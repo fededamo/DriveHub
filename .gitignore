@@ -4,10 +4,9 @@
 /.verify-maven/
 /.verify-latex/
 
-# IDE files (keep the shared VS Code tasks)
+# IDE files
 /.idea/
-/.vscode/*
-!/.vscode/tasks.json
+/.vscode/
 *.iml
 .classpath
 .project

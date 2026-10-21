@@ -51,6 +51,43 @@ Se Compose non parte, controllare che Docker sia avviato con `docker info` e lo 
 
 Il reset usa `mvn compile exec:java`: compila il progetto anche se `target/` non esiste. Se il database o lo schema non esistono ancora, Compose crea il database e l'applicazione applica `init.sql` prima di caricare `demo.sql`. Servono comunque i sorgenti del progetto, JDK 21, Maven e le dipendenze Maven scaricabili o già in cache.
 
+### Avvio manuale senza script
+
+Dalla radice della repository, con JDK 21, Maven 3.9+, Docker Compose e una sessione grafica disponibili, crea `.env` solo se manca. Su **Windows (PowerShell)**:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Su **Linux (Bash)**:
+
+```bash
+cp .env.example .env
+```
+
+Apri `.env` e sostituisci `change-me-local-only` con una password locale a tua scelta. Lascia `DRIVEHUB_DB_SEED_DEMO=false`: impostarlo a `true` farebbe ripopolare il database a ogni avvio. Se hai già un `.env` e un volume PostgreSQL, mantieni la password usata per creare quel volume.
+
+Poi esegui gli stessi comandi nel terminale di entrambi i sistemi:
+
+```text
+docker compose up -d --wait postgres
+mvn compile javafx:run
+```
+
+Il primo comando avvia PostgreSQL e attende che sia pronto; il secondo compila i sorgenti e avvia JavaFX anche senza una cartella `target/` preesistente. Al primo avvio l'applicazione crea lo schema. Per caricare gli account e i dati dimostrativi, esegui **solo quando vuoi sostituire i dati applicativi**:
+
+Su **Windows (PowerShell)**:
+
+```powershell
+mvn compile exec:java '-Dexec.mainClass=it.unifi.ing.drivehub.dao.postgres.ResetDatabase'
+```
+
+Su **Linux (Bash)**:
+
+```bash
+mvn compile exec:java -Dexec.mainClass=it.unifi.ing.drivehub.dao.postgres.ResetDatabase
+```
+
 ### Accessi e dati dimostrativi
 
 Dopo il reset, questi tre account permettono di provare ciascun ruolo. **La password comune è `password`**, valida solo per la demo locale:
