@@ -18,8 +18,7 @@ I pagamenti sono simulati mediante conti interni: non vengono eseguite transazio
 
 - [Relazione finale in PDF](Relazione_SWE/DriveHub_Relazione.pdf) e [sorgente LaTeX](Relazione_SWE/main.tex): contesto, requisiti, architettura, progettazione, implementazione e test.
 - [Template dei casi d'uso](Relazione_SWE/templates), [mockup](Relazione_SWE/images/mockups) e [diagrammi di navigazione](docs/diagrams) per seguire i flussi descritti nella relazione.
-- [Sorgenti dei diagrammi](docs/diagrams), [modello ER di riferimento](docs/reference/er.png) e [migrazione SQL](src/main/resources/db/migration/init.sql). I file `.drawio` sono conservati in `docs/` e `docs/source-diagrams/`.
-- [Linee guida del project work, versione gennaio 2025](docs/reference/project-guidelines-Jan2025.pdf): riferimento metodologico dell'A.A. 2024/2025 usato per organizzare gli artefatti. Il progetto e la relazione sono dell'A.A. 2025/2026.
+- [Sorgenti dei diagrammi](docs/diagrams), incluso il [modello ER](docs/diagrams/er-diagram.puml), e [migrazione SQL](src/main/resources/db/migration/init.sql). I file `.drawio` sono conservati in `docs/` e `docs/source-diagrams/`.
 
 La cartella [`docs/evidence`](docs/evidence) conserva risultati di test di baseline precedenti. Non vanno confusi con i risultati ottenuti eseguendo oggi la suite sul checkout corrente. La relazione distingue inoltre le funzioni attuali da requisiti e mockup storici.
 

@@ -1,5 +1,5 @@
 -- =============================================================================
--- DriveHub - Schema Iniziale (Derivato dal diagramma E-R in er.png)
+-- DriveHub - Schema iniziale
 -- =============================================================================
 -- I nomi di tabelle e colonne riflettono fedelmente il diagramma E-R.
 -- =============================================================================
