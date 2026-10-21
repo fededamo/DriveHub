@@ -1,0 +1,39 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam dpi 180
+entity "client" as client {
+  *id : bigint <<PK>>
+  *name : varchar(50)
+  *surname : varchar(50)
+  *email : varchar(50) <<UQ>>
+  *hash_password : varchar(255)
+}
+entity "salesman" as salesman {
+  *id : bigint <<PK>>
+  *name : varchar(50)
+  *surname : varchar(50)
+  *email : varchar(50) <<UQ>>
+  *hash_password : varchar(255)
+}
+entity "manager" as manager {
+  *id : bigint <<PK>>
+  *name : varchar(50)
+  *surname : varchar(50)
+  *email : varchar(50) <<UQ>>
+  *hash_password : varchar(255)
+}
+entity "bank_account" as bank {
+  *iban : varchar(27) <<PK>>
+  *client : bigint <<FK, UQ>>
+  *balance : decimal(10,2)
+}
+client ||-down-o| bank
+client -[hidden]right- salesman
+salesman -[hidden]right- manager
+note bottom of manager
+  Vista user = UNION delle tre tabelle;
+  email disgiunta tramite trigger SQL.
+end note
+@enduml

@@ -1,0 +1,39 @@
+\section{Business Layer}\label{sec:business-layer}
+
+Il Business Layer coordina le entità del dominio per eseguire i casi d'uso. I servizi ottengono i dati attraverso le interfacce DAO e delegano alle entità le regole che queste possono verificare autonomamente. Il diagramma della figura~\ref{fig:classi-business} mostra le dipendenze principali. Il package \code{business} è suddiviso in sei parti:
+\begin{itemize}
+  \item \textbf{services}: servizi applicativi per identità, catalogo, conto, test drive, noleggio, vendita e prezzi; contiene anche \code{RegistrationRequest} e \code{CatalogModels};
+  \item \textbf{core}: \code{TransactionRunner}, che esegue un lavoro all'interno di una \code{UnitOfWork};
+  \item \textbf{strategies}: algoritmi sostituibili per prezzi, noleggi e valutazioni;
+  \item \textbf{security}: contratto \code{PasswordHasher} e implementazione \code{Pbkdf2PasswordHasher};
+  \item \textbf{banking}: \code{IbanGenerator} per il conto simulato del cliente;
+  \item \textbf{exceptions}: errori applicativi per autenticazione, conflitti e risorse assenti.
+\end{itemize}
+La separazione mantiene le query nelle porte DAO, la verifica del saldo in \code{BankAccount} e la scelta del flusso nei servizi. Il business dipende dal dominio e dalle interfacce di persistenza, non dai controller JavaFX né dalle classi JDBC concrete.
+
+\subsection{Core: unità di lavoro e transazioni}
+Ogni servizio costruisce un \code{TransactionRunner} a partire da \code{DaoFactory}. \code{execute} apre un'unità di lavoro, passa la stessa istanza alla lambda del caso d'uso, esegue il commit se il lavoro termina e il rollback se viene lanciata un'eccezione. Il \code{try}-with-resources chiude l'unità anche in caso di errore:
+\par\medskip\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=Java,caption={Nucleo di TransactionRunner.execute, dal sorgente corrente.},label={lst:transaction-runner}]
+try (UnitOfWork unit = daoFactory.begin()) {
+    try {
+        T result = work.apply(unit);
+        unit.commit();
+        return result;
+    } catch (RuntimeException | Error failure) {
+        try {
+            unit.rollback();
+        } catch (RuntimeException rollbackFailure) {
+            failure.addSuppressed(rollbackFailure);
+        }
+        throw failure;
+    }
+}
+\end{lstlisting}
+\end{minipage}\par\medskip
+Questo meccanismo lega fra loro le scritture eseguite nella stessa lambda, come saldo e registrazione di un noleggio. Non unifica però due chiamate di servizio separate; inoltre una chiamata annidata a \code{execute} apre un'altra \code{UnitOfWork}. L'implementazione JDBC del contratto è descritta nella sezione~\ref{sec:transazioni}.
+
+\subsection{Services: responsabilità}
+\code{AuthService} gestisce registrazione, login e modifiche dell'account; \code{BankAccountService} consulta e aggiorna il saldo del cliente. \code{CatalogService} legge e modifica marche, modelli e veicoli. \code{TestDriveService} e \code{RentalService} verificano disponibilità temporali e salvano le prenotazioni. \code{SalesService} governa richieste di acquisto, saldo, penali e proposte di cessione. \code{PricingService} legge modello e sconti e passa i dati alla strategia di prezzo. La classe di supporto \code{CatalogModels} trova o crea marca e modello durante la proposta di un veicolo; \code{RegistrationRequest} trasporta i dati necessari alla registrazione.
+
+La distinzione fra validazione locale e verifica applicativa è visibile nel test drive. \code{TestDrive} valida l'ora contenuta nel proprio oggetto; \code{TestDriveService.book} deve anche interrogare le prenotazioni già presenti, il noleggio del veicolo e il numero di test drive attivi del cliente. Analogamente \code{Rent} valida date e importo, mentre \code{RentalService.bookRental} decide disponibilità, prezzo e addebito. I paragrafi seguenti esaminano questi flussi e le altre decisioni dei servizi.

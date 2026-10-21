@@ -1,0 +1,37 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam dpi 180
+entity "client (FK target)" as client {
+  *id : bigint <<PK>>
+}
+entity "salesman (FK target)" as salesman {
+  *id : bigint <<PK>>
+}
+entity "vehicle (FK target)" as vehicle {
+  *id : bigint <<PK>>
+}
+entity "request" as request {
+  *id : bigint <<PK>>
+  *vehicle : bigint <<FK>>
+  *client : bigint <<FK>>
+  salesman : bigint <<FK>>
+  *deposit : decimal(10,2)
+  exp_date : date
+}
+entity "sale" as sale {
+  *id : bigint <<PK>>
+  vehicle : bigint <<FK>>
+  salesman : bigint <<FK>>
+  *client : bigint <<FK>>
+  *amount : decimal(10,2)
+  *date : timestamp
+}
+client ||--o{ request
+client ||--o{ sale
+vehicle ||--o{ request
+vehicle |o--o{ sale
+salesman |o--o{ request
+salesman |o--o{ sale
+@enduml

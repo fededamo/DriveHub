@@ -1,0 +1,47 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 17
+skinparam classAttributeIconSize 0
+skinparam dpi 150
+title Business — Politiche sostituibili e Observer effettivo
+interface PricingStrategy {
+ + salePrice(vehicle: Vehicle, discounts: List<Discount>, date: LocalDate): BigDecimal
+ + rentalPrice(vehicle: Vehicle, days: long, discounts: List<Discount>, date: LocalDate): BigDecimal
+}
+class StandardPricingStrategy
+class PricingService {
+ + quoteSalePayment(vehicleId: long, fullPurchase: boolean, date: LocalDate): BigDecimal
+}
+interface PasswordHasher {
+ + hash(password: char[]): String
+ + matches(password: char[], hash: String): boolean
+}
+class Pbkdf2PasswordHasher
+class AuthService
+class InventoryService {
+ + addObserver(observer: InventoryObserver): void
+ + removeObserver(observer: InventoryObserver): void
+}
+interface InventoryObserver
+class InventoryActivityFeed {
+ + onInventoryEvent(event: InventoryEvent): void
+ + recentActivity(): List<DashboardActivity>
+}
+class DashboardService {
+ + snapshot(managerId: long): DashboardSnapshot
+}
+StandardPricingStrategy ..|> PricingStrategy
+PricingService --> PricingStrategy : pricing
+Pbkdf2PasswordHasher ..|> PasswordHasher
+AuthService --> PasswordHasher : passwordHasher
+InventoryActivityFeed ..|> InventoryObserver
+InventoryService "0..*" --> "0..*" InventoryObserver : observers
+DashboardService --> InventoryActivityFeed : inventoryActivity
+note bottom of InventoryService
+  Notifica dopo commit; nessuna notifica
+  su rollback. Feed limitato a 10 eventi,
+  transitorio e locale al processo.
+end note
+@enduml

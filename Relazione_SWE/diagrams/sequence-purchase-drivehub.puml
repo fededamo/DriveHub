@@ -1,0 +1,53 @@
+@startuml
+!include drivehub-sequence-theme.puml
+title Acquisto di un veicolo
+
+actor Customer
+actor Salesman
+participant "Controller JavaFX" as UI #D5E8D4
+participant "SalesService" as Sales #FFF2CC
+participant "TransactionRunner" as TX #FFF2CC
+participant "UnitOfWork / DAO" as DAO #DAE8FC
+participant "BankAccount" as Account #F8CECC
+
+== Acconto ==
+Customer -> UI : seleziona il veicolo
+UI -> Sales : requestPurchase(clientId, vehicleId, deposit)
+Sales -> TX : execute(work)
+TX -> DAO : begin()
+Sales -> DAO : carica Vehicle [SALE] e BankAccount
+Sales -> Account : withdraw(deposit)
+Sales -> DAO : aggiorna saldo e stato BLOCKED
+Sales -> DAO : salva Request positiva
+Sales -> Sales : notifyObservers(SALE -> BLOCKED)
+TX -> DAO : commit()
+
+== Autorizzazione ==
+Salesman -> UI : autorizza la richiesta
+UI -> Sales : authorizePurchase(requestId, salesmanId)
+Sales -> TX : execute(work)
+TX -> DAO : begin()
+Sales -> DAO : carica Request; aggiorna salesmanId e expDate
+TX -> DAO : commit()
+
+== Saldo ==
+Customer -> UI : paga il residuo
+UI -> Sales : completePurchase(requestId, salesmanId)
+Sales -> TX : execute(work)
+TX -> DAO : begin()
+Sales -> DAO : carica Request e Vehicle
+opt prezzo - acconto > 0
+  Sales -> DAO : carica BankAccount del cliente
+  Sales -> Account : withdraw(prezzo - acconto)
+  Sales -> DAO : aggiorna saldo
+end
+Sales -> DAO : stato SOLD; elimina Request; salva Sale
+Sales -> DAO : annulla test drive futuri
+Sales -> Sales : notifyObservers(BLOCKED -> SOLD)
+TX -> DAO : commit()
+
+note over UI,DAO
+  Il gateway inoltra le chiamate del controller.
+  Ogni fase usa una transazione distinta.
+end note
+@enduml

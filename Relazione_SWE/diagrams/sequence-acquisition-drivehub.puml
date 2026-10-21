@@ -1,0 +1,57 @@
+@startuml
+!include drivehub-sequence-theme.puml
+title Acquisizione di un veicolo proposto dal cliente
+
+actor Customer
+actor Salesman
+participant "Controller JavaFX" as UI #D5E8D4
+participant "ServiceUiGateway" as Gateway #D5E8D4
+participant "SalesService" as Sales #FFF2CC
+participant "TransactionRunner" as TX #FFF2CC
+participant "UnitOfWork / DAO" as DAO #DAE8FC
+participant "PricingService /\nPricingStrategy" as Pricing #FFF2CC
+participant "BankAccount" as Account #F8CECC
+
+== Proposta ==
+Customer -> UI : invia i dati del veicolo
+UI -> Gateway : submitVehicleForSale(clientId, submission)
+Gateway -> Sales : submitVehicleForSale(..., clientId)
+Sales -> TX : execute(work)
+TX -> DAO : begin()
+Sales -> DAO : trova o crea VehicleModel
+Sales -> Pricing : calculateValuation(...)
+Pricing --> Sales : valore stimato
+Sales -> DAO : cerca Vehicle per VIN
+alt VIN assente
+  Sales -> DAO : salva Vehicle [WAITING]
+else VIN presente e SOLD
+  Sales -> DAO : aggiorna Vehicle a WAITING
+end
+Sales -> DAO : salva Request con importo negativo
+Sales -> Sales : notifyObservers(-> WAITING)
+TX -> DAO : commit()
+
+== Approvazione ==
+Salesman -> UI : approva il veicolo WAITING
+UI -> Gateway : allPendingRequests()
+Gateway -> Sales : allPendingRequests()
+Sales --> Gateway : richieste
+Gateway --> UI : RequestItem
+UI -> UI : trova la proposta per vehicleId
+UI -> Gateway : approveClientSale(requestId, session.userId)
+Gateway -> Sales : approveClientSale(requestId, salesmanId)
+Sales -> TX : execute(work)
+TX -> DAO : begin()
+Sales -> DAO : carica Request, Vehicle e BankAccount
+Sales -> DAO : aggiorna Vehicle a SALE
+Sales -> Account : deposit(abs(request.deposit))
+Sales -> DAO : aggiorna saldo; salva Sale negativa
+Sales -> DAO : elimina Request
+Sales -> Sales : notifyObservers(WAITING -> SALE)
+TX -> DAO : commit()
+
+note over UI,DAO
+  Le due scritture hanno transazioni distinte.
+  La lettura delle richieste è rappresentata in forma sintetica.
+end note
+@enduml

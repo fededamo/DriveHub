@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="it.unifi.ing.drivehub.presentation.controller.CustomerWorkspaceController"
+            stylesheets="@../css/style.css" prefWidth="1280" prefHeight="800">
+    <top>
+        <HBox styleClass="app-header">
+            <Label text="⌁" styleClass="brand-mark"/>
+            <Label text="DriveHub" styleClass="brand-name"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="userLabel" text="Cliente"/>
+            <Button text="Aggiorna" onAction="#refresh" styleClass="secondary-button"/>
+            <Button text="Logout" onAction="#logout" styleClass="secondary-button"/>
+        </HBox>
+    </top>
+    <center>
+        <VBox styleClass="content">
+            <Label text="Area cliente" styleClass="page-title"/>
+            <TabPane fx:id="workspaceTabs" VBox.vgrow="ALWAYS" tabClosingPolicy="UNAVAILABLE">
+                <tabs>
+                    <!-- TAB 1: CATALOGO VEICOLI -->
+                    <Tab text="Catalogo veicoli">
+                        <VBox styleClass="content" spacing="10">
+                            <FlowPane styleClass="toolbar" hgap="10" vgap="10">
+                                <TextField fx:id="catalogSearchField" promptText="Cerca per modello, VIN o targa" prefWidth="280"/>
+                                <ComboBox fx:id="vehicleStateCombo" promptText="Modalità (Vendita/Noleggio)" prefWidth="220"/>
+                                <Button text="Filtra" onAction="#searchCatalog" styleClass="primary-button"/>
+                            </FlowPane>
+                            <TableView fx:id="catalogTable" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="catalogPlateColumn" text="Targa" prefWidth="120"/>
+                                    <TableColumn fx:id="catalogVinColumn" text="VIN (Telaio)" prefWidth="170"/>
+                                    <TableColumn fx:id="catalogModelColumn" text="Veicolo" prefWidth="280"/>
+                                    <TableColumn fx:id="catalogYearColumn" text="Anno" prefWidth="80"/>
+                                    <TableColumn fx:id="catalogMileageColumn" text="Km" prefWidth="90"/>
+                                    <TableColumn fx:id="catalogPriceColumn" text="Prezzo Scontato (€)" prefWidth="140"/>
+                                    <TableColumn fx:id="catalogStateColumn" text="Stato" prefWidth="100"/>
+                                </columns>
+                            </TableView>
+                            <FlowPane styleClass="toolbar" hgap="10" vgap="10">
+                                <Button text="Acquista con acconto (20%)" onAction="#selectForPurchase" styleClass="primary-button"/>
+                                <Button text="Noleggia veicolo" onAction="#selectForRental" styleClass="secondary-button"/>
+                                <Button text="Prenota test drive" onAction="#selectForTestDrive" styleClass="secondary-button"/>
+                            </FlowPane>
+                        </VBox>
+                    </Tab>
+
+                    <!-- TAB 2: ACQUISTI E RICHIESTE -->
+                    <Tab text="I miei acquisti e richieste">
+                        <VBox styleClass="content" spacing="12">
+                            <Label text="Richieste di acquisto e proposte di vendita in corso" styleClass="section-title"/>
+                            <TableView fx:id="requestsTable" prefHeight="220">
+                                <columns>
+                                    <TableColumn fx:id="requestVehicleColumn" text="Veicolo" prefWidth="300"/>
+                                    <TableColumn fx:id="requestTypeColumn" text="Tipo Richiesta" prefWidth="180"/>
+                                    <TableColumn fx:id="requestDepositColumn" text="Acconto / Stima (€)" prefWidth="160"/>
+                                    <TableColumn fx:id="requestExpDateColumn" text="Scadenza Saldo (30 gg)" prefWidth="180"/>
+                                </columns>
+                            </TableView>
+                            <HBox spacing="10">
+                                <Button text="Paga saldo e completa acquisto" onAction="#payFullBalance" styleClass="primary-button"/>
+                                <Button text="Annulla acquisto (Penale 20% trattenuta, 80% rimborsata)" onAction="#cancelRequestWithPenalty" styleClass="danger-button"/>
+                            </HBox>
+
+                            <Separator/>
+                            <Label text="Storico compravendite concluse" styleClass="section-title"/>
+                            <TableView fx:id="salesTable" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="saleVehicleColumn" text="Veicolo / Motivo" prefWidth="300"/>
+                                    <TableColumn fx:id="saleAmountColumn" text="Importo (€)" prefWidth="150"/>
+                                    <TableColumn fx:id="saleDateColumn" text="Data operazione" prefWidth="150"/>
+                                    <TableColumn fx:id="saleStatusColumn" text="Tipo Transazione" prefWidth="250"/>
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </Tab>
+
+                    <!-- TAB 3: NOLEGGI E TEST DRIVE -->
+                    <Tab text="Noleggi e Test Drive">
+                        <VBox styleClass="content" spacing="12">
+                            <Label text="Prenotazione rapida noleggio" styleClass="section-title"/>
+                            <FlowPane styleClass="toolbar" hgap="10" vgap="10">
+                                <Label fx:id="rentalSelectedVehicleLabel" text="Seleziona un veicolo RENT dal catalogo" styleClass="muted"/>
+                                <Label text="Data inizio:"/><DatePicker fx:id="rentalStartDatePicker" onAction="#updateRentalQuotePreview"/>
+                                <Label text="Data fine:"/><DatePicker fx:id="rentalEndDatePicker" onAction="#updateRentalQuotePreview"/>
+                                <Button text="Conferma noleggio" onAction="#confirmRental" styleClass="primary-button"/>
+                            </FlowPane>
+                            <Label fx:id="rentalQuoteLabel" text="" styleClass="success-text"/>
+                            <TableView fx:id="rentalsTable" prefHeight="180">
+                                <columns>
+                                    <TableColumn fx:id="rentalVehicleColumn" text="Veicolo" prefWidth="320"/>
+                                    <TableColumn fx:id="rentalPeriodColumn" text="Periodo" prefWidth="240"/>
+                                    <TableColumn fx:id="rentalAmountColumn" text="Importo Totale Scalato (€)" prefWidth="200"/>
+                                </columns>
+                            </TableView>
+
+                            <Separator/>
+                            <Label text="Prenotazione rapida test drive (Slot di 1 ora, fascia 09:00 - 16:00)" styleClass="section-title"/>
+                            <FlowPane styleClass="toolbar" hgap="10" vgap="10">
+                                <Label fx:id="testDriveSelectedVehicleLabel" text="Seleziona un veicolo dal catalogo" styleClass="muted"/>
+                                <Label text="Data:"/><DatePicker fx:id="testDriveDatePicker" onAction="#onTestDriveDateSelected"/>
+                                <Label text="Orario:"/><ComboBox fx:id="testDriveHourCombo" prefWidth="120" promptText="Seleziona ora"/>
+                                <Button text="Prenota test drive" onAction="#confirmTestDrive" styleClass="primary-button"/>
+                            </FlowPane>
+                            <TableView fx:id="testDrivesTable" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="testDriveVehicleColumn" text="Veicolo" prefWidth="320"/>
+                                    <TableColumn fx:id="testDriveDateColumn" text="Data" prefWidth="140"/>
+                                    <TableColumn fx:id="testDriveTimeColumn" text="Ora inizio" prefWidth="140"/>
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </Tab>
+
+                    <!-- TAB 4: VENDI UN VEICOLO -->
+                    <Tab text="Vendi il tuo veicolo">
+                        <VBox styleClass="content" spacing="10">
+                            <Label text="Proponi un veicolo alla concessionaria" styleClass="section-title"/>
+                            <Label text="Il valore viene stimato automaticamente: -20% se usato, -5% per ogni anno dal rilascio del modello, -5% per ogni 10.000 km." styleClass="muted"/>
+                            <GridPane styleClass="form-grid" hgap="10" vgap="10">
+                                <Label text="Marca:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                <ComboBox fx:id="brandComboBox" promptText="Seleziona Marchio" prefWidth="280" onAction="#onBrandSelected" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                                <Label text="Modello:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                <ComboBox fx:id="modelComboBox" promptText="Seleziona Modello (da catalogo)" prefWidth="380" onAction="#onModelSelected" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                                <Label text="Numero di telaio (VIN):" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                                <TextField fx:id="newVinField" promptText="17 caratteri alfanumerici" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                                <Label text="Targa:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                                <TextField fx:id="newPlateField" promptText="Es. AA123BB (lascia vuoto se non immatricolata)" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                                <Label text="Chilometri:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                                <TextField fx:id="newKmField" promptText="Es. 45000 (0 se senza targa)" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+                                <Label text="Anno immatricolazione:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                                <TextField fx:id="newVehicleYearField" promptText="Es. 2022" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+                                <Label text="Valutazione calcolata (€):" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+                                <HBox spacing="10" GridPane.rowIndex="6" GridPane.columnIndex="1">
+                                    <TextField fx:id="newPriceField" editable="false" promptText="Valore calcolato automaticamente" prefWidth="220"/>
+                                    <Button text="Calcola preventivo" onAction="#calculateValuationQuote" styleClass="secondary-button"/>
+                                </HBox>
+                            </GridPane>
+                            <Label fx:id="valuationQuoteLabel" text="" styleClass="success-text"/>
+                            <Button text="Invia proposta di vendita al concessionario" onAction="#submitVehicleForSale" styleClass="primary-button"/>
+                        </VBox>
+                    </Tab>
+
+                    <!-- TAB 5: CONTO BANCARIO -->
+                    <Tab text="Il mio conto corrente">
+                        <VBox styleClass="content" spacing="14">
+                            <Label text="Dettagli Conto Bancario" styleClass="section-title"/>
+                            <GridPane styleClass="form-grid" hgap="12" vgap="10">
+                                <Label text="IBAN intestato:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                <Label fx:id="ibanLabel" text="IT00..." styleClass="section-title" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                                <Label text="Saldo disponibile:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                <Label fx:id="balanceLabel" text="0.00 €" styleClass="page-title" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                            </GridPane>
+
+                            <Separator/>
+                            <Label text="Ricarica / Versamento fondi" styleClass="section-title"/>
+                            <FlowPane styleClass="toolbar" hgap="10" vgap="10">
+                                <TextField fx:id="depositAmountField" promptText="Importo da versare (€)" prefWidth="180"/>
+                                <Button text="Deposita fondi sul conto" onAction="#depositFunds" styleClass="primary-button"/>
+                            </FlowPane>
+                        </VBox>
+                    </Tab>
+
+                    <!-- TAB 6: GESTIONE PROFILO E ACCOUNT -->
+                    <Tab text="Profilo e Account">
+                        <VBox styleClass="content" spacing="14">
+                            <Label text="Modifica Indirizzo Email" styleClass="section-title"/>
+                            <GridPane styleClass="form-grid" hgap="10" vgap="10">
+                                <Label text="Nuova Email:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                <TextField fx:id="newEmailField" promptText="nuova@email.it" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                                <Label text="Password attuale per conferma:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                <PasswordField fx:id="emailCurrentPasswordField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                            </GridPane>
+                            <Button text="Aggiorna Email" onAction="#updateEmail" styleClass="primary-button"/>
+
+                            <Separator/>
+                            <Label text="Modifica Password" styleClass="section-title"/>
+                            <GridPane styleClass="form-grid" hgap="10" vgap="10">
+                                <Label text="Password attuale:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                <PasswordField fx:id="pwdCurrentPasswordField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                                <Label text="Nuova Password:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                <PasswordField fx:id="newPasswordField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                            </GridPane>
+                            <Button text="Aggiorna Password" onAction="#updatePassword" styleClass="primary-button"/>
+
+                            <Separator/>
+                            <Label text="Eliminazione Account" styleClass="section-title"/>
+                            <Label text="L'account può essere eliminato solo se non hai storico di operazioni (test drive, noleggi o vendite)." styleClass="muted"/>
+                            <GridPane styleClass="form-grid" hgap="10" vgap="10">
+                                <Label text="Password per conferma:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                <PasswordField fx:id="deleteAccountPasswordField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                            </GridPane>
+                            <Button text="Elimina il mio Account" onAction="#deleteAccount" styleClass="danger-button"/>
+                        </VBox>
+                    </Tab>
+                </tabs>
+            </TabPane>
+            <Label fx:id="globalMessageLabel" wrapText="true"/>
+        </VBox>
+    </center>
+</BorderPane>

@@ -1,0 +1,71 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 17
+skinparam classAttributeIconSize 0
+skinparam dpi 150
+title UC-RENT-01 / UC-PAY-01 — Checkout atomico
+skinparam maxMessageSize 65
+autonumber
+actor Customer
+boundary "ui : CustomerWorkspaceController" as ui
+boundary "dialog : PaymentDialogController" as dialog
+control "checkout : CheckoutService" as checkout
+control "rentals : RentalService" as rentals
+control "payments : PaymentService" as payments
+participant "unit : UnitOfWork" as unit
+participant "gateway : PaymentGateway" as gateway
+Customer -> ui : Conferma e paga
+activate ui
+ui -> dialog : configure(amount, reference)
+activate dialog
+note over ui,dialog : Il controller carica PaymentDialog.fxml e chiama Stage.showAndWait().
+Customer -> dialog : conferma oppure annulla
+ui -> dialog : isConfirmed() / selectedMethod()
+deactivate dialog
+alt annullato
+ ui --> Customer : nessuna scrittura
+else confermato
+ ui -> checkout : checkoutRental(customerId, vehicleId, start, end, method, amount)\n[tramite UiGateway.rentAndPay]
+ activate checkout
+ group unica TransactionRunner.execute(work) — callback del checkout
+  note over checkout,unit
+    DaoFactory.begin() crea unit; tutti i servizi ricevono la stessa unit.
+    Il runner invoca il callback qui rappresentato sul chiamante.
+  end note
+  checkout -> rentals : requestRental(unit, customerId, vehicleId, start, end)
+  activate rentals
+  note over rentals,unit : Ruolo, lock Vehicle, sovrapposizioni, prezzo e save Rental REQUESTED.
+  rentals --> checkout : rental
+  deactivate rentals
+  checkout -> checkout : requireAcceptedQuote(amount, rental.totalPrice())
+  checkout -> payments : payRental(unit, customerId, rental.id, method)
+  activate payments
+  note over payments,unit : Lock Rental; ownership; verifica assenza saldo; save Payment PENDING.
+  payments -> gateway : charge(amount, method)
+  activate gateway
+  gateway --> payments : PaymentGatewayResult
+  deactivate gateway
+  alt approvato
+   note over payments,unit : Payment.complete(reference), update Payment.
+  else rifiutato
+   note over payments,unit : Payment.fail(reason), update Payment.
+  end
+  payments --> checkout : payment
+  deactivate payments
+  alt payment.status == FAILED
+   checkout -> checkout : rental.cancel(rental.customer())
+   checkout -> unit : rentals().update(rental)
+  end
+  note over checkout,unit
+    Callback riuscito: il runner chiama unit.commit(), poi close().
+    Qualunque eccezione: rollback() e close(), nessun risultato riuscito.
+  end note
+ end
+ checkout --> ui : Payment / errore tradotto da UiGateway
+ deactivate checkout
+ ui --> Customer : esito visibile; elenco riletto se riuscito
+end
+deactivate ui
+@enduml

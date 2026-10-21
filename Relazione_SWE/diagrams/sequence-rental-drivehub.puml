@@ -1,0 +1,44 @@
+@startuml
+!include drivehub-sequence-theme.puml
+title Prenotazione di un noleggio
+
+actor Customer
+participant "Controller JavaFX" as UI #D5E8D4
+participant "RentalService" as Rental #FFF2CC
+participant "TransactionRunner" as TX #FFF2CC
+participant "UnitOfWork / DAO" as DAO #DAE8FC
+participant "PricingService /\nPricingStrategy" as Pricing #FFF2CC
+participant "BankAccount" as Account #F8CECC
+participant "InventoryObserver" as Observer #F8CECC
+
+Customer -> UI : conferma date e veicolo
+UI -> Rental : bookRental(clientId, vehicleId, start, end)
+Rental -> Rental : valida le date
+Rental -> TX : execute(work)
+TX -> DAO : begin()
+Rental -> DAO : carica Vehicle [RENT]; verifica sovrapposizioni
+DAO --> Rental : esito
+alt intervallo occupato
+  Rental --> TX : ConflictException
+  TX -> DAO : rollback()
+  Rental --> UI : errore di disponibilita
+else intervallo libero
+  Rental -> Pricing : calculateRentalPrice(vehicle, giorni inclusivi)
+  Pricing --> Rental : importo
+  Rental -> DAO : carica BankAccount
+  Rental -> Account : withdraw(importo)
+  Rental -> DAO : aggiorna saldo; salva Rent
+  Rental -> DAO : annulla test drive nel periodo
+  opt observer registrati
+    Rental -> Observer : onInventoryEvent(TEST_DRIVES_CANCELLED)
+  end
+  TX -> DAO : commit()
+  Rental --> UI : Rent salvato
+end
+
+note over UI,DAO
+  Il gateway inoltra la chiamata del controller.
+  Le scritture JDBC condividono la transazione.
+  La notifica precede il commit.
+end note
+@enduml

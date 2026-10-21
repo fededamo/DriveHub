@@ -1,0 +1,95 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam dpi 180
+hide empty members
+class User {
+  name : String
+  surname : String
+  email : String
+  passwordHash : String
+  role : Role
+}
+enum Role {
+  CLIENT
+  CUSTOMER
+  SALESMAN
+  MANAGER
+}
+class BankAccount {
+  iban : String
+  clientId : long
+  balance : BigDecimal
+  deposit(amount)
+  withdraw(amount)
+}
+class Brand {
+  name : String
+}
+class VehicleModel {
+  brandName : String
+  name : String
+  releasePrice : BigDecimal
+  releaseYear : int
+}
+class Vehicle {
+  modelId : long
+  vin : String
+  licencePlate : String
+  kilometers : int
+  price : BigDecimal
+  year : int
+  state : VehicleState
+  approve()
+  block()
+  unblock()
+}
+enum VehicleState {
+  WAITING
+  SALE
+  RENT
+  BLOCKED
+  SOLD
+}
+class Request {
+  vehicleId : long
+  clientId : long
+  salesmanId : Long
+  deposit : BigDecimal
+  expDate : LocalDate
+  isPurchase()
+  isSaleProposal()
+}
+class Sale {
+  vehicleId : Long
+  salesmanId : Long
+  clientId : long
+  amount : BigDecimal
+  date : LocalDateTime
+}
+class Rent {
+  vehicleId : long
+  clientId : long
+  amount : BigDecimal
+  start : LocalDate
+  end : LocalDate
+}
+class TestDrive {
+  vehicleId : long
+  clientId : long
+  date : LocalDateTime
+}
+User --> Role
+Vehicle --> VehicleState
+Brand "1" -- "0..*" VehicleModel
+VehicleModel "1" -- "0..*" Vehicle
+User "1" -- "0..1" BankAccount : CLIENT
+User "1" -- "0..*" Rent : client
+User "1" -- "0..*" TestDrive : client
+User "1" -- "0..*" Request : client
+Vehicle "1" -- "0..*" Rent
+Vehicle "1" -- "0..*" TestDrive
+Vehicle "1" -- "0..*" Request
+Vehicle "0..1" -- "0..*" Sale
+@enduml

@@ -1,0 +1,24 @@
+\section{Diagramma dei casi d'uso}\label{sec:casi-uso}
+Il diagramma mostra le funzioni offerte ai tre ruoli di DriveHub. L'attore generale \emph{User} raccoglie registrazione e accesso; \emph{Customer}, \emph{Salesman} e \emph{Manager} ereditano queste possibilità e accedono alle operazioni delle rispettive aree. Il Customer consulta il catalogo e avvia le operazioni commerciali; il Salesman valuta le proposte e segue le pratiche; il Manager mantiene catalogo e sconti e consulta le vendite. I quattro casi d'uso dettagliati sotto riguardano il test drive, il noleggio, l'acquisto e la proposta di cessione.
+
+\begin{figure}[p]\centering
+\makebox[\linewidth][c]{\includegraphics[width=1.12\linewidth,height=.91\textheight,keepaspectratio]{users-swe-current.png}}
+\caption{Casi d'uso di DriveHub nel codice corrente. Diagramma sorgente: \texttt{docs/Users\ SWE.drawio}.}\label{fig:uc-correnti}
+\end{figure}
+\clearpage
+
+\section{Template dei casi principali}
+I casi d'uso principali sono descritti con lo stesso schema della relazione ChargeNet: nome, livello, descrizione, condizioni, attori, schermate, test e flussi. Le alternative riportano anche i limiti osservabili della realizzazione corrente. I riferimenti ai test distinguono il percorso verificato dalle alternative prive di prova specifica.
+\begingroup\renewcommand{\arraystretch}{1.4}
+\input{templates/test_drive}
+\endgroup
+\begingroup\renewcommand{\arraystretch}{1.4}
+\input{templates/noleggio}
+\endgroup
+\clearpage
+\begingroup\renewcommand{\arraystretch}{1.4}
+\input{templates/acquisto}
+\endgroup
+\begingroup\renewcommand{\arraystretch}{1.4}
+\input{templates/cessione}
+\endgroup

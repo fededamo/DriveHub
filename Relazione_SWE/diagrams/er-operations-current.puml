@@ -1,0 +1,64 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam dpi 180
+entity "client" as client {
+  *id : bigint <<PK>>
+  *email : varchar(50) <<UQ>>
+  *hash_password : varchar(255)
+}
+entity "salesman" as salesman {
+  *id : bigint <<PK>>
+  *email : varchar(50) <<UQ>>
+}
+entity "bank_account" as bank {
+  *iban : varchar(27) <<PK>>
+  *client : bigint <<FK, UQ>>
+  *balance : decimal(10,2)
+}
+entity "request" as request {
+  *id : bigint <<PK>>
+  *vehicle : bigint <<FK>>
+  *client : bigint <<FK>>
+  salesman : bigint <<FK>>
+  *deposit : decimal(10,2)
+  exp_date : date
+}
+entity "test_drive" as td {
+  *id : bigint <<PK>>
+  *vehicle : bigint <<FK>>
+  *client : bigint <<FK>>
+  *date : timestamp
+}
+entity "rent" as rent {
+  *id : bigint <<PK>>
+  *vehicle : bigint <<FK>>
+  *client : bigint <<FK>>
+  *amount : decimal(10,2)
+  *start : date
+  *end : date
+}
+entity "sale" as sale {
+  *id : bigint <<PK>>
+  vehicle : bigint <<FK>>
+  salesman : bigint <<FK>>
+  *client : bigint <<FK>>
+  *amount : decimal(10,2)
+  *date : timestamp
+}
+entity "vehicle (FK target)" as vehicle {
+  *id : bigint <<PK>>
+}
+client ||--o| bank
+client ||--o{ request
+client ||--o{ td
+client ||--o{ rent
+client ||--o{ sale
+salesman |o--o{ request
+salesman |o--o{ sale
+vehicle ||--o{ request
+vehicle ||--o{ td
+vehicle ||--o{ rent
+vehicle |o--o{ sale
+@enduml

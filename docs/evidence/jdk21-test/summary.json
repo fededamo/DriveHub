@@ -1,0 +1,917 @@
+{
+  "run": "jdk21-test",
+  "recorded_at": "2026-09-08T17:31:07.753822+00:00",
+  "command": "mvn -B -ntp clean test",
+  "java": "openjdk version \"21.0.12.1\" 2026-08-18 LTS\nOpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)",
+  "commit_base": "ed03c32289aa663dfc04b1bf0c8fda15da326b47",
+  "baseline_sha256": "76cd13cc7a53dbefa59f4592cdb98d6e717e06c175182b1b5d258eb1dada4de3",
+  "baseline_kind": "commit base + working tree; manifest of pom, compose and src",
+  "build_success": true,
+  "totals": {
+    "tests": 81,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "coverage": {
+    "INSTRUCTION": {
+      "covered": 10053,
+      "missed": 6020,
+      "total": 16073,
+      "percent": 62.55
+    },
+    "BRANCH": {
+      "covered": 610,
+      "missed": 481,
+      "total": 1091,
+      "percent": 55.91
+    },
+    "LINE": {
+      "covered": 2048,
+      "missed": 1083,
+      "total": 3131,
+      "percent": 65.41
+    },
+    "COMPLEXITY": {
+      "covered": 837,
+      "missed": 740,
+      "total": 1577,
+      "percent": 53.08
+    },
+    "METHOD": {
+      "covered": 667,
+      "missed": 358,
+      "total": 1025,
+      "percent": 65.07
+    },
+    "CLASS": {
+      "covered": 77,
+      "missed": 23,
+      "total": 100,
+      "percent": 77.0
+    }
+  },
+  "package_coverage": {
+    "it/unifi/ing/drivehub/business/core": {
+      "INSTRUCTION": {
+        "covered": 77,
+        "missed": 10,
+        "total": 87,
+        "percent": 88.51
+      },
+      "BRANCH": {
+        "covered": 8,
+        "missed": 4,
+        "total": 12,
+        "percent": 66.67
+      },
+      "LINE": {
+        "covered": 20,
+        "missed": 2,
+        "total": 22,
+        "percent": 90.91
+      },
+      "COMPLEXITY": {
+        "covered": 7,
+        "missed": 4,
+        "total": 11,
+        "percent": 63.64
+      },
+      "METHOD": {
+        "covered": 5,
+        "missed": 0,
+        "total": 5,
+        "percent": 100.0
+      },
+      "CLASS": {
+        "covered": 2,
+        "missed": 0,
+        "total": 2,
+        "percent": 100.0
+      }
+    },
+    "it/unifi/ing/drivehub/business/strategies": {
+      "INSTRUCTION": {
+        "covered": 81,
+        "missed": 15,
+        "total": 96,
+        "percent": 84.38
+      },
+      "BRANCH": {
+        "covered": 3,
+        "missed": 3,
+        "total": 6,
+        "percent": 50.0
+      },
+      "LINE": {
+        "covered": 16,
+        "missed": 3,
+        "total": 19,
+        "percent": 84.21
+      },
+      "COMPLEXITY": {
+        "covered": 7,
+        "missed": 3,
+        "total": 10,
+        "percent": 70.0
+      },
+      "METHOD": {
+        "covered": 7,
+        "missed": 0,
+        "total": 7,
+        "percent": 100.0
+      },
+      "CLASS": {
+        "covered": 1,
+        "missed": 0,
+        "total": 1,
+        "percent": 100.0
+      }
+    },
+    "it/unifi/ing/drivehub/domain/observer": {
+      "INSTRUCTION": {
+        "covered": 55,
+        "missed": 5,
+        "total": 60,
+        "percent": 91.67
+      },
+      "BRANCH": {
+        "covered": 2,
+        "missed": 2,
+        "total": 4,
+        "percent": 50.0
+      },
+      "LINE": {
+        "covered": 9,
+        "missed": 1,
+        "total": 10,
+        "percent": 90.0
+      },
+      "COMPLEXITY": {
+        "covered": 2,
+        "missed": 2,
+        "total": 4,
+        "percent": 50.0
+      },
+      "METHOD": {
+        "covered": 2,
+        "missed": 0,
+        "total": 2,
+        "percent": 100.0
+      },
+      "CLASS": {
+        "covered": 2,
+        "missed": 0,
+        "total": 2,
+        "percent": 100.0
+      }
+    },
+    "it/unifi/ing/drivehub/business/exceptions": {
+      "INSTRUCTION": {
+        "covered": 8,
+        "missed": 6,
+        "total": 14,
+        "percent": 57.14
+      },
+      "LINE": {
+        "covered": 4,
+        "missed": 2,
+        "total": 6,
+        "percent": 66.67
+      },
+      "COMPLEXITY": {
+        "covered": 2,
+        "missed": 1,
+        "total": 3,
+        "percent": 66.67
+      },
+      "METHOD": {
+        "covered": 2,
+        "missed": 1,
+        "total": 3,
+        "percent": 66.67
+      },
+      "CLASS": {
+        "covered": 2,
+        "missed": 1,
+        "total": 3,
+        "percent": 66.67
+      }
+    },
+    "it/unifi/ing/drivehub/business/services": {
+      "INSTRUCTION": {
+        "covered": 3151,
+        "missed": 869,
+        "total": 4020,
+        "percent": 78.38
+      },
+      "BRANCH": {
+        "covered": 146,
+        "missed": 60,
+        "total": 206,
+        "percent": 70.87
+      },
+      "LINE": {
+        "covered": 583,
+        "missed": 85,
+        "total": 668,
+        "percent": 87.28
+      },
+      "COMPLEXITY": {
+        "covered": 216,
+        "missed": 140,
+        "total": 356,
+        "percent": 60.67
+      },
+      "METHOD": {
+        "covered": 167,
+        "missed": 86,
+        "total": 253,
+        "percent": 66.01
+      },
+      "CLASS": {
+        "covered": 16,
+        "missed": 0,
+        "total": 16,
+        "percent": 100.0
+      }
+    },
+    "it/unifi/ing/drivehub/domain": {
+      "INSTRUCTION": {
+        "covered": 39,
+        "missed": 26,
+        "total": 65,
+        "percent": 60.0
+      },
+      "BRANCH": {
+        "covered": 6,
+        "missed": 6,
+        "total": 12,
+        "percent": 50.0
+      },
+      "LINE": {
+        "covered": 13,
+        "missed": 4,
+        "total": 17,
+        "percent": 76.47
+      },
+      "COMPLEXITY": {
+        "covered": 6,
+        "missed": 5,
+        "total": 11,
+        "percent": 54.55
+      },
+      "METHOD": {
+        "covered": 5,
+        "missed": 0,
+        "total": 5,
+        "percent": 100.0
+      },
+      "CLASS": {
+        "covered": 2,
+        "missed": 0,
+        "total": 2,
+        "percent": 100.0
+      }
+    },
+    "it/unifi/ing/drivehub/domain/sales": {
+      "INSTRUCTION": {
+        "covered": 1181,
+        "missed": 236,
+        "total": 1417,
+        "percent": 83.35
+      },
+      "BRANCH": {
+        "covered": 123,
+        "missed": 91,
+        "total": 214,
+        "percent": 57.48
+      },
+      "LINE": {
+        "covered": 269,
+        "missed": 38,
+        "total": 307,
+        "percent": 87.62
+      },
+      "COMPLEXITY": {
+        "covered": 100,
+        "missed": 88,
+        "total": 188,
+        "percent": 53.19
+      },
+      "METHOD": {
+        "covered": 77,
+        "missed": 2,
+        "total": 79,
+        "percent": 97.47
+      },
+      "CLASS": {
+        "covered": 10,
+        "missed": 0,
+        "total": 10,
+        "percent": 100.0
+      }
+    },
+    "it/unifi/ing/drivehub": {
+      "INSTRUCTION": {
+        "covered": 0,
+        "missed": 239,
+        "total": 239,
+        "percent": 0.0
+      },
+      "BRANCH": {
+        "covered": 0,
+        "missed": 10,
+        "total": 10,
+        "percent": 0.0
+      },
+      "LINE": {
+        "covered": 0,
+        "missed": 48,
+        "total": 48,
+        "percent": 0.0
+      },
+      "COMPLEXITY": {
+        "covered": 0,
+        "missed": 12,
+        "total": 12,
+        "percent": 0.0
+      },
+      "METHOD": {
+        "covered": 0,
+        "missed": 7,
+        "total": 7,
+        "percent": 0.0
+      },
+      "CLASS": {
+        "covered": 0,
+        "missed": 1,
+        "total": 1,
+        "percent": 0.0
+      }
+    },
+    "it/unifi/ing/drivehub/domain/vehicles": {
+      "INSTRUCTION": {
+        "covered": 687,
+        "missed": 112,
+        "total": 799,
+        "percent": 85.98
+      },
+      "BRANCH": {
+        "covered": 45,
+        "missed": 33,
+        "total": 78,
+        "percent": 57.69
+      },
+      "LINE": {
+        "covered": 164,
+        "missed": 22,
+        "total": 186,
+        "percent": 88.17
+      },
+      "COMPLEXITY": {
+        "covered": 69,
+        "missed": 31,
+        "total": 100,
+        "percent": 69.0
+      },
+      "METHOD": {
+        "covered": 60,
+        "missed": 1,
+        "total": 61,
+        "percent": 98.36
+      },
+      "CLASS": {
+        "covered": 7,
+        "missed": 0,
+        "total": 7,
+        "percent": 100.0
+      }
+    },
+    "it/unifi/ing/drivehub/business/security": {
+      "INSTRUCTION": {
+        "covered": 171,
+        "missed": 42,
+        "total": 213,
+        "percent": 80.28
+      },
+      "BRANCH": {
+        "covered": 16,
+        "missed": 14,
+        "total": 30,
+        "percent": 53.33
+      },
+      "LINE": {
+        "covered": 36,
+        "missed": 12,
+        "total": 48,
+        "percent": 75.0
+      },
+      "COMPLEXITY": {
+        "covered": 6,
+        "missed": 15,
+        "total": 21,
+        "percent": 28.57
+      },
+      "METHOD": {
+        "covered": 5,
+        "missed": 1,
+        "total": 6,
+        "percent": 83.33
+      },
+      "CLASS": {
+        "covered": 1,
+        "missed": 0,
+        "total": 1,
+        "percent": 100.0
+      }
+    },
+    "it/unifi/ing/drivehub/presentation/core": {
+      "INSTRUCTION": {
+        "covered": 353,
+        "missed": 920,
+        "total": 1273,
+        "percent": 27.73
+      },
+      "BRANCH": {
+        "covered": 24,
+        "missed": 40,
+        "total": 64,
+        "percent": 37.5
+      },
+      "LINE": {
+        "covered": 70,
+        "missed": 156,
+        "total": 226,
+        "percent": 30.97
+      },
+      "COMPLEXITY": {
+        "covered": 27,
+        "missed": 85,
+        "total": 112,
+        "percent": 24.11
+      },
+      "METHOD": {
+        "covered": 18,
+        "missed": 62,
+        "total": 80,
+        "percent": 22.5
+      },
+      "CLASS": {
+        "covered": 5,
+        "missed": 10,
+        "total": 15,
+        "percent": 33.33
+      }
+    },
+    "it/unifi/ing/drivehub/presentation/controller": {
+      "INSTRUCTION": {
+        "covered": 4,
+        "missed": 2465,
+        "total": 2469,
+        "percent": 0.16
+      },
+      "BRANCH": {
+        "covered": 0,
+        "missed": 87,
+        "total": 87,
+        "percent": 0.0
+      },
+      "LINE": {
+        "covered": 1,
+        "missed": 482,
+        "total": 483,
+        "percent": 0.21
+      },
+      "COMPLEXITY": {
+        "covered": 1,
+        "missed": 185,
+        "total": 186,
+        "percent": 0.54
+      },
+      "METHOD": {
+        "covered": 1,
+        "missed": 138,
+        "total": 139,
+        "percent": 0.72
+      },
+      "CLASS": {
+        "covered": 1,
+        "missed": 7,
+        "total": 8,
+        "percent": 12.5
+      }
+    },
+    "it/unifi/ing/drivehub/presentation/navigation": {
+      "INSTRUCTION": {
+        "covered": 0,
+        "missed": 254,
+        "total": 254,
+        "percent": 0.0
+      },
+      "BRANCH": {
+        "covered": 0,
+        "missed": 16,
+        "total": 16,
+        "percent": 0.0
+      },
+      "LINE": {
+        "covered": 0,
+        "missed": 60,
+        "total": 60,
+        "percent": 0.0
+      },
+      "COMPLEXITY": {
+        "covered": 0,
+        "missed": 21,
+        "total": 21,
+        "percent": 0.0
+      },
+      "METHOD": {
+        "covered": 0,
+        "missed": 12,
+        "total": 12,
+        "percent": 0.0
+      },
+      "CLASS": {
+        "covered": 0,
+        "missed": 2,
+        "total": 2,
+        "percent": 0.0
+      }
+    },
+    "it/unifi/ing/drivehub/domain/rentals": {
+      "INSTRUCTION": {
+        "covered": 608,
+        "missed": 98,
+        "total": 706,
+        "percent": 86.12
+      },
+      "BRANCH": {
+        "covered": 77,
+        "missed": 37,
+        "total": 114,
+        "percent": 67.54
+      },
+      "LINE": {
+        "covered": 132,
+        "missed": 16,
+        "total": 148,
+        "percent": 89.19
+      },
+      "COMPLEXITY": {
+        "covered": 63,
+        "missed": 35,
+        "total": 98,
+        "percent": 64.29
+      },
+      "METHOD": {
+        "covered": 40,
+        "missed": 1,
+        "total": 41,
+        "percent": 97.56
+      },
+      "CLASS": {
+        "covered": 4,
+        "missed": 0,
+        "total": 4,
+        "percent": 100.0
+      }
+    },
+    "it/unifi/ing/drivehub/domain/users": {
+      "INSTRUCTION": {
+        "covered": 234,
+        "missed": 29,
+        "total": 263,
+        "percent": 88.97
+      },
+      "BRANCH": {
+        "covered": 18,
+        "missed": 6,
+        "total": 24,
+        "percent": 75.0
+      },
+      "LINE": {
+        "covered": 56,
+        "missed": 7,
+        "total": 63,
+        "percent": 88.89
+      },
+      "COMPLEXITY": {
+        "covered": 28,
+        "missed": 7,
+        "total": 35,
+        "percent": 80.0
+      },
+      "METHOD": {
+        "covered": 22,
+        "missed": 1,
+        "total": 23,
+        "percent": 95.65
+      },
+      "CLASS": {
+        "covered": 2,
+        "missed": 0,
+        "total": 2,
+        "percent": 100.0
+      }
+    },
+    "it/unifi/ing/drivehub/dao/postgres": {
+      "INSTRUCTION": {
+        "covered": 3391,
+        "missed": 690,
+        "total": 4081,
+        "percent": 83.09
+      },
+      "BRANCH": {
+        "covered": 142,
+        "missed": 72,
+        "total": 214,
+        "percent": 66.36
+      },
+      "LINE": {
+        "covered": 672,
+        "missed": 143,
+        "total": 815,
+        "percent": 82.45
+      },
+      "COMPLEXITY": {
+        "covered": 301,
+        "missed": 105,
+        "total": 406,
+        "percent": 74.14
+      },
+      "METHOD": {
+        "covered": 254,
+        "missed": 45,
+        "total": 299,
+        "percent": 84.95
+      },
+      "CLASS": {
+        "covered": 20,
+        "missed": 2,
+        "total": 22,
+        "percent": 90.91
+      }
+    },
+    "it/unifi/ing/drivehub/dao/interfaces": {
+      "INSTRUCTION": {
+        "covered": 13,
+        "missed": 4,
+        "total": 17,
+        "percent": 76.47
+      },
+      "LINE": {
+        "covered": 3,
+        "missed": 2,
+        "total": 5,
+        "percent": 60.0
+      },
+      "COMPLEXITY": {
+        "covered": 2,
+        "missed": 1,
+        "total": 3,
+        "percent": 66.67
+      },
+      "METHOD": {
+        "covered": 2,
+        "missed": 1,
+        "total": 3,
+        "percent": 66.67
+      },
+      "CLASS": {
+        "covered": 2,
+        "missed": 0,
+        "total": 2,
+        "percent": 100.0
+      }
+    }
+  },
+  "suites": [
+    {
+      "name": "it.unifi.ing.drivehub.architecture.LayeringTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "cases": [
+        "presentationCannotBypassBusinessForPersistence",
+        "controllersUseOnlyTheUiGatewayAndProjections",
+        "persistencePortsAreIndependentOfAdapters",
+        "businessDependsOnlyOnPersistencePortsAndDomain",
+        "domainDoesNotDependOnOuterLayersOrInfrastructure",
+        "postgresAdapterDoesNotDependOnBusinessOrPresentation"
+      ]
+    },
+    {
+      "name": "it.unifi.ing.drivehub.business.PricingAndSecurityTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "cases": [
+        "bestPromotionWins",
+        "discountTargetsOneVehicle",
+        "discountCanBeReactivatedWithNewTerms",
+        "pbkdf2RoundTrip"
+      ]
+    },
+    {
+      "name": "it.unifi.ing.drivehub.business.services.AuthServiceTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "cases": [
+        "rejectsDuplicateFiscalCode",
+        "registersEveryRole(Role)[1]",
+        "registersEveryRole(Role)[2]",
+        "registersEveryRole(Role)[3]"
+      ]
+    },
+    {
+      "name": "it.unifi.ing.drivehub.business.services.PaymentServiceTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "cases": [
+        "approvedRentalPayment"
+      ]
+    },
+    {
+      "name": "it.unifi.ing.drivehub.business.services.PurchaseProposalServiceTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "cases": [
+        "managerDecisionIsAtomic",
+        "requestCreatesMissingBrandAndModel"
+      ]
+    },
+    {
+      "name": "it.unifi.ing.drivehub.business.services.RentalServiceTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "cases": [
+        "failedAtomicClaimRollsBack",
+        "requestRentalIsUnassigned"
+      ]
+    },
+    {
+      "name": "it.unifi.ing.drivehub.business.services.TransactionAndObserverTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "cases": [
+        "rolledBackEventIsNeverDelivered",
+        "notificationFollowsCommit",
+        "commitFailurePreservesCauseAndCloses"
+      ]
+    },
+    {
+      "name": "it.unifi.ing.drivehub.dao.postgres.DatabaseBootstrapIntegrationTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "cases": [
+        "bootstrapIsIdempotentAndTracksEachMigrationOnce",
+        "optionalDemoSeedContainsOnlyFictitiousCatalogDataAndIsIdempotent",
+        "databaseChecksRejectInvalidDiscountAndAmbiguousPaymentReference",
+        "transactionManagerRollsBackTheWholeUnitOfWork"
+      ]
+    },
+    {
+      "name": "it.unifi.ing.drivehub.dao.postgres.PostgresDaoIntegrationTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "cases": [
+        "closingWithoutCommitRollsBackEveryWriteInTheUnitOfWork",
+        "rentalAndPaymentCanShareOneTransactionAndClaimIsCompareAndSet",
+        "testDriveOverlapAndConfirmationAreAtomic",
+        "persistsAndRehydratesUsersCatalogAndVehicleDiscount",
+        "saleProposalAndStockOrderRoundTripThroughTheirCasWorkflows"
+      ]
+    },
+    {
+      "name": "it.unifi.ing.drivehub.domain.RentalWorkflowTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "cases": [
+        "rentalHappyPath",
+        "rentalStartsUnassigned",
+        "claimIsExclusive",
+        "testDriveWorkflow"
+      ]
+    },
+    {
+      "name": "it.unifi.ing.drivehub.domain.SalesWorkflowTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "cases": [
+        "paymentHasSingleTerminalOutcome",
+        "depositAndBalance",
+        "purchaseProposalWorkflow",
+        "stockOrderWorkflow"
+      ]
+    },
+    {
+      "name": "it.unifi.ing.drivehub.domain.UserAndVehicleTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "cases": [
+        "registrationPreservesFields",
+        "invalidTransitionLeavesStateUnchanged",
+        "inactiveUsersRemainRehydratable",
+        "managerUpdatesPrices",
+        "onlySalesmanMayHaveManager",
+        "vehicleTransitionNotifiesObserver"
+      ]
+    },
+    {
+      "name": "it.unifi.ing.drivehub.functional.CheckoutFunctionalTest",
+      "tests": "12",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "cases": [
+        "ftRent02Periods",
+        "ftPay03DuplicateAndNonOwner",
+        "ftPay05GatewayExceptionRollback",
+        "ftRent03DeclinedCheckout",
+        "ftSale03DeclinedDeposit",
+        "ftRent01AcceptedCheckout",
+        "ftPay04StaleQuote",
+        "ftRent07StaffWorkflow",
+        "ftPay02FailedBalanceThenRetry",
+        "ftSale01DepositBalanceDelivery",
+        "ftRent05OwnershipAndCancellation",
+        "ftSale03FullPurchaseOnce"
+      ]
+    },
+    {
+      "name": "it.unifi.ing.drivehub.functional.UserGoalsFunctionalTest",
+      "tests": "20",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "cases": [
+        "ftTd01Slots",
+        "ftTd04Cancellation",
+        "ftTd03WorkflowAndOwnership",
+        "ftStock01CreationAndRollback",
+        "ftPrice01PricingAndPromotion",
+        "ftAcq01RequestAndRollback",
+        "ftAuth04LoginDenials",
+        "ftAuth05SessionCleanup",
+        "ftDash01KnownAggregates",
+        "ftAcq03OfferAndBothDecisions",
+        "ftAuth01RegisterAndLogin(Role)[1]",
+        "ftAuth01RegisterAndLogin(Role)[2]",
+        "ftAuth01RegisterAndLogin(Role)[3]",
+        "ftInv01CommittedObserver",
+        "ftAuth02DuplicatesAndInvalidData",
+        "ftInv02CommittedBookingsBlockAvailabilityChanges",
+        "ftAuthz01RoleMatrix(Role)[1]",
+        "ftAuthz01RoleMatrix(Role)[2]",
+        "ftAuthz01RoleMatrix(Role)[3]",
+        "ftCat01CombinedFilters"
+      ]
+    },
+    {
+      "name": "it.unifi.ing.drivehub.presentation.FxmlContractTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "cases": [
+        "allViewsAreWellFormedAndHandlersExist",
+        "sharedStylesheetExists"
+      ]
+    },
+    {
+      "name": "it.unifi.ing.drivehub.presentation.SessionContextTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "cases": [
+        "opensAndClearsSession",
+        "rejectsNullSession"
+      ]
+    }
+  ]
+}

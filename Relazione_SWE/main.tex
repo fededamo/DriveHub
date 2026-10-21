@@ -1,0 +1,64 @@
+\documentclass[12pt,a4paper]{report}
+\pdfminorversion=7
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[normalem]{ulem}
+\usepackage{float}
+\usepackage{pdflscape}
+\usepackage{array,booktabs,longtable,xltabular}
+\usepackage{enumitem}
+\usepackage[table]{xcolor}
+\usepackage{listings}
+\usepackage{hyperref}
+\hypersetup{hidelinks,pdftitle={DriveHub -- Relazione di Ingegneria del Software},pdfauthor={Federico D'Amodio, Matteo Orlandi}}
+\graphicspath{{images/}}
+\setlist{itemsep=2pt,topsep=4pt}
+\renewcommand{\arraystretch}{1.17}
+\emergencystretch=2em
+\setcounter{tocdepth}{2}
+\DeclareRobustCommand{\code}[1]{\nolinkurl{#1}}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,frame=single,columns=fullflexible,showstringspaces=false,
+  keywordstyle=\color{blue!60!black},commentstyle=\color{green!40!black},captionpos=b}
+\newcommand{\dhfigure}[4]{%
+  \begin{figure}[htbp]\centering
+  \includegraphics[width=#1\linewidth,height=.67\textheight,keepaspectratio]{#2}
+  \caption{#3}\label{#4}\end{figure}}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+  \centering
+  {\Large\textsc{Università degli Studi di Firenze}\par}
+  {\large Scuola di Ingegneria\par}
+  {\large Corso di Laurea in Ingegneria Informatica\par}
+  \vspace{2cm}
+  \rule{\linewidth}{.5pt}\par\vspace{.8cm}
+  {\Huge\bfseries\color{blue!55!black} DriveHub\par}\vspace{.35cm}
+  {\Large\itshape Sistema informativo per la vendita e il noleggio di veicoli\par}
+  \vspace{.8cm}\rule{\linewidth}{.5pt}\par
+  \vspace{1.7cm}
+  \begin{minipage}[t]{.48\linewidth}\raggedright
+    \textbf{Candidati:}\\[.3cm]
+    Federico D'Amodio\\
+    Matteo Orlandi
+  \end{minipage}\hfill
+  \begin{minipage}[t]{.48\linewidth}\raggedleft
+    \textbf{Corso:}\\
+    Ingegneria del Software\\[.35cm]
+    \textbf{Docente:}\\
+    Prof. Enrico Vicario
+  \end{minipage}
+  \vfill
+  {\large Anno Accademico 2025/2026\par}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}\tableofcontents\clearpage\pagenumbering{arabic}
+\input{capitoli/1_introduzione}
+\input{capitoli/2_progettazione}
+\input{capitoli/3_implementazione}
+\input{capitoli/4_testing}
+\end{document}

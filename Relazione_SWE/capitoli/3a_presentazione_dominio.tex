@@ -1,0 +1,35 @@
+\section{Presentation Layer}\label{sec:implementazione-ui}
+Il livello di presentazione collega le viste JavaFX ai casi d'uso del Business Layer. Le schermate sono definite nei file FXML; i controller leggono gli input, invocano \code{UiGateway} e aggiornano i controlli grafici con i record di \code{UiModels}. Non costruiscono DAO né connessioni JDBC. DriveHub raccoglie le funzioni di ciascun ruolo in un workspace con più schede. Il diagramma delle classi della figura~\ref{fig:classi-presentation} mostra i componenti e le loro dipendenze.
+
+\subsection{Controller e aree applicative}
+I sei controller corrispondono alle tre pagine pubbliche e ai tre workspace autenticati:
+\begin{itemize}
+  \item \textbf{WelcomeController}: apre login e registrazione;
+  \item \textbf{LoginController}: invia le credenziali al gateway, apre la sessione e passa al workspace del ruolo autenticato;
+  \item \textbf{RegistrationController}: raccoglie anagrafica, credenziali e ruolo, registra l'utente e apre la sessione;
+  \item \textbf{CustomerWorkspaceController}: gestisce catalogo, richieste di acquisto, saldo finale, noleggi, test drive, proposta di cessione, conto dimostrativo e profilo;
+  \item \textbf{SalesmanWorkspaceController}: mostra veicoli e richieste in attesa, approva o rifiuta le proposte, autorizza gli acquisti e cambia la destinazione dei veicoli tra vendita e noleggio;
+  \item \textbf{ManagerWorkspaceController}: gestisce marche, modelli, veicoli e sconti e consulta l'elenco delle vendite.
+\end{itemize}
+\code{AbstractController}, ereditato da tutti salvo \code{WelcomeController}, centralizza l'accesso al gateway e alla sessione, la conversione degli input numerici e la visualizzazione di messaggi di successo o errore. I controller restano responsabili anche di alcune verifiche utili all'interazione, come la presenza di una selezione e l'abilitazione delle date nei calendari. Molti controlli di stato vengono ripetuti dai servizi, ma non tutte le verifiche della UI lo sono: il saldo dell'acquisto, per esempio, non ricontrolla nel servizio autorizzazione, scadenza e identità del cliente.
+
+\subsection{Creazione dei controller e navigazione}
+\code{DriveHubApplication.start} costruisce il gateway, lo inserisce in \code{ApplicationContext} e inizializza \code{NavigationManager}. Quando viene aperta una route, \code{FXMLLoader} crea il controller e inietta i campi \code{@FXML}; subito dopo \code{NavigationManager.show} gli passa il contesto, se implementa \code{ContextAware}. L'ordine è rilevante: \code{initialize()} prepara i controlli, mentre \code{onContextReady()} può interrogare il gateway e popolare la vista. Nei workspace, quest'ultimo metodo richiama \code{refresh()} dopo aver ricevuto il contesto.
+
+\begin{lstlisting}[language=Java,caption={Passaggio del contesto dopo il caricamento della vista.},label={lst:context-aware}]
+FXMLLoader loader = new FXMLLoader(resource);
+Parent root = loader.load();
+Object controller = loader.getController();
+if (controller instanceof ContextAware aware) {
+    aware.setApplicationContext(context);
+}
+\end{lstlisting}
+
+La classe \code{Route} associa a ogni vista il file FXML e l'insieme dei ruoli ammessi. \code{NavigationManager.show} controlla la sessione prima di caricare una route privata; \code{showHomeForCurrentRole} apre il workspace di Customer, Salesman o Manager; \code{logout} svuota la sessione e torna a \code{WELCOME}. Il controllo della route protegge la navigazione, ma non sostituisce l'autorizzazione delle singole operazioni. In particolare, \code{ServiceUiGateway.completePurchase} riceve gli identificatori del cliente e della richiesta e delega al servizio senza confrontarli con la sessione: il requisito \code{RNF-SEC-02} non è quindi garantito universalmente dal solo Presentation Layer.
+
+\subsection{Gateway, dati della UI e aggiornamento}
+\code{UiGateway} è il contratto consumato dai controller; \code{ServiceUiGateway} lo implementa usando i servizi applicativi. Le query come \code{searchCatalog}, \code{clientRentals} e \code{allSales} restituiscono record di \code{UiModels}, adatti alle tabelle JavaFX. I comandi come \code{bookRental}, \code{bookTestDrive} e \code{requestPurchase} sono invece \code{void}: dopo un esito positivo il controller richiama \code{refresh()} e rilegge i dati. Questo evita di considerare la copia mostrata nella tabella come stato aggiornato del database.
+
+Nel workspace del cliente, ad esempio, \code{refresh()} usa l'identificatore della sessione per ricaricare richieste, vendite, noleggi e test drive; aggiorna poi il conto tramite \code{getBankAccount}. I workspace del venditore e del manager ricaricano analogamente le rispettive liste dopo le operazioni. \code{SessionContext} conserva solo la sessione corrente, mentre saldo, catalogo e pratiche sono letti dal gateway. Un preventivo di noleggio viene mostrato prima della conferma, ma \code{RentalService.bookRental} ricalcola l'importo quando esegue il caso d'uso: il valore a schermo non è il vincolo di prezzo.
+
+La registrazione espone nella \code{ComboBox} anche i ruoli Salesman e Manager, oltre a Client. È una scelta presente nell'interfaccia corrente; in un sistema distribuito l'assegnazione dei ruoli privilegiati richiederebbe un percorso amministrato. Anche per questo le guardie di navigazione e i controlli dei controller vanno letti come comportamento della UI, non come prova di autorizzazione end-to-end.

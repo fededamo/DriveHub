@@ -1,0 +1,58 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 17
+skinparam classAttributeIconSize 0
+skinparam dpi 150
+title UC-ACQ-01 / UC-ACQ-02 / UC-ACQ-03 — Tre interazioni, tre commit
+skinparam maxMessageSize 55
+autonumber
+actor Customer
+actor Salesman
+actor Manager
+control "service : PurchaseProposalService" as service
+participant "unit : UnitOfWork" as unit
+participant "dao : PurchaseProposalDao" as dao
+group Richiesta — prima TransactionRunner.execute
+ Customer -> service : request(customerId, modelId, plate, mileage, amount, notes)
+ activate service
+ service -> unit : vehicles().save(vehicle ACQUISITION_REQUEST)
+ service -> dao : save(PurchaseProposal.request(customer, vehicle, amount, notes, now))
+ note over service,unit
+   Autorizzazione Customer prima delle scritture.
+   Runner: commit + close, oppure rollback + close su errore.
+ end note
+ service --> Customer : pratica REQUESTED
+ deactivate service
+end
+group Offerta — seconda TransactionRunner.execute
+ Salesman -> service : submitOffer(proposalId, salesmanId, amount, terms)
+ activate service
+ service -> dao : submitOfferIfRequested(proposalId, salesmanId, amount, terms)
+ alt true
+  note over service,dao : Stato OFFERED e autore salvati atomicamente.
+ else false
+  note over service,dao : ConflictException; rollback, pratica già trattata.
+ end
+ note over service,unit : Runner: commit + close solo sul successo.
+ service --> Salesman : offerta oppure conflitto
+ deactivate service
+end
+group Decisione — terza TransactionRunner.execute
+ Manager -> service : approve(proposalId, managerId, reason)\noppure reject(proposalId, managerId, reason)
+ activate service
+ note over service,unit : Verifica Manager attivo; decisionTime = Instant.now(clock).
+ service -> dao : decideIfOffered(proposalId, managerId, approved, reason, decisionTime)
+ alt true
+  service -> dao : findById(proposalId)
+  dao --> service : APPROVED / REJECTED con decidedAt
+  note over service,unit : Runner: commit + close.
+ else false
+  note over service,unit : ConflictException; runner rollback + close.
+ end
+ service --> Manager : decisione oppure conflitto
+ deactivate service
+end
+note bottom : Nessun pagamento al Customer, nessun ingresso automatico nel catalogo vendibile.
+@enduml

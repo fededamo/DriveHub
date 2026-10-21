@@ -1,0 +1,63 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 17
+skinparam classAttributeIconSize 0
+skinparam dpi 150
+title Dominio — Pratiche operative e importi
+class User
+class Vehicle
+class Rental {
+ - startsOn: LocalDate
+ - endsOn: LocalDate
+ - totalPrice: BigDecimal
+ - status: RentalStatus
+ + claim(candidate: User): void
+ + confirm(actor: User): void
+ + start(actor: User): void
+ + complete(actor: User): void
+ + cancel(actor: User): void
+}
+class TestDrive {
+ - scheduledAt: LocalDateTime
+ - duration: Duration
+ - status: TestDriveStatus
+ + confirm(candidate: User): void
+ + start(actor: User): void
+ + complete(actor: User): void
+ + cancel(actor: User): void
+}
+class SaleOrder {
+ - totalPrice: BigDecimal
+ - requiredDeposit: BigDecimal
+ - paidAmount: BigDecimal
+ - status: SaleOrderStatus
+ + assignSalesman(candidate: User): void
+ + recordPayment(amount: BigDecimal): void
+ + complete(actor: User): void
+}
+class Payment {
+ - referenceType: PaymentReferenceType
+ - referenceId: long
+ - status: PaymentStatus
+ + complete(reference: String): void
+ + fail(reason: String): void
+}
+Rental "0..*" --> "1" User : customer
+Rental "0..*" --> "0..1" User : salesman
+Rental "0..*" --> "1" Vehicle : vehicle
+TestDrive "0..*" --> "1" User : customer
+TestDrive "0..*" --> "0..1" User : salesman
+TestDrive "0..*" --> "1" Vehicle : vehicle
+SaleOrder "0..*" --> "1" User : customer
+SaleOrder "0..*" --> "0..1" User : salesman
+SaleOrder "0..*" --> "1" Vehicle : vehicle
+Payment "0..*" --> "1" User : payer
+note bottom of Payment
+  Rental XOR SaleOrder mediante type + id.
+  Non possiede un oggetto Rental/SaleOrder.
+  Tutte le entità ereditano BaseEntity;
+  generalizzazioni omesse in questa vista.
+end note
+@enduml

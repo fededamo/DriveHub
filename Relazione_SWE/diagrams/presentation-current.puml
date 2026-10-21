@@ -1,0 +1,55 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam dpi 180
+interface UiGateway
+interface ContextAware
+class ApplicationContext {
+  gateway() : UiGateway
+  session() : SessionContext
+}
+class SessionContext {
+  open(Session)
+  clear()
+  requireCurrent()
+}
+class ServiceUiGateway
+class NavigationManager {
+  show(Route)
+  showHomeForCurrentRole()
+  logout()
+}
+enum Route {
+  WELCOME
+  LOGIN
+  REGISTER
+  CUSTOMER
+  SALESMAN
+  MANAGER
+}
+abstract class AbstractController {
+  gateway() : UiGateway
+  session() : Session
+  showError(...)
+}
+class CustomerWorkspaceController
+class SalesmanWorkspaceController
+class ManagerWorkspaceController
+class LoginController
+class RegistrationController
+class WelcomeController
+ApplicationContext --> UiGateway
+ApplicationContext --> SessionContext
+ServiceUiGateway ..|> UiGateway
+NavigationManager --> ApplicationContext
+NavigationManager --> Route
+AbstractController ..|> ContextAware
+AbstractController --> ApplicationContext
+CustomerWorkspaceController --|> AbstractController
+SalesmanWorkspaceController --|> AbstractController
+ManagerWorkspaceController --|> AbstractController
+LoginController --|> AbstractController
+RegistrationController --|> AbstractController
+NavigationManager --> WelcomeController
+@enduml

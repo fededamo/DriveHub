@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="it.unifi.ing.drivehub.dao.postgres.DatabaseBootstrapIntegrationTest" time="0.724" tests="4" errors="0" skipped="0" failures="0">
+  <testcase name="bootstrapIsIdempotentAndTracksEachMigrationOnce" classname="it.unifi.ing.drivehub.dao.postgres.DatabaseBootstrapIntegrationTest" time="0.469" />
+  <testcase name="optionalDemoSeedContainsOnlyFictitiousCatalogDataAndIsIdempotent" classname="it.unifi.ing.drivehub.dao.postgres.DatabaseBootstrapIntegrationTest" time="0.138" />
+  <testcase name="databaseChecksRejectInvalidDiscountAndAmbiguousPaymentReference" classname="it.unifi.ing.drivehub.dao.postgres.DatabaseBootstrapIntegrationTest" time="0.065" />
+  <testcase name="transactionManagerRollsBackTheWholeUnitOfWork" classname="it.unifi.ing.drivehub.dao.postgres.DatabaseBootstrapIntegrationTest" time="0.05" />
+</testsuite>

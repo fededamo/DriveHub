@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="it.unifi.ing.drivehub.functional.CheckoutFunctionalTest" time="0.588" tests="12" errors="0" skipped="0" failures="0">
+  <testcase name="ftRent02Periods" classname="it.unifi.ing.drivehub.functional.CheckoutFunctionalTest" time="0.07" />
+  <testcase name="ftPay03DuplicateAndNonOwner" classname="it.unifi.ing.drivehub.functional.CheckoutFunctionalTest" time="0.048" />
+  <testcase name="ftPay05GatewayExceptionRollback" classname="it.unifi.ing.drivehub.functional.CheckoutFunctionalTest" time="0.064" />
+  <testcase name="ftRent03DeclinedCheckout" classname="it.unifi.ing.drivehub.functional.CheckoutFunctionalTest" time="0.061" />
+  <testcase name="ftSale03DeclinedDeposit" classname="it.unifi.ing.drivehub.functional.CheckoutFunctionalTest" time="0.043" />
+  <testcase name="ftRent01AcceptedCheckout" classname="it.unifi.ing.drivehub.functional.CheckoutFunctionalTest" time="0.04" />
+  <testcase name="ftPay04StaleQuote" classname="it.unifi.ing.drivehub.functional.CheckoutFunctionalTest" time="0.042" />
+  <testcase name="ftRent07StaffWorkflow" classname="it.unifi.ing.drivehub.functional.CheckoutFunctionalTest" time="0.045" />
+  <testcase name="ftPay02FailedBalanceThenRetry" classname="it.unifi.ing.drivehub.functional.CheckoutFunctionalTest" time="0.041" />
+  <testcase name="ftSale01DepositBalanceDelivery" classname="it.unifi.ing.drivehub.functional.CheckoutFunctionalTest" time="0.052" />
+  <testcase name="ftRent05OwnershipAndCancellation" classname="it.unifi.ing.drivehub.functional.CheckoutFunctionalTest" time="0.039" />
+  <testcase name="ftSale03FullPurchaseOnce" classname="it.unifi.ing.drivehub.functional.CheckoutFunctionalTest" time="0.037" />
+</testsuite>

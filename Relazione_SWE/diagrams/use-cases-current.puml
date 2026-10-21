@@ -1,0 +1,38 @@
+@startuml
+!pragma layout smetana
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam dpi 180
+actor "Customer\n(CLIENT nel codice)" as C
+actor Salesman as S
+actor Manager as M
+rectangle "DriveHub - casi esposti dalle viste correnti" {
+  usecase "Registrarsi / accedere / uscire" as Auth
+  usecase "Consultare catalogo" as Cat
+  usecase "Prenotare test drive" as TD
+  usecase "Noleggiare" as Rent
+  usecase "Richiedere acquisto\ne saldare" as Buy
+  usecase "Proporre il proprio veicolo" as Offer
+  usecase "Gestire conto demo" as Account
+  usecase "Valutare proposta cliente" as Review
+  usecase "Autorizzare saldo" as Unlock
+  usecase "Cambiare SALE / RENT" as State
+  usecase "Gestire marche, modelli,\nveicoli e sconti" as Manage
+  usecase "Consultare registro vendite" as Register
+}
+C -- Auth
+S -- Auth
+M -- Auth
+C -- Cat
+C -- TD
+C -- Rent
+C -- Buy
+C -- Offer
+C -- Account
+S -- Review
+S -- Unlock
+S -- State
+M -- Manage
+M -- Register
+@enduml

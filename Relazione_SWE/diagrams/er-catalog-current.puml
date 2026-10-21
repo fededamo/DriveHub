@@ -1,0 +1,40 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam dpi 180
+entity "brand" as brand {
+  *name : varchar(50) <<PK>>
+}
+entity "model" as model {
+  *id : bigint <<PK>>
+  --
+  *brand : varchar(50) <<FK>>
+  *name : varchar(50) <<UQ>>
+  *release_price : decimal(10,2)
+  *release_year : smallint
+}
+entity "vehicle" as vehicle {
+  *id : bigint <<PK>>
+  --
+  *model : bigint <<FK>>
+  *vin : varchar(17) <<UQ>>
+  licence_plate : varchar(10) <<UQ>>
+  *kilometers : int
+  *price : decimal(10,2)
+  *year : smallint
+  *state : varchar(50)
+}
+entity "model_discount" as md {
+  *model : bigint <<PK, FK>>
+  *value : smallint
+}
+entity "vehicle_discount" as vd {
+  *vehicle : bigint <<PK, FK>>
+  *value : smallint
+}
+brand ||--o{ model
+model ||--o{ vehicle
+model ||--o| md
+vehicle ||--o| vd
+@enduml

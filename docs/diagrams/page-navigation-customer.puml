@@ -1,0 +1,34 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 17
+skinparam classAttributeIconSize 0
+skinparam dpi 150
+title Customer — Tab e pagamento modale
+hide empty description
+state "P-10 Catalogo" as Catalog
+state "P-11 Test drive" as TD
+state "P-12 Noleggia" as Rent
+state "P-13 Le mie prenotazioni" as Bookings
+state "P-14 Vendi un veicolo" as Offer
+state "P-40 PaymentDialog" as Pay
+[*] --> Catalog
+Catalog --> TD : selezione / Prenota test drive
+Catalog --> Rent : selezione RENTAL / Noleggia
+Catalog --> Pay : selezione FOR_SALE / acconto o totale
+Rent --> Pay : Conferma e paga / preventivo
+Pay --> Bookings : noleggio riuscito
+Pay --> Rent : noleggio rifiutato o annullato
+Pay --> Catalog : esito vendita o annullamento
+Catalog --> Offer : tab
+Catalog --> Bookings : tab
+TD --> TD : Prenota / feedback
+Offer --> Offer : Invia richiesta / feedback
+Bookings --> Bookings : annulla non pagata / feedback
+note bottom
+  Tutte le cinque tab sono selezionabili direttamente.
+  Le frecce nominano percorsi orientati ai casi d'uso.
+  Aggiorna rilegge i dati; logout torna a P-00.
+end note
+@enduml

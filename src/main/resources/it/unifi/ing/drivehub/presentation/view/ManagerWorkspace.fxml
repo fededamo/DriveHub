@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="it.unifi.ing.drivehub.presentation.controller.ManagerWorkspaceController"
+            stylesheets="@../css/style.css" prefWidth="1280" prefHeight="800">
+    <top>
+        <HBox styleClass="app-header">
+            <Label text="⌁" styleClass="brand-mark"/><Label text="DriveHub" styleClass="brand-name"/>
+            <Region HBox.hgrow="ALWAYS"/><Label fx:id="userLabel" text="Manager"/>
+            <Button text="Aggiorna" onAction="#refresh" styleClass="secondary-button"/>
+            <Button text="Logout" onAction="#logout" styleClass="secondary-button"/>
+        </HBox>
+    </top>
+    <center>
+        <VBox styleClass="content" spacing="12">
+            <Label text="Area Direzione Manager" styleClass="page-title"/>
+            <TabPane VBox.vgrow="ALWAYS" tabClosingPolicy="UNAVAILABLE">
+                <tabs>
+                    <!-- TAB 1: GESTIONE VEICOLI E SCONTI VEICOLO -->
+                    <Tab text="Parco Veicoli e Sconti Singoli">
+                        <VBox styleClass="content" spacing="10">
+                            <Label text="Tutti i veicoli registrati a sistema" styleClass="section-title"/>
+                            <TableView fx:id="vehicleTable" prefHeight="220">
+                                <columns>
+                                    <TableColumn fx:id="plateColumn" text="Targa" prefWidth="120"/>
+                                    <TableColumn fx:id="vinColumn" text="VIN (Telaio)" prefWidth="180"/>
+                                    <TableColumn fx:id="modelColumn" text="Modello" prefWidth="280"/>
+                                    <TableColumn fx:id="yearColumn" text="Anno" prefWidth="80"/>
+                                    <TableColumn fx:id="kmColumn" text="Km" prefWidth="100"/>
+                                    <TableColumn fx:id="priceColumn" text="Prezzo Base (€)" prefWidth="130"/>
+                                    <TableColumn fx:id="stateColumn" text="Stato" prefWidth="110"/>
+                                </columns>
+                            </TableView>
+                            <FlowPane styleClass="toolbar" hgap="10" vgap="10">
+                                <TextField fx:id="discountPercentField" promptText="Sconto veicolo (0 - 50%)" prefWidth="190"/>
+                                <Button text="Applica sconto veicolo" onAction="#applyVehicleDiscount" styleClass="primary-button"/>
+                                <Button text="Rimuovi sconto veicolo" onAction="#removeVehicleDiscount" styleClass="secondary-button"/>
+                                <Button text="Elimina veicolo selezionato" onAction="#deleteVehicle" styleClass="danger-button"/>
+                            </FlowPane>
+
+                            <Separator/>
+                            <Label text="Aggiungi nuovo veicolo a catalogo" styleClass="section-title"/>
+                            <GridPane styleClass="form-grid" hgap="10" vgap="8">
+                                <Label text="Modello:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                <ComboBox fx:id="vehicleModelCombo" promptText="Seleziona Modello" prefWidth="240" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                                <Label text="VIN (Telaio):" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+                                <TextField fx:id="newVehicleVinField" promptText="17 caratteri" prefWidth="180" GridPane.rowIndex="0" GridPane.columnIndex="3"/>
+
+                                <Label text="Targa:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                <TextField fx:id="newVehiclePlateField" promptText="Lascia vuoto se 0 km" prefWidth="180" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                                <Label text="Chilometri:" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+                                <TextField fx:id="newVehicleKmField" promptText="0 se senza targa" prefWidth="180" GridPane.rowIndex="1" GridPane.columnIndex="3"/>
+
+                                <Label text="Prezzo (€):" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                                <TextField fx:id="newVehiclePriceField" promptText="Es. 18500.00" prefWidth="180" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                                <Label text="Anno:" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
+                                <TextField fx:id="newVehicleYearField" promptText="Es. 2023" prefWidth="180" GridPane.rowIndex="2" GridPane.columnIndex="3"/>
+
+                                <Label text="Stato iniziale:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                                <ComboBox fx:id="newVehicleStateCombo" prefWidth="180" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                            </GridPane>
+                            <Button text="Aggiungi Veicolo" onAction="#addVehicle" styleClass="primary-button"/>
+                        </VBox>
+                    </Tab>
+
+                    <!-- TAB 2: MARCHE E MODELLI -->
+                    <Tab text="Marche e Modelli">
+                        <VBox styleClass="content" spacing="12">
+                            <HBox spacing="16" VBox.vgrow="ALWAYS">
+                                <!-- Colonna Sinistra: Marche -->
+                                <VBox spacing="8" prefWidth="380">
+                                    <Label text="Marchi registrati" styleClass="section-title"/>
+                                    <TableView fx:id="brandTable" prefHeight="200">
+                                        <columns>
+                                            <TableColumn fx:id="brandNameColumn" text="Nome Marchio" prefWidth="350"/>
+                                        </columns>
+                                    </TableView>
+                                    <FlowPane styleClass="toolbar" hgap="8" vgap="8">
+                                        <TextField fx:id="newBrandNameField" promptText="Nuovo marchio" prefWidth="160"/>
+                                        <Button text="Aggiungi Marca" onAction="#addBrand" styleClass="primary-button"/>
+                                        <Button text="Elimina Marca" onAction="#deleteBrand" styleClass="danger-button"/>
+                                    </FlowPane>
+                                </VBox>
+
+                                <Separator orientation="VERTICAL"/>
+
+                                <!-- Colonna Destra: Modelli -->
+                                <VBox spacing="8" HBox.hgrow="ALWAYS">
+                                    <Label text="Modelli registrati e sconti modello" styleClass="section-title"/>
+                                    <TableView fx:id="modelTable" prefHeight="200">
+                                        <columns>
+                                            <TableColumn fx:id="modelIdColumn" text="ID" prefWidth="60"/>
+                                            <TableColumn fx:id="modelBrandColumn" text="Marca" prefWidth="130"/>
+                                            <TableColumn fx:id="modelNameCol" text="Modello" prefWidth="180"/>
+                                            <TableColumn fx:id="modelPriceColumn" text="Listino Rilascio" prefWidth="130"/>
+                                            <TableColumn fx:id="modelYearColumn" text="Anno Rilascio" prefWidth="110"/>
+                                        </columns>
+                                    </TableView>
+                                    <FlowPane styleClass="toolbar" hgap="8" vgap="8">
+                                        <TextField fx:id="modelDiscountPercentField" promptText="Sconto Modello (0 - 50%)" prefWidth="180"/>
+                                        <Button text="Applica Sconto Modello" onAction="#applyModelDiscount" styleClass="primary-button"/>
+                                        <Button text="Rimuovi Sconto Modello" onAction="#removeModelDiscount" styleClass="secondary-button"/>
+                                        <Button text="Elimina Modello" onAction="#deleteModel" styleClass="danger-button"/>
+                                    </FlowPane>
+
+                                    <Label text="Aggiungi nuovo modello" styleClass="section-title"/>
+                                    <GridPane styleClass="form-grid" hgap="10" vgap="8">
+                                        <Label text="Marca:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                        <ComboBox fx:id="newModelBrandCombo" promptText="Seleziona Marca" prefWidth="180" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                                        <Label text="Nome Modello:" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+                                        <TextField fx:id="newModelNameField" promptText="Es. Golf" prefWidth="180" GridPane.rowIndex="0" GridPane.columnIndex="3"/>
+
+                                        <Label text="Prezzo Listino (€):" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                        <TextField fx:id="newModelPriceField" promptText="Es. 28000.00" prefWidth="180" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                                        <Label text="Anno Rilascio:" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+                                        <TextField fx:id="newModelYearField" promptText="Es. 2021" prefWidth="180" GridPane.rowIndex="1" GridPane.columnIndex="3"/>
+                                    </GridPane>
+                                    <Button text="Aggiungi Modello" onAction="#addModel" styleClass="primary-button"/>
+                                </VBox>
+                            </HBox>
+                        </VBox>
+                    </Tab>
+
+                    <!-- TAB 3: REGISTRO VENDITE E TRANSAZIONI -->
+                    <Tab text="Registro Vendite e Transazioni">
+                        <VBox styleClass="content" spacing="10">
+                            <Label text="Storico complessivo vendite concluse, acquisizioni e penali" styleClass="section-title"/>
+                            <TableView fx:id="salesTable" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="saleIdColumn" text="ID Vendita" prefWidth="90"/>
+                                    <TableColumn fx:id="saleVehicleColumn" text="Veicolo / Motivo" prefWidth="280"/>
+                                    <TableColumn fx:id="saleClientColumn" text="ID Cliente" prefWidth="110"/>
+                                    <TableColumn fx:id="saleSalesmanColumn" text="ID Venditore" prefWidth="110"/>
+                                    <TableColumn fx:id="saleAmountColumn" text="Importo (€)" prefWidth="140"/>
+                                    <TableColumn fx:id="saleDateColumn" text="Data Operazione" prefWidth="140"/>
+                                    <TableColumn fx:id="saleStatusColumn" text="Tipo Transazione" prefWidth="240"/>
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </Tab>
+
+                    <!-- TAB 4: GESTIONE PROFILO E ACCOUNT -->
+                    <Tab text="Profilo e Account">
+                        <VBox styleClass="content" spacing="14">
+                            <Label text="Modifica Indirizzo Email" styleClass="section-title"/>
+                            <GridPane styleClass="form-grid" hgap="10" vgap="10">
+                                <Label text="Nuova Email:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                <TextField fx:id="newEmailField" promptText="nuova@email.it" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                                <Label text="Password attuale per conferma:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                <PasswordField fx:id="emailCurrentPasswordField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                            </GridPane>
+                            <Button text="Aggiorna Email" onAction="#updateEmail" styleClass="primary-button"/>
+
+                            <Separator/>
+                            <Label text="Modifica Password" styleClass="section-title"/>
+                            <GridPane styleClass="form-grid" hgap="10" vgap="10">
+                                <Label text="Password attuale:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                <PasswordField fx:id="pwdCurrentPasswordField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                                <Label text="Nuova Password:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                <PasswordField fx:id="newPasswordField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                            </GridPane>
+                            <Button text="Aggiorna Password" onAction="#updatePassword" styleClass="primary-button"/>
+                        </VBox>
+                    </Tab>
+                </tabs>
+            </TabPane>
+            <Label fx:id="messageLabel" wrapText="true"/>
+        </VBox>
+    </center>
+</BorderPane>

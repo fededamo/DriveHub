@@ -1,0 +1,47 @@
+\subsection{Strategies: prezzi e sconti}\label{sec:pricing}
+\code{PricingService} dipende da \code{PricingStrategy}; la composizione normale istanzia \code{StandardPricingStrategy}. La porta rende sostituibile l'algoritmo nei test o in una futura revisione. La persistenza offre al massimo uno sconto per modello e uno per veicolo; \code{quotePrice} sceglie il maggiore fra i due valori, non li cumula. \code{ModelDiscount} e \code{VehicleDiscount} ammettono interi fra 0 e 50, coerenti con i CHECK SQL.
+
+Per un veicolo in catalogo, la strategia parte da \code{VehicleModel.releasePrice}; se la targa non è nulla applica un fattore $0{,}80$, poi $1-p/100$ con $p$ pari allo sconto promozionale maggiore, quindi $0{,}95^{a}$ per gli anni trascorsi e $0{,}95^{\lfloor km/10000\rfloor}$ per il chilometraggio. Il risultato è arrotondato a due decimali con \code{HALF_UP} e non scende sotto zero. La formula è una scelta del codice e non va confusa con un prezzo di mercato verificato:
+\[
+P_{\mathrm{catalogo}}=
+\operatorname{round}_{2}\!\left(
+P_{\mathrm{lancio}}\cdot f_{\mathrm{targa}}
+\cdot (1-p/100)\cdot 0{,}95^{a+\lfloor km/10000\rfloor}
+\right),\qquad
+f_{\mathrm{targa}}\in\{1;0{,}80\}.
+\]
+\code{calculateDeposit(price)} restituisce il 20\% del prezzo passato dal chiamante. Nel flusso GUI l'acconto è calcolato sul prezzo mostrato; \code{SalesService.requestPurchase}, tuttavia, non ricontrolla la percentuale.
+
+Per rendere verificabile la distinzione fra prezzi, si consideri un esempio ipotetico coerente con il codice: modello e \code{Vehicle.price} a 40.000 euro, veicolo nuovo senza targa e promozione del 10\%. \code{quotePrice} mostra 36.000 euro e la UI calcola un acconto di 7.200 euro. Il metodo \code{completePurchase} sottrae invece tale acconto da \code{Vehicle.price} e chiede 32.800 euro; l'esborso totale diventa 40.000 euro. L'esempio non afferma che una transazione del dataset abbia questi valori: mostra perché è necessario fissare il prezzo preventivato nella pratica o ricalcolare il saldo con una regola esplicita.
+
+Il noleggio usa \code{Vehicle.price}, non \code{quotePrice}. Per $d$ giorni inclusivi, \code{rentalPrice} calcola una tariffa base giornaliera di $\mathrm{price}/1000$, poi un fattore $0{,}95^{d-1}$ sul totale; arrotonda a centesimi e impone un minimo di 0,01. La label della UI in \code{CustomerWorkspaceController.updateRentalQuotePreview} dice invece «Sconto 5\% ogni 5 gg applicato»: il testo non corrisponde alla formula corrente e deve essere corretto o accompagnato da una modifica della policy. La valutazione del veicolo ceduto riusa il fattore targa, età e km, senza promozione Manager.
+
+\begin{longtable}{p{.25\linewidth}p{.39\linewidth}p{.28\linewidth}}
+\caption{Origine degli importi nei flussi economici.}\label{tab:prezzi}\\
+\toprule Importo & Origine nel codice & Uso\\\midrule\endfirsthead
+\toprule Importo & Origine nel codice & Uso\\\midrule\endhead
+Prezzo esposto nel catalogo & \code{PricingService.quotePrice} & Anteprima di acquisto\\
+Acconto GUI & 20\% di \code{VehicleItem.price} & \code{requestPurchase}\\
+Saldo effettivo & \code{Vehicle.price - Request.deposit} & \code{completePurchase}\\
+Prezzo noleggio & \code{StandardPricingStrategy.rentalPrice} & \code{bookRental}\\
+Stima cessione & \code{calculateValuation} & \code{submitVehicleForSale}\\
+\bottomrule
+\end{longtable}
+
+\subsection{Security e Banking: autenticazione e conto}\label{sec:sicurezza}
+\code{AuthService.register} normalizza l'email, ne verifica l'assenza tramite \code{UserDao.findByEmail}, calcola l'hash e salva \code{User}. Se il ruolo è \code{CLIENT} o \code{CUSTOMER}, crea nello stesso \code{UnitOfWork} un \code{BankAccount} con saldo iniziale zero e IBAN derivato da \code{IbanGenerator}. \code{login} cerca l'email e chiama \code{PasswordHasher.verify}. Il verificatore \code{Pbkdf2PasswordHasher} usa PBKDF2-HMAC-SHA256, sale casuale di 16 byte, 210.000 iterazioni e chiave di 256 bit nei parametri predefiniti; confronta l'hash con \code{MessageDigest.isEqual}. La password non è salvata in chiaro.
+
+Il conto dimostrativo mantiene l'invariante del saldo in \code{BankAccount.withdraw}: un importo nullo o non positivo è rifiutato; se il saldo è inferiore all'importo il metodo lancia \code{DomainRuleViolationException}; solo dopo aggiorna il valore in memoria. Le varianti per IBAN di deposito e prelievo in \code{BankAccountService} recuperano il conto con \code{findByIbanForUpdate}; le varianti per ID cliente e i flussi di noleggio e vendita usano \code{findByClientId}, senza quel lock. Questa distinzione è rilevante sotto concorrenza: la presenza di un lock in un percorso non lo estende agli altri.
+
+Nella UI, \code{RegistrationController} converte il campo password in \code{char[]} e lo azzera dopo la richiesta. La route successiva dipende dal ruolo restituito. \code{AuthService.updateEmail}, \code{updatePassword} e \code{deleteAccount} richiedono la password corrente; l'eliminazione è rifiutata se il DAO trova operazioni collegate. Tali controlli non eliminano le lacune seguenti, che vanno tenute separate dalla proprietà dell'hash:
+\begin{itemize}
+\item \code{RegistrationController} espone pubblicamente anche \code{SALESMAN} e \code{MANAGER}; è una scelta da prototipo, non provisioning sicuro dello staff.
+\item \code{DatabaseConfig} offre una password DB di fallback e seed demo attivo per default, in contrasto con \code{README.md}. I valori devono essere scelti esplicitamente prima di un'installazione non dimostrativa.
+\item Il guard \code{Route.allows} protegge la navigazione, mentre i servizi ricevono ID da parametri e non verificano il ruolo o la proprietà di ogni operazione. \code{ServiceUiGateway.completePurchase} ignora il \code{clientId} ricevuto nel controllo del proprietario della \code{Request}.
+\item \code{AbstractController.showError} mostra \code{Throwable.getMessage()}. Le eccezioni dei DAO o dei servizi potrebbero quindi rivelare dettagli oltre a un messaggio d'uso; manca una traduzione centralizzata degli errori.
+\end{itemize}
+
+\subsection{Observer e gestione dell'inventario}\label{sec:observer}
+\code{SalesService} e \code{RentalService} implementano \code{InventorySubject}. Gli observer sono conservati in una \code{CopyOnWriteArrayList}. \code{InventoryEvent} trasporta tipo, ID e targa del veicolo, stato precedente/corrente e istante. Il codice produce, fra gli altri, \code{STATUS_CHANGED}, \code{REQUEST_EXPIRED}, \code{TEST_DRIVES_CANCELLED_VEHICLE_UNAVAILABLE} e \code{RENTALS_CANCELLED_STATE_CHANGE}. Il literal \code{STOCK_RECEIVED} nell'enum non prova l'esistenza di un modulo stock, assente dai sorgenti correnti.
+
+La notifica agli observer avviene durante la transazione del servizio, prima del commit. L'handler cattura eccezioni dei subscriber e continua. Queste due scelte impediscono all'Observer di far fallire una vendita per errore di un listener, ma un rollback successivo può lasciare un evento già osservato per una modifica non persistita. La garanzia after-commit dichiarata in \code{docs/ARCHITETTURA_E_DATI.md} appartiene alla baseline storica, non a questa implementazione.

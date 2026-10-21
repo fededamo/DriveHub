@@ -1,0 +1,132 @@
+@startuml
+!pragma layout smetana
+!include drivehub-class-theme.puml
+title DriveHub — Domain Model
+left to right direction
+
+package "domain" #F8CECC {
+  abstract class BaseEntity {
+    - id : Long
+    + id() : Long
+    + assignId(id : long) : void
+  }
+
+  package "vehicles" #FFF3F2 {
+    class Brand {
+      + name() : String
+    }
+    class VehicleModel {
+      - brandName : String
+      - releasePrice : BigDecimal
+      + name() : String
+    }
+    class Vehicle {
+      - modelId : long
+      - price : BigDecimal
+      - state : VehicleState
+      + approve() : void
+      + block() : void
+      + unblock() : void
+      + transitionTo(state : VehicleState) : void
+    }
+    enum VehicleState {
+      WAITING
+      SALE
+      RENT
+      BLOCKED
+      SOLD
+    }
+    class ModelDiscount {
+      - modelId : long
+      - value : int
+    }
+    class VehicleDiscount {
+      - vehicleId : long
+      - value : int
+    }
+  }
+
+  package "users" #FFF3F2 {
+    class User {
+      - email : String
+      - role : Role
+      + email() : String
+    }
+    enum Role {
+      CLIENT
+      CUSTOMER
+      SALESMAN
+      MANAGER
+    }
+    class BankAccount {
+      - clientId : long
+      - balance : BigDecimal
+      + deposit(amount : BigDecimal) : void
+      + withdraw(amount : BigDecimal) : void
+    }
+  }
+
+  package "sales" #FFF3F2 {
+    class Request {
+      - vehicleId : long
+      - clientId : long
+      - deposit : BigDecimal
+      + isPurchase() : boolean
+      + isSaleProposal() : boolean
+    }
+    class Sale {
+      - vehicleId : Long
+      - clientId : long
+      - amount : BigDecimal
+    }
+  }
+
+  package "rentals" #FFF3F2 {
+    class Rent {
+      - vehicleId : long
+      - clientId : long
+      - amount : BigDecimal
+    }
+    class TestDrive {
+      - vehicleId : long
+      - clientId : long
+      - date : LocalDateTime
+    }
+  }
+
+  package "observer" #FFF3F2 {
+    interface InventoryObserver {
+      + onInventoryEvent(event : InventoryEvent) : void
+    }
+    interface InventorySubject {
+      + subscribe(observer : InventoryObserver) : void
+    }
+    class InventoryEvent <<record>> {
+      - vehicleId : Long
+      - type : InventoryEventType
+    }
+    enum InventoryEventType {
+      STATUS_CHANGED
+      VEHICLE_ADDED
+      STOCK_RECEIVED
+      REQUEST_EXPIRED
+      TEST_DRIVES_CANCELLED_VEHICLE_UNAVAILABLE
+      RENTALS_CANCELLED_STATE_CHANGE
+    }
+  }
+}
+
+BaseEntity <|-- User
+BaseEntity <|-- Vehicle
+BaseEntity <|-- Request
+Vehicle --> VehicleState
+User --> Role
+InventoryEvent --> InventoryEventType
+InventoryEvent --> VehicleState
+InventorySubject ..> InventoryObserver : notifica
+InventoryObserver ..> InventoryEvent
+Brand -[hidden]right- User
+User -[hidden]right- Request
+Request -[hidden]right- Rent
+Rent -[hidden]right- InventorySubject
+@enduml

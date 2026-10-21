@@ -1,0 +1,16 @@
+skinparam shadowing false
+skinparam backgroundColor white
+skinparam packageStyle folder
+skinparam packageBorderColor #89939F
+skinparam packageFontColor #172B4D
+skinparam classBackgroundColor white
+skinparam classBorderColor #596579
+skinparam classFontColor #172B4D
+skinparam classAttributeIconSize 0
+skinparam ArrowColor #526174
+skinparam NoteBackgroundColor #FFFBE6
+skinparam NoteBorderColor #D2B65A
+skinparam dpi 220
+skinparam nodesep 28
+skinparam ranksep 32
+hide empty members

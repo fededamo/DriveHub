@@ -1,0 +1,99 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam dpi 180
+entity "brand" as brand {
+  *name : varchar(50) <<PK>>
+}
+entity "model" as model {
+  *id : bigint <<PK>>
+  --
+  *brand : varchar(50) <<FK>>
+  *name : varchar(50) <<UQ>>
+  *release_price : decimal
+  *release_year : smallint
+}
+entity "vehicle" as vehicle {
+  *id : bigint <<PK>>
+  --
+  *model : bigint <<FK>>
+  *vin : varchar(17) <<UQ>>
+  licence_plate : varchar(10) <<UQ>>
+  *kilometers : int
+  *price : decimal
+  *year : smallint
+  *state : varchar(50)
+}
+entity "model_discount" as md {
+  *model : bigint <<PK, FK>>
+  *value : smallint
+}
+entity "vehicle_discount" as vd {
+  *vehicle : bigint <<PK, FK>>
+  *value : smallint
+}
+entity "client" as client {
+  *id : bigint <<PK>>
+  *email : varchar(50) <<UQ>>
+  *hash_password : varchar(255)
+}
+entity "salesman" as salesman {
+  *id : bigint <<PK>>
+  *email : varchar(50) <<UQ>>
+}
+entity "manager" as manager {
+  *id : bigint <<PK>>
+  *email : varchar(50) <<UQ>>
+}
+entity "bank_account" as bank {
+  *iban : varchar(27) <<PK>>
+  *client : bigint <<FK, UQ>>
+  *balance : decimal
+}
+entity "request" as request {
+  *id : bigint <<PK>>
+  *vehicle : bigint <<FK>>
+  *client : bigint <<FK>>
+  salesman : bigint <<FK>>
+  *deposit : decimal
+  exp_date : date
+}
+entity "test_drive" as td {
+  *id : bigint <<PK>>
+  *vehicle : bigint <<FK>>
+  *client : bigint <<FK>>
+  *date : timestamp
+}
+entity "rent" as rent {
+  *id : bigint <<PK>>
+  *vehicle : bigint <<FK>>
+  *client : bigint <<FK>>
+  *amount : decimal
+  *start : date
+  *end : date
+}
+entity "sale" as sale {
+  *id : bigint <<PK>>
+  vehicle : bigint <<FK>>
+  salesman : bigint <<FK>>
+  *client : bigint <<FK>>
+  *amount : decimal
+  *date : timestamp
+}
+brand ||--o{ model
+model ||--o{ vehicle
+model ||--o| md
+vehicle ||--o| vd
+client ||--o| bank
+client ||--o{ request
+client ||--o{ td
+client ||--o{ rent
+client ||--o{ sale
+salesman |o--o{ request
+salesman |o--o{ sale
+vehicle ||--o{ request
+vehicle ||--o{ td
+vehicle ||--o{ rent
+vehicle |o--o{ sale
+@enduml

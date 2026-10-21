@@ -1,0 +1,53 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 17
+skinparam classAttributeIconSize 0
+skinparam dpi 150
+title Dominio — Acquisizione, promozione e approvvigionamento
+class User
+class Vehicle
+class VehicleModel
+class PurchaseProposal {
+ - requestedAmount: BigDecimal
+ - offeredAmount: BigDecimal
+ - decidedAt: Instant
+ - status: PurchaseProposalStatus
+ + submitOffer(candidate: User, amount: BigDecimal, terms: String): void
+ + approve(manager: User, reason: String, at: Instant): void
+ + reject(manager: User, reason: String, at: Instant): void
+}
+class Discount {
+ - percentage: BigDecimal
+ - startsOn: LocalDate
+ - endsOn: LocalDate
+ - enabled: boolean
+ + appliesTo(vehicle: Vehicle, date: LocalDate): boolean
+ + apply(price: BigDecimal): BigDecimal
+ + disable(): void
+}
+class StockOrder {
+ - quantity: int
+ - unitCost: BigDecimal
+ - status: StockOrderStatus
+ + confirm(actor: User): void
+ + receive(actor: User, date: LocalDate): void
+ + cancel(actor: User): void
+}
+PurchaseProposal "0..*" --> "1" User : customer
+PurchaseProposal "0..*" --> "0..1" User : salesman
+PurchaseProposal "0..*" --> "0..1" User : manager
+PurchaseProposal "0..*" --> "1" Vehicle : vehicle
+Discount "0..1" --> "1" Vehicle : vehicle
+StockOrder "0..*" --> "1" User : manager
+StockOrder "0..*" --> "1" VehicleModel : model
+note bottom of Discount
+  Un solo record per veicolo, sostituito
+  dal servizio; nessuno storico sconti.
+end note
+note bottom of StockOrder
+  RECEIVED registra una ricezione;
+  non crea targhe/veicoli inventati.
+end note
+@enduml

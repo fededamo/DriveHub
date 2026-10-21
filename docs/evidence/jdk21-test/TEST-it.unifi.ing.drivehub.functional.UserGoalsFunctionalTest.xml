@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="it.unifi.ing.drivehub.functional.UserGoalsFunctionalTest" time="0.696" tests="20" errors="0" skipped="0" failures="0">
+  <testcase name="ftTd01Slots" classname="it.unifi.ing.drivehub.functional.UserGoalsFunctionalTest" time="0.049" />
+  <testcase name="ftTd04Cancellation" classname="it.unifi.ing.drivehub.functional.UserGoalsFunctionalTest" time="0.041" />
+  <testcase name="ftTd03WorkflowAndOwnership" classname="it.unifi.ing.drivehub.functional.UserGoalsFunctionalTest" time="0.042" />
+  <testcase name="ftStock01CreationAndRollback" classname="it.unifi.ing.drivehub.functional.UserGoalsFunctionalTest" time="0.04" />
+  <testcase name="ftPrice01PricingAndPromotion" classname="it.unifi.ing.drivehub.functional.UserGoalsFunctionalTest" time="0.04" />
+  <testcase name="ftAcq01RequestAndRollback" classname="it.unifi.ing.drivehub.functional.UserGoalsFunctionalTest" time="0.036" />
+  <testcase name="ftAuth04LoginDenials" classname="it.unifi.ing.drivehub.functional.UserGoalsFunctionalTest" time="0.036" />
+  <testcase name="ftAuth05SessionCleanup" classname="it.unifi.ing.drivehub.functional.UserGoalsFunctionalTest" time="0.03" />
+  <testcase name="ftDash01KnownAggregates" classname="it.unifi.ing.drivehub.functional.UserGoalsFunctionalTest" time="0.04" />
+  <testcase name="ftAcq03OfferAndBothDecisions" classname="it.unifi.ing.drivehub.functional.UserGoalsFunctionalTest" time="0.04" />
+  <testcase name="ftAuth01RegisterAndLogin(Role)[1]" classname="it.unifi.ing.drivehub.functional.UserGoalsFunctionalTest" time="0.035" />
+  <testcase name="ftAuth01RegisterAndLogin(Role)[2]" classname="it.unifi.ing.drivehub.functional.UserGoalsFunctionalTest" time="0.035" />
+  <testcase name="ftAuth01RegisterAndLogin(Role)[3]" classname="it.unifi.ing.drivehub.functional.UserGoalsFunctionalTest" time="0.034" />
+  <testcase name="ftInv01CommittedObserver" classname="it.unifi.ing.drivehub.functional.UserGoalsFunctionalTest" time="0.027" />
+  <testcase name="ftAuth02DuplicatesAndInvalidData" classname="it.unifi.ing.drivehub.functional.UserGoalsFunctionalTest" time="0.024" />
+  <testcase name="ftInv02CommittedBookingsBlockAvailabilityChanges" classname="it.unifi.ing.drivehub.functional.UserGoalsFunctionalTest" time="0.025" />
+  <testcase name="ftAuthz01RoleMatrix(Role)[1]" classname="it.unifi.ing.drivehub.functional.UserGoalsFunctionalTest" time="0.026" />
+  <testcase name="ftAuthz01RoleMatrix(Role)[2]" classname="it.unifi.ing.drivehub.functional.UserGoalsFunctionalTest" time="0.024" />
+  <testcase name="ftAuthz01RoleMatrix(Role)[3]" classname="it.unifi.ing.drivehub.functional.UserGoalsFunctionalTest" time="0.023" />
+  <testcase name="ftCat01CombinedFilters" classname="it.unifi.ing.drivehub.functional.UserGoalsFunctionalTest" time="0.035" />
+</testsuite>

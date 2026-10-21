@@ -1,0 +1,58 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 17
+skinparam classAttributeIconSize 0
+skinparam dpi 150
+title UC-SALE-01 — Riserva, acconto o totale
+skinparam maxMessageSize 60
+autonumber
+actor Customer
+boundary "ui : ServiceUiGateway" as ui
+control "checkout : CheckoutService" as checkout
+control "sales : SalesService" as sales
+control "payments : PaymentService" as payments
+participant "unit : UnitOfWork" as unit
+Customer -> ui : reserveOrPurchase(customerId, vehicleId, fullPurchase, method, expectedAmount)\n[dopo conferma PaymentDialog]
+activate ui
+ui -> checkout : checkoutSale(customerId, vehicleId, fullPurchase, method, expectedAmount, today)
+activate checkout
+group unica transazione — TransactionRunner.execute(work)
+ checkout -> sales : reserveVehicle(unit, customerId, vehicleId, null, today)
+ activate sales
+ sales -> unit : vehicles().findByIdForUpdate(vehicleId)
+ note over sales,unit
+   AVAILABLE + nessuna prenotazione aperta; prezzo ricalcolato.
+   CAS AVAILABLE→RESERVED e save SaleOrder nella stessa unit.
+ end note
+ sales --> checkout : order
+ deactivate sales
+ checkout -> checkout : requireAcceptedQuote(expectedAmount, amount)
+ checkout -> payments : paySaleOrder(unit, customerId, order.id, SALE_DEPOSIT, method, amount)
+ activate payments
+ note over payments,unit
+   Lock ordine; gateway simulato; Payment aggiornato.
+   Solo se approvato: order.recordPayment(amount) e update.
+ end note
+ payments --> checkout : payment
+ deactivate payments
+ alt FAILED
+  checkout -> checkout : order.cancel(order.customer())
+  checkout -> unit : vehicles().updateStatusIfCurrent(vehicleId, RESERVED, AVAILABLE)
+  checkout -> unit : saleOrders().update(order)
+ else COMPLETED
+  note over checkout,unit : Stato DEPOSIT_PAID (acconto 10%) oppure PAID (totale).
+ end
+ note over checkout,unit : Runner: commit e close; in caso di eccezione rollback e close.
+end
+checkout --> ui : payment
+deactivate checkout
+ui --> Customer : successo oppure rifiuto esplicito
+deactivate ui
+note over payments,unit
+  Saldo successivo via API: paySaleOrder(customerId, orderId,
+  SALE_BALANCE, method, outstanding) ha una propria transazione.
+  Lock ordine + saldo esatto impediscono il doppio saldo.
+end note
+@enduml

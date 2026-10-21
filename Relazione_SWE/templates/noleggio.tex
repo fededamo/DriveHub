@@ -1,0 +1,37 @@
+\subsection{Noleggiare un veicolo}\label{sec:uc-noleggio}
+\begin{xltabular}{\textwidth}{| >{\bfseries}p{.22\textwidth} | >{\raggedright\arraybackslash}X |}
+\caption{Caso d'uso: Noleggiare un veicolo}\label{tab:uc-noleggio}\\
+\hline
+\rowcolor{gray!15} Campo & \textbf{Contenuto}\\\hline
+\endfirsthead
+\multicolumn{2}{c}{{\tablename\ \thetable{} -- Continua dalla pagina precedente}}\\
+\hline
+\rowcolor{gray!15} Campo & \textbf{Contenuto}\\\hline
+\endhead
+\hline
+\multicolumn{2}{r}{\textit{Continua nella pagina successiva...}}\\
+\endfoot
+\endlastfoot
+Nome & Noleggiare un veicolo\\\hline
+Livello & Obiettivo Utente\\\hline
+Descrizione & Il Customer prenota un veicolo per un intervallo di giorni e paga anticipatamente l'intero importo con il conto dimostrativo.\\\hline
+Pre-condizioni & Il Customer ha effettuato l'accesso; il veicolo esiste ed è in stato \code{RENT}; la data iniziale non è passata e la data finale non precede quella iniziale.\\\hline
+Post-condizioni & Il noleggio è registrato, l'importo è sottratto dal saldo del Customer e i test drive sul veicolo nei giorni prenotati sono cancellati. Le scritture nel database avvengono nella stessa transazione.\\\hline
+Attori & Customer\\\hline
+Schermate & Passi 1--6: catalogo (figura~\ref{fig:ui-catalogo}) e scheda noleggi/test drive (figura~\ref{fig:ui-noleggi-test-drive}); conferma dell'addebito nel conto dimostrativo (figura~\ref{fig:ui-conto}).\\\hline
+Test & \code{RentalServiceTest.bookRentalDebitsAccount} verifica il servizio con DAO simulati; \code{CheckoutFunctionalTest.rentalBookingWorkflow} verifica il percorso principale su H2. Le alternative di conflitto e la concorrenza non hanno un test funzionale dedicato nella suite corrente.\\\hline
+Flusso Principale &
+\begin{enumerate}[leftmargin=*,nosep]
+  \item Il Customer seleziona un veicolo disponibile per il noleggio e indica il primo e l'ultimo giorno.
+  \item Il sistema mostra un preventivo. Nel conteggio sono inclusi sia il giorno iniziale sia quello finale.
+  \item Il Customer conferma la prenotazione.
+  \item Il sistema verifica che non vi siano noleggi sovrapposti e calcola l'importo: tariffa giornaliera pari allo 0,1\% del prezzo del veicolo, con un fattore 0,95 applicato per ogni giorno aggiuntivo.
+  \item Il sistema addebita l'intero importo sul conto dimostrativo e registra il noleggio.
+  \item Il sistema cancella gli eventuali test drive sul veicolo nei giorni prenotati e conferma l'operazione.
+\end{enumerate}\\\hline
+Flussi Alternativi &
+\textbf{1. Veicolo o date non validi:} il sistema rifiuta la richiesta senza registrare il noleggio.\newline\newline
+\textbf{4. Periodo occupato:} se esiste un noleggio che condivide almeno un giorno, l'operazione è rifiutata.\newline\newline
+\textbf{5. Saldo insufficiente:} l'addebito fallisce; la transazione annulla anche le altre scritture.\newline\newline
+\textbf{4. Richieste concorrenti:} la verifica delle sovrapposizioni non è protetta da un vincolo di esclusione nel database; due richieste simultanee potrebbero entrambe riuscire.\\\hline
+\end{xltabular}

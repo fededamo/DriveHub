@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/21"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="it.unifi.ing.drivehub.presentation.controller.WelcomeController"
+           stylesheets="@../css/style.css" styleClass="auth-shell"
+           prefWidth="1100" prefHeight="720">
+    <VBox alignment="CENTER" spacing="22" maxWidth="620">
+        <HBox alignment="CENTER" spacing="12">
+            <Label text="⌁" styleClass="brand-mark"/>
+            <Label text="DriveHub" styleClass="brand-name"/>
+        </HBox>
+        <Label text="Gestione integrata del concessionario" styleClass="page-title"/>
+        <Label text="Catalogo, noleggi, test drive, proposte di acquisto e inventario in un unico sistema."
+               styleClass="muted" wrapText="true" textAlignment="CENTER"/>
+        <HBox alignment="CENTER" spacing="14">
+            <Button text="ACCEDI" onAction="#openLogin" styleClass="primary-button" prefWidth="150"/>
+            <Button text="REGISTRATI" onAction="#openRegistration" styleClass="secondary-button" prefWidth="150"/>
+        </HBox>
+        <Label text="Progetto dimostrativo universitario — nessun pagamento reale" styleClass="muted"/>
+    </VBox>
+</StackPane>

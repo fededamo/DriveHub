@@ -1,0 +1,66 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 17
+skinparam classAttributeIconSize 0
+skinparam dpi 150
+title Dominio — Identità, catalogo e osservazione
+abstract class BaseEntity {
+ - id: Long
+ + assignId(id: long): void
+ + requireId(): long
+}
+class User {
+ - role: Role
+ - managerId: Long
+ - active: boolean
+ + requireRole(expected: Role): void
+ + assignManager(manager: User): void
+}
+class Brand {
+ - name: String
+}
+class VehicleModel {
+ - code: String
+ - name: String
+ - modelYear: int
+}
+class Vehicle {
+ - plate: String
+ - purpose: VehiclePurpose
+ - status: VehicleStatus
+ + sendToMaintenance(): void
+ + returnFromMaintenance(): void
+ + subscribe(observer: InventoryObserver): void
+ + unsubscribe(observer: InventoryObserver): void
+}
+interface InventorySubject {
+ + subscribe(observer: InventoryObserver): void
+ + unsubscribe(observer: InventoryObserver): void
+}
+interface InventoryObserver {
+ + onInventoryEvent(event: InventoryEvent): void
+}
+class InventoryEvent <<record>>
+BaseEntity <|-- User
+BaseEntity <|-- Brand
+BaseEntity <|-- VehicleModel
+BaseEntity <|-- Vehicle
+VehicleModel "0..*" --> "1" Brand : brand
+Vehicle "0..*" --> "1" VehicleModel : model
+Vehicle ..|> InventorySubject
+Vehicle "0..*" --> "0..*" InventoryObserver : observers
+Vehicle ..> InventoryEvent : «creates»
+InventoryObserver ..> InventoryEvent : «uses»
+note bottom of User
+  Un solo tipo User; tre valori Role.
+  managerId opzionale è un identificatore:
+  nessun riferimento User→User in memoria.
+end note
+note bottom of Vehicle
+  Vista intenzionale selettiva: factory e
+  accessori ripetitivi omessi. I prezzi
+  dipendono dalla purpose, non dal ruolo.
+end note
+@enduml

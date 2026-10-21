@@ -1,0 +1,57 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 17
+skinparam classAttributeIconSize 0
+skinparam dpi 150
+title Presentation — Contesto, routing e dialogo
+class ApplicationContext {
+ - gateway: UiGateway
+ - session: SessionContext
+ + close(): void
+}
+class SessionContext {
+ + open(session: Session): void
+ + clear(): void
+ + requireCurrent(): Session
+}
+interface UiGateway
+class ServiceUiGateway
+class UiModelMapper
+abstract class AbstractController {
+ # context: ApplicationContext
+}
+class CustomerWorkspaceController
+class SalesmanWorkspaceController
+class ManagerWorkspaceController
+class PaymentDialogController {
+ + configure(amount: BigDecimal, reference: String): void
+ + isConfirmed(): boolean
+ + selectedMethod(): String
+}
+class NavigationManager {
+ + show(route: Route): void
+ + showHomeForCurrentRole(): void
+ + logout(): void
+}
+ApplicationContext --> UiGateway : gateway
+ApplicationContext --> SessionContext : session
+ServiceUiGateway ..|> UiGateway
+ServiceUiGateway ..> UiModelMapper : «uses» mapping
+AbstractController --> ApplicationContext : context
+AbstractController <|-- CustomerWorkspaceController
+AbstractController <|-- SalesmanWorkspaceController
+AbstractController <|-- ManagerWorkspaceController
+CustomerWorkspaceController ..> PaymentDialogController : «uses» configure / esito
+NavigationManager --> ApplicationContext : context
+interface ContextAware
+AbstractController ..|> ContextAware
+NavigationManager ..> ContextAware : «uses» iniezione contesto
+note bottom of PaymentDialogController
+  Il controller cliente carica il FXML.
+  Il dialogo raccoglie
+  conferma e metodo, non esegue pagamenti.
+  Il chiamante traduce annullamento in Optional.empty.
+end note
+@enduml

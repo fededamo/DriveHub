@@ -1,0 +1,47 @@
+\subsection{Services: flussi applicativi}\label{sec:flussi-implementati}
+I servizi coordinano le porte DAO entro \code{TransactionRunner.execute}. Le tre sequenze della sezione~\ref{sec:sequenze} visualizzano le chiamate principali; qui sono analizzate le decisioni e le scritture, incluse le alternative che un diagramma compatto non rende leggibili.
+
+\subsubsection{Catalogo e test drive}
+\code{CatalogService.availableForSale}, \code{availableForRental} e \code{waitingVehicles} interrogano \code{VehicleDao.findByState}. \code{ServiceUiGateway.searchCatalog} applica poi in memoria un testo a descrizione, VIN e targa e calcola il prezzo esposto con \code{PricingService.quotePrice}. Il filtro viene quindi eseguito in parte dal database e in parte dal gateway. La UI non offre il prezzo massimo promesso da \code{RF-CAT-01}.
+
+\code{TestDriveService.book} controlla prima data e ora, poi carica il veicolo. Ammette \code{SALE} e \code{RENT}; limita a tre i test drive attivi del cliente; interroga \code{RentalDao.isVehicleRentedOnDate} e \code{TestDriveDao.hasConflictingTestDrive}; infine salva \code{TestDrive}. Lo slot applicativo è un'ora, con partenza alle 09:00--16:00. Il servizio tronca i minuti della \code{LocalTime} al costruire \code{dateTime}, quindi un input con minuti diversi da zero viene ricondotto all'inizio dell'ora anziché rifiutato in quel punto. Il costruttore \code{TestDrive} ammette solo minuti zero.
+
+\par\medskip\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=Java,caption={Controlli sequenziali di disponibilità nel test drive, estratto da \code{TestDriveService.book}.},label={lst:test-drive-book}]
+if (unit.rentals().isVehicleRentedOnDate(vehicleId, date)) {
+    throw new ConflictException("Il veicolo e noleggiato per il giorno selezionato");
+}
+if (unit.testDrives().hasConflictingTestDrive(vehicleId, dateTime)) {
+    throw new ConflictException("La fascia oraria e gia occupata");
+}
+TestDrive testDrive = TestDrive.create(vehicleId, clientId, dateTime);
+return unit.testDrives().save(testDrive);
+\end{lstlisting}
+\end{minipage}\par\medskip
+Nel listato le stringhe di errore sono abbreviate per mostrare le chiamate rilevanti; per i messaggi letterali si rimanda al sorgente. Le due letture non bloccano un inserimento concorrente: l'assenza di una unique su \code{(vehicle,date)} è discussa in sezione~\ref{sec:concorrenza}.
+
+\subsubsection{Noleggio con saldo del conto}
+La UI mostra un preventivo per \code{days = DAYS.between(start,end)+1}. Alla conferma, \code{RentalService.bookRental} ripete i controlli e ricalcola l'importo. L'algoritmo verifica stato \code{RENT} e overlap, poi trova il conto del cliente, esegue \code{BankAccount.withdraw}, salva il nuovo saldo, inserisce \code{Rent} e cancella test drive nel periodo. Tutte le scritture DAO passano sulla stessa \code{PostgresUnitOfWork}. Non esiste un pagamento con stato \code{PENDING}/\code{COMPLETED}/\code{FAILED}: \code{RF-PAY-01} è quindi coperto soltanto dall'addebito dimostrativo.
+
+La query di overlap usa gli estremi inclusivi. Per prenotazioni già salvate dello stesso veicolo, \code{NOT ("end" < ? OR start > ?)} rileva un'intersezione. Due periodi adiacenti che condividono un giorno sono conflittuali; uno che inizia il giorno dopo la fine dell'altro è ammesso. Lo schema protegge \code{end >= start} ma non l'assenza di sovrapposizioni, perciò il controllo non è sicuro sotto concorrenza.
+\begin{lstlisting}[language=SQL,caption={Predicato di overlap da \code{PostgresRentalDao.hasOverlappingRentals}.},label={lst:overlap}]
+SELECT 1 FROM "rent"
+WHERE vehicle = ? AND NOT ("end" < ? OR start > ?)
+LIMIT 1
+\end{lstlisting}
+
+\code{RentalService.switchVehicleState} è un secondo flusso significativo. Quando un Salesman passa un veicolo da \code{RENT} a \code{SALE}, il servizio legge noleggi futuri, riaccredita l'intero importo sui conti dei clienti e cancella le righe \code{rent}; quindi cambia lo stato del veicolo. L'operazione è in una transazione JDBC, ma le notifiche Observer vengono emesse durante l'esecuzione della lambda, prima del commit. Nel verso \code{SALE} a \code{RENT} il codice non compie il medesimo rimborso.
+
+\subsubsection{Richiesta di acquisto, saldo e penale}
+Il controller calcola l'acconto come 20\% di \code{selectedCatalogVehicle.price()} e chiede conferma. \code{SalesService.requestPurchase} riceve però l'importo dal chiamante senza confrontarlo con \code{PricingStrategy.calculateDeposit}: un client alternativo può passare un valore positivo diverso. Il metodo controlla \code{VehicleState.SALE}, sottrae l'acconto dal conto, aggiorna il veicolo a \code{BLOCKED} e salva \code{Request.createPurchase}. \code{authorizePurchase} aggiunge \code{salesmanId} e \code{expDate = LocalDate.now().plusMonths(1)}.
+
+\code{CustomerWorkspaceController.payFullBalance} nasconde il comando finché \code{expDate} è nulla; il controllo però non è ripetuto in \code{SalesService.completePurchase}. Quest'ultimo calcola \code{remaining = vehicle.price() - request.deposit()}, preleva il residuo se positivo, imposta \code{SOLD}, elimina la richiesta, salva \code{Sale} e cancella i futuri test drive. Il prezzo di partenza del saldo è il campo \code{Vehicle.price}, mentre il catalogo mostra \code{PricingService.quotePrice}; lo sconto mostrato non è conservato nella \code{Request}. La differenza va risolta come regola commerciale, senza supporre che i due importi coincidano sempre.
+
+Se una richiesta scade o viene annullata, \code{cancelRequestWithPenalty} calcola una penale del 20\% dell'acconto con \code{HALF_UP}, rimborsa il restante 80\%, cancella la richiesta, riporta il veicolo in \code{SALE} e salva una \code{Sale.penalty}. \code{processExpiredRequests} ricerca le pratiche scadute e chiama quel metodo separatamente per ognuna; cattura e ignora le eccezioni della singola pratica. L'elaborazione avviene all'accesso e in alcune letture del gateway, non tramite scheduler persistente.
+
+\subsubsection{Proposta di cessione del veicolo}
+\code{SalesService.submitVehicleForSale} usa \code{CatalogModels.findOrCreate} per marca e modello, quindi \code{PricingService.calculateValuation}. Un VIN già presente è ammesso soltanto se il veicolo precedente è \code{SOLD}; in quel caso la riga viene aggiornata a \code{WAITING}, altrimenti viene creata una nuova riga. \code{Request.createSaleProposal} memorizza il valore stimato con segno negativo. La proposta non attraversa un'offerta modificabile dal Salesman e una successiva approvazione Manager come nella specifica storica.
+
+\code{approveClientSale} porta il veicolo a \code{SALE}, accredita al cliente il valore assoluto della \code{Request}, registra una \code{Sale} negativa ed elimina la richiesta. \code{rejectClientSale} elimina la richiesta e conserva il veicolo come \code{SOLD} solo se esistono vendite pregresse, altrimenti lo elimina. Quando trova la proposta, il controller del Salesman chiama direttamente \code{approveClientSale} passando l'ID della sessione; usa \code{approveVehicle} se non trova alcuna proposta per il veicolo selezionato. Se \code{approveVehicle} viene chiamato direttamente su una proposta, chiama \code{approveClientSale} all'interno di un'altra lambda transazionale, aprendo una seconda unità di lavoro, e passa il valore costante \code{1L} come ID del Salesman. Questa scorciatoia può attribuire la vendita al venditore sbagliato quando opera un altro account. Il confine annidato è analizzato in sezione~\ref{sec:transazioni}.
+
+La stima esposta prima della proposta può divergere dal valore poi salvato: \code{quoteValuation} usa un prezzo di rilascio predefinito di 25.000 quando non trova il modello, mentre \code{CatalogModels.findOrCreate} usa l'importo fornito o 20.000 per creare il nuovo modello. Sono due fallback diversi nei sorgenti, non una policy documentata da un requisito.

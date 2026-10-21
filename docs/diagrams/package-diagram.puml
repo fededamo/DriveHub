@@ -1,0 +1,30 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 17
+skinparam classAttributeIconSize 0
+skinparam dpi 150
+title DriveHub — Dipendenze ammesse fra package
+skinparam packageStyle rectangle
+package "presentation" as ui
+package "business" as business
+package "domain" as domain
+package "dao.interfaces" as ports
+package "dao.postgres" as jdbc
+component "DriveHubApplication\n«composition root»" as app
+ui ..> business : «uses» ServiceUiGateway
+ui ..> domain : «uses» tipi e mapping
+business ..> domain : «uses» invarianti
+business ..> ports : «uses» transazioni / DAO
+ports ..> domain : «uses» tipi delle firme
+jdbc ..> ports : realizza le interfacce
+jdbc ..> domain : «creates» reidratazione
+app ..> ui : «creates» context / router
+app ..> business : «creates» servizi / strategie
+app ..> jdbc : «creates» factory / bootstrap
+note bottom of domain
+  Nessuna dipendenza da JavaFX, JDBC,
+  business o infrastruttura.
+end note
+@enduml

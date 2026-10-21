@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="it.unifi.ing.drivehub.domain.UserAndVehicleTest" time="0.008" tests="6" errors="0" skipped="0" failures="0">
+  <testcase name="registrationPreservesFields" classname="it.unifi.ing.drivehub.domain.UserAndVehicleTest" time="0.002" />
+  <testcase name="invalidTransitionLeavesStateUnchanged" classname="it.unifi.ing.drivehub.domain.UserAndVehicleTest" time="0.001" />
+  <testcase name="inactiveUsersRemainRehydratable" classname="it.unifi.ing.drivehub.domain.UserAndVehicleTest" time="0.001" />
+  <testcase name="managerUpdatesPrices" classname="it.unifi.ing.drivehub.domain.UserAndVehicleTest" time="0.001" />
+  <testcase name="onlySalesmanMayHaveManager" classname="it.unifi.ing.drivehub.domain.UserAndVehicleTest" time="0.001" />
+  <testcase name="vehicleTransitionNotifiesObserver" classname="it.unifi.ing.drivehub.domain.UserAndVehicleTest" time="0.0" />
+</testsuite>

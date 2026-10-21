@@ -1,0 +1,57 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam dpi 180
+interface DaoFactory {
+  begin() : UnitOfWork
+}
+interface UnitOfWork {
+  users()
+  bankAccounts()
+  brands()
+  vehicleModels()
+  vehicles()
+  discounts()
+  rentals()
+  testDrives()
+  requests()
+  sales()
+  commit()
+  rollback()
+}
+class PostgresDaoFactory
+class PostgresUnitOfWork
+class JdbcTransactionManager
+class DatabaseBootstrap
+class JdbcEntityLoader
+interface UserDao
+interface VehicleDao
+interface RentalDao
+interface TestDriveDao
+interface RequestDao
+interface SaleDao
+class PostgresUserDao
+class PostgresVehicleDao
+class PostgresRentalDao
+class PostgresTestDriveDao
+class PostgresRequestDao
+class PostgresSaleDao
+PostgresDaoFactory ..|> DaoFactory
+PostgresDaoFactory --> PostgresUnitOfWork : begin()
+PostgresUnitOfWork ..|> UnitOfWork
+UnitOfWork --> UserDao
+UnitOfWork --> VehicleDao
+UnitOfWork --> RentalDao
+UnitOfWork --> TestDriveDao
+UnitOfWork --> RequestDao
+UnitOfWork --> SaleDao
+PostgresUserDao ..|> UserDao
+PostgresVehicleDao ..|> VehicleDao
+PostgresRentalDao ..|> RentalDao
+PostgresTestDriveDao ..|> TestDriveDao
+PostgresRequestDao ..|> RequestDao
+PostgresSaleDao ..|> SaleDao
+PostgresUnitOfWork --> JdbcEntityLoader
+DatabaseBootstrap --> JdbcTransactionManager
+@enduml

@@ -1,0 +1,71 @@
+\section{Persistenza: livello DAO e mapping oggetti/tabelle}\label{sec:persistenza}\label{sec:dao}
+Il livello DAO traduce oggetti del dominio e righe SQL senza ricorrere a un ORM. Le query e il mapping sono scritti in JDBC, con \code{PreparedStatement} per i parametri. Le interfacce del package \code{dao.interfaces} costituiscono le porte usate dai servizi; le classi \code{dao.postgres} ne forniscono le implementazioni. Il diagramma della figura~\ref{fig:classi-dao} mostra factory, unità di lavoro e DAO rappresentativi.
+
+\subsection{Porte DAO e implementazioni JDBC}
+DriveHub definisce una porta per ciascuna area persistente, come \code{UserDao}, \code{VehicleDao}, \code{RentalDao} e \code{SaleDao}. Non c'è un'interfaccia CRUD generica: ciascuna porta espone le query necessarie ai propri casi d'uso. Per esempio, \code{UserDao} offre ricerche per ID, email e ruolo, oltre alla verifica delle operazioni collegate all'account.
+
+\begin{lstlisting}[language=Java,caption={Operazioni di lettura e controllo dichiarate da UserDao.},label={lst:user-dao}]
+Optional<User> findById(long id);
+Optional<User> findByEmail(String normalizedEmail);
+List<User> findByRole(Role role);
+List<User> findAll();
+boolean hasOperations(long userId, Role role);
+\end{lstlisting}
+
+\code{PostgresUserDao} implementa questa porta e scrive nella tabella del ruolo. Gli altri \code{Postgres*Dao} gestiscono catalogo, sconti, conto e operazioni; \code{JdbcEntityLoader} concentra il caricamento per ID di più entità. \code{JdbcSupport} raccoglie operazioni JDBC comuni, fra cui inserimento con chiave generata e gestione dei valori interi nullable. Il servizio riceve una \code{DaoFactory}, quindi non dipende dalle classi JDBC concrete.
+
+\subsection{Mapping degli utenti e vista unificata}
+Lo schema contiene tre tabelle, \code{client}, \code{salesman} e \code{manager}. La vista \code{user} le combina con \code{UNION ALL} e aggiunge la colonna \code{role}; non è una quarta tabella. \code{PostgresUserDao.save} seleziona la tabella mediante il ruolo dell'oggetto, mentre le ricerche comuni leggono dalla vista. Il caricatore costruisce un \code{User} con i campi condivisi e converte la stringa SQL in \code{Role}:
+
+\begin{lstlisting}[language=Java,caption={Ricostruzione di User da una riga della vista user.},label={lst:user-mapping}]
+return load("SELECT id, name, surname, email, "
+        + "hash_password, role FROM \"user\" WHERE id = ?", id,
+        row -> new User(
+                row.getLong("id"),
+                row.getString("name"),
+                row.getString("surname"),
+                row.getString("email"),
+                row.getString("hash_password"),
+                Role.fromString(row.getString("role"))));
+\end{lstlisting}
+
+La vista non possiede una chiave primaria globale: le tre tabelle generano gli ID indipendentemente. Il metodo \code{JdbcEntityLoader.user(id)} interroga la vista con il solo ID e prende la prima riga; se due ruoli hanno lo stesso numero, il risultato può essere ambiguo. Le operazioni di modifica di \code{PostgresUserDao} ricevono invece anche il ruolo per scegliere la tabella. La ricerca per email usa \code{LOWER(email) = LOWER(?)}; l'unicità SQL dell'email è definita nelle singole tabelle, mentre il percorso di registrazione controlla anche la vista comune. I trigger di disgiunzione previsti da \code{init.sql} sono installati su PostgreSQL, ma non su H2 nella modalità dimostrativa; su PostgreSQL il confronto degli ID numerici fra tabelle diverse ne limita comunque la garanzia, come spiegato nella sezione~\ref{sec:modello-relazionale}.
+
+\subsection{Mapping delle operazioni e valori opzionali}
+\code{JdbcEntityLoader} converte gli identificatori esterni in campi dell'entità e i tipi SQL \code{DATE} e \code{TIMESTAMP} in \code{LocalDate} e \code{LocalDateTime}. La tabella \code{sale} consente che \code{vehicle} e \code{salesman} siano \code{NULL}; è necessario conservarli tali nel modello Java, perché una penale può non riferirsi a un veicolo e a un venditore. Il mapping di \code{Sale} usa quindi \code{JdbcSupport.nullableLong}:
+
+\begin{lstlisting}[language=Java,caption={Lettura delle due chiavi opzionali nel mapping di Sale.},label={lst:sale-mapping}]
+JdbcSupport.nullableLong(row, "vehicle"),
+JdbcSupport.nullableLong(row, "salesman"),
+\end{lstlisting}
+
+In scrittura, \code{PostgresSaleDao.save} usa \code{JdbcSupport.setNullableLong} per gli stessi campi. Una lettura diretta con \code{ResultSet.getLong} restituirebbe invece zero per un valore SQL nullo se non fosse accompagnata da \code{wasNull()}. Il modello relazionale della sezione~\ref{sec:modello-relazionale} precisa quali associazioni sono obbligatorie e quali opzionali.
+
+\subsection{Vincoli SQL e controlli dei servizi}\label{sec:concorrenza}
+Lo schema aggiunge vincoli che operano anche se un dato raggiunge il database senza passare dai controlli della schermata: \code{UNIQUE} su VIN e targa, \code{CHECK} su saldo, prezzi, sconti e stati del veicolo, chiavi esterne fra le operazioni e i rispettivi soggetti. Tre esempi dall'inizializzazione SQL sono:
+
+\begin{lstlisting}[caption={Vincoli fisici presenti in init.sql.},label={lst:vincoli-sql}]
+CONSTRAINT "uq_vehicle_vin" UNIQUE ("vin"),
+CONSTRAINT "chk_bank_account_balance" CHECK ("balance" >= 0),
+CONSTRAINT "chk_rent_dates" CHECK ("end" >= "start")
+\end{lstlisting}
+
+I vincoli fisici non coprono tutte le regole temporali. Per un noleggio, il metodo \code{hasOverlappingRentals} di \code{PostgresRentalDao} usa il predicato del listato~\ref{lst:overlap}; il servizio verifica il risultato prima dell'inserimento. La query parametrizzata evita di incorporare i valori nella stringa SQL, ma la lettura e l'\code{INSERT} non sono protetti da un vincolo di esclusione contro richieste concorrenti. Analogamente, lo slot di un test drive viene controllato dal servizio e non da una chiave unica nello schema. \code{PostgresVehicleDao.updateState} aggiorna per ID senza confrontare nella \code{WHERE} lo stato precedente. La tabella~\ref{tab:garanzie} riassume la portata delle garanzie.
+
+\subsection{Connessione condivisa e Unit of Work}\label{sec:transazioni}
+\code{DaoFactory.begin} apre una \code{UnitOfWork}. \code{PostgresDaoFactory} ottiene una connessione dal \code{DataSource}, disabilita l'auto-commit e imposta \code{TRANSACTION_READ_COMMITTED}. \code{PostgresUnitOfWork} costruisce tutti i DAO con quella connessione e lo stesso \code{JdbcEntityLoader}: i metodi dei DAO non ricevono quindi la connessione a ogni chiamata. Il listato~\ref{lst:transaction-runner} mostra come il Business Layer esegue il lavoro, conferma il risultato o chiede il rollback. La chiusura dell'unità annulla una transazione rimasta incompleta.
+
+Il rollback copre le scritture della singola unità prima del commit. Non unifica chiamate applicative separate: richiesta di acquisto, autorizzazione e saldo sono tre transazioni. Non revoca neppure un evento Observer pubblicato durante la lambda, prima del commit. Una chiamata annidata a \code{TransactionRunner.execute}, come nel percorso di \code{SalesService.approveVehicle}, apre un'altra unità di lavoro. Il bootstrap SQL usa separatamente \code{JdbcTransactionManager}.
+
+\begin{longtable}{p{.27\linewidth}p{.34\linewidth}p{.30\linewidth}}
+\caption{Garanzie transazionali e vincoli nel checkout corrente.}\label{tab:garanzie}\\
+\toprule Regola & Meccanismo osservato & Limite della garanzia\\\midrule\endfirsthead
+\toprule Regola & Meccanismo osservato & Limite della garanzia\\\midrule\endhead
+Scritture di un caso d'uso & Connessione condivisa e commit/rollback di \code{UnitOfWork} & Non include side effect degli Observer o transazioni annidate\\
+Saldo non negativo & Invariante \code{BankAccount}, \code{CHECK} SQL & \code{findByClientId} non acquisisce lock; una lettura concorrente può essere obsoleta\\
+VIN e targa unici & \code{UNIQUE} nella tabella \code{vehicle} & L'errore DB richiede una traduzione per la UI\\
+Test drive nello stesso slot & Query \code{hasConflict} nel servizio & Manca \code{UNIQUE(vehicle, slot)}\\
+Noleggi non sovrapposti & Query \code{hasOverlap} & Manca un vincolo/esclusione concorrente\\
+Transizione di stato veicolo & Verifica nel servizio e \code{UPDATE} per ID & Manca confronto atomico con stato atteso\\
+\bottomrule
+\end{longtable}

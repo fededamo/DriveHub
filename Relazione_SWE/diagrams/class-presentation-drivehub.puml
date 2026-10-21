@@ -1,0 +1,92 @@
+@startuml
+!pragma layout smetana
+!include drivehub-class-theme.puml
+title DriveHub — Presentation Layer
+left to right direction
+
+package "presentation" #D5E8D4 {
+  package "controller" #EFF8EE {
+    abstract class AbstractController {
+      + setApplicationContext(context : ApplicationContext)
+      # gateway() : UiGateway
+      # session() : UiModels.Session
+    }
+    class WelcomeController
+    class LoginController
+    class RegistrationController
+    class CustomerWorkspaceController {
+      + searchCatalog()
+      + payFullBalance()
+    }
+    class SalesmanWorkspaceController {
+      + approveWaitingVehicle()
+      + authorizePurchaseRequest()
+    }
+    class ManagerWorkspaceController {
+      + addVehicle()
+      + applyVehicleDiscount()
+    }
+  }
+  package "core" #EFF8EE {
+    interface ContextAware {
+      + setApplicationContext(context : ApplicationContext)
+    }
+    interface UiGateway {
+      + login(...)
+      + searchCatalog(...)
+      + bookRental(...)
+    }
+    class ServiceUiGateway
+    class ApplicationContext {
+      + gateway() : UiGateway
+      + session() : SessionContext
+    }
+    class SessionContext {
+      + open(session)
+      + clear()
+      + requireCurrent()
+    }
+    class UiModels <<DTO records>>
+  }
+  package "navigation" #EFF8EE {
+    class NavigationManager {
+      + show(route : Route)
+      + showHomeForCurrentRole()
+      + logout()
+    }
+    enum Route {
+      WELCOME
+      LOGIN
+      REGISTER
+      CUSTOMER
+      SALESMAN
+      MANAGER
+    }
+  }
+}
+
+package "business.services" #FFF2CC {
+  class AuthService
+  class SalesService
+  class RentalService
+}
+
+AbstractController ..|> ContextAware
+LoginController --|> AbstractController
+RegistrationController --|> AbstractController
+CustomerWorkspaceController --|> AbstractController
+SalesmanWorkspaceController --|> AbstractController
+ManagerWorkspaceController --|> AbstractController
+ServiceUiGateway ..|> UiGateway
+AbstractController --> ApplicationContext
+ApplicationContext --> UiGateway
+ApplicationContext --> SessionContext
+ServiceUiGateway ..> UiModels : restituisce
+NavigationManager --> Route
+NavigationManager --> ApplicationContext
+NavigationManager ..> ContextAware : inietta contesto
+WelcomeController --> NavigationManager
+ServiceUiGateway ..> AuthService
+ServiceUiGateway ..> SalesService
+ServiceUiGateway ..> RentalService
+@enduml

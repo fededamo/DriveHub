@@ -1,0 +1,136 @@
+\chapter{Testing}\label{ch:testing}
+
+\section{Strategia di verifica}
+La verifica principale è organizzata su due livelli, come i confini dell'architettura. Il primo controlla regole del dominio, calcoli e servizi, isolando con Mockito i DAO quando l'obiettivo è osservare una decisione del Business Layer. Il secondo esegue le implementazioni JDBC su un database H2 in memoria con \code{MODE=PostgreSQL}, così da verificare query, mapping e vincoli invece delle sole chiamate fra mock.
+
+\begin{itemize}
+  \item \textbf{Livello 1 -- Business Logic}: test delle entità, di \code{PricingStrategy}, dei servizi e di \code{TransactionRunner}. Gli oracoli sono stati finali, importi, eccezioni e interazioni con le porte DAO.
+  \item \textbf{Livello 2 -- Persistence Layer}: test di \code{DatabaseBootstrap} e dei DAO \code{Postgres*Dao} con tabelle reali in H2. Gli oracoli sono righe salvate e rilette, conteggi dello schema e dati ricostruiti.
+\end{itemize}
+
+DriveHub dispone anche di test funzionali che attraversano servizi e persistenza, di controlli statici dell'architettura e delle viste FXML, e di uno smoke test JavaFX separato. Queste prove sono discusse dopo i due livelli principali, perché hanno un perimetro diverso. Un test con mock può dimostrare che il servizio richiede un aggiornamento e un commit; un test su H2 può dimostrare che la query funziona in quell'ambiente. Nessuno dei due dimostra, da solo, il comportamento di due transazioni concorrenti su PostgreSQL.
+
+\subsection{Tecnologie e strumenti}
+\begin{itemize}
+  \item \textbf{JUnit 5} esegue test e assert, con \code{@BeforeEach} per preparare un contesto nuovo prima di ogni prova. \code{@ParameterizedTest} verifica i tre ruoli nella registrazione e nel login.
+  \item \textbf{Mockito} sostituisce \code{DaoFactory}, \code{UnitOfWork} e singoli DAO nei test dei servizi. \code{verify} controlla le chiamate; \code{inOrder} ne controlla la sequenza nel test del rollback.
+  \item \textbf{H2 in modalità PostgreSQL} ospita i test DAO e i flussi funzionali. Lo schema è caricato da \code{DatabaseBootstrap}; ogni contesto usa un database in memoria con nome distinto.
+  \item \textbf{Maven Surefire} esegue la suite standard. \code{pom.xml} esclude per default i tag \code{gui} e \code{postgres}; JaCoCo è configurato, ma la presenza del plugin non equivale a un report di copertura.
+\end{itemize}
+
+\section{Livello 1: Business Logic}
+
+\subsection{Invarianti del dominio}
+\code{UserAndVehicleTest}, \code{SalesWorkflowTest} e \code{RentalWorkflowTest} usano oggetti reali, senza database. Verificano, fra l'altro, normalizzazione dell'utente, transizioni del veicolo, targa assente con chilometri zero, creazione della richiesta e validità di noleggio e test drive. Abbiamo scelto questi casi perché una vista può impedire un input errato, ma un servizio o un altro adapter possono costruire le entità direttamente. La regola deve quindi rimanere verificabile nel dominio.
+
+\subsection{AuthServiceTest}
+La registrazione parametrizzata prova i quattro valori dell'enum \code{Role}: \code{CLIENT}, l'alias storico \code{CUSTOMER}, \code{SALESMAN} e \code{MANAGER}. Il test controlla l'entità restituita, il commit e la creazione del conto per i due valori cliente. Il caso di email duplicata verifica invece che il servizio interrompa il percorso prima di calcolare l'hash e salvare un utente. Gli assert sui mock fissano la decisione osservata, mentre il test funzionale del login verifica separatamente il risultato quando servizi e DAO lavorano insieme.
+
+\begin{lstlisting}[language=Java,caption={Effetti esclusi dal test di registrazione duplicata.},label={lst:test-auth}]
+verify(hasher, never()).hash(any());
+verify(users, never()).save(any());
+verify(unit).rollback();
+\end{lstlisting}
+
+\subsection{PricingAndSecurityTest}
+Il test \code{discountAppliesToSalePrice} controlla due punti della strategia: per un modello da 40.000 euro, veicolo dell'anno corrente senza targa e a zero chilometri, il preventivo è 36.000 euro con promozione del 10\% e 40.000 euro senza promozione. \code{discountAppliesToRental} verifica gli importi per uno, due, tre e quattro giorni. Sono assert sul calcolo, indipendenti dalla persistenza:
+
+\begin{lstlisting}[language=Java,caption={Estratto degli assert sulla tariffa di noleggio.},label={lst:test-pricing}]
+assertEquals(new BigDecimal("40.00"), strategy.rentalPrice(target, 1));
+assertEquals(new BigDecimal("76.00"), strategy.rentalPrice(target, 2));
+assertEquals(new BigDecimal("108.30"), strategy.rentalPrice(target, 3));
+assertEquals(new BigDecimal("137.18"), strategy.rentalPrice(target, 4));
+\end{lstlisting}
+
+Nella stessa classe, \code{pbkdf2RoundTrip} controlla che due hash della medesima password abbiano sali diversi, che la password corretta sia accettata e che una password errata o una codifica malformata siano rifiutate. Il test usa parametri PBKDF2 ridotti per l'esecuzione, quindi verifica il comportamento dell'implementazione senza misurare la resistenza dei parametri di produzione.
+
+\subsection{SalesServiceTest}
+Il test di avvio acquisto prepara veicolo e conto mediante mock. Dopo la richiesta controlla tre effetti collegati: l'acconto diminuisce il saldo, il veicolo passa a \code{BLOCKED} e la richiesta viene salvata; verifica poi il commit. Il test di annullamento copre il ramo alternativo: il veicolo torna \code{SALE}, il cliente riceve l'80\% dell'acconto e una \code{Sale} senza veicolo e venditore registra il 20\% trattenuto.
+
+\begin{lstlisting}[language=Java,caption={Oracoli del test di annullamento con penale.},label={lst:test-sales-penalty}]
+verify(vehicles).updateState(1L, VehicleState.SALE);
+assertEquals(new BigDecimal("5800.00"), account.balance());
+verify(requests).delete(50L);
+verify(sales).save(argThat(sale ->
+        sale.vehicleId() == null && sale.salesmanId() == null &&
+        sale.amount().compareTo(new BigDecimal("200.00")) == 0));
+\end{lstlisting}
+
+Questi test accertano la decisione del servizio e le chiamate ai DAO simulati. Non sono una prova che le scritture arrivino su PostgreSQL: quel confine è affrontato dai test di persistenza e dai test funzionali.
+
+\subsection{RentalServiceTest e BankAccountServiceTest}
+\code{RentalServiceTest.bookRentalDebitsAccount} prenota un giorno di noleggio per un veicolo con tariffa di 100 euro e saldo iniziale di 500 euro. Il test verifica \code{Rent}, saldo di 400 euro, aggiornamento del conto, salvataggio del noleggio e commit. \code{BankAccountServiceTest} aggiunge i casi di deposito, prelievo e saldo insufficiente; quest'ultimo verifica il rifiuto prima di attribuire un saldo negativo al conto.
+
+\begin{lstlisting}[language=Java,caption={Effetti economici verificati nel test del noleggio.},label={lst:test-rental}]
+Rent rent = service.bookRental(1L, 30L, start, end);
+assertNotNull(rent);
+assertEquals(new BigDecimal("400.00"), account.balance());
+verify(bankAccounts).updateBalance(account.iban(), account.balance());
+verify(rentals).save(any(Rent.class));
+verify(unit).commit();
+\end{lstlisting}
+
+\subsection{TransactionAndObserverTest}
+\code{commitFailurePreservesCauseAndCloses} programma un errore di commit e uno successivo di rollback. L'oracolo richiede che il chiamante riceva l'errore originale, che il secondo sia aggiunto come eccezione soppressa e che \code{UnitOfWork.close} venga invocato dopo commit e rollback:
+
+\begin{lstlisting}[language=Java,caption={Ordine delle operazioni nel test dell'errore transazionale.},label={lst:test-rollback}]
+assertArrayEquals(new Throwable[]{rollback}, original.getSuppressed());
+var order = inOrder(unit);
+order.verify(unit).commit();
+order.verify(unit).rollback();
+order.verify(unit).close();
+\end{lstlisting}
+
+Gli altri test della classe osservano l'evento emesso da \code{RentalService} quando cancella test drive incompatibili e l'evento di \code{SalesService} quando blocca un veicolo. Verificano l'emissione nell'esecuzione corrente, non una consegna dopo il commit o un recupero degli eventi dopo un riavvio, poiché l'observer è locale al processo.
+
+\section{Livello 2: Persistence Layer (DAO)}
+Questi test eseguono query JDBC su tabelle create dalla migration iniziale. Un nuovo database H2 viene preparato prima di ogni prova; le query non sono simulate. La modalità di compatibilità è utile per controllare SQL e mapping, ma non sostituisce PostgreSQL reale per dialetto, trigger e concorrenza.
+
+\subsection{PostgresDaoIntegrationTest}
+Nonostante il nome della classe, il database impiegato è H2. Il primo test salva i tre ruoli, catalogo, conto e sconti, poi verifica i dati riletti. Il secondo salva un noleggio e un test drive, conferma la transazione, li rilegge in una nuova \code{UnitOfWork}, salva una vendita e la rilegge ancora. Il passaggio a una nuova unità è decisivo: impedisce che l'assert osservi soltanto gli oggetti Java rimasti in memoria.
+
+\begin{lstlisting}[language=Java,caption={Verifica di lettura in una nuova Unit of Work.},label={lst:test-dao-roundtrip}]
+try (var work = daoFactory.begin()) {
+    assertEquals(1, work.rentals().findByClientId(clientId).size());
+    assertEquals(1, work.testDrives().findByClientId(clientId).size());
+    work.commit();
+}
+\end{lstlisting}
+
+Il test controlla il percorso nominale di salvataggio e ricostruzione. Non mette due transazioni in competizione per lo stesso veicolo né verifica la semantica dei trigger su PostgreSQL.
+
+\subsection{DatabaseBootstrapIntegrationTest}
+Il primo test controlla una voce nel registro delle migration e le tredici tabelle applicative. Il secondo esegue due volte il bootstrap con seed e verifica che il catalogo sia popolato. Il terzo applica \code{db/demo.sql} e confronta i conteggi delle entità, incluse otto vendite con veicolo e venditore nulli. Questi assert sono utili perché un errore nello schema o nel dataset di prova renderebbe poco affidabili anche i test dei servizi che vi si appoggiano.
+
+\begin{lstlisting}[language=Java,caption={Conteggi controllati dopo il caricamento dei dati dimostrativi.},label={lst:test-bootstrap}]
+assertEquals(56, scalarLong(connection,
+        "SELECT COUNT(*) FROM \"vehicle\""));
+assertEquals(40, scalarLong(connection,
+        "SELECT COUNT(*) FROM \"sale\""));
+assertEquals(8, scalarLong(connection,
+        "SELECT COUNT(*) FROM \"sale\" WHERE \"vehicle\" IS NULL AND \"salesman\" IS NULL"));
+\end{lstlisting}
+
+\section{Verifiche funzionali e della presentazione}
+\code{FunctionalTestSupport} costruisce servizi e \code{ServiceUiGateway} reali sopra i DAO JDBC e un database H2 isolato. \code{CheckoutFunctionalTest.completePurchaseWorkflow} percorre acconto, autorizzazione e saldo, osservando \code{BLOCKED}, poi \code{SOLD}, eliminazione della richiesta, vendita e saldo finale. \code{cancelPurchaseWorkflowWithPenalty} verifica rimborso parziale e vendita di penale; gli altri due metodi coprono noleggio e proposta di cessione. Sono prove che attraversano più livelli, ma esercitano i percorsi scelti e non tutte le varianti o gli accessi concorrenti.
+
+\begin{lstlisting}[language=Java,caption={Due stati osservati nel test funzionale di acquisto.},label={lst:test-checkout}]
+Vehicle blocked = transactions.execute(u ->
+        u.vehicles().findById(saleVehicle.requireId()).orElseThrow());
+assertEquals(VehicleState.BLOCKED, blocked.state());
+
+Vehicle sold = transactions.execute(u ->
+        u.vehicles().findById(saleVehicle.requireId()).orElseThrow());
+assertEquals(VehicleState.SOLD, sold.state());
+\end{lstlisting}
+
+\code{UserGoalsFunctionalTest} verifica registrazione e login dei tre ruoli, email duplicata, credenziali errate, catalogo, test drive e applicazione/rimozione di uno sconto. \code{LayeringTest} controlla staticamente la direzione delle dipendenze fra package; \code{FxmlContractTest} analizza sei viste, campi \code{fx:id}, handler e CSS. Questi ultimi test verificano struttura dei sorgenti e contratto FXML, non l'interazione visiva completa. Lo smoke \code{JavaFxSmokeTest}, marcato \code{@Tag("gui")}, carica route e verifica guardia e logout in un ambiente grafico; è escluso dalla suite standard descritta sotto.
+
+\section{Esecuzione della suite e portata dei risultati}
+Il 21 ottobre 2026 è stata eseguita la suite Maven standard con JDK 21:
+\begin{lstlisting}
+mvn -B -ntp -Dmaven.repo.local=C:/DEV/.m2/repository test
+\end{lstlisting}
+Il risultato è stato \textbf{57 test, 0 failure, 0 error, 0 skipped; BUILD SUCCESS}. Il riepilogo Surefire comprende 16 classi. Il profilo standard esclude \code{gui} e \code{postgres}; il risultato non include quindi lo smoke JavaFX né prove su un server PostgreSQL. JaCoCo ha segnalato l'assenza del file dei dati di esecuzione e non ha prodotto una percentuale di coverage per questa esecuzione. I risultati full-stack e la copertura in \code{docs/evidence/full-stack/} appartengono a un manifest precedente e non sono sommati a questa suite.
+
+La suite attesta i casi e gli ambienti appena descritti. Non fornisce una prova di serializzazione delle prenotazioni concorrenti, di unicità globale degli ID nella vista \code{user}, né di tutte le regole di autorizzazione su chiamate dirette ai servizi. Tali limiti sono coerenti con l'analisi dei vincoli JDBC nel paragrafo~\ref{sec:concorrenza}; non vanno confusi con un esito negativo dei 57 test eseguiti.

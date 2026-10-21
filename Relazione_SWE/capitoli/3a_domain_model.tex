@@ -1,0 +1,77 @@
+\section{Domain Model}\label{sec:implementazione-dominio}
+
+Il Domain Model rappresenta veicoli, utenti e operazioni senza importare classi di \code{presentation}, \code{business} o \code{dao}. È organizzato in cinque pacchetti, già mostrati nel diagramma di classe della figura~\ref{fig:classi-domain}:
+\begin{itemize}
+  \item \textbf{users}: identità, ruolo e conto dimostrativo del cliente;
+  \item \textbf{vehicles}: catalogo, stato dei veicoli e sconti;
+  \item \textbf{rentals}: noleggi e prenotazioni di test drive;
+  \item \textbf{sales}: richieste, compravendite e penali;
+  \item \textbf{observer}: contratti ed eventi relativi all'inventario.
+\end{itemize}
+Alla radice di \code{domain}, \code{BaseEntity} conserva l'ID delle entità persistite. Una nuova entità nasce con ID nullo; \code{assignId} accetta soltanto valori positivi e impedisce di sostituire un ID già assegnato con uno diverso. \code{requireId} segnala invece l'uso di un'entità ancora priva di identità persistente. Le associazioni fra gli oggetti sono rappresentate soprattutto da ID: per esempio \code{Vehicle} conserva \code{modelId} e \code{Request} conserva \code{vehicleId} e \code{clientId}. Il caricamento degli oggetti associati spetta ai DAO e ai servizi.
+
+\subsection{Users}
+Il pacchetto \code{users} contiene \code{User}, \code{Role} e \code{BankAccount}. A differenza della gerarchia concettuale nello schema ER, nel codice Java \code{Client}, \code{Salesman} e \code{Manager} non sono sottoclassi: sono valori del campo \code{role} di un'unica classe \code{User}. L'enumerazione contiene \code{CLIENT}, \code{CUSTOMER}, \code{SALESMAN} e \code{MANAGER}; \code{Role.fromString} converte il vecchio nome \code{CUSTOMER} in \code{CLIENT}. La persistenza dei ruoli in tabelle distinte è descritta nel paragrafo~\ref{sec:dati}.
+
+Il costruttore di \code{User} richiede nome, cognome e hash non vuoti; normalizza l'email in minuscolo e ne controlla il formato. La factory \code{create} produce un utente senza ID, che il DAO assegna dopo l'inserimento. Il controllo di unicità dell'email richiede una ricerca nei dati persistiti: il singolo oggetto non può garantirlo. \code{equals} e \code{hashCode} si basano sull'email, indipendentemente dal ruolo; questa scelta presuppone che il normale flusso applicativo eviti email duplicate fra ruoli.
+
+\code{BankAccount} non deriva da \code{BaseEntity}: è identificato dall'IBAN e conserva l'ID del cliente intestatario. Il costruttore richiede un IBAN di 27 caratteri e un saldo non negativo. I metodi \code{deposit} e \code{withdraw} ammettono solo importi positivi; il prelievo verifica anche che il saldo sia sufficiente prima di aggiornarlo. Il conto rappresenta un saldo simulato, senza collegamento a un servizio bancario esterno.
+
+\subsection{Vehicles}
+Il pacchetto \code{vehicles} riunisce \code{Brand}, \code{VehicleModel}, \code{Vehicle}, \code{VehicleState}, \code{ModelDiscount} e \code{VehicleDiscount}. \code{Brand} richiede un nome non vuoto; \code{VehicleModel} associa marca, nome, prezzo e anno di lancio, rifiutando prezzi negativi e anni fuori dall'intervallo 1900--anno corrente. Gli sconti di modello e di veicolo sono percentuali intere fra 0 e 50 e conservano l'ID del rispettivo elemento.
+
+\code{Vehicle} conserva il modello, il VIN, l'eventuale targa, chilometraggio, prezzo, anno e stato. Il costruttore normalizza VIN e targa in maiuscolo, rifiuta chilometri e prezzi negativi e impone chilometri zero quando la targa manca. \code{VehicleState} comprende \code{WAITING}, \code{SALE}, \code{RENT}, \code{BLOCKED} e \code{SOLD}. Tre metodi esprimono transizioni con una precondizione esplicita:
+\begin{lstlisting}[language=Java,caption={Transizioni controllate dello stato di Vehicle.}]
+public void approve() {
+    if (state != VehicleState.WAITING) {
+        throw new DomainRuleViolationException(
+                "Cannot approve vehicle not in WAITING state");
+    }
+    this.state = VehicleState.SALE;
+}
+
+public void block() {
+    if (state != VehicleState.SALE) {
+        throw new DomainRuleViolationException(
+                "Cannot block vehicle not in SALE state");
+    }
+    this.state = VehicleState.BLOCKED;
+}
+\end{lstlisting}
+\code{unblock} applica la stessa struttura al passaggio da \code{BLOCKED} a \code{SALE}. Esiste anche \code{transitionTo}, che assegna qualsiasi \code{VehicleState} non nullo, e \code{updateDetails} riceve direttamente il nuovo stato: dunque la classe non impone a ogni chiamante l'uso delle tre transizioni controllate. I servizi devono verificare il contesto dell'operazione; il database limita i valori ammessi, ma non l'ordine dei passaggi.
+
+\subsection{Rentals}
+\code{Rent} e \code{TestDrive} condividono il riferimento a un cliente e a un veicolo, ma modellano tempi diversi. \code{Rent} registra un intervallo di giorni \code{LocalDate} e un importo non negativo; il costruttore respinge una data finale precedente a quella iniziale. \code{TestDrive} registra invece un \code{LocalDateTime} e verifica che l'ora di partenza sia fra le 09:00 e le 16:00 con minuti pari a zero. Il metodo \code{end} restituisce l'ora successiva alla partenza.
+
+Nessuna delle due classi contiene uno stato di workflow. Un oggetto \code{Rent} valido può comunque sovrapporsi a un altro noleggio dello stesso veicolo, e due oggetti \code{TestDrive} validi possono avere lo stesso slot: sono verifiche che richiedono la consultazione delle prenotazioni già registrate. I servizi eseguono queste ricerche prima del salvataggio; il rischio residuo delle richieste concorrenti è discusso nella sezione~\ref{sec:concorrenza}.
+
+\subsection{Sales}
+Il pacchetto \code{sales} contiene \code{Request} e \code{Sale}. \code{Request} rappresenta due pratiche con lo stesso insieme di campi. \code{createPurchase} richiede un acconto positivo per l'acquisto dal catalogo; \code{createSaleProposal} richiede una stima positiva e la salva con segno negativo per la proposta di cessione del cliente:
+\begin{lstlisting}[language=Java,caption={Factory method di Request per i due tipi di pratica.},label={lst:request}]
+public static Request createPurchase(long vehicleId, long clientId,
+                                     BigDecimal deposit) {
+    if (deposit.compareTo(BigDecimal.ZERO) <= 0) {
+        throw new IllegalArgumentException(
+                "Purchase deposit must be strictly positive");
+    }
+    return new Request(null, vehicleId, clientId, null, deposit, null);
+}
+
+public static Request createSaleProposal(long vehicleId, long clientId,
+                                         BigDecimal estimatedValue) {
+    if (estimatedValue.compareTo(BigDecimal.ZERO) <= 0) {
+        throw new IllegalArgumentException(
+                "Estimated value must be strictly positive");
+    }
+    return new Request(null, vehicleId, clientId, null,
+                       estimatedValue.negate(), null);
+}
+\end{lstlisting}
+Il costruttore vieta un valore zero e \code{isPurchase}/\code{isSaleProposal} distinguono le due pratiche dal segno. L'eventuale \code{salesmanId} e la scadenza sono assegnati in un momento successivo tramite i metodi della richiesta. La codifica compatta evita due tipi persistenti separati, ma rende necessario interpretare correttamente il segno nei servizi e nelle query.
+
+\code{Sale} è il registro degli esiti economici. Un importo positivo con veicolo rappresenta una vendita al cliente; un importo negativo rappresenta l'acquisizione di un'auto dal cliente. La factory \code{penalty} costruisce una riga senza veicolo né venditore per la penale. \code{isAcquisition} controlla il segno e \code{isPenalty} controlla i due riferimenti nulli. Il costruttore, però, richiede soltanto cliente positivo, importo e data non nulli: non impedisce ogni combinazione incoerente di segno e riferimenti. La coerenza del caso d'uso resta responsabilità dei servizi.
+
+\subsection{Observer}
+Il pacchetto \code{observer} definisce \code{InventorySubject}, \code{InventoryObserver}, il record \code{InventoryEvent} e l'enumerazione \code{InventoryEventType}. L'evento trasporta tipo, veicolo interessato, targa, eventuale stato precedente e successivo, e istante di creazione. Le factory \code{statusChanged} e \code{requestExpired} preparano i dati degli eventi più ricorrenti.
+
+Le interfacce appartengono al dominio, mentre i soggetti concreti sono \code{SalesService} e \code{RentalService} nel livello business. Questi servizi registrano gli observer e li notificano quando un'operazione modifica l'inventario. Il record descrive il fatto avvenuto, senza conoscere controller o database; la notifica, tuttavia, è eseguita dal servizio durante l'operazione e non costituisce una garanzia di consegna dopo il commit della transazione.

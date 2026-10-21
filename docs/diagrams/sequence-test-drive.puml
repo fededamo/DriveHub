@@ -1,0 +1,47 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 17
+skinparam classAttributeIconSize 0
+skinparam dpi 150
+title UC-TD-01 — Prenotazione e conflitti temporali
+skinparam maxMessageSize 55
+autonumber
+actor Customer
+control "service : TestDriveService" as service
+participant "runner : TransactionRunner" as runner
+participant "factory : DaoFactory" as factory
+participant "unit : UnitOfWork" as unit
+participant "dao : TestDriveDao" as dao
+Customer -> service : book(customerId, vehicleId, scheduledAt, duration)\n[da P-11 tramite UiGateway]
+activate service
+service -> runner : execute(work)
+activate runner
+runner -> factory : begin()
+factory --> runner : unit
+note over service,runner : Il runner esegue il callback definito in book().
+service -> unit : users().findByIdForUpdate(customerId)
+service -> unit : vehicles().findByIdForUpdate(vehicleId)
+service -> dao : findByCustomer(customerId)
+dao --> service : prenotazioni
+service -> dao : existsOverlapping(vehicleId, scheduledAt, endsAt)
+dao --> service : conflitto veicolo?
+alt ruolo/stato/data non validi oppure sovrapposizione
+ note over service,runner : Il callback solleva un errore prima del salvataggio.
+ runner -> unit : rollback()
+else intervallo libero
+ service -> dao : save(TestDrive.request(customer, vehicle, scheduledAt, duration))
+ dao --> service : booking REQUESTED
+ runner -> unit : commit()
+end
+runner -> unit : close()
+runner --> service : risultato oppure errore
+deactivate runner
+service --> Customer : richiesta oppure feedback correggibile
+deactivate service
+note over unit,dao
+  Lock cliente poi veicolo: serializza anche due slot
+  con inizi diversi su veicoli diversi per lo stesso cliente.
+end note
+@enduml

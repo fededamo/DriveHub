@@ -1,0 +1,65 @@
+\section{Idiomi e Design Pattern}\label{sec:pattern}
+Le scelte ricorrenti dell'implementazione sono qui ricondotte ai pattern che le descrivono. I paragrafi precedenti ne mostrano il ruolo nei casi d'uso; questa sezione chiarisce quali classi collaborano, quale problema risolvono e dove si arresta la garanzia offerta dal codice corrente.
+
+\subsection{Observer}
+\code{RentalService} e \code{SalesService} implementano \code{InventorySubject}: mantengono una lista di \code{InventoryObserver} e comunicano variazioni dell'inventario con \code{InventoryEvent}. Un listener riceve il tipo dell'evento, il veicolo e gli stati coinvolti senza che il servizio debba conoscere il comportamento del destinatario. L'interfaccia dell'observer è funzionale:
+
+\begin{lstlisting}[language=Java,caption={Contratto dell'osservatore dell'inventario.},label={lst:pattern-observer}]
+@FunctionalInterface
+public interface InventoryObserver {
+    void onInventoryEvent(InventoryEvent event);
+}
+\end{lstlisting}
+
+I servizi usano \code{CopyOnWriteArrayList} per conservare gli iscritti e intercettano le eccezioni dei callback. La notifica avviene però nella lambda transazionale prima del commit: un osservatore può vedere un evento riferito a una modifica poi annullata. Il pattern disaccoppia mittente e ricevente, ma qui non garantisce consegna dopo il commit; il comportamento è dettagliato nel paragrafo~\ref{sec:observer}.
+
+\subsection{Strategy}
+\code{PricingStrategy} definisce le operazioni di preventivo per acquisto, noleggio, acconto e valutazione del veicolo. \code{StandardPricingStrategy} contiene le formule correnti; \code{PricingService} riceve l'interfaccia nel costruttore e le delega i calcoli. Il costruttore usato dalla composizione normale sceglie l'implementazione standard:
+
+\begin{lstlisting}[language=Java,caption={Strategia di prezzo scelta di default e iniettata nel servizio.},label={lst:pattern-strategy}]
+public PricingService(DaoFactory daoFactory) {
+    this(daoFactory, new StandardPricingStrategy());
+}
+
+public PricingService(DaoFactory daoFactory, PricingStrategy pricingStrategy) {
+    this.transactions = new TransactionRunner(daoFactory);
+    this.pricingStrategy = Objects.requireNonNull(pricingStrategy, "pricingStrategy");
+}
+\end{lstlisting}
+
+Il servizio può quindi usare un'altra strategia senza incorporarne le formule. Il codice distribuisce una sola strategia concreta e non offre una scelta di algoritmo all'utente. Gli sconti e i diversi importi usati nei flussi sono analizzati nel paragrafo~\ref{sec:pricing}.
+
+\subsection{Metodi statici di creazione}
+Le entità espongono metodi come \code{Vehicle.create}, \code{Rent.create}, \code{Request.create} e \code{User.create}. Questi metodi rendono esplicita la creazione di una nuova entità con ID non ancora assegnato; il costruttore verifica poi le invarianti. Per esempio:
+
+\begin{lstlisting}[language=Java,caption={Creazione di un veicolo nuovo con ID da assegnare.},label={lst:pattern-factory}]
+public static Vehicle create(long modelId, String vin, String licencePlate,
+                             int kilometers, BigDecimal price, int year,
+                             VehicleState state) {
+    return new Vehicle(null, modelId, vin, licencePlate,
+                       kilometers, price, year, state);
+}
+\end{lstlisting}
+
+Si tratta di metodi factory statici, non di una gerarchia Factory Method con sottoclassi che scelgono il prodotto. Inoltre i costruttori delle entità restano pubblici: \code{create} è il percorso espressivo usato dai servizi, non l'unico modo consentito dal linguaggio per costruire l'oggetto. \code{PostgresDaoFactory} svolge una funzione diversa: apre unità di lavoro JDBC che forniscono i DAO.
+
+\subsection{Istanza centrale per la navigazione}
+\code{NavigationManager} conserva un riferimento statico all'istanza corrente. All'avvio, \code{DriveHubApplication} chiama \code{initialize} con lo stage e il contesto; i controller usano \code{get()} per cambiare route o uscire dalla sessione. In questo senso il gestore è usato come un Singleton applicativo:
+
+\begin{lstlisting}[language=Java,caption={Inizializzazione del gestore di navigazione.},label={lst:pattern-navigation}]
+private static NavigationManager instance;
+
+public static void initialize(Stage stage, ApplicationContext context) {
+    instance = new NavigationManager(stage, context);
+}
+\end{lstlisting}
+
+\code{initialize} può sostituire l'istanza e non è sincronizzato: il codice assume l'inizializzazione sul thread dell'applicazione JavaFX, non implementa un Singleton immutabile e sicuro per accessi concorrenti. Il gestore non è invece un catalogo globale di servizi. Dopo che \code{FXMLLoader} ha creato il controller, \code{NavigationManager.show} gli passa \code{ApplicationContext} tramite \code{ContextAware}; il controller usa quel contesto per ottenere \code{UiGateway}, come mostrato nel paragrafo~\ref{sec:implementazione-ui}.
+
+\subsection{DAO e Unit of Work}
+Il pattern DAO separa le operazioni persistenti dai servizi: \code{UserDao} e \code{VehicleDao} sono porte, mentre \code{PostgresUserDao} e \code{PostgresVehicleDao} traducono oggetti e query JDBC. La distinzione rende possibile sostituire l'adapter attraverso \code{DaoFactory}, senza far conoscere SQL a controller e servizi. Il mapping concreto, inclusa la vista \code{user}, è descritto nel paragrafo~\ref{sec:dao}.
+
+Unit of Work raggruppa i DAO necessari a un caso d'uso su una sola connessione. \code{PostgresDaoFactory.begin} apre la transazione; \code{PostgresUnitOfWork} costruisce i DAO che la condividono; \code{TransactionRunner.execute} esegue la lambda e decide commit o rollback. Il listato~\ref{lst:transaction-runner} mostra il confine applicativo. L'unità è limitata a una chiamata di \code{execute}: non comprende le operazioni successive né una seconda unità aperta da una chiamata annidata. I limiti sono trattati nel paragrafo~\ref{sec:transazioni}.
+
+\subsection{Idiomi Java usati nei confini tra livelli}
+Le query DAO restituiscono spesso \code{Optional<T>}: l'assenza di una riga è distinta da un'entità presente e il servizio la trasforma, quando necessario, in \code{EntityNotFoundException}. I record di \code{UiModels} sono contenitori di dati per la UI, mentre \code{RegistrationRequest} trasporta i campi della registrazione; non sostituiscono le entità modificabili del dominio. Le lambda \code{Function<UnitOfWork,T>} permettono ai servizi di esprimere il lavoro transazionale senza gestire direttamente commit e rollback. Infine il \code{try}-with-resources di \code{TransactionRunner} chiude l'unità di lavoro anche in caso di eccezione. Sono idiomi della piattaforma Java che sostengono i confini dell'architettura, senza introdurre ulteriori livelli applicativi.

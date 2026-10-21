@@ -1,0 +1,37 @@
+\subsection{Proporre un veicolo al concessionario}\label{sec:uc-cessione}
+\begin{xltabular}{\textwidth}{| >{\bfseries}p{.22\textwidth} | >{\raggedright\arraybackslash}X |}
+\caption{Caso d'uso: Proporre un veicolo al concessionario}\label{tab:uc-cessione}\\
+\hline
+\rowcolor{gray!15} Campo & \textbf{Contenuto}\\\hline
+\endfirsthead
+\multicolumn{2}{c}{{\tablename\ \thetable{} -- Continua dalla pagina precedente}}\\
+\hline
+\rowcolor{gray!15} Campo & \textbf{Contenuto}\\\hline
+\endhead
+\hline
+\multicolumn{2}{r}{\textit{Continua nella pagina successiva...}}\\
+\endfoot
+\endlastfoot
+Nome & Proporre un veicolo al concessionario\\\hline
+Livello & Obiettivo Utente\\\hline
+Descrizione & Il Customer propone alla concessionaria il proprio veicolo. Il sistema calcola una valutazione; un Salesman può accettare la proposta e accreditare l'importo sul conto dimostrativo del Customer.\\\hline
+Pre-condizioni & Il Customer ha effettuato l'accesso; sceglie marca e modello, inserisce VIN, chilometri e anno di immatricolazione validi. Se manca la targa, i chilometri devono essere zero.\\\hline
+Post-condizioni & Dopo l'invio, il veicolo è in stato \code{WAITING} e la proposta è registrata. Se accettata, l'importo è accreditato al Customer, la proposta è eliminata, la spesa della concessionaria è registrata e il veicolo passa a \code{SALE}. Invio e decisione sono due transazioni distinte.\\\hline
+Attori & Customer (primario), Salesman\\\hline
+Schermate & Passi 1--4: proposta del Customer (figura~\ref{fig:ui-cessione}); passi 5--6: coda Salesman (figura~\ref{fig:ui-salesman-proposte}); accredito visibile nel conto (figura~\ref{fig:ui-conto}).\\\hline
+Test & \code{CheckoutFunctionalTest.customerProposeAndApprove} esercita proposta e approvazione su H2. Rifiuto, riuso di VIN \code{SOLD} e accredito fallito non hanno un test funzionale dedicato nella suite corrente.\\\hline
+Flusso Principale &
+\begin{enumerate}[leftmargin=*,nosep]
+  \item Il Customer apre la schermata di vendita del proprio veicolo e seleziona marca e modello.
+  \item Inserisce VIN, eventuale targa, chilometri e anno di immatricolazione.
+  \item Il sistema mostra una valutazione calcolata dal prezzo di listino del modello, tenendo conto di targa, età e chilometri.
+  \item Il Customer conferma la proposta; il sistema registra il veicolo in stato \code{WAITING} e la richiesta con l'importo stimato.
+  \item Il Salesman esamina i veicoli in attesa e approva la proposta.
+  \item Il sistema accredita la valutazione al Customer, registra l'operazione con importo negativo per la concessionaria, elimina la richiesta e mette il veicolo in vendita.
+\end{enumerate}\\\hline
+Flussi Alternativi &
+\textbf{2. Dati non validi:} l'interfaccia rifiuta VIN mancante o troppo lungo, chilometri negativi, anno fuori intervallo e veicolo senza targa con chilometri diversi da zero.\newline\newline
+\textbf{4. VIN già attivo:} se il VIN appartiene a un veicolo non \code{SOLD}, la proposta è rifiutata. Se il VIN appartiene a un veicolo \code{SOLD}, il sistema riutilizza quella scheda e la pone in stato \code{WAITING}.\newline\newline
+\textbf{5. Proposta rifiutata:} il Salesman elimina la richiesta; il veicolo torna \code{SOLD} se ha operazioni precedenti, altrimenti viene eliminato dal catalogo.\newline\newline
+\textbf{6. Accredito non riuscito:} le modifiche della decisione vengono annullate dalla transazione.\\\hline
+\end{xltabular}

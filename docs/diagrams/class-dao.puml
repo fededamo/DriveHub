@@ -1,0 +1,56 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 17
+skinparam classAttributeIconSize 0
+skinparam dpi 150
+title DAO — Porte e sessione JDBC (vista rappresentativa)
+interface DaoFactory {
+ + begin(): UnitOfWork
+}
+interface UnitOfWork {
+ + vehicles(): VehicleDao
+ + rentals(): RentalDao
+ + payments(): PaymentDao
+ + commit(): void
+ + rollback(): void
+ + close(): void
+}
+interface VehicleDao {
+ + findByIdForUpdate(id: long): Optional<Vehicle>
+ + hasOpenBookings(vehicleId: long): boolean
+ + updateStatusIfCurrent(vehicleId: long, expected: VehicleStatus, next: VehicleStatus): boolean
+}
+interface RentalDao {
+ + findAll(): List<Rental>
+ + claimIfUnassigned(rentalId: long, salesmanId: long): boolean
+}
+interface PaymentDao {
+ + save(payment: Payment): Payment
+ + update(payment: Payment): void
+}
+class PostgresDaoFactory
+class PostgresUnitOfWork
+class PostgresVehicleDao
+class JdbcEntityLoader
+interface Connection <<JDBC>>
+PostgresDaoFactory ..|> DaoFactory
+PostgresUnitOfWork ..|> UnitOfWork
+PostgresVehicleDao ..|> VehicleDao
+PostgresDaoFactory ..> PostgresUnitOfWork : «creates»
+PostgresUnitOfWork --> Connection : connection
+PostgresUnitOfWork ..> JdbcEntityLoader : «creates»
+PostgresUnitOfWork ..> PostgresVehicleDao : «creates»
+PostgresVehicleDao --> JdbcEntityLoader : loader ereditato
+PostgresVehicleDao --> Connection : connection ereditata
+UnitOfWork ..> VehicleDao : «uses» ritorno
+UnitOfWork ..> RentalDao : «uses» ritorno
+UnitOfWork ..> PaymentDao : «uses» ritorno
+note bottom of UnitOfWork
+  Undici porte DAO: anche User, Brand,
+  VehicleModel, Discount, TestDrive,
+  SaleOrder, PurchaseProposal, StockOrder.
+  close senza commit implica rollback.
+end note
+@enduml

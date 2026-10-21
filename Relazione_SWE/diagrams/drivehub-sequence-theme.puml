@@ -1,0 +1,20 @@
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam dpi 200
+skinparam sequence {
+  ArrowColor #526174
+  LifeLineBorderColor #89939F
+  LifeLineBackgroundColor #F7F9FC
+  ParticipantBorderColor #596579
+  ParticipantFontColor #172B4D
+  ActorBorderColor #596579
+  ActorFontColor #172B4D
+  GroupBorderColor #89939F
+  GroupBackgroundColor #F7F9FC
+  DividerBorderColor #517A95
+  DividerBackgroundColor #EAF2F8
+  DividerFontColor #17365A
+  NoteBorderColor #D2B65A
+  NoteBackgroundColor #FFFBE6
+  ResponseMessageBelowArrow true
+}

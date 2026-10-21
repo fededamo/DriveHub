@@ -1,0 +1,43 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 17
+skinparam classAttributeIconSize 0
+skinparam dpi 150
+title Staff — Navigazione per ruolo
+hide empty description
+state "Salesman" as Salesman {
+ state "P-20 Test drive" as TD
+ state "P-21 Noleggi" as Rent
+ state "P-22 Proposte" as Offers
+ state "P-23 Inventario" as Stock
+ [*] --> TD
+ TD --> Rent : tab
+ Rent --> Offers : tab
+ Offers --> Stock : tab
+ TD --> TD : conferma / avvia / completa / annulla
+ Rent --> Rent : prendi in carico / aggiorna stato
+ Offers --> Offers : formula offerta
+ Stock --> Stock : manutenzione / ritorno disponibile
+}
+state "Manager" as Manager {
+ state "P-30 Dashboard" as Dash
+ state "P-31 Nuovi veicoli" as Orders
+ state "P-32 Prezzi e promozioni" as Prices
+ state "P-33 Approvazioni" as Decisions
+ [*] --> Dash
+ Dash --> Orders : tab
+ Orders --> Prices : tab
+ Prices --> Decisions : tab
+ Orders --> Orders : crea ordine / aggiorna elenco
+ Prices --> Prices : prezzo / applica o rimuovi sconto
+ Decisions --> Decisions : approva / rifiuta
+}
+note bottom
+  Ogni tab del proprio workspace è sempre selezionabile.
+  Nessun passaggio fra ruoli senza logout e nuovo login.
+  Conferma/ricezione StockOrder e saldo/consegna SaleOrder
+  sono estensioni delle API, senza pulsanti in queste viste.
+end note
+@enduml

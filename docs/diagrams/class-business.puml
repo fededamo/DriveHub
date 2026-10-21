@@ -1,0 +1,45 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 17
+skinparam classAttributeIconSize 0
+skinparam dpi 150
+title Business — Checkout e confine transazionale
+class CheckoutService {
+ + checkoutRental(customerId: long, vehicleId: long, start: LocalDate, end: LocalDate, method: PaymentMethod, expectedAmount: BigDecimal): Payment
+ + checkoutSale(customerId: long, vehicleId: long, fullPurchase: boolean, method: PaymentMethod, expectedAmount: BigDecimal, pricingDate: LocalDate): Payment
+}
+class RentalService
+class SalesService
+class PaymentService {
+ + payRental(customerId: long, rentalId: long, method: PaymentMethod): Payment
+ + paySaleOrder(customerId: long, orderId: long, purpose: PaymentPurpose, method: PaymentMethod, amount: BigDecimal): Payment
+ + paymentsFor(customerId: long, referenceType: PaymentReferenceType, referenceId: long): List<Payment>
+}
+class TransactionRunner {
+ - daoFactory: DaoFactory
+ + <T> execute(work: Function<UnitOfWork,T>): T
+}
+interface DaoFactory {
+ + begin(): UnitOfWork
+}
+interface PaymentGateway {
+ + charge(amount: BigDecimal, method: PaymentMethod): PaymentGatewayResult
+}
+interface PricingStrategy
+CheckoutService --> RentalService : rentals
+CheckoutService --> SalesService : sales
+CheckoutService --> PaymentService : payments
+CheckoutService --> TransactionRunner : transactions
+PaymentService --> TransactionRunner : transactions
+TransactionRunner --> DaoFactory : daoFactory
+PaymentService --> PaymentGateway : gateway
+RentalService --> PricingStrategy : pricing
+SalesService --> PricingStrategy : pricing
+note bottom of CheckoutService
+  I collaboratori espongono overload con UnitOfWork
+  a visibilità package (~): nessuna transazione annidata.
+  I metodi pubblici restano utilizzabili singolarmente.
+end note
+@enduml

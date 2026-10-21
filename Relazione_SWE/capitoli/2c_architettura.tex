@@ -1,0 +1,51 @@
+\section{Architettura a livelli}\label{sec:architettura}
+Il package radice è \code{it.unifi.ing.drivehub}. La figura~\ref{fig:package-attuale} distingue le responsabilità effettive e la direzione delle dipendenze. \code{DriveHubApplication} costituisce la composition root: costruisce l'adapter PostgreSQL, i servizi e il gateway, poi passa un \code{ApplicationContext} alla navigazione. Il test \code{LayeringTest} esercita vincoli statici, fra cui l'assenza di dipendenze dal dominio verso presentazione o JDBC e l'uso del solo gateway nei controller.
+
+\begin{longtable}{p{.22\linewidth}p{.37\linewidth}p{.31\linewidth}}
+\caption{Responsabilità dei package principali.}\label{tab:package}\\
+\toprule Package & Responsabilità & Esempi presenti\\\midrule\endfirsthead
+\toprule Package & Responsabilità & Esempi presenti\\\midrule\endhead
+\code{presentation.controller} & Binding FXML, validazione di input, invocazione gateway e feedback & \code{AbstractController}; controller dei tre ruoli\\
+\code{presentation.core} & Porta UI, DTO e sessione & \code{UiGateway}, \code{ServiceUiGateway}, \code{SessionContext}\\
+\code{presentation.navigation} & Route, caricamento scena e guard di accesso & \code{NavigationManager}, \code{Route}\\
+\code{business.services} & Coordinamento dei casi d'uso e delle transazioni & \code{SalesService}, \code{RentalService}, \code{TestDriveService}\\
+\code{business.strategies} & Algoritmi sostituibili di prezzo/valutazione & \code{PricingStrategy}, \code{StandardPricingStrategy}\\
+\code{domain} & Entità, invarianti e eventi di inventario & \code{Vehicle}, \code{Request}, \code{InventoryEvent}\\
+\code{dao.interfaces} & Porte di persistenza e unità di lavoro & \code{DaoFactory}, \code{UnitOfWork}, \code{RentalDao}\\
+\code{dao.postgres} & SQL/JDBC, mapping, bootstrap e adapter & \code{PostgresUnitOfWork}, \code{JdbcEntityLoader}\\
+\bottomrule
+\end{longtable}
+
+\subsection{Presentazione come adattatore}
+La figura~\ref{fig:classi-presentation} mostra il limite della UI. \code{NavigationManager.show} carica un FXML e inietta \code{ApplicationContext} in un controller \code{ContextAware}; \code{AbstractController} espone \code{gateway()} e \code{session()}. \code{ServiceUiGateway} traduce entità di dominio in record \code{UiModels}, per esempio \code{VehicleItem}, \code{RequestItem}, \code{RentItem} e \code{TestDriveItem}. Tale conversione evita ai controller di costruire direttamente le entità o di aprire connessioni JDBC.
+\dhfigure{.94}{presentation-current.png}{Classi principali della presentazione corrente, con gateway, sessione e route.}{fig:classi-presentation}
+Il guard di \code{Route} protegge il cambio pagina, non tutte le operazioni applicative. Metodi come \code{SalesService.completePurchase(requestId, salesmanId)} ricevono ID dal chiamante e non rileggono la sessione dell'attore: la separazione dei livelli è presente, ma l'autorizzazione end-to-end richiesta da \code{RNF-SEC-02} resta incompleta.
+
+\clearpage
+\subsection{Modello di dominio}
+Il catalogo è costituito da \code{Brand}, \code{VehicleModel} e \code{Vehicle}; gli sconti sono \code{ModelDiscount} e \code{VehicleDiscount}. La figura~\ref{fig:classi-catalogo} riporta campi e operazioni significativi. \code{VehicleState} è l'unico enum di stato del veicolo; \code{Vehicle.approve}, \code{block} e \code{unblock} applicano transizioni specifiche. Al contrario \code{Vehicle.transitionTo} e \code{PostgresVehicleDao.updateState} consentono assegnazioni più generali: la presenza di metodi controllati non significa che tutte le modifiche di stato passino per essi.
+\dhfigure{.90}{domain-catalog-current.png}{Classi di catalogo, stato e sconti ricavate da \code{domain.vehicles}.}{fig:classi-catalogo}
+
+La figura~\ref{fig:classi-workflow} separa gli oggetti delle operazioni. \code{User} è una classe con \code{Role}, ma il database memorizza i ruoli in tre tabelle. \code{BankAccount} appartiene al cliente. \code{Rent} e \code{TestDrive} non hanno stato; \code{Request} usa il segno di \code{deposit} per distinguere acquisto e cessione; \code{Sale} usa segno dell'importo e nullabilità dei riferimenti per rappresentare acquisto, vendita e penale. Questo è il modello implementato, distinto da \code{SaleOrder}, \code{PurchaseProposal} e \code{Payment} della documentazione preesistente.
+\dhfigure{.90}{domain-workflows-current.png}{Classi delle operazioni e dell'identità correnti; le molteplicità descrivono le righe possibili nel tempo.}{fig:classi-workflow}
+
+\subsection{Servizi, Strategy e Observer}
+Il gateway compone sette servizi applicativi. Le scritture passano per \code{TransactionRunner} e una porta \code{DaoFactory}. \code{PricingService} usa \code{PricingStrategy}; il progetto fornisce \code{StandardPricingStrategy}. \code{RentalService} e \code{SalesService} implementano \code{InventorySubject}; gli observer ricevono \code{InventoryEvent}. La figura~\ref{fig:classi-business} mostra le relazioni, evitando di attribuire al codice \code{CheckoutService} o \code{DashboardService}, assenti nel checkout corrente.
+\dhfigure{.94}{business-current.png}{Servizi e pattern effettivamente presenti nel business layer.}{fig:classi-business}
+
+\subsection{Porte DAO e adapter}
+\code{DaoFactory.begin} apre una \code{UnitOfWork}; quest'ultima fornisce le dieci porte DAO richieste dai servizi, oltre a \code{commit} e \code{rollback}. \code{PostgresDaoFactory} apre una connessione con autocommit disabilitato e isolamento \code{READ_COMMITTED}; \code{PostgresUnitOfWork} costruisce adapter che condividono quella connessione. \code{JdbcEntityLoader} centralizza la ricostruzione di alcune entità. La figura~\ref{fig:classi-dao} riporta le porte rappresentative; non tutti gli adapter sono disegnati per preservare leggibilità.
+\dhfigure{.94}{dao-current.png}{Porte DAO, factory, unità di lavoro e adapter JDBC del checkout corrente.}{fig:classi-dao}
+
+\begin{longtable}{p{.23\linewidth}p{.38\linewidth}p{.29\linewidth}}
+\caption{Pattern e portata effettiva.}\label{tab:pattern}\\
+\toprule Pattern & Motivo nel progetto & Limite osservato\\\midrule\endfirsthead
+\toprule Pattern & Motivo nel progetto & Limite osservato\\\midrule\endhead
+Layering / Gateway & UI separata da servizi e SQL & Guard solo di route\\
+Service Layer & Coordinare casi d'uso e transazioni & Alcuni metodi espongono ID fidati dal chiamante\\
+DAO + Unit of Work & Stessa connessione per scritture correlate & Nessun CAS sulle transizioni critiche\\
+Strategy & Isolare formule di prezzo & Una sola strategia concreta\\
+Observer & Pubblicare cambiamenti di inventario & Pubblicazione prima del commit\\
+Composition root & Assemblare servizi in un punto & Fallback H2 automatico da documentare\\
+\bottomrule
+\end{longtable}

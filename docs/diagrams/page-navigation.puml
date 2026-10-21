@@ -1,0 +1,37 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 17
+skinparam classAttributeIconSize 0
+skinparam dpi 150
+title Pagine pubbliche e instradamento per ruolo
+hide empty description
+[*] --> Welcome
+state "P-00 Welcome" as Welcome
+state "P-01 Login" as Login
+state "P-02 Registrazione" as Register
+state Router <<choice>>
+state "Customer: P-10..P-14" as Customer
+state "Salesman: P-20..P-23" as Salesman
+state "Manager: P-30..P-33" as Manager
+Welcome --> Login : Accedi
+Welcome --> Register : Registrati
+Login --> Welcome : Indietro
+Login --> Register : Crea account
+Register --> Login : Torna all'accesso
+Login --> Login : errore; password cancellata
+Register --> Register : dati non validi
+Login --> Router : sessione aperta
+Register --> Router : account creato / sessione aperta
+Router --> Customer : CUSTOMER
+Router --> Salesman : SALESMAN
+Router --> Manager : MANAGER
+Customer --> Welcome : logout / session.clear()
+Salesman --> Welcome : logout / session.clear()
+Manager --> Welcome : logout / session.clear()
+note bottom of Router
+  Route non pubblica richiede sessione e ruolo.
+  Guard fallito: eccezione; nessun cambio pagina.
+end note
+@enduml

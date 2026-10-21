@@ -1,0 +1,94 @@
+@startuml
+!pragma layout smetana
+!include drivehub-class-theme.puml
+title DriveHub — Business Layer
+left to right direction
+
+package "business" #FFF2CC {
+  package "services" #FFF9E8 {
+    class AuthService {
+      + register(...)
+      + login(...)
+      + updatePassword(...)
+    }
+    class CatalogService {
+      + availableForSale()
+      + availableForRental()
+    }
+    class BankAccountService {
+      + depositFunds(...)
+      + withdrawFunds(...)
+    }
+    class TestDriveService {
+      + book(...) : TestDrive
+    }
+    class RentalService {
+      + bookRental(...) : Rent
+      + switchVehicleState(...)
+    }
+    class SalesService {
+      + requestPurchase(...) : Request
+      + completePurchase(...) : Sale
+    }
+    class PricingService {
+      + quotePrice(...) : BigDecimal
+      + quoteRentalPrice(...) : BigDecimal
+    }
+  }
+  package "core" #FFF9E8 {
+    class TransactionRunner {
+      + execute(work) : T
+    }
+  }
+  package "strategies" #FFF9E8 {
+    interface PricingStrategy {
+      + quoteVehiclePrice(...) : BigDecimal
+      + rentalPrice(...) : BigDecimal
+    }
+    class StandardPricingStrategy
+  }
+  package "security" #FFF9E8 {
+    interface PasswordHasher {
+      + hash(password) : String
+      + verify(password, hash) : boolean
+    }
+    class Pbkdf2PasswordHasher
+  }
+}
+
+package "dao.interfaces" #DAE8FC {
+  interface DaoFactory {
+    + begin() : UnitOfWork
+  }
+  interface UnitOfWork {
+    + commit()
+    + rollback()
+  }
+}
+package "domain.observer" #F8CECC {
+  interface InventorySubject
+  interface InventoryObserver
+  class InventoryEvent <<record>>
+}
+
+AuthService --> PasswordHasher
+Pbkdf2PasswordHasher ..|> PasswordHasher
+PricingService --> PricingStrategy
+StandardPricingStrategy ..|> PricingStrategy
+SalesService --> PricingService
+RentalService --> PricingService
+SalesService ..|> InventorySubject
+RentalService ..|> InventorySubject
+SalesService ..> InventoryObserver : notifica
+RentalService ..> InventoryObserver : notifica
+InventoryObserver ..> InventoryEvent
+AuthService --> TransactionRunner
+CatalogService --> TransactionRunner
+BankAccountService --> TransactionRunner
+TestDriveService --> TransactionRunner
+RentalService --> TransactionRunner
+SalesService --> TransactionRunner
+PricingService --> TransactionRunner
+TransactionRunner --> DaoFactory
+DaoFactory --> UnitOfWork
+@enduml

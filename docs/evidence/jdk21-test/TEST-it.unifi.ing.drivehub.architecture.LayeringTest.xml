@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="it.unifi.ing.drivehub.architecture.LayeringTest" time="0.213" tests="6" errors="0" skipped="0" failures="0">
+  <testcase name="presentationCannotBypassBusinessForPersistence" classname="it.unifi.ing.drivehub.architecture.LayeringTest" time="0.058" />
+  <testcase name="controllersUseOnlyTheUiGatewayAndProjections" classname="it.unifi.ing.drivehub.architecture.LayeringTest" time="0.015" />
+  <testcase name="persistencePortsAreIndependentOfAdapters" classname="it.unifi.ing.drivehub.architecture.LayeringTest" time="0.033" />
+  <testcase name="businessDependsOnlyOnPersistencePortsAndDomain" classname="it.unifi.ing.drivehub.architecture.LayeringTest" time="0.068" />
+  <testcase name="domainDoesNotDependOnOuterLayersOrInfrastructure" classname="it.unifi.ing.drivehub.architecture.LayeringTest" time="0.008" />
+  <testcase name="postgresAdapterDoesNotDependOnBusinessOrPresentation" classname="it.unifi.ing.drivehub.architecture.LayeringTest" time="0.01" />
+</testsuite>

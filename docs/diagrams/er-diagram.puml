@@ -1,0 +1,187 @@
+@startuml
+!pragma layout smetana
+title DriveHub — Modello entità-relazione
+hide methods
+skinparam shadowing false
+skinparam defaultFontSize 17
+skinparam dpi 150
+
+entity "users" as users {
+  * id : BIGINT <<PK>>
+  --
+  * fiscal_code : VARCHAR(16) <<UQ>>
+  * first_name : VARCHAR(100)
+  * last_name : VARCHAR(100)
+  * email : VARCHAR(254) <<UQ>>
+  * phone : VARCHAR(32)
+  * password_hash : VARCHAR(255)
+  * role : VARCHAR(16)
+  manager_id : BIGINT <<FK>>
+  * active : BOOLEAN
+  * created_at : TIMESTAMPTZ
+}
+
+entity "brands" as brands {
+  * id : BIGINT <<PK>>
+  --
+  * name : VARCHAR(120) <<UQ>>
+}
+
+entity "vehicle_models" as vehicle_models {
+  * id : BIGINT <<PK>>
+  --
+  * brand_id : BIGINT <<FK>>
+  * code : VARCHAR(64) <<UQ>>
+  * name : VARCHAR(120)
+  * model_year : SMALLINT
+}
+
+entity "vehicles" as vehicles {
+  * id : BIGINT <<PK>>
+  --
+  * plate : VARCHAR(10) <<UQ>>
+  * model_id : BIGINT <<FK>>
+  * purpose : VARCHAR(24)
+  sale_price : NUMERIC(12,2)
+  daily_rental_rate : NUMERIC(12,2)
+  * mileage : BIGINT
+  * status : VARCHAR(20)
+  * created_at : TIMESTAMPTZ
+}
+
+entity "discounts" as discounts {
+  * id : BIGINT <<PK>>
+  --
+  * name : VARCHAR(120)
+  * vehicle_id : BIGINT <<FK,UQ>>
+  * percentage : NUMERIC(5,2)
+  * starts_on : DATE
+  * ends_on : DATE
+  * enabled : BOOLEAN
+}
+
+entity "rentals" as rentals {
+  * id : BIGINT <<PK>>
+  --
+  * customer_id : BIGINT <<FK>>
+  salesman_id : BIGINT <<FK>>
+  * vehicle_id : BIGINT <<FK>>
+  * starts_on : DATE
+  * ends_on : DATE
+  * total_price : NUMERIC(12,2)
+  * status : VARCHAR(16)
+  * created_at : TIMESTAMPTZ
+  * updated_at : TIMESTAMPTZ
+}
+
+entity "test_drives" as test_drives {
+  * id : BIGINT <<PK>>
+  --
+  * customer_id : BIGINT <<FK>>
+  salesman_id : BIGINT <<FK>>
+  * vehicle_id : BIGINT <<FK>>
+  * scheduled_at : TIMESTAMP
+  * ends_at : TIMESTAMP
+  * status : VARCHAR(16)
+  * created_at : TIMESTAMPTZ
+}
+
+entity "sale_orders" as sale_orders {
+  * id : BIGINT <<PK>>
+  --
+  * customer_id : BIGINT <<FK>>
+  salesman_id : BIGINT <<FK>>
+  * vehicle_id : BIGINT <<FK>>
+  * total_price : NUMERIC(12,2)
+  * required_deposit : NUMERIC(12,2)
+  * paid_amount : NUMERIC(12,2)
+  * status : VARCHAR(16)
+  * created_at : TIMESTAMPTZ
+  * updated_at : TIMESTAMPTZ
+}
+
+entity "payments" as payments {
+  * id : BIGINT <<PK>>
+  --
+  * payer_id : BIGINT <<FK>>
+  rental_id : BIGINT <<FK>>
+  sale_order_id : BIGINT <<FK>>
+  * purpose : VARCHAR(20)
+  * method : VARCHAR(20)
+  * amount : NUMERIC(12,2)
+  * created_at : TIMESTAMPTZ
+  * status : VARCHAR(16)
+  processor_reference : VARCHAR(128)
+  failure_reason : VARCHAR(500)
+}
+
+entity "purchase_proposals" as purchase_proposals {
+  * id : BIGINT <<PK>>
+  --
+  * customer_id : BIGINT <<FK>>
+  * vehicle_id : BIGINT <<FK>>
+  * requested_amount : NUMERIC(12,2)
+  * customer_notes : VARCHAR(1000)
+  * requested_at : TIMESTAMPTZ
+  salesman_id : BIGINT <<FK>>
+  offered_amount : NUMERIC(12,2)
+  offer_terms : VARCHAR(1000)
+  manager_id : BIGINT <<FK>>
+  decision_reason : VARCHAR(1000)
+  decided_at : TIMESTAMPTZ
+  * status : VARCHAR(16)
+}
+
+entity "stock_orders" as stock_orders {
+  * id : BIGINT <<PK>>
+  --
+  * manager_id : BIGINT <<FK>>
+  * model_id : BIGINT <<FK>>
+  * quantity : INTEGER
+  * unit_cost : NUMERIC(12,2)
+  * placed_on : DATE
+  * status : VARCHAR(16)
+  received_on : DATE
+}
+
+users |o--o{ users : manager supervises salesman
+brands ||--o{ vehicle_models
+vehicle_models ||--o{ vehicles
+vehicles ||--o| discounts
+users ||--o{ rentals : customer
+users |o--o{ rentals : salesman
+vehicles ||--o{ rentals
+users ||--o{ test_drives : customer
+users |o--o{ test_drives : salesman
+vehicles ||--o{ test_drives
+users ||--o{ sale_orders : customer
+users |o--o{ sale_orders : salesman
+vehicles ||--o{ sale_orders
+users ||--o{ payments : payer
+rentals |o--o{ payments : reference XOR
+sale_orders |o--o{ payments : reference XOR
+users ||--o{ purchase_proposals : customer
+users |o--o{ purchase_proposals : salesman
+users |o--o{ purchase_proposals : manager
+vehicles ||--o{ purchase_proposals
+users ||--o{ stock_orders : manager
+vehicle_models ||--o{ stock_orders
+
+note bottom of payments
+  rental_id e sale_order_id sono protetti da CHECK XOR.
+  purpose è coerente con il contesto scelto.
+end note
+note bottom of sale_orders
+  UNIQUE parziale vehicle_id WHERE status <> CANCELLED.
+  Un solo ordine vivo; stato coerente con paid_amount.
+end note
+note bottom of test_drives
+  Durata 15..240 minuti. UNIQUE parziali sugli slot vivi;
+  intervalli sovrapposti protetti dai lock applicativi.
+end note
+note bottom of vehicle_models
+  UNIQUE (brand_id, name, model_year).
+  Tabella tecnica drivehub_schema_migrations omessa:
+  version VARCHAR(200) PK, applied_at TIMESTAMPTZ NOT NULL.
+end note
+@enduml

@@ -1,0 +1,67 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam dpi 180
+class User {
+  name : String
+  surname : String
+  email : String
+  passwordHash : String
+  role : Role
+}
+enum Role {
+  CLIENT
+  CUSTOMER
+  SALESMAN
+  MANAGER
+}
+class BankAccount {
+  iban : String
+  clientId : long
+  balance : BigDecimal
+  deposit(amount)
+  withdraw(amount)
+}
+class Request {
+  vehicleId : long
+  clientId : long
+  salesmanId : Long
+  deposit : BigDecimal
+  expDate : LocalDate
+  isPurchase()
+  isSaleProposal()
+}
+class Sale {
+  vehicleId : Long
+  salesmanId : Long
+  clientId : long
+  amount : BigDecimal
+  date : LocalDateTime
+}
+class Rent {
+  vehicleId : long
+  clientId : long
+  amount : BigDecimal
+  start : LocalDate
+  end : LocalDate
+}
+class TestDrive {
+  vehicleId : long
+  clientId : long
+  date : LocalDateTime
+}
+class Vehicle {
+  id : Long
+  state : VehicleState
+}
+User --> Role
+User "1" -- "0..1" BankAccount : CLIENT
+User "1" -- "0..*" Rent : cliente
+User "1" -- "0..*" TestDrive : cliente
+User "1" -- "0..*" Request : cliente
+Vehicle "1" -- "0..*" Rent
+Vehicle "1" -- "0..*" TestDrive
+Vehicle "1" -- "0..*" Request
+Vehicle "0..1" -- "0..*" Sale
+@enduml

@@ -1,0 +1,68 @@
+@startuml
+!pragma layout smetana
+title DriveHub — Casi d'uso (specifica manuale)
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam defaultFontSize 17
+skinparam dpi 150
+
+actor "User (ruolo generale)" as User
+actor Customer
+actor Salesman
+actor Manager
+User <|-- Customer
+User <|-- Salesman
+User <|-- Manager
+
+rectangle DriveHub {
+  usecase "UC-AUTH-01\nRegistrare un account" as Register
+  usecase "UC-AUTH-02\nAccedere al sistema" as Login
+  usecase "UC-AUTH-03\nTerminare la sessione" as Logout
+
+  usecase "UC-CAT-01\nConsultare il catalogo" as Catalog
+  usecase "UC-TD-01\nPrenotare un test drive" as BookTD
+  usecase "UC-RENT-01\nNoleggiare un veicolo" as Rent
+  usecase "UC-RENT-02\nConsultare e annullare i propri noleggi" as MyRentals
+  usecase "UC-SALE-01\nRiservare o acquistare un veicolo" as Sale
+  usecase "UC-ACQ-01\nProporre un veicolo al concessionario" as Sell
+  usecase "UC-PAY-01\nProcessare pagamento" as Pay
+
+  usecase "UC-TD-02\nGestire i test drive" as ManageTD
+  usecase "UC-RENT-03\nGestire i noleggi" as ManageRent
+  usecase "UC-ACQ-02\nFormulare una proposta di acquisto" as Offer
+  usecase "UC-INV-01\nGestire l’inventario" as Inventory
+
+  usecase "UC-DASH-01\nConsultare la dashboard" as Dashboard
+  usecase "UC-STOCK-01\nOrdinare nuovi veicoli" as Stock
+  usecase "UC-PRICE-01\nGestire prezzi e promozioni" as Pricing
+  usecase "UC-ACQ-03\nApprovare o rifiutare una proposta" as Approve
+}
+
+User -- Register
+User -- Login
+User -- Logout
+Customer -- Catalog
+Customer -- BookTD
+Customer -- Rent
+Customer -- MyRentals
+Customer -- Sale
+Customer -- Sell
+Salesman -- ManageTD
+Salesman -- ManageRent
+Salesman -- Offer
+Salesman -- Inventory
+Manager -- Dashboard
+Manager -- Stock
+Manager -- Pricing
+Manager -- Approve
+
+Rent ..> Pay : <<include>>
+Sale ..> Pay : <<include>>
+
+note bottom
+  Diagramma redatto manualmente dalla specifica.
+  Login, logout e pagamento: livello function.
+  La selezione dal catalogo è navigazione, non «extend».
+end note
+@enduml

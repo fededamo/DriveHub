@@ -1,0 +1,62 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam dpi 180
+class ServiceUiGateway
+class AuthService {
+  register()
+  login()
+  updateEmail()
+  updatePassword()
+}
+class CatalogService
+class BankAccountService
+class TestDriveService {
+  book()
+}
+class RentalService {
+  bookRental()
+  switchVehicleState()
+}
+class SalesService {
+  requestPurchase()
+  authorizePurchase()
+  completePurchase()
+  submitVehicleForSale()
+  approveClientSale()
+}
+class PricingService {
+  quotePrice()
+  quoteRentalPrice()
+  quoteValuation()
+}
+interface PricingStrategy
+class StandardPricingStrategy
+interface InventorySubject
+interface InventoryObserver
+class TransactionRunner {
+  execute(work)
+}
+interface DaoFactory
+ServiceUiGateway --> AuthService
+ServiceUiGateway --> CatalogService
+ServiceUiGateway --> BankAccountService
+ServiceUiGateway --> TestDriveService
+ServiceUiGateway --> RentalService
+ServiceUiGateway --> SalesService
+ServiceUiGateway --> PricingService
+AuthService --> TransactionRunner
+CatalogService --> TransactionRunner
+BankAccountService --> TransactionRunner
+TestDriveService --> TransactionRunner
+RentalService --> TransactionRunner
+SalesService --> TransactionRunner
+PricingService --> TransactionRunner
+TransactionRunner --> DaoFactory
+PricingService --> PricingStrategy
+StandardPricingStrategy ..|> PricingStrategy
+RentalService ..|> InventorySubject
+SalesService ..|> InventorySubject
+InventorySubject --> InventoryObserver
+@enduml

@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="it.unifi.ing.drivehub.business.services.TransactionAndObserverTest" time="0.037" tests="3" errors="0" skipped="0" failures="0">
+  <testcase name="rolledBackEventIsNeverDelivered" classname="it.unifi.ing.drivehub.business.services.TransactionAndObserverTest" time="0.025" />
+  <testcase name="notificationFollowsCommit" classname="it.unifi.ing.drivehub.business.services.TransactionAndObserverTest" time="0.006" />
+  <testcase name="commitFailurePreservesCauseAndCloses" classname="it.unifi.ing.drivehub.business.services.TransactionAndObserverTest" time="0.004" />
+</testsuite>

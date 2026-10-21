@@ -1,0 +1,36 @@
+\subsection{Prenotare un test drive}\label{sec:uc-test-drive}
+\begin{xltabular}{\textwidth}{| >{\bfseries}p{.22\textwidth} | >{\raggedright\arraybackslash}X |}
+\caption{Caso d'uso: Prenotare un test drive}\label{tab:uc-test-drive}\\
+\hline
+\rowcolor{gray!15} Campo & \textbf{Contenuto}\\\hline
+\endfirsthead
+\multicolumn{2}{c}{{\tablename\ \thetable{} -- Continua dalla pagina precedente}}\\
+\hline
+\rowcolor{gray!15} Campo & \textbf{Contenuto}\\\hline
+\endhead
+\hline
+\multicolumn{2}{r}{\textit{Continua nella pagina successiva...}}\\
+\endfoot
+\endlastfoot
+Nome & Prenotare un test drive\\\hline
+Livello & Obiettivo Utente\\\hline
+Descrizione & Il Customer prenota una prova di guida di un'ora per un veicolo disponibile nel catalogo.\\\hline
+Pre-condizioni & Il Customer ha effettuato l'accesso; il veicolo esiste ed è in stato \code{SALE} o \code{RENT}; la data e la fascia oraria scelte non sono passate.\\\hline
+Post-condizioni & Una prenotazione di test drive è registrata per il Customer, il veicolo e lo slot selezionato.\\\hline
+Attori & Customer\\\hline
+Schermate & Passi 1--5: catalogo (figura~\ref{fig:ui-catalogo}) e scheda noleggi/test drive (figura~\ref{fig:ui-noleggi-test-drive}).\\\hline
+Test & \code{UserGoalsFunctionalTest.bookTestDrive} esercita il percorso principale su H2; \code{RentalWorkflowTest} verifica le regole dell'entità. Non è presente una prova funzionale specifica per ciascuna alternativa o per richieste concorrenti.\\\hline
+Flusso Principale &
+\begin{enumerate}[leftmargin=*,nosep]
+  \item Il Customer seleziona un veicolo dal catalogo e apre la scheda dei test drive.
+  \item Sceglie una data e uno degli orari proposti, dalle 09:00 alle 16:00.
+  \item Il sistema verifica che il veicolo sia idoneo, che il Customer abbia meno di tre test drive futuri e che il veicolo non sia noleggiato nella data scelta.
+  \item Il sistema verifica che lo slot di un'ora non sia già occupato per quel veicolo.
+  \item Il sistema salva la prenotazione e ne comunica l'esito al Customer.
+\end{enumerate}\\\hline
+Flussi Alternativi &
+\textbf{2. Data o orario non validi:} se lo slot è nel passato o fuori dalla fascia consentita, il sistema rifiuta la prenotazione.\newline\newline
+\textbf{3. Veicolo non idoneo o limite raggiunto:} un veicolo non in vendita né a noleggio, oppure tre test drive futuri già registrati, impedisce il salvataggio.\newline\newline
+\textbf{3--4. Veicolo indisponibile:} un noleggio nel giorno scelto o un altro test drive nello stesso slot produce un conflitto.\newline\newline
+\textbf{4. Richieste concorrenti:} il controllo dello slot precede l'inserimento; il database non impone un vincolo univoco sullo slot, quindi due richieste simultanee potrebbero entrambe riuscire. Inoltre il servizio riconduce i minuti forniti all'inizio dell'ora: un input diretto come 10:30 è trattato come 10:00.\\\hline
+\end{xltabular}

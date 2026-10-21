@@ -1,0 +1,48 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam dpi 180
+class Brand {
+  name : String
+}
+class VehicleModel {
+  brandName : String
+  name : String
+  releasePrice : BigDecimal
+  releaseYear : int
+}
+class Vehicle {
+  modelId : long
+  vin : String
+  licencePlate : String
+  kilometers : int
+  price : BigDecimal
+  year : int
+  state : VehicleState
+  approve()
+  block()
+  unblock()
+  transitionTo(state)
+}
+enum VehicleState {
+  WAITING
+  SALE
+  RENT
+  BLOCKED
+  SOLD
+}
+class ModelDiscount {
+  modelId : long
+  value : int
+}
+class VehicleDiscount {
+  vehicleId : long
+  value : int
+}
+Brand "1" -- "0..*" VehicleModel
+VehicleModel "1" -- "0..*" Vehicle
+VehicleModel "1" -- "0..1" ModelDiscount
+Vehicle "1" -- "0..1" VehicleDiscount
+Vehicle --> VehicleState
+@enduml

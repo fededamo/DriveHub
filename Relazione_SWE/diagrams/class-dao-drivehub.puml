@@ -1,0 +1,69 @@
+@startuml
+!pragma layout smetana
+!include drivehub-class-theme.puml
+title DriveHub — DAO Layer
+left to right direction
+
+package "dao" #DAE8FC {
+  package "interfaces" #F0F6FF {
+    interface DaoFactory {
+      + begin() : UnitOfWork
+    }
+    interface UnitOfWork {
+      + users() : UserDao
+      + vehicles() : VehicleDao
+      + rentals() : RentalDao
+      + requests() : RequestDao
+      + commit() : void
+      + rollback() : void
+    }
+    interface UserDao {
+      + findByEmail(email : String) : Optional<User>
+    }
+    interface VehicleDao {
+      + findById(id : long) : Optional<Vehicle>
+    }
+    interface RentalDao {
+      + save(rent : Rent) : Rent
+    }
+    interface RequestDao {
+      + save(request : Request) : Request
+    }
+  }
+
+  package "postgres" #F0F6FF {
+    class PostgresDaoFactory {
+      + begin() : UnitOfWork
+    }
+    class PostgresUnitOfWork {
+      + commit() : void
+      + rollback() : void
+    }
+    class PostgresUserDao
+    class PostgresVehicleDao
+    class PostgresRentalDao
+    class PostgresRequestDao
+    class JdbcEntityLoader
+    class DatabaseBootstrap
+  }
+}
+
+PostgresDaoFactory ..|> DaoFactory
+PostgresUnitOfWork ..|> UnitOfWork
+PostgresDaoFactory --> PostgresUnitOfWork : begin()
+PostgresUnitOfWork --> PostgresUserDao
+PostgresUnitOfWork --> PostgresVehicleDao
+PostgresUnitOfWork --> PostgresRentalDao
+PostgresUnitOfWork --> PostgresRequestDao
+PostgresUserDao ..|> UserDao
+PostgresVehicleDao ..|> VehicleDao
+PostgresRentalDao ..|> RentalDao
+PostgresRequestDao ..|> RequestDao
+PostgresUnitOfWork --> JdbcEntityLoader
+
+note right of UnitOfWork
+  Le altre porte DAO seguono lo stesso schema:
+  bankAccounts, brands, vehicleModels,
+  discounts, testDrives e sales.
+end note
+@enduml
