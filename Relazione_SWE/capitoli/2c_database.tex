@@ -1,14 +1,13 @@
 \clearpage
-\begin{landscape}
 \section{Database}\label{sec:dati}
 
 \subsection{Schema ER}
 \begin{figure}[H]
   \centering
-  \includegraphics[width=.94\linewidth,height=.65\textheight,keepaspectratio]{swe-er-original.pdf}
+  \includegraphics[width=\linewidth,height=.76\textheight,keepaspectratio]{swe-er-original.pdf}
   \caption{Schema entità--relazione di DriveHub, esportato dal diagramma originale dell'autore.}\label{fig:er-drivehub}
 \end{figure}
-\end{landscape}
+\clearpage
 DriveHub conserva catalogo, utenti e operazioni in un database relazionale. La configurazione ordinaria usa PostgreSQL tramite JDBC; la modalità dimostrativa avvia invece H2 in memoria con compatibilità PostgreSQL. Entrambe applicano \code{init.sql}, ma su H2 \code{SqlScriptRunner} omette le istruzioni procedurali specifiche di PostgreSQL, fra cui i trigger. \code{DatabaseBootstrap} registra l'applicazione dello script in \code{drivehub_schema_migrations}, così la migration non viene rieseguita a ogni avvio. Il seed dimostrativo è configurabile ed è attivo per impostazione predefinita. Il conto dei clienti è un saldo simulato nel database: non rappresenta una connessione a un istituto bancario.
 
 La figura~\ref{fig:er-drivehub} riproduce la pagina «schema er» del file originale \texttt{docs/SWE\ ER.drawio}. I simboli alle estremità delle relazioni indicano cardinalità e partecipazione; nelle tabelle, \code{PK}, \code{FK}, \code{U} e \code{N} indicano rispettivamente chiave primaria, chiave esterna, unicità e valore non nullo. Il disegno combina la generalizzazione concettuale degli utenti con gli attributi e le chiavi delle relazioni persistenti.

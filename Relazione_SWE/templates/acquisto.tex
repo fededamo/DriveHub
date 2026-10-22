@@ -18,11 +18,10 @@ Descrizione & Il Customer riserva un veicolo in vendita versando un acconto; dop
 Pre-condizioni & Customer e Salesman hanno effettuato l'accesso alle rispettive aree; il veicolo esiste ed è in stato \code{SALE}; il Customer dispone dell'importo necessario per l'acconto.\\\hline
 Post-condizioni & Dopo l'acconto il veicolo è \code{BLOCKED} e la richiesta è registrata. Dopo il saldo il veicolo è \code{SOLD}, la richiesta è eliminata, la vendita è registrata e gli eventuali test drive futuri sono cancellati. Ciascuna fase ha una propria transazione.\\\hline
 Attori & Customer (primario), Salesman\\\hline
-Schermate & Passi 1--2: catalogo (figura~\ref{fig:ui-catalogo}); passo 3: richieste Salesman (figura~\ref{fig:ui-salesman-richieste}); passi 4--6: acquisti del Customer (figura~\ref{fig:ui-acquisti}) e conto (figura~\ref{fig:ui-conto}).\\\hline
 Test & \code{CheckoutFunctionalTest.completePurchaseWorkflow} verifica il percorso principale su H2; \code{cancelPurchaseWorkflowWithPenalty} verifica l'annullamento. \code{SalesServiceTest} verifica avvio e penale con mock. Autorizzazione assente, scadenza e variazione del prezzo non sono coperti da una prova funzionale dedicata.\\\hline
 Flusso Principale &
-\begin{enumerate}[leftmargin=*,nosep]
-  \item Il Customer seleziona un veicolo in vendita; l'interfaccia calcola l'acconto, pari al 20\% del prezzo visualizzato. Il saldo finale usa invece \code{Vehicle.price}, che può differire dal prezzo visualizzato in presenza di sconti.
+\begin{enumerate}[label=\arabic*.,start=1,leftmargin=*,nosep]
+  \item Il Customer seleziona un veicolo in vendita; l'interfaccia calcola l'acconto, pari al 20\% del prezzo visualizzato.
   \item Il Customer conferma: il sistema addebita l'acconto, registra la richiesta e blocca il veicolo.
   \item Il Salesman consulta la richiesta e la autorizza; il sistema registra il venditore e fissa la scadenza a un mese.
   \item Il Customer seleziona la richiesta autorizzata e conferma il pagamento del saldo.
@@ -30,8 +29,9 @@ Flusso Principale &
   \item Il sistema registra la vendita, elimina la richiesta, pone il veicolo in stato \code{SOLD} e cancella i test drive futuri relativi al veicolo.
 \end{enumerate}\\\hline
 Flussi Alternativi &
-\textbf{2. Veicolo non disponibile o saldo insufficiente:} la richiesta non viene creata e le scritture della fase sono annullate.\newline\newline
-\textbf{4. Autorizzazione assente:} l'interfaccia impedisce di avviare il saldo. Il servizio di completamento non verifica autonomamente autorizzazione e scadenza: una chiamata diretta potrebbe aggirare quel controllo.\newline\newline
-\textbf{4. Annullamento o scadenza:} la richiesta viene eliminata e il veicolo torna in vendita; il sistema trattiene il 20\% dell'acconto e rimborsa l'80\%. Le richieste scadute sono elaborate all'avvio e durante alcune consultazioni, senza un timer dedicato.\newline\newline
-\textbf{5. Prezzo variato:} la richiesta non conserva un prezzo finale bloccato; il residuo è calcolato sul prezzo del veicolo letto al momento del saldo.\\\hline
+\textbf{A1 (passo 2). Veicolo non disponibile o saldo insufficiente:} la richiesta non viene creata e le scritture della fase sono annullate.\newline\newline
+\textbf{A2 (passo 4). Autorizzazione assente:} l'interfaccia impedisce di avviare il saldo. Il servizio di completamento non verifica autonomamente autorizzazione e scadenza: una chiamata diretta potrebbe aggirare quel controllo.\newline\newline
+\textbf{A3 (passo 4). Annullamento o scadenza:} la richiesta viene eliminata e il veicolo torna in vendita; il sistema trattiene il 20\% dell'acconto e rimborsa l'80\%. Le richieste scadute sono elaborate all'avvio e durante alcune consultazioni, senza un timer dedicato.\newline\newline
+\textbf{A4 (passo 5). Prezzo variato:} la richiesta non conserva un prezzo finale bloccato; il residuo è calcolato sul prezzo del veicolo letto al momento del saldo.\\\hline
 \end{xltabular}
+\noindent\textbf{Anomalia del prezzo al saldo.} Il passo 5 descrive il comportamento attuale del servizio: il residuo è calcolato da \code{Vehicle.price}, mentre l'acconto deriva dal prezzo di catalogo calcolato da \code{quotePrice}. Il totale pagato può quindi differire dal prezzo mostrato al Customer. Si tratta di un'incoerenza implementativa, approfondita nella sezione~\ref{sec:pricing}.

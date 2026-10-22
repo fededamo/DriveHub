@@ -1,0 +1,35 @@
+\subsection{Gestire lo sconto su un veicolo}\label{sec:uc-sconto}
+\begin{xltabular}{\textwidth}{| >{\bfseries}p{.22\textwidth} | >{\raggedright\arraybackslash}X |}
+\caption{Caso d'uso: Gestire lo sconto su un veicolo}\label{tab:uc-sconto}\\
+\hline
+\rowcolor{gray!15} Campo & \textbf{Contenuto}\\\hline
+\endfirsthead
+\multicolumn{2}{c}{{\tablename\ \thetable{} -- Continua dalla pagina precedente}}\\
+\hline
+\rowcolor{gray!15} Campo & \textbf{Contenuto}\\\hline
+\endhead
+\hline
+\multicolumn{2}{r}{\textit{Continua nella pagina successiva...}}\\
+\endfoot
+\endlastfoot
+Nome & Gestire lo sconto su un veicolo\\\hline
+Livello & Obiettivo Utente\\\hline
+Descrizione & Il Manager applica, modifica o rimuove una promozione sul singolo veicolo. Il catalogo del Customer considera questa percentuale nel calcolo del prezzo esposto.\\\hline
+Pre-condizioni & Il Manager ha effettuato l'accesso alla propria area e il veicolo è presente nel catalogo.\\\hline
+Post-condizioni & La percentuale di sconto del veicolo è salvata nel database. Il successivo calcolo del preventivo considera il maggiore fra sconto del veicolo e sconto del modello, senza sommarli.\\\hline
+Attori & Manager\\\hline
+Test & \code{UserGoalsFunctionalTest.managerVehicleDiscount} applica il 10\%, verifica la riduzione del preventivo e controlla il ritorno al prezzo precedente dopo la rimozione. Il test attraversa servizio e persistenza H2; non esercita i comandi della GUI né il saldo dell'acquisto.\\\hline
+Flusso Principale &
+\begin{enumerate}[label=\arabic*.,start=1,leftmargin=*,nosep]
+  \item Il Manager consulta il parco veicoli e seleziona un esemplare.
+  \item Inserisce una percentuale intera compresa fra 0 e 50 e attiva il comando per applicarla.
+  \item Il sistema valida la percentuale e salva lo sconto del veicolo, sostituendo quello eventualmente già presente nella stessa transazione.
+  \item L'interfaccia conferma l'esito e aggiorna i dati. Alla successiva consultazione del catalogo, il preventivo viene ricalcolato considerando la promozione salvata.
+\end{enumerate}\\\hline
+Flussi Alternativi &
+\textbf{A1 (passo 1). Nessun veicolo selezionato:} l'interfaccia richiede una selezione e non invia modifiche.\newline\newline
+\textbf{A2 (passo 2). Percentuale non valida:} campo vuoto, valore non intero o fuori dall'intervallo 0--50 causano un errore; lo sconto precedente resta invariato.\newline\newline
+\textbf{A3 (passo 2). Rimozione dello sconto:} il Manager sceglie il comando di rimozione; il sistema elimina la promozione individuale. L'eventuale sconto del modello resta applicabile al preventivo.\newline\newline
+\textbf{A4 (passo 3). Salvataggio non riuscito:} la transazione viene annullata e l'interfaccia comunica l'errore.\\\hline
+\end{xltabular}
+\noindent\textbf{Limite del flusso di acquisto.} Lo sconto interviene sul preventivo di catalogo; il saldo usa invece il prezzo memorizzato nel veicolo, secondo l'anomalia descritta nella sezione~\ref{sec:pricing}.

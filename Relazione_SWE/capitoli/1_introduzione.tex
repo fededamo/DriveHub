@@ -10,26 +10,20 @@ Il sistema prevede tre figure operative:
   \item \textbf{Manager (\code{MANAGER}):} cura il catalogo inserendo marche, modelli e veicoli, applica sconti a modelli o singole auto e consulta le vendite registrate.
 \end{itemize}
 
-Le tre aree condividono le informazioni sul veicolo, ma espongono operazioni diverse in base al ruolo. Nel codice il cliente è identificato da \code{CLIENT}; la denominazione \emph{Customer} compare anche nei materiali di progetto.
+Le tre aree condividono le informazioni sul veicolo, ma espongono operazioni diverse in base al ruolo.
 
 \section{Stack tecnologico}
 \begin{itemize}
   \item \textbf{Linguaggio e interfaccia:} Java 21 e JavaFX 21.0.2. I layout sono definiti in FXML, lo stile in CSS e le azioni delle schermate nei controller.
-  \item \textbf{Organizzazione del codice:} i package \code{presentation}, \code{business}, \code{domain} e \code{dao} separano interfaccia, casi d'uso, regole del dominio e accesso ai dati. Le interfacce DAO sono distinte dalle implementazioni JDBC.
   \item \textbf{Persistenza:} PostgreSQL tramite driver JDBC. All'avvio, se la connessione non riesce, l'applicazione usa un database H2 in memoria in modalità compatibile con PostgreSQL, inizializzato con dati dimostrativi.
-  \item \textbf{Sicurezza:} le password sono salvate come hash derivati con PBKDF2, anziché in chiaro.
   \item \textbf{Build e verifica:} Maven gestisce dipendenze e compilazione; JUnit 5 e Mockito supportano i test, JaCoCo la misurazione della copertura.
 \end{itemize}
 
 \section{Semplificazioni adottate}\label{sec:semplificazioni}
 Per mantenere il progetto realizzabile e dimostrabile, alcuni processi del concessionario sono rappresentati in forma ridotta:
 \begin{itemize}
-  \item \textbf{Pagamenti interni:} acconti, saldi, noleggi e rimborsi modificano il saldo di un \code{BankAccount} locale. Non sono integrati banche o circuiti di pagamento e i movimenti non costituiscono transazioni finanziarie reali.
+  \item \textbf{Pagamenti interni:} acconti, saldi, noleggi e rimborsi modificano il saldo di un \code{BankAccount} locale. Non sono integrati banche o circuiti di pagamento.
   \item \textbf{Account dello staff:} la registrazione consente di scegliere anche i ruoli Venditore e Manager. È una scelta del prototipo; l'attribuzione di questi ruoli in un sistema operativo richiederebbe un controllo amministrativo.
-  \item \textbf{Modalità dimostrativa:} H2 permette di avviare l'applicazione senza un server PostgreSQL, ma i dati in memoria non sopravvivono alla chiusura. Questa modalità serve a provare i flussi principali.
+  \item \textbf{Modalità dimostrativa:} se l'avvio con PostgreSQL non riesce, l'applicazione crea automaticamente un database H2 nella memoria del processo e lo popola con utenti e veicoli di esempio. È così possibile provare acquisti, noleggi e test drive senza configurare un server esterno. Gli account creati e le operazioni effettuate restano disponibili durante quella sessione, ma vengono persi quando si chiude l'applicazione; al successivo avvio in modalità dimostrativa si riparte dai dati di esempio. Con PostgreSQL, invece, i dati sono salvati su disco e restano disponibili agli avvii successivi.
   \item \textbf{Processi aziendali:} il sistema registra le operazioni sul veicolo senza modellare sedi, fornitori, officina, consegna fisica, contratti, fatturazione o assistenza successiva alla vendita.
 \end{itemize}
-
-La documentazione in \code{docs/} conserva anche requisiti e risultati di una baseline precedente: fra questi, ordini di stock, un gateway di pagamento con stati propri e prove PostgreSQL/GUI più estese. I capitoli 2--4 descrivono il checkout presente in \code{src/} e in \code{src/main/resources/db/migration/init.sql}; quando richiamano un requisito storico non realizzato, ne dichiarano esplicitamente il limite. I risultati dei test sono attribuiti soltanto alla baseline su cui sono stati eseguiti.
-
-Il progetto ha impiegato un assistente di intelligenza artificiale per analisi comparativa, revisione di testo, diagrammi, codice e test; il processo e le verifiche dichiarate dagli autori sono registrati in \code{docs/USO_AI.md}. La presente revisione ha confrontato i file locali e rieseguito la suite standard. I capitoli successivi presentano requisiti, progettazione, implementazione e verifiche del sistema.

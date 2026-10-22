@@ -1,0 +1,34 @@
+\subsection{Autorizzare una richiesta di acquisto}\label{sec:uc-autorizzazione}
+\begin{xltabular}{\textwidth}{| >{\bfseries}p{.22\textwidth} | >{\raggedright\arraybackslash}X |}
+\caption{Caso d'uso: Autorizzare una richiesta di acquisto}\label{tab:uc-autorizzazione}\\
+\hline
+\rowcolor{gray!15} Campo & \textbf{Contenuto}\\\hline
+\endfirsthead
+\multicolumn{2}{c}{{\tablename\ \thetable{} -- Continua dalla pagina precedente}}\\
+\hline
+\rowcolor{gray!15} Campo & \textbf{Contenuto}\\\hline
+\endhead
+\hline
+\multicolumn{2}{r}{\textit{Continua nella pagina successiva...}}\\
+\endfoot
+\endlastfoot
+Nome & Autorizzare una richiesta di acquisto\\\hline
+Livello & Obiettivo Utente\\\hline
+Descrizione & Il Salesman autorizza il Customer a completare un acquisto per cui è già stato versato un acconto. L'autorizzazione assegna il venditore alla pratica e stabilisce il termine per il saldo.\\\hline
+Pre-condizioni & Il Salesman ha effettuato l'accesso alla propria area; esiste una richiesta di acquisto con acconto positivo e il relativo veicolo è stato riservato dal Customer.\\\hline
+Post-condizioni & La richiesta conserva l'identificativo del Salesman e una scadenza pari alla data di autorizzazione più un mese. Il veicolo resta \code{BLOCKED}; in questa fase non avvengono addebiti.\\\hline
+Attori & Salesman (primario), Customer (beneficiario dell'autorizzazione)\\\hline
+Test & \code{CheckoutFunctionalTest.completePurchaseWorkflow} verifica che l'autorizzazione imposti la scadenza a un mese e che il successivo acquisto registri il venditore. La selezione nella GUI e i rami di errore non sono verificati da quel test.\\\hline
+Flusso Principale &
+\begin{enumerate}[label=\arabic*.,start=1,leftmargin=*,nosep]
+  \item Il Salesman consulta le richieste di acquisto e seleziona la pratica da autorizzare.
+  \item Attiva il comando di autorizzazione.
+  \item Il sistema recupera la richiesta e verifica che si tratti di un acquisto, riconoscibile dall'acconto positivo.
+  \item Il sistema salva nella richiesta l'identificativo del Salesman e la data di scadenza, in un'unica transazione.
+  \item L'interfaccia conferma l'esito e aggiorna l'elenco. Il Customer può procedere al saldo dalla propria area.
+\end{enumerate}\\\hline
+Flussi Alternativi &
+\textbf{A1 (passo 1). Nessuna richiesta selezionata:} l'interfaccia mostra un messaggio e non invia l'autorizzazione.\newline\newline
+\textbf{A2 (passo 3). Richiesta assente o di tipo diverso:} una richiesta non più presente produce un errore; una proposta di cessione è rifiutata dall'interfaccia e dal servizio di autorizzazione. Nessuna autorizzazione viene salvata.\newline\newline
+\textbf{A3 (passo 4). Salvataggio non riuscito:} la transazione viene annullata e l'interfaccia comunica l'errore.\\\hline
+\end{xltabular}

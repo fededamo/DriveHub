@@ -18,10 +18,9 @@ Descrizione & Il Customer prenota un veicolo per un intervallo di giorni e paga 
 Pre-condizioni & Il Customer ha effettuato l'accesso; il veicolo esiste ed è in stato \code{RENT}; la data iniziale non è passata e la data finale non precede quella iniziale.\\\hline
 Post-condizioni & Il noleggio è registrato, l'importo è sottratto dal saldo del Customer e i test drive sul veicolo nei giorni prenotati sono cancellati. Le scritture nel database avvengono nella stessa transazione.\\\hline
 Attori & Customer\\\hline
-Schermate & Passi 1--6: catalogo (figura~\ref{fig:ui-catalogo}) e scheda noleggi/test drive (figura~\ref{fig:ui-noleggi-test-drive}); conferma dell'addebito nel conto dimostrativo (figura~\ref{fig:ui-conto}).\\\hline
 Test & \code{RentalServiceTest.bookRentalDebitsAccount} verifica il servizio con DAO simulati; \code{CheckoutFunctionalTest.rentalBookingWorkflow} verifica il percorso principale su H2. Le alternative di conflitto e la concorrenza non hanno un test funzionale dedicato nella suite corrente.\\\hline
 Flusso Principale &
-\begin{enumerate}[leftmargin=*,nosep]
+\begin{enumerate}[label=\arabic*.,start=1,leftmargin=*,nosep]
   \item Il Customer seleziona un veicolo disponibile per il noleggio e indica il primo e l'ultimo giorno.
   \item Il sistema mostra un preventivo. Nel conteggio sono inclusi sia il giorno iniziale sia quello finale.
   \item Il Customer conferma la prenotazione.
@@ -30,8 +29,8 @@ Flusso Principale &
   \item Il sistema cancella gli eventuali test drive sul veicolo nei giorni prenotati e conferma l'operazione.
 \end{enumerate}\\\hline
 Flussi Alternativi &
-\textbf{1. Veicolo o date non validi:} il sistema rifiuta la richiesta senza registrare il noleggio.\newline\newline
-\textbf{4. Periodo occupato:} se esiste un noleggio che condivide almeno un giorno, l'operazione è rifiutata.\newline\newline
-\textbf{5. Saldo insufficiente:} l'addebito fallisce; la transazione annulla anche le altre scritture.\newline\newline
-\textbf{4. Richieste concorrenti:} la verifica delle sovrapposizioni non è protetta da un vincolo di esclusione nel database; due richieste simultanee potrebbero entrambe riuscire.\\\hline
+\textbf{A1 (passo 1). Veicolo o date non validi:} il sistema rifiuta la richiesta senza registrare il noleggio.\newline\newline
+\textbf{A2 (passo 4). Periodo occupato:} se esiste un noleggio che condivide almeno un giorno, l'operazione è rifiutata.\newline\newline
+\textbf{A3 (passo 4). Richieste concorrenti:} la verifica delle sovrapposizioni non è protetta da un vincolo di esclusione nel database; due richieste simultanee potrebbero entrambe riuscire.\newline\newline
+\textbf{A4 (passo 5). Saldo insufficiente:} l'addebito fallisce; la transazione annulla anche le altre scritture.\\\hline
 \end{xltabular}
