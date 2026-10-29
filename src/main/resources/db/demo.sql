@@ -183,29 +183,35 @@ INSERT INTO "bank_account" ("iban", "client", "balance") VALUES
 
 -- 7c. Salesman (4 venditori)
 INSERT INTO "salesman" ("id", "name", "surname", "email", "hash_password") VALUES
-    (1, 'Paolo',   'Costa',   'paolo.costa@drivehub.it',   'pbkdf2-sha256$210000$7IfCdVFi3d11S9d7NKz0RA==$EiGCP0RiDhnGIjBB2j3r3rg83St531wgatyge3dA+34='),
-    (2, 'Laura',   'Gatti',   'laura.gatti@drivehub.it',   'pbkdf2-sha256$210000$7IfCdVFi3d11S9d7NKz0RA==$EiGCP0RiDhnGIjBB2j3r3rg83St531wgatyge3dA+34='),
-    (3, 'Giorgio', 'Serra',   'giorgio.serra@drivehub.it', 'pbkdf2-sha256$210000$7IfCdVFi3d11S9d7NKz0RA==$EiGCP0RiDhnGIjBB2j3r3rg83St531wgatyge3dA+34='),
-    (4, 'Chiara',  'Fontana', 'chiara.fontana@drivehub.it','pbkdf2-sha256$210000$7IfCdVFi3d11S9d7NKz0RA==$EiGCP0RiDhnGIjBB2j3r3rg83St531wgatyge3dA+34=');
+    (16, 'Paolo',   'Costa',   'paolo.costa@drivehub.it',   'pbkdf2-sha256$210000$7IfCdVFi3d11S9d7NKz0RA==$EiGCP0RiDhnGIjBB2j3r3rg83St531wgatyge3dA+34='),
+    (17, 'Laura',   'Gatti',   'laura.gatti@drivehub.it',   'pbkdf2-sha256$210000$7IfCdVFi3d11S9d7NKz0RA==$EiGCP0RiDhnGIjBB2j3r3rg83St531wgatyge3dA+34='),
+    (18, 'Giorgio', 'Serra',   'giorgio.serra@drivehub.it', 'pbkdf2-sha256$210000$7IfCdVFi3d11S9d7NKz0RA==$EiGCP0RiDhnGIjBB2j3r3rg83St531wgatyge3dA+34='),
+    (19, 'Chiara',  'Fontana', 'chiara.fontana@drivehub.it','pbkdf2-sha256$210000$7IfCdVFi3d11S9d7NKz0RA==$EiGCP0RiDhnGIjBB2j3r3rg83St531wgatyge3dA+34=');
 
 -- 7d. Manager (1 dirigente)
 INSERT INTO "manager" ("id", "name", "surname", "email", "hash_password") VALUES
-    (1, 'Vittorio', 'Brambilla', 'vittorio.manager@drivehub.it', 'pbkdf2-sha256$210000$7IfCdVFi3d11S9d7NKz0RA==$EiGCP0RiDhnGIjBB2j3r3rg83St531wgatyge3dA+34=');
+    (20, 'Vittorio', 'Brambilla', 'vittorio.manager@drivehub.it', 'pbkdf2-sha256$210000$7IfCdVFi3d11S9d7NKz0RA==$EiGCP0RiDhnGIjBB2j3r3rg83St531wgatyge3dA+34=');
 
 -- -----------------------------------------------------------------------------
--- 8. Richieste d'acquisto (10 richieste: su veicoli BLOCKED, alcune con exp_date)
+-- 8. Richieste d'acquisto e Proposte di vendita ("request")
 -- -----------------------------------------------------------------------------
-INSERT INTO "request" ("id", "vehicle", "client", "salesman", "deposit", "exp_date") VALUES
-    (1,  47, 1,  1,    3600.00, DATE '2026-10-25'),
-    (2,  48, 2,  2,    4400.00, DATE '2026-10-28'),
-    (3,  49, 3,  3,    4150.00, DATE '2026-10-22'),
-    (4,  50, 4,  4,    3580.00, DATE '2026-10-30'),
-    (5,  51, 5,  1,    5100.00, DATE '2026-10-18'),
-    (6,  52, 6,  2,    4290.00, DATE '2026-10-20'),
-    (7,  53, 7,  NULL, 3750.00, NULL),
-    (8,  54, 8,  NULL, 1500.00, NULL),
-    (9,  55, 9,  NULL, 3250.00, NULL),
-    (10, 56, 10, NULL, 4800.00, NULL);
+INSERT INTO "request" ("id", "vehicle", "client", "salesman", "deposit", "exp_date", "type") VALUES
+    -- 10 Richieste d'acquisto su veicoli BLOCKED (alcune approvate con exp_date, altre in attesa di approvazione)
+    (1,  47, 1,  16,   3600.00, DATE '2026-10-25', 'PURCHASE'),
+    (2,  48, 2,  17,   4400.00, DATE '2026-10-28', 'PURCHASE'),
+    (3,  49, 3,  18,   4150.00, DATE '2026-10-22', 'PURCHASE'),
+    (4,  50, 4,  19,   3580.00, DATE '2026-10-30', 'PURCHASE'),
+    (5,  51, 5,  16,   5100.00, DATE '2026-10-18', 'PURCHASE'),
+    (6,  52, 6,  17,   4290.00, DATE '2026-10-20', 'PURCHASE'),
+    (7,  53, 7,  NULL, 3750.00, NULL,               'PURCHASE'),
+    (8,  54, 8,  NULL, 1500.00, NULL,               'PURCHASE'),
+    (9,  55, 9,  NULL, 3250.00, NULL,               'PURCHASE'),
+    (10, 56, 10, NULL, 4800.00, NULL,               'PURCHASE'),
+    -- 4 Proposte di vendita inserite dai clienti sui veicoli in stato WAITING (43, 44, 45, 46)
+    (11, 43, 11, NULL, -13500.00, NULL,             'SALE'),
+    (12, 44, 12, NULL, -16800.00, NULL,             'SALE'),
+    (13, 45, 13, NULL, -23000.00, NULL,             'SALE'),
+    (14, 46, 14, NULL, -25500.00, NULL,             'SALE');
 
 -- -----------------------------------------------------------------------------
 -- 9. Test Drive (10 prenotazioni in attesa)
@@ -243,38 +249,38 @@ INSERT INTO "rent" ("id", "vehicle", "client", "amount", "start", "end") VALUES
 -- 11. Operazioni di Compravendita (40 operazioni totali in "sale")
 -- -----------------------------------------------------------------------------
 INSERT INTO "sale" ("id", "vehicle", "salesman", "client", "amount", "date") VALUES
-    (1,  1,  1, 1,  34500.00, TIMESTAMP '2025-02-10 10:00:00'),
-    (2,  2,  2, 2,  38900.00, TIMESTAMP '2025-03-15 11:30:00'),
-    (3,  3,  3, 3,  42000.00, TIMESTAMP '2025-04-20 14:00:00'),
-    (4,  4,  4, 4,  33500.00, TIMESTAMP '2025-05-12 16:15:00'),
-    (5,  5,  1, 5,  14800.00, TIMESTAMP '2025-06-08 09:45:00'),
-    (6,  6,  2, 6,  26900.00, TIMESTAMP '2025-07-22 15:20:00'),
-    (7,  7,  3, 7,  39500.00, TIMESTAMP '2025-08-30 11:00:00'),
-    (8,  8,  4, 8,  48500.00, TIMESTAMP '2025-09-14 17:30:00'),
-    (9,  9,  1, 9,  33000.00, TIMESTAMP '2025-10-05 10:10:00'),
-    (10, 10, 2, 10, 28900.00, TIMESTAMP '2025-11-18 12:00:00'),
-    (11, 11, 3, 11, 41000.00, TIMESTAMP '2025-12-02 16:40:00'),
-    (12, 12, 4, 12, 36500.00, TIMESTAMP '2026-01-15 14:00:00'),
-    (13, 13, 1, 13, 49800.00, TIMESTAMP '2026-02-20 10:30:00'),
-    (14, 14, 2, 14, 14200.00, TIMESTAMP '2026-03-05 15:50:00'),
-    (15, 15, 3, 15, 12900.00, TIMESTAMP '2026-03-25 11:15:00'),
-    (16, 16, 4, 1,  18500.00, TIMESTAMP '2026-04-10 09:20:00'),
-    (17, 17, 1, 2,  17900.00, TIMESTAMP '2026-04-28 16:00:00'),
-    (18, 18, 2, 3,  31500.00, TIMESTAMP '2026-05-15 14:45:00'),
-    (19, 19, 3, 4,  46900.00, TIMESTAMP '2026-05-30 10:00:00'),
-    (20, 20, 4, 5,  38500.00, TIMESTAMP '2026-06-12 11:30:00'),
-    (21, 21, 1, 6,  54500.00, TIMESTAMP '2026-06-25 17:00:00'),
-    (22, 22, 2, 7,  31000.00, TIMESTAMP '2026-07-04 12:15:00'),
-    (23, 23, 3, 8,  37000.00, TIMESTAMP '2026-07-19 15:40:00'),
-    (24, 24, 4, 9,  39500.00, TIMESTAMP '2026-08-02 10:50:00'),
-    (25, 25, 1, 10, 13800.00, TIMESTAMP '2026-08-16 16:30:00'),
-    (26, 26, 2, 11, 29800.00, TIMESTAMP '2026-08-28 14:10:00'),
-    (27, 1,  3, 12, 33900.00, TIMESTAMP '2026-09-02 09:30:00'),
-    (28, 2,  4, 13, 37500.00, TIMESTAMP '2026-09-10 11:20:00'),
-    (29, 6,  1, 14, 26000.00, TIMESTAMP '2026-09-15 15:00:00'),
-    (30, 7,  2, 15, 38800.00, TIMESTAMP '2026-09-20 16:45:00'),
-    (31, 10, 3, 1,  27500.00, TIMESTAMP '2026-09-25 10:00:00'),
-    (32, 14, 4, 2,  12500.00, TIMESTAMP '2026-09-28 12:30:00'),
+    (1,  1,  16, 1,  34500.00, TIMESTAMP '2025-02-10 10:00:00'),
+    (2,  2,  17, 2,  38900.00, TIMESTAMP '2025-03-15 11:30:00'),
+    (3,  3,  18, 3,  42000.00, TIMESTAMP '2025-04-20 14:00:00'),
+    (4,  4,  19, 4,  33500.00, TIMESTAMP '2025-05-12 16:15:00'),
+    (5,  5,  16, 5,  14800.00, TIMESTAMP '2025-06-08 09:45:00'),
+    (6,  6,  17, 6,  26900.00, TIMESTAMP '2025-07-22 15:20:00'),
+    (7,  7,  18, 7,  39500.00, TIMESTAMP '2025-08-30 11:00:00'),
+    (8,  8,  19, 8,  48500.00, TIMESTAMP '2025-09-14 17:30:00'),
+    (9,  9,  16, 9,  33000.00, TIMESTAMP '2025-10-05 10:10:00'),
+    (10, 10, 17, 10, 28900.00, TIMESTAMP '2025-11-18 12:00:00'),
+    (11, 11, 18, 11, 41000.00, TIMESTAMP '2025-12-02 16:40:00'),
+    (12, 12, 19, 12, 36500.00, TIMESTAMP '2026-01-15 14:00:00'),
+    (13, 13, 16, 13, 49800.00, TIMESTAMP '2026-02-20 10:30:00'),
+    (14, 14, 17, 14, 14200.00, TIMESTAMP '2026-03-05 15:50:00'),
+    (15, 15, 18, 15, 12900.00, TIMESTAMP '2026-03-25 11:15:00'),
+    (16, 16, 19, 1,  18500.00, TIMESTAMP '2026-04-10 09:20:00'),
+    (17, 17, 16, 2,  17900.00, TIMESTAMP '2026-04-28 16:00:00'),
+    (18, 18, 17, 3,  31500.00, TIMESTAMP '2026-05-15 14:45:00'),
+    (19, 19, 18, 4,  46900.00, TIMESTAMP '2026-05-30 10:00:00'),
+    (20, 20, 19, 5,  38500.00, TIMESTAMP '2026-06-12 11:30:00'),
+    (21, 21, 16, 6,  54500.00, TIMESTAMP '2026-06-25 17:00:00'),
+    (22, 22, 17, 7,  31000.00, TIMESTAMP '2026-07-04 12:15:00'),
+    (23, 23, 18, 8,  37000.00, TIMESTAMP '2026-07-19 15:40:00'),
+    (24, 24, 19, 9,  39500.00, TIMESTAMP '2026-08-02 10:50:00'),
+    (25, 25, 16, 10, 13800.00, TIMESTAMP '2026-08-16 16:30:00'),
+    (26, 26, 17, 11, 29800.00, TIMESTAMP '2026-08-28 14:10:00'),
+    (27, 1,  18, 12, 33900.00, TIMESTAMP '2026-09-02 09:30:00'),
+    (28, 2,  19, 13, 37500.00, TIMESTAMP '2026-09-10 11:20:00'),
+    (29, 6,  16, 14, 26000.00, TIMESTAMP '2026-09-15 15:00:00'),
+    (30, 7,  17, 15, 38800.00, TIMESTAMP '2026-09-20 16:45:00'),
+    (31, 10, 18, 1,  27500.00, TIMESTAMP '2026-09-25 10:00:00'),
+    (32, 14, 19, 2,  12500.00, TIMESTAMP '2026-09-28 12:30:00'),
 
     -- 8 penali per mancato pagamento / recesso (20% della caparra trattenuto come penale all'azienda, vehicle e salesman NULL)
     (33, NULL, NULL, 3,  680.00, TIMESTAMP '2026-05-20 12:00:00'),
@@ -289,11 +295,10 @@ INSERT INTO "sale" ("id", "vehicle", "salesman", "client", "amount", "date") VAL
 -- -----------------------------------------------------------------------------
 -- 12. Riallineamento sequenze ID per PostgreSQL
 -- -----------------------------------------------------------------------------
+CREATE SEQUENCE IF NOT EXISTS "user_id_seq" START WITH 1 INCREMENT BY 1;
 SELECT setval(pg_get_serial_sequence('"model"', 'id'), COALESCE((SELECT MAX("id") FROM "model"), 1));
 SELECT setval(pg_get_serial_sequence('"vehicle"', 'id'), COALESCE((SELECT MAX("id") FROM "vehicle"), 1));
-SELECT setval(pg_get_serial_sequence('"client"', 'id'), COALESCE((SELECT MAX("id") FROM "client"), 1));
-SELECT setval(pg_get_serial_sequence('"salesman"', 'id'), COALESCE((SELECT MAX("id") FROM "salesman"), 1));
-SELECT setval(pg_get_serial_sequence('"manager"', 'id'), COALESCE((SELECT MAX("id") FROM "manager"), 1));
+SELECT setval('"user_id_seq"', COALESCE((SELECT MAX("id") FROM public."user"), 1));
 SELECT setval(pg_get_serial_sequence('"request"', 'id'), COALESCE((SELECT MAX("id") FROM "request"), 1));
 SELECT setval(pg_get_serial_sequence('"test_drive"', 'id'), COALESCE((SELECT MAX("id") FROM "test_drive"), 1));
 SELECT setval(pg_get_serial_sequence('"rent"', 'id'), COALESCE((SELECT MAX("id") FROM "rent"), 1));

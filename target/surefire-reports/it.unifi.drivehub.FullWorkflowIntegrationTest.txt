@@ -1,0 +1,16 @@
+-------------------------------------------------------------------------------
+Test set: it.unifi.drivehub.FullWorkflowIntegrationTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 24.59 s <<< FAILURE! -- in it.unifi.drivehub.FullWorkflowIntegrationTest
+it.unifi.drivehub.FullWorkflowIntegrationTest.testClientLoginAndDataLoading -- Time elapsed: 18.27 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: I veicoli a 16 caratteri devono essere gestiti correttamente senza errori sul VIN ==> expected: <true> but was: <false>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)
+	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)
+	at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:214)
+	at it.unifi.drivehub.FullWorkflowIntegrationTest.testClientLoginAndDataLoading(FullWorkflowIntegrationTest.java:58)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
