@@ -54,6 +54,10 @@ public final class SaleToDealershipService {
     public BigDecimal calculateEstimate(Long modelId, String plate, int km, int year) {
         Model model = modelDao.findById(modelId)
                 .orElseThrow(() -> new IllegalArgumentException("Modello non trovato: " + modelId));
+        if (year < model.getReleaseYear()) {
+            throw new IllegalArgumentException("L'anno di produzione del veicolo (" + year
+                    + ") non può essere precedente all'anno di rilascio del modello (" + model.getReleaseYear() + ").");
+        }
         int mDisc = discountDao.findModelDiscount(modelId).map(ModelDiscount::getValue).orElse(0);
         return priceCalculator.estimateVehicleValue(model.getReleasePrice(), mDisc, plate, km, year);
     }
@@ -69,7 +73,7 @@ public final class SaleToDealershipService {
         BigDecimal estimatedPrice = calculateEstimate(modelId, licencePlate, km, year);
 
         return db.executeInTransactionWithResult(conn -> {
-            Optional<Vehicle> existingOpt = vehicleDao.findByVin(vin);
+            Optional<Vehicle> existingOpt = vehicleDao.findByVin(vin, conn);
             Vehicle vehicle;
 
             if (existingOpt.isPresent()) {
@@ -101,20 +105,20 @@ public final class SaleToDealershipService {
      */
     public void approveSaleProposal(Long requestId, Long salesmanId) {
         db.executeInTransaction(conn -> {
-            Request request = requestDao.findById(requestId)
+            Request request = requestDao.findById(requestId, conn)
                     .orElseThrow(() -> new IllegalStateException("Richiesta non trovata: " + requestId));
             if (request.getType() != RequestType.SALE) {
                 throw new IllegalArgumentException("La richiesta selezionata non è di vendita.");
             }
 
-            Vehicle vehicle = vehicleDao.findById(request.getVehicleId())
+            Vehicle vehicle = vehicleDao.findById(request.getVehicleId(), conn)
                     .orElseThrow(() -> new IllegalStateException("Veicolo non trovato: " + request.getVehicleId()));
 
             // Importo da accreditare al cliente (valore assoluto di deposit)
             BigDecimal payout = request.getDeposit().abs();
 
             // Accredito sul conto del cliente
-            BankAccount account = bankAccountDao.findByClientId(request.getClientId())
+            BankAccount account = bankAccountDao.findByClientId(request.getClientId(), conn)
                     .orElseThrow(() -> new IllegalStateException("Conto corrente cliente non trovato."));
             account.deposit(payout);
             bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
@@ -139,7 +143,7 @@ public final class SaleToDealershipService {
      */
     public void rejectSaleProposal(Long requestId) {
         db.executeInTransaction(conn -> {
-            Request request = requestDao.findById(requestId)
+            Request request = requestDao.findById(requestId, conn)
                     .orElseThrow(() -> new IllegalStateException("Richiesta non trovata: " + requestId));
             if (request.getType() != RequestType.SALE) {
                 throw new IllegalArgumentException("La richiesta selezionata non è di vendita.");
@@ -151,7 +155,7 @@ public final class SaleToDealershipService {
             boolean hasSales = saleDao.hasSaleOperationsForVehicle(vehicleId);
             if (hasSales) {
                 // Il veicolo ha uno storico vendite: ripristina stato SOLD senza cancellarlo
-                Vehicle vehicle = vehicleDao.findById(vehicleId).orElse(null);
+                Vehicle vehicle = vehicleDao.findById(vehicleId, conn).orElse(null);
                 if (vehicle != null) {
                     vehicle.setState(VehicleState.SOLD);
                     vehicleDao.update(vehicle, conn);

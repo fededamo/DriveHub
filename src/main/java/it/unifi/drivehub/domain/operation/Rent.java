@@ -83,7 +83,7 @@ public final class Rent {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Rent rent)) return false;
-        return Objects.equals(id, rent.id);
+        return id != null && Objects.equals(id, rent.id);
     }
 
     @Override

@@ -14,9 +14,7 @@ import it.unifi.drivehub.domain.vehicle.VehicleState;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Servizio per la consultazione e la gestione del catalogo da parte del Manager (Pagina 4 degli appunti).
@@ -30,7 +28,6 @@ public final class CatalogService {
     private final VehicleDao vehicleDao;
     private final DiscountDao discountDao;
     private final PriceCalculatorService priceCalculator;
-    private final Map<Long, Optional<Model>> modelCache = new ConcurrentHashMap<>();
 
     public CatalogService(DatabaseManager db, BrandDao brandDao, ModelDao modelDao,
                           VehicleDao vehicleDao, DiscountDao discountDao,
@@ -57,7 +54,7 @@ public final class CatalogService {
 
     public Optional<Model> getModelById(Long id) {
         if (id == null) return Optional.empty();
-        return modelCache.computeIfAbsent(id, modelDao::findById);
+        return modelDao.findById(id);
     }
 
     public List<Vehicle> getVehiclesByState(VehicleState state) {
@@ -114,13 +111,11 @@ public final class CatalogService {
     }
 
     public Model addModel(String brand, String name, BigDecimal releasePrice, int releaseYear) {
-        modelCache.clear();
         Model model = Model.create(null, brand, name, releasePrice, releaseYear);
         return db.executeInTransactionWithResult(conn -> modelDao.save(model, conn));
     }
 
     public void deleteModel(Long modelId) {
-        modelCache.clear();
         if (modelDao.hasVehicles(modelId)) {
             throw new IllegalStateException("Impossibile eliminare il modello: sono presenti veicoli associati a questo modello nel catalogo.");
         }
@@ -128,7 +123,10 @@ public final class CatalogService {
     }
 
     public Vehicle addVehicle(Long modelId, String vin, String licencePlate, int km, BigDecimal price, int year, VehicleState state) {
+        Model model = getModelById(modelId)
+                .orElseThrow(() -> new IllegalArgumentException("Modello non trovato: " + modelId));
         Vehicle vehicle = Vehicle.create(null, modelId, vin, licencePlate, km, price, year, state);
+        vehicle.validateProductionYear(model.getReleaseYear());
         return db.executeInTransactionWithResult(conn -> vehicleDao.save(vehicle, conn));
     }
 

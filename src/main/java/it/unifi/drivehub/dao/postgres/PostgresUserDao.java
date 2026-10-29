@@ -52,6 +52,36 @@ public final class PostgresUserDao implements UserDao {
     }
 
     @Override
+    public Optional<User> findById(Long id) {
+        String sql = "SELECT id, name, surname, email, hash_password, role FROM public.\"user\" WHERE id = ?";
+        try (Connection conn = db.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    long userId = rs.getLong("id");
+                    String name = rs.getString("name");
+                    String surname = rs.getString("surname");
+                    String mail = rs.getString("email");
+                    String hash = rs.getString("hash_password");
+                    String role = rs.getString("role");
+
+                    User user = switch (role.toUpperCase()) {
+                        case "CLIENT" -> Client.createWithoutAccount(userId, name, surname, mail, hash);
+                        case "SALESMAN" -> Salesman.create(userId, name, surname, mail, hash);
+                        case "MANAGER" -> Manager.create(userId, name, surname, mail, hash);
+                        default -> throw new IllegalStateException("Ruolo utente non riconosciuto: " + role);
+                    };
+                    return Optional.of(user);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore durante la ricerca utente per id: " + id, e);
+        }
+        return Optional.empty();
+    }
+
+    @Override
     public Optional<Client> findClientById(Long id) {
         String sql = "SELECT id, name, surname, email, hash_password FROM client WHERE id = ?";
         try (Connection conn = db.getConnection();

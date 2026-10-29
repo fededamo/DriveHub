@@ -6,7 +6,6 @@ import it.unifi.drivehub.domain.operation.Rent;
 import it.unifi.drivehub.domain.operation.TestDrive;
 import it.unifi.drivehub.domain.user.BankAccount;
 import it.unifi.drivehub.domain.user.Client;
-import it.unifi.drivehub.domain.vehicle.Brand;
 import it.unifi.drivehub.domain.vehicle.Model;
 import it.unifi.drivehub.domain.vehicle.Vehicle;
 import it.unifi.drivehub.domain.vehicle.VehicleState;
@@ -66,6 +65,22 @@ class DomainInvariantsTest {
     }
 
     @Test
+    @DisplayName("Regola: anno di produzione veicolo >= anno di rilascio del modello")
+    void testVehicleProductionYearAfterModelRelease() {
+        Vehicle v1 = Vehicle.create(1L, 10L, "12345678901234567", null, 0, BigDecimal.valueOf(20000), 2024, VehicleState.SALE);
+
+        // Modello rilasciato nel 2023, veicolo prodotto nel 2024: valido
+        assertDoesNotThrow(() -> v1.validateProductionYear(2023));
+
+        // Modello rilasciato nel 2024, veicolo prodotto nel 2024: valido (stesso anno)
+        assertDoesNotThrow(() -> v1.validateProductionYear(2024));
+
+        // Modello rilasciato nel 2025, veicolo prodotto nel 2024: NON valido
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> v1.validateProductionYear(2025));
+        assertTrue(ex.getMessage().contains("precedente") || ex.getMessage().contains("rilascio"));
+    }
+
+    @Test
     @DisplayName("Regola: orario Test Drive compreso tra 9:00 e 16:00")
     void testTestDriveTimeSlot() {
         LocalDate tomorrow = LocalDate.now().plusDays(1);
@@ -102,6 +117,27 @@ class DomainInvariantsTest {
         assertDoesNotThrow(() -> Rent.create(1L, 1L, 1L, BigDecimal.valueOf(100), today, today));
         assertDoesNotThrow(() -> Rent.create(1L, 1L, 1L, BigDecimal.valueOf(100), today, today.plusDays(3)));
         assertThrows(IllegalArgumentException.class, () -> Rent.create(1L, 1L, 1L, BigDecimal.valueOf(100), today.plusDays(3), today));
+    }
+
+    @Test
+    @DisplayName("Contratto equals e hashCode: transitività e coerenza su User e Vehicle")
+    void testEqualsAndHashCodeContracts() {
+        Client c1 = Client.createWithoutAccount(1L, "Mario", "Rossi", "mario@email.it", "hash1");
+        Client c2 = Client.createWithoutAccount(1L, "Mario", "Rossi", "mario.modified@email.it", "hash1");
+        Client c3 = Client.createWithoutAccount(2L, "Luigi", "Verdi", "luigi@email.it", "hash2");
+
+        // Stesso ID -> equals true e stesso hashCode
+        assertEquals(c1, c2);
+        assertEquals(c1.hashCode(), c2.hashCode());
+        assertNotEquals(c1, c3);
+
+        Vehicle v1 = Vehicle.create(10L, 1L, "12345678901234567", null, 0, BigDecimal.valueOf(10000), 2020, VehicleState.SALE);
+        Vehicle v2 = Vehicle.create(10L, 1L, "99999999901234567", null, 0, BigDecimal.valueOf(10000), 2020, VehicleState.SALE);
+        Vehicle v3 = Vehicle.create(20L, 1L, "99999999901234567", null, 0, BigDecimal.valueOf(10000), 2020, VehicleState.SALE);
+
+        assertEquals(v1, v2);
+        assertEquals(v1.hashCode(), v2.hashCode());
+        assertNotEquals(v1, v3);
     }
 }
 

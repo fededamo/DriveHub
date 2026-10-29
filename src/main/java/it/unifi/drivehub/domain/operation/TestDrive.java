@@ -64,7 +64,7 @@ public final class TestDrive {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof TestDrive testDrive)) return false;
-        return Objects.equals(id, testDrive.id);
+        return id != null && Objects.equals(id, testDrive.id);
     }
 
     @Override

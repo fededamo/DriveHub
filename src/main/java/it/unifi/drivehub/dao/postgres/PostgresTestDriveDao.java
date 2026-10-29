@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public final class PostgresTestDriveDao implements TestDriveDao {
 
@@ -36,6 +37,31 @@ public final class PostgresTestDriveDao implements TestDriveDao {
             throw new RuntimeException("Errore durante il recupero dei test drive.", e);
         }
         return list;
+    }
+
+    @Override
+    public Optional<TestDrive> findById(Long id) {
+        try (Connection conn = db.getConnection()) {
+            return findById(id, conn);
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore di connessione durante la ricerca del test drive per id: " + id, e);
+        }
+    }
+
+    @Override
+    public Optional<TestDrive> findById(Long id, Connection conn) {
+        String sql = "SELECT id, vehicle, client, date FROM test_drive WHERE id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(mapRow(rs));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore durante la ricerca del test drive per id: " + id, e);
+        }
+        return Optional.empty();
     }
 
     @Override
@@ -94,9 +120,17 @@ public final class PostgresTestDriveDao implements TestDriveDao {
 
     @Override
     public int countActiveByClientId(Long clientId) {
+        try (Connection conn = db.getConnection()) {
+            return countActiveByClientId(clientId, conn);
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore di connessione durante il conteggio dei test drive attivi: " + clientId, e);
+        }
+    }
+
+    @Override
+    public int countActiveByClientId(Long clientId, Connection conn) {
         String sql = "SELECT count(*) FROM test_drive WHERE client = ? AND date >= CURRENT_TIMESTAMP";
-        try (Connection conn = db.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, clientId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {

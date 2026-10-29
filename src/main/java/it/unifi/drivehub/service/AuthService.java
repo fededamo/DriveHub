@@ -65,18 +65,18 @@ public final class AuthService {
     }
 
     public void changeEmail(Long userId, String role, String newEmail, String currentPassword) {
-        verifyPasswordBeforeAction(userId, role, currentPassword);
+        verifyPasswordBeforeAction(userId, currentPassword);
         db.executeInTransaction(conn -> userDao.updateEmail(userId, role, newEmail.trim().toLowerCase(), conn));
     }
 
     public void changePassword(Long userId, String role, String newRawPassword, String currentPassword) {
-        verifyPasswordBeforeAction(userId, role, currentPassword);
+        verifyPasswordBeforeAction(userId, currentPassword);
         String newHash = hasher.hash(newRawPassword);
         db.executeInTransaction(conn -> userDao.updatePassword(userId, role, newHash, conn));
     }
 
     public void deleteAccount(Long userId, String role, String currentPassword) {
-        verifyPasswordBeforeAction(userId, role, currentPassword);
+        verifyPasswordBeforeAction(userId, currentPassword);
         if (userDao.hasAssociatedOperations(userId, role)) {
             throw new IllegalStateException("Impossibile eliminare l'account: sono presenti operazioni storiche associate (Test Drive, Noleggi o Vendite).");
         }
@@ -88,7 +88,7 @@ public final class AuthService {
             throw new IllegalArgumentException("L'importo da ricaricare deve essere maggiore di zero.");
         }
         db.executeInTransaction(conn -> {
-            BankAccount account = bankAccountDao.findByClientId(clientId)
+            BankAccount account = bankAccountDao.findByClientId(clientId, conn)
                     .orElseThrow(() -> new IllegalStateException("Conto bancario non trovato per il cliente id: " + clientId));
             account.deposit(amount);
             bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
@@ -100,14 +100,9 @@ public final class AuthService {
                 .orElseThrow(() -> new IllegalStateException("Conto bancario non trovato per il cliente id: " + clientId));
     }
 
-    private void verifyPasswordBeforeAction(Long userId, String role, String currentPassword) {
-        Optional<? extends User> userOpt = switch (role.toUpperCase()) {
-            case "CLIENT", "CLIENTE" -> userDao.findClientById(userId);
-            case "SALESMAN", "VENDITORE" -> userDao.findSalesmanById(userId);
-            case "MANAGER" -> userDao.findManagerById(userId);
-            default -> throw new IllegalArgumentException("Ruolo non valido: " + role);
-        };
-        User user = userOpt.orElseThrow(() -> new IllegalStateException("Utente non trovato con id: " + userId));
+    private void verifyPasswordBeforeAction(Long userId, String currentPassword) {
+        User user = userDao.findById(userId)
+                .orElseThrow(() -> new IllegalStateException("Utente non trovato con id: " + userId));
         if (!hasher.verify(currentPassword, user.getHashPassword())) {
             throw new IllegalArgumentException("Password attuale errata: operazione annullata.");
         }

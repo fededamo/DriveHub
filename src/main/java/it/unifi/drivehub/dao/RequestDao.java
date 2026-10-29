@@ -19,6 +19,10 @@ public interface RequestDao {
 
     Optional<Request> findById(Long id);
 
+    default Optional<Request> findById(Long id, Connection conn) {
+        return findById(id);
+    }
+
     Optional<Request> findActivePurchaseRequestForVehicle(Long vehicleId);
 
     Request save(Request request, Connection conn);

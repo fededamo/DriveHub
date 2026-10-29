@@ -15,6 +15,8 @@ DROP TABLE IF EXISTS "client" CASCADE;
 DROP VIEW IF EXISTS "user" CASCADE;
 DROP SEQUENCE IF EXISTS "user_id_seq" CASCADE;
 DROP FUNCTION IF EXISTS check_user_email_disjoint CASCADE;
+DROP FUNCTION IF EXISTS check_vehicle_year_after_model_release CASCADE;
+DROP FUNCTION IF EXISTS check_model_release_year_update CASCADE;
 DROP TABLE IF EXISTS "vehicle_discount" CASCADE;
 DROP TABLE IF EXISTS "vehicle" CASCADE;
 DROP TABLE IF EXISTS "model_discount" CASCADE;
@@ -97,6 +99,40 @@ CREATE TABLE "vehicle_discount" (
     CONSTRAINT "fk_vehicle_discount_vehicle" FOREIGN KEY ("vehicle") REFERENCES "vehicle" ("id") ON DELETE CASCADE,
     CONSTRAINT "chk_vehicle_discount_value" CHECK ("value" >= 0 AND "value" <= 50)
 );
+
+-- -----------------------------------------------------------------------------
+-- Vincolo di Dominio: Anno di produzione veicolo >= Anno di rilascio del modello
+-- -----------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION check_vehicle_year_after_model_release()
+RETURNS TRIGGER AS $$
+DECLARE
+    v_release_year SMALLINT;
+BEGIN
+    SELECT "release_year" INTO v_release_year FROM "model" WHERE "id" = NEW."model";
+    IF v_release_year IS NOT NULL AND NEW."year" < v_release_year THEN
+        RAISE EXCEPTION 'Violazione vincolo di dominio: l''anno di produzione del veicolo (%) non può essere inferiore all''anno di rilascio del modello (%).', NEW."year", v_release_year;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER "trg_vehicle_year_model"
+BEFORE INSERT OR UPDATE OF "year", "model" ON "vehicle"
+FOR EACH ROW EXECUTE FUNCTION check_vehicle_year_after_model_release();
+
+CREATE OR REPLACE FUNCTION check_model_release_year_update()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM "vehicle" WHERE "model" = NEW."id" AND "year" < NEW."release_year") THEN
+        RAISE EXCEPTION 'Violazione vincolo di dominio: impossibile impostare l''anno di rilascio del modello a %, esistono veicoli prodotti in anni precedenti.', NEW."release_year";
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER "trg_model_release_year_update"
+BEFORE UPDATE OF "release_year" ON "model"
+FOR EACH ROW EXECUTE FUNCTION check_model_release_year_update();
 
 -- -----------------------------------------------------------------------------
 -- 6. Gerarchia Utenti (Generalizzazione Totale ed Esclusiva)
@@ -219,7 +255,8 @@ CREATE TABLE "test_drive" (
     CONSTRAINT "pk_test_drive" PRIMARY KEY ("id"),
     CONSTRAINT "fk_test_drive_vehicle" FOREIGN KEY ("vehicle") REFERENCES "vehicle" ("id") ON DELETE RESTRICT,
     CONSTRAINT "fk_test_drive_client" FOREIGN KEY ("client") REFERENCES "client" ("id") ON DELETE RESTRICT,
-    CONSTRAINT "uq_test_drive_vehicle_date" UNIQUE ("vehicle", "date")
+    CONSTRAINT "uq_test_drive_vehicle_date" UNIQUE ("vehicle", "date"),
+    CONSTRAINT "chk_test_drive_time_slot" CHECK (CAST("date" AS TIME) >= TIME '09:00:00' AND CAST("date" AS TIME) <= TIME '16:00:00')
 );
 
 -- -----------------------------------------------------------------------------

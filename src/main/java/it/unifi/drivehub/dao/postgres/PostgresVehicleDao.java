@@ -58,9 +58,17 @@ public final class PostgresVehicleDao implements VehicleDao {
 
     @Override
     public Optional<Vehicle> findById(Long id) {
+        try (Connection conn = db.getConnection()) {
+            return findById(id, conn);
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore di connessione durante la ricerca del veicolo id: " + id, e);
+        }
+    }
+
+    @Override
+    public Optional<Vehicle> findById(Long id, Connection conn) {
         String sql = "SELECT id, model, vin, licence_plate, kilometers, price, year, state::text as state_str FROM vehicle WHERE id = ?";
-        try (Connection conn = db.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -75,9 +83,17 @@ public final class PostgresVehicleDao implements VehicleDao {
 
     @Override
     public Optional<Vehicle> findByVin(String vin) {
+        try (Connection conn = db.getConnection()) {
+            return findByVin(vin, conn);
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore di connessione durante la ricerca del veicolo per VIN: " + vin, e);
+        }
+    }
+
+    @Override
+    public Optional<Vehicle> findByVin(String vin, Connection conn) {
         String sql = "SELECT id, model, vin, licence_plate, kilometers, price, year, state::text as state_str FROM vehicle WHERE UPPER(vin) = UPPER(?)";
-        try (Connection conn = db.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, vin.trim());
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {

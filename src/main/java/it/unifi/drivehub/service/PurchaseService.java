@@ -71,7 +71,7 @@ public final class PurchaseService {
             }
 
             // 2. Calcolo prezzo effettivo e acconto (20%)
-            Vehicle vehicle = vehicleDao.findById(vehicleId)
+            Vehicle vehicle = vehicleDao.findById(vehicleId, conn)
                     .orElseThrow(() -> new IllegalStateException("Veicolo non trovato: " + vehicleId));
             Model model = modelDao.findById(vehicle.getModelId())
                     .orElseThrow(() -> new IllegalStateException("Modello non trovato: " + vehicle.getModelId()));
@@ -82,7 +82,7 @@ public final class PurchaseService {
             BigDecimal deposit = priceCalculator.calculatePurchaseDeposit(currentPrice);
 
             // 3. Verifica e addebito sul conto corrente del cliente
-            BankAccount account = bankAccountDao.findByClientId(clientId)
+            BankAccount account = bankAccountDao.findByClientId(clientId, conn)
                     .orElseThrow(() -> new IllegalStateException("Conto corrente non trovato per il cliente id: " + clientId));
 
             account.withdraw(deposit);
@@ -100,20 +100,20 @@ public final class PurchaseService {
      */
     public void rejectPurchase(Long requestId) {
         db.executeInTransaction(conn -> {
-            Request request = requestDao.findById(requestId)
+            Request request = requestDao.findById(requestId, conn)
                     .orElseThrow(() -> new IllegalStateException("Richiesta non trovata: " + requestId));
             if (request.getType() != RequestType.PURCHASE) {
                 throw new IllegalArgumentException("La richiesta non è di acquisto.");
             }
 
             // Restituzione acconto
-            BankAccount account = bankAccountDao.findByClientId(request.getClientId())
+            BankAccount account = bankAccountDao.findByClientId(request.getClientId(), conn)
                     .orElseThrow(() -> new IllegalStateException("Conto cliente non trovato."));
             account.deposit(request.getDeposit());
             bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
 
             // Stato veicolo torna SALE
-            Vehicle vehicle = vehicleDao.findById(request.getVehicleId())
+            Vehicle vehicle = vehicleDao.findById(request.getVehicleId(), conn)
                     .orElseThrow(() -> new IllegalStateException("Veicolo non trovato."));
             vehicle.setState(VehicleState.SALE);
             vehicleDao.update(vehicle, conn);
@@ -129,7 +129,7 @@ public final class PurchaseService {
      */
     public void approvePurchase(Long requestId, Long salesmanId) {
         db.executeInTransaction(conn -> {
-            Request request = requestDao.findById(requestId)
+            Request request = requestDao.findById(requestId, conn)
                     .orElseThrow(() -> new IllegalStateException("Richiesta non trovata: " + requestId));
             if (request.getType() != RequestType.PURCHASE) {
                 throw new IllegalArgumentException("La richiesta non è di acquisto.");
@@ -147,7 +147,7 @@ public final class PurchaseService {
      */
     public void completePurchase(Long requestId) {
         VehicleStateChangeEvent event = db.executeInTransactionWithResult(conn -> {
-            Request request = requestDao.findById(requestId)
+            Request request = requestDao.findById(requestId, conn)
                     .orElseThrow(() -> new IllegalStateException("Richiesta non trovata: " + requestId));
             if (request.getSalesmanId() == null) {
                 throw new IllegalStateException("La richiesta deve essere prima approvata da un venditore.");
@@ -156,7 +156,7 @@ public final class PurchaseService {
                 throw new IllegalStateException("La richiesta è scaduta e non può più essere saldata.");
             }
 
-            Vehicle vehicle = vehicleDao.findById(request.getVehicleId())
+            Vehicle vehicle = vehicleDao.findById(request.getVehicleId(), conn)
                     .orElseThrow(() -> new IllegalStateException("Veicolo non trovato."));
             Model model = modelDao.findById(vehicle.getModelId())
                     .orElseThrow(() -> new IllegalStateException("Modello non trovato."));
@@ -169,7 +169,7 @@ public final class PurchaseService {
             BigDecimal remainingAmount = fullPrice.subtract(request.getDeposit());
 
             // Addebito saldo restante
-            BankAccount account = bankAccountDao.findByClientId(request.getClientId())
+            BankAccount account = bankAccountDao.findByClientId(request.getClientId(), conn)
                     .orElseThrow(() -> new IllegalStateException("Conto cliente non trovato."));
             account.withdraw(remainingAmount);
             bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
@@ -216,7 +216,7 @@ public final class PurchaseService {
                     // Rimborsato: 80% della caparra restituito al cliente
                     BigDecimal refunded = deposit.subtract(penalty);
 
-                    BankAccount account = bankAccountDao.findByClientId(clientId)
+                    BankAccount account = bankAccountDao.findByClientId(clientId, conn)
                             .orElseThrow(() -> new IllegalStateException("Conto cliente non trovato."));
                     account.deposit(refunded);
                     bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
@@ -229,7 +229,7 @@ public final class PurchaseService {
                     requestDao.delete(req.getId(), conn);
 
                     // Ripristino stato veicolo a SALE
-                    Vehicle vehicle = vehicleDao.findById(req.getVehicleId()).orElse(null);
+                    Vehicle vehicle = vehicleDao.findById(req.getVehicleId(), conn).orElse(null);
                     if (vehicle != null && vehicle.getState() == VehicleState.BLOCKED) {
                         vehicle.setState(VehicleState.SALE);
                         vehicleDao.update(vehicle, conn);

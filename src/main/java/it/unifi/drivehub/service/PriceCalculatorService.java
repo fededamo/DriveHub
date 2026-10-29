@@ -24,55 +24,37 @@ public final class PriceCalculatorService {
      * 4. Ammortamento chilometri (5% ogni 20.000 km): prezzo = prezzo * (0.95)^(km / 20000)
      */
     public BigDecimal calculateVehiclePrice(Model model, Vehicle vehicle, Integer modelDiscount, Integer vehicleDiscount) {
-        BigDecimal currentPrice = model.getReleasePrice();
-
-        // 1. Sconto promozionale (il maggiore tra modello e veicolo)
         int mDisc = modelDiscount != null ? modelDiscount : 0;
         int vDisc = vehicleDiscount != null ? vehicleDiscount : 0;
         int maxPromo = Math.max(mDisc, vDisc);
-        if (maxPromo > 0) {
-            double promoFactor = 1.0 - (maxPromo / 100.0);
-            currentPrice = currentPrice.multiply(BigDecimal.valueOf(promoFactor));
-        }
-
-        // 2. Sconto sull'usato (20% se targa != null)
-        if (vehicle.isUsed()) {
-            currentPrice = currentPrice.multiply(BigDecimal.valueOf(0.80));
-        }
-
-        // 3. Ammortamento anno (5% all'anno, calcolato dinamicamente rispetto all'anno attuale)
-        int currentYear = Year.now().getValue();
-        int yearsOld = Math.max(0, currentYear - vehicle.getYear());
-        if (yearsOld > 0) {
-            double yearFactor = Math.pow(0.95, yearsOld);
-            currentPrice = currentPrice.multiply(BigDecimal.valueOf(yearFactor));
-        }
-
-        // 4. Ammortamento chilometri (5% ogni 20000 km)
-        if (vehicle.getKilometers() > 0) {
-            double kmExponent = (double) vehicle.getKilometers() / 20000.0;
-            double kmFactor = Math.pow(0.95, kmExponent);
-            currentPrice = currentPrice.multiply(BigDecimal.valueOf(kmFactor));
-        }
-
-        return currentPrice.setScale(2, RoundingMode.HALF_UP);
+        return applyStandardDepreciation(model.getReleasePrice(), maxPromo, vehicle.getLicencePlate(), vehicle.getKilometers(), vehicle.getYear());
     }
 
     /**
      * Calcola il preventivo per un veicolo che un cliente vuole vendere alla concessionaria.
      */
     public BigDecimal estimateVehicleValue(BigDecimal modelBasePrice, int modelDiscount, String plate, int km, int year) {
-        BigDecimal currentPrice = modelBasePrice;
+        return applyStandardDepreciation(modelBasePrice, modelDiscount, plate, km, year);
+    }
 
-        if (modelDiscount > 0) {
-            double promoFactor = 1.0 - (modelDiscount / 100.0);
+    /**
+     * Algoritmo centralizzato di ammortamento e sconti a cascata (DRY).
+     */
+    private BigDecimal applyStandardDepreciation(BigDecimal basePrice, int promoDiscount, String licencePlate, int km, int year) {
+        BigDecimal currentPrice = basePrice;
+
+        // 1. Sconto promozionale
+        if (promoDiscount > 0) {
+            double promoFactor = 1.0 - (promoDiscount / 100.0);
             currentPrice = currentPrice.multiply(BigDecimal.valueOf(promoFactor));
         }
 
-        if (plate != null && !plate.trim().isEmpty()) {
+        // 2. Sconto sull'usato (20% se targa presente)
+        if (licencePlate != null && !licencePlate.trim().isEmpty()) {
             currentPrice = currentPrice.multiply(BigDecimal.valueOf(0.80));
         }
 
+        // 3. Ammortamento anno (5% all'anno rispetto all'anno corrente)
         int currentYear = Year.now().getValue();
         int yearsOld = Math.max(0, currentYear - year);
         if (yearsOld > 0) {
@@ -80,6 +62,7 @@ public final class PriceCalculatorService {
             currentPrice = currentPrice.multiply(BigDecimal.valueOf(yearFactor));
         }
 
+        // 4. Ammortamento chilometri (5% ogni 20.000 km)
         if (km > 0) {
             double kmExponent = (double) km / 20000.0;
             double kmFactor = Math.pow(0.95, kmExponent);

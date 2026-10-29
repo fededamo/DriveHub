@@ -10,6 +10,14 @@ import it.unifi.drivehub.domain.vehicle.Brand;
 import it.unifi.drivehub.domain.vehicle.Model;
 import it.unifi.drivehub.domain.vehicle.Vehicle;
 import it.unifi.drivehub.domain.vehicle.VehicleState;
+import it.unifi.drivehub.service.AuthService;
+import it.unifi.drivehub.service.CatalogService;
+import it.unifi.drivehub.service.OperationQueryService;
+import it.unifi.drivehub.service.PriceCalculatorService;
+import it.unifi.drivehub.service.PurchaseService;
+import it.unifi.drivehub.service.RentalService;
+import it.unifi.drivehub.service.SaleToDealershipService;
+import it.unifi.drivehub.service.TestDriveService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -25,11 +33,21 @@ import java.util.List;
 
 /**
  * Dashboard per il Cliente (Customer).
+ * Adotta la Dependency Injection ricevendo tutti i servizi di dominio via costruttore.
  */
 public final class ClientDashboardView extends BorderPane {
 
     private final Client client;
+    private final AuthService authService;
+    private final PurchaseService purchaseService;
+    private final SaleToDealershipService saleToDealershipService;
+    private final RentalService rentalService;
+    private final TestDriveService testDriveService;
+    private final CatalogService catalogService;
+    private final OperationQueryService operationQueryService;
+    private final PriceCalculatorService priceCalculatorService;
     private final Runnable onLogout;
+
     private Label balanceLabel;
     private TableView<Vehicle> saleTable;
     private TableView<Vehicle> rentTable;
@@ -38,7 +56,37 @@ public final class ClientDashboardView extends BorderPane {
     private TableView<TestDrive> myTestDrivesTable;
 
     public ClientDashboardView(Client client, Runnable onLogout) {
+        this(client,
+                AppContext.getInstance().getAuthService(),
+                AppContext.getInstance().getPurchaseService(),
+                AppContext.getInstance().getSaleToDealershipService(),
+                AppContext.getInstance().getRentalService(),
+                AppContext.getInstance().getTestDriveService(),
+                AppContext.getInstance().getCatalogService(),
+                AppContext.getInstance().getOperationQueryService(),
+                AppContext.getInstance().getPriceCalculatorService(),
+                onLogout);
+    }
+
+    public ClientDashboardView(Client client,
+                               AuthService authService,
+                               PurchaseService purchaseService,
+                               SaleToDealershipService saleToDealershipService,
+                               RentalService rentalService,
+                               TestDriveService testDriveService,
+                               CatalogService catalogService,
+                               OperationQueryService operationQueryService,
+                               PriceCalculatorService priceCalculatorService,
+                               Runnable onLogout) {
         this.client = client;
+        this.authService = authService;
+        this.purchaseService = purchaseService;
+        this.saleToDealershipService = saleToDealershipService;
+        this.rentalService = rentalService;
+        this.testDriveService = testDriveService;
+        this.catalogService = catalogService;
+        this.operationQueryService = operationQueryService;
+        this.priceCalculatorService = priceCalculatorService;
         this.onLogout = onLogout;
         buildUi();
         javafx.application.Platform.runLater(this::checkExpirationsOnStartup);
@@ -46,7 +94,7 @@ public final class ClientDashboardView extends BorderPane {
 
     private void checkExpirationsOnStartup() {
         try {
-            List<String> notices = AppContext.getInstance().getPurchaseService().checkAndHandleExpiredRequests(client.getId());
+            List<String> notices = purchaseService.checkAndHandleExpiredRequests(client.getId());
             if (!notices.isEmpty()) {
                 StringBuilder sb = new StringBuilder();
                 for (String n : notices) {
@@ -62,27 +110,25 @@ public final class ClientDashboardView extends BorderPane {
     }
 
     private void buildUi() {
-        // Header
-        HBox header = UiUtils.createHeader("DriveHub", "Area Cliente - Benvenuto " + client.getName() + " " + client.getSurname());
+        // Intestazione con Info Utente e Saldo
+        HBox header = UiUtils.createHeader("DriveHub", "Area Riservata Cliente - " + client.getName() + " " + client.getSurname());
         HBox.setHgrow(header.getChildren().get(0), Priority.ALWAYS);
 
-        balanceLabel = new Label("Saldo: " + UiUtils.formatCurrency(client.getBankAccount() != null ? client.getBankAccount().getBalance() : BigDecimal.ZERO));
+        balanceLabel = new Label();
         balanceLabel.getStyleClass().add("balance-badge");
+        refreshBalance();
 
-        Button btnTopUp = new Button("Ricarica");
+        Button btnTopUp = new Button("Ricarica Saldo");
         btnTopUp.getStyleClass().add("button-success");
         btnTopUp.setOnAction(e -> openTopUpDialog());
 
         Button btnAccount = new Button("Gestione Account");
         btnAccount.getStyleClass().add("button-secondary");
-        btnAccount.setOnAction(e -> AccountManagementDialog.show((Stage) getScene().getWindow(), client, onLogout, u -> refreshBalance()));
+        btnAccount.setOnAction(e -> AccountManagementDialog.show((Stage) getScene().getWindow(), client, authService, onLogout, u -> refreshBalance()));
 
         Button btnLogout = new Button("Disconnetti");
         btnLogout.getStyleClass().add("button-danger");
-        btnLogout.setOnAction(e -> {
-            AppContext.getInstance().logout();
-            onLogout.run();
-        });
+        btnLogout.setOnAction(e -> onLogout.run());
 
         HBox userControls = new HBox(10, balanceLabel, btnTopUp, btnAccount, btnLogout);
         userControls.setAlignment(Pos.CENTER_RIGHT);
@@ -104,7 +150,7 @@ public final class ClientDashboardView extends BorderPane {
     }
 
     private void refreshBalance() {
-        client.setBankAccount(AppContext.getInstance().getAuthService().getClientBankAccount(client.getId()));
+        client.setBankAccount(authService.getClientBankAccount(client.getId()));
         balanceLabel.setText("Saldo: " + UiUtils.formatCurrency(client.getBankAccount().getBalance()));
     }
 
@@ -116,7 +162,7 @@ public final class ClientDashboardView extends BorderPane {
         dialog.showAndWait().ifPresent(val -> {
             try {
                 BigDecimal amount = new BigDecimal(val.trim().replace(",", "."));
-                AppContext.getInstance().getAuthService().topUpClientBalance(client.getId(), amount);
+                authService.topUpClientBalance(client.getId(), amount);
                 refreshBalance();
                 UiUtils.showInfo("Ricarica Effettuata", "Accreditati con successo € " + amount);
             } catch (Exception ex) {
@@ -125,7 +171,7 @@ public final class ClientDashboardView extends BorderPane {
         });
     }
 
-    // --- TAB 1: CATALOGO AUTO IN VENDITA ---
+    // --- TAB 1: CATALOGO VENDITA ---
     private VBox buildSaleCatalogTab() {
         VBox box = new VBox(15);
         box.setPadding(new Insets(20));
@@ -133,7 +179,7 @@ public final class ClientDashboardView extends BorderPane {
         saleTable = new TableView<>();
         configureVehicleTable(saleTable, true);
 
-        Button btnBuy = new Button("Procedi all'Acquisto (Acconto 20%)");
+        Button btnBuy = new Button("Acquista Veicolo (Blocca con Acconto 20%)");
         btnBuy.setOnAction(e -> handlePurchaseAction());
 
         Button btnTestDrive = new Button("Prenota Test Drive");
@@ -149,7 +195,7 @@ public final class ClientDashboardView extends BorderPane {
     }
 
     private void loadSaleVehicles() {
-        saleTable.getItems().setAll(AppContext.getInstance().getCatalogService().getVehiclesByState(VehicleState.SALE));
+        saleTable.getItems().setAll(catalogService.getVehiclesByState(VehicleState.SALE));
     }
 
     private void handlePurchaseAction() {
@@ -159,8 +205,8 @@ public final class ClientDashboardView extends BorderPane {
             return;
         }
 
-        BigDecimal fullPrice = AppContext.getInstance().getCatalogService().getEffectiveVehiclePrice(v);
-        BigDecimal deposit = AppContext.getInstance().getPriceCalculatorService().calculatePurchaseDeposit(fullPrice);
+        BigDecimal fullPrice = catalogService.getEffectiveVehiclePrice(v);
+        BigDecimal deposit = priceCalculatorService.calculatePurchaseDeposit(fullPrice);
 
         boolean confirm = UiUtils.showConfirmation("Conferma Avvio Operazione",
                 "Procedere alla prenotazione dell'acquisto?",
@@ -170,7 +216,7 @@ public final class ClientDashboardView extends BorderPane {
         if (!confirm) return;
 
         try {
-            AppContext.getInstance().getPurchaseService().initiatePurchase(v.getId(), client.getId());
+            purchaseService.initiatePurchase(v.getId(), client.getId());
             refreshBalance();
             loadSaleVehicles();
             refreshMyOperations();
@@ -204,7 +250,7 @@ public final class ClientDashboardView extends BorderPane {
     }
 
     private void loadRentVehicles() {
-        rentTable.getItems().setAll(AppContext.getInstance().getCatalogService().getVehiclesByState(VehicleState.RENT));
+        rentTable.getItems().setAll(catalogService.getVehiclesByState(VehicleState.RENT));
     }
 
     private void handleRentAction() {
@@ -229,7 +275,7 @@ public final class ClientDashboardView extends BorderPane {
             LocalDate en = endPicker.getValue();
             if (s != null && en != null && !en.isBefore(s)) {
                 try {
-                    BigDecimal cost = AppContext.getInstance().getRentalService().calculateRentalCost(v.getId(), s, en);
+                    BigDecimal cost = rentalService.calculateRentalCost(v.getId(), s, en);
                     costLabel.setText("Costo Totale: " + UiUtils.formatCurrency(cost) + " (100% addebitato all'atto della conferma)");
                 } catch (Exception ex) {
                     costLabel.setText("Date non valide.");
@@ -249,7 +295,7 @@ public final class ClientDashboardView extends BorderPane {
         dialog.showAndWait().ifPresent(btn -> {
             if (btn == ButtonType.OK) {
                 try {
-                    AppContext.getInstance().getRentalService().bookRental(v.getId(), client.getId(), startPicker.getValue(), endPicker.getValue());
+                    rentalService.bookRental(v.getId(), client.getId(), startPicker.getValue(), endPicker.getValue());
                     refreshBalance();
                     refreshMyOperations();
                     UiUtils.showInfo("Noleggio Confermato", "Prenotazione registrata con successo!");
@@ -289,7 +335,7 @@ public final class ClientDashboardView extends BorderPane {
             if (btn == ButtonType.OK) {
                 try {
                     LocalDateTime dt = LocalDateTime.of(datePicker.getValue(), LocalTime.of(hourCombo.getValue(), 0));
-                    AppContext.getInstance().getTestDriveService().bookTestDrive(v.getId(), client.getId(), dt);
+                    testDriveService.bookTestDrive(v.getId(), client.getId(), dt);
                     refreshMyOperations();
                     UiUtils.showInfo("Test Drive Prenotato", "Il giro di prova è stato confermato per il giorno " + dt.format(UiUtils.DATE_TIME_FORMATTER));
                 } catch (Exception ex) {
@@ -309,13 +355,13 @@ public final class ClientDashboardView extends BorderPane {
         lbl.getStyleClass().add("card-title");
 
         ComboBox<Brand> brandCombo = new ComboBox<>();
-        brandCombo.getItems().setAll(AppContext.getInstance().getCatalogService().getAllBrands());
+        brandCombo.getItems().setAll(catalogService.getAllBrands());
         ComboBox<Model> modelCombo = new ComboBox<>();
 
         brandCombo.setOnAction(e -> {
             Brand b = brandCombo.getValue();
             if (b != null) {
-                modelCombo.getItems().setAll(AppContext.getInstance().getCatalogService().getModelsByBrand(b.getName()));
+                modelCombo.getItems().setAll(catalogService.getModelsByBrand(b.getName()));
             }
         });
 
@@ -339,7 +385,7 @@ public final class ClientDashboardView extends BorderPane {
                 if (m == null) throw new IllegalArgumentException("Seleziona prima marca e modello.");
                 int km = Integer.parseInt(kmField.getText().trim());
                 int year = Integer.parseInt(yearField.getText().trim());
-                BigDecimal est = AppContext.getInstance().getSaleToDealershipService().calculateEstimate(m.getId(), plateField.getText(), km, year);
+                BigDecimal est = saleToDealershipService.calculateEstimate(m.getId(), plateField.getText(), km, year);
                 estimateLabel.setText("Valore di stima calcolato: " + UiUtils.formatCurrency(est));
             } catch (Exception ex) {
                 UiUtils.showError("Errore Calcolo", ex.getMessage());
@@ -354,7 +400,7 @@ public final class ClientDashboardView extends BorderPane {
                 if (m == null) throw new IllegalArgumentException("Seleziona marca e modello.");
                 int km = Integer.parseInt(kmField.getText().trim());
                 int year = Integer.parseInt(yearField.getText().trim());
-                AppContext.getInstance().getSaleToDealershipService().submitSaleProposal(
+                saleToDealershipService.submitSaleProposal(
                         client.getId(), m.getId(), vinField.getText(), plateField.getText(), km, year
                 );
                 refreshMyOperations();
@@ -409,7 +455,7 @@ public final class ClientDashboardView extends BorderPane {
         btnCancelTd.setOnAction(e -> {
             TestDrive td = myTestDrivesTable.getSelectionModel().getSelectedItem();
             if (td != null) {
-                AppContext.getInstance().getTestDriveService().cancelTestDrive(td.getId(), client.getId());
+                testDriveService.cancelTestDrive(td.getId(), client.getId());
                 refreshMyOperations();
                 UiUtils.showInfo("Test Drive Annullato", "Prenotazione annullata.");
             }
@@ -448,7 +494,7 @@ public final class ClientDashboardView extends BorderPane {
         if (!confirm) return;
 
         try {
-            AppContext.getInstance().getPurchaseService().completePurchase(r.getId());
+            purchaseService.completePurchase(r.getId());
             refreshBalance();
             refreshMyOperations();
             loadSaleVehicles();
@@ -460,11 +506,11 @@ public final class ClientDashboardView extends BorderPane {
 
     private void refreshMyOperations() {
         requestsTable.getItems().setAll(
-                AppContext.getInstance().getOperationQueryService().getClientRequests(client.getId())
+                operationQueryService.getClientRequests(client.getId())
                         .stream().filter(r -> r.getType() == RequestType.PURCHASE).toList()
         );
-        myRentsTable.getItems().setAll(AppContext.getInstance().getOperationQueryService().getClientRents(client.getId()));
-        myTestDrivesTable.getItems().setAll(AppContext.getInstance().getOperationQueryService().getClientTestDrives(client.getId()));
+        myRentsTable.getItems().setAll(operationQueryService.getClientRents(client.getId()));
+        myTestDrivesTable.getItems().setAll(operationQueryService.getClientTestDrives(client.getId()));
     }
 
     private void configureVehicleTable(TableView<Vehicle> table, boolean isSale) {
@@ -497,11 +543,11 @@ public final class ClientDashboardView extends BorderPane {
             if (data == null || data.getValue() == null) return new SimpleStringProperty("");
             try {
                 if (isSale) {
-                    BigDecimal effPrice = AppContext.getInstance().getCatalogService().getEffectiveVehiclePrice(data.getValue());
+                    BigDecimal effPrice = catalogService.getEffectiveVehiclePrice(data.getValue());
                     return new SimpleStringProperty(UiUtils.formatCurrency(effPrice));
                 } else {
-                    BigDecimal effPrice = AppContext.getInstance().getCatalogService().getEffectiveVehiclePrice(data.getValue());
-                    BigDecimal dailyRate = AppContext.getInstance().getPriceCalculatorService().calculateDailyRentalRate(effPrice);
+                    BigDecimal effPrice = catalogService.getEffectiveVehiclePrice(data.getValue());
+                    BigDecimal dailyRate = priceCalculatorService.calculateDailyRentalRate(effPrice);
                     return new SimpleStringProperty(UiUtils.formatCurrency(dailyRate) + "/giorno");
                 }
             } catch (Exception ex) {
@@ -509,8 +555,8 @@ public final class ClientDashboardView extends BorderPane {
             }
         });
 
-        table.getColumns().addAll(colModel, colYear, colPlate, colKm, colPrice);
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        table.getColumns().addAll(List.of(colModel, colYear, colPlate, colKm, colPrice));
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
     }
 
     private void configureRequestsTable() {
@@ -548,8 +594,8 @@ public final class ClientDashboardView extends BorderPane {
             );
         });
 
-        requestsTable.getColumns().addAll(colId, colVeh, colDep, colStatus, colExp);
-        requestsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        requestsTable.getColumns().addAll(List.of(colId, colVeh, colDep, colStatus, colExp));
+        requestsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
     }
 
     private void configureMyRentsTable() {
@@ -577,8 +623,8 @@ public final class ClientDashboardView extends BorderPane {
             return new SimpleStringProperty(data.getValue().getEndDate() != null ? data.getValue().getEndDate().format(UiUtils.DATE_FORMATTER) : "");
         });
 
-        myRentsTable.getColumns().addAll(colVeh, colAmount, colStart, colEnd);
-        myRentsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        myRentsTable.getColumns().addAll(List.of(colVeh, colAmount, colStart, colEnd));
+        myRentsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
     }
 
     private void configureMyTestDrivesTable() {
@@ -594,15 +640,14 @@ public final class ClientDashboardView extends BorderPane {
             return new SimpleStringProperty(data.getValue().getDate() != null ? data.getValue().getDate().format(UiUtils.DATE_TIME_FORMATTER) : "");
         });
 
-        myTestDrivesTable.getColumns().addAll(colVeh, colDate);
-        myTestDrivesTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        myTestDrivesTable.getColumns().addAll(List.of(colVeh, colDate));
+        myTestDrivesTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
     }
 
     private String getVehicleDesc(Vehicle v) {
         if (v == null) return "";
-        return AppContext.getInstance().getCatalogService().getModelById(v.getModelId())
+        return catalogService.getModelById(v.getModelId())
                 .map(m -> m.getBrand() + " " + m.getName() + " (" + v.getYear() + ")")
                 .orElse("Veicolo #" + v.getId());
     }
 }
-

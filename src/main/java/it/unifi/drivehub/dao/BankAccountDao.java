@@ -13,6 +13,10 @@ public interface BankAccountDao {
 
     Optional<BankAccount> findByClientId(Long clientId);
 
+    default Optional<BankAccount> findByClientId(Long clientId, Connection conn) {
+        return findByClientId(clientId);
+    }
+
     Optional<BankAccount> findByIban(String iban);
 
     void save(BankAccount account, Connection conn);

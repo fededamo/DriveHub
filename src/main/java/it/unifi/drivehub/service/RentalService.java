@@ -79,7 +79,7 @@ public final class RentalService {
         BigDecimal totalCost = calculateRentalCost(vehicleId, start, end);
 
         Rent createdRent = db.executeInTransactionWithResult(conn -> {
-            Vehicle vehicle = vehicleDao.findById(vehicleId)
+            Vehicle vehicle = vehicleDao.findById(vehicleId, conn)
                     .orElseThrow(() -> new IllegalStateException("Veicolo non trovato: " + vehicleId));
             if (vehicle.getState() != VehicleState.RENT) {
                 throw new IllegalStateException("Il veicolo non è abilitato per il noleggio.");
@@ -92,7 +92,7 @@ public final class RentalService {
             }
 
             // Addebito al 100% sul conto del cliente
-            BankAccount account = bankAccountDao.findByClientId(clientId)
+            BankAccount account = bankAccountDao.findByClientId(clientId, conn)
                     .orElseThrow(() -> new IllegalStateException("Conto cliente non trovato."));
             account.withdraw(totalCost);
             bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
@@ -121,7 +121,7 @@ public final class RentalService {
         }
 
         return db.executeInTransactionWithResult(conn -> {
-            Vehicle vehicle = vehicleDao.findById(vehicleId)
+            Vehicle vehicle = vehicleDao.findById(vehicleId, conn)
                     .orElseThrow(() -> new IllegalStateException("Veicolo non trovato: " + vehicleId));
             VehicleState oldState = vehicle.getState();
 
@@ -130,7 +130,7 @@ public final class RentalService {
                 // Elimina prenotazioni future e rimborsa i clienti
                 List<Rent> cancelledRents = rentDao.deleteFutureByVehicleId(vehicleId, conn);
                 for (Rent cancelled : cancelledRents) {
-                    BankAccount account = bankAccountDao.findByClientId(cancelled.getClientId()).orElse(null);
+                    BankAccount account = bankAccountDao.findByClientId(cancelled.getClientId(), conn).orElse(null);
                     if (account != null) {
                         account.deposit(cancelled.getAmount());
                         bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);

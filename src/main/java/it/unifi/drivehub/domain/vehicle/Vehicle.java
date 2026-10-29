@@ -114,6 +114,17 @@ public final class Vehicle {
         return year;
     }
 
+    /**
+     * Valida che l'anno di produzione del veicolo sia maggiore o uguale
+     * all'anno di rilascio del relativo modello (vincolo di dominio).
+     */
+    public void validateProductionYear(int modelReleaseYear) {
+        if (this.year < modelReleaseYear) {
+            throw new IllegalArgumentException("L'anno di produzione del veicolo (" + this.year
+                    + ") non può essere precedente all'anno di rilascio del modello (" + modelReleaseYear + ").");
+        }
+    }
+
     public VehicleState getState() {
         return state;
     }
@@ -133,12 +144,18 @@ public final class Vehicle {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Vehicle vehicle)) return false;
-        return Objects.equals(id, vehicle.id) || Objects.equals(vin, vehicle.vin);
+        if (id != null && vehicle.id != null) {
+            return Objects.equals(id, vehicle.id);
+        }
+        if (id == null && vehicle.id == null) {
+            return Objects.equals(vin, vehicle.vin);
+        }
+        return false;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, vin);
+        return id != null ? Objects.hash(id) : Objects.hash(vin);
     }
 
     @Override

@@ -21,9 +21,17 @@ public final class PostgresBankAccountDao implements BankAccountDao {
 
     @Override
     public Optional<BankAccount> findByClientId(Long clientId) {
+        try (Connection conn = db.getConnection()) {
+            return findByClientId(clientId, conn);
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore di connessione durante la ricerca del conto bancario per cliente: " + clientId, e);
+        }
+    }
+
+    @Override
+    public Optional<BankAccount> findByClientId(Long clientId, Connection conn) {
         String sql = "SELECT iban, client, balance FROM bank_account WHERE client = ?";
-        try (Connection conn = db.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, clientId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {

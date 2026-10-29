@@ -39,14 +39,14 @@ public final class TestDriveService {
             throw new IllegalArgumentException("Impossibile prenotare un test drive nel passato.");
         }
 
-        // Controllo massimo 3 test drive attivi per il cliente
-        int activeCount = testDriveDao.countActiveByClientId(clientId);
-        if (activeCount >= 3) {
-            throw new IllegalStateException("Hai già raggiunto il limite massimo di 3 test drive prenotati.");
-        }
-
         return db.executeInTransactionWithResult(conn -> {
-            Vehicle vehicle = vehicleDao.findById(vehicleId)
+            // Controllo concorrente atomico: massimo 3 test drive attivi per il cliente
+            int activeCount = testDriveDao.countActiveByClientId(clientId, conn);
+            if (activeCount >= 3) {
+                throw new IllegalStateException("Hai già raggiunto il limite massimo di 3 test drive prenotati.");
+            }
+
+            Vehicle vehicle = vehicleDao.findById(vehicleId, conn)
                     .orElseThrow(() -> new IllegalStateException("Veicolo non trovato: " + vehicleId));
             if (vehicle.getState() != VehicleState.SALE && vehicle.getState() != VehicleState.RENT) {
                 throw new IllegalStateException("I test drive possono essere prenotati solo su veicoli in vendita o a noleggio.");
@@ -69,9 +69,8 @@ public final class TestDriveService {
 
     public void cancelTestDrive(Long testDriveId, Long clientId) {
         db.executeInTransaction(conn -> {
-            TestDrive td = testDriveDao.findAll().stream()
-                    .filter(t -> t.getId().equals(testDriveId) && t.getClientId().equals(clientId))
-                    .findFirst()
+            TestDrive td = testDriveDao.findById(testDriveId, conn)
+                    .filter(t -> t.getClientId().equals(clientId))
                     .orElseThrow(() -> new IllegalArgumentException("Test drive non trovato per l'utente specificato."));
             testDriveDao.delete(td.getId(), conn);
         });

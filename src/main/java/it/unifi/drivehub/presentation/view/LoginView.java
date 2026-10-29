@@ -3,6 +3,7 @@ package it.unifi.drivehub.presentation.view;
 import it.unifi.drivehub.AppContext;
 import it.unifi.drivehub.domain.user.Client;
 import it.unifi.drivehub.domain.user.User;
+import it.unifi.drivehub.service.AuthService;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -18,12 +19,19 @@ import java.util.function.Consumer;
 
 /**
  * Schermata iniziale di Autenticazione e Registrazione.
+ * Adotta la Dependency Injection ricevendo AuthService.
  */
 public final class LoginView extends BorderPane {
 
+    private final AuthService authService;
     private final Consumer<User> onLoginSuccess;
 
     public LoginView(Consumer<User> onLoginSuccess) {
+        this(AppContext.getInstance().getAuthService(), onLoginSuccess);
+    }
+
+    public LoginView(AuthService authService, Consumer<User> onLoginSuccess) {
+        this.authService = authService;
         this.onLoginSuccess = onLoginSuccess;
         buildUi();
     }
@@ -111,8 +119,7 @@ public final class LoginView extends BorderPane {
     private void handleLogin(String email, String password) {
         User user;
         try {
-            user = AppContext.getInstance().getAuthService().login(email, password);
-            AppContext.getInstance().setCurrentUser(user);
+            user = authService.login(email, password);
         } catch (Throwable ex) {
             UiUtils.showError("Errore di Accesso", ex.getMessage());
             return;
@@ -130,11 +137,10 @@ public final class LoginView extends BorderPane {
     private void handleRegister(String name, String surname, String email, String password) {
         Client client;
         try {
-            client = AppContext.getInstance().getAuthService().registerClient(name, surname, email, password);
+            client = authService.registerClient(name, surname, email, password);
             UiUtils.showInfo("Registrazione Completata",
                     "Benvenuto " + client.getName() + "!\nÈ stato creato automaticamente un conto corrente con IBAN:\n"
                             + client.getBankAccount().getIban() + "\nSaldo iniziale: € 0,00");
-            AppContext.getInstance().setCurrentUser(client);
         } catch (Throwable ex) {
             UiUtils.showError("Errore di Registrazione", ex.getMessage());
             return;
@@ -149,4 +155,3 @@ public final class LoginView extends BorderPane {
         }
     }
 }
-

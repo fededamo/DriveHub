@@ -7,30 +7,65 @@ import it.unifi.drivehub.domain.operation.RequestType;
 import it.unifi.drivehub.domain.user.Salesman;
 import it.unifi.drivehub.domain.vehicle.Vehicle;
 import it.unifi.drivehub.domain.vehicle.VehicleState;
+import it.unifi.drivehub.service.AuthService;
+import it.unifi.drivehub.service.CatalogService;
+import it.unifi.drivehub.service.OperationQueryService;
+import it.unifi.drivehub.service.PurchaseService;
+import it.unifi.drivehub.service.RentalService;
+import it.unifi.drivehub.service.SaleToDealershipService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.util.List;
 
 /**
  * Dashboard per il Venditore (Salesman).
+ * Adotta la Dependency Injection ricevendo tutti i servizi via costruttore.
  */
 public final class SalesmanDashboardView extends BorderPane {
 
     private final Salesman salesman;
+    private final AuthService authService;
+    private final PurchaseService purchaseService;
+    private final SaleToDealershipService saleToDealershipService;
+    private final RentalService rentalService;
+    private final CatalogService catalogService;
+    private final OperationQueryService operationQueryService;
     private final Runnable onLogout;
+
     private TableView<Request> pendingTable;
     private TableView<Vehicle> inventoryTable;
 
     public SalesmanDashboardView(Salesman salesman, Runnable onLogout) {
+        this(salesman,
+                AppContext.getInstance().getAuthService(),
+                AppContext.getInstance().getPurchaseService(),
+                AppContext.getInstance().getSaleToDealershipService(),
+                AppContext.getInstance().getRentalService(),
+                AppContext.getInstance().getCatalogService(),
+                AppContext.getInstance().getOperationQueryService(),
+                onLogout);
+    }
+
+    public SalesmanDashboardView(Salesman salesman,
+                                 AuthService authService,
+                                 PurchaseService purchaseService,
+                                 SaleToDealershipService saleToDealershipService,
+                                 RentalService rentalService,
+                                 CatalogService catalogService,
+                                 OperationQueryService operationQueryService,
+                                 Runnable onLogout) {
         this.salesman = salesman;
+        this.authService = authService;
+        this.purchaseService = purchaseService;
+        this.saleToDealershipService = saleToDealershipService;
+        this.rentalService = rentalService;
+        this.catalogService = catalogService;
+        this.operationQueryService = operationQueryService;
         this.onLogout = onLogout;
         buildUi();
     }
@@ -41,14 +76,11 @@ public final class SalesmanDashboardView extends BorderPane {
 
         Button btnAccount = new Button("Gestione Account");
         btnAccount.getStyleClass().add("button-secondary");
-        btnAccount.setOnAction(e -> AccountManagementDialog.show((Stage) getScene().getWindow(), salesman, onLogout, null));
+        btnAccount.setOnAction(e -> AccountManagementDialog.show((Stage) getScene().getWindow(), salesman, authService, onLogout, null));
 
         Button btnLogout = new Button("Disconnetti");
         btnLogout.getStyleClass().add("button-danger");
-        btnLogout.setOnAction(e -> {
-            AppContext.getInstance().logout();
-            onLogout.run();
-        });
+        btnLogout.setOnAction(e -> onLogout.run());
 
         HBox controls = new HBox(10, btnAccount, btnLogout);
         controls.setAlignment(Pos.CENTER_RIGHT);
@@ -93,7 +125,7 @@ public final class SalesmanDashboardView extends BorderPane {
     }
 
     private void loadPendingRequests() {
-        pendingTable.getItems().setAll(AppContext.getInstance().getOperationQueryService().getPendingRequests());
+        pendingTable.getItems().setAll(operationQueryService.getPendingRequests());
     }
 
     private void handleApproveRequest() {
@@ -105,10 +137,10 @@ public final class SalesmanDashboardView extends BorderPane {
 
         try {
             if (req.getType() == RequestType.PURCHASE) {
-                AppContext.getInstance().getPurchaseService().approvePurchase(req.getId(), salesman.getId());
+                purchaseService.approvePurchase(req.getId(), salesman.getId());
                 UiUtils.showInfo("Richiesta Approvata", "Richiesta d'acquisto approvata! Il cliente ha ora 1 mese di tempo per saldare il restante 80%.");
             } else {
-                AppContext.getInstance().getSaleToDealershipService().approveSaleProposal(req.getId(), salesman.getId());
+                saleToDealershipService.approveSaleProposal(req.getId(), salesman.getId());
                 UiUtils.showInfo("Proposta Accettata", "Proposta di vendita accettata: importo accreditato al cliente e veicolo aggiunto al catalogo in stato SALE.");
             }
             loadPendingRequests();
@@ -127,10 +159,10 @@ public final class SalesmanDashboardView extends BorderPane {
 
         try {
             if (req.getType() == RequestType.PURCHASE) {
-                AppContext.getInstance().getPurchaseService().rejectPurchase(req.getId());
+                purchaseService.rejectPurchase(req.getId());
                 UiUtils.showInfo("Richiesta Rifiutata", "Richiesta d'acquisto rifiutata: caparra rimborsata integralmente al cliente e veicolo tornato SALE.");
             } else {
-                AppContext.getInstance().getSaleToDealershipService().rejectSaleProposal(req.getId());
+                saleToDealershipService.rejectSaleProposal(req.getId());
                 UiUtils.showInfo("Proposta Rifiutata", "Proposta di vendita rifiutata.");
             }
             loadPendingRequests();
@@ -161,7 +193,7 @@ public final class SalesmanDashboardView extends BorderPane {
     }
 
     private void loadInventoryVehicles() {
-        List<Vehicle> list = AppContext.getInstance().getCatalogService().getAllVehicles().stream()
+        List<Vehicle> list = catalogService.getAllVehicles().stream()
                 .filter(v -> v.getState() == VehicleState.SALE || v.getState() == VehicleState.RENT)
                 .toList();
         inventoryTable.getItems().setAll(list);
@@ -178,7 +210,7 @@ public final class SalesmanDashboardView extends BorderPane {
 
         // Se da RENT a SALE, verifica prenotazioni future di noleggio (Pagina 3)
         if (v.getState() == VehicleState.RENT && target == VehicleState.SALE) {
-            List<Rent> futureRents = AppContext.getInstance().getRentalService().getFutureRentsForVehicle(v.getId());
+            List<Rent> futureRents = rentalService.getFutureRentsForVehicle(v.getId());
             String warningMsg = "Stai passando il veicolo #" + v.getId() + " da RENT a SALE.";
             if (!futureRents.isEmpty()) {
                 warningMsg += "\nATTENZIONE: Sono presenti " + futureRents.size() + " prenotazioni future di noleggio su questo veicolo!\n"
@@ -194,7 +226,7 @@ public final class SalesmanDashboardView extends BorderPane {
         }
 
         try {
-            int refunded = AppContext.getInstance().getRentalService().changeVehicleRentalState(v.getId(), target);
+            int refunded = rentalService.changeVehicleRentalState(v.getId(), target);
             if (refunded > 0) {
                 UiUtils.showInfo("Stato Aggiornato", "Stato modificato in " + target + ". Rimborsati con successo " + refunded + " noleggi futuri.");
             } else {
@@ -239,8 +271,8 @@ public final class SalesmanDashboardView extends BorderPane {
             return new SimpleStringProperty(UiUtils.formatCurrency(data.getValue().getDeposit().abs()));
         });
 
-        pendingTable.getColumns().addAll(colId, colType, colClient, colVeh, colAmount);
-        pendingTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        pendingTable.getColumns().addAll(List.of(colId, colType, colClient, colVeh, colAmount));
+        pendingTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
     }
 
     private void configureInventoryTable() {
@@ -254,7 +286,7 @@ public final class SalesmanDashboardView extends BorderPane {
         colModel.setCellValueFactory(data -> {
             if (data == null || data.getValue() == null) return new SimpleStringProperty("");
             return new SimpleStringProperty(
-                    AppContext.getInstance().getCatalogService().getModelById(data.getValue().getModelId())
+                    catalogService.getModelById(data.getValue().getModelId())
                             .map(m -> m.getBrand() + " " + m.getName()).orElse("N/D")
             );
         });
@@ -277,8 +309,7 @@ public final class SalesmanDashboardView extends BorderPane {
             return new SimpleStringProperty(data.getValue().getState().name());
         });
 
-        inventoryTable.getColumns().addAll(colId, colModel, colVin, colPlate, colState);
-        inventoryTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        inventoryTable.getColumns().addAll(List.of(colId, colModel, colVin, colPlate, colState));
+        inventoryTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
     }
 }
-

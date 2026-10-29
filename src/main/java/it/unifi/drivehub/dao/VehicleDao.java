@@ -19,7 +19,15 @@ public interface VehicleDao {
 
     Optional<Vehicle> findById(Long id);
 
+    default Optional<Vehicle> findById(Long id, Connection conn) {
+        return findById(id);
+    }
+
     Optional<Vehicle> findByVin(String vin);
+
+    default Optional<Vehicle> findByVin(String vin, Connection conn) {
+        return findByVin(vin);
+    }
 
     Vehicle save(Vehicle vehicle, Connection conn);
 

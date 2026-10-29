@@ -39,12 +39,6 @@
             <version>42.7.3</version>
         </dependency>
 
-        <!-- BCrypt per hashing sicuro delle password -->
-        <dependency>
-            <groupId>org.mindrot</groupId>
-            <artifactId>jbcrypt</artifactId>
-            <version>0.4</version>
-        </dependency>
 
         <!-- JUnit 5 per i test unitari -->
         <dependency>
@@ -83,6 +77,9 @@
                 <configuration>
                     <source>21</source>
                     <target>21</target>
+                    <compilerArgs>
+                        <arg>-Xlint:all</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
 

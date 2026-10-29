@@ -67,12 +67,18 @@ public final class Model {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Model model)) return false;
-        return Objects.equals(id, model.id) || Objects.equals(name, model.name);
+        if (id != null && model.id != null) {
+            return Objects.equals(id, model.id);
+        }
+        if (id == null && model.id == null) {
+            return Objects.equals(brand, model.brand) && Objects.equals(name, model.name);
+        }
+        return false;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return id != null ? Objects.hash(id) : Objects.hash(brand, name);
     }
 
     @Override

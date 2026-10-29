@@ -89,7 +89,7 @@ public final class Sale {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Sale sale)) return false;
-        return Objects.equals(id, sale.id);
+        return id != null && Objects.equals(id, sale.id);
     }
 
     @Override

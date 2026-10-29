@@ -3,18 +3,15 @@ package it.unifi.drivehub.presentation.view;
 import it.unifi.drivehub.AppContext;
 import it.unifi.drivehub.domain.user.Client;
 import it.unifi.drivehub.domain.user.User;
+import it.unifi.drivehub.service.AuthService;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.Separator;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -26,10 +23,15 @@ import java.util.function.Consumer;
  * Schermata di gestione account (Pagina 4 degli appunti).
  * Permette la modifica di email, password, ricarica saldo (per Clienti)
  * e la cancellazione controllata dell'account previa conferma della password attuale.
+ * Supporta la Dependency Injection ricevendo AuthService.
  */
 public final class AccountManagementDialog {
 
     public static void show(Stage owner, User user, Runnable onAccountDeleted, Consumer<User> onUserUpdated) {
+        show(owner, user, AppContext.getInstance().getAuthService(), onAccountDeleted, onUserUpdated);
+    }
+
+    public static void show(Stage owner, User user, AuthService authService, Runnable onAccountDeleted, Consumer<User> onUserUpdated) {
         Stage dialog = new Stage();
         dialog.initOwner(owner);
         dialog.initModality(Modality.APPLICATION_MODAL);
@@ -51,9 +53,9 @@ public final class AccountManagementDialog {
             String newEmail = newEmailField.getText();
             String pwd = pwdForEmailField.getText();
             try {
-                AppContext.getInstance().getAuthService().changeEmail(user.getId(), user.getRoleDisplayName(), newEmail, pwd);
+                authService.changeEmail(user.getId(), user.getRoleDisplayName(), newEmail, pwd);
                 UiUtils.showInfo("Operazione Riuscita", "Email aggiornata con successo in: " + newEmail);
-                if (user instanceof Client c) c.updateEmail(newEmail);
+                user.updateEmail(newEmail);
                 if (onUserUpdated != null) onUserUpdated.accept(user);
                 dialog.close();
             } catch (Exception ex) {
@@ -81,7 +83,7 @@ public final class AccountManagementDialog {
             String curPwd = currentPwdField.getText();
             String newPwd = newPwdField.getText();
             try {
-                AppContext.getInstance().getAuthService().changePassword(user.getId(), user.getRoleDisplayName(), newPwd, curPwd);
+                authService.changePassword(user.getId(), user.getRoleDisplayName(), newPwd, curPwd);
                 UiUtils.showInfo("Operazione Riuscita", "Password aggiornata con successo.");
                 dialog.close();
             } catch (Exception ex) {
@@ -107,8 +109,8 @@ public final class AccountManagementDialog {
             btnTopUp.setOnAction(e -> {
                 try {
                     BigDecimal amount = new BigDecimal(amountField.getText().trim().replace(",", "."));
-                    AppContext.getInstance().getAuthService().topUpClientBalance(client.getId(), amount);
-                    client.setBankAccount(AppContext.getInstance().getAuthService().getClientBankAccount(client.getId()));
+                    authService.topUpClientBalance(client.getId(), amount);
+                    client.setBankAccount(authService.getClientBankAccount(client.getId()));
                     UiUtils.showInfo("Ricarica Effettuata", "Accreditati con successo € " + amount + " sul conto.");
                     if (onUserUpdated != null) onUserUpdated.accept(client);
                     dialog.close();
@@ -141,7 +143,7 @@ public final class AccountManagementDialog {
             if (!confirm) return;
 
             try {
-                AppContext.getInstance().getAuthService().deleteAccount(user.getId(), user.getRoleDisplayName(), pwdForDeleteField.getText());
+                authService.deleteAccount(user.getId(), user.getRoleDisplayName(), pwdForDeleteField.getText());
                 UiUtils.showInfo("Account Eliminato", "L'account è stato cancellato con successo.");
                 dialog.close();
                 if (onAccountDeleted != null) onAccountDeleted.run();
@@ -164,4 +166,3 @@ public final class AccountManagementDialog {
         dialog.showAndWait();
     }
 }
-

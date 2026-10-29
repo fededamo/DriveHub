@@ -14,6 +14,12 @@ public interface TestDriveDao {
 
     List<TestDrive> findAll();
 
+    Optional<TestDrive> findById(Long id);
+
+    default Optional<TestDrive> findById(Long id, Connection conn) {
+        return findById(id);
+    }
+
     List<TestDrive> findByClientId(Long clientId);
 
     List<TestDrive> findByVehicleId(Long vehicleId);
@@ -21,6 +27,10 @@ public interface TestDriveDao {
     List<TestDrive> findFutureByVehicleId(Long vehicleId);
 
     int countActiveByClientId(Long clientId);
+
+    default int countActiveByClientId(Long clientId, Connection conn) {
+        return countActiveByClientId(clientId);
+    }
 
     boolean isVehicleAvailableForTestDrive(Long vehicleId, LocalDateTime date, Connection conn);
 

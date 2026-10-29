@@ -75,9 +75,17 @@ public final class PostgresRequestDao implements RequestDao {
 
     @Override
     public Optional<Request> findById(Long id) {
+        try (Connection conn = db.getConnection()) {
+            return findById(id, conn);
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore di connessione durante la ricerca della richiesta id: " + id, e);
+        }
+    }
+
+    @Override
+    public Optional<Request> findById(Long id, Connection conn) {
         String sql = "SELECT id, vehicle, client, salesman, deposit, exp_date, type::text as type_str FROM request WHERE id = ?";
-        try (Connection conn = db.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {

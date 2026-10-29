@@ -4,34 +4,26 @@ import java.util.Objects;
 
 /**
  * Entità Sconto Veicolo.
- * Invariante: percentuale compresa tra 0 e 50.
+ * Invariante: percentuale compresa tra 0 e 50 (ereditata da Discount).
  */
-public final class VehicleDiscount {
+public final class VehicleDiscount extends Discount {
 
     private final Long vehicleId;
-    private final int value;
 
     private VehicleDiscount(Long vehicleId, int value) {
+        super(value);
         this.vehicleId = vehicleId;
-        this.value = value;
     }
 
     public static VehicleDiscount create(Long vehicleId, int value) {
         if (vehicleId == null) {
             throw new IllegalArgumentException("L'ID del veicolo non può essere nullo.");
         }
-        if (value < 0 || value > 50) {
-            throw new IllegalArgumentException("Lo sconto deve essere compreso tra 0 e 50. Valore inserito: " + value);
-        }
         return new VehicleDiscount(vehicleId, value);
     }
 
     public Long getVehicleId() {
         return vehicleId;
-    }
-
-    public int getValue() {
-        return value;
     }
 
     @Override
@@ -51,4 +43,3 @@ public final class VehicleDiscount {
         return "VehicleDiscount{" + "vehicleId=" + vehicleId + ", value=" + value + "%}";
     }
 }
-
