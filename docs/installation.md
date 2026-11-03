@@ -67,7 +67,9 @@ la risorsa. La configurazione è in chiaro; non esiste un gestore di segreti.
 
 Il costruttore predefinito usa valori locali di fallback se la risorsa o una
 chiave mancano e ignora un errore di lettura del file: controllare esplicitamente
-tutte e tre le chiavi. Non presumere che una variabile d'ambiente le sostituisca.
+tutte e tre le chiavi. Le variabili `DRIVEHUB_DB_URL`, `DRIVEHUB_DB_USER` e
+`DRIVEHUB_DB_PASSWORD`, se presenti, prevalgono sulle rispettive proprietà.
+`run.bat` le imposta per collegare la propria istanza alla demo Docker.
 
 Verificare destinazione e permessi prima di eseguire SQL, usando gli stessi
 host/porta/ruolo/database della configurazione (qui l'esempio locale):
@@ -136,8 +138,8 @@ mvn -DskipTests clean package
 mvn javafx:run
 ```
 
-Su Windows `run.bat` richiama lo stesso goal Maven: richiede ugualmente JDK21,
-Maven nel PATH, PostgreSQL già avviato/configurato e schema predisposto.
+Su Windows `run.bat` avvia una demo Docker dedicata e poi il goal Maven:
+vedere l'avvio rapido nel [README](../README.md).
 Il JAR ordinario non è un installer autonomo con runtime e dipendenze inclusi.
 
 L'avvio **non** crea DB/ruoli, non esegue schema/demo e non resetta i dati.

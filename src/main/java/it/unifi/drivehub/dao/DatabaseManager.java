@@ -29,9 +29,9 @@ public final class DatabaseManager {
             }
         } catch (IOException ignored) {}
 
-        this.url = props.getProperty("db.url", DEFAULT_URL);
-        this.user = props.getProperty("db.user", DEFAULT_USER);
-        this.password = props.getProperty("db.password", DEFAULT_PASS);
+        this.url = System.getenv().getOrDefault("DRIVEHUB_DB_URL", props.getProperty("db.url", DEFAULT_URL));
+        this.user = System.getenv().getOrDefault("DRIVEHUB_DB_USER", props.getProperty("db.user", DEFAULT_USER));
+        this.password = System.getenv().getOrDefault("DRIVEHUB_DB_PASSWORD", props.getProperty("db.password", DEFAULT_PASS));
 
         try {
             Class.forName("org.postgresql.Driver");
