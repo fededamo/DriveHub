@@ -26,7 +26,7 @@ public final class PostgresRequestDao implements RequestDao {
     @Override
     public List<Request> findAll() {
         List<Request> list = new ArrayList<>();
-        String sql = "SELECT id, vehicle, client, salesman, deposit, exp_date, type::text as type_str FROM request ORDER BY id DESC";
+        String sql = "SELECT id, vehicle, client, salesman, deposit, agreed_total, exp_date, type::text as type_str FROM request ORDER BY id DESC";
         try (Connection conn = db.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -42,7 +42,7 @@ public final class PostgresRequestDao implements RequestDao {
     @Override
     public List<Request> findPending() {
         List<Request> list = new ArrayList<>();
-        String sql = "SELECT id, vehicle, client, salesman, deposit, exp_date, type::text as type_str FROM request WHERE salesman IS NULL ORDER BY id ASC";
+        String sql = "SELECT id, vehicle, client, salesman, deposit, agreed_total, exp_date, type::text as type_str FROM request WHERE salesman IS NULL ORDER BY id ASC";
         try (Connection conn = db.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -58,7 +58,7 @@ public final class PostgresRequestDao implements RequestDao {
     @Override
     public List<Request> findByClientId(Long clientId) {
         List<Request> list = new ArrayList<>();
-        String sql = "SELECT id, vehicle, client, salesman, deposit, exp_date, type::text as type_str FROM request WHERE client = ? ORDER BY id DESC";
+        String sql = "SELECT id, vehicle, client, salesman, deposit, agreed_total, exp_date, type::text as type_str FROM request WHERE client = ? ORDER BY id DESC";
         try (Connection conn = db.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, clientId);
@@ -84,8 +84,21 @@ public final class PostgresRequestDao implements RequestDao {
 
     @Override
     public Optional<Request> findById(Long id, Connection conn) {
-        String sql = "SELECT id, vehicle, client, salesman, deposit, exp_date, type::text as type_str FROM request WHERE id = ?";
+        return findById(id, conn, false);
+    }
+
+    @Override
+    public Optional<Request> findByIdForUpdate(Long id, Connection conn) {
+        return findById(id, conn, true);
+    }
+
+    private Optional<Request> findById(Long id, Connection conn, boolean forUpdate) {
+        String sql = "SELECT id, vehicle, client, salesman, deposit, agreed_total, exp_date, type::text as type_str FROM request WHERE id = ?"
+                + (forUpdate ? " FOR UPDATE" : "");
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            if (forUpdate && conn.getAutoCommit()) {
+                throw new IllegalArgumentException("Il lock della richiesta richiede una transazione attiva.");
+            }
             ps.setLong(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -100,7 +113,7 @@ public final class PostgresRequestDao implements RequestDao {
 
     @Override
     public Optional<Request> findActivePurchaseRequestForVehicle(Long vehicleId) {
-        String sql = "SELECT id, vehicle, client, salesman, deposit, exp_date, type::text as type_str " +
+        String sql = "SELECT id, vehicle, client, salesman, deposit, agreed_total, exp_date, type::text as type_str " +
                 "FROM request WHERE vehicle = ? AND type = 'PURCHASE'::request_type";
         try (Connection conn = db.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -117,9 +130,23 @@ public final class PostgresRequestDao implements RequestDao {
     }
 
     @Override
+    public boolean hasOpenRequestForVehicle(Long vehicleId, Connection conn) {
+        try (PreparedStatement ps = conn.prepareStatement("SELECT EXISTS (SELECT 1 FROM request WHERE vehicle = ?)")) {
+            if (conn.getAutoCommit()) throw new IllegalArgumentException("La verifica delle richieste richiede una transazione attiva.");
+            ps.setLong(1, vehicleId);
+            try (ResultSet rs = ps.executeQuery()) {
+                rs.next();
+                return rs.getBoolean(1);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore durante la verifica delle richieste aperte del veicolo.", e);
+        }
+    }
+
+    @Override
     public Request save(Request request, Connection conn) {
-        String sql = "INSERT INTO request (vehicle, client, salesman, deposit, exp_date, type) " +
-                "VALUES (?, ?, ?, ?, ?, ?::request_type) RETURNING id";
+        String sql = "INSERT INTO request (vehicle, client, salesman, deposit, exp_date, type, agreed_total) " +
+                "VALUES (?, ?, ?, ?, ?, ?::request_type, ?) RETURNING id";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, request.getVehicleId());
             ps.setLong(2, request.getClientId());
@@ -135,12 +162,13 @@ public final class PostgresRequestDao implements RequestDao {
                 ps.setNull(5, Types.DATE);
             }
             ps.setString(6, request.getType().name());
+            ps.setBigDecimal(7, request.getAgreedTotal());
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     long id = rs.getLong(1);
                     return Request.create(id, request.getVehicleId(), request.getClientId(),
-                            request.getSalesmanId(), request.getDeposit(), request.getExpDate(), request.getType());
+                            request.getSalesmanId(), request.getDeposit(), request.getAgreedTotal(), request.getExpDate(), request.getType());
                 }
                 throw new SQLException("Inserimento richiesta non ha restituito l'ID generato.");
             }
@@ -166,7 +194,7 @@ public final class PostgresRequestDao implements RequestDao {
             }
             ps.setString(4, request.getType().name());
             ps.setLong(5, request.getId());
-            ps.executeUpdate();
+            if (ps.executeUpdate() != 1) throw new SQLException("Aggiornamento richiesta non eseguito.");
         } catch (SQLException e) {
             throw new RuntimeException("Errore durante l'aggiornamento della richiesta id: " + request.getId(), e);
         }
@@ -177,7 +205,7 @@ public final class PostgresRequestDao implements RequestDao {
         String sql = "DELETE FROM request WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, id);
-            ps.executeUpdate();
+            if (ps.executeUpdate() != 1) throw new SQLException("Eliminazione richiesta non eseguita.");
         } catch (SQLException e) {
             throw new RuntimeException("Errore durante l'eliminazione della richiesta id: " + id, e);
         }
@@ -192,6 +220,7 @@ public final class PostgresRequestDao implements RequestDao {
                 rs.getLong("client"),
                 salesman,
                 rs.getBigDecimal("deposit"),
+                rs.getBigDecimal("agreed_total"),
                 expDate != null ? expDate.toLocalDate() : null,
                 RequestType.valueOf(rs.getString("type_str"))
         );

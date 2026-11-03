@@ -1,0 +1,295 @@
+2026-10-31 19:41:16
+Full thread dump OpenJDK 64-Bit Server VM (21.0.12.1+1-1-26.04.4-Ubuntu mixed mode, sharing):
+
+Threads class SMR info:
+_java_thread_list=0x00007b54c4002120, length=16, elements={
+0x00007b5554019fa0, 0x00007b55540e4260, 0x00007b55540e57e0, 0x00007b55540e6f90,
+0x00007b55540e85e0, 0x00007b55540e9b90, 0x00007b55540eb6e0, 0x00007b55540ecdb0,
+0x00007b5554103df0, 0x00007b5554149820, 0x00007b555428b580, 0x00007b55548fff50,
+0x00007b5554a66790, 0x00007b5554a69d50, 0x00007b5474387b30, 0x00007b54c4000f50
+}
+
+"main" #1 [42129] prio=5 os_prio=0 cpu=1432.65ms elapsed=11.56s tid=0x00007b5554019fa0 nid=42129 waiting on condition  [0x00007b555adfe000]
+   java.lang.Thread.State: TIMED_WAITING (parking)
+	at jdk.internal.misc.Unsafe.park(java.base@21.0.12.1/Native Method)
+	- parking to wait for  <0x00000000c658c010> (a java.util.concurrent.FutureTask)
+	at java.util.concurrent.locks.LockSupport.parkNanos(java.base@21.0.12.1/LockSupport.java:269)
+	at java.util.concurrent.FutureTask.awaitDone(java.base@21.0.12.1/FutureTask.java:497)
+	at java.util.concurrent.FutureTask.get(java.base@21.0.12.1/FutureTask.java:203)
+	at it.unifi.drivehub.PriceUiCheck.fx(PriceUiCheck.java:30)
+	at it.unifi.drivehub.PriceUiCheck.show(PriceUiCheck.java:66)
+	at it.unifi.drivehub.PriceUiCheck.main(PriceUiCheck.java:88)
+
+"Reference Handler" #9 [42137] daemon prio=10 os_prio=0 cpu=3.91ms elapsed=11.54s tid=0x00007b55540e4260 nid=42137 waiting on condition  [0x00007b554b9a8000]
+   java.lang.Thread.State: RUNNABLE
+	at java.lang.ref.Reference.waitForReferencePendingList(java.base@21.0.12.1/Native Method)
+	at java.lang.ref.Reference.processPendingReferences(java.base@21.0.12.1/Reference.java:246)
+	at java.lang.ref.Reference$ReferenceHandler.run(java.base@21.0.12.1/Reference.java:208)
+
+"Finalizer" #10 [42138] daemon prio=8 os_prio=0 cpu=0.75ms elapsed=11.54s tid=0x00007b55540e57e0 nid=42138 in Object.wait()  [0x00007b553c7fe000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait0(java.base@21.0.12.1/Native Method)
+	- waiting on <0x00000000c60984d8> (a java.lang.ref.NativeReferenceQueue$Lock)
+	at java.lang.Object.wait(java.base@21.0.12.1/Object.java:366)
+	at java.lang.Object.wait(java.base@21.0.12.1/Object.java:339)
+	at java.lang.ref.NativeReferenceQueue.await(java.base@21.0.12.1/NativeReferenceQueue.java:48)
+	at java.lang.ref.ReferenceQueue.remove0(java.base@21.0.12.1/ReferenceQueue.java:158)
+	at java.lang.ref.NativeReferenceQueue.remove(java.base@21.0.12.1/NativeReferenceQueue.java:89)
+	- locked <0x00000000c60984d8> (a java.lang.ref.NativeReferenceQueue$Lock)
+	at java.lang.ref.Finalizer$FinalizerThread.run(java.base@21.0.12.1/Finalizer.java:173)
+
+"Signal Dispatcher" #11 [42139] daemon prio=9 os_prio=0 cpu=0.94ms elapsed=11.54s tid=0x00007b55540e6f90 nid=42139 waiting on condition  [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+"Service Thread" #12 [42140] daemon prio=9 os_prio=0 cpu=2.69ms elapsed=11.54s tid=0x00007b55540e85e0 nid=42140 runnable  [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+"Monitor Deflation Thread" #13 [42141] daemon prio=9 os_prio=0 cpu=1.98ms elapsed=11.54s tid=0x00007b55540e9b90 nid=42141 runnable  [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+"C2 CompilerThread0" #14 [42142] daemon prio=9 os_prio=0 cpu=6426.79ms elapsed=11.54s tid=0x00007b55540eb6e0 nid=42142 runnable  [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+   Compiling: 5502 %     4       javafx.scene.CssStyleHelper::createStyleHelper @ 4 (316 bytes)
+
+"C1 CompilerThread0" #17 [42143] daemon prio=9 os_prio=0 cpu=2016.03ms elapsed=11.53s tid=0x00007b55540ecdb0 nid=42143 waiting on condition  [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+   No compile task
+
+"Common-Cleaner" #18 [42144] daemon prio=8 os_prio=0 cpu=2.73ms elapsed=11.50s tid=0x00007b5554103df0 nid=42144 waiting on condition  [0x00007b553c12d000]
+   java.lang.Thread.State: TIMED_WAITING (parking)
+	at jdk.internal.misc.Unsafe.park(java.base@21.0.12.1/Native Method)
+	- parking to wait for  <0x00000000c6098600> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+	at java.util.concurrent.locks.LockSupport.parkNanos(java.base@21.0.12.1/LockSupport.java:269)
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(java.base@21.0.12.1/AbstractQueuedSynchronizer.java:1886)
+	at java.lang.ref.ReferenceQueue.await(java.base@21.0.12.1/ReferenceQueue.java:71)
+	at java.lang.ref.ReferenceQueue.remove0(java.base@21.0.12.1/ReferenceQueue.java:143)
+	at java.lang.ref.ReferenceQueue.remove(java.base@21.0.12.1/ReferenceQueue.java:218)
+	at jdk.internal.ref.CleanerImpl.run(java.base@21.0.12.1/CleanerImpl.java:140)
+	at java.lang.Thread.runWith(java.base@21.0.12.1/Thread.java:1596)
+	at java.lang.Thread.run(java.base@21.0.12.1/Thread.java:1583)
+	at jdk.internal.misc.InnocuousThread.run(java.base@21.0.12.1/InnocuousThread.java:186)
+
+"Notification Thread" #19 [42145] daemon prio=9 os_prio=0 cpu=0.30ms elapsed=11.43s tid=0x00007b5554149820 nid=42145 runnable  [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+"PostgreSQL-JDBC-Cleaner" #21 [42147] daemon prio=5 os_prio=0 cpu=0.50ms elapsed=10.98s tid=0x00007b555428b580 nid=42147 waiting on condition  [0x00007b552defe000]
+   java.lang.Thread.State: TIMED_WAITING (parking)
+	at jdk.internal.misc.Unsafe.park(java.base@21.0.12.1/Native Method)
+	- parking to wait for  <0x00000000c6098718> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+	at java.util.concurrent.locks.LockSupport.parkNanos(java.base@21.0.12.1/LockSupport.java:269)
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(java.base@21.0.12.1/AbstractQueuedSynchronizer.java:1886)
+	at java.lang.ref.ReferenceQueue.await(java.base@21.0.12.1/ReferenceQueue.java:71)
+	at java.lang.ref.ReferenceQueue.remove0(java.base@21.0.12.1/ReferenceQueue.java:143)
+	at java.lang.ref.ReferenceQueue.remove(java.base@21.0.12.1/ReferenceQueue.java:218)
+	at org.postgresql.util.LazyCleaner$1.run(LazyCleaner.java:129)
+	at java.lang.Thread.runWith(java.base@21.0.12.1/Thread.java:1596)
+	at java.lang.Thread.run(java.base@21.0.12.1/Thread.java:1583)
+
+"QuantumRenderer-0" #26 [42159] daemon prio=5 os_prio=0 cpu=34.27ms elapsed=10.09s tid=0x00007b55548fff50 nid=42159 waiting on condition  [0x00007b552d9fa000]
+   java.lang.Thread.State: WAITING (parking)
+	at jdk.internal.misc.Unsafe.park(java.base@21.0.12.1/Native Method)
+	- parking to wait for  <0x00000000c636fd78> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+	at java.util.concurrent.locks.LockSupport.park(java.base@21.0.12.1/LockSupport.java:371)
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionNode.block(java.base@21.0.12.1/AbstractQueuedSynchronizer.java:519)
+	at java.util.concurrent.ForkJoinPool.unmanagedBlock(java.base@21.0.12.1/ForkJoinPool.java:3780)
+	at java.util.concurrent.ForkJoinPool.managedBlock(java.base@21.0.12.1/ForkJoinPool.java:3725)
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(java.base@21.0.12.1/AbstractQueuedSynchronizer.java:1746)
+	at java.util.concurrent.LinkedBlockingQueue.take(java.base@21.0.12.1/LinkedBlockingQueue.java:435)
+	at java.util.concurrent.ThreadPoolExecutor.getTask(java.base@21.0.12.1/ThreadPoolExecutor.java:1070)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(java.base@21.0.12.1/ThreadPoolExecutor.java:1130)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(java.base@21.0.12.1/ThreadPoolExecutor.java:642)
+	at com.sun.javafx.tk.quantum.QuantumRenderer$PipelineRunnable.run(javafx.graphics@21.0.2/QuantumRenderer.java:126)
+	at java.lang.Thread.runWith(java.base@21.0.12.1/Thread.java:1596)
+	at java.lang.Thread.run(java.base@21.0.12.1/Thread.java:1583)
+
+"InvokeLaterDispatcher" #28 [42166] daemon prio=5 os_prio=0 cpu=1.12ms elapsed=9.94s tid=0x00007b5554a66790 nid=42166 in Object.wait()  [0x00007b54d858d000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait0(java.base@21.0.12.1/Native Method)
+	- waiting on <0x00000000c6375390> (a java.lang.StringBuilder)
+	at java.lang.Object.wait(java.base@21.0.12.1/Object.java:366)
+	at java.lang.Object.wait(java.base@21.0.12.1/Object.java:339)
+	at com.sun.glass.ui.InvokeLaterDispatcher.run(javafx.graphics@21.0.2/InvokeLaterDispatcher.java:126)
+	- locked <0x00000000c6375390> (a java.lang.StringBuilder)
+
+"JavaFX Application Thread" #29 [42167] prio=5 os_prio=0 cpu=5566.81ms elapsed=9.93s tid=0x00007b5554a69d50 nid=42167 runnable  [0x00007b54d8488000]
+   java.lang.Thread.State: RUNNABLE
+	at org.postgresql.shaded.com.ongres.scram.common.bouncycastle.base64.Base64Encoder.decode(Base64Encoder.java:312)
+	at org.postgresql.shaded.com.ongres.scram.common.bouncycastle.base64.Base64.decode(Base64.java:152)
+	at org.postgresql.shaded.com.ongres.scram.common.ScramStringFormatting.base64Decode(ScramStringFormatting.java:147)
+	at org.postgresql.shaded.com.ongres.scram.common.message.ServerFinalMessage.parseFrom(ServerFinalMessage.java:204)
+	at org.postgresql.shaded.com.ongres.scram.client.ScramSession$ClientFinalProcessor.receiveServerFinalMessage(ScramSession.java:260)
+	at org.postgresql.jre7.sasl.ScramAuthenticator.verifyServerSignature(ScramAuthenticator.java:176)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.doAuthentication(ConnectionFactoryImpl.java:872)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:207)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:262)
+	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:54)
+	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:273)
+	at org.postgresql.Driver.makeConnection(Driver.java:446)
+	at org.postgresql.Driver.connect(Driver.java:298)
+	at java.sql.DriverManager.getConnection(java.sql@21.0.12.1/DriverManager.java:683)
+	at java.sql.DriverManager.getConnection(java.sql@21.0.12.1/DriverManager.java:230)
+	at it.unifi.drivehub.dao.DatabaseManager.getConnection(DatabaseManager.java:50)
+	at it.unifi.drivehub.dao.postgres.PostgresModelDao.findById(PostgresModelDao.java:72)
+	at it.unifi.drivehub.service.CatalogService.getModelById(CatalogService.java:57)
+	at it.unifi.drivehub.service.CatalogService.getVehicleBasePrice(CatalogService.java:89)
+	at it.unifi.drivehub.presentation.view.ManagerDashboardView.lambda$buildVehiclesTab$20(ManagerDashboardView.java:253)
+	at it.unifi.drivehub.presentation.view.ManagerDashboardView$$Lambda/0x00007b54e01cddc8.call(Unknown Source)
+	at javafx.scene.control.TableColumn.getCellObservableValue(javafx.controls@21.0.2/TableColumn.java:592)
+	at javafx.scene.control.TableColumn.getCellObservableValue(javafx.controls@21.0.2/TableColumn.java:577)
+	at javafx.scene.control.TableCell.updateItem(javafx.controls@21.0.2/TableCell.java:681)
+	at javafx.scene.control.TableCell.indexChanged(javafx.controls@21.0.2/TableCell.java:485)
+	at javafx.scene.control.IndexedCell$1.invalidated(javafx.controls@21.0.2/IndexedCell.java:85)
+	at javafx.beans.property.IntegerPropertyBase.markInvalid(javafx.base@21.0.2/IntegerPropertyBase.java:113)
+	at javafx.beans.property.IntegerPropertyBase.set(javafx.base@21.0.2/IntegerPropertyBase.java:148)
+	at javafx.scene.control.IndexedCell.updateIndex(javafx.controls@21.0.2/IndexedCell.java:130)
+	at javafx.scene.control.skin.TableRowSkinBase.requestCellUpdate(javafx.controls@21.0.2/TableRowSkinBase.java:700)
+	at javafx.scene.control.skin.TableRowSkinBase.lambda$new$1(javafx.controls@21.0.2/TableRowSkinBase.java:167)
+	at javafx.scene.control.skin.TableRowSkinBase$$Lambda/0x00007b54e02a2298.accept(javafx.controls@21.0.2/Unknown Source)
+	at com.sun.javafx.scene.control.LambdaMultiplePropertyChangeListenerHandler.lambda$new$2(javafx.controls@21.0.2/LambdaMultiplePropertyChangeListenerHandler.java:95)
+	at com.sun.javafx.scene.control.LambdaMultiplePropertyChangeListenerHandler$$Lambda/0x00007b54e0240468.invalidated(javafx.controls@21.0.2/Unknown Source)
+	at javafx.beans.WeakInvalidationListener.invalidated(javafx.base@21.0.2/WeakInvalidationListener.java:82)
+	at com.sun.javafx.binding.ExpressionHelper$SingleInvalidation.fireValueChangedEvent(javafx.base@21.0.2/ExpressionHelper.java:147)
+	at com.sun.javafx.binding.ExpressionHelper.fireValueChangedEvent(javafx.base@21.0.2/ExpressionHelper.java:91)
+	at javafx.beans.property.ObjectPropertyBase.fireValueChangedEvent(javafx.base@21.0.2/ObjectPropertyBase.java:106)
+	at javafx.beans.property.ObjectPropertyBase.markInvalid(javafx.base@21.0.2/ObjectPropertyBase.java:113)
+	at javafx.beans.property.ObjectPropertyBase.set(javafx.base@21.0.2/ObjectPropertyBase.java:147)
+	at javafx.scene.control.Cell.setItem(javafx.controls@21.0.2/Cell.java:404)
+	at javafx.scene.control.Cell.updateItem(javafx.controls@21.0.2/Cell.java:694)
+	at javafx.scene.control.TableRow.updateItem(javafx.controls@21.0.2/TableRow.java:260)
+	at javafx.scene.control.TableRow.indexChanged(javafx.controls@21.0.2/TableRow.java:226)
+	at javafx.scene.control.IndexedCell$1.invalidated(javafx.controls@21.0.2/IndexedCell.java:85)
+	at javafx.beans.property.IntegerPropertyBase.markInvalid(javafx.base@21.0.2/IntegerPropertyBase.java:113)
+	at javafx.beans.property.IntegerPropertyBase.set(javafx.base@21.0.2/IntegerPropertyBase.java:148)
+	at javafx.scene.control.IndexedCell.updateIndex(javafx.controls@21.0.2/IndexedCell.java:130)
+	at javafx.scene.control.skin.TableColumnHeader.resizeColumnToFitContent(javafx.controls@21.0.2/TableColumnHeader.java:664)
+	at javafx.scene.control.skin.TableColumnHeader.resizeColumnToFitContent(javafx.controls@21.0.2/TableColumnHeader.java:630)
+	at javafx.scene.control.skin.TableColumnHeader.doColumnAutoSize(javafx.controls@21.0.2/TableColumnHeader.java:607)
+	at javafx.scene.control.skin.TableColumnHeader.updateScene(javafx.controls@21.0.2/TableColumnHeader.java:550)
+	at javafx.scene.control.skin.TableColumnHeader.lambda$new$0(javafx.controls@21.0.2/TableColumnHeader.java:168)
+	at javafx.scene.control.skin.TableColumnHeader$$Lambda/0x00007b54e028ae20.accept(javafx.controls@21.0.2/Unknown Source)
+	at com.sun.javafx.scene.control.LambdaMultiplePropertyChangeListenerHandler.lambda$new$1(javafx.controls@21.0.2/LambdaMultiplePropertyChangeListenerHandler.java:88)
+	at com.sun.javafx.scene.control.LambdaMultiplePropertyChangeListenerHandler$$Lambda/0x00007b54e0240000.changed(javafx.controls@21.0.2/Unknown Source)
+	at javafx.beans.value.WeakChangeListener.changed(javafx.base@21.0.2/WeakChangeListener.java:86)
+	at com.sun.javafx.binding.ExpressionHelper$SingleChange.fireValueChangedEvent(javafx.base@21.0.2/ExpressionHelper.java:192)
+	at com.sun.javafx.binding.ExpressionHelper.fireValueChangedEvent(javafx.base@21.0.2/ExpressionHelper.java:91)
+	at javafx.beans.property.ReadOnlyObjectPropertyBase.fireValueChangedEvent(javafx.base@21.0.2/ReadOnlyObjectPropertyBase.java:80)
+	at javafx.beans.property.ReadOnlyObjectWrapper.fireValueChangedEvent(javafx.base@21.0.2/ReadOnlyObjectWrapper.java:102)
+	at javafx.scene.Node$ReadOnlyObjectWrapperManualFire.fireSuperValueChangedEvent(javafx.graphics@21.0.2/Node.java:1044)
+	at javafx.scene.Node.invalidatedScenes(javafx.graphics@21.0.2/Node.java:1095)
+	at javafx.scene.Node.setScenes(javafx.graphics@21.0.2/Node.java:1133)
+	at javafx.scene.Parent$2.onChanged(javafx.graphics@21.0.2/Parent.java:373)
+	at com.sun.javafx.collections.TrackableObservableList.lambda$new$0(javafx.base@21.0.2/TrackableObservableList.java:44)
+	at com.sun.javafx.collections.TrackableObservableList$$Lambda/0x00007b54e012d4b8.onChanged(javafx.base@21.0.2/Unknown Source)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(javafx.base@21.0.2/ListListenerHelper.java:327)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(javafx.base@21.0.2/ListListenerHelper.java:71)
+	at javafx.collections.ObservableListBase.fireChange(javafx.base@21.0.2/ObservableListBase.java:246)
+	at javafx.collections.ListChangeBuilder.commit(javafx.base@21.0.2/ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(javafx.base@21.0.2/ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(javafx.base@21.0.2/ObservableListBase.java:210)
+	at javafx.collections.ModifiableObservableListBase.setAll(javafx.base@21.0.2/ModifiableObservableListBase.java:102)
+	at com.sun.javafx.collections.VetoableListDecorator.setAll(javafx.base@21.0.2/VetoableListDecorator.java:119)
+	at javafx.scene.control.skin.NestedTableColumnHeader.updateContent(javafx.controls@21.0.2/NestedTableColumnHeader.java:581)
+	at javafx.scene.control.skin.NestedTableColumnHeader.updateTableColumnHeaders(javafx.controls@21.0.2/NestedTableColumnHeader.java:506)
+	at javafx.scene.control.skin.NestedTableColumnHeader.checkState(javafx.controls@21.0.2/NestedTableColumnHeader.java:635)
+	at javafx.scene.control.skin.NestedTableColumnHeader.computePrefHeight(javafx.controls@21.0.2/NestedTableColumnHeader.java:347)
+	at javafx.scene.Parent.prefHeight(javafx.graphics@21.0.2/Parent.java:1035)
+	at javafx.scene.layout.Region.prefHeight(javafx.graphics@21.0.2/Region.java:1552)
+	at javafx.scene.control.skin.TableHeaderRow.computePrefHeight(javafx.controls@21.0.2/TableHeaderRow.java:404)
+	at javafx.scene.control.skin.TableHeaderRow.computeMinHeight(javafx.controls@21.0.2/TableHeaderRow.java:397)
+	at javafx.scene.Parent.minHeight(javafx.graphics@21.0.2/Parent.java:1063)
+	at javafx.scene.layout.Region.minHeight(javafx.graphics@21.0.2/Region.java:1518)
+	at javafx.scene.control.SkinBase.computeMinHeight(javafx.controls@21.0.2/SkinBase.java:409)
+	at javafx.scene.control.Control.computeMinHeight(javafx.controls@21.0.2/Control.java:523)
+	at javafx.scene.Parent.minHeight(javafx.graphics@21.0.2/Parent.java:1063)
+	at javafx.scene.layout.Region.minHeight(javafx.graphics@21.0.2/Region.java:1518)
+	at javafx.scene.layout.Region.computeChildMinAreaHeight(javafx.graphics@21.0.2/Region.java:1928)
+	at javafx.scene.layout.VBox.getAreaHeights(javafx.graphics@21.0.2/VBox.java:445)
+	at javafx.scene.layout.VBox.computeContentHeight(javafx.graphics@21.0.2/VBox.java:539)
+	at javafx.scene.layout.VBox.computeMinHeight(javafx.graphics@21.0.2/VBox.java:407)
+	at javafx.scene.Parent.minHeight(javafx.graphics@21.0.2/Parent.java:1069)
+	at javafx.scene.layout.Region.minHeight(javafx.graphics@21.0.2/Region.java:1518)
+	at javafx.scene.layout.Region.boundedNodeSizeWithBias(javafx.graphics@21.0.2/Region.java:2158)
+	at javafx.scene.layout.Region.layoutInArea(javafx.graphics@21.0.2/Region.java:2558)
+	at javafx.scene.layout.Region.layoutInArea(javafx.graphics@21.0.2/Region.java:2472)
+	at javafx.scene.layout.Region.layoutInArea(javafx.graphics@21.0.2/Region.java:2413)
+	at javafx.scene.layout.StackPane.layoutChildren(javafx.graphics@21.0.2/StackPane.java:344)
+	at javafx.scene.Parent.layout(javafx.graphics@21.0.2/Parent.java:1208)
+	at javafx.scene.Parent.layout(javafx.graphics@21.0.2/Parent.java:1215)
+	at javafx.scene.Parent.layout(javafx.graphics@21.0.2/Parent.java:1215)
+	at javafx.scene.Scene.doLayoutPass(javafx.graphics@21.0.2/Scene.java:594)
+	at javafx.scene.Scene.preferredSize(javafx.graphics@21.0.2/Scene.java:1789)
+	at javafx.scene.Scene$2.preferredSize(javafx.graphics@21.0.2/Scene.java:411)
+	at com.sun.javafx.scene.SceneHelper.preferredSize(javafx.graphics@21.0.2/SceneHelper.java:65)
+	at javafx.stage.Window$12.invalidated(javafx.graphics@21.0.2/Window.java:1163)
+	at javafx.beans.property.BooleanPropertyBase.markInvalid(javafx.base@21.0.2/BooleanPropertyBase.java:110)
+	at javafx.beans.property.BooleanPropertyBase.set(javafx.base@21.0.2/BooleanPropertyBase.java:145)
+	at javafx.stage.Window.setShowing(javafx.graphics@21.0.2/Window.java:1239)
+	at javafx.stage.Window.show(javafx.graphics@21.0.2/Window.java:1254)
+	at javafx.stage.Stage.show(javafx.graphics@21.0.2/Stage.java:277)
+	at it.unifi.drivehub.PriceUiCheck.lambda$show$6(PriceUiCheck.java:69)
+	at it.unifi.drivehub.PriceUiCheck$$Lambda/0x00007b54e01d9318.call(Unknown Source)
+	at java.util.concurrent.FutureTask.run(java.base@21.0.12.1/FutureTask.java:317)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$10(javafx.graphics@21.0.2/PlatformImpl.java:456)
+	at com.sun.javafx.application.PlatformImpl$$Lambda/0x00007b54e0115e20.run(javafx.graphics@21.0.2/Unknown Source)
+	at java.security.AccessController.executePrivileged(java.base@21.0.12.1/AccessController.java:778)
+	at java.security.AccessController.doPrivileged(java.base@21.0.12.1/AccessController.java:400)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$11(javafx.graphics@21.0.2/PlatformImpl.java:455)
+	at com.sun.javafx.application.PlatformImpl$$Lambda/0x00007b54e0114d90.run(javafx.graphics@21.0.2/Unknown Source)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(javafx.graphics@21.0.2/InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.gtk.GtkApplication._runLoop(javafx.graphics@21.0.2/Native Method)
+	at com.sun.glass.ui.gtk.GtkApplication.lambda$runLoop$10(javafx.graphics@21.0.2/GtkApplication.java:263)
+	at com.sun.glass.ui.gtk.GtkApplication$$Lambda/0x00007b54e0103740.run(javafx.graphics@21.0.2/Unknown Source)
+	at java.lang.Thread.runWith(java.base@21.0.12.1/Thread.java:1596)
+	at java.lang.Thread.run(java.base@21.0.12.1/Thread.java:1583)
+
+"Prism Font Disposer" #33 [42181] daemon prio=10 os_prio=0 cpu=0.53ms elapsed=9.25s tid=0x00007b5474387b30 nid=42181 waiting on condition  [0x00007b54911fe000]
+   java.lang.Thread.State: WAITING (parking)
+	at jdk.internal.misc.Unsafe.park(java.base@21.0.12.1/Native Method)
+	- parking to wait for  <0x00000000c659fe08> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+	at java.util.concurrent.locks.LockSupport.park(java.base@21.0.12.1/LockSupport.java:371)
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionNode.block(java.base@21.0.12.1/AbstractQueuedSynchronizer.java:519)
+	at java.util.concurrent.ForkJoinPool.unmanagedBlock(java.base@21.0.12.1/ForkJoinPool.java:3780)
+	at java.util.concurrent.ForkJoinPool.managedBlock(java.base@21.0.12.1/ForkJoinPool.java:3725)
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(java.base@21.0.12.1/AbstractQueuedSynchronizer.java:1746)
+	at java.lang.ref.ReferenceQueue.await(java.base@21.0.12.1/ReferenceQueue.java:67)
+	at java.lang.ref.ReferenceQueue.remove0(java.base@21.0.12.1/ReferenceQueue.java:158)
+	at java.lang.ref.ReferenceQueue.remove(java.base@21.0.12.1/ReferenceQueue.java:234)
+	at com.sun.javafx.font.Disposer.run(javafx.graphics@21.0.2/Disposer.java:96)
+	at java.lang.Thread.runWith(java.base@21.0.12.1/Thread.java:1596)
+	at java.lang.Thread.run(java.base@21.0.12.1/Thread.java:1583)
+
+"Attach Listener" #35 [42880] daemon prio=9 os_prio=0 cpu=0.59ms elapsed=0.10s tid=0x00007b54c4000f50 nid=42880 waiting on condition  [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+"G1 Conc#1" os_prio=0 cpu=26.93ms elapsed=3.51s tid=0x00007b5530000cf0 nid=42561 runnable  
+
+"GC Thread#7" os_prio=0 cpu=18.00ms elapsed=9.68s tid=0x00007b54d4011870 nid=42171 runnable  
+
+"GC Thread#6" os_prio=0 cpu=21.56ms elapsed=9.68s tid=0x00007b54d4010cd0 nid=42170 runnable  
+
+"GC Thread#5" os_prio=0 cpu=15.53ms elapsed=9.68s tid=0x00007b54d4010400 nid=42169 runnable  
+
+"GC Thread#4" os_prio=0 cpu=22.89ms elapsed=10.38s tid=0x00007b54d400e580 nid=42158 runnable  
+
+"GC Thread#3" os_prio=0 cpu=30.22ms elapsed=10.38s tid=0x00007b54d400d690 nid=42157 runnable  
+
+"GC Thread#2" os_prio=0 cpu=22.42ms elapsed=10.38s tid=0x00007b54d400cbe0 nid=42156 runnable  
+
+"GC Thread#1" os_prio=0 cpu=21.25ms elapsed=10.39s tid=0x00007b54d4007980 nid=42155 runnable  
+
+"VM Thread" os_prio=0 cpu=25.68ms elapsed=11.55s tid=0x00007b55540d91e0 nid=42136 runnable  
+
+"VM Periodic Task Thread" os_prio=0 cpu=10.21ms elapsed=11.55s tid=0x00007b55540c7160 nid=42135 waiting on condition  
+
+"G1 Service" os_prio=0 cpu=0.94ms elapsed=11.56s tid=0x00007b55540b59c0 nid=42134 runnable  
+
+"G1 Refine#0" os_prio=0 cpu=1.51ms elapsed=11.56s tid=0x00007b55540b49f0 nid=42133 runnable  
+
+"G1 Conc#0" os_prio=0 cpu=26.02ms elapsed=11.56s tid=0x00007b555405cf70 nid=42132 runnable  
+
+"G1 Main Marker" os_prio=0 cpu=1.30ms elapsed=11.56s tid=0x00007b555405bfc0 nid=42131 runnable  
+
+"GC Thread#0" os_prio=0 cpu=14.94ms elapsed=11.56s tid=0x00007b5554053590 nid=42130 runnable  
+
+JNI global refs: 28, weak refs: 1
+

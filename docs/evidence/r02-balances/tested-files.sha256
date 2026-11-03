@@ -1,0 +1,8 @@
+13eb7a1bbf2ac7b5113257b262256e4e9b878f6f52e88811faf58b3fb50bac60  src/main/java/it/unifi/drivehub/dao/BankAccountDao.java
+bf936c7280b27cffa4ad0e926410e88dc9fa67cec84b09f2b7e77baa4865da7b  src/main/java/it/unifi/drivehub/dao/postgres/PostgresBankAccountDao.java
+f1a63adc2d5da38bc20b26a433b8f240b13cc4b0115c601a2dbde1fe9ffcbfde  src/main/java/it/unifi/drivehub/service/AuthService.java
+b854fac4e033d9c19a7ac8291c44db1defc6a9bda8369aaad4d7635f272deecc  src/main/java/it/unifi/drivehub/service/PurchaseService.java
+119096c15e348b17e06ec735eb375dda46cbe25829f5977f1a39ff6a66401dbd  src/main/java/it/unifi/drivehub/service/RentalService.java
+9a7c60bc5c1a13a8a0e2df5b4dce71a15c2cfb7e9379860c10fcdeaccc968eee  src/main/java/it/unifi/drivehub/service/SaleToDealershipService.java
+354d2f592032961c2e85f794eab9bef41df95b8cbfeb220141c8b79978083040  src/test/java/it/unifi/drivehub/BalanceConcurrencyIntegrationTest.java
+d9abd0bafdf492393b2e3ceafc4e903ff3b630b7e3d3422e384673ef8fc06ffe  docs/testing.md

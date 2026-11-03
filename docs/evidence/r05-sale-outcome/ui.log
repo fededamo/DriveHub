@@ -1,0 +1,46 @@
+SEED SUCCESS: tre cessioni 16000, storico effettivo, tipi espliciti anche a zero
+PASS JavaFX avviato nella seconda JVM
+PASS selezione righe con tastiera e focus visibile
+PASS tabella richieste raggiunta con focus tastiera
+PASS importi selezionati leggibili con testo scuro
+PASS cessione selezionata con frecce T1000000000000091
+PASS messaggio di accredito positivo
+PASS conto cliente +16000
+PASS selezione righe con tastiera e focus visibile
+PASS tabella richieste raggiunta con focus tastiera
+PASS importi selezionati leggibili con testo scuro
+PASS cessione selezionata con frecce T1000000000000091
+PASS sessione obsoleta segnala errore senza secondo pagamento
+PASS nessun doppio accredito UI
+PASS selezione righe con tastiera e focus visibile
+PASS tabella richieste raggiunta con focus tastiera
+PASS importi selezionati leggibili con testo scuro
+PASS cessione selezionata con frecce T1000000000000092
+PASS messaggio rifiuto senza accredito
+PASS VIN nuovo rimosso dal catalogo UI
+PASS selezione righe con tastiera e focus visibile
+PASS tabella richieste raggiunta con focus tastiera
+PASS importi selezionati leggibili con testo scuro
+PASS cessione selezionata con frecce T1000000000000093
+PASS messaggio rifiuto con storico
+PASS VIN storico ripristinato SOLD
+PASS vendita e acquisizione conservate
+PASS cliente vede il saldo accreditato
+PASS registro raggiunto con frecce
+PASS registro riletto con tutte le cinque operazioni
+PASS tipo esplicito ACQUISITION -16000.00
+PASS importo del registro -16000.00
+PASS tipo esplicito PURCHASE 20000.00
+PASS importo del registro 20000.00
+PASS tipo esplicito PENALTY 800.00
+PASS importo del registro 800.00
+PASS tipo esplicito PURCHASE 0.00
+PASS importo del registro 0.00
+PASS tipo esplicito ACQUISITION 0.00
+PASS importo del registro 0.00
+PASS acquisizione -16000
+PASS selezione righe con tastiera e focus visibile
+PASS tabella richieste raggiunta con focus tastiera
+PASS importi selezionati leggibili con testo scuro
+PASS registro navigabile fino all'ultima operazione
+UI CHECK SUCCESS

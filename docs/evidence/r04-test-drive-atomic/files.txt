@@ -1,0 +1,13 @@
+DriveHub/README.md
+DriveHub/docs/testing.md
+DriveHub/src/main/java/it/unifi/drivehub/AppContext.java
+DriveHub/src/main/java/it/unifi/drivehub/dao/TestDriveDao.java
+DriveHub/src/main/java/it/unifi/drivehub/event/VehicleCommitmentEvent.java
+DriveHub/src/main/java/it/unifi/drivehub/event/VehicleCommitmentObserver.java
+DriveHub/src/main/java/it/unifi/drivehub/event/VehicleEventPublisher.java
+DriveHub/src/main/java/it/unifi/drivehub/event/VehicleStateChangeEvent.java
+DriveHub/src/main/java/it/unifi/drivehub/event/VehicleStateObserver.java
+DriveHub/src/main/java/it/unifi/drivehub/service/PurchaseService.java
+DriveHub/src/main/java/it/unifi/drivehub/service/RentalService.java
+DriveHub/src/main/java/it/unifi/drivehub/service/TestDriveCancellationObserver.java
+DriveHub/src/test/java/it/unifi/drivehub/TestDriveCancellationIntegrationTest.java

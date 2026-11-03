@@ -11,6 +11,9 @@ import it.unifi.drivehub.domain.vehicle.Vehicle;
 import it.unifi.drivehub.domain.vehicle.VehicleState;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -21,6 +24,61 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Verifica degli Invarianti di Dominio (DDD)")
 class DomainInvariantsTest {
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {" \t "})
+    @DisplayName("Rimuovere la targa con 100 km fallisce e conserva tutti i dati del veicolo")
+    void testRejectedVehiclePlateChangeLeavesVehicleUnchanged(String plate) {
+        Vehicle vehicle = Vehicle.create(1L, 10L, "12345678901234567", "AB123CD", 100,
+                BigDecimal.valueOf(20000), 2023, VehicleState.SALE);
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> vehicle.setLicencePlate(plate));
+
+        assertEquals("Se la targa viene rimossa, i chilometri devono essere impostati a 0.", ex.getMessage());
+        assertAll(
+                () -> assertEquals("AB123CD", vehicle.getLicencePlate()),
+                () -> assertEquals(100, vehicle.getKilometers()),
+                () -> assertEquals(1L, vehicle.getId()),
+                () -> assertEquals(10L, vehicle.getModelId()),
+                () -> assertEquals("12345678901234567", vehicle.getVin()),
+                () -> assertEquals(BigDecimal.valueOf(20000), vehicle.getPrice()),
+                () -> assertEquals(2023, vehicle.getYear()),
+                () -> assertEquals(VehicleState.SALE, vehicle.getState()),
+                () -> assertTrue(vehicle.isUsed()));
+    }
+
+    @Test
+    @DisplayName("Una modifica valida normalizza la targa e consente di aggiornare i chilometri")
+    void testValidVehiclePlateChangeNormalizesPlate() {
+        Vehicle vehicle = Vehicle.create(1L, 10L, "12345678901234567", "AB123CD", 100,
+                BigDecimal.valueOf(20000), 2023, VehicleState.SALE);
+
+        vehicle.setLicencePlate(" cd456ef ");
+        vehicle.setKilometers(200);
+
+        assertEquals("CD456EF", vehicle.getLicencePlate());
+        assertEquals(200, vehicle.getKilometers());
+        assertTrue(vehicle.isUsed());
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {" \t "})
+    @DisplayName("La targa può essere rimossa dopo aver azzerato i chilometri")
+    void testVehiclePlateCanBeRemovedWithZeroKilometers(String plate) {
+        Vehicle vehicle = Vehicle.create(1L, 10L, "12345678901234567", "AB123CD", 100,
+                BigDecimal.valueOf(20000), 2023, VehicleState.SALE);
+
+        vehicle.setKilometers(0);
+        vehicle.setLicencePlate(plate);
+
+        assertNull(vehicle.getLicencePlate());
+        assertFalse(vehicle.isUsed());
+        assertThrows(IllegalArgumentException.class, () -> vehicle.setKilometers(100));
+        assertEquals(0, vehicle.getKilometers());
+    }
 
     @Test
     @DisplayName("Regola: se un veicolo non ha targa, obbligatoriamente i km devono essere 0")

@@ -1,0 +1,993 @@
+--- before/DriveHub/README.md
++++ after/DriveHub/README.md
+@@ -2,30 +2,28 @@
+ 
+ Avanzamento delle revisioni, decisioni e verifiche: [registro di revisione esterno al progetto](../PIANO_REVISIONI_DRIVEHUB.md). Terminologia: [glossario](GLOSSARY.md).
+ 
+-Applicazione Desktop JavaFX con persistenza su **PostgreSQL 16**, sviluppata secondo i paradigmi del **Domain-Driven Design (DDD)**, i principi **SOLID** e i **Design Pattern GoF**.
++Applicazione desktop **JavaFX**, con **JDK21**, **Maven3.9+** e persistenza su
++**PostgreSQL16**. Entità di dominio, servizi applicativi e DAO JDBC separano le
++responsabilità; pattern e compromessi sono descritti sulla base dei sorgenti.
+ 
+----
++## 1. Preparazione e architettura
+ 
+-## 1. Principi e Paradigmi Architetturali
++Per una nuova installazione seguire [installazione e avvio](docs/installation.md):
++strumenti, ruolo/database, `application.properties`, schema e demo facoltativa.
++`schema.sql` e `demo.sql` sono **distruttivi** su un database popolato e non fanno
++parte dell'avvio ordinario. Dopo la preparazione, dalla radice del progetto:
+ 
+-### 1.1 Flusso a Strati e Persistenza On-Demand
+-Il software adotta una rigida architettura a strati:
+-$$\text{DAO (PostgreSQL)} \longrightarrow \text{Domain (Entità pure)} \longrightarrow \text{Business (Services)} \longrightarrow \text{Presentation (JavaFX)}$$
++```bash
++mvn javafx:run
++```
+ 
+-* **Single Source of Truth**: il database PostgreSQL è l'unica sorgente permanente di verità. La memoria RAM opera in modalità **On-Demand** (i dati vengono prelevati per il tempo necessario all'elaborazione e poi rilasciati).
+-* **Aggiornamento Interfaccia Posticipato**: l'interfaccia utente si aggiorna **solo dopo** il successo definitivo e il commit della transazione su database, garantendo rollback immediato in caso di fallimento o violazione di vincoli.
+-
+-### 1.2 Design Pattern GoF Implementati
+-1. **Factory Method**: creazione protetta delle entità (`Vehicle.create()`, `Client.create()`, `Rent.create()`, ecc.) per verificare a priori tutti gli invarianti di dominio prima dell'istanziazione.
+-2. **Observer**: `VehicleCommitmentEvent` segnala una vendita o la conferma di un noleggio. `TestDriveCancellationObserver` applica la priorità commerciale cancellando tutti i test drive futuri del veicolo, anche fuori dal periodo noleggiato, e conservando lo storico. La notifica è sincrona, prima del commit, sulla stessa connessione dell'operazione economica: un errore provoca il rollback dell'intera operazione. Una conferma noleggio non simula una transizione `RENT → RENT`.
+-3. **Data Access Object (DAO)**: separazione netta tra logica applicativa e persistenza relazionale JDBC, con gestione esplicita delle transazioni atomiche (`DatabaseManager.executeInTransaction`).
+-4. **Composition Root & Dependency Injection**: classe `AppContext` che assembla e inietta tutte le dipendenze al bootstrap del sistema senza accoppiamenti rigidi.
+-
+-### 1.3 Rispetto dei Principi SOLID
+-* **Single Responsibility (SRP)**: classi separate e focalizzate (`PriceCalculatorService`, `PurchaseService`, `RentalService`, `PostgresVehicleDao`, ecc.).
+-* **Open-Closed (OCP) & Liskov Substitution (LSP)**: gerarchia utenti basata sull'interfaccia polimorfica `User` implementata da `Client`, `Salesman`, `Manager`. **Nessuna enumerazione discriminante sui ruoli**, garantendo estendibilità e comportamenti dedicati.
+-* **Interface Segregation (ISP)**: interfacce DAO granulari e dedicate per ogni aggregato del dominio.
+-* **Dependency Inversion (DIP)**: i servizi dipendono da astrazioni (`UserDao`, `VehicleDao`, `PasswordHasher`), non da implementazioni concrete.
++[Responsabilità, dipendenze e flussi](docs/architecture.md) distingue factory
++statiche da Factory Method GoF, Observer/Visitor/Singleton da DAO/DI e composition
++root, e motiva SOLID e l'ispirazione DDD con esempi e limiti. `AppContext`
++costruisce i servizi; restano accessi globali negli overload delle viste.
++La direzione delle dipendenze non coincide con il ritorno dei dati dal DB alla UI.
++I diagrammi vengono riallineati separatamente nel ticket17 e non sono una prova
++della struttura corrente.
+ 
+ ---
+ 
+@@ -76,41 +74,38 @@
+ 
+ ### 2.3 Gestione Concorrenza su Database
+ * **Acquisto**: prenotazione atomica da `SALE` a `BLOCKED`. Saldo, rifiuto e scadenza rileggono e bloccano la richiesta nella stessa transazione dei movimenti del conto e della transizione da `BLOCKED`: una richiesta genera un solo esito economico. Anche l'approvazione usa il lock della richiesta. [Protocollo e prove PostgreSQL](docs/testing.md#richieste-di-acquisto-elaborate-una-sola-volta--ticket-07).
+-* **Noleggio e Test Drive**: verifica di disponibilità e inserimento nella stessa transazione con lock.
++* **Noleggio e Test Drive**: lock veicolo/cliente e disponibilità riletta nella transazione; conto protetto per gli addebiti, vincolo PostgreSQL contro periodi di noleggio sovrapposti. Conferma noleggio e cancellazione test drive futuri sono atomiche. Cambio destinazione e cancellazione identità conservano rimborsi e storico secondo i [flussi verificati](docs/architecture.md#flussi-economici-e-transazionali).
+ 
+ ---
+ 
+-## 3. Account Demo Precaricati
++## 3. Demo facoltativa
+ 
+-Tutti gli account esistenti nel database hanno password: **`password`**
++Solo dopo il caricamento di `demo.sql`, la password delle identità della fixture
++è **`password`**: cliente `mario.rossi@email.it`, venditore
++`paolo.costa@drivehub.it`, manager `vittorio.manager@drivehub.it`.
++Non è la password di tutti gli utenti registrati. Date e operazioni demo sono
++storiche; le scadenze vengono elaborate all'accesso del cliente.
+ 
+-* **Cliente**: `mario.rossi@email.it`
+-* **Venditore**: `paolo.costa@drivehub.it`
+-* **Manager**: `vittorio.manager@drivehub.it`
++La registrazione pubblica crea nuovi clienti con conto dimostrativo a zero;
++l'identificativo generato non certifica un IBAN bancario reale. Schema vuoto,
++limiti e precauzioni della demo: [installazione](docs/installation.md).
+ 
+-È inoltre possibile registrare in tempo reale nuovi clienti dalla schermata iniziale: il sistema provvederà a generare in automatico un IBAN italiano standard e un conto corrente a saldo zero.
+-
+----
+-
+-## 4. Avvio ed Esecuzione
+-
+-Prerequisiti: **JDK 21** e **Maven 3.9+**.
+-
+-### Avvio dell'Applicazione
+-```bash
+-mvn javafx:run
+-```
+-Oppure tramite doppio clic sul file `run.bat`.
+-
+-### Esecuzione dei Test Unitari e di Integrazione
++## 4. Verifiche
+ 
+ ```bash
++# Compila e produce il JAR, senza eseguire test
++mvn -DskipTests clean package
+ # Solo prove senza database
+ mvn test
+ # Suite completa: richiede configurazioni esplicite di test e sentinella
+-mvn -Ppostgres-tests test
++mvn -Ppostgres-tests clean test
+ ```
+ 
+-Preparazione del PostgreSQL dedicato, variabili richieste, comandi mirati e limiti
+-delle verifiche: [Build e test isolati](docs/testing.md). Nessun test usa implicitamente
+-il database applicativo; le prove PostgreSQL inizializzano solo `drivehub_test`.
++Preparazione del PostgreSQL dedicato, sei variabili richieste, comandi mirati e
++confini delle verifiche grafiche: [Build e test isolati](docs/testing.md).
++Nessun test usa implicitamente il DB applicativo: il reset è consentito solo
++su `drivehub_test` con ruolo dedicato e privilegi controllati.
++
++Le [evidenze16](docs/evidence/r09-instructions/verification.md) documentano nuove
++prove su una copia della versione locale corrente, con DB sacrificabili e
++sentinella distinta. I risultati delle sessioni01–15 restano storici.
+--- before/DriveHub/docs/architecture.md
++++ after/DriveHub/docs/architecture.md
+@@ -0,0 +1,142 @@
++# Responsabilità, dipendenze e flussi
++
++Questa descrizione riguarda i sorgenti correnti, non i diagrammi storici.
++Glossario e [ADR0001](adr/0001-base-manuale-e-prezzo-concordato.md) fissano i
++termini economici. Le prove e i loro limiti sono in [testing](testing.md).
++
++## Costruzione e direzione delle dipendenze
++
++| Parte | Responsabilità ed esempio verificabile | Dipende da |
++|---|---|---|
++| [App](../src/main/java/it/unifi/drivehub/App.java) | Avvia JavaFX, sceglie la dashboard e passa servizi/utente/callback alle viste | AppContext, dominio utenti, viste JavaFX |
++| [AppContext](../src/main/java/it/unifi/drivehub/AppContext.java) | Composition root: costruisce DAO PostgreSQL, hasher, publisher/observer e servizi | Implementazioni DAO, DatabaseManager, servizi, sicurezza, eventi |
++| [Viste](../src/main/java/it/unifi/drivehub/presentation/view/) | Raccolgono input, invocano servizi, presentano esiti e righe di lettura | Servizi concreti, dominio, JavaFX; alcuni overload anche AppContext |
++| [Servizi](../src/main/java/it/unifi/drivehub/service/) | Coordinano casi d'uso, transazioni e regole fra entità; PriceCalculatorService centralizza le formule | Interfacce DAO, dominio; servizi transazionali anche DatabaseManager e java.sql.Connection |
++| [Dominio](../src/main/java/it/unifi/drivehub/domain/) | Entità/enum, controlli locali e comportamenti: Vehicle, Request, BankAccount | Libreria Java; User conosce il contratto UserDashboardNavigator dello stesso package |
++| [DAO](../src/main/java/it/unifi/drivehub/dao/) e [PostgreSQL](../src/main/java/it/unifi/drivehub/dao/postgres/) | Contratti di accesso, mapping righe/entità, SQL, lock e conteggi di scrittura | Dominio, JDBC/Connection; implementazioni anche DatabaseManager |
++
++Questa è la **direzione delle dipendenze del codice**, non una pipeline
++DAO → dominio → servizi → UI. Una richiesta dati parte, per esempio, da
++`ClientDashboardView` → `CatalogService.getVehicleRows` → DAO → PostgreSQL;
++il risultato torna come righe preparate dal servizio alla vista. Il dominio
++non chiama i DAO. Il DB conserva i dati persistenti, mentre viste, liste ed
++entità ne trattengono copie in memoria che possono diventare obsolete.
++
++`AppContext(DatabaseManager)` costruisce esplicitamente tutti i servizi e
++condivide lo stesso gestore fra DAO e servizi; i costruttori dei servizi
++ricevono le dipendenze. È **dependency injection manuale**, senza container.
++`App` usa `AppContext.getInstance()`, Singleton inizializzato in modo
++sincronizzato, e passa i servizi alle viste. Restano accessi globali negli
++overload di comodo di LoginView, delle tre dashboard e AccountManagementDialog.
++Non c'è DI uniforme né sostituibilità di ogni dipendenza dal solo costruttore
++del contesto: questo riceve il gestore, ma sceglie internamente i PostgresDAO,
++Pbkdf2PasswordHasher e servizi concreti. I test PostgreSQL costruiscono invece
++un nuovo contesto con il gestore del solo DB dedicato.
++
++## Pattern: nomi e confini
++
++| Meccanismo | Esempio nel codice | Classificazione e limite |
++|---|---|---|
++| Factory statiche | `Vehicle.create`, `Client.createWithoutAccount`, `Request.createNewPurchaseRequest`, `Sale.createAcquisitionRecord` | Metodi statici nominati, con costruttori non pubblici e controlli propri dell'entità. **Non Factory Method GoF**: manca un metodo di creazione ridefinito dai sottotipi di un Creator |
++| Observer | `VehicleEventPublisher.attach/publishCommitment` e `TestDriveCancellationObserver.onVehicleCommitted` | Observer GoF, notifica sincrona sulla connessione del chiamante prima del commit; non coda di eventi, outbox o consegna asincrona |
++| Navigazione polimorfica | `Client.openDashboard` chiama `UserDashboardNavigator.showClientDashboard(this)`, implementato in App anche per Salesman/Manager | Double dispatch nello stile Visitor; il contratto enumera i tre tipi. Un nuovo ruolo richiede di aggiornare il navigator e la composizione, non soltanto una nuova classe |
++| Singleton | `AppContext.getInstance` | Accesso globale al contesto dell'applicazione, distinto dalla DI dei costruttori; non è stato conservato uno stato globale dell'utente corrente |
++| DAO | `VehicleDao` / `PostgresVehicleDao` | Pattern di accesso ai dati, **non uno dei GoF**. Restituisce entità e accetta Connection nei percorsi transazionali; non un ORM né un repository DDD indipendente da JDBC |
++| Composition root e DI | AppContext assembla, App collega le viste | Tecniche di composizione/inversione del controllo, **non pattern GoF** |
++
++Alcuni Javadoc preesistenti chiamano `create` “Factory Method”: qui la
++classificazione è quella della struttura effettiva, non di quell'etichetta.
++Non vengono introdotti pattern o refactor per far coincidere il codice con la teoria.
++
++## SOLID: esempi e compromessi
++
++- **SRP:** PriceCalculatorService calcola prezzi/tariffe senza SQL; i DAO
++  mappano e persistono; PurchaseService coordina l'acquisto. La separazione è
++  utile, ma le dashboard costruiscono controlli, gestiscono eventi e caricamenti
++  in classi ampie; AuthService riunisce login, identità e conto dimostrativo.
++- **OCP:** un nuovo observer può essere registrato senza cambiare il ciclo
++  di pubblicazione. Non vale per ogni variazione: un nuovo ruolo modifica
++  UserDashboardNavigator/App e il mapping SQL; una nuova formula richiede oggi
++  la modifica del calcolatore concreto.
++- **LSP:** Client, Salesman e Manager implementano il contratto User e App li
++  usa attraverso `openDashboard`. Questo è un esempio di polimorfismo, non una
++  dimostrazione formale della sostituibilità di ogni sottotipo in ogni contesto.
++  AuthService distingue ancora Client con `instanceof` per caricare il conto.
++- **ISP:** PasswordHasher espone hash/verify; i DAO sono distinti per risorsa.
++  Non significa “un DAO per aggregato DDD”: UserDao copre più ruoli, VehicleDao
++  comprende query, scritture e lock, e i contratti espongono JDBC.
++- **DIP:** AuthService riceve UserDao, BankAccountDao e PasswordHasher come
++  astrazioni; la scelta PostgreSQL/PBKDF2 sta nel contesto. Restano dipendenze
++  da DatabaseManager, calcolatore/publisher concreti e servizi concreti nelle
++  viste. I contratti DAO con Connection legano anche i servizi alla tecnologia
++  JDBC: non è un'architettura esagonale interamente disaccoppiata.
++
++## Uso di DDD
++
++Il lessico condiviso distingue acquisto del cliente, cessione, base manuale,
++totale concordato e conto dimostrativo. Vehicle protegge proprietà locali
++(ad esempio chilometri non negativi e coerenza targa/chilometri);
++BankAccount.withdraw controlla disponibilità e importo; Request conserva
++totale/acconto dell'accordo e ne ricava il saldo. I controlli che richiedono
++più record o concorrenza appartengono ai servizi e ai vincoli PostgreSQL:
++l'unicità del VIN, per esempio, non è dimostrabile dalla factory in memoria.
++
++È un modello di dominio con ispirazione DDD e servizi applicativi, in un solo
++contesto documentato. Non sono dimostrati bounded context indipendenti,
++aggregate root che racchiudano tutte le scritture, repository DDD, value object
++per ogni concetto o eventi persistenti. Le entità hanno riferimenti per ID e
++stato mutabile; la transazione del servizio può attraversare più entità/tabelle.
++Il contratto di navigazione in User introduce anche una responsabilità legata
++alla presentazione, pur senza importare JavaFX nel dominio.
++
++## Flussi economici e transazionali
++
++`DatabaseManager.executeInTransaction*` apre una connessione, disabilita
++autocommit, esegue il corpo e tenta commit oppure rollback sull'eccezione.
++Le scritture del caso d'uso passano questa stessa connessione ai DAO e
++all'Observer. Un errore di rollback viene conservato come eccezione soppressa:
++non si promette il recupero da ogni guasto del server o della rete.
++
++| Caso d'uso | Passaggi attuali e prova pertinente |
++|---|---|
++| Avvio acquisto | `PurchaseService.initiatePurchase`: UPDATE condizionale SALE → BLOCKED, calcolo del prezzo sulla modalità esplicita, lock conto, addebito20%, salvataggio totale/acconto. [PurchaseAgreementIntegrationTest](../src/test/java/it/unifi/drivehub/PurchaseAgreementIntegrationTest.java) |
++| Saldo, rifiuto, scadenza | Rilettura della richiesta con FOR UPDATE; saldo solo dopo approvazione e prima della scadenza, per totale meno acconto persistiti; vendita PURCHASE, richiesta rimossa, BLOCKED → SOLD, Observer prima del commit. Rifiuto rimborsa l'acconto; scadenza all'accesso trattiene20% dell'acconto e rimborsa80%, una richiesta per transazione. [PurchaseConcurrencyIntegrationTest](../src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java) |
++| Cessione del cliente | `submitSaleProposal`: VIN noto solo SOLD, ultima PURCHASE al proponente, nessuna richiesta, modello/anno coerenti. Approvazione/rifiuto bloccano richiesta e veicolo WAITING; accettazione accredita il cliente e registra ACQUISITION negativa, rifiuto conserva il VIN con storico o elimina quello nuovo senza storico. [SaleProposalIntegrationTest](../src/test/java/it/unifi/drivehub/SaleProposalIntegrationTest.java), [SaleOutcomeIntegrationTest](../src/test/java/it/unifi/drivehub/SaleOutcomeIntegrationTest.java) |
++| Noleggio e test drive | Lock veicolo, cliente NO KEY UPDATE, conto se serve; disponibilità riletta, addebito noleggio integrale. EXCLUDE sui giorni inclusivi e vincoli test drive aiutano a proteggere accessi concorrenti. La conferma noleggio cancella tutti i test drive futuri, anche fuori periodo, nella propria transazione. [BookingConcurrencyIntegrationTest](../src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java), [TestDriveCancellationIntegrationTest](../src/test/java/it/unifi/drivehub/TestDriveCancellationIntegrationTest.java) |
++| Cambio destinazione | Solo SALE ↔ RENT sotto lock veicolo; un noleggio che comprende oggi blocca RENT → SALE. Futuri da domani cancellati e rimborsati100% con lock conti per ID cliente crescente, prima dell'aggiornamento finale. [VehicleDestinationIntegrationTest](../src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java) |
++| Cancellazione identità | Password, lock identità NO KEY UPDATE e conto cliente; richieste/storico e FK RESTRICT impediscono la cancellazione. Identità senza associazioni cancellabile, con conto dimostrativo eliminato per CASCADE anche se positivo. Attribuzioni storiche preservate. [IdentityDeletionIntegrationTest](../src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java) |
++
++Il prezzo consigliato usa la base modello; quello effettivo usa la base
++selezionata, automatica o manuale, **nella stessa formula**, non come totale
++finale imposto. Le basi manuali sono arrotondate ai centesimi HALF_UP.
++`PriceCalculatorService` usa BigDecimal ma anche fattori/potenze e calcolo
++geometrico in `double`, con arrotondamento finale: non aritmetica decimale
++esatta in ogni passaggio. Il totale20.000/acconto4.000/saldo16.000 resta
++concordato anche se cambia il listino; questo non congela tutti i prezzi futuri.
++
++Il lock dei conti protegge gli aggiornamenti, quello delle richieste serializza
++gli esiti sullo stesso ID, e i lock veicolo/cliente coordinano le prenotazioni.
++I DAO verificano conteggi/ID nei percorsi protetti. Sono protocolli specifici
++verificati con gare reali e guasti SQL, non una certificazione globale di
++assenza di deadlock, serializzabilità o consegna “exactly once” distribuita.
++In particolare l'avvio acquisto legge modello/sconti anche con DAO che aprono
++connessioni proprie: non garantisce uno snapshot unico dell'intero listino
++durante modifiche concorrenti del manager. Il totale letto viene poi persistito.
++
++## Presentazione e flusso delle letture
++
++`CatalogService.getVehicleRows` prepara modelli, sconti, prezzi e tariffa;
++`AsyncLoad` esegue le letture su worker virtuali Java21 attraverso Task JavaFX,
++pubblica solo il caricamento corrente sul thread grafico e presenta errore/riprova.
++Le celle delle tabelle modificate nel14 leggono righe già preparate, senza SQL
++nel rendering. Le letture collettive non costituiscono una cache persistente
++né uno snapshot transazionale comune alle query.
++
++Le azioni economiche mostrano successo dopo il ritorno del servizio e il
++commit; ciò non implica che ogni gesto UI sia asincrono o che tutti i controlli
++rimangano sempre reattivi. Anteprime, selezioni ed entità in memoria possono
++essere obsolete: i comandi rileggono i dati necessari nei percorsi protetti.
++La cancellazione di un Task scarta risultati vecchi ma non interrompe
++immediatamente JDBC già avviato. [Prove14](evidence/r08-tables/verification.md)
++e [prove16](evidence/r09-instructions/verification.md) delimitano gli esiti
++osservati; non attestano prestazioni universali o accessibilità certificata.
+--- before/DriveHub/docs/evidence/r09-instructions/InstallationDbCheck.java
++++ after/DriveHub/docs/evidence/r09-instructions/InstallationDbCheck.java
+@@ -0,0 +1,27 @@
++package it.unifi.drivehub;
++
++/** Controllo della configurazione e delle credenziali demo nella copia d'installazione. */
++public class InstallationDbCheck {
++    public static void main(String[] args) throws Exception {
++        AppContext ctx = AppContext.getInstance();
++        try (var conn = ctx.getDatabaseManager().getConnection();
++             var stmt = conn.createStatement();
++             var rows = stmt.executeQuery("SELECT current_database(), current_user, current_setting('server_version'), EXISTS(SELECT 1 FROM brand WHERE name='R00_SENTINEL')")) {
++            if (!rows.next() || !"drivehub".equals(rows.getString(1))
++                    || !"drivehub".equals(rows.getString(2))
++                    || !rows.getString(3).startsWith("16.") || !rows.getBoolean(4))
++                throw new AssertionError("Destinazione installazione/sentinella non corretta");
++        }
++        String[][] users = {
++            {"mario.rossi@email.it", "Cliente"},
++            {"paolo.costa@drivehub.it", "Venditore"},
++            {"vittorio.manager@drivehub.it", "Manager"}
++        };
++        for (String[] entry : users) {
++            var user = ctx.getAuthService().login(entry[0], "password");
++            if (!entry[1].equals(user.getRoleDisplayName()))
++                throw new AssertionError("Credenziali/ruolo demo non corrispondenti");
++        }
++        System.out.println("INSTALLATION DB AND THREE DEMO LOGINS SUCCESS");
++    }
++}
+--- before/DriveHub/docs/evidence/r09-instructions/check-db.py
++++ after/DriveHub/docs/evidence/r09-instructions/check-db.py
+@@ -0,0 +1,30 @@
++from pathlib import Path
++import hashlib, json, subprocess, sys
++
++s=Path('/tmp/drivehub-ticket16-session')
++e=Path('/home/federico/dev/Drivehub/DriveHub/docs/evidence/r09-instructions')
++env=json.loads((s/'env.json').read_text())
++phase=sys.argv[1]
++assert phase in ('before-suite','after-suite')
++env.update(PGPASSWORD=env['DRIVEHUB_SENTINEL_DB_PASSWORD'],PGOPTIONS='-c default_transaction_read_only=on')
++cmd=['psql','-X','-A','-t','-v','ON_ERROR_STOP=1','-h','127.0.0.1','-p','55434','-U','drivehub','-d','drivehub']
++def query(sql):
++    return subprocess.check_output(cmd+['-c',sql],env=env,text=True)
++identity=query("SELECT current_database(),current_user,current_setting('server_version'),current_setting('transaction_read_only'); SELECT name FROM brand WHERE name='R00_SENTINEL';")
++assert 'R00_SENTINEL' in identity and 'drivehub|drivehub|16.' in identity and '|on' in identity
++tables=query("SELECT tablename FROM pg_tables WHERE schemaname='public' ORDER BY tablename").splitlines()
++sequences=query("SELECT sequencename FROM pg_sequences WHERE schemaname='public' ORDER BY sequencename").splitlines()
++hashes={}
++for name in tables:
++    hashes['table/'+name]=hashlib.sha256(query(f'SELECT row_to_json(r)::text FROM public."{name}" r ORDER BY row_to_json(r)::text').encode()).hexdigest()
++for name in sequences:
++    hashes['sequence/'+name]=hashlib.sha256(query(f'SELECT last_value,is_called FROM public."{name}"').encode()).hexdigest()
++if phase=='after-suite':
++    assert hashes==json.loads((e/'before-suite-application.sha256.json').read_text()),'Application copy changed during suite'
++(e/(phase+'-application.sha256.json')).write_text(json.dumps(hashes,indent=2)+'\n')
++adminenv=env.copy()
++adminenv.pop('PGPASSWORD')
++admin=['psql','-X','-A','-t','-v','ON_ERROR_STOP=1','-h',str(s),'-p','55434','-d','postgres']
++privileges=subprocess.check_output(admin+['-c',"SELECT datname,pg_get_userbyid(datdba) FROM pg_database ORDER BY datname; SELECT rolname,rolsuper,rolcreatedb,rolcreaterole,rolreplication,rolbypassrls FROM pg_roles WHERE rolname IN ('drivehub','drivehub_test'); SELECT count(*) FROM pg_auth_members m JOIN pg_roles r ON m.member=r.oid WHERE r.rolname='drivehub_test';"],env=adminenv,text=True)
++(e/(phase+'-environment.txt')).write_text(identity+'\n'+privileges+f'\nREAD ONLY application fingerprint: {len(tables)} tables, {len(sequences)} sequences\n')
++print(phase,'sentinel and application fingerprint verified READ ONLY')
+--- before/DriveHub/docs/evidence/r09-instructions/check-startup.py
++++ after/DriveHub/docs/evidence/r09-instructions/check-startup.py
+@@ -0,0 +1,45 @@
++from pathlib import Path
++import hashlib, json, os, re, signal, subprocess, time
++
++s=Path('/tmp/drivehub-ticket16-session')
++e=Path('/home/federico/dev/Drivehub/DriveHub/docs/evidence/r09-instructions')
++repo=s/'install/DriveHub'
++env=json.loads((s/'env.json').read_text())
++out=s/'startup'
++out.mkdir(exist_ok=True)
++java=Path(env['JAVA_HOME'])/'bin'
++m2=Path.home()/'.m2/repository'
++modules=':'.join(str(next((m2/'org/openjfx'/n/'21.0.2').glob('*-linux.jar'))) for n in ['javafx-base','javafx-graphics','javafx-controls'])
++cp=':'.join([str(repo/'target/classes'),str(repo/'target/test-classes'),str(m2/'org/postgresql/postgresql/42.7.3/postgresql-42.7.3.jar'),str(out)])
++sources=[repo/'docs/evidence/r03-prices/PriceUiCheck.java',repo/'docs/evidence/r08-tables/ReactiveTablesUiCheck.java',repo/'docs/evidence/r10-cleanup/AppStartupUiCheck.java',s/'InstallationDbCheck.java']
++with (e/'startup-check.log').open('w') as log:
++    subprocess.run([str(java/'javac'),'--module-path',modules,'--add-modules','javafx.controls','-cp',cp,'-d',str(out),*map(str,sources)],env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
++    subprocess.run([str(java/'java'),'--module-path',modules,'--add-modules','javafx.controls','-cp',cp,'it.unifi.drivehub.InstallationDbCheck'],env=env,stdout=log,stderr=subprocess.STDOUT,check=True,timeout=30)
++    subprocess.run([str(java/'java'),'--module-path',modules,'--add-modules','javafx.controls','-Dprism.order=sw','-cp',cp,'it.unifi.drivehub.AppStartupUiCheck',str(out)],env=env,stdout=log,stderr=subprocess.STDOUT,check=True,timeout=45)
++for attempt in (1,2):
++    with (e/f'javafx-run-{attempt}.log').open('w') as log:
++        process=subprocess.Popen(['mvn','-B','javafx:run'],cwd=repo,env=env,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
++        try:
++            deadline=time.monotonic()+45
++            while True:
++                tree=subprocess.check_output(['xwininfo','-root','-tree'],env=env,text=True)
++                match=re.search(r'(0x[0-9a-f]+) "DriveHub - Piattaforma Concessionario Auto"',tree)
++                if match:
++                    assert process.poll() is None
++                    properties=subprocess.check_output(['xprop','-id',match[1],'_NET_WM_PID','WM_CLASS'],env=env,text=True)
++                    (e/f'javafx-window-{attempt}.txt').write_text(tree+'\n'+properties)
++                    break
++                if process.poll() is not None: raise AssertionError('Maven/JavaFX terminato prima della finestra')
++                if time.monotonic()>deadline: raise TimeoutError('Finestra JavaFX non osservata')
++                time.sleep(.2)
++        finally:
++            os.killpg(process.pid,signal.SIGTERM)
++            try: process.wait(timeout=10)
++            except subprocess.TimeoutExpired:
++                os.killpg(process.pid,signal.SIGKILL)
++                process.wait(timeout=5)
++    print(f'javafx:run window observed, attempt {attempt}; process group stopped by harness')
++for p in out.glob('*.png'):
++    __import__('shutil').copy2(p,e/p.name)
++assert 'APP STARTUP SUCCESS' in (e/'startup-check.log').read_text()
++print('Startup checks passed; ordinary Maven goal launched twice without schema/demo rerun')
+--- before/DriveHub/docs/evidence/r09-instructions/commands.md
++++ after/DriveHub/docs/evidence/r09-instructions/commands.md
+@@ -0,0 +1,92 @@
++# Comandi della verifica16
++
++Eseguiti il3novembre2026, dalla copia
++`/tmp/drivehub-ticket16-session/install/DriveHub`. Questa pagina registra
++l'ambiente della sessione; la procedura generale è [installation.md](../../installation.md).
++
++## Preparazione isolata
++
++`/tmp` esisteva ma gli strumenti13–15 erano assenti. Nuovi pacchetti Ubuntu
++scaricati ed estratti con `dpkg-deb -x`, senza installazioni o servizi di sistema.
++[Versioni e SHA256 dei pacchetti](tool-archives.json).
++
++- `apt download openjdk-21-jdk-headless openjdk-21-jre-headless xvfb xserver-common libxfont2 x11-xkb-utils libpq5`;
++  poi `apt download libunwind8` e `apt download libfontenc1`.
++- PostgreSQL16 e client16 da
++  `https://archive.ubuntu.com/ubuntu/pool/main/p/postgresql-16/`,
++  versione16.15-0ubuntu0.24.04.1.
++- Dipendenze aggiuntive dall'archivio Ubuntu:
++  `pool/main/i/icu/libicu74_74.2-1ubuntu3.1_amd64.deb`,
++  `pool/main/l/llvm-toolchain-17/libllvm17t64_17.0.6-9ubuntu1_amd64.deb`,
++  `pool/main/libx/libxml2/libxml2_2.9.14+dfsg-1.3ubuntu3.10_amd64.deb`.
++
++Le prime richieste apt che includevano `libicu74` e `libxml2-2` non erano
++risolvibili nei metadati della distribuzione corrente; nessuna build/test
++fallita viene attribuita al prodotto. Le dipendenze sono state estratte dai
++pacchetti indicati; `ldd` ha guidato l'aggiunta di libxml2/icu/unwind/fontenc.
++La libpq18 scaricata dai metadati correnti è una libreria client; il server e
++il client `psql` eseguiti sono16.15, verificati anche tramite SQL sul server.
++
++Solo nella copia estratta del JDK, symlink da `/etc/java-21-openjdk/*`
++reindirizzate ai corrispondenti file estratti. Solo nel binario Xvfb estratto,
++la stringa `/usr/bin` del compilatore tastiera è stata sostituita con
++`/tmp/x16`, contenente un link all'xkbcomp estratto. Nessun binario di sistema
++modificato. `LD_LIBRARY_PATH` punta alle librerie estratte, `JAVA_HOME` al JDK21.
++
++[snapshot.py](snapshot.py) ha salvato la copia iniziale e controllato i15ticket.
++[prepare.py](prepare.py) ha copiato questa fotografia, generato credenziali
++casuali private0600 e configurato un nuovo cluster con `initdb`: UTF8,
++socket privato, host SCRAM, solo127.0.0.1:55434. Il file privato `env.json`
++non è un'evidenza pubblicata e non va copiato nel repository.
++
++```bash
++pg_ctl -D /tmp/drivehub-ticket16-session/pgdata \
++  -l docs/evidence/r09-instructions/postgres.log -w start
++# Comando completo registrato in xvfb-command.txt, su display92 libero
++python3 /tmp/drivehub-ticket16-session/setup-db.py
++```
++
++[setup-db.py](setup-db.py) crea esclusivamente nuovi ruoli/DB dedicati;
++inizializza lo schema applicativo vuoto con `psql -X -v ON_ERROR_STOP=1
++--single-transaction -f .../schema.sql`, ne controlla client=0 e btree_gist,
++poi carica demo con gli stessi flag. Aggiunge la sentinella soltanto nella
++copia sacrificabile, distinta dal DB di test. Non usa DB sulla porta5432.
++
++## Build, avvio e suite
++
++Il [launcher Maven](run-maven.py) legge l'ambiente privato, esegue comandi
++Maven reali nella copia, salva log/input e riepiloga XML. Non modifica src/POM;
++nei soli XML conservati omette il blocco properties ambientale, mantenendo
++testcase, esiti e output. Nessun nuovo test nella suite.
++
++```bash
++python3 /tmp/drivehub-ticket16-session/run-maven.py build -DskipTests clean package
++python3 /tmp/drivehub-ticket16-session/run-maven.py without-db test
++python3 /tmp/drivehub-ticket16-session/check-startup.py
++python3 /tmp/drivehub-ticket16-session/check-db.py before-suite
++python3 /tmp/drivehub-ticket16-session/run-maven.py full -Ppostgres-tests clean test
++python3 /tmp/drivehub-ticket16-session/check-db.py after-suite
++pg_ctl -D /tmp/drivehub-ticket16-session/pgdata -m fast -w stop
++```
++
++[check-startup.py](check-startup.py) compila gli harness15/14/05 già presenti
++e il solo probe d'installazione [InstallationDbCheck.java](InstallationDbCheck.java).
++Quest'ultimo apre la configurazione applicativa della copia, controlla DB/ruolo,
++versione server e sentinella, poi autentica le tre identità demo tramite
++AuthService. Non scrive o resetta il DB; non è un test sulla forma del testo.
++AppStartupUiCheck invoca App.start, verifica tema/schede/Tab e salva screenshot.
++Infine il launcher esegue due volte `mvn -B javafx:run`, attende la finestra
++con titolo/classe App su Xvfb e registra PID tramite xprop. Arresta ciascun
++gruppo di processi con SIGTERM: i goal sono interrotti dopo l'osservazione,
++non dichiarati terminati spontaneamente con BUILD SUCCESS.
++
++[check-db.py](check-db.py) apre connessioni READ ONLY alla copia applicativa,
++controlla sentinella/identità e confronta gli hash delle righe ordinate di
++tutte le13tabelle e lo stato delle7sequenze prima/dopo la suite. Privilegi e
++proprietari vengono letti sul nuovo cluster. Il controllo di isolamento nella
++suite tenta anche configurazioni di reset non sicure e verifica il loro rifiuto.
++
++A fine prova SIGTERM al solo PID Xvfb92 registrato; `pg_ctl status`=3.
++Controllo successivo di assenza dei listener55434/X92 e del processo display.
++Rieseguire questi script richiede di predisporre nuovamente l'ambiente privato;
++i percorsi temporanei non sono un requisito per usare DriveHub.
+--- before/DriveHub/docs/evidence/r09-instructions/prepare.py
++++ after/DriveHub/docs/evidence/r09-instructions/prepare.py
+@@ -0,0 +1,31 @@
++from pathlib import Path
++import json, os, secrets, shutil, subprocess
++
++session = Path('/tmp/drivehub-ticket16-session')
++tools = Path('/tmp/drivehub-ticket16-tools/root')
++repo = session/'install/DriveHub'
++evidence = Path('/home/federico/dev/Drivehub/DriveHub/docs/evidence/r09-instructions')
++evidence.mkdir(parents=True, exist_ok=True)
++shutil.copytree(session/'before/DriveHub', repo)
++env = os.environ.copy()
++env['JAVA_HOME'] = str(tools/'usr/lib/jvm/java-21-openjdk-amd64')
++env['PATH'] = env['JAVA_HOME']+'/bin:'+str(tools/'usr/lib/postgresql/16/bin')+':'+env['PATH']
++env['LD_LIBRARY_PATH'] = str(tools/'usr/lib/x86_64-linux-gnu')
++env['DISPLAY'] = ':92'
++env['DRIVEHUB_UI_DIR'] = str(session/'ui')
++for database, prefix in [('drivehub_test','DRIVEHUB_TEST'),('drivehub','DRIVEHUB_SENTINEL')]:
++    env[prefix+'_DB_URL'] = 'jdbc:postgresql://127.0.0.1:55434/'+database
++    env[prefix+'_DB_USER'] = database
++    env[prefix+'_DB_PASSWORD'] = secrets.token_hex(24)
++private = session/'env.json'
++private.write_text(json.dumps(env))
++private.chmod(0o600)
++config = repo/'src/main/resources/application.properties'
++config.write_text('db.url='+env['DRIVEHUB_SENTINEL_DB_URL']+'\ndb.user=drivehub\ndb.password='+env['DRIVEHUB_SENTINEL_DB_PASSWORD']+'\n')
++config.chmod(0o600)
++pgdata = session/'pgdata'
++with (evidence/'initdb.log').open('w') as log:
++    subprocess.run(['initdb','-D',str(pgdata),'--no-locale','-E','UTF8','--auth-local=trust','--auth-host=scram-sha-256'],env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
++with (pgdata/'postgresql.conf').open('a') as out:
++    out.write("\nlisten_addresses = '127.0.0.1'\nport = 55434\nunix_socket_directories = '/tmp/drivehub-ticket16-session'\n")
++print('Prepared current-worktree installation copy, private config0600 and new cluster127.0.0.1:55434')
+--- before/DriveHub/docs/evidence/r09-instructions/run-maven.py
++++ after/DriveHub/docs/evidence/r09-instructions/run-maven.py
+@@ -0,0 +1,31 @@
++from pathlib import Path
++import hashlib, json, shutil, subprocess, sys, xml.etree.ElementTree as ET
++
++s=Path('/tmp/drivehub-ticket16-session')
++e=Path('/home/federico/dev/Drivehub/DriveHub/docs/evidence/r09-instructions')
++repo=s/'install/DriveHub'
++env=json.loads((s/'env.json').read_text())
++label, *args=sys.argv[1:]
++assert label in ('build','without-db','full')
++inputs={str(p.relative_to(repo)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [repo/'pom.xml',*sorted((repo/'src').rglob('*'))] if p.is_file()}
++(e/(label+'-inputs.sha256.json')).write_text(json.dumps(inputs,indent=2)+'\n')
++command=['mvn','-B',*args]
++with (e/(label+'.log')).open('w') as log:
++    log.write('COMMAND: '+' '.join(command)+'\n'); log.flush()
++    result=subprocess.run(command,cwd=repo,env=env,stdout=log,stderr=subprocess.STDOUT)
++if label != 'build':
++    dest=e/(label+'-surefire')
++    dest.mkdir(exist_ok=True)
++    totals=dict.fromkeys(['tests','failures','errors','skipped'],0)
++    for p in sorted((repo/'target/surefire-reports').glob('TEST-*.xml')):
++        tree=ET.parse(p)
++        for key in totals: totals[key]+=int(tree.getroot().attrib[key])
++        # Surefire properties contain the private installation configuration in classpath only;
++        # omit environment-specific properties and retain testcases/failures intact.
++        props=tree.getroot().find('properties')
++        if props is not None: tree.getroot().remove(props)
++        tree.write(dest/p.name,encoding='utf-8',xml_declaration=True)
++    (e/(label+'-summary.json')).write_text(json.dumps(totals,indent=2)+'\n')
++    print(label,totals)
++print(label,'exit',result.returncode)
++sys.exit(result.returncode)
+--- before/DriveHub/docs/evidence/r09-instructions/setup-db.py
++++ after/DriveHub/docs/evidence/r09-instructions/setup-db.py
+@@ -0,0 +1,23 @@
++from pathlib import Path
++import json, subprocess
++
++s = Path('/tmp/drivehub-ticket16-session')
++e = Path('/home/federico/dev/Drivehub/DriveHub/docs/evidence/r09-instructions')
++env = json.loads((s/'env.json').read_text())
++repo = s/'install/DriveHub'
++psql = ['psql','-X','-v','ON_ERROR_STOP=1','-h',str(s),'-p','55434']
++with (e/'database-setup.log').open('w') as log:
++    for db, prefix in [('drivehub_test','DRIVEHUB_TEST'),('drivehub','DRIVEHUB_SENTINEL')]:
++        password=env[prefix+'_DB_PASSWORD']
++        sql=f"CREATE ROLE {db} LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS PASSWORD '{password}';\nCREATE DATABASE {db} OWNER {db};\nREVOKE CONNECT ON DATABASE {db} FROM PUBLIC;\nGRANT CONNECT ON DATABASE {db} TO {db};\n"
++        subprocess.run(psql+['-d','postgres'],input=sql,text=True,env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
++    appenv=env|{'PGPASSWORD':env['DRIVEHUB_SENTINEL_DB_PASSWORD']}
++    app=['psql','-X','-v','ON_ERROR_STOP=1','--single-transaction','-h','127.0.0.1','-p','55434','-U','drivehub','-d','drivehub']
++    subprocess.run(app+['-f','src/main/resources/db/schema.sql'],cwd=repo,env=appenv,stdout=log,stderr=subprocess.STDOUT,check=True)
++    subprocess.run(app+['-c',"SELECT count(*) AS clients_before_optional_demo FROM client; SELECT extname FROM pg_extension WHERE extname='btree_gist';"],cwd=repo,env=appenv,stdout=log,stderr=subprocess.STDOUT,check=True)
++    subprocess.run(app+['-f','src/main/resources/db/demo.sql'],cwd=repo,env=appenv,stdout=log,stderr=subprocess.STDOUT,check=True)
++    subprocess.run(app+['-c',"INSERT INTO brand(name) VALUES ('R00_SENTINEL'); SELECT current_database(), current_user, (SELECT count(*) FROM client) AS clients, (SELECT count(*) FROM sale) AS operations;"],env=appenv,stdout=log,stderr=subprocess.STDOUT,check=True)
++with (e/'versions.txt').open('w') as log:
++    for command in [['java','-version'],['javac','-version'],['mvn','-version'],['postgres','--version'],['psql','--version']]:
++        subprocess.run(command,env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
++print('Dedicated nonadmin roles/databases created; empty schema then optional demo and sentinel loaded')
+--- before/DriveHub/docs/evidence/r09-instructions/snapshot.py
++++ after/DriveHub/docs/evidence/r09-instructions/snapshot.py
+@@ -0,0 +1,40 @@
++from pathlib import Path
++import hashlib, json, shutil, subprocess
++
++ROOT = Path('/home/federico/dev/Drivehub')
++SESSION = Path('/tmp/drivehub-ticket16-session')
++def files():
++    for base in (ROOT / 'DriveHub', ROOT / 'TRACKER_DRIVEHUB'):
++        for directory, dirs, names in __import__('os').walk(base):
++            dirs[:] = [d for d in dirs if d not in ('.git', 'target', 'Relazione_SWE')]
++            for name in names:
++                p = Path(directory) / name
++                if p.is_file():
++                    yield p
++    yield ROOT / 'PIANO_REVISIONI_DRIVEHUB.md'
++def digest(p):
++    return hashlib.sha256(p.read_bytes()).hexdigest()
++if __name__ == '__main__':
++    before = SESSION / 'before'
++    assert not before.exists()
++    manifest = {}
++    for p in files():
++        rel = p.relative_to(ROOT)
++        dest = before / rel
++        dest.parent.mkdir(parents=True, exist_ok=True)
++        shutil.copy2(p, dest)
++        manifest[str(rel)] = digest(p)
++    (SESSION / 'baseline-sha256.json').write_text(json.dumps(manifest, indent=2) + '\n')
++    head = subprocess.check_output(['git', '-C', str(ROOT/'DriveHub'), 'rev-parse', 'HEAD'], text=True)
++    (SESSION/'initial-head.txt').write_text(head)
++    index = ROOT/'DriveHub/.git/index'
++    (SESSION/'initial-index.sha256').write_text(digest(index)+'\n')
++    statuses = {}
++    for p in sorted((ROOT/'TRACKER_DRIVEHUB/revisioni/issues').glob('*.md')):
++        if int(p.name[:2]) <= 15:
++            content = p.read_text()
++            assert 'State: closed' in content and '- [ ]' not in content, p
++            statuses[str(p.relative_to(ROOT))] = {'state': 'closed', 'sha256':digest(p)}
++    assert len(statuses) == 15
++    (SESSION/'prerequisites.json').write_text(json.dumps(statuses, indent=2)+'\n')
++    print(f'Snapshot: {len(manifest)} files; prerequisites: {len(statuses)} closed')
+--- before/DriveHub/docs/evidence/r09-instructions/verification.md
++++ after/DriveHub/docs/evidence/r09-instructions/verification.md
+@@ -0,0 +1,101 @@
++# Ticket16 — installazione e rigore teorico
++
++Sessione del3novembre2026, solo16. Letti AGENTS, piano, glossario, ADR0001,
++testing ed evidenze15. [Prerequisiti01–15](prerequisites.json) tutti chiusi e
++senza criteri aperti. `Relazione_SWE` esclusa da letture, ricerche, copia,
++modifiche e verifiche. Nessun commit/staging; nessun intervento sui diagrammi17.
++
++## Versione locale e conservazione
++
++Fotografia iniziale **1422file**, progetto, tracker e piano esterni, esclusi
++`.git`, `target` e relazione: [manifest](baseline-sha256.json),
++[HEAD](initial-head.txt), [indice](initial-index.sha256).
++La copia iniziale è in `/tmp/drivehub-ticket16-session/before`.
++Un diff da HEAD attribuirebbe impropriamente il lavoro01–15 a questa sessione:
++le review confrontano esclusivamente la fotografia locale.
++
++Installazione verificata in `/tmp/drivehub-ticket16-session/install/DriveHub`,
++copiata dalla fotografia della **versione locale corrente**, inclusi file
++modificati/non tracciati, non da un clone/checkout del solo HEAD.
++[Controllo della copia](installation-copy.json): tutti i file iniziali del
++progetto identici salvo `application.properties`, sostituito solo nella copia
++con configurazione privata0600 del nuovo DB sacrificabile. Documenti correnti
++sincronizzati prima della suite finale. Sorgenti, test, POM, schema/demo e
++harness preesistenti del progetto originale non modificati.
++
++## Cambiamenti e motivazione
++
++- README come ingresso, [installazione](../../installation.md) completa e
++  [architettura](../../architecture.md) sostenuta da riferimenti ai sorgenti;
++  testing consolidato con comandi/confini e ambiente temporaneo esplicitato.
++- Java21/Maven/PG16, btree_gist, proprietà effettivamente lette, credenziali
++  locali e risorsa nel JAR; niente presunta configurazione applicativa via
++  variabili dei test. Avvio ordinario distinto da schema/demo distruttivi.
++- Demo facoltativa, credenziali valide per la fixture, schema vuoto senza
++  manager/venditore, date storiche e conto/identificativo solo dimostrativi.
++- Factory statiche distinte dal Factory Method GoF; Observer sincrono,
++  navigazione nello stile Visitor, Singleton, DAO/DI/composition root distinti.
++  SOLID/DDD descritti con esempi e compromessi, senza promessa di purezza.
++- Dipendenze del codice distinte dal flusso dei dati; costruzione esplicita
++  dei servizi e accessi globali residui. Prezzi/transazioni/lock/cancellazioni
++  secondo i percorsi attuali, incluso il limite dello snapshot listino
++  nell'avvio acquisto e delle query JDBC già avviate.
++
++Nessun refactor, dipendenza nuova, modifica a diagrammi o test artificiale
++per il testo. Il probe conservato fra le evidenze verifica invece il confine
++reale d'installazione: configurazione PostgreSQL e tre login demo.
++Nessun grafo Graphify esistente, nessuna generazione necessaria.
++
++## Ambiente e prove nuove
++
++I file temporanei13–15 erano assenti. Strumenti ricreati da pacchetti Ubuntu
++ufficiali estratti, senza installazioni/servizi di sistema:
++[versioni](versions.txt), [pacchetti/hash](tool-archives.json),
++[comandi e script](commands.md).
++Java/javac **21.0.12.1**, Maven **3.9.16** sullo stesso JDK,
++server/client PostgreSQL **16.15**. Nuovo cluster solo **127.0.0.1:55434**;
++DB/ruoli `drivehub_test` e copia applicativa `drivehub`, senza privilegi
++amministrativi; test senza appartenenze o altri DB posseduti.
++[Identità/privilegi iniziali](before-suite-environment.txt).
++Xvfb isolato **:92**,1440×1000, solo socket locale astratto, senza TCP/Unix
++filesystem: [comando](xvfb-command.txt), [log](xvfb.log).
++Warning EGL su /dev/dri non impedisce il rendering software osservato.
++Servizi e prove eseguiti fuori sandbox per rendere persistenti processi/socket.
++Nessun DB applicativo preesistente contattato.
++
++| Prova | Esito nuovo |
++|---|---|
++| `psql --single-transaction -v ON_ERROR_STOP=1 -f schema.sql` sulla nuova copia applicativa | Schema vuoto, client=0, btree_gist presente |
++| Caricamento separato facoltativo `demo.sql` |15clienti,40operazioni; [log](database-setup.log) |
++| `mvn -DskipTests clean package` |65sorgenti target21, JAR prodotto, BUILD SUCCESS; test non eseguiti. [Log](build.log), [input](build-inputs.sha256.json) |
++| `mvn test` |**47/47**, zero failure/errori/salti; [log](without-db.log), [XML](without-db-surefire/), [riepilogo](without-db-summary.json) |
++| Configurazione applicativa e login demo |DB/ruolo/versione/sentinella corretti e tre ruoli autenticati con AuthService; [log](startup-check.log) |
++| App.start con JavaFX/Robot |**APP STARTUP SUCCESS**, tema, schede e Tab; [schermata ispezionata](startup-login.png) |
++| `mvn javafx:run`, due avvii ordinari |Finestra App900×650 osservata due volte, PIDJava distinti5664/6146; nessuno schema/demo ripetuto. [Primo log](javafx-run-1.log), [finestra1](javafx-window-1.txt), [secondo log](javafx-run-2.log), [finestra2](javafx-window-2.txt). Goal interrotti dal launcher dopo l'osservazione |
++| `mvn -Ppostgres-tests clean test` finale |**394/394**,47senzaDB/347PostgreSQL, zero failure/errori/salti; [log](full.log), [XML](full-surefire/), [riepilogo](full-summary.json), [input](full-inputs.sha256.json) |
++
++Il394/394 del15 resta storico; i log/XML qui sono nuove esecuzioni16.
++Include DatabaseIsolationIntegrationTest, fixture/demo e tutte le regressioni
++precedenti con gare PostgreSQL effettive, PID/blocker e rollback.
++Test e harness non eseguiti contemporaneamente.
++
++La suite lascia intatta la copia applicativa: sentinella finale riletta
++**READ ONLY** e hash di tutte le13tabelle/7sequenze identici
++[prima](before-suite-application.sha256.json)/[dopo](after-suite-application.sha256.json).
++[Controllo finale](after-suite-environment.txt), [arresto](shutdown.txt),
++[log server](postgres.log). I guasti SQL nel log sono quelli deliberati delle
++regressioni. PostgreSQL e Xvfb arrestati; controllo listener/processi da registrare.
++
++## Review e stato
++
++Verifiche runtime completate; review indipendenti Standards/Spec sul solo diff
++della sessione e controlli finali di conservazione ancora in corso.
++Ticket16 resta in-progress fino al completamento. Nessun codice/test/harness
++di produzione modificato: gli aggiornamenti di chiusura saranno documentali.
++
++Limiti: Linux/WSL e Xvfb, nessuna nuova certificazione screen reader, altro
++OS/display, installer autonomo o benchmark. Il goal Maven prova l'avvio della
++finestra, i login sono verificati tramite i servizi; non tutti i flussi sono
++riesercitati nella GUI. Nessuna migrazione completa di installazioni popolate,
++nuova garanzia globale di concorrenza o risoluzione dei diagrammi17.
++R09 resta parziale per17 e AC13 resta trasversale.
+--- before/DriveHub/docs/installation.md
++++ after/DriveHub/docs/installation.md
+@@ -0,0 +1,165 @@
++# Installazione e avvio
++
++Procedura per una **nuova copia locale** di DriveHub e un database applicativo
++nuovo. Per verificare modifiche non committate copiare la directory di lavoro
++corrente, inclusi i file non tracciati necessari; un clone del solo HEAD non
++contiene le revisioni locali. Escludere `.git`, `target` e `Relazione_SWE`.
++I percorsi dei comandi seguenti sono relativi alla radice `DriveHub/`.
++
++## Prerequisiti
++
++- **JDK 21**, con `java` e `javac`; **Maven 3.9+**. In WSL usare un JDK Linux.
++- **PostgreSQL 16**, client `psql` e file dell'estensione **btree_gist**
++  (pacchetti PostgreSQL/contrib della distribuzione). Il proprietario del nuovo
++  DB esegue `CREATE EXTENSION` attraverso lo script dello schema.
++- Ambiente grafico per JavaFX e relative librerie native. Su Linux occorrono
++  GTK3/X11; per le sole prove senza schermo usare un display Xvfb isolato.
++- Accesso a Maven Central alla prima risoluzione delle dipendenze. JavaFX e
++  driver JDBC sono dichiarati nel POM: non occorre un SDK JavaFX separato.
++
++Installare questi strumenti con i pacchetti appropriati al proprio sistema;
++poi verificare, senza abbassare il target del POM:
++
++```bash
++java -version
++javac -version
++mvn -version
++psql --version
++```
++
++Le prime tre uscite devono identificare Java **21**, compreso il runtime usato
++da Maven. Se necessario impostare `JAVA_HOME` alla propria directory JDK21 e
++anteporre `"$JAVA_HOME/bin"` a `PATH`. Verificare anche la versione del server
++con `SHOW server_version;`: la versione del client non la dimostra.
++
++## Database applicativo e configurazione
++
++Avviare PostgreSQL secondo il proprio sistema. In una sessione `psql` da
++amministratore, creare **una sola volta** un nuovo ruolo e database applicativi:
++
++```sql
++CREATE ROLE drivehub LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS;
++\password drivehub
++CREATE DATABASE drivehub OWNER drivehub;
++REVOKE CONNECT ON DATABASE drivehub FROM PUBLIC;
++GRANT CONNECT ON DATABASE drivehub TO drivehub;
++```
++
++`\password` chiede il segreto senza inserirlo nel file SQL o nella cronologia.
++Scegliere una password locale propria. Usare `drivehub_test` esclusivamente
++per i test, mai per l'applicazione.
++
++Modificare **nella propria copia** `src/main/resources/application.properties`:
++
++```properties
++db.url=jdbc:postgresql://127.0.0.1:5432/drivehub
++db.user=drivehub
++db.password=<password locale scelta per il ruolo drivehub>
++```
++
++Sostituire il segnaposto e adattare host/porta ai valori reali. I tre nomi di
++proprietà sono quelli letti da [DatabaseManager](../src/main/java/it/unifi/drivehub/dao/DatabaseManager.java).
++Le variabili `DRIVEHUB_TEST_*` e `DRIVEHUB_SENTINEL_*` configurano le prove,
++**non** l'applicazione. La risorsa viene copiata in `target/classes` da Maven;
++dopo una modifica rieseguire il comando di avvio dalla radice del progetto.
++Non distribuire o committare password locali: anche il JAR prodotto contiene
++la risorsa. La configurazione è in chiaro; non esiste un gestore di segreti.
++
++Il costruttore predefinito usa valori locali di fallback se la risorsa o una
++chiave mancano e ignora un errore di lettura del file: controllare esplicitamente
++tutte e tre le chiavi. Non presumere che una variabile d'ambiente le sostituisca.
++
++Verificare destinazione e permessi prima di eseguire SQL, usando gli stessi
++host/porta/ruolo/database della configurazione (qui l'esempio locale):
++
++```bash
++psql -X -W -h 127.0.0.1 -p 5432 -U drivehub -d drivehub \
++  -v ON_ERROR_STOP=1 -c 'SELECT current_database(), current_user; SHOW server_version;'
++```
++
++## Inizializzazione, demo facoltativa e reset
++
++**Solo sul nuovo DB vuoto destinato a questa installazione**, creare lo schema:
++
++```bash
++psql -X -W -h 127.0.0.1 -p 5432 -U drivehub -d drivehub \
++  -v ON_ERROR_STOP=1 --single-transaction -f src/main/resources/db/schema.sql
++```
++
++`schema.sql` **non è una migrazione**: contiene `DROP ... CASCADE` e ricrea
++tabelle, tipi, vincoli, trigger e sequenze. Rieseguirlo su un DB popolato è un
++**reset distruttivo**. `ON_ERROR_STOP` e la singola transazione fanno fallire
++e annullare lo script su errore; non rendono sicura una destinazione sbagliata.
++Se manca `btree_gist`, predisporne i file sul server prima di riprovare.
++
++Lo schema basta per avviare la schermata pubblica e registrare nuovi clienti;
++catalogo e identità manager/venditore sono inizialmente vuoti. La schermata
++pubblica non registra manager o venditori. Per esplorare i tre ruoli si può
++caricare **facoltativamente**, solo sul DB dimostrativo sacrificabile:
++
++```bash
++psql -X -W -h 127.0.0.1 -p 5432 -U drivehub -d drivehub \
++  -v ON_ERROR_STOP=1 --single-transaction -f src/main/resources/db/demo.sql
++```
++
++Anche `demo.sql` è **distruttivo**: elimina i dati applicativi e li sostituisce
++con la fixture, riallineando le sequenze. Non è un'aggiunta di alcuni esempi,
++non è necessario all'avvio e non va eseguito su dati da conservare.
++
++Solo dopo aver caricato questa demo, password **`password`** per le identità
++della fixture, ad esempio:
++
++| Ruolo | Email |
++|---|---|
++| Cliente | `mario.rossi@email.it` |
++| Venditore | `paolo.costa@drivehub.it` |
++| Manager | `vittorio.manager@drivehub.it` |
++
++Le date della demo sono storiche, non uno scenario sempre futuro: gli acquisti
++scaduti vengono trattati all'accesso del cliente. Il conto è dimostrativo;
++l'identificativo generato ha forma simile a un IBAN e non certifica un conto
++bancario reale né un checksum bancario.
++
++Installazioni già popolate richiedono un adeguamento dello schema e dati
++coerenti prima di usare questa versione: prezzo/modalità, totale concordato,
++tipo/segno delle operazioni, unicità richieste, esclusione sovrapposizioni e FK
++storiche sono descritti in [testing](testing.md). La decisione D02 ammette un
++DB ricreabile; non viene fornita una migrazione completa dei dati preesistenti.
++Non ricavare totali storici dal listino corrente o tipi dai soli vecchi segni.
++
++## Build e avvio ordinario
++
++```bash
++# Build del JAR e compilazione dei test; non esegue i test
++mvn -DskipTests clean package
++# Avvio ordinario dalla radice del progetto
++mvn javafx:run
++```
++
++Su Windows `run.bat` richiama lo stesso goal Maven: richiede ugualmente JDK21,
++Maven nel PATH, PostgreSQL già avviato/configurato e schema predisposto.
++Il JAR ordinario non è un installer autonomo con runtime e dipendenze inclusi.
++
++L'avvio **non** crea DB/ruoli, non esegue schema/demo e non resetta i dati.
++`App.start` costruisce il contesto e mostra accesso/registrazione; la sola
++finestra iniziale non prova la connessione DB. Il login e le successive azioni
++usano PostgreSQL. In caso di errore controllare destinazione, credenziali,
++servizio, schema e console; per un crash non gestito controllare anche
++`app_error.log`. Non usare un reset come rimedio ordinario a un errore di avvio.
++
++Per riavviare, chiudere la finestra e ripetere soltanto `mvn javafx:run` con il
++servizio PostgreSQL disponibile. La prima installazione e la demo non vanno ripetute.
++
++## Prove e limiti
++
++`mvn test` verifica solo i test senza DB. La suite completa richiede ruolo/DB
++dedicati e sentinella distinta: seguire [Build e test isolati](testing.md).
++Suite e harness grafici possono resettare solo il DB di test; non eseguirli
++contemporaneamente sullo stesso DB.
++
++La [verifica16](evidence/r09-instructions/verification.md) registra una copia
++della versione locale corrente, versioni effettive, inizializzazione/demo,
++build, avvio su Xvfb e suite con isolamento/sentinella. I percorsi `/tmp` delle
++sessioni precedenti non sono prerequisiti installabili: verificarne l'esistenza
++e ricreare gli strumenti se assenti. Windows, altri display e distribuzione
++con installer richiedono prove proprie; il `394/394` del15 è storico.
+--- before/DriveHub/docs/testing.md
++++ after/DriveHub/docs/testing.md
+@@ -106,33 +106,43 @@
+ Se Java 21, Maven Central o PostgreSQL mancano, registrare il comando fallito e il
+ motivo nel ticket e nel piano: un test non avviato o escluso **non è una verifica superata**.
+ 
+-## Ambiente locale verificato il 31 ottobre 2026
+-
+-La verifica R00 ha usato OpenJDK Linux 21.0.12.1, Maven 3.9.16 e PostgreSQL 16.15.
+-JDK e binari PostgreSQL sono stati estratti dai pacchetti ufficiali Ubuntu in
+-`/tmp/drivehub-r00-tools/root`, senza installazioni o servizi di sistema.
+-Il cluster sacrificabile è in `/tmp/drivehub-r00-pgdata`, porta `55432` su `127.0.0.1`.
+-Contiene `drivehub_test` e una **copia applicativa** `drivehub` con `R00_SENTINEL`;
+-non è stato usato il database applicativo preesistente sulla porta predefinita.
+-
+-Per riutilizzare questo ambiente finché i file temporanei esistono:
+-
+-```bash
+-export JAVA_HOME=/tmp/drivehub-r00-tools/root/usr/lib/jvm/java-21-openjdk-amd64
+-export PATH="$JAVA_HOME/bin:$PATH"
+-export LD_LIBRARY_PATH=/tmp/drivehub-r00-tools/root/usr/lib/x86_64-linux-gnu
+-/tmp/drivehub-r00-tools/root/usr/lib/postgresql/16/bin/pg_ctl \
+-  -D /tmp/drivehub-r00-pgdata -l /tmp/drivehub-r00-postgres.log \
+-  -o '-h 127.0.0.1 -p 55432 -k /tmp' -w start
+-python3 /tmp/drivehub-r00-maven.py full-jdk21 -Ppostgres-tests clean test
+-/tmp/drivehub-r00-tools/root/usr/lib/postgresql/16/bin/pg_ctl \
+-  -D /tmp/drivehub-r00-pgdata -m fast -w stop
+-```
+-
+-Il launcher locale carica le sei variabili da `/tmp/drivehub-r00-env.json`, privato
+-(modalità 0600), senza stampare password. Non copiarlo nel repository. Questi file
+-sono temporanei: se rimossi, ripredisporre l'ambiente seguendo le istruzioni generali.
+-Il server viene arrestato a fine verifica. [Esiti e log conservati](evidence/r00/verification.md).
++## Verifica corrente e ambiente temporaneo
++
++Per installazione, configurazione applicativa, inizializzazione e demo facoltativa
++seguire [installation.md](installation.md). Schema/demo sono distruttivi su un DB
++popolato; l'avvio ordinario non li esegue. La [verifica16](evidence/r09-instructions/verification.md)
++usa una copia isolata della versione locale corrente, inclusi file modificati e
++non tracciati necessari: un checkout del solo HEAD non riprodurrebbe questa versione.
++
++| Comando / controllo | Confine dimostrato | Cosa non dimostra |
++|---|---|---|
++| `mvn -DskipTests clean package` | Compilazione e JAR ordinario | Test eseguiti o installer autonomo |
++| `mvn test` | Dominio, prezzi, configurazioni sicure senza DB | DAO, transazioni, fixture o concorrenza PostgreSQL |
++| `mvn -Ppostgres-tests clean test` | Test senza DB e PostgreSQL, isolamento/sentinella se configurati | UI, altri OS o prestazioni universali |
++| `mvn javafx:run` | Avvio della finestra JavaFX | Connessione DB dimostrata dalla sola schermata pubblica |
++| Harness JavaFX/Robot | Flussi/assert specifici su display isolato | Certificazione screen reader o tutti i flussi grafici |
++
++Java21, Maven sullo stesso JDK, versione del server PostgreSQL, ruoli, proprietari,
++porta, sentinella e display devono essere ricontrollati a ogni sessione. I percorsi
++`/tmp/drivehub-r00-*` e `ticket07/13/14/15-*` descritti nelle evidenze precedenti
++sono temporanei, non prerequisiti disponibili: se mancano, ricreare strumenti e
++cluster dedicati senza contattare il DB applicativo preesistente. Non copiare
++configurazioni private nelle evidenze o nel repository.
++
++Per i controlli grafici, dopo la compilazione, predisporre un display separato
++(ad esempio `Xvfb :92 -screen 0 1440x1000x24 -nolisten tcp`) e impostare `DISPLAY`
++al display effettivamente verificato libero. Registrare PID/log, attendere che il
++server sia pronto e arrestare soltanto quel processo a fine prova. Il comando
++Xvfb va adattato alle librerie/font disponibili; il mero PID non prova JavaFX.
++Gli harness sotto usano solo il DB di test e possono ricrearne le fixture.
++`AppStartupUiCheck` fa eccezione: non scrive nel DB e usa il contesto applicativo;
++per provarlo isolatamente occorre una configurazione privata per una copia
++sacrificabile, come nelle evidenze15/16. Non eseguire suite e harness insieme.
++
++Le sezioni per ticket che seguono documentano l'introduzione delle verifiche e
++i limiti osservati in quelle sessioni. I rinvii a lavori allora successivi sono
++storici:01–15 risultano chiusi. I conteggi precedenti non sostituiscono una nuova
++esecuzione. Nessun nuovo test è necessario per certificare la sola documentazione.
+ 
+ ## Saldi concorrenti — ticket 04
+ 
+--- before/PIANO_REVISIONI_DRIVEHUB.md
++++ after/PIANO_REVISIONI_DRIVEHUB.md
+@@ -2,7 +2,15 @@
+ 
+ Registro operativo avviato il 31 ottobre 2026. Punto di ingresso per riprendere il lavoro: avanzamento, decisioni, attività, verifiche e prossimo passo.
+ 
+-## Stato attuale — ticket 15 completato
++## Stato attuale — ticket 16 in corso
++
++- Solo16, prerequisiti01–15 verificati chiusi e senza criteri aperti; fotografia iniziale1422file, HEAD/indice conservati. Relazione_SWE esclusa, nessun commit/staging.
++- Consolidati README, installazione/configurazione e descrizione architetturale: inizializzazione/reset distruttivi distinti dall'avvio, demo facoltativa; factory statiche/GoF/DAO/DI, SOLID/DDD e limiti spiegati con sorgenti concreti. Diagrammi17 esclusi.
++- Ambiente temporaneo precedente assente: Java21.0.12.1/Maven3.9.16/PG16.15/Xvfb ricreati senza installazioni di sistema. Nuovo cluster sacrificabile127.0.0.1:55434, DB/ruoli distinti e sentinella; copia dalla versione locale corrente, non solo HEAD, con sola configurazione DB privata diversa nei sorgenti.
++- Schema vuoto, demo facoltativa, build `mvn -DskipTests clean package`,47/47 senzaDB, tre login demo, App.start/Robot e due avvii ordinari `mvn javafx:run` verificati. Suite completa finale e review indipendenti Standards/Spec da completare.394/394 del15 resta storico.
++- [Evidenze16](DriveHub/docs/evidence/r09-instructions/verification.md). Nessuna chiusura anticipata; R09 resta parziale per17, nessun ticket successivo avviato.
++
++## Stato al termine del ticket 15 — storico
+ 
+ - Solo15: prerequisiti01–14 chiusi e fotografia iniziale1276file. Nuova baseline `mvn -Ppostgres-tests clean test` **394/394**,47 senzaDB/347 PostgreSQL, zero failure/errori/salti, isolamento/sentinella compresi; il394/394 del14 resta storico.
+ - Ricerca riferimenti completa nel perimetro autorizzato: nessuna risorsa/loader FXML, nessun chiamante dei membri di sessione AppContext. Rimossi soltanto `javafx-fxml`, `currentUser`, tre metodi e l'import User. Login/logout reali, chiamanti, DAO/schema/demo e test invariati; nessun test che rispecchi rimozioni.
+@@ -199,7 +207,7 @@
+ | R06 | Noleggi/test drive concorrenti e transizioni valide | #5, #7, restante #12 | R02, R03, D08–D10; coordinamento eventi con R04 | Completata: ticket 08, 11 e 12 chiusi e verificati |
+ | R07 | Cancellazione account rispettosa di storico e richieste | #9 | R00; fixture aggiornate dai flussi interessati | Completata: ticket13 chiuso e verificato |
+ | R08 | Tabelle JavaFX senza query nel rendering | #16 | R03; verificare aggiornamenti dei flussi corretti | Completata: ticket14 verificato e chiuso |
+-| R09 | README, diagrammi, teoria ed evidenze coerenti | #14, #15, #18; valutazione teorica | Incrementale; chiusura dopo R01–R08 e R10 | Pianificata |
++| R09 | README, diagrammi, teoria ed evidenze coerenti | #14, #15, #18; valutazione teorica | Incrementale; chiusura dopo R01–R08 e R10 | In corso: ticket16 in verifica; diagrammi17 esclusi |
+ | R10 | Rimozione dei componenti inutilizzati | #20 | R00; controllo riferimenti prima di rimuovere | Completata: ticket15 verificato e chiuso |
+ | R11 | Verifica integrata e tracciabilità completa | #13; conferma finale #1–#20 | R01–R10 | Pianificata |
+ 
+--- before/TRACKER_DRIVEHUB/revisioni/issues/16-istruzioni-e-rigore-teorico.md
++++ after/TRACKER_DRIVEHUB/revisioni/issues/16-istruzioni-e-rigore-teorico.md
+@@ -7,7 +7,7 @@
+ **Blocked by:** 02: Conservare il veicolo invariato dopo una modifica non valida; 03: Cambiare email senza compromettere l'accesso; 06: Concludere l'acquisto al totale concordato all'acconto; 10: Accettare o rifiutare una cessione senza doppi pagamenti; 12: Cambiare destinazione senza riaprire auto assegnate o perdere rimborsi; 13: Cancellare identità senza perdere richieste o attribuzioni storiche; 14: Consultare le tabelle senza query nel rendering; 15: Rimuovere FXML e stato di sessione soltanto se inutilizzati
+ 
+ Status: ready-for-agent
+-State: open
++State: in-progress
+ 
+ **Piano:** R09
+ **Specifica:** AC15, AC18
+@@ -33,3 +33,5 @@
+ ## Comments
+ 
+ - 31 ottobre 2026: ticket pubblicato da `to-tickets` dopo approvazione di granularità e dipendenze. Esecuzione non ancora avviata; verificare i blocchi prima di iniziare.
++
++- 3 novembre 2026: avviato solo16; AGENTS, piano, glossario, ADR0001, testing ed evidenze15 letti. Verificati01–15 chiusi e senza criteri aperti; fotografia iniziale1422file, HEAD/indice conservati. Strumenti temporanei precedenti assenti: ambiente Java21/PG16/Xvfb ricreato senza installazioni di sistema; copia isolata dalla versione locale corrente, inclusi file modificati e non tracciati, esclusa Relazione_SWE. Nuove build/avvio/suite e review ancora da completare;394/394 del15 resta storico. Nessun commit/staging o intervento17.

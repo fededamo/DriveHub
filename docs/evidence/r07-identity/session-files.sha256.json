@@ -1,0 +1,14 @@
+{
+  "DriveHub/src/main/java/it/unifi/drivehub/dao/UserDao.java": "8c16d0ba814c4eadf4039ac2ce1222d5c8cf864ab68c534ec4c0ba67b3d2f795",
+  "DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresUserDao.java": "e9b4a4ea84e3102aee9563498bc8a9da6fef29732c5d8f3589e21ba00cb81286",
+  "DriveHub/src/main/java/it/unifi/drivehub/service/AuthService.java": "ee97db9cb5296bc4b69233b3c6ff83cd37c2238b4e504ac5918fe4ba05d356ea",
+  "DriveHub/src/main/java/it/unifi/drivehub/presentation/view/AccountManagementDialog.java": "20c5aa25545dd17bc75b6bc50bdef4e2d9ee6caca43f9d01689f514988c89860",
+  "DriveHub/src/main/resources/db/schema.sql": "111cbb2baaa36eff25beacf874ff9b4ceb0f3831caa4a189450696ce904da517",
+  "DriveHub/src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java": "57fbdec1a8fa7d5e2dcc1a77a5aec8f862c745a98757e534b1e1a50960a86e05",
+  "DriveHub/docs/testing.md": "97a164c0258fe5a542c05ca79bdf9efea8fd807c4369e668bee6c6e4a098dd58",
+  "DriveHub/docs/evidence/r07-identity/IdentityUiCheck.java": "68cb02a72d3fc88f9f8d0353a386f41395a666381bfb9b639158a26daa47d3c9",
+  "DriveHub/docs/evidence/r07-identity/run-ui.py": "954cd6604c27d2986c4534bb56127cabd6c0bc98d41a717b4a1f9ba385b76856",
+  "DriveHub/docs/evidence/r07-identity/verification.md": "007d22fec41677d3ce7e81c9c20581145376679a3774c6591ffe3492be31dd3e",
+  "PIANO_REVISIONI_DRIVEHUB.md": "a399267b33da1ceedfdea8bf13263683dc89114e23b3bded0e05dcf296f4fca6",
+  "TRACKER_DRIVEHUB/revisioni/issues/13-cancellazione-identita-e-storico.md": "905d45bf3bc46e68000ff1fc159e390a39514c7e48e4176467a31506a33c6f19"
+}

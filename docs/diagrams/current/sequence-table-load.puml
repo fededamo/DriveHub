@@ -1,0 +1,43 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontSize 16
+skinparam maxMessageSize 280
+title Letture tabellari — worker, risultato corrente, rendering senza query
+autonumber
+actor Utente
+boundary "dashboard (thread FX)" as ui
+control "AsyncLoad (thread FX)" as load
+participant "Task / worker virtuale Java21" as task
+control CatalogService as catalog
+participant "ModelDao / DiscountDao / VehicleDao" as dao
+Utente -> ui : apertura / Aggiorna / modifica catalogo
+ui -> load : load() oppure load(source)
+load -> load : cancella task precedente; memorizza quello nuovo
+note over ui,load : Disabilita controllo dati; mostra Caricamento; Aggiorna accessibile.
+load -> task : Thread.ofVirtual().start(task)
+task -> catalog : source.get() → getVehicleRows(state)
+catalog -> dao : modelli, sconti modello, sconti veicolo, veicoli
+dao --> catalog : quattro letture collettive
+note over catalog,dao : Query separate, nessuno snapshot comune o cache persistente.
+catalog -> catalog : prepara VehicleRow con modello, basi, prezzi e tariffa
+alt lettura riuscita
+catalog --> task : List<VehicleRow>
+else eccezione della lettura
+catalog --> task : errore del worker
+end
+task --> load : onSucceeded / onFailed sul thread FX
+alt task corrente e riuscito
+load -> ui : apply.accept(righe); riabilita; Aggiornato
+ui -> ui : celle leggono VehicleRow; nessun DAO nel rendering
+else task corrente e fallito
+load -> load : controllo resta disabilitato; Riprova
+else task superato / controllo staccato dalla scena
+note over load,task : Nessuna pubblicazione del vecchio risultato/errore.
+end
+Utente -> load : Aggiorna / Riprova → nuovo caricamento
+note over load,task
+  scene=null cancella e azzera current; JDBC già partito può proseguire.
+  getModelDiscountRows usa due letture collettive, non quattro.
+  Non tutte le azioni/anteprime UI sono asincrone.
+end note
+@enduml

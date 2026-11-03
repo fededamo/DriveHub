@@ -1,0 +1,11 @@
+Controlli finali 31 ottobre 2026:
+- XML Surefire finali: 84 test, 0 failure, 0 errori, 0 saltati; 51 PostgreSQL, 33 senza DB.
+- Hash della revisione finale: 16/16 corrispondenti ai file correnti.
+- git diff --check -- . ':!Relazione_SWE/**': exit 0.
+- git apply --check --reverse docs/evidence/r03-prices/session.patch: exit 0.
+- Link dei documenti nuovi/modificati controllati.
+- Nessuna password privata DB trovata nelle evidenze.
+- HEAD c2a81122ee6be44760ded4160fde229bd33e837c invariato, indice senza staging.
+- 62 file locali preesistenti: 57 identici; 5 adeguati intenzionalmente, nessuna rimozione.
+- Ticket 05 State closed e 6/6 checkbox verificati.
+- PostgreSQL temporaneo arrestato con pg_ctl; display Xvfb dedicato terminato.

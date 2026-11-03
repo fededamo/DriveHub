@@ -9,6 +9,7 @@ import it.unifi.drivehub.domain.vehicle.Vehicle;
 import it.unifi.drivehub.domain.vehicle.VehicleState;
 import it.unifi.drivehub.service.AuthService;
 import it.unifi.drivehub.service.CatalogService;
+import it.unifi.drivehub.service.CatalogService.VehicleRow;
 import it.unifi.drivehub.service.OperationQueryService;
 import it.unifi.drivehub.service.PurchaseService;
 import it.unifi.drivehub.service.RentalService;
@@ -38,7 +39,8 @@ public final class SalesmanDashboardView extends BorderPane {
     private final Runnable onLogout;
 
     private TableView<Request> pendingTable;
-    private TableView<Vehicle> inventoryTable;
+    private AsyncLoad<List<VehicleRow>> inventoryLoad;
+    private TableView<VehicleRow> inventoryTable;
 
     public SalesmanDashboardView(Salesman salesman, Runnable onLogout) {
         this(salesman,
@@ -106,6 +108,7 @@ public final class SalesmanDashboardView extends BorderPane {
         title.getStyleClass().add("card-title");
 
         pendingTable = new TableView<>();
+        pendingTable.getStyleClass().add("agreement-requests");
         configurePendingTable();
 
         Button btnApprove = new Button("Approva Richiesta");
@@ -138,10 +141,11 @@ public final class SalesmanDashboardView extends BorderPane {
         try {
             if (req.getType() == RequestType.PURCHASE) {
                 purchaseService.approvePurchase(req.getId(), salesman.getId());
-                UiUtils.showInfo("Richiesta Approvata", "Richiesta d'acquisto approvata! Il cliente ha ora 1 mese di tempo per saldare il restante 80%.");
+                UiUtils.showInfo("Richiesta Approvata", "Il cliente ha 1 mese di tempo per pagare il saldo concordato: "
+                        + UiUtils.formatCurrency(req.getRemainingAmount()));
             } else {
                 saleToDealershipService.approveSaleProposal(req.getId(), salesman.getId());
-                UiUtils.showInfo("Proposta Accettata", "Proposta di vendita accettata: importo accreditato al cliente e veicolo aggiunto al catalogo in stato SALE.");
+                UiUtils.showInfo("Proposta Accettata", "Cessione accettata: pagamento accreditato al cliente e veicolo disponibile nel catalogo.");
             }
             loadPendingRequests();
             loadInventoryVehicles();
@@ -163,7 +167,7 @@ public final class SalesmanDashboardView extends BorderPane {
                 UiUtils.showInfo("Richiesta Rifiutata", "Richiesta d'acquisto rifiutata: caparra rimborsata integralmente al cliente e veicolo tornato SALE.");
             } else {
                 saleToDealershipService.rejectSaleProposal(req.getId());
-                UiUtils.showInfo("Proposta Rifiutata", "Proposta di vendita rifiutata.");
+                UiUtils.showInfo("Proposta Rifiutata", "Cessione rifiutata senza pagamento. Lo storico del veicolo è conservato; un veicolo senza storico viene rimosso dal catalogo.");
             }
             loadPendingRequests();
             loadInventoryVehicles();
@@ -185,7 +189,10 @@ public final class SalesmanDashboardView extends BorderPane {
         Button btnToggle = new Button("Modifica Stato (Da RENT a SALE o viceversa)");
         btnToggle.setOnAction(e -> handleToggleState());
 
-        box.getChildren().addAll(title, inventoryTable, btnToggle);
+        inventoryLoad = new AsyncLoad<>("inventario", inventoryTable,
+                () -> catalogService.getVehicleRows(null).stream().filter(row -> row.vehicle().getState() == VehicleState.SALE || row.vehicle().getState() == VehicleState.RENT).toList(),
+                rows -> inventoryTable.getItems().setAll(rows));
+        box.getChildren().addAll(title, inventoryLoad, inventoryTable, btnToggle);
         VBox.setVgrow(inventoryTable, Priority.ALWAYS);
 
         loadInventoryVehicles();
@@ -193,14 +200,12 @@ public final class SalesmanDashboardView extends BorderPane {
     }
 
     private void loadInventoryVehicles() {
-        List<Vehicle> list = catalogService.getAllVehicles().stream()
-                .filter(v -> v.getState() == VehicleState.SALE || v.getState() == VehicleState.RENT)
-                .toList();
-        inventoryTable.getItems().setAll(list);
+        inventoryLoad.load();
     }
 
     private void handleToggleState() {
-        Vehicle v = inventoryTable.getSelectionModel().getSelectedItem();
+        VehicleRow selected = inventoryTable.getSelectionModel().getSelectedItem();
+        Vehicle v = selected == null ? null : selected.vehicle();
         if (v == null) {
             UiUtils.showError("Selezione mancante", "Seleziona un veicolo da modificare.");
             return;
@@ -265,48 +270,60 @@ public final class SalesmanDashboardView extends BorderPane {
             return new SimpleStringProperty("#" + data.getValue().getVehicleId());
         });
 
-        TableColumn<Request, String> colAmount = new TableColumn<>("Importo / Acconto");
+        TableColumn<Request, String> colTotal = new TableColumn<>("Totale concordato");
+        colTotal.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getType() == RequestType.PURCHASE
+                ? UiUtils.formatCurrency(data.getValue().getAgreedTotal()) : "—"));
+
+        TableColumn<Request, String> colDeposit = new TableColumn<>("Acconto versato");
+        colDeposit.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getType() == RequestType.PURCHASE
+                ? UiUtils.formatCurrency(data.getValue().getDeposit()) : "—"));
+
+        TableColumn<Request, String> colRemaining = new TableColumn<>("Saldo da pagare");
+        colRemaining.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getType() == RequestType.PURCHASE
+                ? UiUtils.formatCurrency(data.getValue().getRemainingAmount()) : "—"));
+
+        TableColumn<Request, String> colAmount = new TableColumn<>("Stima cessione");
         colAmount.setCellValueFactory(data -> {
             if (data == null || data.getValue() == null || data.getValue().getDeposit() == null) return new SimpleStringProperty("");
-            return new SimpleStringProperty(UiUtils.formatCurrency(data.getValue().getDeposit().abs()));
+            return new SimpleStringProperty(data.getValue().getType() == RequestType.SALE
+                    ? UiUtils.formatCurrency(data.getValue().getDeposit().abs()) : "—");
         });
 
-        pendingTable.getColumns().addAll(List.of(colId, colType, colClient, colVeh, colAmount));
+        pendingTable.getColumns().addAll(List.of(colId, colType, colClient, colVeh, colTotal, colDeposit, colRemaining, colAmount));
         pendingTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
     }
 
     private void configureInventoryTable() {
-        TableColumn<Vehicle, String> colId = new TableColumn<>("ID");
+        TableColumn<VehicleRow, String> colId = new TableColumn<>("ID");
         colId.setCellValueFactory(data -> {
             if (data == null || data.getValue() == null) return new SimpleStringProperty("");
-            return new SimpleStringProperty("#" + data.getValue().getId());
+            return new SimpleStringProperty("#" + data.getValue().vehicle().getId());
         });
 
-        TableColumn<Vehicle, String> colModel = new TableColumn<>("Modello");
+        TableColumn<VehicleRow, String> colModel = new TableColumn<>("Modello");
         colModel.setCellValueFactory(data -> {
             if (data == null || data.getValue() == null) return new SimpleStringProperty("");
             return new SimpleStringProperty(
-                    catalogService.getModelById(data.getValue().getModelId())
-                            .map(m -> m.getBrand() + " " + m.getName()).orElse("N/D")
+                    data.getValue().modelName()
             );
         });
 
-        TableColumn<Vehicle, String> colVin = new TableColumn<>("VIN");
+        TableColumn<VehicleRow, String> colVin = new TableColumn<>("VIN");
         colVin.setCellValueFactory(data -> {
             if (data == null || data.getValue() == null) return new SimpleStringProperty("");
-            return new SimpleStringProperty(data.getValue().getVin());
+            return new SimpleStringProperty(data.getValue().vehicle().getVin());
         });
 
-        TableColumn<Vehicle, String> colPlate = new TableColumn<>("Targa");
+        TableColumn<VehicleRow, String> colPlate = new TableColumn<>("Targa");
         colPlate.setCellValueFactory(data -> {
             if (data == null || data.getValue() == null) return new SimpleStringProperty("");
-            return new SimpleStringProperty(data.getValue().getLicencePlate() != null ? data.getValue().getLicencePlate() : "N/D");
+            return new SimpleStringProperty(data.getValue().vehicle().getLicencePlate() != null ? data.getValue().vehicle().getLicencePlate() : "N/D");
         });
 
-        TableColumn<Vehicle, String> colState = new TableColumn<>("Stato Attuale");
+        TableColumn<VehicleRow, String> colState = new TableColumn<>("Stato Attuale");
         colState.setCellValueFactory(data -> {
-            if (data == null || data.getValue() == null || data.getValue().getState() == null) return new SimpleStringProperty("");
-            return new SimpleStringProperty(data.getValue().getState().name());
+            if (data == null || data.getValue() == null || data.getValue().vehicle().getState() == null) return new SimpleStringProperty("");
+            return new SimpleStringProperty(data.getValue().vehicle().getState().name());
         });
 
         inventoryTable.getColumns().addAll(List.of(colId, colModel, colVin, colPlate, colState));

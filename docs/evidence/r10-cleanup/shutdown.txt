@@ -1,0 +1,4 @@
+waiting for server to shut down.... done
+server stopped
+Xvfb :93 SIGTERM sent to verified PID 64752
+Escalated post-check: pg_ctl status exit3, pg_ctl: no server running; Xvfb93 PID 64752 state=absent; TCP55433 and abstractX93 listeners unavailable.

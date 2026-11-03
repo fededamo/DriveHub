@@ -1,0 +1,204 @@
+--- external-baseline/PIANO_REVISIONI_DRIVEHUB.md
++++ external-current/PIANO_REVISIONI_DRIVEHUB.md
+@@ -4,20 +4,26 @@
+ 
+ ## Stato attuale
+ 
+-- Ticket 06 / R04 in verifica finale: accordo economico persistito all'acconto,
+-  saldo dal totale concordato meno versato. Prerequisiti 04/05 e precedenti 01–05 chiusi.
+-- Java 21/PostgreSQL R00 ripresi; regressione pubblica RED 2 failure, stessa prova GREEN 2/2;
+-  mirati 57/57 e suite completa 103/103 con isolamento/sentinella, zero failure/errori/saltati.
+-- Baseline acquisita prima delle modifiche; solo diff della sessione, nessun commit/staging,
+-  lavoro dei ticket 01–05 preservato. Relazione_SWE esclusa da ogni operazione.
+-- GUI JavaFX cliente/venditore su seconda JVM, importi e azioni da tastiera verificati;
+-  raccolta finale e review indipendente Standards/Spec in completamento.
+-- R04 rimane parziale: questo ticket fissa soltanto l'accordo; 07/08 non avviati.
+-  Conteggio precedente 5/20, da aggiornare solo dopo conclusione verifiche ticket 06.
+-- Evidenze: [ticket 06](TRACKER_DRIVEHUB/revisioni/issues/06-totale-concordato-acquisto.md),
+-  [rapporto](DriveHub/docs/evidence/r04-agreement/verification.md),
+-  [ambiente e comandi](DriveHub/docs/testing.md). Evidenze precedenti conservate.
+-- Prossimo passo: concludere questo stesso ticket; nessun passaggio ai successivi.
++- **Ticket 07 chiuso** il 2 novembre 2026: richiesta riletta e bloccata nella
++  transazione, saldo/rifiuto/scadenza una sola volta; prerequisito 04 chiuso.
++  Il passaggio al 07 è stato autorizzato esplicitamente dall'utente.
++- **Ticket 06 resta aperto in verifica finale**: il suo file e tutto il lavoro locale
++  sono preservati. Nessuna chiusura implicita del 06 e nessun altro ticket avviato.
++- Java 21.0.12.1/PostgreSQL 16.15 ripredisposti in /tmp, Maven 3.9.16. Regressione
++  saldo/saldo RED 1 failure attesa, stessa prova GREEN 1/1; mirati 88/88 e suite
++  completa **163/163**, zero failure/errori/saltati, isolamento/sentinella passati.
++- Review solo sul diff dalla baseline dedicata: Standards 0 violazioni / 1 osservazione
++  non bloccante, Spec 0 rilievi. 266/272 file precedenti identici, 6 aggiornati
++  intenzionalmente più un test nuovo. HEAD/indice invariati, nessun commit/staging.
++- R04 resta parziale: **06 aperto, 07 chiuso, 08 non avviato**. Chiuso rilievo #6:
++  **6/20** (#1, #4, #6, #8, #17, #19). #11 non chiuso per conseguenza del 07;
++  #12 e #13 restano parziali/non conclusi.
++- [Ticket 07](TRACKER_DRIVEHUB/revisioni/issues/07-richieste-acquisto-una-volta.md),
++  [evidenze](DriveHub/docs/evidence/r04-purchase-once/verification.md),
++  [comandi](DriveHub/docs/testing.md#richieste-di-acquisto-elaborate-una-sola-volta--ticket-07).
++  Evidenze precedenti conservate. Relazione_SWE esclusa da ogni operazione.
++- Cluster temporaneo arrestato; nessun contatto al DB applicativo preesistente.
++  Prossimo passo: riprendere la verifica finale del 06; altri ticket su richiesta successiva.
+ 
+ ## Perimetro e fonti
+ 
+@@ -70,7 +76,7 @@
+ | R01 | Invarianti preservati e cambio email sicuro | #8, #19 | R00 per eseguire le prove | Completata: ticket 02 (#19) e 03 (#8) verificati e chiusi |
+ | R02 | Movimenti del conto corretti sotto concorrenza | #4 | R00 | Completata: ticket 04 verificato e chiuso |
+ | R03 | Prezzo consigliato/manuale coerente lungo il flusso | #17 | R00, D04–D05 | Completata: ticket 05 verificato e chiuso |
+-| R04 | Acquisto: totale concordato e conclusione una sola volta | #6, #11, parte #12 | R02, R03, D06 | In corso: ticket 06 in verifica finale; 07/08 non avviati |
++| R04 | Acquisto: totale concordato e conclusione una sola volta | #6, #11, parte #12 | R02, R03, D06 | In corso: 06 aperto in verifica finale; 07 chiuso e verificato; 08 non avviato |
+ | R05 | Cessione: titolarità, richiesta unica, pagamento e contabilità | #2, #3, #10 | R02, R03, D07 | Pianificata |
+ | R06 | Noleggi/test drive concorrenti e transizioni valide | #5, #7, restante #12 | R02, R03, D08–D10; coordinamento eventi con R04 | Pianificata |
+ | R07 | Cancellazione account rispettosa di storico e richieste | #9 | R00; fixture aggiornate dai flussi interessati | Pianificata |
+@@ -198,7 +204,7 @@
+ | Dati di test | Isolamento, reset, configurazione errata | R00 | Java 21/PostgreSQL 16: configurazione, fixture, sentinella e scadenza superate; suite completa 28/28, evidenze R00 |
+ | Account/dominio | Email, duplicati, targa/km, cancellazione con storico | R01, R07 | Ticket 02: targa/km e dati invariati dopo rifiuto, dominio 15/15; ticket 03: AuthServiceIntegrationTest 18/18 PostgreSQL per email invalida, normalizzazione/successo, duplicati e credenziali preservate. Cancellazione/storico ancora da verificare (R07) |
+ | Prezzi | Consigliato, base manuale, sconti, ritorno al consigliato | R03 | PriceCalculatorServiceTest 11/11; PriceSelectionIntegrationTest 10/10, PostgreSQL reale; UI Robot/tastiera superata. [Evidenze](DriveHub/docs/evidence/r03-prices/verification.md) |
+-| Acquisto | Acconto, approvazione, saldo; rifiuto/scadenza; fondi insufficienti | R02, R04 | Totale fissato, movimenti singoli, penale, rollback e cancellazioni |
++| Acquisto | Acconto, approvazione, saldo; rifiuto/scadenza; fondi insufficienti | R02, R04 | Ticket 07: PurchaseConcurrencyIntegrationTest 60/60, lock/rilettura, gare e penale/rimborsi singoli, errori e scritture saltate con rollback; suite 163/163. Ticket 06 aperto in verifica finale, cancellazioni atomiche al ticket 08 |
+ | Cessione | Nuovo VIN, titolarità VIN esistente, accettazione/rifiuto | R02, R05 | Richiesta unica, un accredito, segno contabile, storico |
+ | Noleggio | Disponibilità, priorità, cambio destinazione/rimborsi | R02, R06 | Concorrenza, date limite, in corso, rimborsi, rollback |
+ | Test drive | Limite tre, disponibilità, cancellazione/storico | R06 | Concorrenza, tutti i futuri cancellati dopo noleggio, passato conservato |
+@@ -403,3 +409,54 @@
+ - Stato: ticket 06 aperto in attesa di verifica finale indipendente; R04 parziale.
+   Prossimo passo: completare lo stesso ticket, senza passare al successivo.
+   [Evidenze](DriveHub/docs/evidence/r04-agreement/verification.md).
++
++
++### Ticket 07 — richieste di acquisto una volta, 2 novembre 2026
++
++- Passaggio esplicitamente autorizzato dall'utente; prerequisito diretto 04 chiuso.
++  Il ticket 06 rimane **aperto in verifica finale**, file esterno e lavoro preservati.
++  La sua chiusura non è stata attesa né implicata. Nessun altro ticket avviato.
++- Baseline dedicata prima degli interventi, 272 file locali e copie esterne:
++  diff separato da HEAD e dal lavoro dei precedenti ticket. 266 file invariati;
++  6 aggiornati intenzionalmente e un nuovo test. Nessun commit/staging/push.
++- Mappati tutti i chiamanti. RequestDao offre lettura FOR UPDATE con transazione
++  attiva; saldo/rifiuto/scadenza e approvazione usano la stessa connessione protetta.
++  Tipo, approvazione, scadenza e transizioni da BLOCKED ricontrollati; zero righe
++  aggiornate/eliminate causa rollback. La scadenza usa solo gli ID iniziali, rilegge
++  e restituisce notifica soltanto dopo commit. Nessuna modifica a UI/schema/fixture
++  applicativa, protocollo conti 04 e totale concordato 06 conservati.
++- RED `python3 /tmp/drivehub-ticket07-maven.py red -Ppostgres-tests
++  -Dtest=PurchaseConcurrencyIntegrationTest#concurrentCompletionsChargeAndSellOnlyOnce test`
++  → 1 failure attesa (anche seconda sessione conclude); stessi argomenti `green` → 1/1.
++  Connessioni reali distinte, gate SQL e attese osservate tramite PID PostgreSQL:
++  saldo/saldo, saldo/rifiuto nei due ordini, saldo/scadenza, rifiuti/scadenze ripetuti,
++  approvazioni obsolete, proroga concorrente nei due ordini. Nessuno sleep o mock.
++- Verificati 4000 → penale 800/rimborso 3200 una volta, saldo senza approvazione
++  o scaduto rifiutato, conto mancante/stato incoerente, notifiche con rimborso effettivo.
++  24 casi errore/scrittura saltata provano rollback dopo movimenti effettivi, con
++  rilettura di accordo, richiesta, veicolo, conto e registro da nuovi AppContext.
++- Mirati finali `python3 /tmp/drivehub-ticket07-maven.py final-targeted -Ppostgres-tests
++  -Dtest=PurchaseConcurrencyIntegrationTest,PurchaseAgreementIntegrationTest,BalanceConcurrencyIntegrationTest test`
++  → **88/88** (60 ticket07 + 12 accordo06 + 16 conti04).
++  Suite `python3 /tmp/drivehub-ticket07-maven.py full -Ppostgres-tests clean test`
++  → **163/163**, 0 failure/errori/saltati, 40 senza DB e 123 PostgreSQL; 63 sorgenti
++  principali + 14 test ricompilati con target 21 e lint, fixture/isolamento/sentinella passati.
++- Ambiente R00 assente: verificati inizialmente Java17 e Maven; ricreati JDK Linux
++  21.0.12.1/PostgreSQL16.15 da pacchetti Ubuntu ufficiali estratti in /tmp. Download
++  sandbox fallito per DNS, poi riuscito con escalation. Nuovo cluster sacrificabile
++  127.0.0.1:55432, DB/ruolo drivehub_test e nuova copia applicativa con sentinella;
++  nessun accesso al DB applicativo preesistente. Segreti 0600 fuori repository,
++  nessuna password privata nelle evidenze; server arrestato alla fine.
++- Review indipendente sul solo diff 07 fissato: **Standards 0 violazioni / 1
++  osservazione non bloccante** sul supporto gare simile al 04; **Spec 0 rilievi**.
++  Supporto lasciato separato per le differenze nei gate, senza refactor estraneo.
++  Hash/XML/log/link/whitespace e preservazione controllati, HEAD/indice invariati.
++  Nessun codice/test cambiato dopo suite/review. Relazione sempre esclusa.
++- [Evidenze e limiti](DriveHub/docs/evidence/r04-purchase-once/verification.md).
++  **6/6 criteri soddisfatti, ticket 07 chiuso e rilievo #6 chiuso: 6/20**.
++  AC13 ancora parziale; R04 resta in corso, **06 aperto in verifica finale / 08 non avviato**.
++- Limiti: nessuna UI modificata/prova grafica; warning JavaFX preesistente; Observer
++  transazionale e cancellazione obbligatoria dei test drive al ticket 08; nessuna
++  nuova regola economica o migrazione. Ambiente /tmp temporaneo.
++- Prossimo passo: riprendere la verifica finale del 06; altri ticket soltanto in
++  successiva richiesta. Voci storiche precedenti conservate senza riscriverne gli esiti.
+--- external-baseline/TRACKER_DRIVEHUB/revisioni/issues/07-richieste-acquisto-una-volta.md
++++ external-current/TRACKER_DRIVEHUB/revisioni/issues/07-richieste-acquisto-una-volta.md
+@@ -7,7 +7,7 @@
+ **Blocked by:** 04: Eseguire addebiti e rimborsi senza perdere aggiornamenti
+ 
+ Status: ready-for-agent
+-State: open
++State: closed
+ 
+ **Piano:** R04
+ **Specifica:** AC06, AC13
+@@ -15,12 +15,12 @@
+ 
+ ## Acceptance criteria
+ 
+-- [ ] Definita una protezione condivisa della richiesta riletta nella transazione; tutti i percorsi di saldo, rifiuto e scadenza verificano tipo/stato e scritture interessate.
+-- [ ] L'elaborazione delle scadenze non usa come autorità un oggetto letto prima della transazione; chiamanti aggiornati al protocollo condiviso.
+-- [ ] Prove PostgreSQL con connessioni distinte coprono saldo/saldo, saldo/rifiuto e saldo/scadenza senza doppia vendita, doppio addebito o doppio rimborso.
+-- [ ] Approvazione mancante e richiesta scaduta restano rifiutate dal servizio; il rifiuto conserva il rimborso esistente.
+-- [ ] Su acconto 4.000 €, la scadenza genera penale 800 € e rimborso 3.200 € una sola volta; ripetere il controllo non cambia ancora il conto.
+-- [ ] Errori annullano tutte le scritture della fase; oggetti, richieste e registro risultano coerenti dopo rilettura.
++- [x] Definita una protezione condivisa della richiesta riletta nella transazione; tutti i percorsi di saldo, rifiuto e scadenza verificano tipo/stato e scritture interessate.
++- [x] L'elaborazione delle scadenze non usa come autorità un oggetto letto prima della transazione; chiamanti aggiornati al protocollo condiviso.
++- [x] Prove PostgreSQL con connessioni distinte coprono saldo/saldo, saldo/rifiuto e saldo/scadenza senza doppia vendita, doppio addebito o doppio rimborso.
++- [x] Approvazione mancante e richiesta scaduta restano rifiutate dal servizio; il rifiuto conserva il rimborso esistente.
++- [x] Su acconto 4.000 €, la scadenza genera penale 800 € e rimborso 3.200 € una sola volta; ripetere il controllo non cambia ancora il conto.
++- [x] Errori annullano tutte le scritture della fase; oggetti, richieste e registro risultano coerenti dopo rilettura.
+ 
+ ## Note per l'implementazione
+ 
+@@ -33,3 +33,57 @@
+ ## Comments
+ 
+ - 31 ottobre 2026: ticket pubblicato da `to-tickets` dopo approvazione di granularità e dipendenze. Esecuzione non ancora avviata; verificare i blocchi prima di iniziare.
++
++### Implementazione e chiusura — 2 novembre 2026
++
++- Passaggio al 07 autorizzato esplicitamente dall'utente. Prerequisito diretto 04
++  controllato chiuso. **Ticket 06 rimane aperto in verifica finale**, file e lavoro
++  locale preservati; nessuna attesa della sua chiusura e nessuna chiusura implicita.
++- Baseline dedicata acquisita prima degli interventi: 272 file correnti, manifest
++  SHA-256 e copie esterne di piano/ticket. Revisionato solo il diff di questa
++  sessione, distinto dal lavoro non committato precedente. 266 file preesistenti
++  identici; 6 modificati intenzionalmente più un nuovo test. HEAD/indice invariati.
++- Mappati saldo, rifiuto, approvazione, scadenza, chiamanti cliente/venditore/accesso
++  e tutti gli usi dei DAO condivisi. `findByIdForUpdate` rilegge e protegge la richiesta
++  sulla connessione della transazione; approvazione inclusa per evitare aggiornamenti
++  obsoleti. Verificati tipo, approvazione/scadenza e transizione da BLOCKED; controllo
++  delle righe per conto/richiesta e degli ID per gli inserimenti. La scadenza usa solo
++  gli ID dell'elenco iniziale, poi decide sui dati riletti; notifica dopo commit.
++- RED reale: `python3 /tmp/drivehub-ticket07-maven.py red -Ppostgres-tests
++  -Dtest=PurchaseConcurrencyIntegrationTest#concurrentCompletionsChargeAndSellOnlyOnce test`
++  → **1 failure attesa**, entrambe le sessioni concludevano la stessa richiesta.
++  Stessi argomenti con etichetta `green` → **1/1** dopo correzione.
++- Gare con connessioni distinte, gate SQL e PID/attese attestati prima del rilascio,
++  senza sleep/mock: saldo/saldo, saldo/rifiuto nei due ordini, saldo/scadenza,
++  rifiuto/rifiuto, scadenza/scadenza, approvazioni obsolete e proroga nei due ordini.
++  Letture da nuovi contesti confermano un solo esito. Acconto 4000: penale 800,
++  rimborso 3200 una volta; ripetizione senza altri movimenti o record.
++- Approvazione incompleta, richieste scadute/tipo errato, stato veicolo incoerente
++  e conto mancante verificati. **24** casi PostgreSQL di errore/scrittura saltata
++  su conto, vendita, richiesta e veicolo provano rollback integrale; compresi guasti
++  successivi al movimento già avvenuto. Totale persistito 06 e protocollo conti 04
++  invariati. Nessuna nuova regola economica, modifica UI/schema o fixture applicativa.
++- Mirati: `python3 /tmp/drivehub-ticket07-maven.py final-targeted -Ppostgres-tests
++  -Dtest=PurchaseConcurrencyIntegrationTest,PurchaseAgreementIntegrationTest,BalanceConcurrencyIntegrationTest test`
++  → **88/88** (60 nuovi casi 07, 12 accordo 06, 16 conti 04).
++  Suite finale: `python3 /tmp/drivehub-ticket07-maven.py full -Ppostgres-tests clean test`
++  → **163/163**, zero failure/errori/saltati; 40 senza DB e 123 PostgreSQL.
++  Ricompilati 63 sorgenti principali e 14 test con target 21 e lint.
++- Ambiente ripredisposto perché R00 temporaneo assente: Java 21.0.12.1, Maven 3.9.16,
++  PostgreSQL 16.15 da pacchetti ufficiali Ubuntu estratti in /tmp; nessuna installazione
++  di sistema. Solo cluster sacrificabile 127.0.0.1:55432, drivehub_test non privilegiato
++  e nuova copia sentinella drivehub; isolamento/sentinella/fixture passati. Nessun
++  contatto al DB applicativo preesistente. Server arrestato al termine.
++- Review indipendenti su patch fissata: **Standards 0 violazioni / 1 osservazione
++  non bloccante** sul supporto gare simile al 04; **Spec 0 rilievi**. Nessun refactor
++  estraneo del supporto test. Hash, XML, link e whitespace controllati; nessuna
++  password privata nelle evidenze. Nessun codice/test cambiato dopo suite e review.
++- [Rapporto, log, XML, baseline, patch, preservazione e review](../../../DriveHub/docs/evidence/r04-purchase-once/verification.md).
++  **6/6 criteri soddisfatti: State: closed.** Rilievo #6 chiuso, totale **6/20**
++  (#1, #4, #6, #8, #17, #19); #13 resta parziale e trasversale.
++- Limiti: nessuna verifica grafica, nessuna UI modificata; warning JavaFX preesistente;
++  Observer/cancellazioni atomiche ai test drive restano al ticket 08. R04 parziale:
++  **06 aperto in verifica finale, 07 chiuso, 08 non avviato**. Ambiente /tmp temporaneo;
++  relazione sempre esclusa. Nessun commit, staging, push o pubblicazione.
++- Prossimo passo: riprendere la verifica finale del 06; altri ticket soltanto in una
++  successiva richiesta. Nessun altro ticket lavorato in questa sessione.

@@ -1,0 +1,15 @@
+
+xwininfo: Window id: 0x21f (the root window) (has no name)
+
+  Root window id: 0x21f (the root window) (has no name)
+  Parent window id: 0x0 (none)
+     3 children:
+     0x400004 "DriveHub - Piattaforma Concessionario Auto": ("it.unifi.drivehub.App" "it.unifi.drivehub.App")  900x650+270+117  +270+117
+        1 child:
+        0x400005 (has no name): ()  1x1+-1+-1  +269+116
+     0x400001 "java": ("java" "Java")  10x10+10+10  +10+10
+     0x200003 (has no name): ()  1x1+0+0  +0+0
+
+
+_NET_WM_PID(CARDINAL) = 5664
+WM_CLASS(STRING) = "it.unifi.drivehub.App", "it.unifi.drivehub.App"

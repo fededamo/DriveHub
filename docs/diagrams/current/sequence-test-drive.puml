@@ -1,0 +1,44 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontSize 16
+skinparam maxMessageSize 280
+title Test drive — prenotazione e cancellazione del cliente
+autonumber
+actor Cliente
+control TestDriveService as service
+participant DatabaseManager as db
+participant VehicleDao as vehicle
+participant UserDao as user
+participant TestDriveDao as td
+group bookTestDrive(vehicleId, clientId, dateTime)
+Cliente -> service : dialogo da catalogo SALE o RENT, OK
+service -> db : executeInTransactionWithResult(callback)
+service -> vehicle : findByIdForUpdate(vehicleId, conn)
+note over service,vehicle : Solo SALE/RENT, data futura; lock veicolo prima del cliente.
+service -> user : lockClient(clientId, conn)
+service -> td : countActiveByClientId(clientId, conn)
+note over service,td : Rifiuta se già 3 attivi, anche su veicoli diversi.
+service -> td : isVehicleAvailableForTestDrive(vehicleId, dateTime, conn)
+note over service,td
+  Stessa data/ora veicolo libera, nessun noleggio in quel giorno.
+  Factory TestDrive e DB controllano fascia 9:00–16:00 (16 esatto).
+  La UI propone ore intere; il dominio ammette minuti prima delle16.
+end note
+service -> td : save(TestDrive.create(...), conn)
+db -> db : commit / close
+service --> Cliente : prenotazione
+end
+group cancelTestDrive(testDriveId, clientId) — altra transazione
+Cliente -> service : Le Mie Operazioni, annulla selezionato
+service -> db : executeInTransaction(callback)
+service -> td : findById(testDriveId, conn)
+note over service,td : Filtra per clientId; non aggiunge un controllo isFuture.
+service -> td : delete(testDriveId, conn)
+db -> db : commit / close
+end
+note over service,db
+  Eccezione: tenta rollback, close, errore UI. Nessun pagamento.
+  La priorità commerciale di acquisto/noleggio usa l'Observer
+  nelle loro transazioni, non cancelTestDrive del cliente.
+end note
+@enduml

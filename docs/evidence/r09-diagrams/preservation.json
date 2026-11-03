@@ -1,0 +1,16 @@
+{
+  "initial_files": 1507,
+  "unchanged": 1502,
+  "intentionally_changed": [
+    "DriveHub/README.md",
+    "DriveHub/docs/architecture.md",
+    "DriveHub/docs/testing.md",
+    "PIANO_REVISIONI_DRIVEHUB.md",
+    "TRACKER_DRIVEHUB/revisioni/issues/17-diagrammi-ed-evidenze-correnti.md"
+  ],
+  "deleted": [],
+  "HEAD_unchanged": true,
+  "index_unchanged": true,
+  "source_test_pom_schema_demo_unchanged": true,
+  "relation": "excluded from traversal/read/copy/check"
+}

@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="18.177" tests="60" errors="0" skipped="0" failures="0">
+  <testcase name="purchaseApprovalCannotReferToADeletedSalesman(boolean)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.342">
+    <system-out>Ticket13 waiters 1 pid:blockers 6966:{6961}
+Ticket13 waiters 2 pid:blockers 6966:{6961}, 6968:{6966}
+</system-out>
+  </testcase>
+  <testcase name="purchaseApprovalCannotReferToADeletedSalesman(boolean)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.336">
+    <system-out>Ticket13 waiters 1 pid:blockers 6995:{6990}
+Ticket13 waiters 2 pid:blockers 6995:{6990}, 6997:{6995}
+</system-out>
+  </testcase>
+  <testcase name="saleCommittedWhileDeletionWaitsPreservesAttributionAndExplainsRefusal" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.324">
+    <system-out>Ticket13 waiters 1 pid:blockers 7018:{7013}
+</system-out>
+  </testcase>
+  <testcase name="identitiesWithoutOperationsRemainDeletableIncludingDemonstrationBalance(long, String, String)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.255" />
+  <testcase name="identitiesWithoutOperationsRemainDeletableIncludingDemonstrationBalance(long, String, String)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.26" />
+  <testcase name="identitiesWithoutOperationsRemainDeletableIncludingDemonstrationBalance(long, String, String)[3]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.252" />
+  <testcase name="identitiesWithoutOperationsRemainDeletableIncludingDemonstrationBalance(long, String, String)[4]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.259" />
+  <testcase name="identitiesWithoutOperationsRemainDeletableIncludingDemonstrationBalance(long, String, String)[5]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.253" />
+  <testcase name="identitiesWithoutOperationsRemainDeletableIncludingDemonstrationBalance(long, String, String)[6]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.286" />
+  <testcase name="acquisitionInsertedBeforeDeletionEitherRetainsAttributionOrRollsBack(boolean)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.373">
+    <system-out>Ticket13 waiters 1 pid:blockers 7146:{7142}
+Ticket13 waiters 2 pid:blockers 7146:{7142}, 7149:{7146}
+</system-out>
+  </testcase>
+  <testcase name="acquisitionInsertedBeforeDeletionEitherRetainsAttributionOrRollsBack(boolean)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.339">
+    <system-out>Ticket13 waiters 1 pid:blockers 7177:{7173}
+Ticket13 waiters 2 pid:blockers 7177:{7173}, 7180:{7177}
+</system-out>
+  </testcase>
+  <testcase name="wrongPasswordCannotDeleteAnyRole(long, String)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.234" />
+  <testcase name="wrongPasswordCannotDeleteAnyRole(long, String)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.214" />
+  <testcase name="wrongPasswordCannotDeleteAnyRole(long, String)[3]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.213" />
+  <testcase name="purchaseAlreadyWaitingOnBalanceCannotDeadlockWithIdentityDeletion" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.286">
+    <system-out>Ticket13 waiters 1 pid:blockers 7232:{7228}
+Ticket13 waiters 2 pid:blockers 7232:{7228}, 7238:{7232}
+</system-out>
+  </testcase>
+  <testcase name="clientWithOnlyARequestCannotDeleteIdentity(String, String)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.462" />
+  <testcase name="clientWithOnlyARequestCannotDeleteIdentity(String, String)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.427" />
+  <testcase name="clientWithOnlyARequestCannotDeleteIdentity(String, String)[3]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.376" />
+  <testcase name="clientWithOnlyARequestCannotDeleteIdentity(String, String)[4]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.397" />
+  <testcase name="acquisitionAfterActualSalesmanDeletionRollsBackItsCredit(boolean)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.346">
+    <system-out>Ticket13 waiters 1 pid:blockers 7345:{7340}
+Ticket13 waiters 2 pid:blockers 7345:{7340}, 7347:{7345}
+</system-out>
+  </testcase>
+  <testcase name="acquisitionAfterActualSalesmanDeletionRollsBackItsCredit(boolean)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.386">
+    <system-out>Ticket13 waiters 1 pid:blockers 7376:{7371}
+Ticket13 waiters 2 pid:blockers 7376:{7371}, 7378:{7376}
+</system-out>
+  </testcase>
+  <testcase name="databaseCannotEraseSalesmanAttributionEvenWithoutServices(String, int)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.182" />
+  <testcase name="databaseCannotEraseSalesmanAttributionEvenWithoutServices(String, int)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.134" />
+  <testcase name="databaseCannotEraseSalesmanAttributionEvenWithoutServices(String, int)[3]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.147" />
+  <testcase name="errorAfterActualIdentityAndAccountDeletionRollsBackBoth" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.382" />
+  <testcase name="clientDeletionRollbackAllowsWaitingBooking(boolean)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.278">
+    <system-out>Ticket13 waiters 1 pid:blockers 7462:{7457}
+Ticket13 waiters 2 pid:blockers 7462:{7457}, 7464:{7462}
+</system-out>
+  </testcase>
+  <testcase name="clientDeletionRollbackAllowsWaitingBooking(boolean)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.285">
+    <system-out>Ticket13 waiters 1 pid:blockers 7485:{7480}
+Ticket13 waiters 2 pid:blockers 7485:{7480}, 7487:{7485}
+</system-out>
+  </testcase>
+  <testcase name="mismatchedRoleCannotReportADeletion(long, String)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.231" />
+  <testcase name="mismatchedRoleCannotReportADeletion(long, String)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.224" />
+  <testcase name="mismatchedRoleCannotReportADeletion(long, String)[3]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.224" />
+  <testcase name="unrecognizedRoleCannotChangeAnyData(String)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.232" />
+  <testcase name="unrecognizedRoleCannotChangeAnyData(String)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.216" />
+  <testcase name="unrecognizedRoleCannotChangeAnyData(String)[3]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.213" />
+  <testcase name="clientBookingAndDeletionAreCoherentInBothOrders(boolean, boolean)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.263">
+    <system-out>Ticket13 waiters 1 pid:blockers 7571:{7567}
+Ticket13 waiters 2 pid:blockers 7571:{7567}, 7574:{7571}
+</system-out>
+  </testcase>
+  <testcase name="clientBookingAndDeletionAreCoherentInBothOrders(boolean, boolean)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.295">
+    <system-out>Ticket13 waiters 1 pid:blockers 7593:{7587}
+Ticket13 waiters 2 pid:blockers 7593:{7587}, 7595:{7593}
+</system-out>
+  </testcase>
+  <testcase name="clientBookingAndDeletionAreCoherentInBothOrders(boolean, boolean)[3]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.32">
+    <system-out>Ticket13 waiters 1 pid:blockers 7610:{7606}
+Ticket13 waiters 2 pid:blockers 7610:{7606}, 7613:{7610}
+</system-out>
+  </testcase>
+  <testcase name="clientBookingAndDeletionAreCoherentInBothOrders(boolean, boolean)[4]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.327">
+    <system-out>Ticket13 waiters 1 pid:blockers 7630:{7625}
+Ticket13 waiters 2 pid:blockers 7630:{7625}, 7632:{7630}
+</system-out>
+  </testcase>
+  <testcase name="newVehicleProposalAfterClientDeletionCommitsOnlyIfDeletionRollsBack(boolean)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.492">
+    <system-out>Ticket13 waiters 1 pid:blockers 7656:{7651}
+Ticket13 waiters 2 pid:blockers 7656:{7651}, 7658:{7656}
+</system-out>
+  </testcase>
+  <testcase name="newVehicleProposalAfterClientDeletionCommitsOnlyIfDeletionRollsBack(boolean)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.328">
+    <system-out>Ticket13 waiters 1 pid:blockers 7682:{7677}
+Ticket13 waiters 2 pid:blockers 7682:{7677}, 7684:{7682}
+</system-out>
+  </testcase>
+  <testcase name="clientOperationsAndHistoryRemainBinding(String, String, int)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.257" />
+  <testcase name="clientOperationsAndHistoryRemainBinding(String, String, int)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.368" />
+  <testcase name="clientOperationsAndHistoryRemainBinding(String, String, int)[3]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.235" />
+  <testcase name="clientOperationsAndHistoryRemainBinding(String, String, int)[4]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.249" />
+  <testcase name="clientOperationsAndHistoryRemainBinding(String, String, int)[5]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.246" />
+  <testcase name="clientOperationsAndHistoryRemainBinding(String, String, int)[6]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.225" />
+  <testcase name="clientOperationsAndHistoryRemainBinding(String, String, int)[7]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.241" />
+  <testcase name="clientOperationsAndHistoryRemainBinding(String, String, int)[8]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.251" />
+  <testcase name="clientWithoutADemonstrationAccountIsStillDeletable" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.243" />
+  <testcase name="salesmanWithOnlyAnAssignedRequestCannotDelete(String, String)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.425" />
+  <testcase name="salesmanWithOnlyAnAssignedRequestCannotDelete(String, String)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.34" />
+  <testcase name="salesmanWithOnlyAnAssignedRequestCannotDelete(String, String)[3]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.29" />
+  <testcase name="salesmanWithOnlyAnAssignedRequestCannotDelete(String, String)[4]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.353" />
+  <testcase name="skippedDeletionCannotReportSuccess" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.399" />
+  <testcase name="salesmanWithOnlyCompletedSalesRetainsIdentityAndAttribution(String, String, int)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.451" />
+  <testcase name="salesmanWithOnlyCompletedSalesRetainsIdentityAndAttribution(String, String, int)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.424" />
+  <testcase name="salesmanWithOnlyCompletedSalesRetainsIdentityAndAttribution(String, String, int)[3]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.358" />
+  <testcase name="salesmanWithOnlyCompletedSalesRetainsIdentityAndAttribution(String, String, int)[4]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.37" />
+  <testcase name="salesmanWithOnlyCompletedSalesRetainsIdentityAndAttribution(String, String, int)[5]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.336" />
+  <testcase name="salesmanWithOnlyCompletedSalesRetainsIdentityAndAttribution(String, String, int)[6]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.346" />
+  <testcase name="deletionAlreadyWaitingOnBalancePreventsPurchaseWithoutPartialVehicleChange" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.3">
+    <system-out>Ticket13 waiters 1 pid:blockers 8020:{8015}
+Ticket13 waiters 2 pid:blockers 8020:{8015}, 8022:{8020}
+</system-out>
+  </testcase>
+</testsuite>

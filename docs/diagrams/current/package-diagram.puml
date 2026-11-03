@@ -1,0 +1,44 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontSize 16
+skinparam packageStyle rectangle
+title it.unifi.drivehub — dipendenze fra package, non flusso dei dati
+package "presentation.view" as ui {}
+package service {}
+package domain {}
+package dao {}
+package "dao.postgres" as pg {}
+package event {}
+package security {}
+package "javafx.*" as fx {}
+package "java.sql" as sql {}
+ui ..> service
+ui ..> domain
+ui ..> fx
+service ..> dao
+service ..> domain
+service ..> event
+service ..> security
+service ..> sql
+dao ..> domain
+dao ..> sql
+pg ..> dao
+pg ..> domain
+pg ..> sql
+event ..> sql
+note bottom of domain
+  Entità, enum e UserDashboardNavigator.
+  Nessun import JavaFX, DAO o servizi.
+  Il navigator enumera i tre ruoli.
+end note
+legend bottom
+  Package interni relativi a it.unifi.drivehub; javafx/java.sql sono esterni.
+  App/AppContext (radice): costruiscono viste, servizi e PostgresDAO,
+  scelgono hasher e collegano Observer; usano anche dominio e JavaFX.
+  Overload delle viste dipendono ancora da AppContext nella radice.
+  Composizione dettagliata: class-business e class-presentation.
+  dao include DatabaseManager; dao.postgres realizza i contratti e fa mapping.
+  DAO/servizi/eventi espongono Connection: non indipendenti da JDBC.
+endlegend
+@enduml

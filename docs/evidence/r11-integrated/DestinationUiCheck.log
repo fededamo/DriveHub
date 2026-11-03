@@ -1,0 +1,37 @@
+COMMAND: /tmp/drivehub-ticket16-tools/root/usr/lib/jvm/java-21-openjdk-amd64/bin/javac --module-path /home/federico/.m2/repository/org/openjfx/javafx-base/21.0.2/javafx-base-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-graphics/21.0.2/javafx-graphics-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-controls/21.0.2/javafx-controls-21.0.2-linux.jar --add-modules javafx.controls -cp /tmp/drivehub-ticket18-session/install/DriveHub/target/classes:/tmp/drivehub-ticket18-session/install/DriveHub/target/test-classes:/home/federico/.m2/repository/org/postgresql/postgresql/42.7.3/postgresql-42.7.3.jar:/tmp/drivehub-ticket18-session/ui/DestinationUiCheck -d /tmp/drivehub-ticket18-session/ui/DestinationUiCheck /tmp/drivehub-ticket18-session/ui/DestinationUiCheck/sources/AgreementUiCheck.java /tmp/drivehub-ticket18-session/ui/DestinationUiCheck/sources/AppStartupUiCheck.java /tmp/drivehub-ticket18-session/ui/DestinationUiCheck/sources/DestinationUiCheck.java /tmp/drivehub-ticket18-session/ui/DestinationUiCheck/sources/IdentityUiCheck.java /tmp/drivehub-ticket18-session/ui/DestinationUiCheck/sources/PriceUiCheck.java /tmp/drivehub-ticket18-session/ui/DestinationUiCheck/sources/ReactiveTablesUiCheck.java /tmp/drivehub-ticket18-session/ui/DestinationUiCheck/sources/SaleOutcomeUiCheck.java /tmp/drivehub-ticket18-session/ui/DestinationUiCheck/sources/SlowModelsUiCheck.java /tmp/drivehub-ticket18-session/ui/DestinationUiCheck/sources/TableLifecycleUiCheck.java
+COMMAND: /tmp/drivehub-ticket16-tools/root/usr/lib/jvm/java-21-openjdk-amd64/bin/java --module-path /home/federico/.m2/repository/org/openjfx/javafx-base/21.0.2/javafx-base-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-graphics/21.0.2/javafx-graphics-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-controls/21.0.2/javafx-controls-21.0.2-linux.jar --add-modules javafx.controls -Dprism.order=sw -cp /tmp/drivehub-ticket18-session/install/DriveHub/target/classes:/tmp/drivehub-ticket18-session/install/DriveHub/target/test-classes:/home/federico/.m2/repository/org/postgresql/postgresql/42.7.3/postgresql-42.7.3.jar:/tmp/drivehub-ticket18-session/ui/DestinationUiCheck it.unifi.drivehub.DestinationUiCheck seed /tmp/drivehub-ticket18-session/ui/DestinationUiCheck
+SEED SUCCESS: futuro multi-cliente, noleggio iniziato ieri, stato obsoleto e rollback
+COMMAND: /tmp/drivehub-ticket16-tools/root/usr/lib/jvm/java-21-openjdk-amd64/bin/java --module-path /home/federico/.m2/repository/org/openjfx/javafx-base/21.0.2/javafx-base-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-graphics/21.0.2/javafx-graphics-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-controls/21.0.2/javafx-controls-21.0.2-linux.jar --add-modules javafx.controls -Dprism.order=sw -cp /tmp/drivehub-ticket18-session/install/DriveHub/target/classes:/tmp/drivehub-ticket18-session/install/DriveHub/target/test-classes:/home/federico/.m2/repository/org/postgresql/postgresql/42.7.3/postgresql-42.7.3.jar:/tmp/drivehub-ticket18-session/ui/DestinationUiCheck it.unifi.drivehub.DestinationUiCheck check /tmp/drivehub-ticket18-session/ui/DestinationUiCheck
+PASS JavaFX avviato nella seconda JVM
+PASS inventario raggiunto con freccia
+PASS SOLD e WAITING esclusi dall'inventario
+PASS selezione righe con tastiera e focus visibile
+PASS selezione con frecce 1201
+PASS conferma con conteggio futuro e rimborso 100%
+PASS successo soltanto dopo commit
+PASS saldo cliente 1 = 1100.25
+PASS saldo cliente 2 = 1200.75
+PASS destinazione SALE persistita
+PASS inventario raggiunto con freccia
+PASS selezione righe con tastiera e focus visibile
+PASS selezione con frecce 1202
+PASS rifiuto leggibile per noleggio iniziato ieri
+PASS saldo cliente 1 = 1100.25
+PASS saldo cliente 2 = 1200.75
+PASS inventario raggiunto con freccia
+PASS selezione righe con tastiera e focus visibile
+PASS selezione con frecce 1204
+PASS vista obsoleta non aggira la riserva
+PASS inventario raggiunto con freccia
+PASS selezione righe con tastiera e focus visibile
+PASS selezione con frecce 1205
+PASS SALE verso RENT consentito
+PASS inventario raggiunto con freccia
+PASS selezione righe con tastiera e focus visibile
+PASS selezione con frecce 1203
+PASS conto mancante segnala errore
+PASS saldo cliente 1 = 1080.25
+PASS rollback conserva destinazione
+PASS rollback conserva entrambi i noleggi
+PASS nessuna nuova penale
+UI CHECK SUCCESS

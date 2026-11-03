@@ -7,8 +7,9 @@ import it.unifi.drivehub.domain.user.Salesman;
 import it.unifi.drivehub.domain.user.User;
 import it.unifi.drivehub.domain.vehicle.Vehicle;
 import it.unifi.drivehub.domain.vehicle.VehicleState;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -17,13 +18,29 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Verifica Completa dei Flussi Applicativi e Login sui 3 Ruoli")
+@Tag("postgres")
 class FullWorkflowIntegrationTest {
 
-    private static AppContext ctx;
+    private AppContext ctx;
 
-    @BeforeAll
-    static void setUp() {
-        ctx = AppContext.getInstance();
+    @BeforeEach
+    void setUp() throws Exception {
+        ctx = new AppContext(TestDatabase.fromEnvironment().reset());
+    }
+
+    @Test
+    @DisplayName("Scadenza deterministica sul solo database di test")
+    void expirationUsesOnlyTheIsolatedFixture() throws Exception {
+        try (var conn = ctx.getDatabaseManager().getConnection(); var statement = conn.createStatement()) {
+            assertEquals(1, statement.executeUpdate("UPDATE request SET exp_date = CURRENT_DATE - 1 WHERE id = 1"));
+            statement.executeUpdate("UPDATE request SET exp_date = CURRENT_DATE + 30 WHERE id <> 1 AND exp_date IS NOT NULL");
+        }
+        assertEquals(1, ctx.getPurchaseService().checkAndHandleExpiredRequests(1L).size());
+        try (var conn = ctx.getDatabaseManager().getConnection(); var statement = conn.createStatement();
+             var result = statement.executeQuery("SELECT count(*) FROM request WHERE id = 1")) {
+            assertTrue(result.next());
+            assertEquals(0, result.getInt(1));
+        }
     }
 
     @Test

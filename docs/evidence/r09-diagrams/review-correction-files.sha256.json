@@ -1,0 +1,18 @@
+{
+  "DriveHub/docs/diagrams/current/page-navigation-customer.puml": {
+    "reviewed_sha256": "4945113cf125e5319684fec4fadc748049117219d16931cc5f3d4957ff757fca",
+    "corrected_sha256": "251651cc8d017d80cd6e8e5d1a926be194c56442b45313ec02cb0d75edd29de6"
+  },
+  "DriveHub/docs/diagrams/current/page-navigation-customer.svg": {
+    "reviewed_sha256": "d84611341ea5c11a934eccc982c3cd8d887338134338aabcbe639ca391fc696e",
+    "corrected_sha256": "9d14fb79ac263823a76ad7cb7c372dc16b279e50950b1b0e8fafd414e5bbd770"
+  },
+  "DriveHub/docs/evidence/r09-diagrams/render.log": {
+    "reviewed_sha256": "2de08e74cbe59e1b373b024bfe1d1223e384bb31d33b143f6952f752e8344fd4",
+    "corrected_sha256": "08f0dd0ee0bbb1498b9364aea9f203a84c8da8c1809ea37279de5822ac003c48"
+  },
+  "DriveHub/docs/evidence/r09-diagrams/render-inventory.json": {
+    "reviewed_sha256": "53bdad892ae7533ac9e0228a314d80df3bf2b1fa27241502bbd23223e09181cb",
+    "corrected_sha256": "0a75522b8cf1068f2451def6aefa5086a7e40de21efd1d6b43ff24b51fa01124"
+  }
+}

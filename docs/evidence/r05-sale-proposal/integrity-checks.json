@@ -1,0 +1,9 @@
+{
+  "tested_hashes_unchanged": true,
+  "historical_files_preserved": true,
+  "documentation_links_exist": true,
+  "changed_lines_no_trailing_whitespace": true,
+  "private_passwords_absent_from_evidence": true,
+  "head_and_index_unchanged": true,
+  "relazione_excluded": true
+}

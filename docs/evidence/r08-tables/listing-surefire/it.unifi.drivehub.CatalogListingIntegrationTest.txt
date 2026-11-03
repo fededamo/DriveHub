@@ -1,0 +1,13 @@
+-------------------------------------------------------------------------------
+Test set: it.unifi.drivehub.CatalogListingIntegrationTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 1.072 s <<< FAILURE! -- in it.unifi.drivehub.CatalogListingIntegrationTest
+it.unifi.drivehub.CatalogListingIntegrationTest.usedVehicleAndDailyRateKeepDepreciationAndMaximumDiscount -- Time elapsed: 0.151 s <<< ERROR!
+java.lang.IllegalArgumentException: L'anno di produzione del veicolo (2025) non può essere precedente all'anno di rilascio del modello (2026).
+	at it.unifi.drivehub.domain.vehicle.Vehicle.validateProductionYear(Vehicle.java:153)
+	at it.unifi.drivehub.service.CatalogService.addVehicle(CatalogService.java:196)
+	at it.unifi.drivehub.CatalogListingIntegrationTest.usedVehicleAndDailyRateKeepDepreciationAndMaximumDiscount(CatalogListingIntegrationTest.java:68)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+

@@ -24,10 +24,17 @@ public final class PriceCalculatorService {
      * 4. Ammortamento chilometri (5% ogni 20.000 km): prezzo = prezzo * (0.95)^(km / 20000)
      */
     public BigDecimal calculateVehiclePrice(Model model, Vehicle vehicle, Integer modelDiscount, Integer vehicleDiscount) {
+        return calculatePriceFromBase(vehicle.getSelectedBasePrice(model), vehicle, modelDiscount, vehicleDiscount);
+    }
+
+    public BigDecimal calculateRecommendedVehiclePrice(Model model, Vehicle vehicle, Integer modelDiscount, Integer vehicleDiscount) {
+        return calculatePriceFromBase(model.getReleasePrice(), vehicle, modelDiscount, vehicleDiscount);
+    }
+
+    private BigDecimal calculatePriceFromBase(BigDecimal base, Vehicle vehicle, Integer modelDiscount, Integer vehicleDiscount) {
         int mDisc = modelDiscount != null ? modelDiscount : 0;
         int vDisc = vehicleDiscount != null ? vehicleDiscount : 0;
-        int maxPromo = Math.max(mDisc, vDisc);
-        return applyStandardDepreciation(model.getReleasePrice(), maxPromo, vehicle.getLicencePlate(), vehicle.getKilometers(), vehicle.getYear());
+        return applyStandardDepreciation(base, Math.max(mDisc, vDisc), vehicle.getLicencePlate(), vehicle.getKilometers(), vehicle.getYear());
     }
 
     /**

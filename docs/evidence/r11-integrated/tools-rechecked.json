@@ -1,0 +1,22 @@
+{
+  "/tmp/drivehub-ticket16-tools/root/usr/lib/jvm/java-21-openjdk-amd64/bin/java": {
+    "sha256": "af14efcaa70a4bfd214159034f6c13c93a1099d90315f57f711c01dcbfdd111c",
+    "size": 14536
+  },
+  "/tmp/drivehub-ticket16-tools/root/usr/lib/jvm/java-21-openjdk-amd64/bin/javac": {
+    "sha256": "fad7233dfc534be188f01a72a6deaeab00f4a871aba3e494995d7db3262e4cb0",
+    "size": 14592
+  },
+  "/tmp/drivehub-ticket16-tools/root/usr/lib/postgresql/16/bin/postgres": {
+    "sha256": "201d8daff9a5bd9df70b820471b965c39f5a776d677f395232c477d051270722",
+    "size": 10511456
+  },
+  "/tmp/drivehub-ticket16-tools/root/usr/lib/postgresql/16/bin/psql": {
+    "sha256": "df8031178589c31c7bc20aa2adf902e1cc3f0aa9ea12428aa5db3d476cbcac1a",
+    "size": 790104
+  },
+  "/tmp/drivehub-ticket16-tools/root/usr/bin/Xvfb": {
+    "sha256": "0012d7f5adc41ae9eb8340df3d2ffbea0823485529ad0178354ade3a72b4978a",
+    "size": 2142760
+  }
+}

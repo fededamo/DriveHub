@@ -1,0 +1,32 @@
+{
+  "final-full": {
+    "tests": 394,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "targeted": {
+    "tests": 148,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "listing-fixed": {
+    "tests": 25,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "listing": {
+    "tests": 25,
+    "failures": 0,
+    "errors": 1,
+    "skipped": 0
+  },
+  "baseline": {
+    "tests": 390,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

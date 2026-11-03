@@ -1,0 +1,23 @@
+{
+  "runtime_inputs_verified": 93,
+  "startup_harness_identical": true,
+  "final_authored_hashes_verified": 7,
+  "initial_files": 1276,
+  "identical": 1271,
+  "intentional_updates": [
+    "DriveHub/pom.xml",
+    "DriveHub/docs/testing.md",
+    "DriveHub/src/main/java/it/unifi/drivehub/AppContext.java",
+    "TRACKER_DRIVEHUB/revisioni/issues/15-pulizia-componenti-inutilizzati.md",
+    "PIANO_REVISIONI_DRIVEHUB.md"
+  ],
+  "deleted": [],
+  "all_new_files_under": "DriveHub/docs/evidence/r10-cleanup/",
+  "head_unchanged": true,
+  "index_unchanged": true,
+  "local_links_checked": 124,
+  "broken_links": [],
+  "session_diff_whitespace": [],
+  "standards_residual_findings": 0,
+  "spec_findings": 0
+}

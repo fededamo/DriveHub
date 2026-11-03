@@ -105,6 +105,21 @@ public final class PostgresUserDao implements UserDao {
     }
 
     @Override
+    public void lockClient(Long id, Connection conn) {
+        // NO KEY UPDATE non blocca i KEY SHARE delle FK degli altri flussi economici.
+        String sql = "SELECT id FROM client WHERE id = ? FOR NO KEY UPDATE";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            if (conn.getAutoCommit()) throw new IllegalArgumentException("Il lock del cliente richiede una transazione attiva.");
+            ps.setLong(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) throw new IllegalStateException("Cliente non trovato: " + id);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore durante il lock del cliente: " + id, e);
+        }
+    }
+
+    @Override
     public Optional<Salesman> findSalesmanById(Long id) {
         String sql = "SELECT id, name, surname, email, hash_password FROM salesman WHERE id = ?";
         try (Connection conn = db.getConnection();
@@ -197,27 +212,47 @@ public final class PostgresUserDao implements UserDao {
     }
 
     @Override
+    public void lockUser(Long id, String role, Connection conn) {
+        String table = resolveTable(role);
+        // Compatibile con i KEY SHARE delle FK: un acquisto già sul conto può terminare.
+        try (PreparedStatement ps = conn.prepareStatement("SELECT id FROM " + table + " WHERE id = ? FOR NO KEY UPDATE")) {
+            if (conn.getAutoCommit()) throw new IllegalArgumentException("Il lock dell'identità richiede una transazione attiva.");
+            ps.setLong(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) throw new IllegalStateException("Identità non trovata per il ruolo indicato.");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore durante il lock dell'identità.", e);
+        }
+    }
+
+    @Override
     public void deleteUser(Long id, String role, Connection conn) {
         String table = resolveTable(role);
         String sql = "DELETE FROM " + table + " WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, id);
-            ps.executeUpdate();
+            if (ps.executeUpdate() != 1) throw new IllegalStateException("Cancellazione dell'identità non eseguita.");
         } catch (SQLException e) {
+            if ("23503".equals(e.getSQLState())) {
+                throw new IllegalStateException("Impossibile eliminare l'identità: un'operazione associata ne impedisce la cancellazione.", e);
+            }
             throw new RuntimeException("Errore durante la cancellazione dell'utente.", e);
         }
     }
 
     @Override
-    public boolean hasAssociatedOperations(Long userId, String role) {
+    public boolean hasAssociatedOperations(Long userId, String role, Connection conn) {
+        String table = resolveTable(role);
         String checkSql;
-        if ("CLIENT".equalsIgnoreCase(role)) {
+        if ("client".equals(table)) {
             checkSql = "SELECT (" +
+                    "EXISTS(SELECT 1 FROM request WHERE client = ?) OR " +
                     "EXISTS(SELECT 1 FROM test_drive WHERE client = ?) OR " +
                     "EXISTS(SELECT 1 FROM rent WHERE client = ?) OR " +
                     "EXISTS(SELECT 1 FROM sale WHERE client = ?)" +
                     ") AS has_ops";
-        } else if ("SALESMAN".equalsIgnoreCase(role)) {
+        } else if ("salesman".equals(table)) {
             checkSql = "SELECT (" +
                     "EXISTS(SELECT 1 FROM request WHERE salesman = ?) OR " +
                     "EXISTS(SELECT 1 FROM sale WHERE salesman = ?)" +
@@ -226,12 +261,12 @@ public final class PostgresUserDao implements UserDao {
             return false;
         }
 
-        try (Connection conn = db.getConnection();
-             PreparedStatement ps = conn.prepareStatement(checkSql)) {
-            if ("CLIENT".equalsIgnoreCase(role)) {
+        try (PreparedStatement ps = conn.prepareStatement(checkSql)) {
+            if ("client".equals(table)) {
                 ps.setLong(1, userId);
                 ps.setLong(2, userId);
                 ps.setLong(3, userId);
+                ps.setLong(4, userId);
             } else {
                 ps.setLong(1, userId);
                 ps.setLong(2, userId);

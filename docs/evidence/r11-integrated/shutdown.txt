@@ -1,0 +1,4 @@
+waiting for server to shut down.... done
+server stopped
+pg_ctl: no server running
+Phase2 listener55436 absent; no Xvfb started in phase2. Phase1 environment disappeared on interruption; no controlled shutdown/final sentinel check claimed.

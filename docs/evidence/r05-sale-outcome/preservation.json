@@ -1,0 +1,21 @@
+{
+  "baseline_files": 390,
+  "unchanged": 377,
+  "changed": [
+    "docs/testing.md",
+    "src/test/java/it/unifi/drivehub/PriceSelectionIntegrationTest.java",
+    "src/test/java/it/unifi/drivehub/SaleProposalIntegrationTest.java",
+    "src/test/java/it/unifi/drivehub/SaleTypeTest.java",
+    "src/main/java/it/unifi/drivehub/dao/SaleDao.java",
+    "src/main/java/it/unifi/drivehub/dao/VehicleDao.java",
+    "src/main/java/it/unifi/drivehub/dao/postgres/PostgresSaleDao.java",
+    "src/main/java/it/unifi/drivehub/dao/postgres/PostgresVehicleDao.java",
+    "src/main/java/it/unifi/drivehub/domain/operation/Sale.java",
+    "src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java",
+    "src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java",
+    "src/main/java/it/unifi/drivehub/service/SaleToDealershipService.java",
+    "src/main/resources/db/schema.sql"
+  ],
+  "deleted": [],
+  "historical_evidence_01_09_unchanged": true
+}

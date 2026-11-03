@@ -13,9 +13,12 @@ public interface BankAccountDao {
 
     Optional<BankAccount> findByClientId(Long clientId);
 
-    default Optional<BankAccount> findByClientId(Long clientId, Connection conn) {
-        return findByClientId(clientId);
-    }
+    /**
+     * Legge e blocca il conto fino a commit/rollback sulla connessione transazionale ricevuta.
+     * Prima di modificare un saldo usare questa lettura; per più conti acquisire i lock
+     * in ordine crescente di clientId, senza aprire altre transazioni.
+     */
+    Optional<BankAccount> findByClientIdForUpdate(Long clientId, Connection conn);
 
     Optional<BankAccount> findByIban(String iban);
 

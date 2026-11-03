@@ -1,0 +1,11 @@
+{
+  "production_inputs_original_unchanged": true,
+  "targeted_vs_final_only_private_config_diff": [
+    "src/main/resources/application.properties"
+  ],
+  "phase2_execution": "full394; no GUI rerun",
+  "groups": {
+    "without_database": 47,
+    "postgresql": 347
+  }
+}

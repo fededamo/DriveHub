@@ -1,0 +1,2 @@
+e52ff10487e42635a3517dce5d600089e3b2b015fb439848676b24ba3d364373  src/main/java/it/unifi/drivehub/domain/vehicle/Vehicle.java
+05b33f269fa1af288fda238eb88b68799c2b0c37f996419be5addf37993b8e6f  src/test/java/it/unifi/drivehub/DomainInvariantsTest.java

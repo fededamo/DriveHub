@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="5.256" tests="36" errors="0" skipped="0" failures="0">
+  <testcase name="databasePreservesTestDriveHoursAndVehicleTimestampUniqueness(String, String)[1]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.102" />
+  <testcase name="databasePreservesTestDriveHoursAndVehicleTimestampUniqueness(String, String)[2]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.104" />
+  <testcase name="databasePreservesTestDriveHoursAndVehicleTimestampUniqueness(String, String)[3]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.1" />
+  <testcase name="pastDatesAndReversedRentalPeriodAreRejectedWithoutWrites" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.094" />
+  <testcase name="testDriveCommittedFirstIsCancelledAtomicallyByRental(boolean)[1]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.172">
+    <system-out>Ticket11 waiters 1 pid:blockers 11675:{11671}
+Ticket11 waiters 2 pid:blockers 11675:{11671}, 11677:{11675}
+</system-out>
+  </testcase>
+  <testcase name="testDriveCommittedFirstIsCancelledAtomicallyByRental(boolean)[2]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.198">
+    <system-out>Ticket11 waiters 1 pid:blockers 11696:{11691}
+Ticket11 waiters 2 pid:blockers 11696:{11691}, 11698:{11696}
+</system-out>
+  </testcase>
+  <testcase name="sameClientCannotExceedThreeTestDrivesAcrossDifferentVehicles" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.166">
+    <system-out>Ticket11 waiters 1 pid:blockers 11713:{11709}
+Ticket11 waiters 2 pid:blockers 11713:{11709}, 11715:{11713}
+</system-out>
+  </testcase>
+  <testcase name="rentalUsesThePriceRereadAfterTheVehicleLock" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.144">
+    <system-out>Ticket11 waiters 1 pid:blockers 11726:{11722}
+</system-out>
+  </testcase>
+  <testcase name="failureAfterBookingInsertRollsBackActualWrites(boolean)[1]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.133" />
+  <testcase name="failureAfterBookingInsertRollsBackActualWrites(boolean)[2]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.227" />
+  <testcase name="concurrentRentalsOnAdjacentDaysCanBothBeConfirmed" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.172">
+    <system-out>Ticket11 waiters 1 pid:blockers 11766:{11762}
+Ticket11 waiters 2 pid:blockers 11766:{11762}, 11768:{11766}
+</system-out>
+  </testcase>
+  <testcase name="clientLockIsCompatibleWithPurchaseForeignKeysAndTheAccountProtocol" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.183">
+    <system-out>Ticket11 waiters 1 pid:blockers 11784:{11780}
+Ticket11 waiters 2 pid:blockers 11784:{11780}, 11789:{11784}
+</system-out>
+  </testcase>
+  <testcase name="rejectedBookingsExposeTheBusinessReasonAfterRollback(boolean)[1]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.125" />
+  <testcase name="rejectedBookingsExposeTheBusinessReasonAfterRollback(boolean)[2]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.103" />
+  <testcase name="insufficientBalanceDoesNotCreateRentalOrCancelTestDrives" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.138" />
+  <testcase name="bookingRereadsVehicleStateAfterWaitingForTheLock(boolean)[1]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.141">
+    <system-out>Ticket11 waiters 1 pid:blockers 11831:{11827}
+</system-out>
+  </testcase>
+  <testcase name="bookingRereadsVehicleStateAfterWaitingForTheLock(boolean)[2]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.128">
+    <system-out>Ticket11 waiters 1 pid:blockers 11844:{11840}
+</system-out>
+  </testcase>
+  <testcase name="rentalWinsAgainstATestDriveStartedBeforeItsCommit" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.143">
+    <system-out>Ticket11 waiters 1 pid:blockers 11857:{11853}
+Ticket11 waiters 2 pid:blockers 11857:{11853}, 11859:{11857}
+</system-out>
+  </testcase>
+  <testcase name="databaseSerializesOverlapsEvenWhenWritersBypassServices(boolean)[1]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.123">
+    <system-out>Ticket11 waiters 1 pid:blockers 11871:{11867}
+</system-out>
+  </testcase>
+  <testcase name="databaseSerializesOverlapsEvenWhenWritersBypassServices(boolean)[2]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.117">
+    <system-out>Ticket11 waiters 1 pid:blockers 11883:{11879}
+</system-out>
+  </testcase>
+  <testcase name="overlappingRentalsFromDifferentClientsCannotBothBeConfirmed" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.144">
+    <system-out>Ticket11 waiters 1 pid:blockers 11895:{11891}
+Ticket11 waiters 2 pid:blockers 11895:{11891}, 11897:{11895}
+</system-out>
+  </testcase>
+  <testcase name="testDriveDoesNotRequireABankAccount" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.104" />
+  <testcase name="testDriveCannotUseAnyDayOfARental(int)[1]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.134" />
+  <testcase name="testDriveCannotUseAnyDayOfARental(int)[2]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.129" />
+  <testcase name="testDriveCannotUseAnyDayOfARental(int)[3]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.132" />
+  <testcase name="twoClientsCannotBookTheSameTestDriveSlot" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.137">
+    <system-out>Ticket11 waiters 1 pid:blockers 11949:{11945}
+Ticket11 waiters 2 pid:blockers 11949:{11945}, 11951:{11949}
+</system-out>
+  </testcase>
+  <testcase name="rentalPeriodsAreInclusiveAndAdjacentDaysRemainBookable(int, int, boolean)[1]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.142" />
+  <testcase name="rentalPeriodsAreInclusiveAndAdjacentDaysRemainBookable(int, int, boolean)[2]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.129" />
+  <testcase name="rentalPeriodsAreInclusiveAndAdjacentDaysRemainBookable(int, int, boolean)[3]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.13" />
+  <testcase name="rentalPeriodsAreInclusiveAndAdjacentDaysRemainBookable(int, int, boolean)[4]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.146" />
+  <testcase name="rentalPeriodsAreInclusiveAndAdjacentDaysRemainBookable(int, int, boolean)[5]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.169" />
+  <testcase name="rentalPeriodsAreInclusiveAndAdjacentDaysRemainBookable(int, int, boolean)[6]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.125" />
+  <testcase name="rentalPeriodsAreInclusiveAndAdjacentDaysRemainBookable(int, int, boolean)[7]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.137" />
+  <testcase name="purchaseCompletionAndRentalCannotDeadlockWithATestDriveOnTheBlockedVehicle" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.285">
+    <system-out>Ticket11 waiters 1 pid:blockers 12043:{12039}
+Ticket11 waiters 2 pid:blockers 12043:{12039}, 12045:{12043}
+Ticket11 operation 3 completed before gate release
+</system-out>
+  </testcase>
+  <testcase name="concurrentRentalsForSameClientOnDifferentVehiclesCannotOverdraw" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.243">
+    <system-out>Ticket11 waiters 1 pid:blockers 12100:{12096}
+Ticket11 waiters 2 pid:blockers 12100:{12096}, 12102:{12100}
+</system-out>
+  </testcase>
+  <testcase name="databaseRejectsInclusiveRentalOverlapWithoutServices" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.125" />
+</testsuite>

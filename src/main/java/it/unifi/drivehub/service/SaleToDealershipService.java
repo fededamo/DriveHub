@@ -17,6 +17,7 @@ import it.unifi.drivehub.domain.vehicle.Vehicle;
 import it.unifi.drivehub.domain.vehicle.VehicleState;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.util.Optional;
 
 /**
@@ -64,72 +65,81 @@ public final class SaleToDealershipService {
 
     /**
      * Passo 1: Il cliente conferma la proposta di vendita alla concessionaria.
-     * Gestisce la concorrenza e il vincolo di unicità sul VIN:
-     * - Se il VIN è già nel database (veicolo precedentemente venduto dal concessionario), aggiorna la tupla esistente
-     * - Altrimenti inserisce una nuova tupla
-     * - Crea la richiesta con stato WAITING e deposit negativo
+     * Il VIN noto richiede stato SOLD, ultima vendita al proponente e nessuna richiesta aperta.
+     * Lock/rilettura e scritture condividono la transazione; VIN e richiesta sono univoci anche nel DB.
      */
     public Request submitSaleProposal(Long clientId, Long modelId, String vin, String licencePlate, int km, int year) {
-        BigDecimal estimatedPrice = calculateEstimate(modelId, licencePlate, km, year);
-
-        return db.executeInTransactionWithResult(conn -> {
-            Optional<Vehicle> existingOpt = vehicleDao.findByVin(vin, conn);
-            Vehicle vehicle;
-
-            if (existingOpt.isPresent()) {
-                // Aggiornamento della tupla esistente per non violare l'unicità del VIN
-                vehicle = existingOpt.get();
-                vehicle.setLicencePlate(licencePlate);
-                vehicle.setKilometers(km);
-                vehicle.setPrice(estimatedPrice);
-                vehicle.setState(VehicleState.WAITING);
-                vehicleDao.update(vehicle, conn);
-            } else {
-                // Nuovo inserimento
-                Vehicle newVehicle = Vehicle.create(null, modelId, vin, licencePlate, km, estimatedPrice, year, VehicleState.WAITING);
-                vehicle = vehicleDao.save(newVehicle, conn);
+        try {
+            return db.executeInTransactionWithResult(conn -> {
+                Optional<Vehicle> existingOpt = vehicleDao.findByVinForUpdate(vin, conn);
+                Vehicle vehicle;
+                if (existingOpt.isPresent()) {
+                    vehicle = existingOpt.get();
+                    if (vehicle.getState() != VehicleState.SOLD) {
+                        throw new IllegalStateException("Puoi proporre solo un veicolo venduto a te e senza richieste aperte.");
+                    }
+                    Sale latestSale = saleDao.findLatestPurchaseForVehicle(vehicle.getId(), conn)
+                            .orElseThrow(() -> new IllegalStateException("Nessuna vendita al cliente registrata per questo VIN."));
+                    if (!latestSale.getClientId().equals(clientId)) {
+                        throw new IllegalStateException("L'ultima vendita di questo veicolo è a un altro cliente.");
+                    }
+                    if (requestDao.hasOpenRequestForVehicle(vehicle.getId(), conn)) {
+                        throw new IllegalStateException("Esiste già una richiesta aperta per questo veicolo.");
+                    }
+                    if (!vehicle.getModelId().equals(modelId) || vehicle.getYear() != year) {
+                        throw new IllegalArgumentException("Modello e anno devono corrispondere al veicolo già registrato per questo VIN.");
+                    }
+                    vehicle.setLicencePlate(licencePlate);
+                    vehicle.setKilometers(km);
+                    vehicle.setState(VehicleState.WAITING);
+                    vehicleDao.update(vehicle, conn);
+                } else {
+                    BigDecimal modelBase = modelDao.findById(modelId)
+                            .orElseThrow(() -> new IllegalArgumentException("Modello non trovato: " + modelId)).getReleasePrice();
+                    Vehicle newVehicle = Vehicle.create(null, modelId, vin, licencePlate, km, modelBase, year, VehicleState.WAITING);
+                    vehicle = vehicleDao.save(newVehicle, conn);
+                }
+                BigDecimal estimatedPrice = calculateEstimate(modelId, licencePlate, km, year);
+                Request request = Request.createNewSaleRequest(vehicle.getId(), clientId, estimatedPrice);
+                return requestDao.save(request, conn);
+            });
+        } catch (RuntimeException failure) {
+            if (failure.getCause() instanceof RuntimeException reason
+                    && (reason instanceof IllegalArgumentException || reason instanceof IllegalStateException)) {
+                throw reason;
             }
-
-            // Generazione tupla in Request con deposit negativo
-            Request request = Request.createNewSaleRequest(vehicle.getId(), clientId, estimatedPrice);
-            return requestDao.save(request, conn);
-        });
+            throw failure;
+        }
     }
-
     /**
      * Passo 2: Il venditore approva la proposta di vendita.
-     * - Crea una tupla in Sale con amount = deposit (positivo per il cliente)
+     * - Registra un'acquisizione negativa per la concessionaria
      * - Lo stato del veicolo diventa SALE
      * - Elimina la tupla da Request
      * - Accredita il pagamento sul conto corrente del cliente
      */
     public void approveSaleProposal(Long requestId, Long salesmanId) {
         db.executeInTransaction(conn -> {
-            Request request = requestDao.findById(requestId, conn)
-                    .orElseThrow(() -> new IllegalStateException("Richiesta non trovata: " + requestId));
-            if (request.getType() != RequestType.SALE) {
-                throw new IllegalArgumentException("La richiesta selezionata non è di vendita.");
-            }
-
-            Vehicle vehicle = vehicleDao.findById(request.getVehicleId(), conn)
-                    .orElseThrow(() -> new IllegalStateException("Veicolo non trovato: " + request.getVehicleId()));
+            Request request = lockWaitingSaleRequest(requestId, conn);
+            if (salesmanId == null) throw new IllegalArgumentException("Il venditore che accetta la cessione è obbligatorio.");
 
             // Importo da accreditare al cliente (valore assoluto di deposit)
             BigDecimal payout = request.getDeposit().abs();
 
             // Accredito sul conto del cliente
-            BankAccount account = bankAccountDao.findByClientId(request.getClientId(), conn)
+            BankAccount account = bankAccountDao.findByClientIdForUpdate(request.getClientId(), conn)
                     .orElseThrow(() -> new IllegalStateException("Conto corrente cliente non trovato."));
             account.deposit(payout);
             bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
 
             // Registrazione compravendita in Sale
-            Sale saleRecord = Sale.createAcquisitionRecord(vehicle.getId(), salesmanId, request.getClientId(), payout);
+            Sale saleRecord = Sale.createAcquisitionRecord(request.getVehicleId(), salesmanId, request.getClientId(), payout);
             saleDao.save(saleRecord, conn);
 
             // Stato veicolo diventa SALE
-            vehicle.setState(VehicleState.SALE);
-            vehicleDao.update(vehicle, conn);
+            if (!vehicleDao.updateStateAtomically(request.getVehicleId(), VehicleState.WAITING, VehicleState.SALE, conn)) {
+                throw new IllegalStateException("Il veicolo non è più in attesa di valutazione.");
+            }
 
             // Eliminazione richiesta
             requestDao.delete(requestId, conn);
@@ -138,33 +148,38 @@ public final class SaleToDealershipService {
 
     /**
      * Il venditore rifiuta la proposta di vendita del cliente.
-     * Regola Pagina 4: prima di eliminare la tupla Vehicle, controlla se ci sono operazioni di vendita associate.
-     * Se non ce ne sono elimina il veicolo, altrimenti ripristina lo stato a SOLD lasciandolo intatto.
+     * Elimina il veicolo soltanto se privo di storico; altrimenti ripristina SOLD.
+     * La presenza di operazioni non equivale alla titolarità, che richiede l'ultima PURCHASE.
      */
     public void rejectSaleProposal(Long requestId) {
         db.executeInTransaction(conn -> {
-            Request request = requestDao.findById(requestId, conn)
-                    .orElseThrow(() -> new IllegalStateException("Richiesta non trovata: " + requestId));
-            if (request.getType() != RequestType.SALE) {
-                throw new IllegalArgumentException("La richiesta selezionata non è di vendita.");
-            }
+            Request request = lockWaitingSaleRequest(requestId, conn);
 
             Long vehicleId = request.getVehicleId();
             requestDao.delete(requestId, conn);
 
-            boolean hasSales = saleDao.hasSaleOperationsForVehicle(vehicleId);
-            if (hasSales) {
-                // Il veicolo ha uno storico vendite: ripristina stato SOLD senza cancellarlo
-                Vehicle vehicle = vehicleDao.findById(vehicleId, conn).orElse(null);
-                if (vehicle != null) {
-                    vehicle.setState(VehicleState.SOLD);
-                    vehicleDao.update(vehicle, conn);
+            if (vehicleDao.hasAssociatedOperations(vehicleId, conn)) {
+                if (!vehicleDao.updateStateAtomically(vehicleId, VehicleState.WAITING, VehicleState.SOLD, conn)) {
+                    throw new IllegalStateException("Il veicolo non è più in attesa di valutazione.");
                 }
             } else {
-                // Nessuna vendita associata: può essere rimosso dal catalogo in sicurezza
                 vehicleDao.delete(vehicleId, conn);
             }
         });
+    }
+
+    private Request lockWaitingSaleRequest(Long requestId, Connection conn) {
+        Request request = requestDao.findByIdForUpdate(requestId, conn)
+                .orElseThrow(() -> new IllegalStateException("Richiesta non trovata: " + requestId));
+        if (request.getType() != RequestType.SALE) {
+            throw new IllegalArgumentException("La richiesta selezionata non è una cessione.");
+        }
+        Vehicle vehicle = vehicleDao.findByIdForUpdate(request.getVehicleId(), conn)
+                .orElseThrow(() -> new IllegalStateException("Veicolo non trovato: " + request.getVehicleId()));
+        if (vehicle.getState() != VehicleState.WAITING) {
+            throw new IllegalStateException("Il veicolo non è in attesa di valutazione.");
+        }
+        return request;
     }
 }
 

@@ -1,0 +1,236 @@
+$ rg -n AppContext|onLogout|showLoginView|openDashboard src docs/evidence -g *.java -g *.py
+exit=0
+docs/evidence/r07-identity/IdentityUiCheck.java:26:        ctx = new AppContext(TestDatabase.fromEnvironment().reset());
+docs/evidence/r07-identity/IdentityUiCheck.java:116:        ctx = new AppContext(new DatabaseManager(System.getenv("DRIVEHUB_TEST_DB_URL"),
+docs/evidence/r03-prices/PriceUiCheck.java:24:    static AppContext ctx;
+docs/evidence/r03-prices/PriceUiCheck.java:78:            ctx = new AppContext(TestDatabase.fromEnvironment().reset());
+docs/evidence/r05-sale-outcome/SaleOutcomeUiCheck.java:29:        ctx = new AppContext(TestDatabase.fromEnvironment().reset());
+docs/evidence/r05-sale-outcome/SaleOutcomeUiCheck.java:95:        ctx = new AppContext(new DatabaseManager(System.getenv("DRIVEHUB_TEST_DB_URL"),
+docs/evidence/r04-agreement/AgreementUiCheck.java:26:        ctx = new AppContext(TestDatabase.fromEnvironment().reset());
+docs/evidence/r04-agreement/AgreementUiCheck.java:118:        ctx = new AppContext(new DatabaseManager(System.getenv("DRIVEHUB_TEST_DB_URL"),
+docs/evidence/r08-tables/tdd/1/ReactiveTablesUiCheck.java:87:            ctx = new AppContext(TestDatabase.fromEnvironment().reset());
+docs/evidence/r08-tables/tdd/2/SlowModelsUiCheck.java:14:            ctx = new AppContext(TestDatabase.fromEnvironment().reset());
+src/test/java/it/unifi/drivehub/SaleOutcomeIntegrationTest.java:42:        proposal = new AppContext(db).getSaleToDealershipService().submitSaleProposal(
+src/test/java/it/unifi/drivehub/SaleOutcomeIntegrationTest.java:59:        var reloaded = new AppContext(db);
+src/test/java/it/unifi/drivehub/SaleOutcomeIntegrationTest.java:84:        var reloaded = new AppContext(db);
+src/test/java/it/unifi/drivehub/SaleOutcomeIntegrationTest.java:146:        var ctx = new AppContext(db);
+src/test/java/it/unifi/drivehub/SaleOutcomeIntegrationTest.java:169:        var ctx = new AppContext(db);
+src/test/java/it/unifi/drivehub/SaleOutcomeIntegrationTest.java:190:        var ctx = new AppContext(db);
+src/test/java/it/unifi/drivehub/SaleOutcomeIntegrationTest.java:200:                () -> new AppContext(db).getSaleToDealershipService().approveSaleProposal(proposal.getId(), null));
+src/test/java/it/unifi/drivehub/SaleOutcomeIntegrationTest.java:236:        assertEquals(VehicleState.WAITING, new AppContext(db).getCatalogService()
+src/test/java/it/unifi/drivehub/SaleOutcomeIntegrationTest.java:238:        assertEquals(1, new AppContext(db).getOperationQueryService().getClientRequests(1L).size());
+src/test/java/it/unifi/drivehub/SaleOutcomeIntegrationTest.java:280:        var ctx = new AppContext(db);
+src/test/java/it/unifi/drivehub/SaleOutcomeIntegrationTest.java:298:        assertThrows(RuntimeException.class, () -> new AppContext(db).getSaleToDealershipService()
+src/test/java/it/unifi/drivehub/SaleOutcomeIntegrationTest.java:313:        var ctx = new AppContext(db);
+src/test/java/it/unifi/drivehub/SaleOutcomeIntegrationTest.java:332:        var ctx = new AppContext(db);
+src/test/java/it/unifi/drivehub/SaleOutcomeIntegrationTest.java:445:        var service = new AppContext(db).getSaleToDealershipService();
+docs/evidence/r08-tables/tdd/3/SlowModelsUiCheck.java:22:            ctx = new AppContext(TestDatabase.fromEnvironment().reset());
+docs/evidence/r08-tables/ReactiveTablesUiCheck.java:116:            ctx = new AppContext(TestDatabase.fromEnvironment().reset());
+src/test/java/it/unifi/drivehub/PriceSelectionIntegrationTest.java:21:    private AppContext ctx;
+src/test/java/it/unifi/drivehub/PriceSelectionIntegrationTest.java:27:        ctx = new AppContext(TestDatabase.fromEnvironment().reset());
+src/test/java/it/unifi/drivehub/PriceSelectionIntegrationTest.java:64:        Vehicle reloaded = new AppContext(ctx.getDatabaseManager()).getCatalogService()
+src/test/java/it/unifi/drivehub/PriceSelectionIntegrationTest.java:165:        return new AppContext(ctx.getDatabaseManager()).getCatalogService().getVehicleById(vehicle.getId()).orElseThrow();
+src/test/java/it/unifi/drivehub/TestDriveCancellationIntegrationTest.java:21:    private AppContext ctx;
+src/test/java/it/unifi/drivehub/TestDriveCancellationIntegrationTest.java:27:        ctx = new AppContext(TestDatabase.fromEnvironment().reset());
+src/test/java/it/unifi/drivehub/TestDriveCancellationIntegrationTest.java:62:        ctx = new AppContext(ctx.getDatabaseManager());
+src/test/java/it/unifi/drivehub/TestDriveCancellationIntegrationTest.java:96:        ctx = new AppContext(ctx.getDatabaseManager());
+src/test/java/it/unifi/drivehub/TestDriveCancellationIntegrationTest.java:135:        ctx = new AppContext(ctx.getDatabaseManager());
+src/test/java/it/unifi/drivehub/TestDriveCancellationIntegrationTest.java:144:        ctx = new AppContext(ctx.getDatabaseManager());
+src/test/java/it/unifi/drivehub/SaleProposalIntegrationTest.java:31:    private AppContext ctx;
+src/test/java/it/unifi/drivehub/SaleProposalIntegrationTest.java:37:        ctx = new AppContext(db);
+src/test/java/it/unifi/drivehub/SaleProposalIntegrationTest.java:98:        var reloaded = new AppContext(db).getCatalogService().getVehicleById(1001L).orElseThrow();
+src/test/java/it/unifi/drivehub/SaleProposalIntegrationTest.java:129:        var vehicle = new AppContext(db).getCatalogService().getVehicleById(request.getVehicleId()).orElseThrow();
+src/test/java/it/unifi/drivehub/SaleProposalIntegrationTest.java:255:        var requests = new AppContext(db).getOperationQueryService().getClientRequests(1L);
+src/test/java/it/unifi/drivehub/SaleProposalIntegrationTest.java:345:        return new AppContext(db).getSaleToDealershipService()
+docs/evidence/r08-tables/TableLifecycleUiCheck.java:56:            ctx=new AppContext(TestDatabase.fromEnvironment().reset());
+src/test/java/it/unifi/drivehub/CatalogListingIntegrationTest.java:12:    private AppContext ctx;
+src/test/java/it/unifi/drivehub/CatalogListingIntegrationTest.java:17:        ctx = new AppContext(TestDatabase.fromEnvironment().reset());
+src/test/java/it/unifi/drivehub/CatalogListingIntegrationTest.java:61:        var fresh=new AppContext(ctx.getDatabaseManager()).getCatalogService().getVehicleRows(null).stream()
+docs/evidence/r08-tables/SlowModelsUiCheck.java:22:            ctx = new AppContext(TestDatabase.fromEnvironment().reset());
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:28:    private AppContext ctx;
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:34:        ctx = new AppContext(db);
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:50:                () -> new AppContext(db).getRentalService().bookRental(1101L, 1L, start, start),
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:51:                () -> new AppContext(db).getRentalService().bookRental(1101L, 2L, start, start));
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:55:        ctx = new AppContext(db);
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:67:                () -> new AppContext(db).getTestDriveService().bookTestDrive(1101L, 1L, start.atTime(10, 0)),
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:68:                () -> new AppContext(db).getTestDriveService().bookTestDrive(1102L, 1L, start.atTime(10, 0)));
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:72:        assertEquals(3, new AppContext(db).getTestDriveService().getClientTestDrives(1L).size());
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:78:                () -> new AppContext(db).getRentalService().bookRental(1101L, 1L, start, start),
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:79:                () -> new AppContext(db).getTestDriveService().bookTestDrive(1101L, 2L, start.atTime(10, 0)));
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:83:        ctx = new AppContext(db);
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:102:                true, () -> new AppContext(db).getRentalService().bookRental(1101L, 1L, start, start));
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:105:                new AppContext(db).getAuthService().getClientBankAccount(1L).getBalance());
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:133:        ctx = new AppContext(db);
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:143:                () -> new AppContext(db).getRentalService().bookRental(1101L, 1L, start, start),
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:144:                () -> new AppContext(db).getRentalService().bookRental(1102L, 1L, start, start));
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:148:        ctx = new AppContext(db);
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:167:                () -> new AppContext(db).getTestDriveService().bookTestDrive(1101L, 2L, start.atTime(10, 0)),
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:168:                () -> new AppContext(db).getRentalService().bookRental(1101L, 1L, start, start));
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:174:        ctx = new AppContext(db);
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:184:                () -> new AppContext(db).getTestDriveService().bookTestDrive(1101L, 1L, start.atTime(10, 0)),
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:185:                () -> new AppContext(db).getTestDriveService().bookTestDrive(1101L, 2L, start.atTime(10, 0)));
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:189:        ctx = new AppContext(db);
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:202:        assertEquals(2, new AppContext(db).getTestDriveService().getClientTestDrives(2L).size());
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:209:        assertEquals(td.getId(), new AppContext(db).getTestDriveService().getClientTestDrives(2L).getFirst().getId());
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:216:                () -> new AppContext(db).getPurchaseService().initiatePurchase(1102L, 1L),
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:217:                () -> new AppContext(db).getRentalService().bookRental(1101L, 1L, start, start));
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:220:        ctx = new AppContext(db);
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:243:        ctx = new AppContext(db);
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:265:        ctx = new AppContext(db);
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:287:        ctx = new AppContext(db);
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:313:                () -> new AppContext(db).getRentalService().bookRental(1101L, 1L, start, start),
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:314:                () -> new AppContext(db).getRentalService().bookRental(1101L, 2L, start.plusDays(1), start.plusDays(1)));
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:317:        ctx = new AppContext(db);
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:330:                    if (rental) new AppContext(db).getRentalService().bookRental(1101L, 1L, start, start);
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:331:                    else new AppContext(db).getTestDriveService().bookTestDrive(1101L, 1L, start.atTime(10, 0));
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:334:        ctx = new AppContext(db);
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:369:                () -> new AppContext(db).getPurchaseService().completePurchase(request.getId()),
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:370:                () -> new AppContext(db).getRentalService().bookRental(1102L, 1L, start, start),
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:371:                () -> new AppContext(db).getTestDriveService().bookTestDrive(1101L, 1L, start.atTime(10, 0)));
+src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java:376:        ctx = new AppContext(db);
+src/test/java/it/unifi/drivehub/AuthServiceIntegrationTest.java:21:        auth = new AppContext(TestDatabase.fromEnvironment().reset()).getAuthService();
+src/test/java/it/unifi/drivehub/FullWorkflowIntegrationTest.java:24:    private AppContext ctx;
+src/test/java/it/unifi/drivehub/FullWorkflowIntegrationTest.java:28:        ctx = new AppContext(TestDatabase.fromEnvironment().reset());
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:50:                () -> new AppContext(db).getRentalService().changeVehicleRentalState(1201L, to));
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:62:                () -> new AppContext(db).getRentalService().changeVehicleRentalState(1201L, VehicleState.SALE));
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:67:        assertEquals(1, new AppContext(db).getOperationQueryService().getClientRents(1L).size());
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:68:        assertEquals(1, new AppContext(db).getOperationQueryService().getClientRents(2L).size());
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:81:        var future = new AppContext(db).getRentalService().getFutureRentsForVehicle(1201L);
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:97:                () -> new AppContext(db).getRentalService().changeVehicleRentalState(1201L, VehicleState.SALE));
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:106:                () -> new AppContext(db).getRentalService().changeVehicleRentalState(1201L, target));
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:113:                () -> new AppContext(db).getRentalService().changeVehicleRentalState(Long.MAX_VALUE, VehicleState.SALE));
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:121:        assertEquals(0, new AppContext(db).getRentalService().changeVehicleRentalState(1201L, target));
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:138:        assertEquals(3, new AppContext(db).getRentalService().changeVehicleRentalState(1201L, VehicleState.SALE));
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:142:        var reread = new AppContext(db);
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:170:                () -> new AppContext(db).getRentalService().changeVehicleRentalState(1201L, VehicleState.SALE));
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:182:        assertThrows(IllegalStateException.class, () -> new AppContext(db).getAuthService().getClientBankAccount(2L));
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:183:        assertEquals(1, new AppContext(db).getOperationQueryService().getClientRents(1L).size());
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:184:        assertEquals(1, new AppContext(db).getOperationQueryService().getClientRents(2L).size());
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:212:                () -> new AppContext(db).getRentalService().changeVehicleRentalState(1201L, VehicleState.SALE));
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:223:                () -> assertEquals(2, new AppContext(db).getRentalService().changeVehicleRentalState(1201L, VehicleState.SALE)),
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:224:                () -> new AppContext(db).getRentalService().bookRental(1201L, 1L,
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:231:        assertTrue(new AppContext(db).getOperationQueryService().getClientRents(1L).isEmpty());
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:232:        assertTrue(new AppContext(db).getOperationQueryService().getClientRents(2L).isEmpty());
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:241:                () -> new AppContext(db).getRentalService().bookRental(1201L, 1L, date, date),
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:242:                () -> assertEquals(1, new AppContext(db).getRentalService().changeVehicleRentalState(1201L, VehicleState.SALE)));
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:249:            assertEquals(1, new AppContext(db).getOperationQueryService().getClientRents(1L).size());
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:254:            assertTrue(new AppContext(db).getOperationQueryService().getClientRents(1L).isEmpty());
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:256:        assertTrue(new AppContext(db).getTestDriveService().getClientTestDrives(2L).isEmpty(), "Observer 08 conserva la priorità commerciale");
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:257:        assertTrue(new AppContext(db).getOperationQueryService().getAllSales().isEmpty());
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:282:                () -> new AppContext(db).getRentalService().changeVehicleRentalState(1201L, VehicleState.SALE),
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:283:                () -> new AppContext(db).getRentalService().bookRental(1201L, 1L, date, date));
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:289:        assertEquals(2, new AppContext(db).getOperationQueryService().getClientRents(1L).size());
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:290:        assertEquals(1, new AppContext(db).getOperationQueryService().getClientRents(2L).size());
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:299:                () -> assertEquals(2, new AppContext(db).getRentalService().changeVehicleRentalState(1201L, VehicleState.SALE)),
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:300:                () -> assertEquals(0, new AppContext(db).getRentalService().changeVehicleRentalState(1201L, secondTarget)));
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:306:        assertTrue(new AppContext(db).getOperationQueryService().getClientRents(1L).isEmpty());
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:307:        assertTrue(new AppContext(db).getOperationQueryService().getClientRents(2L).isEmpty());
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:380:        assertEquals(1, new AppContext(db).getOperationQueryService().getClientRents(1L).size());
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:381:        assertEquals(1, new AppContext(db).getOperationQueryService().getClientRents(2L).size());
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:382:        assertTrue(new AppContext(db).getOperationQueryService().getAllSales().isEmpty());
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:391:        return new AppContext(db).getCatalogService().getAllVehicles().stream()
+src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java:397:                new AppContext(db).getAuthService().getClientBankAccount(client).getBalance());
+docs/evidence/r06-destination/DestinationUiCheck.java:21:        ctx = new AppContext(TestDatabase.fromEnvironment().reset());
+docs/evidence/r06-destination/DestinationUiCheck.java:92:        ctx = new AppContext(new DatabaseManager(System.getenv("DRIVEHUB_TEST_DB_URL"),
+src/test/java/it/unifi/drivehub/BalanceConcurrencyIntegrationTest.java:27:    private AppContext ctx;
+src/test/java/it/unifi/drivehub/BalanceConcurrencyIntegrationTest.java:32:        ctx = new AppContext(db);
+src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java:32:    private AppContext ctx;
+src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java:37:        ctx = new AppContext(db);
+src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java:54:                () -> new AppContext(db).getPurchaseService().completePurchase(1001L),
+src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java:55:                () -> new AppContext(db).getPurchaseService().completePurchase(1001L));
+src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java:149:        ctx = new AppContext(db);
+src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java:238:        ctx = new AppContext(db);
+src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java:256:            var service = new AppContext(db).getPurchaseService();
+src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java:268:        ctx = new AppContext(db);
+src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java:27:    private AppContext ctx;
+src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java:32:        ctx = new AppContext(db);
+src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java:58:        assertEquals(16L, new AppContext(db).getAuthService().login("paolo.costa@drivehub.it", "password").getId());
+src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java:74:        assertEquals(1L, new AppContext(db).getAuthService().login("mario.rossi@email.it", "password").getId());
+src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java:98:        assertEquals(16L, new AppContext(db).getAuthService().login("paolo.costa@drivehub.it", "password").getId());
+src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java:104:                () -> new AppContext(db).getPurchaseService().initiatePurchase(1301L, 1L),
+src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java:105:                () -> new AppContext(db).getAuthService().deleteAccount(1L, "Cliente", "password"));
+src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java:145:        assertThrows(IllegalArgumentException.class, () -> new AppContext(db).getAuthService().login(email, "password"));
+src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java:218:            var fresh = new AppContext(db);
+src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java:223:        Runnable deletion = () -> new AppContext(db).getAuthService().deleteAccount(1L, "Cliente", "password");
+src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java:236:                () -> new AppContext(db).getAuthService().deleteAccount(1L, "Cliente", "password"),
+src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java:237:                () -> new AppContext(db).getPurchaseService().initiatePurchase(1301L, 1L));
+src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java:257:                () -> new AppContext(db).getSaleToDealershipService().approveSaleProposal(request.getId(), 16L),
+src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java:258:                () -> new AppContext(db).getAuthService().deleteAccount(16L, "Venditore", "password"));
+src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java:289:                () -> new AppContext(db).getAuthService().deleteAccount(16L, "Venditore", "password"),
+src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java:290:                () -> new AppContext(db).getSaleToDealershipService().approveSaleProposal(request.getId(), 16L));
+src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java:323:        assertEquals(1L, new AppContext(db).getAuthService().login("mario.rossi@email.it", "password").getId());
+src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java:339:                () -> new AppContext(db).getAuthService().deleteAccount(1L, "Cliente", "password"),
+src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java:341:                    var fresh = new AppContext(db); var date = java.time.LocalDate.now().plusDays(2);
+src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java:369:                () -> new AppContext(db).getAuthService().deleteAccount(1L, "Cliente", "password"),
+src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java:370:                () -> new AppContext(db).getSaleToDealershipService().submitSaleProposal(1L, 1301L,
+src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java:397:                () -> new AppContext(db).getAuthService().deleteAccount(16L, "Venditore", "password"),
+src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java:398:                () -> new AppContext(db).getPurchaseService().approvePurchase(request.getId(), 16L));
+src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java:3:import it.unifi.drivehub.AppContext;
+src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java:39:    private final Runnable onLogout;
+src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java:45:    public SalesmanDashboardView(Salesman salesman, Runnable onLogout) {
+src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java:47:                AppContext.getInstance().getAuthService(),
+src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java:48:                AppContext.getInstance().getPurchaseService(),
+src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java:49:                AppContext.getInstance().getSaleToDealershipService(),
+src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java:50:                AppContext.getInstance().getRentalService(),
+src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java:51:                AppContext.getInstance().getCatalogService(),
+src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java:52:                AppContext.getInstance().getOperationQueryService(),
+src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java:53:                onLogout);
+src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java:63:                                 Runnable onLogout) {
+src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java:71:        this.onLogout = onLogout;
+src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java:81:        btnAccount.setOnAction(e -> AccountManagementDialog.show((Stage) getScene().getWindow(), salesman, authService, onLogout, null));
+src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java:85:        btnLogout.setOnAction(e -> onLogout.run());
+src/main/java/it/unifi/drivehub/presentation/view/AccountManagementDialog.java:3:import it.unifi.drivehub.AppContext;
+src/main/java/it/unifi/drivehub/presentation/view/AccountManagementDialog.java:31:        show(owner, user, AppContext.getInstance().getAuthService(), onAccountDeleted, onUserUpdated);
+src/main/java/it/unifi/drivehub/presentation/view/LoginView.java:3:import it.unifi.drivehub.AppContext;
+src/main/java/it/unifi/drivehub/presentation/view/LoginView.java:30:        this(AppContext.getInstance().getAuthService(), onLoginSuccess);
+src/test/java/it/unifi/drivehub/PurchaseAgreementIntegrationTest.java:21:    private AppContext ctx;
+src/test/java/it/unifi/drivehub/PurchaseAgreementIntegrationTest.java:26:        ctx = new AppContext(TestDatabase.fromEnvironment().reset());
+src/test/java/it/unifi/drivehub/PurchaseAgreementIntegrationTest.java:59:        ctx = new AppContext(ctx.getDatabaseManager());
+src/test/java/it/unifi/drivehub/PurchaseAgreementIntegrationTest.java:90:        ctx = new AppContext(ctx.getDatabaseManager());
+src/test/java/it/unifi/drivehub/PurchaseAgreementIntegrationTest.java:106:        ctx = new AppContext(ctx.getDatabaseManager());
+src/test/java/it/unifi/drivehub/PurchaseAgreementIntegrationTest.java:176:        ctx = new AppContext(ctx.getDatabaseManager());
+src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java:3:import it.unifi.drivehub.AppContext;
+src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java:40:    private final Runnable onLogout;
+src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java:55:    public ManagerDashboardView(Manager manager, Runnable onLogout) {
+src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java:57:                AppContext.getInstance().getAuthService(),
+src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java:58:                AppContext.getInstance().getCatalogService(),
+src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java:59:                AppContext.getInstance().getOperationQueryService(),
+src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java:60:                onLogout);
+src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java:67:                                Runnable onLogout) {
+src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java:72:        this.onLogout = onLogout;
+src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java:82:        btnAccount.setOnAction(e -> AccountManagementDialog.show((Stage) getScene().getWindow(), manager, authService, onLogout, null));
+src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java:86:        btnLogout.setOnAction(e -> onLogout.run());
+src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java:3:import it.unifi.drivehub.AppContext;
+src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java:50:    private final Runnable onLogout;
+src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java:61:    public ClientDashboardView(Client client, Runnable onLogout) {
+src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java:63:                AppContext.getInstance().getAuthService(),
+src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java:64:                AppContext.getInstance().getPurchaseService(),
+src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java:65:                AppContext.getInstance().getSaleToDealershipService(),
+src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java:66:                AppContext.getInstance().getRentalService(),
+src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java:67:                AppContext.getInstance().getTestDriveService(),
+src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java:68:                AppContext.getInstance().getCatalogService(),
+src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java:69:                AppContext.getInstance().getOperationQueryService(),
+src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java:70:                AppContext.getInstance().getPriceCalculatorService(),
+src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java:71:                onLogout);
+src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java:83:                               Runnable onLogout) {
+src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java:93:        this.onLogout = onLogout;
+src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java:130:        btnAccount.setOnAction(e -> AccountManagementDialog.show((Stage) getScene().getWindow(), client, authService, onLogout, u -> refreshBalance()));
+src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java:134:        btnLogout.setOnAction(e -> onLogout.run());
+src/main/java/it/unifi/drivehub/AppContext.java:43:public final class AppContext {
+src/main/java/it/unifi/drivehub/AppContext.java:45:    private static AppContext instance;
+src/main/java/it/unifi/drivehub/AppContext.java:73:    private AppContext() {
+src/main/java/it/unifi/drivehub/AppContext.java:77:    public AppContext(DatabaseManager databaseManager) {
+src/main/java/it/unifi/drivehub/AppContext.java:115:    public static synchronized AppContext getInstance() {
+src/main/java/it/unifi/drivehub/AppContext.java:117:            instance = new AppContext();
+src/main/java/it/unifi/drivehub/App.java:34:    private AppContext ctx;
+src/main/java/it/unifi/drivehub/App.java:48:        this.ctx = AppContext.getInstance();
+src/main/java/it/unifi/drivehub/App.java:50:        showLoginView();
+src/main/java/it/unifi/drivehub/App.java:54:    private void showLoginView() {
+src/main/java/it/unifi/drivehub/App.java:63:        user.openDashboard(new UserDashboardNavigator() {
+src/main/java/it/unifi/drivehub/App.java:76:                        App.this::showLoginView
+src/main/java/it/unifi/drivehub/App.java:91:                        App.this::showLoginView
+src/main/java/it/unifi/drivehub/App.java:103:                        App.this::showLoginView
+src/main/java/it/unifi/drivehub/domain/user/Manager.java:23:    public void openDashboard(UserDashboardNavigator navigator) {
+src/main/java/it/unifi/drivehub/domain/user/Salesman.java:23:    public void openDashboard(UserDashboardNavigator navigator) {
+src/main/java/it/unifi/drivehub/domain/user/User.java:30:    void openDashboard(UserDashboardNavigator navigator);
+src/main/java/it/unifi/drivehub/domain/user/Client.java:33:    public void openDashboard(UserDashboardNavigator navigator) {

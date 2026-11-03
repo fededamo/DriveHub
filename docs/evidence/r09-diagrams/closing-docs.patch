@@ -1,0 +1,321 @@
+--- review/DriveHub/docs/evidence/r09-diagrams/commands.md
++++ final/DriveHub/docs/evidence/r09-diagrams/commands.md
+@@ -115,3 +115,11 @@
+ baseline e identità HEAD/indice. Sono controlli degli artefatti, non nuovi test
+ artificiali della documentazione. Diff congelato per review indipendenti rispetto
+ alla fotografia locale iniziale, mai rispetto al solo HEAD. Relazione sempre esclusa.
++
++Review Spec iniziale:1P2 sui self-loop di test drive/ricarica cliente, che nel
++codice chiudono il dialogo prima del comando/esito. Corretto il solo diagramma,
++brevi etichette di ritorno e note separate per annullamento/OK; nuovi SVG/PNG exit0,
++hash e ispezione. [Patch correttiva](review-correction.patch),
++[hash](review-correction-files.sha256.json), [follow-up Spec](spec-followup.md)
++e [Standards](standards-followup.md):0rilievi residui. Nessuna suite ripetuta per
++questa correzione documentale, nessun input runtime modificato.
+--- /dev/null
++++ final/DriveHub/docs/evidence/r09-diagrams/spec-followup.md
+@@ -0,0 +1,34 @@
++# Follow-up indipendente Spec — ticket17
++
++**P2 risolto; zero rilievi Spec residui individuati.** Conservato il rapporto
++iniziale `spec-review.md`, riferito alla patch congelata precedente.
++
++Verificata la correzione `review-correction.patch`, SHA256
++`cc93bd7778f40c56e2e55022e05d2ebda70fecaabb3bec69fa0b86fde29d5abc`,
++e i quattro file fissati da `review-correction-files.sha256.json`.
++Il manifest iniziale dei130file, applicando soltanto questi quattro nuovi
++hash, corrisponde ai file correnti senza discrepanze.
++
++Il nuovo hunk `@@ -14,23 +14,28 @@` di
++`docs/diagrams/current/page-navigation-customer.puml` elimina entrambi i
++self-loop contestati. Le righe22–23 riportano il test drive alla tab chiamante
++Vendita/Noleggio; la riga30 riporta la ricarica a Vendita nel percorso
++esemplificato. Le righe34–38 distinguono annullamento, conferma e comando
++successivo alla chiusura, anche in errore, precisando che la ricarica è
++disponibile da tutte le tab e ne conserva la selezione.
++
++Questa rappresentazione corrisponde a
++`ClientDashboardView.java` righe165–174 e344–355: comando ed Alert sono
++elaborati dopo `showAndWait`, senza selezionare un'altra tab. Risolto quindi
++il disallineamento rispetto a ticket17 riga18, AC14 riga163 e R09 righe324–327.
++
++Ispezionato direttamente il nuovo PNG: ritorni espliciti e note leggibili.
++Hash di PUML, SVG e PNG coincidono con `render-inventory.json`, che registra
++entrambi i render exit0; i comandi di correzione sono conservati in `render.log`.
++Ricontrollati i93input runtime originali: nessuna modifica. La correzione
++documentale non richiede una nuova esecuzione della suite.
++
++Limiti: controllo statico e visivo della correzione, senza rieseguire
++render/suite/DB o certificare tutti i gesti GUI. Relazione sempre esclusa.
++Nessun nuovo rischio applicativo individuato; restano i limiti delle prove
++documentati in `verification.md`.
+--- /dev/null
++++ final/DriveHub/docs/evidence/r09-diagrams/spec-review.md
+@@ -0,0 +1,42 @@
++# Review indipendente Spec — ticket17
++
++Esito iniziale: **1 rilievo P2**, nessuno scope creep rilevato. Review della sola
++sessione17 rispetto alla baseline locale `/tmp/drivehub-r17-baseline/tree`,
++non rispetto a HEAD. Patch congelata `review.patch`, SHA256
++`1d07fb5bca5373935e98d7ea833d334aade090683d0ebe4f1290a6fe7c6317cc`;
++manifest `review-files.sha256.json`:130file verificati, zero discrepanze.
++HEAD di riferimento: `c2a81122ee6be44760ded4160fde229bd33e837c`.
++
++## Requisiti mancanti/parziali e conformità apparente errata
++
++**[P2] Ritorno dai dialoghi cliente rappresentato come permanenza nel dialogo.**
++Requisito: ticket17 riga18, AC14 della specifica riga163 e R09 del piano
++righe324–327 richiedono navigazione coerente con i flussi correnti.
++Nel nuovo hunk `@@ -0,0 +1,37 @@` di
++`docs/diagrams/current/page-navigation-customer.puml`, righe22 e29, i self-loop
++`TD --> TD` e `Topup --> Topup` mostrano conferma ed esito senza uscita dal dialogo.
++Il codice invece elabora `showAndWait().ifPresent(...)` dopo la chiusura:
++`ClientDashboardView.java` righe165–174 e344–355. Conferma, annullamento ed
++errore lasciano quindi l'utente sulla tab chiamante; per il test drive può
++essere vendita o noleggio. Anche la nota riga33 confonde chiusura confermata
++con annullamento senza comando. Correggere i ritorni e la nota, poi aggiornare
++SVG e registrazione del render. Riscontro anche nel PNG ispezionato.
++
++## Altri riscontri
++
++Controllati i18sorgenti correnti, glossario/ADR0001/architettura, servizi
++acquisto/cessione/noleggio/test drive, Observer, AsyncLoad e navigazione.
++Nessun altro rilievo di specifica individuato. I riferimenti distinguono
++controlli statici e prove GUI; manuale e totale concordato rispettano ADR0001.
++
++Verificati hash dei37artefatti storici contro la baseline e identità dei93input
++runtime originali. Ricalcolati dagli XML79/79 mirati e394/394 finali, zero
++failure/errori/salti; log di successo GUI/avvio e impronte sentinella identiche
++supportano le affermazioni. Tentativi fallito/interrotto e394/394del16 sono
++distinti dai successi17. Nessuna copertura percentuale dedotta.
++
++Limiti: review statica e lettura delle prove salvate; ispezione indipendente
++di cinque PNG rappresentativi, senza rieseguire suite/render o certificare
++ogni gesto GUI. Relazione sempre esclusa; nessun codice/DB/tracker modificato.
++Il rilievo richiede una correzione documentale e un follow-up separato sulla
++nuova versione; la chiusura pendente del ticket non è conteggiata come mancanza.
+--- /dev/null
++++ final/DriveHub/docs/evidence/r09-diagrams/standards-followup.md
+@@ -0,0 +1,30 @@
++# Review Standards aggiuntiva — correzione navigazione cliente
++
++Esito del solo delta successivo alla review iniziale: **0 violazioni documentate,
++0 nuovi smell azionabili**. Il rapporto `standards-review.md` è conservato.
++
++Verificato SHA256 della patch `review-correction.patch`:
++`cc93bd7778f40c56e2e55022e05d2ebda70fecaabb3bec69fa0b86fde29d5abc`.
++Tutti i4hash corretti del manifest `review-correction-files.sha256.json`
++corrispondono ai file presenti; anche il PNG temporaneo coincide con
++`render-inventory.json`.
++
++La correzione rispetta le regole di `AGENTS.md` e
++`docs/agents/domain.md`: modifica circoscritta al diagramma/render/evidenze,
++termini esistenti e nessuna modifica al codice per adattarlo al diagramma.
++Le precisazioni di `docs/architecture.md` sui limiti delle prove restano valide.
++
++Confronto con `ClientDashboardView.openTopUpDialog`,
++`handleTestDriveAction`, `handlePurchaseAction` e dialogo noleggio:
++`showAndWait` termina prima del comando e dell'Alert; annullare evita il comando,
++confermare mantiene la tab chiamante anche in errore. I ritorni del test drive
++sono distinti per Vendita/Noleggio; la ricarica rappresenta esplicitamente il
++solo esempio dalla Vendita e la nota chiarisce la disponibilità nelle altre tab.
++Nessuna nuova pretesa di autorizzazione, concorrenza o copertura GUI.
++
++PNG corretto ispezionato: frecce di ritorno ed etichette leggibili, nota separata
++su annullamento/conferma coerente con i sorgenti. L'inventario registra exit0
++per SVG/PNG; il log conserva i comandi di correzione.
++
++Non rieseguiti suite, rendering o DB; giudizio statico sul delta e sul render
++congelato. Nessun commit/staging; Relazione esclusa da letture e ricerche.
+--- /dev/null
++++ final/DriveHub/docs/evidence/r09-diagrams/standards-review.md
+@@ -0,0 +1,50 @@
++# Review Standards — ticket17
++
++Esito: **0 violazioni documentate, 0 smell azionabili nel diff17**.
++
++## Perimetro e regole
++
++Review indipendente della patch SHA256
++`1d07fb5bca5373935e98d7ea833d334aade090683d0ebe4f1290a6fe7c6317cc`,
++confrontata con `/tmp/drivehub-r17-baseline/tree`, non con il solo HEAD
++`c2a81122ee6be44760ded4160fde229bd33e837c`. Verificati gli hash di tutti i130file
++in `review-files.sha256.json`: nessuna differenza. Nessun cambiamento01–16
++attribuito alla sessione17.
++
++Regole applicate: `AGENTS.md`, `GLOSSARY.md`, ADR0001,
++`docs/agents/issue-tracker.md`, `docs/agents/domain.md`, precisazioni16 di
++`docs/architecture.md` e istruzioni dell'utente. Non risultano standard separati
++CODING_STANDARDS/CONTRIBUTING nel perimetro comunicato.
++
++## Riscontri
++
++- `docs/diagrams/README.md` e i18sorgenti correnti rispettano glossario/ADR:
++  acquisto e cessione del cliente distinti, base manuale nella stessa formula,
++  totale/acconto persistiti e saldo derivato. Nessun refactor per adeguare il
++  codice alla teoria;93input runtime identici alla fotografia iniziale.
++- Classi/package/sequenze mantengono i limiti di `docs/architecture.md`:
++  factory statiche distinte da Factory Method, DAO/DI distinti dai GoF,
++  navigazione con double dispatch, Observer sincrono prima del commit e
++  dipendenze JDBC esplicite. Riscontri mirati su servizi economici,
++  CatalogService/AsyncLoad, App e Observer coerenti; nessuna garanzia globale
++  o snapshot del listino inventati.
++- `verification.md`, `commands.md` e indici distinguono storico e prove17.
++  Ricontati gli XML:79mirati e394finali, zero failure/errori/salti, coerenti
++  coi riepiloghi e col launcher exit0. Tentativi falliti/interrotti conservati.
++  Impronte sentinella identiche; log finali indicano READ ONLY e servizi arrestati.
++- Le tre viste complesse campionate nei PNG (servizi, navigazione cliente,
++  acquisto) restano leggibili e coerenti con i sorgenti. Ticket17 in-progress
++  e18aperto rispettano la chiusura subordinata alle verifiche.
++
++## Smell baseline
++
++Valutate come euristiche: Mysterious Name, Duplicated Code, Feature Envy,
++Data Clumps, Primitive Obsession, Repeated Switches, Shotgun Surgery,
++Divergent Change, Speculative Generality, Message Chains, Middle Man e
++Refused Bequest. Nessun rilievo azionabile introdotto dal17; frammenti
++PlantUML e launcher di evidenza ripetuti non giustificano nuove astrazioni.
++Nessun suggerimento promosso a violazione.
++
++Limiti: nessuna suite, render o operazione DB rieseguita; valutati artefatti
++congelati, codice pertinente e tre render campione. Relazione esclusa da ogni
++lettura/ricerca; nessun commit, staging o modifica oltre questo rapporto.
+--- review/DriveHub/docs/evidence/r09-diagrams/verification.md
++++ final/DriveHub/docs/evidence/r09-diagrams/verification.md
+@@ -80,8 +80,33 @@
+ 
+ ## Review, conservazione e limiti
+ 
+-Review indipendenti Standards/Spec sul solo diff della sessione in corso;
+-ticket ancora in-progress fino alla loro conclusione e al controllo finale.
++Review indipendenti sulla [patch congelata](review.patch), SHA256
++`1d07fb5bca5373935e98d7ea833d334aade090683d0ebe4f1290a6fe7c6317cc`,
++130file: [Standards](standards-review.md) **0violazioni/0smell azionabili**;
++[Spec iniziale](spec-review.md) **1P2** sui ritorni dai dialoghi cliente.
++Corretto soltanto quel diagramma: test drive torna alla tab vendita/noleggio
++chiamante, ricarica conserva la tab, annullamento distinto da comando/esito
++dopo chiusura anche in errore. [Delta corretto](review-correction.patch), SHA256
++`cc93bd7778f40c56e2e55022e05d2ebda70fecaabb3bec69fa0b86fde29d5abc`,
++[4hash](review-correction-files.sha256.json), nuovi render exit0 e ispezione.
++[Follow-up Standards](standards-followup.md) **0violazioni/0smell** e
++[follow-up Spec](spec-followup.md) **P2risolto,0residui**. Rapporti iniziali
++conservati; nessun input runtime cambiato dopo le prove.
++
++[Conservazione](preservation.json):1507file iniziali presenti,1502identici,
++5aggiornamenti intenzionali (README, architecture, testing, piano, ticket17),
++zeroeliminazioni. Codice/POM/test/schema/demo, evidenze01–16, originali storici
++e ticket18 intatti; HEAD/indice invariati. [Controlli finali](final-checks.json)
++su riferimenti, XML, hash/render, preservazione e assenza di segreti privati.
++[Diff completo della sessione](session.patch) e [hash finali](session-files.sha256.json)
++distinti dalla review iniziale; [delta documentale di chiusura](closing-docs.patch)
++non è una nuova prova runtime. [Hash degli archivi](delivery.json).
++Ricontrollo indipendente del solo delta di chiusura:
++[Standards](standards-closing-review.md), [Spec](spec-closing-review.md).
++
++**Ticket17 chiuso,5/5criteri verificati; AC14/#14 e R09 completati,18/20rilievi
++chiusi.** R11/ticket18 e AC13 trasversale restano aperti; nessuna chiusura integrata
++anticipata. Nessun commit/staging.
+ 
+ Nessun nuovo test della documentazione o modifica a codice/POM/test/DB/UI.
+ Nessuna rigenerazione degli artefatti storici o grafi Graphify: nessun grafo
+--- review/PIANO_REVISIONI_DRIVEHUB.md
++++ final/PIANO_REVISIONI_DRIVEHUB.md
+@@ -2,13 +2,15 @@
+ 
+ Registro operativo avviato il 31 ottobre 2026. Punto di ingresso per riprendere il lavoro: avanzamento, decisioni, attività, verifiche e prossimo passo.
+ 
+-## Stato attuale — ticket17 in verifica
+-
+-- Solo17/AC14:01–16 verificati chiusi; baseline completa1507file, inclusi ignorati/modificati/non tracciati. HEAD da solo non identifica la versione. Relazione esclusa, nessun commit/staging o lavoro18.
+-- Creati18diagrammi correnti con sorgenti PlantUML/renderSVG e rimandi a codice/test; originali37artefatti visivi e vecchi manifest identificati come storici e conservati. Precisazioni teoriche16 mantenute; nessun codice/POM/test/schema/demo modificato.
+-- Java21/PG16 temporanei16 presenti e ricontrollati, PlantUML1.2026.2 predisposto. Nuovo cluster127.0.0.1:55435 e display91, DB/ruoli dedicati e sentinella. Mirati nuovi79/79, GUI UI CHECK SUCCESS e App.start APP STARTUP SUCCESS; suite finale nuova394/394 (47senzaDB/347PostgreSQL), zero failure/errori/salti.394/394del16 storico. Primo mirato fallito per server perso e primo avvio finale interrotto143 conservati separatamente.
+-- Render finali SVG/PNG exit0; ispezione e correzioni di leggibilità; sentinella READ ONLY e hash13tabelle/7sequenze invariati. PostgreSQL/Xvfb arrestati. [Evidenze17](DriveHub/docs/evidence/r09-diagrams/verification.md).
+-- Review indipendenti Standards/Spec e controllo di conservazione finale da concludere; ticket ancora in-progress.18/R11 non avviato.
++## Stato attuale — ticket17 completato
++
++- Solo17 completato,01–16 verificati chiusi;5/5criteri, **AC14/#14 e R09 completati**,18/20rilievi chiusi. R11/ticket18 e AC13 trasversale restano aperti; nessuna verifica integrata anticipata.
++- [Indice diagrammi correnti](DriveHub/docs/diagrams/README.md):18sorgenti PlantUML e18SVG per classi, package, sequenze, casi d'uso, navigazione e stati, con rimandi a sorgenti/test reali. Componenti/stati/flussi effettivi e precisazioni teoriche16 mantenuti; nessun refactor, test artificiale del testo o modifica a codice/POM/test/schema/demo.
++- Baseline1507file, anche ignorati/modificati/nontracciati: HEAD da solo non identifica la versione.37artefatti visivi e vecchi manifest identificati come storici e conservati; ciascun manifest150voci ha149percorsi mancanti e POM diverso. Nessun ER/draw.io/mockup/screenshot storico rigenerato.
++- Java21/PG16 temporanei16 presenti e ricontrollati, PlantUML1.2026.2 predisposto. Nuovo cluster127.0.0.1:55435, DB/ruoli dedicati e sentinella, Xvfb91. Nuovi mirati79/79, UI CHECK SUCCESS, APP STARTUP SUCCESS e finale **394/394** (47senzaDB/347PostgreSQL), zero failure/errori/salti.394/394del16 resta storico. Mirato fallito per server perso e primo avvio finale interrotto143 conservati separatamente, senza attribuirvi riuscite.
++- Render SVG/PNG finali exit0, ispezione e correzioni di leggibilità. Review indipendenti sul solo diff locale: Standards0violazioni/0smell; Spec1P2 sui ritorni dei dialoghi cliente corretto, render aggiornato e follow-up indipendenti **0residui**. [Evidenze17](DriveHub/docs/evidence/r09-diagrams/verification.md): versione/diff/hash, comandi/log/XML, storico, review e limiti.
++- Sentinella finale READ ONLY e hash13tabelle/7sequenze invariati; PostgreSQL/Xvfb arrestati.1507file iniziali presenti,1502identici,5aggiornamenti documentali intenzionali,zeroeliminazioni. Sorgenti/test/evidenze01–16/ticket18 intatti; HEAD/indice invariati, nessun commit/staging, relazione sempre esclusa.
++- Limiti: Linux/WSL/Xvfb, SVG a zoom, niente certificazione screen reader/altriOS/stampaA4; non tutti i gesti GUI riesercitati, parte dei riscontri è statica. Temporanei da ricontrollare. Nessun residuo17;18 solo su nuova richiesta.
+ 
+ ## Stato al termine del ticket16 — storico
+ 
+@@ -224,7 +226,7 @@
+ | R06 | Noleggi/test drive concorrenti e transizioni valide | #5, #7, restante #12 | R02, R03, D08–D10; coordinamento eventi con R04 | Completata: ticket 08, 11 e 12 chiusi e verificati |
+ | R07 | Cancellazione account rispettosa di storico e richieste | #9 | R00; fixture aggiornate dai flussi interessati | Completata: ticket13 chiuso e verificato |
+ | R08 | Tabelle JavaFX senza query nel rendering | #16 | R03; verificare aggiornamenti dei flussi corretti | Completata: ticket14 verificato e chiuso |
+-| R09 | README, diagrammi, teoria ed evidenze coerenti | #14, #15, #18; valutazione teorica | Incrementale; chiusura dopo R01–R08 e R10 | Parziale: ticket16 verificato e chiuso; diagrammi17 da eseguire |
++| R09 | README, diagrammi, teoria ed evidenze coerenti | #14, #15, #18; valutazione teorica | Incrementale; chiusura dopo R01–R08 e R10 | Completata: ticket16 e17 verificati e chiusi |
+ | R10 | Rimozione dei componenti inutilizzati | #20 | R00; controllo riferimenti prima di rimuovere | Completata: ticket15 verificato e chiuso |
+ | R11 | Verifica integrata e tracciabilità completa | #13; conferma finale #1–#20 | R01–R10 | Pianificata |
+ 
+@@ -352,7 +354,7 @@
+ | Noleggio | Disponibilità, priorità, cambio destinazione/rimborsi | R02, R06 | Ticket 11–12 chiusi: concorrenza, date inclusive, prezzo sotto lock, stati ammessi, noleggio in corso e rimborsi atomici multi-cliente. Mirati 278/278, suite 330/330, GUI/tastiera e review indipendenti senza rilievi |
+ | Test drive | Limite tre, disponibilità, cancellazione/storico | R06 | Ticket08 e11: limite cliente concorrente anche su veicoli diversi, gare miste nei due ordini, cancellazione atomica, storico e orari verificati. Regressioni rieseguite nella suite corrente 330/330; 297/297 del ticket 11 storico |
+ | UI | Caricamento, prezzi, errori/riprova | R03, R08 | Ticket14 chiuso: celle/scorrimento senza SQL, caricamento fuori FX, lock reale/PID e proprietà osservabili, errore SQL/riprova e obsoleti, prezzi aggiornati, etichette e Robot/tastiera; nuovi4 test PostgreSQL, mirati148/148, finale394/394, [evidenze](DriveHub/docs/evidence/r08-tables/verification.md) |
+-| Consegna | Installazione, UML, teoria, prove della versione | R09–R11 | Ticket16: installazione su copia locale corrente, configurazione/schema/demo, build/avvio/suite394/394 e teoria verificati; [evidenze16](DriveHub/docs/evidence/r09-instructions/verification.md). Diagrammi17 e chiusura18 restano da eseguire |
++| Consegna | Installazione, UML, teoria, prove della versione | R09–R11 | Ticket16: installazione su copia locale corrente, configurazione/schema/demo, build/avvio/suite394/394 e teoria verificati; [evidenze16](DriveHub/docs/evidence/r09-instructions/verification.md). Ticket17:18diagrammi correnti renderizzati, storico distinto, nuove prove79/79 e394/394, GUI e review indipendenti senza residui; [evidenze17](DriveHub/docs/evidence/r09-diagrams/verification.md). Chiusura18 resta da eseguire |
+ | Pulizia | Riferimenti FXML/sessione, chiamanti integri | R10 | Ticket15 chiuso: dipendenza/campo/3metodi/import senza usi rimossi,20righe nette in meno; compilazione Java21, App.start/Xvfb e ciclo grafico14 riusciti, baseline/finale nuove394/394, isolamento/sentinella e review indipendenti senza rilievi residui; [evidenze15](DriveHub/docs/evidence/r10-cleanup/verification.md) |
+ 
+ ## Evidenze e limiti della baseline
+@@ -895,3 +897,23 @@
+ AC13 trasversale; nessun altro ticket avviato. Limiti Linux/WSL/Xvfb, nessuna
+ migrazione completa/certificazione screen reader/installer/benchmark o prova
+ di tutti i flussi GUI. [Prove16](DriveHub/docs/evidence/r09-instructions/verification.md).
++
++### 3 novembre 2026 — ticket17 completato
++
++Solo17/AC14,01–16 chiusi verificati.18diagrammi correnti con sorgenti/render e
++riscontri a codice/test;37artefatti visivi e vecchi manifest conservati come storici.
++Precisazioni teoriche16 mantenute; nessun codice/POM/test/schema/demo modificato.
++Baseline1507file inclusi ignorati/modificati/nontracciati, diff della sola sessione.
++Java21.0.12.1/Maven3.9.16/PG16.15 ricontrollati; nuovo cluster55435 e display91,
++ruoli/DB dedicati e sentinella. Mirati nuovi79/79, UI CHECK SUCCESS,
++APP STARTUP SUCCESS, finale nuova394/394 (47senzaDB/347PostgreSQL), zero
++failure/errori/salti.394/394del16 storico; tentativi fallito/interrotto distinti.
++Render finali SVG/PNG exit0 e ispezione. Standards0violazioni/0smell, Spec1P2
++sui ritorni dei dialoghi corretto e follow-up indipendenti0residui; nessun input
++runtime cambiato dopo prove. Sentinella READ ONLY/hash13tabelle7sequenze invariati,
++servizi arrestati.1507file presenti,1502identici,5aggiornamenti intenzionali,
++zeroeliminazioni; HEAD/indice invariati. Nessun commit/staging, relazione esclusa.
++**17chiuso,5/5criteri; AC14/#14 e R09 completati,18/20rilievi chiusi.**
++[Evidenze17](DriveHub/docs/evidence/r09-diagrams/verification.md). Limiti GUI/OS/display,
++stampa e temporanei espliciti. Nessun residuo17 o anticipo18/R11; prossimo passo18
++soltanto su nuova richiesta.
+--- review/TRACKER_DRIVEHUB/revisioni/issues/17-diagrammi-ed-evidenze-correnti.md
++++ final/TRACKER_DRIVEHUB/revisioni/issues/17-diagrammi-ed-evidenze-correnti.md
+@@ -7,7 +7,7 @@
+ **Blocked by:** 02: Conservare il veicolo invariato dopo una modifica non valida; 03: Cambiare email senza compromettere l'accesso; 06: Concludere l'acquisto al totale concordato all'acconto; 10: Accettare o rifiutare una cessione senza doppi pagamenti; 12: Cambiare destinazione senza riaprire auto assegnate o perdere rimborsi; 13: Cancellare identità senza perdere richieste o attribuzioni storiche; 14: Consultare le tabelle senza query nel rendering; 15: Rimuovere FXML e stato di sessione soltanto se inutilizzati
+ 
+ Status: ready-for-agent
+-State: in-progress
++State: closed
+ 
+ **Piano:** R09
+ **Specifica:** AC14
+@@ -15,11 +15,11 @@
+ 
+ ## Acceptance criteria
+ 
+-- [ ] Diagrammi usati di classi, package, sequenze, casi d'uso e navigazione coerenti con componenti, stati e flussi correnti.
+-- [ ] Individuati e identificati come storici diagrammi e manifest precedenti senza presentarli come prove della nuova versione.
+-- [ ] Nuove evidenze registrano versione/commit e diff, ambiente, comandi, esiti e limiti; nessuna percentuale o riuscita non misurata.
+-- [ ] Diagrammi aggiornati generati/renderizzati quando possibile; assenza degli strumenti registrata senza dichiarare completata quella verifica.
+-- [ ] Riferimenti fra documentazione, flussi e test controllati, mantenendo esclusione completa della relazione.
++- [x] Diagrammi usati di classi, package, sequenze, casi d'uso e navigazione coerenti con componenti, stati e flussi correnti.
++- [x] Individuati e identificati come storici diagrammi e manifest precedenti senza presentarli come prove della nuova versione.
++- [x] Nuove evidenze registrano versione/commit e diff, ambiente, comandi, esiti e limiti; nessuna percentuale o riuscita non misurata.
++- [x] Diagrammi aggiornati generati/renderizzati quando possibile; assenza degli strumenti registrata senza dichiarare completata quella verifica.
++- [x] Riferimenti fra documentazione, flussi e test controllati, mantenendo esclusione completa della relazione.
+ 
+ ## Note per l'implementazione
+ 
+@@ -34,3 +34,5 @@
+ - 31 ottobre 2026: ticket pubblicato da `to-tickets` dopo approvazione di granularità e dipendenze. Esecuzione non ancora avviata; verificare i blocchi prima di iniziare.
+ 
+ - 3 novembre 2026: avviato solo17; letti AGENTS, piano, glossario, ADR0001, testing, installation, architecture ed evidenze16. Verificati01–16 chiusi senza criteri aperti. Baseline completa1507file (anche ignorati, modificati e non tracciati), HEAD/indice e diff iniziale salvati; relazione esclusa. Originali diagrammi/manifest conservati, nuova selezione corrente separata. Java21/PG16 temporanei ricontrollati; nuovo cluster sacrificabile127.0.0.1:55435 con DB dedicati e sentinella.394/394del16 storico; render, prove e review17 ancora da completare. Nessun commit/staging o lavoro18.
++
++- 3 novembre 2026 — chiusura: **5/5criteri verificati**, solo17/AC14/#14 e R09 completati;18/20rilievi chiusi.18sorgenti PlantUML e18SVG correnti per classi/package/sequenze/casi d’uso/navigazione e stati, con riscontri a codice/test e precisazioni teoriche16.37artefatti visivi e vecchi manifest identificati come storici e conservati identici, senza rigenerazione. Baseline1507file inclusi ignorati/modificati/nontracciati; versione con diff locale, non solo HEAD. Nuove prove Java21/PG16 ricontrollati, cluster sacrificabile127.0.0.1:55435 e Xvfb91, DB dedicati/sentinella: mirati79/79, UI CHECK SUCCESS, APP STARTUP SUCCESS, suite finale394/394 (47senzaDB/347PostgreSQL), zero failure/errori/salti;394/394del16 storico. Tentativi fallito/interrotto conservati separatamente. Render SVG/PNG finali exit0 e ispezione, riferimenti controllati. Review indipendenti Standards0violazioni/0smell; Spec1P2 sui ritorni dei dialoghi cliente corretto, nuovo render e follow-up indipendenti0residui. Sentinella READ ONLY e hash13tabelle7sequenze invariati; servizi arrestati.1507file iniziali presenti,1502identici,5aggiornamenti intenzionali,zeroeliminazioni; codice/POM/test/schema/demo/evidenze01–16/ticket18 intatti, HEAD/indice invariati. [Versione, diff, ambiente, comandi, log/XML, render, review e limiti](../../../DriveHub/docs/evidence/r09-diagrams/verification.md). Nessun commit/staging, relazione sempre esclusa, nessun test artificiale della documentazione o lavoro18. Limiti Linux/WSL/Xvfb, nessuna certificazione screen reader/altriOS/stampaA4; non tutti i gesti GUI riesercitati. R11/ticket18 e AC13 trasversale aperti; nessun residuo17.

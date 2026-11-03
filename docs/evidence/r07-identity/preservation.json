@@ -1,0 +1,19 @@
+{
+  "initial_files": 846,
+  "unchanged": 838,
+  "changed": [
+    "DriveHub/docs/testing.md",
+    "DriveHub/src/main/resources/db/schema.sql",
+    "DriveHub/src/main/java/it/unifi/drivehub/dao/UserDao.java",
+    "DriveHub/src/main/java/it/unifi/drivehub/service/AuthService.java",
+    "DriveHub/src/main/java/it/unifi/drivehub/presentation/view/AccountManagementDialog.java",
+    "DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresUserDao.java",
+    "TRACKER_DRIVEHUB/revisioni/issues/13-cancellazione-identita-e-storico.md",
+    "PIANO_REVISIONI_DRIVEHUB.md"
+  ],
+  "missing": [],
+  "new_files_count": 243,
+  "previous_tickets_and_evidence_preserved": true,
+  "head_unchanged": true,
+  "index_unchanged": true
+}

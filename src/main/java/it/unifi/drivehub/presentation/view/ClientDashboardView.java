@@ -12,6 +12,7 @@ import it.unifi.drivehub.domain.vehicle.Vehicle;
 import it.unifi.drivehub.domain.vehicle.VehicleState;
 import it.unifi.drivehub.service.AuthService;
 import it.unifi.drivehub.service.CatalogService;
+import it.unifi.drivehub.service.CatalogService.VehicleRow;
 import it.unifi.drivehub.service.OperationQueryService;
 import it.unifi.drivehub.service.PriceCalculatorService;
 import it.unifi.drivehub.service.PurchaseService;
@@ -49,8 +50,10 @@ public final class ClientDashboardView extends BorderPane {
     private final Runnable onLogout;
 
     private Label balanceLabel;
-    private TableView<Vehicle> saleTable;
-    private TableView<Vehicle> rentTable;
+    private AsyncLoad<List<VehicleRow>> saleLoad;
+    private AsyncLoad<List<VehicleRow>> rentLoad;
+    private TableView<VehicleRow> saleTable;
+    private TableView<VehicleRow> rentTable;
     private TableView<Request> requestsTable;
     private TableView<Rent> myRentsTable;
     private TableView<TestDrive> myTestDrivesTable;
@@ -184,10 +187,11 @@ public final class ClientDashboardView extends BorderPane {
 
         Button btnTestDrive = new Button("Prenota Test Drive");
         btnTestDrive.getStyleClass().add("button-secondary");
-        btnTestDrive.setOnAction(e -> handleTestDriveAction(saleTable.getSelectionModel().getSelectedItem()));
+        btnTestDrive.setOnAction(e -> handleTestDriveAction(saleTable.getSelectionModel().getSelectedItem() == null ? null : saleTable.getSelectionModel().getSelectedItem().vehicle()));
 
         HBox actions = new HBox(10, btnBuy, btnTestDrive);
-        box.getChildren().addAll(saleTable, actions);
+        saleLoad = new AsyncLoad<>("catalogo vendita", saleTable, () -> catalogService.getVehicleRows(VehicleState.SALE), rows -> saleTable.getItems().setAll(rows));
+        box.getChildren().addAll(saleLoad, saleTable, actions);
         VBox.setVgrow(saleTable, Priority.ALWAYS);
 
         loadSaleVehicles();
@@ -195,11 +199,12 @@ public final class ClientDashboardView extends BorderPane {
     }
 
     private void loadSaleVehicles() {
-        saleTable.getItems().setAll(catalogService.getVehiclesByState(VehicleState.SALE));
+        saleLoad.load();
     }
 
     private void handlePurchaseAction() {
-        Vehicle v = saleTable.getSelectionModel().getSelectedItem();
+        VehicleRow selected = saleTable.getSelectionModel().getSelectedItem();
+        Vehicle v = selected == null ? null : selected.vehicle();
         if (v == null) {
             UiUtils.showError("Selezione mancante", "Seleziona un veicolo dalla tabella.");
             return;
@@ -210,17 +215,20 @@ public final class ClientDashboardView extends BorderPane {
 
         boolean confirm = UiUtils.showConfirmation("Conferma Avvio Operazione",
                 "Procedere alla prenotazione dell'acquisto?",
-                "Prezzo stimato: " + UiUtils.formatCurrency(fullPrice) +
+                "Prezzo effettivo attuale: " + UiUtils.formatCurrency(fullPrice) +
                         "\nAcconto da versare ora (20%): " + UiUtils.formatCurrency(deposit) +
                         "\nIl veicolo passerà in stato BLOCKED e l'operazione verrà sottoposta a un venditore.");
         if (!confirm) return;
 
         try {
-            purchaseService.initiatePurchase(v.getId(), client.getId());
+            Request request = purchaseService.initiatePurchase(v.getId(), client.getId());
             refreshBalance();
             loadSaleVehicles();
             refreshMyOperations();
-            UiUtils.showInfo("Richiesta Inviata", "Acconto scalato con successo. La richiesta è ora in attesa di approvazione dal venditore.");
+            UiUtils.showInfo("Richiesta Inviata", "Totale concordato: " + UiUtils.formatCurrency(request.getAgreedTotal())
+                    + "\nAcconto versato: " + UiUtils.formatCurrency(request.getDeposit())
+                    + "\nSaldo da pagare: " + UiUtils.formatCurrency(request.getRemainingAmount())
+                    + "\nLa richiesta è in attesa di approvazione dal venditore.");
         } catch (Exception ex) {
             UiUtils.showError("Operazione Fallita", ex.getMessage());
         }
@@ -239,10 +247,11 @@ public final class ClientDashboardView extends BorderPane {
 
         Button btnTestDrive = new Button("Prenota Test Drive");
         btnTestDrive.getStyleClass().add("button-secondary");
-        btnTestDrive.setOnAction(e -> handleTestDriveAction(rentTable.getSelectionModel().getSelectedItem()));
+        btnTestDrive.setOnAction(e -> handleTestDriveAction(rentTable.getSelectionModel().getSelectedItem() == null ? null : rentTable.getSelectionModel().getSelectedItem().vehicle()));
 
         HBox actions = new HBox(10, btnRent, btnTestDrive);
-        box.getChildren().addAll(rentTable, actions);
+        rentLoad = new AsyncLoad<>("catalogo noleggio", rentTable, () -> catalogService.getVehicleRows(VehicleState.RENT), rows -> rentTable.getItems().setAll(rows));
+        box.getChildren().addAll(rentLoad, rentTable, actions);
         VBox.setVgrow(rentTable, Priority.ALWAYS);
 
         loadRentVehicles();
@@ -250,11 +259,12 @@ public final class ClientDashboardView extends BorderPane {
     }
 
     private void loadRentVehicles() {
-        rentTable.getItems().setAll(catalogService.getVehiclesByState(VehicleState.RENT));
+        rentLoad.load();
     }
 
     private void handleRentAction() {
-        Vehicle v = rentTable.getSelectionModel().getSelectedItem();
+        VehicleRow selected = rentTable.getSelectionModel().getSelectedItem();
+        Vehicle v = selected == null ? null : selected.vehicle();
         if (v == null) {
             UiUtils.showError("Selezione mancante", "Seleziona un veicolo per il noleggio.");
             return;
@@ -355,13 +365,21 @@ public final class ClientDashboardView extends BorderPane {
         lbl.getStyleClass().add("card-title");
 
         ComboBox<Brand> brandCombo = new ComboBox<>();
-        brandCombo.getItems().setAll(catalogService.getAllBrands());
         ComboBox<Model> modelCombo = new ComboBox<>();
+        AsyncLoad<List<Brand>> brandsLoad = new AsyncLoad<>("marchi per cessione", brandCombo,
+                catalogService::getAllBrands, rows -> brandCombo.getItems().setAll(rows));
+        AsyncLoad<List<Model>> modelsLoad = new AsyncLoad<>("modelli per cessione", modelCombo,
+                List::of, rows -> modelCombo.getItems().setAll(rows));
+        brandsLoad.load();
+        modelsLoad.load();
 
         brandCombo.setOnAction(e -> {
             Brand b = brandCombo.getValue();
             if (b != null) {
-                modelCombo.getItems().setAll(catalogService.getModelsByBrand(b.getName()));
+                modelCombo.getSelectionModel().clearSelection();
+                modelsLoad.load(() -> catalogService.getModelsByBrand(b.getName()));
+            } else {
+                modelsLoad.load(List::of);
             }
         });
 
@@ -411,7 +429,7 @@ public final class ClientDashboardView extends BorderPane {
         });
 
         box.getChildren().addAll(
-                lbl,
+                lbl, brandsLoad, modelsLoad,
                 new Label("Marca:"), brandCombo,
                 new Label("Modello:"), modelCombo,
                 new Label("VIN:"), vinField,
@@ -432,9 +450,10 @@ public final class ClientDashboardView extends BorderPane {
         Label reqTitle = new Label("Richieste d'Acquisto in Corso");
         reqTitle.getStyleClass().add("card-title");
         requestsTable = new TableView<>();
+        requestsTable.getStyleClass().add("agreement-requests");
         configureRequestsTable();
 
-        Button btnCompletePurchase = new Button("Paga Saldo Restante (80%) e Completa Acquisto");
+        Button btnCompletePurchase = new Button("Paga saldo concordato e completa acquisto");
         btnCompletePurchase.getStyleClass().add("button-success");
         btnCompletePurchase.setOnAction(e -> handleCompletePurchaseAction());
 
@@ -490,7 +509,10 @@ public final class ClientDashboardView extends BorderPane {
 
         boolean confirm = UiUtils.showConfirmation("Conferma Saldo Finale",
                 "Completare l'acquisto del veicolo #" + r.getVehicleId() + "?",
-                "Verrà scalato il restante 80% dell'importo dal tuo saldo e il veicolo diventerà di tua proprietà (stato SOLD).");
+                "Totale concordato: " + UiUtils.formatCurrency(r.getAgreedTotal())
+                        + "\nAcconto versato: " + UiUtils.formatCurrency(r.getDeposit())
+                        + "\nSaldo da pagare: " + UiUtils.formatCurrency(r.getRemainingAmount())
+                        + "\nIl saldo da pagare verrà addebitato sul tuo conto per completare l'acquisto.");
         if (!confirm) return;
 
         try {
@@ -513,49 +535,50 @@ public final class ClientDashboardView extends BorderPane {
         myTestDrivesTable.getItems().setAll(operationQueryService.getClientTestDrives(client.getId()));
     }
 
-    private void configureVehicleTable(TableView<Vehicle> table, boolean isSale) {
-        TableColumn<Vehicle, String> colModel = new TableColumn<>("Modello");
+    private void configureVehicleTable(TableView<VehicleRow> table, boolean isSale) {
+        TableColumn<VehicleRow, String> colModel = new TableColumn<>("Modello");
         colModel.setCellValueFactory(data -> {
             if (data == null || data.getValue() == null) return new SimpleStringProperty("");
-            return new SimpleStringProperty(getVehicleDesc(data.getValue()));
+            return new SimpleStringProperty(data.getValue().modelName() + " (" + data.getValue().vehicle().getYear() + ")");
         });
 
-        TableColumn<Vehicle, String> colYear = new TableColumn<>("Anno");
+        TableColumn<VehicleRow, String> colYear = new TableColumn<>("Anno");
         colYear.setCellValueFactory(data -> {
             if (data == null || data.getValue() == null) return new SimpleStringProperty("");
-            return new SimpleStringProperty(String.valueOf(data.getValue().getYear()));
+            return new SimpleStringProperty(String.valueOf(data.getValue().vehicle().getYear()));
         });
 
-        TableColumn<Vehicle, String> colPlate = new TableColumn<>("Targa / Usato");
+        TableColumn<VehicleRow, String> colPlate = new TableColumn<>("Targa / Usato");
         colPlate.setCellValueFactory(data -> {
             if (data == null || data.getValue() == null) return new SimpleStringProperty("");
-            return new SimpleStringProperty(data.getValue().isUsed() ? data.getValue().getLicencePlate() : "Nuovo (0 km)");
+            return new SimpleStringProperty(data.getValue().vehicle().isUsed() ? data.getValue().vehicle().getLicencePlate() : "Nuovo (0 km)");
         });
 
-        TableColumn<Vehicle, String> colKm = new TableColumn<>("Km");
+        TableColumn<VehicleRow, String> colKm = new TableColumn<>("Km");
         colKm.setCellValueFactory(data -> {
             if (data == null || data.getValue() == null) return new SimpleStringProperty("");
-            return new SimpleStringProperty(String.valueOf(data.getValue().getKilometers()));
+            return new SimpleStringProperty(String.valueOf(data.getValue().vehicle().getKilometers()));
         });
 
-        TableColumn<Vehicle, String> colPrice = new TableColumn<>(isSale ? "Prezzo Calcolato" : "Tariffa Giornaliera");
+        TableColumn<VehicleRow, String> colPrice = new TableColumn<>(isSale ? "Prezzo effettivo" : "Tariffa iniziale/giorno");
         colPrice.setCellValueFactory(data -> {
             if (data == null || data.getValue() == null) return new SimpleStringProperty("");
-            try {
-                if (isSale) {
-                    BigDecimal effPrice = catalogService.getEffectiveVehiclePrice(data.getValue());
-                    return new SimpleStringProperty(UiUtils.formatCurrency(effPrice));
-                } else {
-                    BigDecimal effPrice = catalogService.getEffectiveVehiclePrice(data.getValue());
-                    BigDecimal dailyRate = priceCalculatorService.calculateDailyRentalRate(effPrice);
-                    return new SimpleStringProperty(UiUtils.formatCurrency(dailyRate) + "/giorno");
-                }
-            } catch (Exception ex) {
-                return new SimpleStringProperty("N/D");
-            }
+            return new SimpleStringProperty(isSale
+                    ? UiUtils.formatCurrency(data.getValue().effective())
+                    : UiUtils.formatCurrency(data.getValue().dailyRate()) + "/giorno");
         });
 
-        table.getColumns().addAll(List.of(colModel, colYear, colPlate, colKm, colPrice));
+        TableColumn<VehicleRow, String> colBase = new TableColumn<>("Base applicata");
+        colBase.setCellValueFactory(d -> new SimpleStringProperty(UiUtils.formatCurrency(d.getValue().base())));
+        TableColumn<VehicleRow, String> colRecommended = new TableColumn<>("Prezzo consigliato");
+        colRecommended.setCellValueFactory(d -> new SimpleStringProperty(UiUtils.formatCurrency(d.getValue().recommended())));
+        table.getColumns().addAll(List.of(colModel, colYear, colPlate, colKm, colBase, colRecommended));
+        if (!isSale) {
+            TableColumn<VehicleRow, String> colEffective = new TableColumn<>("Prezzo effettivo");
+            colEffective.setCellValueFactory(d -> new SimpleStringProperty(UiUtils.formatCurrency(d.getValue().effective())));
+            table.getColumns().add(colEffective);
+        }
+        table.getColumns().add(colPrice);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
     }
 
@@ -572,11 +595,19 @@ public final class ClientDashboardView extends BorderPane {
             return new SimpleStringProperty("#" + data.getValue().getVehicleId());
         });
 
-        TableColumn<Request, String> colDep = new TableColumn<>("Acconto Versato");
+        TableColumn<Request, String> colTotal = new TableColumn<>("Totale concordato");
+        colTotal.setCellValueFactory(data -> new SimpleStringProperty(
+                UiUtils.formatCurrency(data.getValue().getAgreedTotal())));
+
+        TableColumn<Request, String> colDep = new TableColumn<>("Acconto versato");
         colDep.setCellValueFactory(data -> {
             if (data == null || data.getValue() == null) return new SimpleStringProperty("");
             return new SimpleStringProperty(UiUtils.formatCurrency(data.getValue().getDeposit()));
         });
+
+        TableColumn<Request, String> colRemaining = new TableColumn<>("Saldo da pagare");
+        colRemaining.setCellValueFactory(data -> new SimpleStringProperty(
+                UiUtils.formatCurrency(data.getValue().getRemainingAmount())));
 
         TableColumn<Request, String> colStatus = new TableColumn<>("Stato / Venditore");
         colStatus.setCellValueFactory(data -> {
@@ -594,7 +625,7 @@ public final class ClientDashboardView extends BorderPane {
             );
         });
 
-        requestsTable.getColumns().addAll(List.of(colId, colVeh, colDep, colStatus, colExp));
+        requestsTable.getColumns().addAll(List.of(colId, colVeh, colTotal, colDep, colRemaining, colStatus, colExp));
         requestsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
     }
 

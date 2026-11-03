@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="20.758" tests="60" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="21"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/home/federico/dev/Drivehub/DriveHub/target/test-classes:/home/federico/dev/Drivehub/DriveHub/target/classes:/home/federico/.m2/repository/org/openjfx/javafx-controls/21.0.2/javafx-controls-21.0.2.jar:/home/federico/.m2/repository/org/openjfx/javafx-controls/21.0.2/javafx-controls-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-graphics/21.0.2/javafx-graphics-21.0.2.jar:/home/federico/.m2/repository/org/openjfx/javafx-graphics/21.0.2/javafx-graphics-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-base/21.0.2/javafx-base-21.0.2.jar:/home/federico/.m2/repository/org/openjfx/javafx-base/21.0.2/javafx-base-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-fxml/21.0.2/javafx-fxml-21.0.2.jar:/home/federico/.m2/repository/org/openjfx/javafx-fxml/21.0.2/javafx-fxml-21.0.2-linux.jar:/home/federico/.m2/repository/org/postgresql/postgresql/42.7.3/postgresql-42.7.3.jar:/home/federico/.m2/repository/org/checkerframework/checker-qual/3.42.0/checker-qual-3.42.0.jar:/home/federico/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.10.2/junit-jupiter-api-5.10.2.jar:/home/federico/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/home/federico/.m2/repository/org/junit/platform/junit-platform-commons/1.10.2/junit-platform-commons-1.10.2.jar:/home/federico/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/federico/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.10.2/junit-jupiter-engine-5.10.2.jar:/home/federico/.m2/repository/org/junit/platform/junit-platform-engine/1.10.2/junit-platform-engine-1.10.2.jar:/home/federico/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.10.2/junit-jupiter-params-5.10.2.jar:/home/federico/.m2/repository/org/junit/platform/junit-platform-launcher/1.10.2/junit-platform-launcher-1.10.2.jar:"/>
+    <property name="java.vm.vendor" value="Ubuntu"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://ubuntu.com/"/>
+    <property name="user.timezone" value="Europe/Rome"/>
+    <property name="os.name" value="Linux"/>
+    <property name="java.vm.specification.version" value="21"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.boot.library.path" value="/tmp/drivehub-ticket07-tools/root/usr/lib/jvm/java-21-openjdk-amd64/lib"/>
+    <property name="sun.java.command" value="/home/federico/dev/Drivehub/DriveHub/target/surefire/surefirebooter-20261102175238840_3.jar /home/federico/dev/Drivehub/DriveHub/target/surefire 2026-11-02T17-52-37_796-jvmRun1 surefire-20261102175238840_1tmp surefire_0-20261102175238840_2tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/home/federico/dev/Drivehub/DriveHub/target/test-classes:/home/federico/dev/Drivehub/DriveHub/target/classes:/home/federico/.m2/repository/org/openjfx/javafx-controls/21.0.2/javafx-controls-21.0.2.jar:/home/federico/.m2/repository/org/openjfx/javafx-controls/21.0.2/javafx-controls-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-graphics/21.0.2/javafx-graphics-21.0.2.jar:/home/federico/.m2/repository/org/openjfx/javafx-graphics/21.0.2/javafx-graphics-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-base/21.0.2/javafx-base-21.0.2.jar:/home/federico/.m2/repository/org/openjfx/javafx-base/21.0.2/javafx-base-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-fxml/21.0.2/javafx-fxml-21.0.2.jar:/home/federico/.m2/repository/org/openjfx/javafx-fxml/21.0.2/javafx-fxml-21.0.2-linux.jar:/home/federico/.m2/repository/org/postgresql/postgresql/42.7.3/postgresql-42.7.3.jar:/home/federico/.m2/repository/org/checkerframework/checker-qual/3.42.0/checker-qual-3.42.0.jar:/home/federico/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.10.2/junit-jupiter-api-5.10.2.jar:/home/federico/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/home/federico/.m2/repository/org/junit/platform/junit-platform-commons/1.10.2/junit-platform-commons-1.10.2.jar:/home/federico/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/federico/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.10.2/junit-jupiter-engine-5.10.2.jar:/home/federico/.m2/repository/org/junit/platform/junit-platform-engine/1.10.2/junit-platform-engine-1.10.2.jar:/home/federico/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.10.2/junit-jupiter-params-5.10.2.jar:/home/federico/.m2/repository/org/junit/platform/junit-platform-launcher/1.10.2/junit-platform-launcher-1.10.2.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/home/federico"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2026-08-18"/>
+    <property name="java.home" value="/tmp/drivehub-ticket07-tools/root/usr/lib/jvm/java-21-openjdk-amd64"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/home/federico/dev/Drivehub/DriveHub"/>
+    <property name="java.vm.compressedOopsMode" value="32-bit"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="surefire.real.class.path" value="/home/federico/dev/Drivehub/DriveHub/target/surefire/surefirebooter-20261102175238840_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="21.0.12.1+1-1-26.04.4-Ubuntu"/>
+    <property name="user.name" value="federico"/>
+    <property name="stdout.encoding" value="UTF-8"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="6.18.54.1-microsoft-standard-WSL2"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="localRepository" value="/home/federico/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://bugs.launchpad.net/ubuntu/+source/openjdk-21"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="java.version" value="21.0.12.1"/>
+    <property name="user.dir" value="/home/federico/dev/Drivehub/DriveHub"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib"/>
+    <property name="stderr.encoding" value="UTF-8"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.vendor" value="Ubuntu"/>
+    <property name="java.vm.version" value="21.0.12.1+1-1-26.04.4-Ubuntu"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="65.0"/>
+  </properties>
+  <testcase name="rejectionPreservesEveryKindOfHistoryAndRemovesOnlyANewVehicle(String)[1]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.313"/>
+  <testcase name="rejectionPreservesEveryKindOfHistoryAndRemovesOnlyANewVehicle(String)[2]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.261"/>
+  <testcase name="rejectionPreservesEveryKindOfHistoryAndRemovesOnlyANewVehicle(String)[3]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.246"/>
+  <testcase name="rejectionPreservesEveryKindOfHistoryAndRemovesOnlyANewVehicle(String)[4]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.267"/>
+  <testcase name="rejectionPreservesEveryKindOfHistoryAndRemovesOnlyANewVehicle(String)[5]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.268"/>
+  <testcase name="rejectionPreservesEveryKindOfHistoryAndRemovesOnlyANewVehicle(String)[6]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.311"/>
+  <testcase name="onlyAWaitingVehicleCanReceiveAnOutcome(String, VehicleState)[1]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.209"/>
+  <testcase name="onlyAWaitingVehicleCanReceiveAnOutcome(String, VehicleState)[2]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.197"/>
+  <testcase name="onlyAWaitingVehicleCanReceiveAnOutcome(String, VehicleState)[3]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.187"/>
+  <testcase name="onlyAWaitingVehicleCanReceiveAnOutcome(String, VehicleState)[4]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.182"/>
+  <testcase name="onlyAWaitingVehicleCanReceiveAnOutcome(String, VehicleState)[5]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.217"/>
+  <testcase name="onlyAWaitingVehicleCanReceiveAnOutcome(String, VehicleState)[6]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.209"/>
+  <testcase name="onlyAWaitingVehicleCanReceiveAnOutcome(String, VehicleState)[7]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.207"/>
+  <testcase name="onlyAWaitingVehicleCanReceiveAnOutcome(String, VehicleState)[8]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.194"/>
+  <testcase name="missingOrInvalidDataCannotLeaveAnyWrite(String)[1]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.186"/>
+  <testcase name="missingOrInvalidDataCannotLeaveAnyWrite(String)[2]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.222"/>
+  <testcase name="missingOrInvalidDataCannotLeaveAnyWrite(String)[3]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.216"/>
+  <testcase name="missingOrInvalidDataCannotLeaveAnyWrite(String)[4]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.2"/>
+  <testcase name="missingOrInvalidDataCannotLeaveAnyWrite(String)[5]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.244"/>
+  <testcase name="missingOrInvalidDataCannotLeaveAnyWrite(String)[6]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.446"/>
+  <testcase name="approvalPaysTheClientAndRecordsOneDealershipExpense" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.601"/>
+  <testcase name="typeAndStateAreCheckedAfterWaitingForTheirLocks(String, String)[1]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.779">
+    <system-out><![CDATA[Ticket10 waiters 1 pid:blockers 74667:{74663}
+]]></system-out>
+  </testcase>
+  <testcase name="typeAndStateAreCheckedAfterWaitingForTheirLocks(String, String)[2]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.413">
+    <system-out><![CDATA[Ticket10 waiters 1 pid:blockers 74692:{74688}
+]]></system-out>
+  </testcase>
+  <testcase name="typeAndStateAreCheckedAfterWaitingForTheirLocks(String, String)[3]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.277">
+    <system-out><![CDATA[Ticket10 waiters 1 pid:blockers 74710:{74706}
+]]></system-out>
+  </testcase>
+  <testcase name="typeAndStateAreCheckedAfterWaitingForTheirLocks(String, String)[4]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.246">
+    <system-out><![CDATA[Ticket10 waiters 1 pid:blockers 74729:{74725}
+]]></system-out>
+  </testcase>
+  <testcase name="anObsoleteSessionUsesTheRequestRereadAfterTheLock(String)[1]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.256">
+    <system-out><![CDATA[Ticket10 waiters 1 pid:blockers 74747:{74743}
+]]></system-out>
+  </testcase>
+  <testcase name="anObsoleteSessionUsesTheRequestRereadAfterTheLock(String)[2]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.26">
+    <system-out><![CDATA[Ticket10 waiters 1 pid:blockers 74766:{74762}
+]]></system-out>
+  </testcase>
+  <testcase name="databaseRejectsAnAmountWhoseSignContradictsTheExplicitType(String, BigDecimal)[1]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.211"/>
+  <testcase name="databaseRejectsAnAmountWhoseSignContradictsTheExplicitType(String, BigDecimal)[2]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.239"/>
+  <testcase name="databaseRejectsAnAmountWhoseSignContradictsTheExplicitType(String, BigDecimal)[3]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.25"/>
+  <testcase name="aSkippedVehicleDeletionCannotConsumeTheRequest" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.237"/>
+  <testcase name="zeroPaymentCannotConsumeTheProposalOrWriteAnAcquisition" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.239"/>
+  <testcase name="approvalNeedsASalesmanBeforePaying" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.216"/>
+  <testcase name="vehicleLockRequiresAnActiveTransaction" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.216"/>
+  <testcase name="competingOutcomesHaveExactlyOnePaymentAndAvailabilityChange(String, String, boolean)[1]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.564">
+    <system-out><![CDATA[Ticket10 waiters 1 pid:blockers 74900:{74896}
+Ticket10 waiters 2 pid:blockers 74900:{74896}, 74902:{74900}
+]]></system-out>
+  </testcase>
+  <testcase name="competingOutcomesHaveExactlyOnePaymentAndAvailabilityChange(String, String, boolean)[2]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.511">
+    <system-out><![CDATA[Ticket10 waiters 1 pid:blockers 74932:{74928}
+Ticket10 waiters 2 pid:blockers 74932:{74928}, 74934:{74932}
+]]></system-out>
+  </testcase>
+  <testcase name="competingOutcomesHaveExactlyOnePaymentAndAvailabilityChange(String, String, boolean)[3]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.533">
+    <system-out><![CDATA[Ticket10 waiters 1 pid:blockers 74963:{74959}
+Ticket10 waiters 2 pid:blockers 74963:{74959}, 74965:{74963}
+]]></system-out>
+  </testcase>
+  <testcase name="competingOutcomesHaveExactlyOnePaymentAndAvailabilityChange(String, String, boolean)[4]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.557">
+    <system-out><![CDATA[Ticket10 waiters 1 pid:blockers 75011:{75005}
+Ticket10 waiters 2 pid:blockers 75011:{75005}, 75013:{75011}
+]]></system-out>
+  </testcase>
+  <testcase name="competingOutcomesHaveExactlyOnePaymentAndAvailabilityChange(String, String, boolean)[5]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.695">
+    <system-out><![CDATA[Ticket10 waiters 1 pid:blockers 75055:{75051}
+Ticket10 waiters 2 pid:blockers 75055:{75051}, 75057:{75055}
+]]></system-out>
+  </testcase>
+  <testcase name="competingOutcomesHaveExactlyOnePaymentAndAvailabilityChange(String, String, boolean)[6]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.689">
+    <system-out><![CDATA[Ticket10 waiters 1 pid:blockers 75101:{75097}
+Ticket10 waiters 2 pid:blockers 75101:{75097}, 75103:{75101}
+]]></system-out>
+  </testcase>
+  <testcase name="competingOutcomesHaveExactlyOnePaymentAndAvailabilityChange(String, String, boolean)[7]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.578">
+    <system-out><![CDATA[Ticket10 waiters 1 pid:blockers 75154:{75150}
+Ticket10 waiters 2 pid:blockers 75154:{75150}, 75156:{75154}
+]]></system-out>
+  </testcase>
+  <testcase name="competingOutcomesHaveExactlyOnePaymentAndAvailabilityChange(String, String, boolean)[8]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.963">
+    <system-out><![CDATA[Ticket10 waiters 1 pid:blockers 75195:{75191}
+Ticket10 waiters 2 pid:blockers 75195:{75191}, 75197:{75195}
+]]></system-out>
+  </testcase>
+  <testcase name="failureAfterTheFinalWriteRollsBackEveryActualEffect(String)[1]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.491"/>
+  <testcase name="failureAfterTheFinalWriteRollsBackEveryActualEffect(String)[2]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.507"/>
+  <testcase name="failureAfterTheFinalWriteRollsBackEveryActualEffect(String)[3]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.538"/>
+  <testcase name="rejectionReadsHistoryWrittenInItsOwnTransaction" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.432"/>
+  <testcase name="errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[1]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.524"/>
+  <testcase name="errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[2]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.465"/>
+  <testcase name="errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[3]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.429"/>
+  <testcase name="errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[4]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.305"/>
+  <testcase name="errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[5]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.26"/>
+  <testcase name="errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[6]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.288"/>
+  <testcase name="errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[7]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.25"/>
+  <testcase name="errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[8]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.259"/>
+  <testcase name="errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[9]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.314"/>
+  <testcase name="errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[10]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.315"/>
+  <testcase name="errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[11]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.231"/>
+  <testcase name="errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[12]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.204"/>
+  <testcase name="errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[13]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.257"/>
+  <testcase name="errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[14]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.251"/>
+</testsuite>

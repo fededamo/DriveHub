@@ -1,0 +1,63 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------< it.unifi.drivehub:DriveHub >---------------------
+[INFO] Building DriveHub 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] 6 problems were encountered while building the effective model for org.openjfx:javafx-controls:jar:21.0.2 during dependency collection step for project (use -X to see details)
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ DriveHub ---
+[INFO] Copying 4 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ DriveHub ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ DriveHub ---
+[INFO] skip non existing resourceDirectory /home/federico/dev/Drivehub/DriveHub/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ DriveHub ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ DriveHub ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running it.unifi.drivehub.DatabaseConnectionIntegrationTest
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.399 s <<< FAILURE! -- in it.unifi.drivehub.DatabaseConnectionIntegrationTest
+[ERROR] it.unifi.drivehub.DatabaseConnectionIntegrationTest.testRealDatabaseConnection -- Time elapsed: 0.362 s <<< ERROR!
+java.lang.IllegalArgumentException: Reset rifiutato: identità, proprietario o privilegi del PostgreSQL di test non sicuri.
+	at it.unifi.drivehub.TestDatabase.verifyDestination(TestDatabase.java:104)
+	at it.unifi.drivehub.TestDatabase.executeScripts(TestDatabase.java:68)
+	at it.unifi.drivehub.TestDatabase.reset(TestDatabase.java:58)
+	at it.unifi.drivehub.DatabaseConnectionIntegrationTest.testRealDatabaseConnection(DatabaseConnectionIntegrationTest.java:22)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Errors: 
+[ERROR]   DatabaseConnectionIntegrationTest.testRealDatabaseConnection:22 » IllegalArgument Reset rifiutato: identità, proprietario o privilegi del PostgreSQL di test non sicuri.
+[INFO] 
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  6.216 s
+[INFO] Finished at: 2026-10-31T18:21:05+01:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.2.5:test (default-test) on project DriveHub: 
+[ERROR] 
+[ERROR] Please refer to /home/federico/dev/Drivehub/DriveHub/target/surefire-reports for the individual test results.
+[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

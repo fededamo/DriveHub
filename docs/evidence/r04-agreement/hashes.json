@@ -1,0 +1,21 @@
+{
+  "README.md": "4da0bdb052e0c7fee88666bc676fabe7de2fa00e1e011d37b8c04c572af5350c",
+  "docs/adr/0001-base-manuale-e-prezzo-concordato.md": "59c781d4a660e2850ad292ef6799592eb405c4193a6e6893479ac06b45bac5e6",
+  "docs/testing.md": "69e586be99b9f4c11fec83407a96c2000c3572c193a998b83ed844d6b345d463",
+  "src/main/java/it/unifi/drivehub/dao/postgres/PostgresRequestDao.java": "1c856205b3fbb6cc193d8028a981e51cb63cef624b253b995b174d639ddac0d5",
+  "src/main/java/it/unifi/drivehub/domain/operation/Request.java": "f23f4ed707fe886670bbbb8e97bcb623de64083b06104fd38c7dee70948ff26f",
+  "src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java": "7a49d1d889ca89e71a9bc78a4cf9ca2f2a4c45645213d9d43e71119dac3e132d",
+  "src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java": "67744d54d3cc3b6bf8a98312ed97250889656816d48d13bf937dee7a57f0a8d3",
+  "src/main/java/it/unifi/drivehub/service/PurchaseService.java": "87681698c6048a91f7cde911877b9d1ee19393da5ca5849fd4c2206ce4c5c2ab",
+  "src/main/resources/css/style.css": "472f8a41fe3f0f93eedd86f8e840a87aa7a43327974606627da86e2c2ecea0ca",
+  "src/main/resources/db/demo.sql": "85bd32a5842def2d22255f56243e0818fced0053e354e6b7607fee7bf75aed5d",
+  "src/main/resources/db/schema.sql": "10126762d1f453219ca445d25bbee4103e79c2327f62a672034b156872342969",
+  "src/test/java/it/unifi/drivehub/BalanceConcurrencyIntegrationTest.java": "565cd4aa0990bf1750b71512d52febfcdfe20bd4033b960864bb1b255b530ae1",
+  "src/test/java/it/unifi/drivehub/PurchaseAgreementIntegrationTest.java": "bd6254bfaaa250e65c82f88bd0d747c06bcc2867f7b81de790efef6d94433a15",
+  "src/test/java/it/unifi/drivehub/RequestAgreementTest.java": "e3d5a263a1e84b3e6a572d844f7d1f182790a8837f2ca7b17d13e14baee86033",
+  "docs/evidence/r04-agreement/AgreementUiCheck.java": "b314a49129f02b3976838b20760dc999082138a17ffe4e879d0d76d21753730f",
+  "docs/evidence/r04-agreement/run-ui.py": "9883482ad874a886567f6f856dc336669befc268025becdcc2fe2dc7d3f5ead0",
+  "docs/evidence/r04-agreement/verification.md": "feb1e505668f4286b659243d00f4fd7df4a5d0866e438d13907df9fa2ca7392e",
+  "../PIANO_REVISIONI_DRIVEHUB.md": "09ca5df1bdc6fa097ee22a68f0638246dedc4380379641311bbcc3c221ecd530",
+  "../TRACKER_DRIVEHUB/revisioni/issues/06-totale-concordato-acquisto.md": "ce81f2eec02d9d7fb640b730da5ef02b97f2d20022ff39d0eac06f45a0128411"
+}

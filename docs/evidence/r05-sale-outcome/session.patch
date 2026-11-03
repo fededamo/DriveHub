@@ -1,0 +1,1463 @@
+--- a/DriveHub/src/main/resources/db/schema.sql
++++ b/DriveHub/src/main/resources/db/schema.sql
+@@ -296,6 +296,10 @@
+     "amount" DECIMAL(10, 2) NOT NULL,
+     "date" TIMESTAMP NOT NULL,
+     "type" VARCHAR(16) NOT NULL CHECK ("type" IN ('PURCHASE', 'ACQUISITION', 'PENALTY')),
++    CONSTRAINT "ck_sale_amount_type" CHECK (
++        ("type" = 'ACQUISITION' AND "amount" <= 0)
++        OR ("type" IN ('PURCHASE', 'PENALTY') AND "amount" >= 0)
++    ),
+     CONSTRAINT "pk_sale" PRIMARY KEY ("id"),
+     CONSTRAINT "fk_sale_vehicle" FOREIGN KEY ("vehicle") REFERENCES "vehicle" ("id") ON DELETE SET NULL,
+     CONSTRAINT "fk_sale_salesman" FOREIGN KEY ("salesman") REFERENCES "salesman" ("id") ON DELETE SET NULL,
+--- a/DriveHub/src/main/java/it/unifi/drivehub/dao/VehicleDao.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/dao/VehicleDao.java
+@@ -22,6 +22,9 @@
+     default Optional<Vehicle> findById(Long id, Connection conn) {
+         return findById(id);
+     }
++
++    /** Rilegge e blocca il veicolo nella transazione attiva del chiamante. */
++    Optional<Vehicle> findByIdForUpdate(Long id, Connection conn);
+ 
+     Optional<Vehicle> findByVin(String vin);
+ 
+@@ -48,5 +51,8 @@
+     void delete(Long id, Connection conn);
+ 
+     boolean hasAssociatedOperations(Long vehicleId);
++
++    /** Presenza di qualsiasi storico sulla connessione transazionale del chiamante. */
++    boolean hasAssociatedOperations(Long vehicleId, Connection conn);
+ }
+ 
+--- a/DriveHub/src/main/java/it/unifi/drivehub/dao/SaleDao.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/dao/SaleDao.java
+@@ -22,6 +22,5 @@
+ 
+     Sale save(Sale sale, Connection conn);
+ 
+-    boolean hasSaleOperationsForVehicle(Long vehicleId);
+ }
+ 
+--- a/DriveHub/src/main/java/it/unifi/drivehub/service/SaleToDealershipService.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/service/SaleToDealershipService.java
+@@ -17,6 +17,7 @@
+ import it.unifi.drivehub.domain.vehicle.VehicleState;
+ 
+ import java.math.BigDecimal;
++import java.sql.Connection;
+ import java.util.Optional;
+ 
+ /**
+@@ -112,21 +113,15 @@
+     }
+     /**
+      * Passo 2: Il venditore approva la proposta di vendita.
+-     * - Crea una tupla in Sale con amount = deposit (positivo per il cliente)
++     * - Registra un'acquisizione negativa per la concessionaria
+      * - Lo stato del veicolo diventa SALE
+      * - Elimina la tupla da Request
+      * - Accredita il pagamento sul conto corrente del cliente
+      */
+     public void approveSaleProposal(Long requestId, Long salesmanId) {
+         db.executeInTransaction(conn -> {
+-            Request request = requestDao.findById(requestId, conn)
+-                    .orElseThrow(() -> new IllegalStateException("Richiesta non trovata: " + requestId));
+-            if (request.getType() != RequestType.SALE) {
+-                throw new IllegalArgumentException("La richiesta selezionata non è di vendita.");
+-            }
+-
+-            Vehicle vehicle = vehicleDao.findById(request.getVehicleId(), conn)
+-                    .orElseThrow(() -> new IllegalStateException("Veicolo non trovato: " + request.getVehicleId()));
++            Request request = lockWaitingSaleRequest(requestId, conn);
++            if (salesmanId == null) throw new IllegalArgumentException("Il venditore che accetta la cessione è obbligatorio.");
+ 
+             // Importo da accreditare al cliente (valore assoluto di deposit)
+             BigDecimal payout = request.getDeposit().abs();
+@@ -138,12 +133,13 @@
+             bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
+ 
+             // Registrazione compravendita in Sale
+-            Sale saleRecord = Sale.createAcquisitionRecord(vehicle.getId(), salesmanId, request.getClientId(), payout);
++            Sale saleRecord = Sale.createAcquisitionRecord(request.getVehicleId(), salesmanId, request.getClientId(), payout);
+             saleDao.save(saleRecord, conn);
+ 
+             // Stato veicolo diventa SALE
+-            vehicle.setState(VehicleState.SALE);
+-            vehicleDao.update(vehicle, conn);
++            if (!vehicleDao.updateStateAtomically(request.getVehicleId(), VehicleState.WAITING, VehicleState.SALE, conn)) {
++                throw new IllegalStateException("Il veicolo non è più in attesa di valutazione.");
++            }
+ 
+             // Eliminazione richiesta
+             requestDao.delete(requestId, conn);
+@@ -152,33 +148,38 @@
+ 
+     /**
+      * Il venditore rifiuta la proposta di vendita del cliente.
+-     * Regola Pagina 4: prima di eliminare la tupla Vehicle, controlla se ci sono operazioni di vendita associate.
+-     * Se non ce ne sono elimina il veicolo, altrimenti ripristina lo stato a SOLD lasciandolo intatto.
++     * Elimina il veicolo soltanto se privo di storico; altrimenti ripristina SOLD.
++     * La presenza di operazioni non equivale alla titolarità, che richiede l'ultima PURCHASE.
+      */
+     public void rejectSaleProposal(Long requestId) {
+         db.executeInTransaction(conn -> {
+-            Request request = requestDao.findById(requestId, conn)
+-                    .orElseThrow(() -> new IllegalStateException("Richiesta non trovata: " + requestId));
+-            if (request.getType() != RequestType.SALE) {
+-                throw new IllegalArgumentException("La richiesta selezionata non è di vendita.");
+-            }
++            Request request = lockWaitingSaleRequest(requestId, conn);
+ 
+             Long vehicleId = request.getVehicleId();
+             requestDao.delete(requestId, conn);
+ 
+-            boolean hasSales = saleDao.hasSaleOperationsForVehicle(vehicleId);
+-            if (hasSales) {
+-                // Il veicolo ha uno storico vendite: ripristina stato SOLD senza cancellarlo
+-                Vehicle vehicle = vehicleDao.findById(vehicleId, conn).orElse(null);
+-                if (vehicle != null) {
+-                    vehicle.setState(VehicleState.SOLD);
+-                    vehicleDao.update(vehicle, conn);
++            if (vehicleDao.hasAssociatedOperations(vehicleId, conn)) {
++                if (!vehicleDao.updateStateAtomically(vehicleId, VehicleState.WAITING, VehicleState.SOLD, conn)) {
++                    throw new IllegalStateException("Il veicolo non è più in attesa di valutazione.");
+                 }
+             } else {
+-                // Nessuna vendita associata: può essere rimosso dal catalogo in sicurezza
+                 vehicleDao.delete(vehicleId, conn);
+             }
+         });
+     }
++
++    private Request lockWaitingSaleRequest(Long requestId, Connection conn) {
++        Request request = requestDao.findByIdForUpdate(requestId, conn)
++                .orElseThrow(() -> new IllegalStateException("Richiesta non trovata: " + requestId));
++        if (request.getType() != RequestType.SALE) {
++            throw new IllegalArgumentException("La richiesta selezionata non è una cessione.");
++        }
++        Vehicle vehicle = vehicleDao.findByIdForUpdate(request.getVehicleId(), conn)
++                .orElseThrow(() -> new IllegalStateException("Veicolo non trovato: " + request.getVehicleId()));
++        if (vehicle.getState() != VehicleState.WAITING) {
++            throw new IllegalStateException("Il veicolo non è in attesa di valutazione.");
++        }
++        return request;
++    }
+ }
+ 
+--- a/DriveHub/src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java
+@@ -88,7 +88,7 @@
+         Tab tabModels = new Tab("Modelli", buildModelsTab());
+         Tab tabVehicles = new Tab("Veicoli", buildVehiclesTab());
+         Tab tabDiscounts = new Tab("Sconti", buildDiscountsTab());
+-        Tab tabSales = new Tab("Registro Vendite & Penali", buildSalesTab());
++        Tab tabSales = new Tab("Registro economico", buildSalesTab());
+ 
+         tabPane.getTabs().addAll(tabBrands, tabModels, tabVehicles, tabDiscounts, tabSales);
+ 
+@@ -460,10 +460,11 @@
+         VBox box = new VBox(15);
+         box.setPadding(new Insets(20));
+ 
+-        Label title = new Label("Registro Contabile Operazioni (Vendite, Acquisti, Penali)");
++        Label title = new Label("Registro della concessionaria: entrate positive, uscite negative");
+         title.getStyleClass().add("card-title");
+ 
+         saleTable = new TableView<>();
++        saleTable.getStyleClass().add("agreement-requests");
+         TableColumn<Sale, String> colId = new TableColumn<>("ID");
+         colId.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null ? "#" + d.getValue().getId() : ""));
+ 
+@@ -471,13 +472,11 @@
+         colType.setCellValueFactory(d -> {
+             if (d == null || d.getValue() == null) return new SimpleStringProperty("");
+             Sale s = d.getValue();
+-            if (s.getSalesmanId() == null && s.getVehicleId() == null) {
+-                return new SimpleStringProperty("PENALE SCADENZA (Quota trattenuta)");
+-            } else if (s.getAmount() != null && s.getAmount().compareTo(BigDecimal.ZERO) < 0) {
+-                return new SimpleStringProperty("ACQUISTO DA CLIENTE");
+-            } else {
+-                return new SimpleStringProperty("VENDITA A CLIENTE");
+-            }
++            return new SimpleStringProperty(switch (s.getType()) {
++                case PURCHASE -> "VENDITA A CLIENTE";
++                case ACQUISITION -> "ACQUISIZIONE DA CLIENTE";
++                case PENALTY -> "PENALE SCADENZA (Quota trattenuta)";
++            });
+         });
+ 
+         TableColumn<Sale, String> colDate = new TableColumn<>("Data Transazione");
+@@ -500,7 +499,7 @@
+                 d != null && d.getValue() != null && d.getValue().getVehicleId() != null ? "#" + d.getValue().getVehicleId() : "N/D"
+         ));
+ 
+-        TableColumn<Sale, String> colAmount = new TableColumn<>("Importo");
++        TableColumn<Sale, String> colAmount = new TableColumn<>("Importo concessionaria");
+         colAmount.setCellValueFactory(d -> new SimpleStringProperty(
+                 d != null && d.getValue() != null && d.getValue().getAmount() != null ? UiUtils.formatCurrency(d.getValue().getAmount()) : ""
+         ));
+--- a/DriveHub/src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java
+@@ -143,7 +143,7 @@
+                         + UiUtils.formatCurrency(req.getRemainingAmount()));
+             } else {
+                 saleToDealershipService.approveSaleProposal(req.getId(), salesman.getId());
+-                UiUtils.showInfo("Proposta Accettata", "Proposta di vendita accettata: importo accreditato al cliente e veicolo aggiunto al catalogo in stato SALE.");
++                UiUtils.showInfo("Proposta Accettata", "Cessione accettata: pagamento accreditato al cliente e veicolo disponibile nel catalogo.");
+             }
+             loadPendingRequests();
+             loadInventoryVehicles();
+@@ -165,7 +165,7 @@
+                 UiUtils.showInfo("Richiesta Rifiutata", "Richiesta d'acquisto rifiutata: caparra rimborsata integralmente al cliente e veicolo tornato SALE.");
+             } else {
+                 saleToDealershipService.rejectSaleProposal(req.getId());
+-                UiUtils.showInfo("Proposta Rifiutata", "Proposta di vendita rifiutata.");
++                UiUtils.showInfo("Proposta Rifiutata", "Cessione rifiutata senza pagamento. Lo storico del veicolo è conservato; un veicolo senza storico viene rimosso dal catalogo.");
+             }
+             loadPendingRequests();
+             loadInventoryVehicles();
+--- a/DriveHub/src/main/java/it/unifi/drivehub/domain/operation/Sale.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/domain/operation/Sale.java
+@@ -7,9 +7,9 @@
+ /**
+  * Entità Sale (registro contabile di acquisti, vendite e penali).
+  * Regole di dominio:
+- * - Acquisti: saldo negativo (denaro in uscita per il cliente/entrata per l'azienda)
+- * - Vendite auto cliente all'azienda: importo positivo accreditato al cliente
+- * - Penali: importo trattenuto dall'azienda per mancato pagamento entro scadenza (senza veicolo né venditore)
++ * - PURCHASE: entrata positiva per la concessionaria (acquisto del cliente)
++ * - ACQUISITION: uscita negativa per la concessionaria; il cliente riceve un accredito positivo
++ * - PENALTY: entrata positiva trattenuta dalla concessionaria (senza veicolo né venditore)
+  * - La data non può essere nel futuro.
+  */
+ public final class Sale {
+@@ -42,6 +42,9 @@
+         if (amount == null) {
+             throw new IllegalArgumentException("L'importo non può essere nullo.");
+         }
++        if (type == SaleType.ACQUISITION ? amount.signum() > 0 : amount.signum() < 0) {
++            throw new IllegalArgumentException("Il segno dell'importo non è coerente con il tipo di operazione della concessionaria.");
++        }
+         if (date == null) {
+             throw new IllegalArgumentException("La data della transazione non può essere nulla.");
+         }
+@@ -57,8 +60,9 @@
+     }
+ 
+     public static Sale createAcquisitionRecord(Long vehicleId, Long salesmanId, Long clientId, BigDecimal pricePaidToClient) {
+-        // Concessionaria acquista auto dal cliente (saldo positivo per il cliente)
+-        return create(null, vehicleId, salesmanId, clientId, pricePaidToClient, LocalDateTime.now(), SaleType.ACQUISITION);
++        if (pricePaidToClient == null) throw new IllegalArgumentException("Il pagamento al cliente non può essere nullo.");
++        // Il registro usa il punto di vista della concessionaria, distinto dal conto cliente.
++        return create(null, vehicleId, salesmanId, clientId, pricePaidToClient.negate(), LocalDateTime.now(), SaleType.ACQUISITION);
+     }
+ 
+     public static Sale createPenaltyRecord(Long clientId, BigDecimal penaltyAmount) {
+--- a/DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresVehicleDao.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresVehicleDao.java
+@@ -68,8 +68,18 @@
+ 
+     @Override
+     public Optional<Vehicle> findById(Long id, Connection conn) {
+-        String sql = "SELECT id, model, vin, licence_plate, kilometers, price, price_mode, year, state::text as state_str FROM vehicle WHERE id = ?";
+-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
++        return findById(id, conn, false);
++    }
++
++    @Override
++    public Optional<Vehicle> findByIdForUpdate(Long id, Connection conn) {
++        return findById(id, conn, true);
++    }
++
++    private Optional<Vehicle> findById(Long id, Connection conn, boolean forUpdate) {
++        String sql = "SELECT id, model, vin, licence_plate, kilometers, price, price_mode, year, state::text as state_str FROM vehicle WHERE id = ?" + (forUpdate ? " FOR UPDATE" : "");
++        try (PreparedStatement ps = conn.prepareStatement(sql)) {
++            if (forUpdate && conn.getAutoCommit()) throw new IllegalArgumentException("Il lock del veicolo richiede una transazione attiva.");
+             ps.setLong(1, id);
+             try (ResultSet rs = ps.executeQuery()) {
+                 if (rs.next()) {
+@@ -200,7 +210,7 @@
+         String sql = "DELETE FROM vehicle WHERE id = ?";
+         try (PreparedStatement ps = conn.prepareStatement(sql)) {
+             ps.setLong(1, id);
+-            ps.executeUpdate();
++            if (ps.executeUpdate() != 1) throw new SQLException("Veicolo da eliminare non trovato: " + id);
+         } catch (SQLException e) {
+             throw new RuntimeException("Errore durante l'eliminazione del veicolo id: " + id, e);
+         }
+@@ -208,13 +218,21 @@
+ 
+     @Override
+     public boolean hasAssociatedOperations(Long vehicleId) {
++        try (Connection conn = db.getConnection()) {
++            return hasAssociatedOperations(vehicleId, conn);
++        } catch (SQLException e) {
++            throw new RuntimeException("Errore di connessione durante la verifica dello storico del veicolo.", e);
++        }
++    }
++
++    @Override
++    public boolean hasAssociatedOperations(Long vehicleId, Connection conn) {
+         String sql = "SELECT (" +
+                 "EXISTS(SELECT 1 FROM test_drive WHERE vehicle = ?) OR " +
+                 "EXISTS(SELECT 1 FROM rent WHERE vehicle = ?) OR " +
+                 "EXISTS(SELECT 1 FROM sale WHERE vehicle = ?)" +
+                 ") AS has_ops";
+-        try (Connection conn = db.getConnection();
+-             PreparedStatement ps = conn.prepareStatement(sql)) {
++        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+             ps.setLong(1, vehicleId);
+             ps.setLong(2, vehicleId);
+             ps.setLong(3, vehicleId);
+--- a/DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresSaleDao.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresSaleDao.java
+@@ -120,23 +120,6 @@
+         }
+     }
+ 
+-    @Override
+-    public boolean hasSaleOperationsForVehicle(Long vehicleId) {
+-        String sql = "SELECT EXISTS(SELECT 1 FROM sale WHERE vehicle = ?) AS has_sales";
+-        try (Connection conn = db.getConnection();
+-             PreparedStatement ps = conn.prepareStatement(sql)) {
+-            ps.setLong(1, vehicleId);
+-            try (ResultSet rs = ps.executeQuery()) {
+-                if (rs.next()) {
+-                    return rs.getBoolean("has_sales");
+-                }
+-            }
+-        } catch (SQLException e) {
+-            throw new RuntimeException("Errore durante la verifica delle vendite per il veicolo id: " + vehicleId, e);
+-        }
+-        return false;
+-    }
+-
+     private static Sale mapRow(ResultSet rs) throws SQLException {
+         Long vehicle = rs.getObject("vehicle") != null ? rs.getLong("vehicle") : null;
+         Long salesman = rs.getObject("salesman") != null ? rs.getLong("salesman") : null;
+--- a/DriveHub/src/test/java/it/unifi/drivehub/SaleProposalIntegrationTest.java
++++ b/DriveHub/src/test/java/it/unifi/drivehub/SaleProposalIntegrationTest.java
+@@ -84,7 +84,7 @@
+                 (1003, 1001, 16, 1, 20000, CURRENT_DATE - INTERVAL '2 days', 'PURCHASE'),
+                 (1001, 1001, 16, 1, 21000, CURRENT_DATE - INTERVAL '1 day', 'PURCHASE'),
+                 (1002, 1001, 16, 2, 22000, CURRENT_DATE - INTERVAL '1 day', 'PURCHASE'),
+-                (1004, 1001, 16, 1, 15000, CURRENT_DATE, 'ACQUISITION'),
++                (1004, 1001, 16, 1, -15000, CURRENT_DATE, 'ACQUISITION'),
+                 (1005, NULL, NULL, 1, 800, CURRENT_DATE, 'PENALTY');
+                 """);
+         String before = snapshot();
+@@ -204,7 +204,7 @@
+     @Test
+     void anAcquisitionAloneDoesNotEstablishOwnershipButAZeroPriceSaleDoes() throws Exception {
+         soldToClientOne();
+-        sql("UPDATE sale SET type = 'ACQUISITION'");
++        sql("UPDATE sale SET type = 'ACQUISITION', amount = -20000");
+         String before = snapshot();
+         assertThrows(RuntimeException.class, () -> propose(1L, VIN, "ZZ123ZZ", 250));
+         assertEquals(before, snapshot());
+--- a/DriveHub/src/test/java/it/unifi/drivehub/PriceSelectionIntegrationTest.java
++++ b/DriveHub/src/test/java/it/unifi/drivehub/PriceSelectionIntegrationTest.java
+@@ -158,7 +158,7 @@
+         assertEquals(new BigDecimal("14400.00"), ctx.getCatalogService().getRecommendedVehiclePrice(reload(vehicle)));
+         var acquisition = ctx.getOperationQueryService().getAllSales().stream()
+                 .filter(s -> s.getVehicleId().equals(vehicle.getId())).findFirst().orElseThrow();
+-        assertEquals(new BigDecimal("14400.00"), acquisition.getAmount().abs());
++        assertEquals(new BigDecimal("-14400.00"), acquisition.getAmount());
+     }
+ 
+     private Vehicle reload(Vehicle vehicle) {
+--- /dev/null
++++ b/DriveHub/src/test/java/it/unifi/drivehub/SaleOutcomeIntegrationTest.java
+@@ -0,0 +1,473 @@
++package it.unifi.drivehub;
++
++import it.unifi.drivehub.dao.DatabaseManager;
++import it.unifi.drivehub.domain.operation.Request;
++import it.unifi.drivehub.domain.vehicle.VehicleState;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.AfterEach;
++import org.junit.jupiter.api.Tag;
++import org.junit.jupiter.api.Test;
++import org.junit.jupiter.params.ParameterizedTest;
++import org.junit.jupiter.params.provider.CsvSource;
++import org.junit.jupiter.params.provider.ValueSource;
++import org.junit.jupiter.params.provider.MethodSource;
++import org.junit.jupiter.params.provider.Arguments;
++
++import java.sql.Connection;
++import java.math.BigDecimal;
++import java.util.Arrays;
++import java.util.List;
++import java.util.concurrent.Callable;
++import java.util.concurrent.Executors;
++import java.util.concurrent.TimeUnit;
++import java.util.stream.Stream;
++
++import static org.junit.jupiter.api.Assertions.*;
++
++@Tag("postgres")
++class SaleOutcomeIntegrationTest {
++    private DatabaseManager db;
++    private Request proposal;
++
++    @BeforeEach
++    void setUp() throws Exception {
++        db = TestDatabase.fromEnvironment().reset();
++        sql("""
++                DELETE FROM sale; DELETE FROM rent; DELETE FROM test_drive; DELETE FROM request;
++                UPDATE bank_account SET balance = 1000 WHERE client = 1;
++                UPDATE bank_account SET balance = 2000 WHERE client = 2;
++                INSERT INTO model (id, brand, name, release_price, release_year)
++                VALUES (1001, 'Fiat', 'Ticket10', 20000, EXTRACT(YEAR FROM CURRENT_DATE));
++                """);
++        proposal = new AppContext(db).getSaleToDealershipService().submitSaleProposal(
++                1L, 1001L, "T1000000000000001", "AB123CD", 0, java.time.Year.now().getValue());
++    }
++
++    @ParameterizedTest
++    @CsvSource({"approval,SALE", "approval,SOLD", "approval,RENT", "approval,BLOCKED",
++            "rejection,SALE", "rejection,SOLD", "rejection,RENT", "rejection,BLOCKED"})
++    void onlyAWaitingVehicleCanReceiveAnOutcome(String phase, VehicleState state) throws Exception {
++        sql("UPDATE vehicle SET state = '" + state + "' WHERE id = " + proposal.getVehicleId());
++        String before = snapshot();
++        assertThrows(RuntimeException.class, operation(phase)::run);
++        assertEquals(before, snapshot());
++    }
++
++    @Test
++    void approvalPaysTheClientAndRecordsOneDealershipExpense() throws Exception {
++        operation("approval").run();
++        var reloaded = new AppContext(db);
++        assertEquals(new BigDecimal("17000.00"), reloaded.getAuthService().getClientBankAccount(1L).getBalance());
++        var sales = reloaded.getOperationQueryService().getAllSales();
++        assertEquals(1, sales.size());
++        var acquisition = sales.getFirst();
++        assertEquals(new BigDecimal("-16000.00"), acquisition.getAmount());
++        assertEquals(it.unifi.drivehub.domain.operation.SaleType.ACQUISITION, acquisition.getType());
++        assertEquals(proposal.getVehicleId(), acquisition.getVehicleId());
++        assertEquals(16L, acquisition.getSalesmanId());
++        assertEquals(1L, acquisition.getClientId());
++        assertEquals(sales, reloaded.getOperationQueryService().getClientSales(1L));
++        assertTrue(reloaded.getOperationQueryService().getClientRequests(1L).isEmpty());
++        assertEquals(VehicleState.SALE, reloaded.getCatalogService().getVehicleById(proposal.getVehicleId()).orElseThrow().getState());
++        String after = snapshot();
++        assertThrows(RuntimeException.class, operation("approval")::run);
++        assertThrows(RuntimeException.class, operation("rejection")::run);
++        assertEquals(after, snapshot());
++    }
++
++    @ParameterizedTest
++    @ValueSource(strings = {"NONE", "PURCHASE", "ACQUISITION", "RENT", "TEST_DRIVE", "ALL"})
++    void rejectionPreservesEveryKindOfHistoryAndRemovesOnlyANewVehicle(String kind) throws Exception {
++        addHistory(kind);
++        String history = snapshot("sale", "rent", "test_drive");
++        operation("rejection").run();
++        var reloaded = new AppContext(db);
++        assertEquals(new BigDecimal("1000.00"), reloaded.getAuthService().getClientBankAccount(1L).getBalance());
++        assertTrue(reloaded.getOperationQueryService().getClientRequests(1L).isEmpty());
++        var vehicle = reloaded.getCatalogService().getVehicleById(proposal.getVehicleId());
++        if (kind.equals("NONE")) {
++            assertTrue(vehicle.isEmpty());
++            assertTrue(reloaded.getCatalogService().getAllVehicles().stream().noneMatch(v -> v.getVin().equals("T1000000000000001")));
++        } else {
++            assertEquals(VehicleState.SOLD, vehicle.orElseThrow().getState());
++        }
++        assertEquals(history, snapshot("sale", "rent", "test_drive"));
++        String after = snapshot();
++        assertThrows(RuntimeException.class, operation("approval")::run);
++        assertThrows(RuntimeException.class, operation("rejection")::run);
++        assertEquals(after, snapshot());
++    }
++
++    @Test
++    void aSkippedVehicleDeletionCannotConsumeTheRequest() throws Exception {
++        String before = snapshot();
++        sql("""
++                CREATE FUNCTION ticket10_skip_delete() RETURNS trigger LANGUAGE plpgsql AS $$
++                BEGIN RETURN NULL; END $$;
++                CREATE TRIGGER ticket10_skip_delete BEFORE DELETE ON vehicle
++                FOR EACH ROW EXECUTE FUNCTION ticket10_skip_delete();
++                """);
++        try {
++            assertThrows(RuntimeException.class, operation("rejection")::run);
++            assertEquals(before, snapshot());
++        } finally {
++            sql("DROP FUNCTION ticket10_skip_delete() CASCADE");
++        }
++    }
++
++    @ParameterizedTest
++    @CsvSource({"approval,approval,false", "approval,rejection,false", "rejection,approval,false", "rejection,rejection,false",
++            "approval,approval,true", "approval,rejection,true", "rejection,approval,true", "rejection,rejection,true"})
++    void competingOutcomesHaveExactlyOnePaymentAndAvailabilityChange(String first, String second, boolean history) throws Exception {
++        if (history) addHistory("ALL");
++        monitorVehicleWrites();
++        var failures = race("SELECT id FROM vehicle WHERE id = " + proposal.getVehicleId() + " FOR UPDATE", false,
++                operation(first), operation(second));
++        assertNull(failures.get(0));
++        assertNotNull(failures.get(1), "La sessione obsoleta deve rileggere la richiesta consumata");
++        assertOutcome(first, history);
++        try (var conn = db.getConnection(); var statement = conn.createStatement();
++             var rows = statement.executeQuery("SELECT count(*) FROM ticket10_changes")) {
++            assertTrue(rows.next());
++            assertEquals(1, rows.getInt(1), "Una sola transizione o eliminazione del veicolo");
++        }
++        String after = snapshot();
++        assertThrows(RuntimeException.class, operation(first)::run);
++        assertThrows(RuntimeException.class, operation(second)::run);
++        assertEquals(after, snapshot());
++    }
++
++    @ParameterizedTest
++    @ValueSource(strings = {"approval", "rejection"})
++    void anObsoleteSessionUsesTheRequestRereadAfterTheLock(String phase) throws Exception {
++        var failures = race("UPDATE request SET client = 2, deposit = -123.45 WHERE id = " + proposal.getId(), true,
++                operation(phase), null);
++        assertNull(failures.getFirst());
++        var ctx = new AppContext(db);
++        assertEquals(new BigDecimal("1000.00"), ctx.getAuthService().getClientBankAccount(1L).getBalance());
++        assertEquals(new BigDecimal(phase.equals("approval") ? "2123.45" : "2000.00"),
++                ctx.getAuthService().getClientBankAccount(2L).getBalance());
++        assertTrue(ctx.getOperationQueryService().getClientRequests(1L).isEmpty());
++        assertTrue(ctx.getOperationQueryService().getClientRequests(2L).isEmpty());
++        if (phase.equals("approval")) {
++            var sale = ctx.getOperationQueryService().getAllSales().getFirst();
++            assertEquals(2L, sale.getClientId());
++            assertEquals(new BigDecimal("-123.45"), sale.getAmount());
++        } else {
++            assertTrue(ctx.getOperationQueryService().getAllSales().isEmpty());
++        }
++    }
++
++    @ParameterizedTest
++    @CsvSource({"approval,type", "rejection,type", "approval,state", "rejection,state"})
++    void typeAndStateAreCheckedAfterWaitingForTheirLocks(String phase, String field) throws Exception {
++        String change = field.equals("type")
++                ? "UPDATE request SET type = 'PURCHASE', deposit = 4000, agreed_total = 20000 WHERE id = " + proposal.getId()
++                : "UPDATE vehicle SET state = 'SOLD' WHERE id = " + proposal.getVehicleId();
++        var failures = race(change, true, operation(phase), null);
++        assertNotNull(failures.getFirst());
++        var ctx = new AppContext(db);
++        assertEquals(new BigDecimal("1000.00"), ctx.getAuthService().getClientBankAccount(1L).getBalance());
++        assertTrue(ctx.getOperationQueryService().getAllSales().isEmpty());
++        assertEquals(1, ctx.getOperationQueryService().getClientRequests(1L).size());
++        assertEquals(field.equals("type") ? VehicleState.WAITING : VehicleState.SOLD,
++                ctx.getCatalogService().getVehicleById(proposal.getVehicleId()).orElseThrow().getState());
++    }
++
++    @Test
++    void rejectionReadsHistoryWrittenInItsOwnTransaction() throws Exception {
++        sql("""
++                CREATE FUNCTION ticket10_history() RETURNS trigger LANGUAGE plpgsql AS $$
++                BEGIN
++                  INSERT INTO sale (vehicle,salesman,client,amount,date,type)
++                  VALUES (OLD.vehicle,16,OLD.client,-500,CURRENT_TIMESTAMP,'ACQUISITION');
++                  RETURN OLD;
++                END $$;
++                CREATE TRIGGER ticket10_history AFTER DELETE ON request
++                FOR EACH ROW EXECUTE FUNCTION ticket10_history();
++                """);
++        operation("rejection").run();
++        var ctx = new AppContext(db);
++        assertEquals(VehicleState.SOLD, ctx.getCatalogService().getVehicleById(proposal.getVehicleId()).orElseThrow().getState());
++        assertEquals(proposal.getVehicleId(), ctx.getOperationQueryService().getAllSales().getFirst().getVehicleId());
++        assertEquals(new BigDecimal("1000.00"), ctx.getAuthService().getClientBankAccount(1L).getBalance());
++    }
++
++    @Test
++    void approvalNeedsASalesmanBeforePaying() throws Exception {
++        String before = snapshot();
++        assertThrows(RuntimeException.class,
++                () -> new AppContext(db).getSaleToDealershipService().approveSaleProposal(proposal.getId(), null));
++        assertEquals(before, snapshot());
++    }
++
++    @ParameterizedTest
++    @CsvSource({"PURCHASE,-0.01", "ACQUISITION,0.01", "PENALTY,-0.01"})
++    void databaseRejectsAnAmountWhoseSignContradictsTheExplicitType(String type, BigDecimal amount) throws Exception {
++        String before = snapshot();
++        var failure = assertThrows(java.sql.SQLException.class, () -> sql(
++                "INSERT INTO sale (vehicle,salesman,client,amount,date,type) VALUES (" + proposal.getVehicleId()
++                        + ",16,1," + amount + ",CURRENT_DATE,'" + type + "')"));
++        assertEquals("23514", failure.getSQLState());
++        assertEquals(before, snapshot());
++    }
++
++    @ParameterizedTest
++    @MethodSource("writeFailures")
++    void errorsAndSkippedWritesNeverLeaveAPartialOutcome(String phase, String table, String event,
++                                                       boolean history, String balance, boolean skip) throws Exception {
++        if (history) addHistory("ALL");
++        String before = snapshot();
++        sql("CREATE FUNCTION ticket10_fault() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN "
++                + "IF (SELECT balance FROM bank_account WHERE client=1) <> " + balance
++                + " THEN RAISE EXCEPTION 'ticket10_movement_not_observed'; END IF; "
++                + (phase.equals("approval") && (table.equals("vehicle") || table.equals("request"))
++                    ? "IF NOT EXISTS (SELECT 1 FROM sale WHERE vehicle=" + proposal.getVehicleId()
++                        + " AND amount=-16000 AND type='ACQUISITION') THEN RAISE EXCEPTION 'ticket10_acquisition_not_observed'; END IF; " : "")
++                + (phase.equals("rejection") && table.equals("vehicle")
++                    ? "IF EXISTS (SELECT 1 FROM request WHERE id=" + proposal.getId()
++                        + ") THEN RAISE EXCEPTION 'ticket10_deletion_not_observed'; END IF; " : "")
++                + (skip ? "RETURN NULL; " : "RAISE EXCEPTION 'ticket10_after_prior_writes'; ")
++                + "END $$; CREATE TRIGGER ticket10_fault BEFORE " + event + " ON " + table
++                + " FOR EACH ROW EXECUTE FUNCTION ticket10_fault()");
++        RuntimeException failure = assertThrows(RuntimeException.class, operation(phase)::run);
++        if (!skip) assertTrue(rootMessage(failure).contains("ticket10_after_prior_writes"), rootMessage(failure));
++        assertEquals(before, snapshot());
++        assertEquals(VehicleState.WAITING, new AppContext(db).getCatalogService()
++                .getVehicleById(proposal.getVehicleId()).orElseThrow().getState());
++        assertEquals(1, new AppContext(db).getOperationQueryService().getClientRequests(1L).size());
++    }
++
++    static Stream<Arguments> writeFailures() {
++        return Stream.of(
++                new String[]{"approval", "bank_account", "UPDATE", "false", "1000"},
++                new String[]{"approval", "sale", "INSERT", "false", "17000"},
++                new String[]{"approval", "vehicle", "UPDATE", "false", "17000"},
++                new String[]{"approval", "request", "DELETE", "false", "17000"},
++                new String[]{"rejection", "request", "DELETE", "false", "1000"},
++                new String[]{"rejection", "vehicle", "DELETE", "false", "1000"},
++                new String[]{"rejection", "vehicle", "UPDATE", "true", "1000"})
++                .flatMap(row -> Stream.of(false, true).map(skip -> Arguments.of(
++                        row[0], row[1], row[2], Boolean.parseBoolean(row[3]), row[4], skip)));
++    }
++
++    @ParameterizedTest
++    @ValueSource(strings = {"approval", "rejection-new", "rejection-history"})
++    void failureAfterTheFinalWriteRollsBackEveryActualEffect(String phase) throws Exception {
++        boolean approved = phase.equals("approval");
++        boolean history = phase.equals("rejection-history");
++        if (history) addHistory("ALL");
++        String before = snapshot();
++        String table = approved ? "request" : "vehicle";
++        String event = history ? "UPDATE" : "DELETE";
++        sql("CREATE FUNCTION ticket10_fault() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN "
++                + "IF EXISTS (SELECT 1 FROM request WHERE id=" + proposal.getId()
++                + ") THEN RAISE EXCEPTION 'ticket10_request_not_consumed'; END IF; "
++                + "IF (SELECT balance FROM bank_account WHERE client=1) <> " + (approved ? 17000 : 1000)
++                + " THEN RAISE EXCEPTION 'ticket10_wrong_balance'; END IF; "
++                + (approved ? "IF NOT EXISTS (SELECT 1 FROM sale WHERE vehicle=" + proposal.getVehicleId()
++                        + " AND amount=-16000 AND type='ACQUISITION') THEN RAISE EXCEPTION 'ticket10_missing_acquisition'; END IF; " : "")
++                + (approved || history ? "IF NOT EXISTS (SELECT 1 FROM vehicle WHERE id=" + proposal.getVehicleId()
++                        + " AND state='" + (approved ? "SALE" : "SOLD") + "') THEN RAISE EXCEPTION 'ticket10_wrong_state'; END IF; "
++                        : "IF EXISTS (SELECT 1 FROM vehicle WHERE id=" + proposal.getVehicleId()
++                        + ") THEN RAISE EXCEPTION 'ticket10_vehicle_not_deleted'; END IF; ")
++                + "RAISE EXCEPTION 'ticket10_all_effects_observed_then_failed'; END $$; "
++                + "CREATE TRIGGER ticket10_fault AFTER " + event + " ON " + table
++                + " FOR EACH ROW EXECUTE FUNCTION ticket10_fault()");
++        RuntimeException failure = assertThrows(RuntimeException.class, operation(approved ? "approval" : "rejection")::run);
++        assertTrue(rootMessage(failure).contains("ticket10_all_effects_observed_then_failed"), rootMessage(failure));
++        assertEquals(before, snapshot());
++        var ctx = new AppContext(db);
++        assertEquals(new BigDecimal("1000.00"), ctx.getAuthService().getClientBankAccount(1L).getBalance());
++        assertEquals(VehicleState.WAITING, ctx.getCatalogService().getVehicleById(proposal.getVehicleId()).orElseThrow().getState());
++    }
++
++    @ParameterizedTest
++    @ValueSource(strings = {"account", "vehicle", "request", "salesman", "overflow", "type"})
++    void missingOrInvalidDataCannotLeaveAnyWrite(String missing) throws Exception {
++        switch (missing) {
++            case "account" -> sql("DELETE FROM bank_account WHERE client=1");
++            case "vehicle" -> sql("ALTER TABLE request DROP CONSTRAINT fk_request_vehicle; DELETE FROM vehicle WHERE id=" + proposal.getVehicleId());
++            case "request" -> sql("DELETE FROM request WHERE id=" + proposal.getId());
++            case "overflow" -> sql("UPDATE bank_account SET balance=99999999.99 WHERE client=1");
++            case "type" -> sql("UPDATE request SET type='PURCHASE', deposit=4000, agreed_total=20000 WHERE id=" + proposal.getId());
++            case "salesman" -> { }
++            default -> throw new IllegalArgumentException(missing);
++        }
++        String before = snapshot();
++        assertThrows(RuntimeException.class, () -> new AppContext(db).getSaleToDealershipService()
++                .approveSaleProposal(proposal.getId(), missing.equals("salesman") ? 999999L : 16L));
++        assertEquals(before, snapshot());
++        if (missing.equals("vehicle") || missing.equals("request") || missing.equals("type")) {
++            assertThrows(RuntimeException.class, operation("rejection")::run);
++            assertEquals(before, snapshot());
++        }
++    }
++
++    @Test
++    void zeroPaymentCannotConsumeTheProposalOrWriteAnAcquisition() throws Exception {
++        sql("UPDATE request SET deposit=0 WHERE id=" + proposal.getId());
++        String before = snapshot();
++        assertThrows(RuntimeException.class, operation("approval")::run);
++        assertEquals(before, snapshot());
++        var ctx = new AppContext(db);
++        assertTrue(ctx.getOperationQueryService().getAllSales().isEmpty());
++        assertEquals(new BigDecimal("1000.00"), ctx.getAuthService().getClientBankAccount(1L).getBalance());
++    }
++
++    @Test
++    void vehicleLockRequiresAnActiveTransaction() throws Exception {
++        try (var conn = db.getConnection()) {
++            assertThrows(IllegalArgumentException.class, () -> new it.unifi.drivehub.dao.postgres.PostgresVehicleDao(db)
++                    .findByIdForUpdate(proposal.getVehicleId(), conn));
++        }
++    }
++
++    private static String rootMessage(Throwable failure) {
++        while (failure.getCause() != null) failure = failure.getCause();
++        return failure.getMessage();
++    }
++
++    private void assertOutcome(String first, boolean history) {
++        var ctx = new AppContext(db);
++        boolean approved = first.equals("approval");
++        assertEquals(new BigDecimal(approved ? "17000.00" : "1000.00"), ctx.getAuthService().getClientBankAccount(1L).getBalance());
++        assertTrue(ctx.getOperationQueryService().getClientRequests(1L).isEmpty());
++        var vehicle = ctx.getCatalogService().getVehicleById(proposal.getVehicleId());
++        if (approved || history) assertEquals(approved ? VehicleState.SALE : VehicleState.SOLD, vehicle.orElseThrow().getState());
++        else assertTrue(vehicle.isEmpty());
++        var sales = ctx.getOperationQueryService().getAllSales();
++        assertEquals((history ? 2 : 0) + (approved ? 1 : 0), sales.size());
++        assertEquals(approved ? 1 : 0, sales.stream().filter(s -> s.getAmount().equals(new BigDecimal("-16000.00"))).count());
++        assertEquals(history ? 1 : 0, ctx.getOperationQueryService().getClientRents(2L).size());
++        assertEquals(history ? 1 : 0, ctx.getOperationQueryService().getClientTestDrives(2L).size());
++    }
++
++    private void monitorVehicleWrites() throws Exception {
++        sql("CREATE TABLE ticket10_changes (state text); "
++                + "CREATE FUNCTION ticket10_monitor() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN "
++                + "IF OLD.id = " + proposal.getVehicleId() + " THEN "
++                + "INSERT INTO ticket10_changes VALUES (TG_OP); END IF; RETURN NULL; END $$; "
++                + "CREATE TRIGGER ticket10_monitor AFTER UPDATE OR DELETE ON vehicle "
++                + "FOR EACH ROW EXECUTE FUNCTION ticket10_monitor()");
++    }
++
++    // Il primo worker attende il gate; il secondo deve risultare bloccato prima del rilascio.
++    private List<RuntimeException> race(String gateQuery, boolean commit, Runnable first, Runnable second) throws Exception {
++        var workers = Executors.newFixedThreadPool(2);
++        try (Connection gate = db.getConnection(); Connection observer = db.getConnection()) {
++            gate.setAutoCommit(false);
++            try (var statement = gate.createStatement()) {
++                statement.setQueryTimeout(10);
++                statement.execute(gateQuery);
++            }
++            var a = workers.submit(outcome(first));
++            try {
++                awaitWaiters(observer, 1);
++                var b = second == null ? null : workers.submit(outcome(second));
++                if (b != null) awaitWaiters(observer, 2);
++                if (commit) gate.commit();
++                else gate.rollback();
++                return Arrays.asList(a.get(10, TimeUnit.SECONDS), b == null ? null : b.get(10, TimeUnit.SECONDS));
++            } finally {
++                gate.rollback();
++                try (var statement = observer.createStatement()) {
++                    statement.setQueryTimeout(10);
++                    statement.executeQuery("""
++                            SELECT pg_cancel_backend(pid) FROM pg_stat_activity
++                            WHERE datname = current_database() AND usename = current_user
++                              AND pid <> pg_backend_pid() AND state = 'active' AND wait_event_type = 'Lock'
++                            """).close();
++                }
++            }
++        } finally {
++            workers.shutdownNow();
++            assertTrue(workers.awaitTermination(10, TimeUnit.SECONDS), "Worker JDBC non terminati");
++        }
++    }
++
++    private static Callable<RuntimeException> outcome(Runnable operation) {
++        return () -> {
++            try { operation.run(); return null; }
++            catch (RuntimeException failure) { return failure; }
++        };
++    }
++
++    private static void awaitWaiters(Connection observer, int expected) throws Exception {
++        long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(10);
++        try (var statement = observer.createStatement()) {
++            statement.setQueryTimeout(10);
++            do {
++                try (var rows = statement.executeQuery("""
++                        SELECT count(DISTINCT pid), string_agg(pid::text || ':' || pg_blocking_pids(pid)::text, ', ')
++                        FROM pg_stat_activity
++                        WHERE datname = current_database() AND usename = current_user
++                          AND pid <> pg_backend_pid() AND state = 'active' AND wait_event_type = 'Lock'
++                          AND cardinality(pg_blocking_pids(pid)) > 0
++                        """)) {
++                    assertTrue(rows.next());
++                    if (rows.getInt(1) == expected) {
++                        System.out.println("Ticket10 waiters " + expected + " pid:blockers " + rows.getString(2));
++                        return;
++                    }
++                }
++            } while (System.nanoTime() < deadline);
++        }
++        fail("Attese PostgreSQL distinte mancanti: " + expected);
++    }
++
++    @AfterEach
++    void removeFaults() throws Exception {
++        if (db != null) sql("DROP FUNCTION IF EXISTS ticket10_history() CASCADE; "
++                + "DROP FUNCTION IF EXISTS ticket10_monitor() CASCADE; DROP TABLE IF EXISTS ticket10_changes; "
++                + "DROP FUNCTION IF EXISTS ticket10_fault() CASCADE");
++    }
++
++    private void addHistory(String kind) throws Exception {
++        long id = proposal.getVehicleId();
++        if (kind.equals("PURCHASE") || kind.equals("ALL")) {
++            sql("INSERT INTO sale (vehicle,salesman,client,amount,date,type) VALUES (" + id
++                    + ",16,1,20000,CURRENT_DATE - INTERVAL '3 days','PURCHASE')");
++        }
++        if (kind.equals("ACQUISITION") || kind.equals("ALL")) {
++            sql("INSERT INTO sale (vehicle,salesman,client,amount,date,type) VALUES (" + id
++                    + ",16,2,-15000,CURRENT_DATE - INTERVAL '2 days','ACQUISITION')");
++        }
++        if (kind.equals("RENT") || kind.equals("ALL")) {
++            sql("INSERT INTO rent (vehicle,client,amount,start,\"end\") VALUES (" + id + ",2,100,CURRENT_DATE-5,CURRENT_DATE-4)");
++        }
++        if (kind.equals("TEST_DRIVE") || kind.equals("ALL")) {
++            sql("INSERT INTO test_drive (vehicle,client,date) VALUES (" + id + ",2,CURRENT_DATE - INTERVAL '6 days' + TIME '10:00')");
++        }
++    }
++
++    private Runnable operation(String phase) {
++        var service = new AppContext(db).getSaleToDealershipService();
++        return switch (phase) {
++            case "approval" -> () -> service.approveSaleProposal(proposal.getId(), 16L);
++            case "rejection" -> () -> service.rejectSaleProposal(proposal.getId());
++            default -> throw new IllegalArgumentException(phase);
++        };
++    }
++
++    private String snapshot(String... tables) throws Exception {
++        StringBuilder result = new StringBuilder();
++        try (Connection conn = db.getConnection(); var statement = conn.createStatement()) {
++            statement.setQueryTimeout(10);
++            for (String table : tables.length == 0 ? new String[]{"vehicle", "request", "sale", "bank_account", "rent", "test_drive"} : tables) {
++                try (var rows = statement.executeQuery("SELECT row_to_json(t)::text FROM " + table + " t ORDER BY 1")) {
++                    result.append(table);
++                    while (rows.next()) result.append(rows.getString(1));
++                }
++            }
++        }
++        return result.toString();
++    }
++
++    private void sql(String query) throws Exception {
++        try (var conn = db.getConnection(); var statement = conn.createStatement()) {
++            statement.setQueryTimeout(10);
++            statement.execute(query);
++        }
++    }
++}
+--- a/DriveHub/src/test/java/it/unifi/drivehub/SaleTypeTest.java
++++ b/DriveHub/src/test/java/it/unifi/drivehub/SaleTypeTest.java
+@@ -3,6 +3,8 @@
+ import it.unifi.drivehub.domain.operation.Sale;
+ import it.unifi.drivehub.domain.operation.SaleType;
+ import org.junit.jupiter.api.Test;
++import org.junit.jupiter.params.ParameterizedTest;
++import org.junit.jupiter.params.provider.CsvSource;
+ 
+ import java.math.BigDecimal;
+ import java.time.LocalDateTime;
+@@ -11,7 +13,7 @@
+ 
+ class SaleTypeTest {
+     @Test
+-    void factoriesDistinguishOperationsWithoutChangingTheirAmounts() {
++    void factoriesUseTheDealershipPerspectiveAndExplicitTypes() {
+         BigDecimal amount = new BigDecimal("123.45");
+         var purchase = Sale.createPurchaseRecord(1L, 16L, 1L, amount);
+         var acquisition = Sale.createAcquisitionRecord(1L, 16L, 1L, amount);
+@@ -20,10 +22,24 @@
+         assertEquals(SaleType.ACQUISITION, acquisition.getType());
+         assertEquals(SaleType.PENALTY, penalty.getType());
+         assertEquals(amount, purchase.getAmount());
+-        assertEquals(amount, acquisition.getAmount());
++        assertEquals(amount.negate(), acquisition.getAmount());
+         assertEquals(amount, penalty.getAmount());
+         assertNull(penalty.getVehicleId());
+         assertThrows(IllegalArgumentException.class,
+                 () -> Sale.create(1L, 1L, 16L, 1L, amount, LocalDateTime.now(), null));
+     }
++
++    @ParameterizedTest
++    @CsvSource({"PURCHASE,-0.01", "ACQUISITION,0.01", "PENALTY,-0.01"})
++    void reconstructionRejectsAmountsWithTheWrongEconomicSign(SaleType type, BigDecimal amount) {
++        assertThrows(IllegalArgumentException.class,
++                () -> Sale.create(1L, 1L, 16L, 1L, amount, LocalDateTime.now(), type));
++    }
++
++    @Test
++    void zeroHistoricalAmountsKeepTheirExplicitType() {
++        assertEquals(SaleType.ACQUISITION, Sale.createAcquisitionRecord(1L, 16L, 1L, BigDecimal.ZERO).getType());
++        assertEquals(SaleType.PURCHASE, Sale.createPurchaseRecord(1L, 16L, 1L, BigDecimal.ZERO).getType());
++        assertEquals(SaleType.PENALTY, Sale.createPenaltyRecord(1L, BigDecimal.ZERO).getType());
++    }
+ }
+--- a/DriveHub/docs/testing.md
++++ b/DriveHub/docs/testing.md
+@@ -368,3 +368,51 @@
+ [Evidenze, versione verificata, comandi e limiti](evidence/r05-sale-proposal/verification.md).
+ L'ambiente `/tmp/drivehub-ticket07-*` è temporaneo: verificare file privati,
+ Java 21, binari, porta e configurazione prima del riuso; la suite 08 resta storica.
++
++
++## Esito della cessione e registro — ticket 10
++
++```bash
++mvn -Ppostgres-tests -Dtest=SaleOutcomeIntegrationTest,SaleTypeTest test
++mvn -Ppostgres-tests clean test
++```
++
++Approvazione e rifiuto rileggono e bloccano richiesta e veicolo nella stessa
++transazione: tipo SALE, stato WAITING, poi conto del cliente con il protocollo 04.
++Lo storico completo (vendite, acquisizioni, noleggi e test drive) è controllato
++sulla connessione del chiamante; l'ultima PURCHASE resta un controllo distinto
++di titolarità del ticket 09. Gli esiti verificano tutte le scritture.
++
++Il cliente riceve +16000; il registro della concessionaria conserva -16000 con
++tipo ACQUISITION. PURCHASE e PENALTY restano entrate positive. Il tipo esplicito
++si conserva anche a zero e con attribuzioni storiche nulle; il registro manager
++non lo deduce da importi o soggetti mancanti. La regola esistente del conto
++continua a rifiutare pagamenti di zero, senza consumare la proposta.
++
++`SaleOutcomeIntegrationTest` usa servizi pubblici, AppContext distinti e PostgreSQL
++reale: doppio invio, gare nei due ordini, sessioni obsolete, dati mancanti, vincoli,
++errori e scritture saltate. Il gate SQL osserva PID distinti e pg_blocking_pids
++prima del rilascio, senza sleep; query, worker e cleanup hanno timeout.
++Trigger AFTER verificano tutte le scritture effettive prima di provocare il
++rollback finale, anche dopo l'eliminazione fisica di un VIN nuovo.
++
++Schema ricreabile secondo D02: `ck_sale_amount_type` richiede ACQUISITION <= 0,
++PURCHASE/PENALTY >= 0. Prima dell'uso su installazioni esistenti occorre adeguare
++schema e importi delle acquisizioni già classificate dai fatti; non inferire il
++tipo dai vecchi segni e non resettare dati applicativi. La demo non contiene
++acquisizioni: i suoi importi, soggetti e attribuzioni restano invariati.
++
++Il [controllo JavaFX](evidence/r05-sale-outcome/SaleOutcomeUiCheck.java) riusa Robot
++dei ticket 05/06; il [launcher](evidence/r05-sale-outcome/run-ui.py) richiede
++JAVA_HOME 21, le variabili DB di questa pagina e DISPLAY su un display di test
++isolato. Dopo la compilazione Maven, eseguire:
++
++```bash
++python3 docs/evidence/r05-sale-outcome/run-ui.py
++```
++
++Seed e controllo usano JVM distinte e soltanto il DB dedicato; l'output predefinito
++è `/tmp/drivehub-ticket10/ui`, personalizzabile con DRIVEHUB_UI_DIR. Il controllo
++esercita approvazione, sessione obsoleta, rifiuti, saldo cliente, tipi/importi del
++registro manager e navigazione con frecce, Tab, Spazio e Invio.
++[Evidenze, comandi ed esiti della versione](evidence/r05-sale-outcome/verification.md).
+--- /dev/null
++++ b/DriveHub/docs/evidence/r05-sale-outcome/SaleOutcomeUiCheck.java
+@@ -0,0 +1,161 @@
++package it.unifi.drivehub;
++
++import it.unifi.drivehub.dao.DatabaseManager;
++import it.unifi.drivehub.domain.operation.Request;
++import it.unifi.drivehub.domain.operation.Sale;
++import it.unifi.drivehub.domain.operation.SaleType;
++import it.unifi.drivehub.domain.user.*;
++import it.unifi.drivehub.domain.vehicle.VehicleState;
++import it.unifi.drivehub.presentation.view.*;
++import javafx.application.Platform;
++import javafx.scene.Parent;
++import javafx.scene.control.*;
++import javafx.scene.input.KeyCode;
++import javafx.scene.robot.Robot;
++import javafx.stage.Stage;
++
++import java.math.BigDecimal;
++import java.time.Year;
++import java.util.concurrent.CountDownLatch;
++import java.util.concurrent.TimeUnit;
++
++/** Controllo delle viste pubbliche con Robot e PostgreSQL dedicato; riusa il ticket 06. */
++public class SaleOutcomeUiCheck extends AgreementUiCheck {
++    static final String APPROVE = "T1000000000000091";
++    static final String REJECT_NEW = "T1000000000000092";
++    static final String REJECT_KNOWN = "T1000000000000093";
++
++    static void seed() throws Exception {
++        ctx = new AppContext(TestDatabase.fromEnvironment().reset());
++        try (var conn = ctx.getDatabaseManager().getConnection(); var sql = conn.createStatement()) {
++            sql.execute("DELETE FROM sale; DELETE FROM rent; DELETE FROM test_drive; DELETE FROM request;"
++                    + "DELETE FROM vehicle_discount; DELETE FROM vehicle; UPDATE bank_account SET balance=50000 WHERE client=1");
++        }
++        int year = Year.now().getValue();
++        var model = ctx.getCatalogService().addModel("Fiat", "UI Outcome10", new BigDecimal("20000"), year);
++        var known = ctx.getCatalogService().addVehicle(model.getId(), REJECT_KNOWN, null, 0, null, year, VehicleState.SALE);
++        var purchase = ctx.getPurchaseService().initiatePurchase(known.getId(), 1L);
++        ctx.getPurchaseService().approvePurchase(purchase.getId(), 16L);
++        ctx.getPurchaseService().completePurchase(purchase.getId());
++        for (String vin : new String[]{APPROVE, REJECT_NEW, REJECT_KNOWN}) {
++            String plate = vin.equals(APPROVE) ? "AB123CD" : vin.equals(REJECT_NEW) ? "EF456GH" : "MN789PQ";
++            ctx.getSaleToDealershipService().submitSaleProposal(1L, model.getId(), vin, plate, 0, year);
++        }
++        try (var conn = ctx.getDatabaseManager().getConnection(); var sql = conn.createStatement()) {
++            sql.execute("UPDATE bank_account SET balance=1000 WHERE client=1;"
++                    + "INSERT INTO sale(vehicle,salesman,client,amount,date,type) VALUES"
++                    + "(NULL,NULL,2,0,CURRENT_DATE-2,'ACQUISITION'),"
++                    + "(NULL,NULL,2,0,CURRENT_DATE-1,'PURCHASE'),"
++                    + "(NULL,NULL,2,800,CURRENT_DATE,'PENALTY')");
++        }
++        System.out.println("SEED SUCCESS: tre cessioni 16000, storico effettivo, tipi espliciti anche a zero");
++    }
++
++    static SalesmanDashboardView seller(Salesman user) {
++        return new SalesmanDashboardView(user, ctx.getAuthService(), ctx.getPurchaseService(),
++                ctx.getSaleToDealershipService(), ctx.getRentalService(), ctx.getCatalogService(), ctx.getOperationQueryService(), () -> {});
++    }
++
++    static long vehicle(String vin) {
++        return ctx.getCatalogService().getAllVehicles().stream().filter(v -> v.getVin().equals(vin)).findFirst().orElseThrow().getId();
++    }
++
++    static void selectProposal(String vin) throws Exception {
++        long id = vehicle(vin);
++        var table = fx(() -> requests(stage.getScene().getRoot()));
++        int index = fx(() -> {
++            for (int i=0; i<table.getItems().size(); i++) if (table.getItems().get(i).getVehicleId().equals(id)) return i;
++            throw new AssertionError("Proposta assente " + vin);
++        });
++        focusTable(table);
++        for (int i=0; i<index; i++) key(KeyCode.DOWN);
++        check(fx(() -> table.getSelectionModel().getSelectedItem().getVehicleId()).equals(id), "cessione selezionata con frecce " + vin);
++    }
++
++    static void press(String label) throws Exception {
++        reach(n -> n instanceof Button b && b.getText().equals(label));
++        key(KeyCode.SPACE);
++    }
++
++    @SuppressWarnings("unchecked")
++    static TableView<Sale> ledger(Parent root) {
++        return (TableView<Sale>) root.lookupAll(".table-view").stream().filter(n -> ((TableView<?>) n).getColumns().stream()
++                .anyMatch(c -> c.getText().equals("Importo concessionaria"))).findFirst().orElseThrow();
++    }
++
++    static String saleCell(TableView<Sale> table, Sale sale, String column) {
++        return table.getColumns().stream().filter(c -> c.getText().equals(column)).findFirst().orElseThrow().getCellData(sale).toString();
++    }
++
++    public static void main(String[] args) throws Exception {
++        if (args[0].equals("seed")) { seed(); return; }
++        out = args[1] + "/";
++        Thread.setDefaultUncaughtExceptionHandler((thread, error) -> { error.printStackTrace(); System.exit(2); });
++        TestDatabase.fromEnvironment();
++        ctx = new AppContext(new DatabaseManager(System.getenv("DRIVEHUB_TEST_DB_URL"),
++                System.getenv("DRIVEHUB_TEST_DB_USER"), System.getenv("DRIVEHUB_TEST_DB_PASSWORD")));
++        var ready = new CountDownLatch(1);
++        Platform.startup(ready::countDown);
++        check(ready.await(10, TimeUnit.SECONDS), "JavaFX avviato nella seconda JVM");
++        Platform.setImplicitExit(false);
++        try {
++            fx(() -> { stage = new Stage(); robot = new Robot(); return null; });
++            var user = (Salesman) ctx.getAuthService().login("paolo.costa@drivehub.it", "password");
++            var stale = fx(() -> seller(user));
++            show(fx(() -> seller(user)));
++            selectProposal(APPROVE);
++            press("Approva Richiesta");
++            check(dialog().contains("pagamento accreditato al cliente"), "messaggio di accredito positivo");
++            closeAlert(); show(fx(() -> seller(user))); screenshot("seller-approved");
++            check(ctx.getAuthService().getClientBankAccount(1L).getBalance().equals(new BigDecimal("17000.00")), "conto cliente +16000");
++            show(stale); selectProposal(APPROVE); press("Approva Richiesta");
++            check(dialog().contains("rollback"), "sessione obsoleta segnala errore senza secondo pagamento");
++            screenshot("seller-stale"); closeAlert();
++            check(ctx.getAuthService().getClientBankAccount(1L).getBalance().equals(new BigDecimal("17000.00")), "nessun doppio accredito UI");
++
++            show(fx(() -> seller(user))); selectProposal(REJECT_NEW); press("Rifiuta Richiesta");
++            check(dialog().contains("senza pagamento"), "messaggio rifiuto senza accredito"); closeAlert();
++            check(ctx.getCatalogService().getAllVehicles().stream().noneMatch(v -> v.getVin().equals(REJECT_NEW)), "VIN nuovo rimosso dal catalogo UI");
++            show(fx(() -> seller(user))); selectProposal(REJECT_KNOWN); press("Rifiuta Richiesta");
++            check(dialog().contains("storico del veicolo è conservato"), "messaggio rifiuto con storico");
++            screenshot("seller-rejected"); closeAlert();
++            check(ctx.getCatalogService().getVehicleById(vehicle(REJECT_KNOWN)).orElseThrow().getState()==VehicleState.SOLD, "VIN storico ripristinato SOLD");
++            check(ctx.getOperationQueryService().getClientSales(1L).size()==2, "vendita e acquisizione conservate");
++
++            var client = (Client) ctx.getAuthService().login("mario.rossi@email.it", "password");
++            show(fx(() -> new ClientDashboardView(client, ctx.getAuthService(), ctx.getPurchaseService(), ctx.getSaleToDealershipService(),
++                    ctx.getRentalService(), ctx.getTestDriveService(), ctx.getCatalogService(), ctx.getOperationQueryService(), ctx.getPriceCalculatorService(), () -> {})));
++            check(fx(() -> ((Label)stage.getScene().getRoot().lookup(".balance-badge")).getText()).contains(
++                    UiUtils.formatCurrency(new BigDecimal("17000"))), "cliente vede il saldo accreditato");
++            screenshot("client-balance");
++
++            var manager = (Manager) ctx.getAuthService().login("vittorio.manager@drivehub.it", "password");
++            show(fx(() -> new ManagerDashboardView(manager, ctx.getAuthService(), ctx.getCatalogService(), ctx.getOperationQueryService(), () -> {})));
++            TabPane tabs = fx(() -> (TabPane)((ManagerDashboardView)stage.getScene().getRoot()).getCenter());
++            fx(() -> { tabs.requestFocus(); return null; });
++            for (int i=0; i<tabs.getTabs().size()-1; i++) key(KeyCode.RIGHT);
++            check(fx(() -> tabs.getSelectionModel().getSelectedItem().getText()).equals("Registro economico"), "registro raggiunto con frecce");
++            var table = fx(() -> ledger(stage.getScene().getRoot()));
++            fx(() -> {
++                check(table.getItems().size()==5, "registro riletto con tutte le cinque operazioni");
++                for (Sale sale:table.getItems()) {
++                    String expected = switch(sale.getType()) {
++                        case PURCHASE -> "VENDITA A CLIENTE";
++                        case ACQUISITION -> "ACQUISIZIONE DA CLIENTE";
++                        case PENALTY -> "PENALE SCADENZA (Quota trattenuta)";
++                    };
++                    check(saleCell(table,sale,"Tipologia").equals(expected), "tipo esplicito "+sale.getType()+" "+sale.getAmount());
++                    check(saleCell(table,sale,"Importo concessionaria").equals(UiUtils.formatCurrency(sale.getAmount())), "importo del registro "+sale.getAmount());
++                }
++                check(table.getItems().stream().anyMatch(s -> s.getType()==SaleType.ACQUISITION && s.getAmount().equals(new BigDecimal("-16000.00"))), "acquisizione -16000");
++                return null;
++            });
++            focusTable(table); key(KeyCode.END);
++            check(fx(() -> table.getSelectionModel().getSelectedIndex())==4, "registro navigabile fino all'ultima operazione");
++            screenshot("manager-ledger");
++            System.out.println("UI CHECK SUCCESS");
++        } finally {
++            fx(() -> { stage.close(); return null; }); Platform.exit();
++        }
++    }
++}
+--- /dev/null
++++ b/DriveHub/docs/evidence/r05-sale-outcome/run-ui.py
+@@ -0,0 +1,26 @@
++from pathlib import Path
++import os
++import subprocess
++
++repo = Path(__file__).resolve().parents[3]
++out = Path(os.environ.get("DRIVEHUB_UI_DIR", "/tmp/drivehub-ticket10/ui"))
++out.mkdir(parents=True, exist_ok=True)
++env = os.environ.copy()
++assert env.get("DISPLAY"), "Impostare DISPLAY su un display di test isolato"
++java = Path(env["JAVA_HOME"]) / "bin"
++modules = ":".join(str(next((Path.home() / ".m2/repository/org/openjfx" / name / "21.0.2").glob("*-linux.jar")))
++                   for name in ["javafx-base", "javafx-graphics", "javafx-controls"])
++classpath = ":".join([str(repo / "target/classes"), str(repo / "target/test-classes"),
++                      str(Path.home() / ".m2/repository/org/postgresql/postgresql/42.7.3/postgresql-42.7.3.jar"), str(out)])
++sources = [repo / "docs/evidence" / folder / name for folder, name in [
++    ("r03-prices", "PriceUiCheck.java"), ("r04-agreement", "AgreementUiCheck.java"),
++    ("r05-sale-outcome", "SaleOutcomeUiCheck.java")]]
++with (out / "ui.log").open("w") as log:
++    subprocess.run([str(java / "javac"), "--module-path", modules, "--add-modules", "javafx.controls",
++                    "-cp", classpath, "-d", str(out), *map(str, sources)], env=env, stdout=log, stderr=subprocess.STDOUT, check=True)
++    for phase in ["seed", "check"]:
++        subprocess.run([str(java / "java"), "--module-path", modules, "--add-modules", "javafx.controls",
++                        "-Dprism.order=sw", "-cp", classpath, "it.unifi.drivehub.SaleOutcomeUiCheck", phase, str(out)],
++                       env=env, stdout=log, stderr=subprocess.STDOUT, timeout=180, check=True)
++assert "UI CHECK SUCCESS" in (out / "ui.log").read_text()
++print("UI CHECK SUCCESS; log e schermate:", out)
+--- /dev/null
++++ b/DriveHub/docs/evidence/r05-sale-outcome/verification.md
+@@ -0,0 +1,139 @@
++# Ticket 10 — esito della cessione e registro della concessionaria
++
++Verifica del 2 novembre 2026. Implementato soltanto il ticket 10.
++**Ticket 10 chiuso: 6/6 criteri soddisfatti e verificati.**
++Prerequisiti 07 e 09 e tutti i ticket 01–09 controllati chiusi:
++[controllo](prerequisites.json). Nessun commit/staging; Relazione_SWE esclusa.
++
++## Versione e conservazione
++
++HEAD iniziale `c2a81122ee6be44760ded4160fde229bd33e837c`. Baseline acquisita prima
++delle modifiche: 390 file tracciati/non ignorati presenti, esclusi Relazione_SWE,
++Git e output di build; piano e ticket esterni copiati separatamente in
++`/tmp/drivehub-ticket10`. [Manifest](baseline-sha256.json).
++Il lavoro locale 01–09 non è attribuito a questa sessione: nessuna review da HEAD.
++
++[Patch fissata per la review](review.patch), [16 file](review-files.txt), SHA256
++`8da69d421468addde119df3ec2105e40c54c9ff892c49bdfb3b4fe6cacf39f53`.
++Comprende codice, test, testing.md e harness GUI; log, immagini e documenti di
++chiusura sono evidenze aggiuntive. [Conservazione](preservation.json),
++[controlli finali](integrity-checks.json), [patch finale della sessione](session.patch).
++Gli hash della [suite finale](final-full-files.sha256.json) identificano sorgenti,
++test, schema, fixture e POM realmente ricompilati; [hash GUI](ui-files.sha256.json).
++I documenti finali non sono nuove prove runtime. Evidenze storiche 01–09 conservate.
++
++## Mappa dei chiamanti
++
++| Confine | Risultato |
++|---|---|
++| `approveSaleProposal` / `rejectSaleProposal` | Firme pubbliche conservate; helper comune rilegge e blocca richiesta e veicolo, verificando SALE e WAITING prima degli effetti |
++| Richieste / veicoli / conti | Ordine richiesta → veicolo → conto singolo; lock richiesta del 07 e conto del 04 riusati; stesso conn fino a commit/rollback; nessuna autorità da oggetti UI |
++| DAO veicolo | Aggiunta lettura ID FOR UPDATE con rifiuto autocommit; transizioni atomiche WAITING → SALE/SOLD; DELETE richiede una riga |
++| Storico | Riutilizzata la verifica di tutte le operazioni del veicolo, con overload sulla connessione del chiamante; eliminata la verifica sale su connessione separata. Ultima PURCHASE per titolarità 09 resta distinta e invariata |
++| Rifiuto | Richiesta eliminata nella transazione; senza storico elimina il VIN, con sale/rent/test_drive conserva tutte le righe e ripristina SOLD |
++| Dominio / factory / mapping | ACQUISITION negativa nel registro, accredito cliente positivo. PURCHASE/PENALTY positive. Tipo esplicito 09 conservato dai mapper; nessuna classificazione dal segno o da soggetti nulli |
++| Schema / fixture | Check segno/tipo nel dominio e DB; demo invariata. Due fixture 09 mantengono valore assoluto, clienti, venditori e storico con acquisizioni negative; aspettativa 05 ora verifica il segno esatto |
++| AppContext / query / cliente | Stessa composizione e stesse dipendenze; servizio economico e letture esistenti riusati. Vista cliente invariata, saldo controllato anche nella GUI |
++| Venditore / manager | Messaggi di cessione coerenti; registro dal punto di vista concessionaria, tipo da SaleType, contrasto selezione riusando CSS esistente |
++
++Nessun nuovo conto o procedura economica; formula/base/centesimi 05, accordi 06,
++elaborazioni 07, Observer 08 e titolarità/unicità 09 preservati e verificati.
++
++## Ambiente e comandi
++
++[Identità/privilegi/sentinella](environment.txt): JDK Linux 21.0.12.1,
++Maven 3.9.16, PostgreSQL 16.15. Ricontrollati binari, PG_VERSION, cluster
++arrestato e sei variabili del file privato 07 (0600) prima del riuso.
++Il cluster dedicato è `/tmp/drivehub-ticket07-pgdata`, solo 127.0.0.1:55432;
++DB/ruolo drivehub_test e copia applicativa distinta drivehub con R00_SENTINEL.
++Nessun contatto ai database applicativi preesistenti. Credenziali fuori repository.
++Avvio sandbox negato sui socket; avvio/prove riusciti con escalation sul solo cluster
++sacrificabile. Il launcher temporaneo usa JDK21, `mvn -B -o` e variabili private 07.
++
++Dalla directory esterna: `python3 /tmp/drivehub-ticket10/maven.py <etichetta> <argomenti>`.
++Argomenti Maven ripetibili predisponendo l'ambiente di [testing.md](../../testing.md).
++
++| Etichetta / selezione | Esito |
++|---|---|
++| `state-red -Ppostgres-tests -Dtest=SaleOutcomeIntegrationTest test` | 8 failure attese sugli stati errati; [log](state-red.log), [XML](state-red.xml), [stessa regressione](state-regression-source.java.txt) |
++| `state-green`, stessi test | 8/8; [log](state-green.log), [XML](state-green.xml) |
++| `amount-red -Ppostgres-tests -Dtest=SaleTypeTest,SaleOutcomeIntegrationTest#approvalPaysTheClientAndRecordsOneDealershipExpense test` | 2 failure attese sul segno; [log](amount-red.log), [sorgente servizio](amount-regression-source.java.txt) |
++| `amount-green -Ppostgres-tests -Dtest=SaleTypeTest,SaleOutcomeIntegrationTest test` | 10/10; [log](amount-green.log) |
++| `history-red`, metodi `rejectionPreservesEveryKindOfHistoryAndRemovesOnlyANewVehicle+aSkippedVehicleDeletionCannotConsumeTheRequest` | 1 failure e 2 errori attesi su 7: DELETE saltata, storico rent/test_drive; [log](history-red.log), [XML](history-red.xml), [sorgente](history-regression-source.java.txt) |
++| `history-green -Ppostgres-tests -Dtest=SaleOutcomeIntegrationTest test` | 16/16; [log](history-green.log) |
++| `races`, stessa classe ampliata | 31/31; [log con PID e blocker](races.log) |
++| `validation-red`, metodi su venditore mancante e segno/tipo dominio/DB | 7 failure attese; [log](validation-red.log), [XML](validation-red-surefire/) |
++| `validation-green -Ppostgres-tests -Dtest=SaleTypeTest,SaleOutcomeIntegrationTest,SaleProposalIntegrationTest,PriceSelectionIntegrationTest test` | 72/72; [log](validation-green.log) |
++| `outcomes`, estensione rollback | 63/64: il nuovo test ipotizzava un pagamento zero consentito; il conto preesistente lo rifiuta. Aspettativa corretta a fallimento atomico, senza modificare la regola economica; [log](outcomes.log) |
++| `stale-baseline-red`, stessi tre metodi obsolescenza/storico | 5 failure e 1 errore su 7 sulla copia isolata della baseline; [log](stale-baseline-red.log), [hash](stale-baseline-red-files.sha256.json). Invariati i metodi selezionati; escluso dal sorgente compilato solo il test DAO del nuovo metodo assente nella baseline |
++| `targeted -Ppostgres-tests -Dtest=SaleOutcomeIntegrationTest,SaleTypeTest,SaleProposalIntegrationTest,TestDriveCancellationIntegrationTest,PurchaseConcurrencyIntegrationTest,PurchaseAgreementIntegrationTest,BalanceConcurrencyIntegrationTest,PriceCalculatorServiceTest,PriceSelectionIntegrationTest,DemoSqlValidationTest test` | 206/206; [log](targeted.log) |
++| `full -Ppostgres-tests clean test` | 259/259 prima dell'ultimo riuso CSS del registro; risultato intermedio, [log](full.log) |
++| `final-full -Ppostgres-tests clean test` | **259/259, zero failure/errori/salti**; [log](final-full.log), [XML](final-full-surefire/), [riepilogo](summary.json) |
++
++Suite finale: **45 senza DB e 214 PostgreSQL**, inclusi isolamento/sentinella, fixture ripetibili e tutti i protocolli 04–09. Target Java21 con `-Xlint:all`; resta il warning Maven preesistente sulle dipendenze JavaFX.
++
++La suite 195/195 del 09 è storica. Nessun mock certifica la persistenza.
++I primi cicli conservano sorgenti RED e XML; i cicli successivi anche manifest
++prima della compilazione. La copia RED isolata contiene solo baseline src/POM e
++il test corrente: non ha sovrascritto il repository o il lavoro locale.
++
++## Criteri e prove
++
++`SaleOutcomeIntegrationTest` conta 60 casi PostgreSQL, `SaleTypeTest` 5 di dominio.
++I primi test accertano che il vecchio servizio accettava stati non WAITING,
++registrava il segno errato e non gestiva correttamente storico e DELETE saltata.
++La prova aggiuntiva sulla baseline riproduce client/importo/tipo/stato obsoleti e
++lettura storica separata. Non si attribuisce un doppio pagamento osservato a una
++gara che i controlli delle righe precedenti già facevano fallire in rollback.
++
++- Gare di tutti gli esiti nei due ordini, con/senza storico, richieste ripetute:
++  una sola acquisizione -16000, conto 1000 → 17000, una sola modifica/eliminazione
++  del veicolo misurata da trigger transazionale. Perdente fallisce senza effetti.
++- Gate su richiesta/veicolo; PID distinti e pg_blocking_pids osservati prima del
++  rilascio, nessuno sleep. Rilettura di cliente/importo/tipo/stato dopo l'attesa.
++  Query/worker/cleanup con limiti di 10 secondi e cancellazione delle attese residue.
++- Rifiuto senza storico e con PURCHASE, ACQUISITION, RENT, TEST_DRIVE e combinati:
++  nessun residuo o pagamento; storico e attribuzioni confrontati integralmente.
++  Un trigger scrive storico dopo DELETE richiesta nella stessa transazione:
++  il rifiuto deve vederlo e conservare il veicolo SOLD.
++- Errori e RETURN NULL su conto, INSERT sale, UPDATE/DELETE veicolo e DELETE
++  richiesta; account/veicolo/richiesta/venditore mancanti, tipo errato, overflow,
++  vincoli segno/tipo. Snapshot completi prima/dopo e riletture pubbliche da nuovi AppContext.
++- Trigger AFTER sull'ultima scrittura osservano conto già accreditato, acquisizione,
++  richiesta consumata e stato finale oppure eliminazione fisica del veicolo;
++  poi errore PostgreSQL e rollback integrale. Non basta un errore prima degli effetti.
++
++## JavaFX, tastiera e review
++
++[Sorgente](SaleOutcomeUiCheck.java), [launcher](run-ui.py), [log finale](ui.log):
++**UI CHECK SUCCESS**. JDK21 e JavaFX21.0.2, Xvfb :97 senza TCP, rendering software,
++pacchetti ufficiali estratti solo in /tmp; nessuna modifica di sistema o desktop utente.
++Seed/check in due JVM; solo DB dedicato. Primo seed fallito per targhe duplicate
++della fixture, poi corrette; un primo passaggio Robot perdeva focus dopo il dialogo,
++risolto ricostruendo la vista. [Log seed](ui-seed-failed.log), [log focus](ui-focus-failed.log).
++
++Verificati frecce, Tab, Spazio e Invio; selezione con focus e testo scuro leggibile,
++approvazione e sessione obsoleta senza doppio pagamento, rifiuto dei due VIN,
++saldo cliente, registro con -16000/+20000/+800 e due tipi distinti a zero con
++attribuzioni nulle. Schermate: [venditore](seller-approved.png),
++[cliente](client-balance.png), [manager](manager-ledger.png). Schermate finali
++ispezionate visivamente; riutilizzato il CSS di selezione del 06 per il registro.
++
++[Standards](standards-review.md): **0 violazioni, 0 smell azionabili**.
++[Spec](spec-review.md): **0 rilievi**. Revisori distinti, contesti nuovi, stessa
++patch finale fissata. Nessun codice/test/harness cambiato dopo le prove finali.
++
++## Limiti e prossimo passo
++
++Schema ricreabile secondo D02: prima dell'uso su installazioni esistenti occorre
++adeguare il vincolo e gli importi delle acquisizioni già classificate dai fatti;
++non inferire i tipi dai vecchi segni né resettare i dati applicativi.
++Non certificati screen reader, prenotazioni ticket 11, altre transizioni,
++cancellazione account o prestazioni. Ambiente /tmp temporaneo, da ricontrollare.
++[Lettura finale](environment-final.txt) conferma identità e sentinella dopo la suite.
++Cluster [arrestato](cluster-stop.txt) e display Xvfb :97 terminato; nessun servizio
++applicativo preesistente usato. HEAD e indice invariati; nessun commit.
++**R05 completata per 09–10; AC03/#3 e AC10/#10 chiusi, totale 10/20**
++(#1, #2, #3, #4, #6, #8, #10, #11, #17, #19). AC13 resta trasversale.
++Prossimo passo: nessun lavoro residuo del ticket 10. Ticket 11 soltanto su una
++nuova richiesta; nessun successivo avviato.
+--- /dev/null
++++ b/DriveHub/docs/evidence/r05-sale-outcome/standards-review.md
+@@ -0,0 +1,12 @@
++# Standards — revisione indipendente finale
++
++Patch della sola sessione SHA256 `8da69d421468addde119df3ec2105e40c54c9ff892c49bdfb3b4fe6cacf39f53`.
++Revisore in contesto nuovo, lettura di istruzioni, glossario, ADR, codice connesso e prove.
++**0 violazioni documentate, 0 smell azionabili, 0 bug concreti.**
++
++Confermati lock/rilettura richiesta e veicolo, protocollo conto 04, segni distinti,
++conservazione storico su connessione transazionale, prove pubbliche PostgreSQL.
++Nessuna modifica a formule, accordi, Observer o titolarità precedenti.
++Rivisti anche riuso del CSS di contrasto e aggiornamenti del controllo Robot.
++Nessun test o SQL eseguito dal revisore; validazione finale runtime del principale.
++Relazione_SWE esclusa; nessun confronto cumulativo da HEAD.
+--- /dev/null
++++ b/DriveHub/docs/evidence/r05-sale-outcome/spec-review.md
+@@ -0,0 +1,14 @@
++# Spec — revisione indipendente finale
++
++Patch della sola sessione SHA256 `8da69d421468addde119df3ec2105e40c54c9ff892c49bdfb3b4fe6cacf39f53`.
++Revisore distinto in contesto nuovo, ticket 10, requisiti dell'utente e piano.
++**0 rilievi** su requisiti mancanti/parziali, scope creep o comportamento errato.
++
++Confermati AC03/AC10: lock/rilettura SALE e WAITING nella transazione,
++accredito positivo e acquisizione negativa, rifiuto senza residui del VIN nuovo,
++storico completo conservato con SOLD, tipi espliciti e fixture coerenti.
++Verificati controlli delle scritture e test di rollback dopo effetti effettivi,
++gare osservabili nei due ordini e sessioni obsolete, dati/conti mancanti.
++Il riuso CSS migliora la leggibilità; i delta Robot preservano le verifiche.
++Nessun ticket successivo anticipato. Nessun test/DB eseguito dal revisore;
++validazione finale runtime del principale. Relazione_SWE esclusa.
+--- a/PIANO_REVISIONI_DRIVEHUB.md
++++ b/PIANO_REVISIONI_DRIVEHUB.md
+@@ -3,6 +3,36 @@
+ Registro operativo avviato il 31 ottobre 2026. Punto di ingresso per riprendere il lavoro: avanzamento, decisioni, attività, verifiche e prossimo passo.
+ 
+ ## Stato attuale
++
++- **Ticket 01–10 chiusi e verificati**. In questa sessione lavorato soltanto il 10,
++  dopo controllo dei prerequisiti e baseline locale del lavoro 01–09.
++- Cessione: richiesta SALE e veicolo WAITING riletti e bloccati nella transazione;
++  accredito +16000 una sola volta, acquisizione -16000 con tipo esplicito;
++  rifiuto atomico, VIN nuovo rimosso, storico completo conservato e SOLD.
++- Mirati **206/206**, suite finale **259/259**, zero failure/errori/salti:
++  **45 senza DB, 214 PostgreSQL**, inclusi conti04, prezzi05, accordi06,
++  elaborazioni07, Observer08, titolarità/unicità09, fixture e isolamento/sentinella.
++  Nuovi 60 casi PostgreSQL e 4 aggiuntivi dominio; suite 195/195 del 09 storica.
++- JavaFX/Robot/tastiera finale **UI CHECK SUCCESS**, schermate ispezionate:
++  cliente/venditore/manager, esiti e sessione obsoleta, segni/tipi e contrasto.
++- Review indipendenti **Standards 0 violazioni/0 smell, Spec 0 rilievi** sul solo
++  diff di sessione SHA256 `8da69d421468addde119df3ec2105e40c54c9ff892c49bdfb3b4fe6cacf39f53`.
++  Nessun codice/test/harness cambiato dopo prove finali/review.
++- [Ticket 10](TRACKER_DRIVEHUB/revisioni/issues/10-esito-cessione-e-registro.md),
++  [prove e comandi](DriveHub/docs/evidence/r05-sale-outcome/verification.md).
++- **R05 completata; AC03/#3 e AC10/#10 chiusi; totale 10/20**
++  (#1, #2, #3, #4, #6, #8, #10, #11, #17, #19). AC13 resta trasversale.
++- Ambiente Java21/PG16 del 07 ricontrollato prima del riuso; solo cluster
++  sacrificabile 127.0.0.1:55432 e copia sentinella; cluster e Xvfb arrestati.
++  Nessun DB applicativo preesistente contattato, nessuna installazione di sistema.
++- Baseline: 390 file, 377 identici e 13 modifiche intenzionali, zero eliminazioni;
++  evidenze storiche preservate, HEAD/indice invariati. Nessun commit/staging;
++  Relazione_SWE sempre esclusa. Schema/importi acquisizioni da adeguare prima
++  dell'uso su installazioni esistenti; /tmp temporanea, screen reader non certificato.
++- Prossimo passo: nessun residuo del 10; ticket 11 soltanto su nuova richiesta.
++  Nessun ticket successivo avviato.
++
++## Stato al termine del ticket 09 — storico
+ 
+ - **Ticket 01–09 chiusi e verificati**. Soltanto il ticket 09 lavorato nella
+   sessione corrente, dopo controllo dei precedenti e acquisizione della baseline.
+@@ -106,7 +136,7 @@
+ | R02 | Movimenti del conto corretti sotto concorrenza | #4 | R00 | Completata: ticket 04 verificato e chiuso |
+ | R03 | Prezzo consigliato/manuale coerente lungo il flusso | #17 | R00, D04–D05 | Completata: ticket 05 verificato e chiuso |
+ | R04 | Acquisto: totale concordato e conclusione una sola volta | #6, #11, parte #12 | R02, R03, D06 | Completata: 06–08 chiusi e verificati |
+-| R05 | Cessione: titolarità, richiesta unica, pagamento e contabilità | #2, #3, #10 | R02, R03, D07 | Parziale: 09 chiuso e verificato; 10 pianificato |
++| R05 | Cessione: titolarità, richiesta unica, pagamento e contabilità | #2, #3, #10 | R02, R03, D07 | Completata: 09–10 chiusi e verificati |
+ | R06 | Noleggi/test drive concorrenti e transizioni valide | #5, #7, restante #12 | R02, R03, D08–D10; coordinamento eventi con R04 | Parziale: 08 chiuso; 11/12 pianificati |
+ | R07 | Cancellazione account rispettosa di storico e richieste | #9 | R00; fixture aggiornate dai flussi interessati | Pianificata |
+ | R08 | Tabelle JavaFX senza query nel rendering | #16 | R03; verificare aggiornamenti dei flussi corretti | Pianificata |
+@@ -234,7 +264,7 @@
+ | Account/dominio | Email, duplicati, targa/km, cancellazione con storico | R01, R07 | Ticket 02: targa/km e dati invariati dopo rifiuto, dominio 15/15; ticket 03: AuthServiceIntegrationTest 18/18 PostgreSQL per email invalida, normalizzazione/successo, duplicati e credenziali preservate. Cancellazione/storico ancora da verificare (R07) |
+ | Prezzi | Consigliato, base manuale, sconti, ritorno al consigliato | R03 | PriceCalculatorServiceTest 11/11; PriceSelectionIntegrationTest 10/10, PostgreSQL reale; UI Robot/tastiera superata. [Evidenze](DriveHub/docs/evidence/r03-prices/verification.md) |
+ | Acquisto | Acconto, approvazione, saldo; rifiuto/scadenza; fondi insufficienti | R02, R04 | Ticket 07: PurchaseConcurrencyIntegrationTest 60/60, lock/rilettura, gare e penale/rimborsi singoli, errori e scritture saltate con rollback; suite 163/163. Ticket 06 chiuso: RequestAgreementTest 7/7 e PurchaseAgreementIntegrationTest 12/12, accordo/centesimi/rollback e GUI/tastiera; cancellazioni atomiche al ticket 08 |
+-| Cessione | Nuovo VIN, titolarità VIN esistente, accettazione/rifiuto | R02, R05 | Richiesta unica, un accredito, segno contabile, storico |
++| Cessione | Nuovo VIN, titolarità VIN esistente, accettazione/rifiuto | R02, R05 | Ticket 09–10 chiusi; 60 casi esito PostgreSQL, gare/rollback e GUI/tastiera; suite finale 259/259. [Evidenze](DriveHub/docs/evidence/r05-sale-outcome/verification.md) |
+ | Noleggio | Disponibilità, priorità, cambio destinazione/rimborsi | R02, R06 | Concorrenza, date limite, in corso, rimborsi, rollback |
+ | Test drive | Limite tre, disponibilità, cancellazione/storico | R06 | Concorrenza, tutti i futuri cancellati dopo noleggio, passato conservato |
+ | UI | Caricamento, prezzi, errori/riprova | R03, R08 | Rendering senza SQL, reattività, etichette, tastiera |
+@@ -619,3 +649,29 @@
+   e classificazione fattuale dello storico. `/tmp` temporanea da ricontrollare.
+ - Nessun blocco residuo del 09. Prossimo passo: ticket 10 soltanto in una nuova
+   richiesta; nessun successivo avviato.
++
++
++### 2 novembre 2026 — ticket 10 completato
++
++Implementato soltanto accettazione/rifiuto cessione e registro. Tutti i criteri
++verificati; [ticket](TRACKER_DRIVEHUB/revisioni/issues/10-esito-cessione-e-registro.md)
++e [prove della versione](DriveHub/docs/evidence/r05-sale-outcome/verification.md).
++Comandi del launcher `/tmp/drivehub-ticket10/maven.py` equivalenti a Maven JDK21:
++RED/GREEN stato/importi/storico/validazioni, gare con PID e blocker osservati;
++mirati estesi 206/206 e `mvn -Ppostgres-tests clean test` finale 259/259,
++45 senza DB e 214 PostgreSQL, zero failure/errori/salti, isolamento/sentinella.
++La prima suite completa 259/259 è intermedia: la finale ricompila anche l'ultimo
++riuso CSS del registro, dopo GUI/Robot/tastiera riuscita e review indipendenti
++Standards/Spec senza rilievi. Nessun codice/test/harness cambiato successivamente.
++
++Ambiente temporaneo 07 ricontrollato (R00 assente); Java21/PG16, DB/ruoli dedicati,
++file privato 0600, nessun segreto nelle evidenze. Lettura finale sentinella riuscita,
++cluster e Xvfb arrestati. Preservati lavoro locale e prove storiche 01–09;
++377/390 file identici, 13 modifiche intenzionali, nessuna eliminazione, HEAD/indice
++invariati. Nessun commit o staging; Relazione_SWE sempre esclusa.
++
++R05 e AC03/AC10 completati; rilievi integralmente chiusi 10/20, AC13 trasversale.
++Limiti e prossimo passo: D02 richiede adeguamento schema/importi storici prima
++uso applicativo; /tmp temporanea, screen reader non certificato. Prenotazioni11,
++altre transizioni, account e prestazioni esclusi. Nessun blocco residuo del ticket10;
++nessun successivo avviato, ticket11 soltanto su nuova richiesta.
+--- a/TRACKER_DRIVEHUB/revisioni/issues/10-esito-cessione-e-registro.md
++++ b/TRACKER_DRIVEHUB/revisioni/issues/10-esito-cessione-e-registro.md
+@@ -7,7 +7,7 @@
+ **Blocked by:** 07: Elaborare saldo, rifiuto e scadenza una sola volta; 09: Proporre una cessione solo per un veicolo consentito
+ 
+ Status: ready-for-agent
+-State: open
++State: closed
+ 
+ **Piano:** R05
+ **Specifica:** AC03, AC10, AC13
+@@ -15,12 +15,12 @@
+ 
+ ## Acceptance criteria
+ 
+-- [ ] Riutilizzato il protocollo di protezione della richiesta del ticket 07; approvazione/rifiuto rileggono e verificano richiesta, tipo e stato del veicolo nella transazione.
+-- [ ] Due approvazioni, sequenziali o concorrenti, di una cessione da 16.000 € producono un solo accredito di 16.000 € e un solo cambio di disponibilità.
+-- [ ] Registro della concessionaria con acquisizione -16.000 €; vendite ai clienti e penali restano entrate positive. Factory, mapping, commenti, fixture e vista manager concordano.
+-- [ ] Rifiuto di nuovo veicolo segue la rimozione prevista senza lasciare catalogo sporco; rifiuto di veicolo con storico mantiene lo storico e ripristina lo stato ammesso.
+-- [ ] Fondi/dati mancanti o errore di scrittura non lasciano accrediti, richieste o veicoli parzialmente aggiornati.
+-- [ ] Verificati flussi completi di accettazione/rifiuto e competizioni approvazione/approvazione e approvazione/rifiuto su PostgreSQL.
++- [x] Riutilizzato il protocollo di protezione della richiesta del ticket 07; approvazione/rifiuto rileggono e verificano richiesta, tipo e stato del veicolo nella transazione.
++- [x] Due approvazioni, sequenziali o concorrenti, di una cessione da 16.000 € producono un solo accredito di 16.000 € e un solo cambio di disponibilità.
++- [x] Registro della concessionaria con acquisizione -16.000 €; vendite ai clienti e penali restano entrate positive. Factory, mapping, commenti, fixture e vista manager concordano.
++- [x] Rifiuto di nuovo veicolo segue la rimozione prevista senza lasciare catalogo sporco; rifiuto di veicolo con storico mantiene lo storico e ripristina lo stato ammesso.
++- [x] Fondi/dati mancanti o errore di scrittura non lasciano accrediti, richieste o veicoli parzialmente aggiornati.
++- [x] Verificati flussi completi di accettazione/rifiuto e competizioni approvazione/approvazione e approvazione/rifiuto su PostgreSQL.
+ 
+ ## Note per l'implementazione
+ 
+@@ -33,3 +33,31 @@
+ ## Comments
+ 
+ - 31 ottobre 2026: ticket pubblicato da `to-tickets` dopo approvazione di granularità e dipendenze. Esecuzione non ancora avviata; verificare i blocchi prima di iniziare.
++
++- 2 novembre 2026: completato e verificato soltanto il ticket 10. Prerequisiti 07/09
++  e ticket 01–09 controllati chiusi; baseline locale acquisita prima delle modifiche.
++  [Evidenze, versione e comandi](../../../DriveHub/docs/evidence/r05-sale-outcome/verification.md).
++- Richiesta e veicolo riletti/bloccati nella transazione: SALE/WAITING; conto 04
++  e verifiche delle righe conservati. Storico completo sulla stessa connessione,
++  distinto dall'ultima PURCHASE della titolarità 09. Rifiuto VIN nuovo senza residui;
++  veicolo con qualsiasi storico conservato e ripristinato SOLD.
++- Accredito cliente +16000 e acquisizione concessionaria -16000; vendite e penali
++  positive, tipi espliciti, dominio/schema/factory/fixture/registro/messaggi allineati.
++- RED/GREEN ripetibili su servizi pubblici e PostgreSQL dedicato, inclusi stessa
++  baseline isolata per obsolescenza, gare osservabili nei due ordini senza sleep,
++  dati mancanti, vincoli, scritture saltate e rollback dopo effetti effettivi.
++- Comandi: `mvn -Ppostgres-tests -Dtest=SaleOutcomeIntegrationTest,SaleTypeTest test`;
++  mirati estesi **206/206**; finale `mvn -Ppostgres-tests clean test` **259/259**,
++  zero failure/errori/saltati (45 senza DB, 214 PostgreSQL), isolamento/sentinella.
++  Java21/PG16 del 07 ricontrollati prima del riuso. Baseline 195/195 del 09 storica.
++- JavaFX/Robot/tastiera finale **UI CHECK SUCCESS**: cliente/venditore/manager,
++  sessione obsoleta, segni/tipi anche a zero e contrasto selezione. Review indipendenti
++  Standards/Spec: **0 rilievi**, patch della sola sessione fissata nelle evidenze.
++- 377 file preesistenti identici, 13 modifiche intenzionali, nessuna eliminazione;
++  prove storiche preservate. HEAD/indice invariati, nessun commit/staging.
++  Cluster dedicato e Xvfb arrestati; Relazione_SWE sempre esclusa.
++- R05 completata, AC03/#3 e AC10/#10 chiusi; 10/20 rilievi integralmente chiusi.
++  Limiti: nessuna migrazione applicativa (D02); schema/importi storici da adeguare
++  prima dell'uso, senza dedurre i tipi dal segno. Screen reader, prenotazioni 11,
++  altre transizioni, account e prestazioni esclusi. Nessun blocco residuo del 10;
++  nessun ticket successivo avviato. Prossimo passo: ticket 11 solo su nuova richiesta.

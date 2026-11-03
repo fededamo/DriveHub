@@ -1,0 +1,48 @@
+@startuml
+!pragma layout smetana
+left to right direction
+skinparam shadowing false
+skinparam defaultFontSize 16
+title Casi d'uso correnti — cliente e identità
+actor "Utente autenticato\n(cliente / venditore / manager)" as Utente
+actor "Visitatore" as Ospite
+actor Cliente
+Utente <|-- Cliente
+rectangle DriveHub {
+  usecase "Registrare un cliente\ne conto dimostrativo" as Register
+  usecase "Accedere" as Login
+  usecase "Disconnettersi" as Logout
+  usecase "Cambiare email / password\ncon password corrente" as Identity
+  usecase "Eliminare identità\nse priva di associazioni" as Delete
+  usecase "Ricaricare il conto\ndimostrativo" as Topup
+  usecase "Consultare cataloghi\nvendita / noleggio" as Catalog
+  usecase "Avviare acquisto\ncon acconto 20%" as Buy
+  usecase "Saldare acquisto approvato\nal totale concordato" as Balance
+  usecase "Proporre cessione\ncon stima" as Offer
+  usecase "Prenotare noleggio\ncon addebito 100%" as Rent
+  usecase "Prenotare / annullare\nun proprio test drive" as TD
+  usecase "Consultare le proprie\nrichieste, noleggi, test drive" as Operations
+}
+Ospite -- Register
+Ospite -- Login
+Utente -- Logout
+Utente -- Identity
+Utente -- Delete
+Cliente -- Topup
+Cliente -- Catalog
+Cliente -- Buy
+Cliente -- Balance
+Cliente -- Offer
+Cliente -- Rent
+Cliente -- TD
+Cliente -- Operations
+legend bottom
+  Addebiti sul conto dimostrativo, non gateway esterno.
+  L'approvazione spetta al venditore (diagramma staff).
+  Scadenze trattate all'ingresso nella dashboard cliente.
+  Noleggio e saldo acquisto cancellano i test drive futuri
+  tramite Observer: effetto interno, non azione di uno staff.
+  Le frecce indicano partecipazione, non autorizzazione
+  centralizzata: il ruolo è instradato dalla UI.
+endlegend
+@enduml

@@ -65,8 +65,9 @@ public final class AuthService {
     }
 
     public void changeEmail(Long userId, String role, String newEmail, String currentPassword) {
-        verifyPasswordBeforeAction(userId, currentPassword);
-        db.executeInTransaction(conn -> userDao.updateEmail(userId, role, newEmail.trim().toLowerCase(), conn));
+        User user = verifyPasswordBeforeAction(userId, currentPassword);
+        user.updateEmail(newEmail);
+        db.executeInTransaction(conn -> userDao.updateEmail(userId, role, user.getEmail(), conn));
     }
 
     public void changePassword(Long userId, String role, String newRawPassword, String currentPassword) {
@@ -76,11 +77,20 @@ public final class AuthService {
     }
 
     public void deleteAccount(Long userId, String role, String currentPassword) {
-        verifyPasswordBeforeAction(userId, currentPassword);
-        if (userDao.hasAssociatedOperations(userId, role)) {
-            throw new IllegalStateException("Impossibile eliminare l'account: sono presenti operazioni storiche associate (Test Drive, Noleggi o Vendite).");
+        User user = verifyPasswordBeforeAction(userId, currentPassword);
+        try {
+            db.executeInTransaction(conn -> {
+                userDao.lockUser(userId, role, conn);
+                if (user instanceof Client) bankAccountDao.findByClientIdForUpdate(userId, conn);
+                if (userDao.hasAssociatedOperations(userId, role, conn)) {
+                    throw new IllegalStateException("Impossibile eliminare l'identità: sono presenti richieste o operazioni storiche associate.");
+                }
+                userDao.deleteUser(userId, role, conn);
+            });
+        } catch (RuntimeException failure) {
+            if (failure.getCause() instanceof IllegalStateException reason) throw reason;
+            throw failure;
         }
-        db.executeInTransaction(conn -> userDao.deleteUser(userId, role, conn));
     }
 
     public void topUpClientBalance(Long clientId, BigDecimal amount) {
@@ -88,7 +98,7 @@ public final class AuthService {
             throw new IllegalArgumentException("L'importo da ricaricare deve essere maggiore di zero.");
         }
         db.executeInTransaction(conn -> {
-            BankAccount account = bankAccountDao.findByClientId(clientId, conn)
+            BankAccount account = bankAccountDao.findByClientIdForUpdate(clientId, conn)
                     .orElseThrow(() -> new IllegalStateException("Conto bancario non trovato per il cliente id: " + clientId));
             account.deposit(amount);
             bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
@@ -100,12 +110,13 @@ public final class AuthService {
                 .orElseThrow(() -> new IllegalStateException("Conto bancario non trovato per il cliente id: " + clientId));
     }
 
-    private void verifyPasswordBeforeAction(Long userId, String currentPassword) {
+    private User verifyPasswordBeforeAction(Long userId, String currentPassword) {
         User user = userDao.findById(userId)
                 .orElseThrow(() -> new IllegalStateException("Utente non trovato con id: " + userId));
         if (!hasher.verify(currentPassword, user.getHashPassword())) {
             throw new IllegalArgumentException("Password attuale errata: operazione annullata.");
         }
+        return user;
     }
 
     private String generateUniqueIban() {

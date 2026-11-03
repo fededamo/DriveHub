@@ -1,0 +1,209 @@
+--- review/DriveHub/docs/evidence/r07-identity/verification.md
++++ closed/DriveHub/docs/evidence/r07-identity/verification.md
+@@ -84,6 +84,7 @@
+ | extended-fixed, stesso comando | 56/56, corretta solo l'aspettativa della prova |
+ | final-cases, stesso comando | **60/60**, zero failure/errori/salti |
+ | targeted, selezione estesa sotto | **356/356**, zero failure/errori/salti |
++| final-full `-Ppostgres-tests clean test` | **390/390**, zero failure/errori/salti;47 senzaDB/343 PostgreSQL |
+ 
+ Selezione esatta di `targeted`:
+ 
+@@ -145,8 +146,32 @@
+ 
+ ## Verifica finale e review
+ 
+-Il ticket resta in verifica finché suite completa, review Standards/Spec,
+-conservazione e arresto ambiente non sono tutti attestati. Per installazioni
++Suite finale **390/390**, inclusi isolamento/sentinella e tutte le regressioni:
++[log](final-full.log), [XML](final-full-surefire/),
++[hash input](final-full-files.sha256.json). Input runtime e harness identici
++alle versioni verificate. [Sentinella finale in sola lettura](sentinel-final.txt),
++[arresto PostgreSQL e Xvfb](shutdown.txt): porta dedicata non risponde,
++display non in esecuzione. Nessun altro servizio arrestato.
++
++Review indipendenti: [Standards](standards-review.md) **0 violazioni/0 smell
++azionabili**, [Spec](spec-review.md) **0 rilievi**, sul solo diff congelato della
++sessione: [patch](review.patch), [elenco](review-files.txt),
++[hash snapshot](review-files.sha256.json),12file; SHA256
++`08237df074ee2e3074135d31497fb0e627823fef856bf2da548cf32233aab68d`.
++Nessun codice/test/harness cambiato dopo prove finali e review. I documenti di
++chiusura successivi non costituiscono nuove prove runtime.
++
++[Conservazione](preservation.json):846file iniziali presenti,838 identici,
++8aggiornamenti intenzionali (cinque file prodotto, testing, piano e ticket13),
++zero eliminazioni. Ticket/evidenze01–12 e successivi intatti, HEAD/indice
++invariati. [Controlli](integrity-checks.json): whitespace del diff, link locali,
++input runtime/UI identici, perimetro e assenza credenziali private nelle prove.
++Non si correggono spazi preesistenti dei documenti storici per alterarne gli hash.
++
++**5/5 criteri verificati, ticket13 chiuso; R07 e AC09/#9 completati,13/20 rilievi
++integralmente chiusi.** AC13 resta trasversale; nessun ticket successivo,
++nessun commit/staging. Relazione_SWE esclusa.
++Per installazioni
+ esistenti applicare il solo cambio FK documentato in testing prima del nuovo
+ codice; nessun reset applicativo e nessun recupero automatico delle
+ attribuzioni eventualmente già azzerate in passato.
+--- review/PIANO_REVISIONI_DRIVEHUB.md
++++ closed/PIANO_REVISIONI_DRIVEHUB.md
+@@ -2,14 +2,17 @@
+ 
+ Registro operativo avviato il 31 ottobre 2026. Punto di ingresso per riprendere il lavoro: avanzamento, decisioni, attività, verifiche e prossimo passo.
+ 
+-## Stato attuale — ticket 13 in verifica finale
+-
+-- Soltanto13 implementato, prerequisito01 e ticket01–12 verificati chiusi; fotografia iniziale846 file e nuova baseline330/330 prima delle modifiche.
+-- Ruoli UI/DAO allineati con la mappatura esistente; richieste e storico impediscono la cancellazione, FK venditore RESTRICT conserva attribuzioni. Identità prive di vincoli cancellabili; conto dimostrativo distinto ed eliminato per CASCADE.
+-- Lock identità NO KEY UPDATE → conto → controllo/DELETE nella stessa transazione; gare nei due ordini, FK e rollback dopo scritture effettive, senza sleep nelle gare. Riprodotto e risolto anche deadlock acquisto/cancellazione.
+-- Quattro coppie TDD identiche RED/GREEN,60/60 casi nuovi, mirati356/356. JavaFX/Robot/tastiera UI CHECK SUCCESS; sei schermate finali ispezionate.
+-- Nuovo ambiente Java21/PG16/Xvfb isolato,127.0.0.1:55433 e copia sentinella. Suite completa finale e review indipendenti in corso: ticket13 non ancora chiuso. Nessun commit/staging o ticket successivo, Relazione_SWE esclusa.
+-- [Ticket13](TRACKER_DRIVEHUB/revisioni/issues/13-cancellazione-identita-e-storico.md), [evidenze](DriveHub/docs/evidence/r07-identity/verification.md).
++## Stato attuale — ticket 13 completato
++
++- Soltanto13 implementato, prerequisito01 e ticket01–12 verificati chiusi; fotografia iniziale846 file e nuova baseline **330/330** prima delle modifiche.
++- Mappatura ruoli UI/DAO riusata; richieste e storico impediscono la cancellazione, FK venditore RESTRICT conserva attribuzioni. Identità prive di vincoli cancellabili; conto dimostrativo distinto ed eliminato per CASCADE secondo le regole esistenti.
++- Lock identità NO KEY UPDATE → conto → controllo/DELETE nella stessa transazione, una riga effettiva. Gare nei due ordini, vincoli reali e rollback dopo scritture effettive, senza sleep nelle gare. Riprodotto e risolto anche deadlock acquisto/cancellazione; garanzie04–12 preservate.
++- Quattro coppie TDD identiche RED/GREEN; nuovi **60/60**, mirati **356/356**, suite completa finale **390/390** (47 senzaDB/343 PostgreSQL), zero failure/errori/salti, inclusi isolamento/sentinella.
++- JavaFX/Robot/tastiera **UI CHECK SUCCESS**, sei schermate finali ispezionate. Review indipendenti Standards **0 violazioni/0 smell azionabili**, Spec **0**, sul solo diff congelato della sessione. Nessun codice/test/harness cambiato dopo prove finali e review.
++- **Ticket13 chiuso,5/5 criteri; R07 e AC09/#9 completati. Rilievi chiusi13/20** (#1,#2,#3,#4,#5,#6,#7,#8,#9,#10,#11,#17,#19); AC13 resta trasversale.
++- [Ticket13](TRACKER_DRIVEHUB/revisioni/issues/13-cancellazione-identita-e-storico.md), [comandi, log/XML, gare, GUI, review e limiti](DriveHub/docs/evidence/r07-identity/verification.md).
++- Ambiente Java21/PG16/Xvfb ricreato, solo127.0.0.1:55433 e copia sentinella; sentinella finale in sola lettura, cluster/display arrestati.846 file iniziali presenti,838 identici e8 aggiornamenti intenzionali, nessuna eliminazione; prove/ticket01–12 e successivi intatti. HEAD/indice invariati, nessun commit/staging, Relazione_SWE esclusa.
++- Nessun residuo del13 o ticket successivo avviato. Per installazioni esistenti applicare il solo cambio FK prima del codice; attribuzioni già azzerate non ricostruite. Ambiente /tmp temporaneo, screen reader/prestazioni non certificati.
+ 
+ ## Stato al termine del ticket 12 — storico
+ 
+@@ -172,7 +175,7 @@
+ | R04 | Acquisto: totale concordato e conclusione una sola volta | #6, #11, parte #12 | R02, R03, D06 | Completata: 06–08 chiusi e verificati |
+ | R05 | Cessione: titolarità, richiesta unica, pagamento e contabilità | #2, #3, #10 | R02, R03, D07 | Completata: 09–10 chiusi e verificati |
+ | R06 | Noleggi/test drive concorrenti e transizioni valide | #5, #7, restante #12 | R02, R03, D08–D10; coordinamento eventi con R04 | Completata: ticket 08, 11 e 12 chiusi e verificati |
+-| R07 | Cancellazione account rispettosa di storico e richieste | #9 | R00; fixture aggiornate dai flussi interessati | Pianificata |
++| R07 | Cancellazione account rispettosa di storico e richieste | #9 | R00; fixture aggiornate dai flussi interessati | Completata: ticket13 chiuso e verificato |
+ | R08 | Tabelle JavaFX senza query nel rendering | #16 | R03; verificare aggiornamenti dei flussi corretti | Pianificata |
+ | R09 | README, diagrammi, teoria ed evidenze coerenti | #14, #15, #18; valutazione teorica | Incrementale; chiusura dopo R01–R08 e R10 | Pianificata |
+ | R10 | Rimozione dei componenti inutilizzati | #20 | R00; controllo riferimenti prima di rimuovere | Pianificata |
+@@ -295,7 +298,7 @@
+ | Flusso | Regole/alternative | Attività | Verifiche da collegare |
+ |---|---|---|---|
+ | Dati di test | Isolamento, reset, configurazione errata | R00 | Java 21/PostgreSQL 16: configurazione, fixture, sentinella e scadenza superate; suite completa 28/28, evidenze R00 |
+-| Account/dominio | Email, duplicati, targa/km, cancellazione con storico | R01, R07 | Ticket 02: targa/km e dati invariati dopo rifiuto, dominio 15/15; ticket 03: AuthServiceIntegrationTest 18/18 PostgreSQL per email invalida, normalizzazione/successo, duplicati e credenziali preservate. Cancellazione/storico ancora da verificare (R07) |
++| Account/dominio | Email, duplicati, targa/km, cancellazione con storico | R01, R07 | Ticket 02: targa/km e dati invariati dopo rifiuto, dominio 15/15; ticket 03: AuthServiceIntegrationTest 18/18 PostgreSQL per email invalida, normalizzazione/successo, duplicati e credenziali preservate. Ticket13/R07 completato:60 casi PostgreSQL su ruoli, richieste, storico, identità senza vincoli, gare/FK e rollback effettivi; mirati356/356, suite390/390 e GUI/tastiera verificati |
+ | Prezzi | Consigliato, base manuale, sconti, ritorno al consigliato | R03 | PriceCalculatorServiceTest 11/11; PriceSelectionIntegrationTest 10/10, PostgreSQL reale; UI Robot/tastiera superata. [Evidenze](DriveHub/docs/evidence/r03-prices/verification.md) |
+ | Acquisto | Acconto, approvazione, saldo; rifiuto/scadenza; fondi insufficienti | R02, R04 | Ticket 07: PurchaseConcurrencyIntegrationTest 60/60, lock/rilettura, gare e penale/rimborsi singoli, errori e scritture saltate con rollback; suite 163/163. Ticket 06 chiuso: RequestAgreementTest 7/7 e PurchaseAgreementIntegrationTest 12/12, accordo/centesimi/rollback e GUI/tastiera; cancellazioni atomiche al ticket 08 |
+ | Cessione | Nuovo VIN, titolarità VIN esistente, accettazione/rifiuto | R02, R05 | Ticket 09–10 chiusi; 60 casi esito PostgreSQL, gare/rollback e GUI/tastiera; suite finale 259/259. [Evidenze](DriveHub/docs/evidence/r05-sale-outcome/verification.md) |
+@@ -745,3 +748,48 @@
+ Review indipendenti Standards **0 violazioni/0 smell azionabili**, Spec **0**, sul solo diff rispetto alla fotografia iniziale. [Evidenze, comandi, hash, log/XML e limiti](DriveHub/docs/evidence/r06-destination/verification.md). Nessun codice/test/harness cambiato dopo prove finali/review; i documenti di chiusura non costituiscono nuove prove runtime. Conservazione: 617 file presenti, 612 identici, 5 aggiornamenti intenzionali, zero eliminazioni; HEAD/indice invariati, nessun commit/staging. Alla ripresa l’ambiente temporaneo era già assente e non risultano processi PostgreSQL/Xvfb residui. Relazione_SWE sempre esclusa.
+ 
+ **Ticket12 chiuso, 6/6 criteri; R06 completata per 08/11/12, AC07/#7 chiuso, totale12/20.** AC13 resta trasversale; nessun ticket successivo avviato. Ambiente /tmp da ricreare prima di nuove prove.
++
++
++### 2 novembre 2026 — ticket 13 completato
++
++Solo13,01–12 controllati chiusi. Letti AGENTS, piano, glossario, ADR0001,
++testing ed evidenze12; ambiente /tmp precedente assente. Nuovo Java21 Linux,
++PostgreSQL16 e Xvfb estratti da pacchetti Ubuntu ufficiali, senza installazioni
++di sistema. Solo cluster sacrificabile127.0.0.1:55433, ruolo/DB di test non
++amministrativo e copia applicativa sentinella. Nuova baseline **330/330**;
++primo tentativo sandbox283 errori di connessione documentato separatamente,
++non presentato come regressione o verifica riuscita.
++
++Mappatura ruoli unica riusata, richieste incluse e attribuzione venditore
++RESTRICT. Lock identità NO KEY UPDATE → conto → controllo e cancellazione
++nella stessa transazione; rifiuti leggibili, DELETE verificata. Conservata
++cancellabilità delle identità senza vincoli e distinzione dal conto dimostrativo.
++Quattro coppie identiche RED/GREEN: ruoli3failure→6/6, richieste4→10/10,
++storico/gare5→15/15 (deadlock PostgreSQL reale incluso), DELETE saltata1→16/16.
++Estesi **60/60**, mirati **356/356**, suite finale **390/390** (47 senzaDB,
++343 PostgreSQL), zero failure/errori/salti; isolamento/sentinella e regressioni
++precedenti compresi. Gare nei due ordini con backend distinti e blocker osservati
++senza sleep; rollback dopo scritture effettive di identità/conto, accredito e
++acquisizione, nuovo veicolo e approvazione. Un'aspettativa errata della fixture
++estesa e due errori dell'harness GUI registrati, senza attribuirli al prodotto.
++
++JavaFX/Robot/tastiera **UI CHECK SUCCESS**, sei schermate finali ispezionate;
++conferma/annullamento, password, richiesta cliente e sola vendita storica
++venditore, successo senza vincoli e callback verificati. Review indipendenti
++Standards **0 violazioni/0 smell azionabili**, Spec **0**, sul solo diff della
++sessione rispetto alla fotografia locale846 file. Nessun codice/test/harness
++modificato dopo prove finali e review; aggiornamenti documentali di chiusura
++non sono nuove prove runtime.
++
++Conservazione:846 file presenti,838 identici,8 aggiornamenti intenzionali,
++zero eliminazioni. Ticket/evidenze01–12 e successivi intatti, HEAD/indice
++invariati, nessun commit/staging. Sentinella finale riletta in sola lettura,
++cluster e Xvfb arrestati; nessun DB applicativo preesistente contattato.
++Relazione_SWE sempre esclusa. [Evidenze](DriveHub/docs/evidence/r07-identity/verification.md).
++
++**Ticket13 chiuso,5/5 criteri, R07 e AC09/#9 completati;13/20 rilievi chiusi.**
++AC13 resta trasversale. Nessun ticket successivo. Prima dell'uso su installazioni
++esistenti aggiornare il solo vincolo FK secondo testing; eventuali attribuzioni
++già azzerate non ricostruite. /tmp temporanea, nessuna certificazione screen
++reader o benchmark prestazioni. Prossimo passo: nessun residuo del13;
++proseguire solo su nuova richiesta.
+--- review/TRACKER_DRIVEHUB/revisioni/issues/13-cancellazione-identita-e-storico.md
++++ closed/TRACKER_DRIVEHUB/revisioni/issues/13-cancellazione-identita-e-storico.md
+@@ -7,7 +7,7 @@
+ **Blocked by:** 01: Rendere build e test ripetibili senza toccare i dati applicativi
+ 
+ Status: ready-for-agent
+-State: in-progress
++State: closed
+ 
+ **Piano:** R07
+ **Specifica:** AC09, AC13
+@@ -15,11 +15,11 @@
+ 
+ ## Acceptance criteria
+ 
+-- [ ] Ruolo rappresentato coerentemente fra dialog, servizio e DAO, con tutti i chiamanti aggiornati e senza conversioni duplicate.
+-- [ ] Cliente con richieste o operazioni vincolanti non cancellabile; venditore con sole vendite concluse non cancellabile.
+-- [ ] Le attribuzioni storiche non vengono azzerate; identità realmente prive di vincoli restano cancellabili secondo le regole esistenti.
+-- [ ] Controllo e cancellazione restano coerenti in presenza di un'operazione associata concorrente; verificati vincoli e rollback reali.
+-- [ ] Test su ruoli, richieste, storico e casi senza vincoli, con controllo della gestione identità nella UI.
++- [x] Ruolo rappresentato coerentemente fra dialog, servizio e DAO, con tutti i chiamanti aggiornati e senza conversioni duplicate.
++- [x] Cliente con richieste o operazioni vincolanti non cancellabile; venditore con sole vendite concluse non cancellabile.
++- [x] Le attribuzioni storiche non vengono azzerate; identità realmente prive di vincoli restano cancellabili secondo le regole esistenti.
++- [x] Controllo e cancellazione restano coerenti in presenza di un'operazione associata concorrente; verificati vincoli e rollback reali.
++- [x] Test su ruoli, richieste, storico e casi senza vincoli, con controllo della gestione identità nella UI.
+ 
+ ## Note per l'implementazione
+ 
+@@ -34,3 +34,40 @@
+ - 31 ottobre 2026: ticket pubblicato da `to-tickets` dopo approvazione di granularità e dipendenze. Esecuzione non ancora avviata; verificare i blocchi prima di iniziare.
+ 
+ - 2 novembre 2026: avviata soltanto la sessione 13; prerequisito 01 e ticket 01–12 chiusi verificati. Nuova baseline completa Java21/PostgreSQL dedicato **330/330**, distinta dal risultato storico12. Fotografia iniziale acquisita; TDD ai confini già approvati, nessun commit.
++
++### 2 novembre 2026 — implementazione e chiusura verificata
++
++- Prerequisito01 e ticket01–12 verificati chiusi prima del lavoro; AGENTS,
++  piano, glossario, ADR0001, testing ed evidenze12 letti. Nuova baseline
++  Java21/PostgreSQL dedicato **330/330**, distinta dal risultato storico12.
++- Riutilizzata la sola mappatura ruoli del DAO in controllo e cancellazione;
++  chiamanti dialogo/servizio/DAO censiti nelle evidenze. Richieste cliente e
++  richieste/vendite concluse venditore impediscono la cancellazione; storico
++  e attribuzioni preservati. Identità senza vincoli cancellabili, conto
++  dimostrativo distinto, anche con disponibilità positiva, rimosso per CASCADE.
++- Lock identità NO KEY UPDATE → conto → verifica/DELETE sulla stessa
++  connessione, esattamente una riga. FK venditore RESTRICT e conflitto FK
++  leggibile proteggono anche associazioni successive al controllo. Riprodotto
++  e risolto deadlock contro acquisto già sul conto; garanzie04–12 conservate.
++- Quattro coppie TDD con sorgente del test identico RED/GREEN. **60/60** casi
++  nuovi, mirati **356/356**, suite completa finale **390/390**:47 senzaDB,
++  343 PostgreSQL, zero failure/errori/salti, inclusi isolamento e sentinella.
++  Gate osservabili, backend distinti, nessuno sleep nelle gare; rollback dopo
++  cancellazione identità/conto, accredito/acquisizione e creazione veicolo.
++- JavaFX/Robot/tastiera **UI CHECK SUCCESS**, sei schermate finali ispezionate:
++  regole/conferma/annullamento, richiesta cliente, storico venditore, password,
++  successo; callback solo dopo successo, tutti i ruoli senza vincoli eliminabili.
++- Review indipendenti Standards **0 violazioni/0 smell azionabili**, Spec **0**,
++  sul solo diff congelato della sessione. Nessun codice/test/harness cambiato
++  dopo prove finali e review; documenti di chiusura successivi non sono prove runtime.
++- Nuovo ambiente Java21/PG16/Xvfb temporaneo: solo127.0.0.1:55433, ruolo/DB
++  dedicati e copia sentinella, riletta in sola lettura dopo suite. Cluster e
++  Xvfb arrestati; nessun DB applicativo preesistente contattato. Fotografia846
++  file preservata:838 identici,8 aggiornamenti intenzionali, zero eliminazioni;
++  ticket/evidenze01–12 e successivi intatti, HEAD/indice invariati, nessun commit.
++- **5/5 criteri verificati, ticket13 chiuso, R07 e AC09/#9 completati;13/20
++  rilievi integralmente chiusi.** AC13 resta trasversale. Nessun ticket successivo.
++- [Evidenze complete, comandi, hash, XML, gare, GUI, review e limiti](../../../DriveHub/docs/evidence/r07-identity/verification.md).
++  Prima dell'uso su installazioni esistenti applicare il solo cambio FK
++  documentato in testing: non ricostruisce attribuzioni già azzerate. /tmp
++  temporanea; nessuna certificazione screen reader o prestazioni.

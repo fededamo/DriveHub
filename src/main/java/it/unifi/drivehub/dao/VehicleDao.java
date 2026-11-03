@@ -23,15 +23,24 @@ public interface VehicleDao {
         return findById(id);
     }
 
+    /** Rilegge e blocca il veicolo nella transazione attiva del chiamante. */
+    Optional<Vehicle> findByIdForUpdate(Long id, Connection conn);
+
     Optional<Vehicle> findByVin(String vin);
 
     default Optional<Vehicle> findByVin(String vin, Connection conn) {
         return findByVin(vin);
     }
 
+    /** Rilegge il VIN noto con lock fino al commit/rollback nella transazione attiva. */
+    Optional<Vehicle> findByVinForUpdate(String vin, Connection conn);
+
     Vehicle save(Vehicle vehicle, Connection conn);
 
     void update(Vehicle vehicle, Connection conn);
+
+    /** Aggiorna la sola scelta commerciale senza sovrascrivere stato o caratteristiche. */
+    void updatePricing(Vehicle vehicle, Connection conn);
 
     /**
      * Esegue una modifica atomica di stato con WHERE sullo stato atteso (ottimizzazione concorrenza).
@@ -42,5 +51,8 @@ public interface VehicleDao {
     void delete(Long id, Connection conn);
 
     boolean hasAssociatedOperations(Long vehicleId);
+
+    /** Presenza di qualsiasi storico sulla connessione transazionale del chiamante. */
+    boolean hasAssociatedOperations(Long vehicleId, Connection conn);
 }
 

@@ -5,6 +5,7 @@ import it.unifi.drivehub.dao.postgres.PostgresBrandDao;
 import it.unifi.drivehub.domain.vehicle.Brand;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 
 import java.sql.Connection;
 import java.util.List;
@@ -12,12 +13,13 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Verifica Connessione PostgreSQL reale e DAO")
+@Tag("postgres")
 class DatabaseConnectionIntegrationTest {
 
     @Test
     @DisplayName("Connessione e lettura marchi dal database PostgreSQL")
-    void testRealDatabaseConnection() {
-        DatabaseManager db = new DatabaseManager();
+    void testRealDatabaseConnection() throws Exception {
+        DatabaseManager db = TestDatabase.fromEnvironment().reset();
         assertDoesNotThrow(() -> {
             try (Connection conn = db.getConnection()) {
                 assertNotNull(conn);

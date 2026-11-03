@@ -1,0 +1,27 @@
+{
+  "baseline_file_count": 576,
+  "unchanged": 562,
+  "modified": 14,
+  "deleted": 0,
+  "modified_files": [
+    "DriveHub/docs/testing.md",
+    "DriveHub/src/main/resources/db/schema.sql",
+    "DriveHub/src/main/java/it/unifi/drivehub/AppContext.java",
+    "DriveHub/src/main/java/it/unifi/drivehub/dao/DiscountDao.java",
+    "DriveHub/src/main/java/it/unifi/drivehub/dao/ModelDao.java",
+    "DriveHub/src/main/java/it/unifi/drivehub/dao/UserDao.java",
+    "DriveHub/src/main/java/it/unifi/drivehub/service/RentalService.java",
+    "DriveHub/src/main/java/it/unifi/drivehub/service/TestDriveService.java",
+    "DriveHub/src/main/java/it/unifi/drivehub/domain/operation/TestDrive.java",
+    "DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresModelDao.java",
+    "DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresUserDao.java",
+    "DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresDiscountDao.java",
+    "TRACKER_DRIVEHUB/revisioni/issues/11-prenotazioni-concorrenti.md",
+    "PIANO_REVISIONI_DRIVEHUB.md"
+  ],
+  "new_source_files": [
+    "DriveHub/src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java",
+    "DriveHub/src/test/java/it/unifi/drivehub/BookingRulesTest.java"
+  ],
+  "tickets_and_evidence_01_10_unchanged": true
+}

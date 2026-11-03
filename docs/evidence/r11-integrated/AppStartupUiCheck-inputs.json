@@ -1,0 +1,38 @@
+{
+  "docs/evidence/r03-prices/PriceUiCheck.java": {
+    "original_sha256": "efc94f8656d2cf0337979d66935f227d2ce65d3d91aea896b4d60751ff5a4ffa",
+    "executed_sha256": "b4eb3daddfe0ec63ce531543086d5d9cc965a39c96fb8c1e5801687c0aa1ad71"
+  },
+  "docs/evidence/r04-agreement/AgreementUiCheck.java": {
+    "original_sha256": "b314a49129f02b3976838b20760dc999082138a17ffe4e879d0d76d21753730f",
+    "executed_sha256": "8415bf292cee4d8606bac0502053b8467547b916c7afaa273239e5409ae30eb2"
+  },
+  "docs/evidence/r05-sale-outcome/SaleOutcomeUiCheck.java": {
+    "original_sha256": "a470700fdc8dad4d9592be8b8e791d1f5e9aac8cba3bbb4983ee8b6bab04c449",
+    "executed_sha256": "3a9daff9e9c15dfa8ab77dd0a65f3eb2a9c0a79f2a24c7253707e6081822d12c"
+  },
+  "docs/evidence/r06-destination/DestinationUiCheck.java": {
+    "original_sha256": "9fc5222cd958aceaaadf58a049c4eccdcfa0cbb808eb421e3d659c580311ddad",
+    "executed_sha256": "88df73cf8324e39a0453f06b6a749e903cba6c043bf57d9a8d0532ee080b0992"
+  },
+  "docs/evidence/r07-identity/IdentityUiCheck.java": {
+    "original_sha256": "68cb02a72d3fc88f9f8d0353a386f41395a666381bfb9b639158a26daa47d3c9",
+    "executed_sha256": "68cb02a72d3fc88f9f8d0353a386f41395a666381bfb9b639158a26daa47d3c9"
+  },
+  "docs/evidence/r08-tables/ReactiveTablesUiCheck.java": {
+    "original_sha256": "0666aac9367ba717b1d2c5c207457575adfbb9b1f76905813aba86bb5c5f35c9",
+    "executed_sha256": "0666aac9367ba717b1d2c5c207457575adfbb9b1f76905813aba86bb5c5f35c9"
+  },
+  "docs/evidence/r08-tables/SlowModelsUiCheck.java": {
+    "original_sha256": "e48455cfed68106ae4d2b75c7c3a02a8cb3371cc04b3180f0f9bc9b6f76d2cfd",
+    "executed_sha256": "e48455cfed68106ae4d2b75c7c3a02a8cb3371cc04b3180f0f9bc9b6f76d2cfd"
+  },
+  "docs/evidence/r08-tables/TableLifecycleUiCheck.java": {
+    "original_sha256": "afd4e8a51fa93d03cbd57a3ce063946b0722db14e916f62eadbb5d9ecb56a6e5",
+    "executed_sha256": "afd4e8a51fa93d03cbd57a3ce063946b0722db14e916f62eadbb5d9ecb56a6e5"
+  },
+  "docs/evidence/r10-cleanup/AppStartupUiCheck.java": {
+    "original_sha256": "bb1f7110b282fbc76b11a79ba36eec4092efab45991705b6451f66ee13b7eaa5",
+    "executed_sha256": "bb1f7110b282fbc76b11a79ba36eec4092efab45991705b6451f66ee13b7eaa5"
+  }
+}

@@ -1,6 +1,7 @@
 package it.unifi.drivehub;
 
 import it.unifi.drivehub.domain.vehicle.Model;
+import it.unifi.drivehub.domain.vehicle.PriceMode;
 import it.unifi.drivehub.domain.vehicle.Vehicle;
 import it.unifi.drivehub.domain.vehicle.VehicleState;
 import it.unifi.drivehub.service.PriceCalculatorService;
@@ -12,10 +13,73 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Year;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Verifica del Calcolo Prezzi e Tariffe (Regole di Business)")
 class PriceCalculatorServiceTest {
+    @Test
+    void manualBaseReceivesPromotionOnce() {
+        int year = Year.now().getValue();
+        Model model = Model.create(1L, "Fiat", "500", new BigDecimal("20000"), year);
+        Vehicle vehicle = Vehicle.create(1L, 1L, "T0500000000000001", null, 0,
+                new BigDecimal("20000"), year, VehicleState.SALE);
+        vehicle.setPrice(new BigDecimal("10000"));
+        assertEquals(new BigDecimal("9000.00"),
+                new PriceCalculatorService().calculateVehiclePrice(model, vehicle, 10, 0));
+    }
+
+
+
+    @Test
+    void manualBaseEqualToModelRemainsManualWhenModelChangesAndCanReturnToRecommended() {
+        int year = Year.now().getValue();
+        Vehicle vehicle = Vehicle.create(1L, 1L, "T0500000000000001", null, 0,
+                new BigDecimal("20000"), year, VehicleState.SALE);
+        vehicle.setPrice(new BigDecimal("20000"));
+        Model changedModel = Model.create(1L, "Fiat", "500", new BigDecimal("30000"), year);
+        assertEquals(PriceMode.MANUAL, vehicle.getPriceMode());
+        assertEquals(new BigDecimal("18000.00"), new PriceCalculatorService().calculateVehiclePrice(changedModel, vehicle, 10, 0));
+        vehicle.useRecommendedPrice();
+        assertEquals(PriceMode.AUTOMATIC, vehicle.getPriceMode());
+        assertEquals(new BigDecimal("27000.00"), new PriceCalculatorService().calculateVehiclePrice(changedModel, vehicle, 10, 0));
+    }
+
+    @Test
+    void manualBasePreservesAllDepreciationsAndMaximumPromotion() {
+        int year = Year.now().getValue();
+        Model model = Model.create(1L, "Fiat", "500", new BigDecimal("20000"), year - 2);
+        Vehicle vehicle = Vehicle.create(1L, 1L, "T0500000000000001", "AB123CD", 40000,
+                new BigDecimal("20000"), year - 2, VehicleState.SALE);
+        vehicle.setPrice(new BigDecimal("10000"));
+        assertEquals(new BigDecimal("5212.84"), new PriceCalculatorService().calculateVehiclePrice(model, vehicle, 10, 20));
+    }
+
+    @Test
+    void invalidManualBaseLeavesSelectionUnchangedAndZeroIsValid() {
+        int year = Year.now().getValue();
+        Vehicle vehicle = Vehicle.create(1L, 1L, "T0500000000000001", null, 0,
+                new BigDecimal("20000"), year, VehicleState.SALE);
+        assertThrows(IllegalArgumentException.class, () -> vehicle.setPrice(null));
+        assertThrows(IllegalArgumentException.class, () -> vehicle.setPrice(new BigDecimal("-0.001")));
+        assertEquals(PriceMode.AUTOMATIC, vehicle.getPriceMode());
+        assertEquals(new BigDecimal("20000"), vehicle.getPrice());
+        vehicle.setPrice(BigDecimal.ZERO);
+        assertEquals(PriceMode.MANUAL, vehicle.getPriceMode());
+        assertEquals(new BigDecimal("0.00"), vehicle.getPrice());
+    }
+
+    @Test
+    void fractionalCentManualBaseIsRoundedBeforeApplyingFormula() {
+        int year = Year.now().getValue();
+        Model model = Model.create(1L, "Fiat", "500", new BigDecimal("20000"), year);
+        Vehicle vehicle = Vehicle.create(1L, 1L, "T0500000000000001", null, 0,
+                new BigDecimal("20000"), year, VehicleState.SALE);
+        vehicle.setPrice(new BigDecimal("10000.005"));
+        assertEquals(new BigDecimal("9000.01"), new PriceCalculatorService().calculateVehiclePrice(model, vehicle, 10, 0));
+        Vehicle manual = Vehicle.create(1L, 1L, "T0500000000000001", null, 0,
+                new BigDecimal("10000.005"), year, VehicleState.SALE, PriceMode.MANUAL);
+        assertEquals(new BigDecimal("9000.01"), new PriceCalculatorService().calculateVehiclePrice(model, manual, 10, 0));
+    }
 
     private PriceCalculatorService calculator;
 

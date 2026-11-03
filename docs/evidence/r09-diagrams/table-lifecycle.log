@@ -1,0 +1,72 @@
+PASS listino intero: quattro query/connessioni indipendenti dal numero di righe
+PASS JavaFX avviato
+PASS scheda veicoli raggiunta con frecce
+PASS selezione veicolo con tastiera
+PASS Prezzo effettivo = 18.000,00 €
+PASS Prezzo effettivo = 9.000,00 €
+PASS Base applicata = 12.000,00 €
+PASS Prezzo effettivo = 10.800,00 €
+PASS Prezzo consigliato = 18.000,00 €
+PASS tre frame renderizzati
+OBSERVED slow catalog PID=20752 blocker=20750
+PASS caricamento catalogo in attesa osservabile
+PASS stato caricamento e dati temporaneamente non azionabili
+PASS tastiera reattiva durante query bloccata
+PASS tre frame renderizzati
+PASS errore visibile, riprova disponibile e vecchi dati non azionabili
+PASS tre frame renderizzati
+PASS riprova da tastiera riuscita
+PASS vecchia query reale acquisita prima della seconda richiesta
+PASS Prezzo effettivo = 11.700,00 €
+PASS vecchia lettura terminata e connessione chiusa
+PASS tre frame renderizzati
+PASS Prezzo effettivo = 11.700,00 €
+PASS risultato/errore obsoleto ignorato
+PASS vecchia query reale acquisita prima della seconda richiesta
+PASS Prezzo effettivo = 12.600,00 €
+PASS vecchia lettura terminata e connessione chiusa
+PASS tre frame renderizzati
+PASS Prezzo effettivo = 12.600,00 €
+PASS risultato/errore obsoleto ignorato
+PASS aggiornamenti osservati sul thread JavaFX
+PASS Prezzo effettivo = 16.000,00 €
+PASS Prezzo effettivo = 11.200,00 €
+PASS tre frame renderizzati
+PASS tre frame renderizzati
+PASS celle e scorrimento: zero connessioni/query, connessioni=0, query=0
+PASS tre frame renderizzati
+PASS tre frame renderizzati
+PASS celle e scorrimento: zero connessioni/query, connessioni=0, query=0
+PASS tre frame renderizzati
+PASS tre frame renderizzati
+PASS celle e scorrimento: zero connessioni/query, connessioni=0, query=0
+PASS tre frame renderizzati
+PASS tre frame renderizzati
+PASS celle e scorrimento: zero connessioni/query, connessioni=0, query=0
+PASS tre frame renderizzati
+PASS celle e scorrimento: zero connessioni/query, connessioni=0, query=0
+PASS tre frame renderizzati
+PASS tre frame renderizzati
+PASS celle e scorrimento: zero connessioni/query, connessioni=0, query=0
+PASS Prezzo effettivo = 16.000,00 €
+PASS Prezzo effettivo = 11.200,00 €
+PASS tre frame renderizzati
+PASS celle e scorrimento: zero connessioni/query, connessioni=0, query=0
+PASS tre frame renderizzati
+PASS Prezzo effettivo = 8.000,00 €
+PASS Tariffa iniziale/giorno = 8,00 €/giorno
+PASS tre frame renderizzati
+PASS celle e scorrimento: zero connessioni/query, connessioni=0, query=0
+PASS tre frame renderizzati
+PASS Base applicata = 20.000,00 €
+PASS Prezzo effettivo = 16.000,00 €
+PASS Prezzo effettivo = 24.000,00 €
+PASS Prezzo effettivo = 24.000,00 €
+PASS descrizione e base modello aggiornate nella vista già aperta
+PASS tre frame renderizzati
+PASS celle e scorrimento: zero connessioni/query, connessioni=0, query=0
+PASS tre frame renderizzati
+PASS tre frame renderizzati
+PASS celle e scorrimento: zero connessioni/query, connessioni=0, query=0
+PASS tre frame renderizzati
+UI CHECK SUCCESS

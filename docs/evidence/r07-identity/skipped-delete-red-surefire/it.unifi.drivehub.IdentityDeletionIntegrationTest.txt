@@ -1,0 +1,15 @@
+-------------------------------------------------------------------------------
+Test set: it.unifi.drivehub.IdentityDeletionIntegrationTest
+-------------------------------------------------------------------------------
+Tests run: 16, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 5.940 s <<< FAILURE! -- in it.unifi.drivehub.IdentityDeletionIntegrationTest
+it.unifi.drivehub.IdentityDeletionIntegrationTest.skippedDeletionCannotReportSuccess -- Time elapsed: 0.221 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Expected java.lang.IllegalStateException to be thrown, but nothing was thrown.
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:152)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:73)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:35)
+	at org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3115)
+	at it.unifi.drivehub.IdentityDeletionIntegrationTest.skippedDeletionCannotReportSuccess(IdentityDeletionIntegrationTest.java:129)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+

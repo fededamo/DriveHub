@@ -1,0 +1,26 @@
+{
+  "roles": {
+    "test": "src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java",
+    "red_sha256": "62ebe66a8e76c021f8dedf52d0baf99b48d5409284c315fd240f6b81fb2e61c0",
+    "green_sha256": "62ebe66a8e76c021f8dedf52d0baf99b48d5409284c315fd240f6b81fb2e61c0",
+    "identical": true
+  },
+  "requests": {
+    "test": "src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java",
+    "red_sha256": "78a2f03e07c8674b894f683a4fe223bf6f4fa62345e530289040f9187a4ca5ad",
+    "green_sha256": "78a2f03e07c8674b894f683a4fe223bf6f4fa62345e530289040f9187a4ca5ad",
+    "identical": true
+  },
+  "history-race": {
+    "test": "src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java",
+    "red_sha256": "293375bbb0ffe6241ffdddb7d81e1acb76da461078edd6bfa0a005efe194f1aa",
+    "green_sha256": "293375bbb0ffe6241ffdddb7d81e1acb76da461078edd6bfa0a005efe194f1aa",
+    "identical": true
+  },
+  "skipped-delete": {
+    "test": "src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java",
+    "red_sha256": "25a20ff06666f4025c2ed4ca6746b8c3dbb7d323cd88763b350a61a6ded2c946",
+    "green_sha256": "25a20ff06666f4025c2ed4ca6746b8c3dbb7d323cd88763b350a61a6ded2c946",
+    "identical": true
+  }
+}

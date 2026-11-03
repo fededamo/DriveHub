@@ -1,0 +1,34 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontSize 16
+hide empty description
+title Navigazione corrente — accesso, ruoli e identità
+state "LoginView" as Login
+Login : Tab Accedi → AuthService.login
+Login : Tab Registrati → registerClient
+state "Dashboard per ruolo" as Dashboard
+Dashboard : Client → ClientDashboardView
+Dashboard : Salesman → SalesmanDashboardView
+Dashboard : Manager → ManagerDashboardView
+state "AccountManagementDialog" as Account
+Account : Email / Password / Elimina Identità
+Account : + Ricarica Saldo solo cliente
+[*] --> Login : App.start
+Login --> Login : errore / riprova
+Login --> Dashboard : successo → user.openDashboard(navigator)
+Dashboard --> Login : Disconnetti / onLogout
+Dashboard --> Account : Gestione Account
+Account --> Dashboard : chiudi / aggiornamento riuscito
+Account --> Login : eliminazione riuscita / onLogout
+Account --> Account : errore / riprova
+legend bottom
+  App.showDashboardForUser crea UserDashboardNavigator anonimo.
+  Double dispatch seleziona una delle tre viste e passa utente/servizi/callback.
+  Errore nella costruzione dashboard: messaggio in LoginView.
+  Eliminazione impedita da richieste/storico; conto cliente dimostrativo
+  cancellato per CASCADE se l'identità è eliminabile.
+  Scene costruite in Java e sostituite da App; nessun Welcome, Route,
+  FXML o SessionContext. Le tab del LoginView sono selezionabili direttamente.
+endlegend
+@enduml

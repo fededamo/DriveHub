@@ -14,7 +14,11 @@ public interface DiscountDao {
 
     Optional<ModelDiscount> findModelDiscount(Long modelId);
 
+    Optional<ModelDiscount> findModelDiscount(Long modelId, Connection conn);
+
     Optional<VehicleDiscount> findVehicleDiscount(Long vehicleId);
+
+    Optional<VehicleDiscount> findVehicleDiscount(Long vehicleId, Connection conn);
 
     List<ModelDiscount> findAllModelDiscounts();
 

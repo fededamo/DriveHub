@@ -1,0 +1,75 @@
+COMMAND: mvn -B -Ppostgres-tests -Dtest=DatabaseIsolationIntegrationTest,PurchaseAgreementIntegrationTest,SaleOutcomeIntegrationTest,CatalogListingIntegrationTest,BookingRulesTest clean test
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------< it.unifi.drivehub:DriveHub >---------------------
+[INFO] Building DriveHub 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] 6 problems were encountered while building the effective model for org.openjfx:javafx-controls:jar:21.0.2 during dependency collection step for project (use -X to see details)
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ DriveHub ---
+[INFO] Deleting /tmp/drivehub-ticket17-session/install/DriveHub/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ DriveHub ---
+[INFO] Copying 4 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ DriveHub ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 65 source files with javac [debug target 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ DriveHub ---
+[INFO] skip non existing resourceDirectory /tmp/drivehub-ticket17-session/install/DriveHub/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ DriveHub ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 23 source files with javac [debug target 21] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ DriveHub ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running it.unifi.drivehub.SaleOutcomeIntegrationTest
+Ticket10 waiters 1 pid:blockers 19103:{19099}
+Ticket10 waiters 1 pid:blockers 19121:{19117}
+Ticket10 waiters 1 pid:blockers 19139:{19135}
+Ticket10 waiters 1 pid:blockers 19157:{19153}
+Ticket10 waiters 1 pid:blockers 19175:{19171}
+Ticket10 waiters 1 pid:blockers 19194:{19190}
+Ticket10 waiters 1 pid:blockers 19320:{19316}
+Ticket10 waiters 2 pid:blockers 19320:{19316}, 19322:{19320}
+Ticket10 waiters 1 pid:blockers 19351:{19347}
+Ticket10 waiters 2 pid:blockers 19351:{19347}, 19353:{19351}
+Ticket10 waiters 1 pid:blockers 19382:{19378}
+Ticket10 waiters 2 pid:blockers 19382:{19378}, 19384:{19382}
+Ticket10 waiters 1 pid:blockers 19413:{19409}
+Ticket10 waiters 2 pid:blockers 19413:{19409}, 19415:{19413}
+Ticket10 waiters 1 pid:blockers 19452:{19448}
+Ticket10 waiters 2 pid:blockers 19452:{19448}, 19454:{19452}
+Ticket10 waiters 1 pid:blockers 19491:{19487}
+Ticket10 waiters 2 pid:blockers 19491:{19487}, 19493:{19491}
+Ticket10 waiters 1 pid:blockers 19530:{19526}
+Ticket10 waiters 2 pid:blockers 19530:{19526}, 19532:{19530}
+Ticket10 waiters 1 pid:blockers 19569:{19565}
+Ticket10 waiters 2 pid:blockers 19569:{19565}, 19571:{19569}
+[INFO] Tests run: 60, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 14.29 s -- in it.unifi.drivehub.SaleOutcomeIntegrationTest
+[INFO] Running it.unifi.drivehub.PurchaseAgreementIntegrationTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.177 s -- in it.unifi.drivehub.PurchaseAgreementIntegrationTest
+[INFO] Running it.unifi.drivehub.DatabaseIsolationIntegrationTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.187 s -- in it.unifi.drivehub.DatabaseIsolationIntegrationTest
+[INFO] Running it.unifi.drivehub.CatalogListingIntegrationTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.020 s -- in it.unifi.drivehub.CatalogListingIntegrationTest
+[INFO] Running it.unifi.drivehub.BookingRulesTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s -- in it.unifi.drivehub.BookingRulesTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 79, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  28.924 s
+[INFO] Finished at: 2026-11-03T13:19:47+01:00
+[INFO] ------------------------------------------------------------------------

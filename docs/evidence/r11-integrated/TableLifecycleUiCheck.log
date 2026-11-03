@@ -1,0 +1,74 @@
+COMMAND: /tmp/drivehub-ticket16-tools/root/usr/lib/jvm/java-21-openjdk-amd64/bin/javac --module-path /home/federico/.m2/repository/org/openjfx/javafx-base/21.0.2/javafx-base-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-graphics/21.0.2/javafx-graphics-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-controls/21.0.2/javafx-controls-21.0.2-linux.jar --add-modules javafx.controls -cp /tmp/drivehub-ticket18-session/install/DriveHub/target/classes:/tmp/drivehub-ticket18-session/install/DriveHub/target/test-classes:/home/federico/.m2/repository/org/postgresql/postgresql/42.7.3/postgresql-42.7.3.jar:/tmp/drivehub-ticket18-session/ui/TableLifecycleUiCheck -d /tmp/drivehub-ticket18-session/ui/TableLifecycleUiCheck /tmp/drivehub-ticket18-session/ui/TableLifecycleUiCheck/sources/AgreementUiCheck.java /tmp/drivehub-ticket18-session/ui/TableLifecycleUiCheck/sources/AppStartupUiCheck.java /tmp/drivehub-ticket18-session/ui/TableLifecycleUiCheck/sources/DestinationUiCheck.java /tmp/drivehub-ticket18-session/ui/TableLifecycleUiCheck/sources/IdentityUiCheck.java /tmp/drivehub-ticket18-session/ui/TableLifecycleUiCheck/sources/PriceUiCheck.java /tmp/drivehub-ticket18-session/ui/TableLifecycleUiCheck/sources/ReactiveTablesUiCheck.java /tmp/drivehub-ticket18-session/ui/TableLifecycleUiCheck/sources/SaleOutcomeUiCheck.java /tmp/drivehub-ticket18-session/ui/TableLifecycleUiCheck/sources/SlowModelsUiCheck.java /tmp/drivehub-ticket18-session/ui/TableLifecycleUiCheck/sources/TableLifecycleUiCheck.java
+COMMAND: /tmp/drivehub-ticket16-tools/root/usr/lib/jvm/java-21-openjdk-amd64/bin/java --module-path /home/federico/.m2/repository/org/openjfx/javafx-base/21.0.2/javafx-base-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-graphics/21.0.2/javafx-graphics-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-controls/21.0.2/javafx-controls-21.0.2-linux.jar --add-modules javafx.controls -Dprism.order=sw -cp /tmp/drivehub-ticket18-session/install/DriveHub/target/classes:/tmp/drivehub-ticket18-session/install/DriveHub/target/test-classes:/home/federico/.m2/repository/org/postgresql/postgresql/42.7.3/postgresql-42.7.3.jar:/tmp/drivehub-ticket18-session/ui/TableLifecycleUiCheck it.unifi.drivehub.TableLifecycleUiCheck check /tmp/drivehub-ticket18-session/ui/TableLifecycleUiCheck
+PASS listino intero: quattro query/connessioni indipendenti dal numero di righe
+PASS JavaFX avviato
+PASS scheda veicoli raggiunta con frecce
+PASS selezione veicolo con tastiera
+PASS Prezzo effettivo = 18.000,00 €
+PASS Prezzo effettivo = 9.000,00 €
+PASS Base applicata = 12.000,00 €
+PASS Prezzo effettivo = 10.800,00 €
+PASS Prezzo consigliato = 18.000,00 €
+PASS tre frame renderizzati
+OBSERVED slow catalog PID=57277 blocker=57275
+PASS caricamento catalogo in attesa osservabile
+PASS stato caricamento e dati temporaneamente non azionabili
+PASS tastiera reattiva durante query bloccata
+PASS tre frame renderizzati
+PASS errore visibile, riprova disponibile e vecchi dati non azionabili
+PASS tre frame renderizzati
+PASS riprova da tastiera riuscita
+PASS vecchia query reale acquisita prima della seconda richiesta
+PASS Prezzo effettivo = 11.700,00 €
+PASS vecchia lettura terminata e connessione chiusa
+PASS tre frame renderizzati
+PASS Prezzo effettivo = 11.700,00 €
+PASS risultato/errore obsoleto ignorato
+PASS vecchia query reale acquisita prima della seconda richiesta
+PASS Prezzo effettivo = 12.600,00 €
+PASS vecchia lettura terminata e connessione chiusa
+PASS tre frame renderizzati
+PASS Prezzo effettivo = 12.600,00 €
+PASS risultato/errore obsoleto ignorato
+PASS aggiornamenti osservati sul thread JavaFX
+PASS Prezzo effettivo = 16.000,00 €
+PASS Prezzo effettivo = 11.200,00 €
+PASS tre frame renderizzati
+PASS tre frame renderizzati
+PASS celle e scorrimento: zero connessioni/query, connessioni=0, query=0
+PASS tre frame renderizzati
+PASS tre frame renderizzati
+PASS celle e scorrimento: zero connessioni/query, connessioni=0, query=0
+PASS tre frame renderizzati
+PASS tre frame renderizzati
+PASS celle e scorrimento: zero connessioni/query, connessioni=0, query=0
+PASS tre frame renderizzati
+PASS tre frame renderizzati
+PASS celle e scorrimento: zero connessioni/query, connessioni=0, query=0
+PASS tre frame renderizzati
+PASS celle e scorrimento: zero connessioni/query, connessioni=0, query=0
+PASS tre frame renderizzati
+PASS tre frame renderizzati
+PASS celle e scorrimento: zero connessioni/query, connessioni=0, query=0
+PASS Prezzo effettivo = 16.000,00 €
+PASS Prezzo effettivo = 11.200,00 €
+PASS tre frame renderizzati
+PASS celle e scorrimento: zero connessioni/query, connessioni=0, query=0
+PASS tre frame renderizzati
+PASS Prezzo effettivo = 8.000,00 €
+PASS Tariffa iniziale/giorno = 8,00 €/giorno
+PASS tre frame renderizzati
+PASS celle e scorrimento: zero connessioni/query, connessioni=0, query=0
+PASS tre frame renderizzati
+PASS Base applicata = 20.000,00 €
+PASS Prezzo effettivo = 16.000,00 €
+PASS Prezzo effettivo = 24.000,00 €
+PASS Prezzo effettivo = 24.000,00 €
+PASS descrizione e base modello aggiornate nella vista già aperta
+PASS tre frame renderizzati
+PASS celle e scorrimento: zero connessioni/query, connessioni=0, query=0
+PASS tre frame renderizzati
+PASS tre frame renderizzati
+PASS celle e scorrimento: zero connessioni/query, connessioni=0, query=0
+PASS tre frame renderizzati
+UI CHECK SUCCESS

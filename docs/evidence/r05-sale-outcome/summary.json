@@ -1,0 +1,146 @@
+{
+  "tests": 259,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "postgres": 214,
+  "without_db": 45,
+  "classes": [
+    {
+      "class": "AuthServiceIntegrationTest",
+      "tests": 18,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "postgres": true
+    },
+    {
+      "class": "BalanceConcurrencyIntegrationTest",
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "postgres": true
+    },
+    {
+      "class": "DatabaseConnectionIntegrationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "postgres": true
+    },
+    {
+      "class": "DatabaseIsolationIntegrationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "postgres": true
+    },
+    {
+      "class": "DemoSqlValidationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "postgres": true
+    },
+    {
+      "class": "DomainInvariantsTest",
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "postgres": false
+    },
+    {
+      "class": "FullWorkflowIntegrationTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "postgres": true
+    },
+    {
+      "class": "PriceCalculatorServiceTest",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "postgres": false
+    },
+    {
+      "class": "PriceSelectionIntegrationTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "postgres": true
+    },
+    {
+      "class": "PurchaseAgreementIntegrationTest",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "postgres": true
+    },
+    {
+      "class": "PurchaseConcurrencyIntegrationTest",
+      "tests": 60,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "postgres": true
+    },
+    {
+      "class": "RequestAgreementTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "postgres": false
+    },
+    {
+      "class": "SaleOutcomeIntegrationTest",
+      "tests": 60,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "postgres": true
+    },
+    {
+      "class": "SaleProposalIntegrationTest",
+      "tests": 23,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "postgres": true
+    },
+    {
+      "class": "SaleTypeTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "postgres": false
+    },
+    {
+      "class": "TestDatabaseConfigurationTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "postgres": false
+    },
+    {
+      "class": "TestDriveCancellationIntegrationTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "postgres": true
+    }
+  ]
+}

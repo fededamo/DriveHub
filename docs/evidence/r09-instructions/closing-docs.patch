@@ -1,0 +1,162 @@
+--- reviewed/DriveHub/docs/evidence/r09-instructions/commands.md
++++ closing/DriveHub/docs/evidence/r09-instructions/commands.md
+@@ -37,11 +37,12 @@
+ [prepare.py](prepare.py) ha copiato questa fotografia, generato credenziali
+ casuali private0600 e configurato un nuovo cluster con `initdb`: UTF8,
+ socket privato, host SCRAM, solo127.0.0.1:55434. Il file privato `env.json`
+-non è un'evidenza pubblicata e non va copiato nel repository.
++non è un'evidenza pubblicata e non va copiato nel repository. La directory
++temporanea della sessione è stata ristretta a0700 al controllo finale.
+ 
+ ```bash
+ pg_ctl -D /tmp/drivehub-ticket16-session/pgdata \
+-  -l docs/evidence/r09-instructions/postgres.log -w start
++  -l /home/federico/dev/Drivehub/DriveHub/docs/evidence/r09-instructions/postgres.log -w start
+ # Comando completo registrato in xvfb-command.txt, su display92 libero
+ python3 /tmp/drivehub-ticket16-session/setup-db.py
+ ```
+--- reviewed/DriveHub/docs/evidence/r09-instructions/verification.md
++++ closing/DriveHub/docs/evidence/r09-instructions/verification.md
+@@ -84,14 +84,33 @@
+ [prima](before-suite-application.sha256.json)/[dopo](after-suite-application.sha256.json).
+ [Controllo finale](after-suite-environment.txt), [arresto](shutdown.txt),
+ [log server](postgres.log). I guasti SQL nel log sono quelli deliberati delle
+-regressioni. PostgreSQL e Xvfb arrestati; controllo listener/processi da registrare.
++regressioni. PostgreSQL e Xvfb arrestati; verifica successiva fuori sandbox: listener55434,
++socketX92 e PIDXvfb assenti, come registrato in shutdown.txt.
+ 
+ ## Review e stato
+ 
+-Verifiche runtime completate; review indipendenti Standards/Spec sul solo diff
+-della sessione e controlli finali di conservazione ancora in corso.
+-Ticket16 resta in-progress fino al completamento. Nessun codice/test/harness
+-di produzione modificato: gli aggiornamenti di chiusura saranno documentali.
++Review indipendenti [Standards](standards-review.md) **0violazioni/0smell
++azionabili**, [Spec](spec-review.md) **PASS,0rilievi**. [Patch congelata](review.patch),
++[15file](review-files.txt), [hash input review](review-files.sha256.json), SHA256
++`5302f7b4445f7e12af229b056d9a3cf46a8b9c5172f00c74f0d314af3035ca0b`. Confronto con fotografia locale iniziale,
++non HEAD; verificati anche sorgenti, manifest/log/XML e confini delle prove.
++
++[Delta documentale di chiusura](closing-docs.patch) separato dalla review
++congelata; [ricontrollo indipendente](closing-review.md).
++[Diff finale](session.patch), [hash file della sessione](session-files.sha256.json).
++La chiusura non costituisce una nuova prova runtime. Nessun input produttivo
++o harness modificato dopo le prove e la review.
++
++[Conservazione](preservation.json): **1422file presenti,1418identici,
++4aggiornamenti documentali intenzionali,zeroeliminazioni**; ticket/evidenze01–15
++e successivi intatti, HEAD/indice invariati. [Controlli documentali](document-checks.json):
++link locali e whitespace del diff verificati, integrità della fotografia e
++input runtime identici build→47test→394test; password private assenti dalle
++prove. Temporanei privati non pubblicati, sessione0700/env0600.
++
++**6/6criteri verificati, ticket16 chiuso; AC15/#15 e AC18/#18 completati,
++17/20rilievi chiusi**. R09 resta parziale per diagrammi17 e AC13 trasversale.
++Nessun commit/staging, nessun ticket successivo avviato.
+ 
+ Limiti: Linux/WSL e Xvfb, nessuna nuova certificazione screen reader, altro
+ OS/display, installer autonomo o benchmark. Il goal Maven prova l'avvio della
+--- reviewed/PIANO_REVISIONI_DRIVEHUB.md
++++ closing/PIANO_REVISIONI_DRIVEHUB.md
+@@ -2,7 +2,16 @@
+ 
+ Registro operativo avviato il 31 ottobre 2026. Punto di ingresso per riprendere il lavoro: avanzamento, decisioni, attività, verifiche e prossimo passo.
+ 
+-## Stato attuale — ticket 16 in corso
++## Stato attuale — ticket 16 completato
++
++- Solo16 completato,01–15 verificati chiusi;6/6criteri, **AC15/#15 e AC18/#18 chiusi**. Rilievi integralmente chiusi **17/20** (#1,#2,#3,#4,#5,#6,#7,#8,#9,#10,#11,#15,#16,#17,#18,#19,#20). R09 resta parziale per i diagrammi17; AC13 trasversale, nessun successivo avviato.
++- Consolidati README, [installazione](DriveHub/docs/installation.md), [architettura](DriveHub/docs/architecture.md) e testing. Configurazione/inizializzazione/demo facoltativa, reset distruttivo distinto dall'avvio; factory statiche/GoF/DAO/DI, SOLID/DDD, responsabilità/dipendenze/flussi e compromessi sostenuti dai sorgenti. Nessun refactor o modifica a codice/POM/test/schema/demo/diagrammi.
++- Installazione provata sulla copia della versione locale corrente, inclusi modificati/non tracciati, non solo HEAD. Temporanei precedenti assenti: Java21.0.12.1/Maven3.9.16/PG16.15/Xvfb ricreati senza installazioni di sistema, solo cluster sacrificabile127.0.0.1:55434, DB/ruoli dedicati e sentinella distinta.
++- Nuove prove: schema vuoto e demo separata; build `mvn -DskipTests clean package`65sorgenti target21;47/47senzaDB; tre login demo tramite servizi e App.start/Robot; due avvii reali `mvn javafx:run` con finestre/PID distinti, interrotti dal launcher dopo osservazione. Suite finale **394/394**,47senzaDB/347PostgreSQL, zero failure/errori/salti, isolamento/sentinella;394/394del15 resta storico. Input runtime identici fra build e suite.
++- Review indipendenti sul solo diff congelato della sessione: **Standards0violazioni/0smell azionabili, Spec0rilievi**. [Evidenze16](DriveHub/docs/evidence/r09-instructions/verification.md). Sentinella finale READ ONLY e hash13tabelle/7sequenze applicative identici prima/dopo; PostgreSQL/Xvfb arrestati, listener e PID assenti.
++- Conservati1422file iniziali:1418identici,4aggiornamenti documentali intenzionali,zeroeliminazioni;01–15 e successivi intatti, HEAD/indice invariati, nessun commit/staging, relazione sempre esclusa. Limiti: Linux/WSL/Xvfb, login tramite servizi anziché tutti i flussi GUI, nessuna certificazione screen reader/altroOS/installer/benchmark o migrazione completa. Prossimo passo: nessun residuo16;17 solo su nuova richiesta.
++
++## Stato durante il ticket 16 — storico
+ 
+ - Solo16, prerequisiti01–15 verificati chiusi e senza criteri aperti; fotografia iniziale1422file, HEAD/indice conservati. Relazione_SWE esclusa, nessun commit/staging.
+ - Consolidati README, installazione/configurazione e descrizione architetturale: inizializzazione/reset distruttivi distinti dall'avvio, demo facoltativa; factory statiche/GoF/DAO/DI, SOLID/DDD e limiti spiegati con sorgenti concreti. Diagrammi17 esclusi.
+@@ -207,7 +216,7 @@
+ | R06 | Noleggi/test drive concorrenti e transizioni valide | #5, #7, restante #12 | R02, R03, D08–D10; coordinamento eventi con R04 | Completata: ticket 08, 11 e 12 chiusi e verificati |
+ | R07 | Cancellazione account rispettosa di storico e richieste | #9 | R00; fixture aggiornate dai flussi interessati | Completata: ticket13 chiuso e verificato |
+ | R08 | Tabelle JavaFX senza query nel rendering | #16 | R03; verificare aggiornamenti dei flussi corretti | Completata: ticket14 verificato e chiuso |
+-| R09 | README, diagrammi, teoria ed evidenze coerenti | #14, #15, #18; valutazione teorica | Incrementale; chiusura dopo R01–R08 e R10 | In corso: ticket16 in verifica; diagrammi17 esclusi |
++| R09 | README, diagrammi, teoria ed evidenze coerenti | #14, #15, #18; valutazione teorica | Incrementale; chiusura dopo R01–R08 e R10 | Parziale: ticket16 verificato e chiuso; diagrammi17 da eseguire |
+ | R10 | Rimozione dei componenti inutilizzati | #20 | R00; controllo riferimenti prima di rimuovere | Completata: ticket15 verificato e chiuso |
+ | R11 | Verifica integrata e tracciabilità completa | #13; conferma finale #1–#20 | R01–R10 | Pianificata |
+ 
+@@ -335,7 +344,7 @@
+ | Noleggio | Disponibilità, priorità, cambio destinazione/rimborsi | R02, R06 | Ticket 11–12 chiusi: concorrenza, date inclusive, prezzo sotto lock, stati ammessi, noleggio in corso e rimborsi atomici multi-cliente. Mirati 278/278, suite 330/330, GUI/tastiera e review indipendenti senza rilievi |
+ | Test drive | Limite tre, disponibilità, cancellazione/storico | R06 | Ticket08 e11: limite cliente concorrente anche su veicoli diversi, gare miste nei due ordini, cancellazione atomica, storico e orari verificati. Regressioni rieseguite nella suite corrente 330/330; 297/297 del ticket 11 storico |
+ | UI | Caricamento, prezzi, errori/riprova | R03, R08 | Ticket14 chiuso: celle/scorrimento senza SQL, caricamento fuori FX, lock reale/PID e proprietà osservabili, errore SQL/riprova e obsoleti, prezzi aggiornati, etichette e Robot/tastiera; nuovi4 test PostgreSQL, mirati148/148, finale394/394, [evidenze](DriveHub/docs/evidence/r08-tables/verification.md) |
+-| Consegna | Installazione, UML, teoria, prove della versione | R09–R11 | Installazione pulita, diagrammi correnti, evidenze datate |
++| Consegna | Installazione, UML, teoria, prove della versione | R09–R11 | Ticket16: installazione su copia locale corrente, configurazione/schema/demo, build/avvio/suite394/394 e teoria verificati; [evidenze16](DriveHub/docs/evidence/r09-instructions/verification.md). Diagrammi17 e chiusura18 restano da eseguire |
+ | Pulizia | Riferimenti FXML/sessione, chiamanti integri | R10 | Ticket15 chiuso: dipendenza/campo/3metodi/import senza usi rimossi,20righe nette in meno; compilazione Java21, App.start/Xvfb e ciclo grafico14 riusciti, baseline/finale nuove394/394, isolamento/sentinella e review indipendenti senza rilievi residui; [evidenze15](DriveHub/docs/evidence/r10-cleanup/verification.md) |
+ 
+ ## Evidenze e limiti della baseline
+@@ -852,3 +861,29 @@
+ AC13 trasversale. /tmp temporanea, packaging/goal javafx:run e altri OS/display
+ non verificati; nessuna certificazione screen reader o benchmark. Nessun blocco
+ residuo15 o successivo avviato; proseguire solo su nuova richiesta.
++
++
++### 3 novembre 2026 — ticket16 completato
++
++Solo16,01–15 chiusi verificati con hash; letti AGENTS/piano/glossario/ADR0001,
++testing/evidenze15. Installazione/configurazione e teoria consolidate in README,
++docs/installation.md, docs/architecture.md e testing, con esempi/compromessi reali.
++Nessun refactor, test artificiale o modifica ai diagrammi17; codice/POM/test/fixture
++preesistenti identici. Fotografia1422file e copia della versione locale corrente,
++non solo HEAD, inclusi untracked/modificati; sola configurazione DB privata diversa.
++Ambiente temporaneo assente e ricreato: Java21.0.12.1/Maven3.9.16/PG16.15/Xvfb92,
++cluster nuovo127.0.0.1:55434 con ruoli/DB dedicati e sentinella distinta.
++Schema vuoto/demo facoltativa verificati separatamente, build package65sorgenti
++target21,47/47senzaDB, tre login demo via servizi, App.start/Robot e due avvii
++Maven reali con finestre/PID distinti (processi interrotti dopo osservazione).
++Finale nuova394/394,47senzaDB/347PostgreSQL, zero failure/errori/salti,
++isolamento/sentinella; risultato15 storico. Hash applicativi13tabelle7sequenze
++identici prima/dopo, letture READ ONLY. Review indipendenti sul solo diff
++Standards0violazioni/0smell azionabili e Spec0rilievi. Chiusura documentale
++separata dalle prove runtime; input invariati build→suite. Servizi arrestati,
++listener/PID assenti;1422file conservati,1418identici+4aggiornamenti documentali,
++zeroeliminazioni. HEAD/indice invariati, nessun commit/staging, relazione esclusa.
++**6/6criteri,16/AC15/#15/AC18/#18 chiusi,17/20rilievi.** R09 parziale per17,
++AC13 trasversale; nessun altro ticket avviato. Limiti Linux/WSL/Xvfb, nessuna
++migrazione completa/certificazione screen reader/installer/benchmark o prova
++di tutti i flussi GUI. [Prove16](DriveHub/docs/evidence/r09-instructions/verification.md).
+--- reviewed/TRACKER_DRIVEHUB/revisioni/issues/16-istruzioni-e-rigore-teorico.md
++++ closing/TRACKER_DRIVEHUB/revisioni/issues/16-istruzioni-e-rigore-teorico.md
+@@ -7,7 +7,7 @@
+ **Blocked by:** 02: Conservare il veicolo invariato dopo una modifica non valida; 03: Cambiare email senza compromettere l'accesso; 06: Concludere l'acquisto al totale concordato all'acconto; 10: Accettare o rifiutare una cessione senza doppi pagamenti; 12: Cambiare destinazione senza riaprire auto assegnate o perdere rimborsi; 13: Cancellare identità senza perdere richieste o attribuzioni storiche; 14: Consultare le tabelle senza query nel rendering; 15: Rimuovere FXML e stato di sessione soltanto se inutilizzati
+ 
+ Status: ready-for-agent
+-State: in-progress
++State: closed
+ 
+ **Piano:** R09
+ **Specifica:** AC15, AC18
+@@ -15,12 +15,12 @@
+ 
+ ## Acceptance criteria
+ 
+-- [ ] Istruzioni complete per Java 21, Maven, PostgreSQL, configurazione, inizializzazione e demo facoltativa; reset distruttivo distinto dall'avvio ordinario.
+-- [ ] Documentati comandi e confini delle prove senza DB, PostgreSQL e verifiche grafiche, con eventuali limitazioni reali.
+-- [ ] Factory statiche distinte da Factory Method GoF; DAO, DI e composition root distinti dai GoF.
+-- [ ] SOLID e uso di DDD motivati con esempi reali e compromessi; direzione delle dipendenze distinta dal flusso dei dati; costruzione dei servizi e accessi globali residui descritti correttamente.
+-- [ ] Prezzi, transazioni, cancellazioni e concorrenza descritti secondo le decisioni e i flussi implementati, senza promettere proprietà non dimostrate.
+-- [ ] Procedura di installazione pulita verificata e incongruenze risolte o registrate come verifiche ancora aperte; relazione sempre esclusa.
++- [x] Istruzioni complete per Java 21, Maven, PostgreSQL, configurazione, inizializzazione e demo facoltativa; reset distruttivo distinto dall'avvio ordinario.
++- [x] Documentati comandi e confini delle prove senza DB, PostgreSQL e verifiche grafiche, con eventuali limitazioni reali.
++- [x] Factory statiche distinte da Factory Method GoF; DAO, DI e composition root distinti dai GoF.
++- [x] SOLID e uso di DDD motivati con esempi reali e compromessi; direzione delle dipendenze distinta dal flusso dei dati; costruzione dei servizi e accessi globali residui descritti correttamente.
++- [x] Prezzi, transazioni, cancellazioni e concorrenza descritti secondo le decisioni e i flussi implementati, senza promettere proprietà non dimostrate.
++- [x] Procedura di installazione pulita verificata e incongruenze risolte o registrate come verifiche ancora aperte; relazione sempre esclusa.
+ 
+ ## Note per l'implementazione
+ 
+@@ -35,3 +35,5 @@
+ - 31 ottobre 2026: ticket pubblicato da `to-tickets` dopo approvazione di granularità e dipendenze. Esecuzione non ancora avviata; verificare i blocchi prima di iniziare.
+ 
+ - 3 novembre 2026: avviato solo16; AGENTS, piano, glossario, ADR0001, testing ed evidenze15 letti. Verificati01–15 chiusi e senza criteri aperti; fotografia iniziale1422file, HEAD/indice conservati. Strumenti temporanei precedenti assenti: ambiente Java21/PG16/Xvfb ricreato senza installazioni di sistema; copia isolata dalla versione locale corrente, inclusi file modificati e non tracciati, esclusa Relazione_SWE. Nuove build/avvio/suite e review ancora da completare;394/394 del15 resta storico. Nessun commit/staging o intervento17.
++
++- 3 novembre 2026 — chiusura: **6/6 criteri verificati**, solo16/AC15/#15 e AC18/#18 completati. README, installazione, architettura e testing consolidati: avvio ordinario distinto da schema/demo distruttivi; configurazione reale, demo facoltativa, pattern/SOLID/DDD e limiti con sorgenti verificati. Nessun codice/POM/test/schema/demo o diagramma modificato. Copia isolata dalla versione locale corrente, non HEAD, inclusi modificati/non tracciati; sola configurazione privata DB differente nei sorgenti. Java21.0.12.1/Maven3.9.16/PG16.15/Xvfb ricreati dopo assenza dei temporanei precedenti; solo127.0.0.1:55434 con ruoli/DB dedicati e sentinella distinta. Schema vuoto e demo separata, build package65sorgenti target21,47/47senzaDB, tre login demo tramite servizi e App.start/Robot riusciti; due veri avvii mvn javafx:run con finestre/PID distinti, interrotti dopo osservazione. Nuova suite completa finale **394/394**,47senzaDB/347PostgreSQL, zero failure/errori/salti, isolamento/sentinella inclusi;394/394del15 resta storico. Hash13tabelle/7sequenze applicative identici prima/dopo, READ ONLY; servizi arrestati, listener/PID assenti. Review indipendenti solo diff sessione: **Standards0violazioni/0smell azionabili, Spec0rilievi**. [Comandi, log/XML, hash, review e limiti](../../../DriveHub/docs/evidence/r09-instructions/verification.md).1422file iniziali presenti,1418identici e4aggiornamenti documentali intenzionali,zeroeliminazioni;01–15 e successivi intatti, HEAD/indice invariati, nessun commit/staging, Relazione_SWE esclusa. R09 resta parziale per17, AC13 trasversale; nessuna migrazione completa, certificazione screen reader/altroOS/installer o prova di tutti i flussi GUI. Nessun ticket successivo avviato.

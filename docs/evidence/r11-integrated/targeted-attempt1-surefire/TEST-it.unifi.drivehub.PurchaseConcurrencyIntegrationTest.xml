@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="90.537" tests="60" errors="0" skipped="0" failures="0">
+  <testcase name="completionAndExpirationRecheckTheLockedDeadline(boolean)[1]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.242" />
+  <testcase name="completionAndExpirationRecheckTheLockedDeadline(boolean)[2]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.236" />
+  <testcase name="staleExpirationCandidateCannotRefundACompletedOrExtendedRequest(boolean)[1]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.242" />
+  <testcase name="staleExpirationCandidateCannotRefundACompletedOrExtendedRequest(boolean)[2]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.239" />
+  <testcase name="competingPhasesConsumeTheRequestOnce(String, String, String, VehicleState, BigDecimal)[1]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.27" />
+  <testcase name="competingPhasesConsumeTheRequestOnce(String, String, String, VehicleState, BigDecimal)[2]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.259" />
+  <testcase name="competingPhasesConsumeTheRequestOnce(String, String, String, VehicleState, BigDecimal)[3]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.264" />
+  <testcase name="competingPhasesConsumeTheRequestOnce(String, String, String, VehicleState, BigDecimal)[4]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.279" />
+  <testcase name="competingPhasesConsumeTheRequestOnce(String, String, String, VehicleState, BigDecimal)[5]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.279" />
+  <testcase name="competingPhasesConsumeTheRequestOnce(String, String, String, VehicleState, BigDecimal)[6]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.328" />
+  <testcase name="competingPhasesConsumeTheRequestOnce(String, String, String, VehicleState, BigDecimal)[7]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.312" />
+  <testcase name="competingPhasesConsumeTheRequestOnce(String, String, String, VehicleState, BigDecimal)[8]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.29" />
+  <testcase name="incompleteApprovalCannotEnableCompletionOrExpiration(String, String)[1]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.25" />
+  <testcase name="incompleteApprovalCannotEnableCompletionOrExpiration(String, String)[2]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.244" />
+  <testcase name="incompleteApprovalCannotEnableCompletionOrExpiration(String, String)[3]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.227" />
+  <testcase name="failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[1]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.272" />
+  <testcase name="failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[2]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.463" />
+  <testcase name="failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[3]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.283" />
+  <testcase name="failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[4]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.23" />
+  <testcase name="failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[5]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.242" />
+  <testcase name="failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[6]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.259" />
+  <testcase name="failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[7]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.238" />
+  <testcase name="failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[8]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.306" />
+  <testcase name="failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[9]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.223" />
+  <testcase name="failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[10]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.213" />
+  <testcase name="failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[11]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.221" />
+  <testcase name="failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[12]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.233" />
+  <testcase name="failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[13]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.231" />
+  <testcase name="failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[14]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.21" />
+  <testcase name="failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[15]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.237" />
+  <testcase name="failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[16]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.227" />
+  <testcase name="failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[17]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.223" />
+  <testcase name="failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[18]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.232" />
+  <testcase name="failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[19]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.359" />
+  <testcase name="failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[20]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.265" />
+  <testcase name="failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[21]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.285" />
+  <testcase name="failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[22]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.255" />
+  <testcase name="failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[23]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.239" />
+  <testcase name="failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[24]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="1.795" />
+  <testcase name="inconsistentVehicleStateRollsBackTheWholePhase(String, VehicleState)[1]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="4.03" />
+  <testcase name="inconsistentVehicleStateRollsBackTheWholePhase(String, VehicleState)[2]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="12.962" />
+  <testcase name="inconsistentVehicleStateRollsBackTheWholePhase(String, VehicleState)[3]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="28.446" />
+  <testcase name="inconsistentVehicleStateRollsBackTheWholePhase(String, VehicleState)[4]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="12.248" />
+  <testcase name="inconsistentVehicleStateRollsBackTheWholePhase(String, VehicleState)[5]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="4.023" />
+  <testcase name="inconsistentVehicleStateRollsBackTheWholePhase(String, VehicleState)[6]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="7.453" />
+  <testcase name="inconsistentVehicleStateRollsBackTheWholePhase(String, VehicleState)[7]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="4.204" />
+  <testcase name="inconsistentVehicleStateRollsBackTheWholePhase(String, VehicleState)[8]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.605" />
+  <testcase name="inconsistentVehicleStateRollsBackTheWholePhase(String, VehicleState)[9]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.399" />
+  <testcase name="inconsistentVehicleStateRollsBackTheWholePhase(String, VehicleState)[10]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.579" />
+  <testcase name="inconsistentVehicleStateRollsBackTheWholePhase(String, VehicleState)[11]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.313" />
+  <testcase name="inconsistentVehicleStateRollsBackTheWholePhase(String, VehicleState)[12]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.347" />
+  <testcase name="purchaseCommandsRejectSaleRequests(String)[1]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.364" />
+  <testcase name="purchaseCommandsRejectSaleRequests(String)[2]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.563" />
+  <testcase name="purchaseCommandsRejectSaleRequests(String)[3]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.363" />
+  <testcase name="expirationUsesTheRefundActuallyWrittenInTheNotification" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.469" />
+  <testcase name="missingAccountPreventsEveryWrite(String)[1]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.331" />
+  <testcase name="missingAccountPreventsEveryWrite(String)[2]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.26" />
+  <testcase name="missingAccountPreventsEveryWrite(String)[3]" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.303" />
+  <testcase name="requestLockRequiresAnActiveTransaction" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.226" />
+  <testcase name="concurrentCompletionsChargeAndSellOnlyOnce" classname="it.unifi.drivehub.PurchaseConcurrencyIntegrationTest" time="0.258" />
+</testsuite>

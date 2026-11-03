@@ -1,0 +1,6 @@
+waiting for server to shut down.... done
+server stopped
+127.0.0.1:55433 - no response
+Xvfb :95 SIGTERM sent to verified PID 9072
+PostgreSQL dedicated port no longer responds
+Xvfb process state: absent (not running)

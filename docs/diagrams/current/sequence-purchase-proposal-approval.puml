@@ -1,0 +1,63 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontSize 16
+skinparam maxMessageSize 280
+title Cessione del cliente — proposta ed esito del venditore
+autonumber
+actor Cliente
+actor Venditore
+control SaleToDealershipService as service
+participant DatabaseManager as db
+participant VehicleDao as vehicle
+participant RequestDao as request
+participant SaleDao as sale
+participant BankAccountDao as account
+group submitSaleProposal(...) — transazione 1
+Cliente -> service : dalla ClientDashboardView
+service -> db : executeInTransactionWithResult(callback)
+service -> vehicle : findByVinForUpdate(vin, conn)
+alt VIN noto
+service -> sale : findLatestPurchaseForVehicle(vehicleId, conn)
+service -> request : hasOpenRequestForVehicle(vehicleId, conn)
+note over service,vehicle
+  Solo SOLD, ultima PURCHASE al proponente, nessuna richiesta;
+  modello/anno coerenti; aggiorna targa/km e passa WAITING.
+end note
+service -> vehicle : update(vehicle WAITING, conn)
+else VIN nuovo
+service -> vehicle : save(Vehicle WAITING, conn)
+end
+note over service,vehicle : Stima dalla formula esistente; modello/sconti letti anche fuori conn.
+service -> request : save(Request SALE, deposit negativo = stima, conn)
+db -> db : commit / close
+end
+group approveSaleProposal / rejectSaleProposal — transazione 2
+Venditore -> service : esito dalla SalesmanDashboardView
+service -> db : executeInTransaction(callback)
+service -> request : findByIdForUpdate(requestId, conn)
+service -> vehicle : findByIdForUpdate(vehicleId, conn)
+note over service,vehicle : Richiesta SALE e veicolo WAITING, altrimenti errore.
+alt accetta (salesmanId obbligatorio)
+service -> account : findByClientIdForUpdate(clientId, conn)
+service -> account : updateBalance(..., saldo + abs(deposit), conn)
+service -> sale : save(Sale ACQUISITION negativa, conn)
+service -> vehicle : updateStateAtomically(WAITING, SALE, conn)
+service -> request : delete(requestId, conn)
+else rifiuta — nessun pagamento
+service -> request : delete(requestId, conn)
+service -> vehicle : hasAssociatedOperations(vehicleId, conn)
+alt storico presente
+service -> vehicle : updateStateAtomically(WAITING, SOLD, conn)
+else privo di storico
+service -> vehicle : delete(vehicleId, conn)
+end
+end
+db -> db : commit / close
+service --> Venditore : esito visibile dopo commit
+end
+note over service,db
+  Errori: tenta rollback di tutte le scritture, close, errore UI.
+  Vincoli unici e lock impediscono esiti duplicati riusciti sullo stesso ID.
+  Non intervengono Manager, PurchaseProposal o PaymentGateway.
+end note
+@enduml

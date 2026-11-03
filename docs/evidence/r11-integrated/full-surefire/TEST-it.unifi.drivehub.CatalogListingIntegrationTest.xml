@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="it.unifi.drivehub.CatalogListingIntegrationTest" time="1.049" tests="4" errors="0" skipped="0" failures="0">
+  <testcase name="nextRefreshReadsNewModelBaseAndNameWithoutChangingManualBase" classname="it.unifi.drivehub.CatalogListingIntegrationTest" time="0.231" />
+  <testcase name="stateFilteringEmptyResultsAndNewSessionRemainCorrect" classname="it.unifi.drivehub.CatalogListingIntegrationTest" time="0.206" />
+  <testcase name="usedVehicleAndDailyRateKeepDepreciationAndMaximumDiscount" classname="it.unifi.drivehub.CatalogListingIntegrationTest" time="0.171" />
+  <testcase name="automaticAndManualUseTheSameFormulaAfterRefresh" classname="it.unifi.drivehub.CatalogListingIntegrationTest" time="0.439" />
+</testsuite>

@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="it.unifi.drivehub.SaleProposalIntegrationTest" time="8.668" tests="23" errors="0" skipped="0" failures="0">
+  <testcase name="dealershipVinIsRejectedWithoutAnyMutation" classname="it.unifi.drivehub.SaleProposalIntegrationTest" time="0.15" />
+  <testcase name="ownershipQueriesAndVehicleLockRequireATransaction" classname="it.unifi.drivehub.SaleProposalIntegrationTest" time="0.105" />
+  <testcase name="skippedVehicleUpdateCannotLeaveAnOpenRequest" classname="it.unifi.drivehub.SaleProposalIntegrationTest" time="0.19" />
+  <testcase name="anAcquisitionAloneDoesNotEstablishOwnershipButAZeroPriceSaleDoes" classname="it.unifi.drivehub.SaleProposalIntegrationTest" time="0.228" />
+  <testcase name="aKnownVinCannotUseAnotherModelOrYearForItsEstimate(boolean)[1]" classname="it.unifi.drivehub.SaleProposalIntegrationTest" time="0.168" />
+  <testcase name="aKnownVinCannotUseAnotherModelOrYearForItsEstimate(boolean)[2]" classname="it.unifi.drivehub.SaleProposalIntegrationTest" time="0.177" />
+  <testcase name="aPastSaleDoesNotAllowADealershipVehicle(String)[1]" classname="it.unifi.drivehub.SaleProposalIntegrationTest" time="0.173" />
+  <testcase name="aPastSaleDoesNotAllowADealershipVehicle(String)[2]" classname="it.unifi.drivehub.SaleProposalIntegrationTest" time="0.181" />
+  <testcase name="aPastSaleDoesNotAllowADealershipVehicle(String)[3]" classname="it.unifi.drivehub.SaleProposalIntegrationTest" time="0.185" />
+  <testcase name="aPastSaleDoesNotAllowADealershipVehicle(String)[4]" classname="it.unifi.drivehub.SaleProposalIntegrationTest" time="0.193" />
+  <testcase name="soldVinWithoutAnEffectiveSaleIsRejected" classname="it.unifi.drivehub.SaleProposalIntegrationTest" time="0.174" />
+  <testcase name="databaseRejectsAnotherOpenRequestOfAnyType" classname="it.unifi.drivehub.SaleProposalIntegrationTest" time="0.341" />
+  <testcase name="everyOpenRequestBlocksTheProposal(String, boolean)[1]" classname="it.unifi.drivehub.SaleProposalIntegrationTest" time="0.199" />
+  <testcase name="everyOpenRequestBlocksTheProposal(String, boolean)[2]" classname="it.unifi.drivehub.SaleProposalIntegrationTest" time="0.195" />
+  <testcase name="everyOpenRequestBlocksTheProposal(String, boolean)[3]" classname="it.unifi.drivehub.SaleProposalIntegrationTest" time="0.204" />
+  <testcase name="newVinKeepsTheExistingEstimateAndRejectsSequentialDuplicates" classname="it.unifi.drivehub.SaleProposalIntegrationTest" time="0.307" />
+  <testcase name="rejectionMessageIsAvailableToTheExistingView" classname="it.unifi.drivehub.SaleProposalIntegrationTest" time="0.189" />
+  <testcase name="invalidNewProposalLeavesNoVehicleOrRequest" classname="it.unifi.drivehub.SaleProposalIntegrationTest" time="0.329" />
+  <testcase name="onlyTheLatestEffectiveBuyerCanProposeAndHistoryIsPreserved" classname="it.unifi.drivehub.SaleProposalIntegrationTest" time="0.405" />
+  <testcase name="competingProposalsKeepOnlyTheFirstCompleteVehicleAndRequest(boolean)[1]" classname="it.unifi.drivehub.SaleProposalIntegrationTest" time="0.482" />
+  <testcase name="competingProposalsKeepOnlyTheFirstCompleteVehicleAndRequest(boolean)[2]" classname="it.unifi.drivehub.SaleProposalIntegrationTest" time="1.279" />
+  <testcase name="requestFailureRollsBackNewAndKnownVehicles(boolean)[1]" classname="it.unifi.drivehub.SaleProposalIntegrationTest" time="1.119" />
+  <testcase name="requestFailureRollsBackNewAndKnownVehicles(boolean)[2]" classname="it.unifi.drivehub.SaleProposalIntegrationTest" time="1.644" />
+</testsuite>

@@ -26,6 +26,8 @@ DROP TABLE IF EXISTS "brand" CASCADE;
 DROP TYPE IF EXISTS vehicle_state CASCADE;
 DROP TYPE IF EXISTS request_type CASCADE;
 
+CREATE EXTENSION IF NOT EXISTS btree_gist;
+
 -- -----------------------------------------------------------------------------
 -- 0. Tipi Enumerati su PostgreSQL (come da requisiti di dominio)
 -- -----------------------------------------------------------------------------
@@ -76,7 +78,8 @@ CREATE TABLE "vehicle" (
     "vin" VARCHAR(17) NOT NULL,
     "licence_plate" VARCHAR(10),
     "kilometers" INT NOT NULL,
-    "price" DECIMAL(10, 2) NOT NULL,
+    "price" DECIMAL(10, 2) NOT NULL, -- base commerciale, mai risultato della formula
+    "price_mode" VARCHAR(9) NOT NULL DEFAULT 'AUTOMATIC',
     "year" SMALLINT NOT NULL,
     "state" vehicle_state NOT NULL,
     CONSTRAINT "pk_vehicle" PRIMARY KEY ("id"),
@@ -84,6 +87,7 @@ CREATE TABLE "vehicle" (
     CONSTRAINT "uq_vehicle_licence_plate" UNIQUE ("licence_plate"),
     CONSTRAINT "fk_vehicle_model" FOREIGN KEY ("model") REFERENCES "model" ("id") ON DELETE RESTRICT,
     CONSTRAINT "chk_vehicle_price" CHECK ("price" >= 0),
+    CONSTRAINT "chk_vehicle_price_mode" CHECK ("price_mode" IN ('AUTOMATIC', 'MANUAL')),
     CONSTRAINT "chk_vehicle_kilometers" CHECK ("kilometers" >= 0),
     CONSTRAINT "chk_vehicle_year" CHECK ("year" >= 1900),
     CONSTRAINT "chk_vehicle_plate_km" CHECK ("licence_plate" IS NOT NULL OR "kilometers" = 0)
@@ -236,9 +240,16 @@ CREATE TABLE "request" (
     "client" BIGINT NOT NULL,
     "salesman" BIGINT,
     "deposit" DECIMAL(10, 2) NOT NULL,
+    "agreed_total" DECIMAL(10, 2),
     "exp_date" DATE,
     "type" request_type NOT NULL,
     CONSTRAINT "pk_request" PRIMARY KEY ("id"),
+    CONSTRAINT "uq_request_vehicle" UNIQUE ("vehicle"),
+    CONSTRAINT "ck_request_agreement" CHECK (
+        ("type" = 'PURCHASE' AND "agreed_total" IS NOT NULL AND "agreed_total" >= 0
+            AND "deposit" >= 0 AND "deposit" <= "agreed_total")
+        OR ("type" = 'SALE' AND "agreed_total" IS NULL)
+    ),
     CONSTRAINT "fk_request_vehicle" FOREIGN KEY ("vehicle") REFERENCES "vehicle" ("id") ON DELETE RESTRICT,
     CONSTRAINT "fk_request_client" FOREIGN KEY ("client") REFERENCES "client" ("id") ON DELETE RESTRICT,
     CONSTRAINT "fk_request_salesman" FOREIGN KEY ("salesman") REFERENCES "salesman" ("id") ON DELETE RESTRICT
@@ -273,7 +284,9 @@ CREATE TABLE "rent" (
     CONSTRAINT "fk_rent_vehicle" FOREIGN KEY ("vehicle") REFERENCES "vehicle" ("id") ON DELETE RESTRICT,
     CONSTRAINT "fk_rent_client" FOREIGN KEY ("client") REFERENCES "client" ("id") ON DELETE RESTRICT,
     CONSTRAINT "chk_rent_amount" CHECK ("amount" >= 0),
-    CONSTRAINT "chk_rent_dates" CHECK ("end" >= "start")
+    CONSTRAINT "chk_rent_dates" CHECK ("end" >= "start"),
+    CONSTRAINT "ex_rent_vehicle_period" EXCLUDE USING gist
+        ("vehicle" WITH =, daterange("start", "end", '[]') WITH &&)
 );
 
 -- -----------------------------------------------------------------------------
@@ -286,9 +299,14 @@ CREATE TABLE "sale" (
     "client" BIGINT NOT NULL,
     "amount" DECIMAL(10, 2) NOT NULL,
     "date" TIMESTAMP NOT NULL,
+    "type" VARCHAR(16) NOT NULL CHECK ("type" IN ('PURCHASE', 'ACQUISITION', 'PENALTY')),
+    CONSTRAINT "ck_sale_amount_type" CHECK (
+        ("type" = 'ACQUISITION' AND "amount" <= 0)
+        OR ("type" IN ('PURCHASE', 'PENALTY') AND "amount" >= 0)
+    ),
     CONSTRAINT "pk_sale" PRIMARY KEY ("id"),
     CONSTRAINT "fk_sale_vehicle" FOREIGN KEY ("vehicle") REFERENCES "vehicle" ("id") ON DELETE SET NULL,
-    CONSTRAINT "fk_sale_salesman" FOREIGN KEY ("salesman") REFERENCES "salesman" ("id") ON DELETE SET NULL,
+    CONSTRAINT "fk_sale_salesman" FOREIGN KEY ("salesman") REFERENCES "salesman" ("id") ON DELETE RESTRICT,
     CONSTRAINT "fk_sale_client" FOREIGN KEY ("client") REFERENCES "client" ("id") ON DELETE RESTRICT
 );
 

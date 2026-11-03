@@ -17,6 +17,8 @@ public interface ModelDao {
 
     Optional<Model> findById(Long id);
 
+    Optional<Model> findById(Long id, Connection conn);
+
     Model save(Model model, Connection conn);
 
     void delete(Long id, Connection conn);

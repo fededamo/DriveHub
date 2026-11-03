@@ -1,0 +1,12 @@
+BEGIN
+ transaction_read_only 
+-----------------------
+ on
+(1 row)
+
+ current_database | current_user |     name     
+------------------+--------------+--------------
+ drivehub         | drivehub     | R00_SENTINEL
+(1 row)
+
+COMMIT

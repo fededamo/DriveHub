@@ -1,0 +1,47 @@
+[
+  {
+    "file": "libicu74_74.2-1ubuntu3.1_amd64.deb",
+    "sha256": "c9a70989678660eed9a1e904c74fa043da8bec8e2036856fc16e31ced79b04f8",
+    "package": "Package: libicu74\nVersion: 74.2-1ubuntu3.1\n"
+  },
+  {
+    "file": "libllvm17t64_17.0.6-9ubuntu1_amd64.deb",
+    "sha256": "1863b5459ca4a6691f5e039e76157f074ee08b48176267642ee4dfea065f5db4",
+    "package": "Package: libllvm17t64\nVersion: 1:17.0.6-9ubuntu1\n"
+  },
+  {
+    "file": "libpq5_18.6-0ubuntu0.26.04.1_amd64.deb",
+    "sha256": "7e9199f54290b04a28e9f136207624ca30b0988d613159977fd84e8b4467e0a4",
+    "package": "Package: libpq5\nVersion: 18.6-0ubuntu0.26.04.1\n"
+  },
+  {
+    "file": "libunwind8_1.8.3-0ubuntu1_amd64.deb",
+    "sha256": "7a9978fadf0940f45500ced0fba219cb5954f322a31068b7b32ad04f3ddc5c3f",
+    "package": "Package: libunwind8\nVersion: 1.8.3-0ubuntu1\n"
+  },
+  {
+    "file": "libxml2_2.9.14+dfsg-1.3ubuntu3.10_amd64.deb",
+    "sha256": "c5a065f85c1e6f605741e365e40cad71c3ceb0e85e2791400bd35b8896e12ad1",
+    "package": "Package: libxml2\nVersion: 2.9.14+dfsg-1.3ubuntu3.10\n"
+  },
+  {
+    "file": "openjdk-21-jdk-headless_21.0.12.1+1-1~26.04.4_amd64.deb",
+    "sha256": "a8c8d09f0c4d5e48a5d97a275f658dcfc72061d9d5b33d93db9c2ee45f74d0e7",
+    "package": "Package: openjdk-21-jdk-headless\nVersion: 21.0.12.1+1-1~26.04.4\n"
+  },
+  {
+    "file": "openjdk-21-jre-headless_21.0.12.1+1-1~26.04.4_amd64.deb",
+    "sha256": "174105c57728ea7652d2a49b5af2f529277dbef51c02417b931e792e54fb2b29",
+    "package": "Package: openjdk-21-jre-headless\nVersion: 21.0.12.1+1-1~26.04.4\n"
+  },
+  {
+    "file": "postgresql-16_16.15-0ubuntu0.24.04.1_amd64.deb",
+    "sha256": "d60ae76fb862cd4cca7bfdcdcdcc271c5e1d75f6b7915305ce2d962735a4b666",
+    "package": "Package: postgresql-16\nVersion: 16.15-0ubuntu0.24.04.1\n"
+  },
+  {
+    "file": "postgresql-client-16_16.15-0ubuntu0.24.04.1_amd64.deb",
+    "sha256": "4796f72e1a7270ad8c17b1ecb025cd453f692b42c10aaf89f6b476da61761eac",
+    "package": "Package: postgresql-client-16\nVersion: 16.15-0ubuntu0.24.04.1\n"
+  }
+]

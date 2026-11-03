@@ -1,0 +1,34 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontSize 16
+hide empty description
+title VehicleState — transizioni dei servizi, non ogni assegnazione in memoria
+state SALE
+state RENT
+state BLOCKED
+state SOLD
+state WAITING
+SALE --> BLOCKED : initiatePurchase\nacconto e totale
+BLOCKED --> SOLD : completePurchase\nsaldo + PURCHASE + Observer
+BLOCKED --> SALE : rejectPurchase\nrimborso100% acconto
+BLOCKED --> SALE : scadenza all'accesso\npenale20% acconto
+SOLD --> WAITING : submitSaleProposal\nultima PURCHASE al cliente
+WAITING --> SALE : approveSaleProposal\naccredito + ACQUISITION
+WAITING --> SOLD : rejectSaleProposal\nstorico presente
+WAITING --> [*] : rifiuto senza storico\nDELETE veicolo
+SALE --> RENT : changeVehicleRentalState
+RENT --> SALE : nessun noleggio in corso\nfuturi rimborsati100%
+RENT --> RENT : bookRental\naddebito100% + Observer
+note bottom of WAITING
+  VIN nuovo in cessione: creato WAITING.
+  La UI manager propone SALE/RENT; addVehicle riceve VehicleState.
+  Non c'è uno stato iniziale universale o uno stato noleggio COMPLETED.
+end note
+note bottom of BLOCKED
+  Ogni transizione è parte della transazione del caso d'uso:
+  fallimento tenta rollback anche di saldi, richieste e cancellazioni.
+  Cambio destinazione vietato da BLOCKED/SOLD/WAITING.
+  Vehicle.setState da solo non impone questa macchina a stati.
+end note
+@enduml

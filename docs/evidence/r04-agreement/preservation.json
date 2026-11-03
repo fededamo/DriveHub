@@ -1,0 +1,21 @@
+{
+  "baseline_files": 242,
+  "unchanged_files": 230,
+  "modified_baseline_files": [
+    "README.md",
+    "docs/adr/0001-base-manuale-e-prezzo-concordato.md",
+    "docs/testing.md",
+    "src/main/java/it/unifi/drivehub/dao/postgres/PostgresRequestDao.java",
+    "src/main/java/it/unifi/drivehub/domain/operation/Request.java",
+    "src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java",
+    "src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java",
+    "src/main/java/it/unifi/drivehub/service/PurchaseService.java",
+    "src/main/resources/css/style.css",
+    "src/main/resources/db/demo.sql",
+    "src/main/resources/db/schema.sql",
+    "src/test/java/it/unifi/drivehub/BalanceConcurrencyIntegrationTest.java"
+  ],
+  "all_other_baseline_files_unchanged": true,
+  "head_unchanged": true,
+  "staged_files": []
+}

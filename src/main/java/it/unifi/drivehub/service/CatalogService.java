@@ -15,6 +15,9 @@ import it.unifi.drivehub.domain.vehicle.VehicleState;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Servizio per la consultazione e la gestione del catalogo da parte del Manager (Pagina 4 degli appunti).
@@ -65,6 +68,43 @@ public final class CatalogService {
         return vehicleDao.findAll();
     }
 
+    /** Dati di una singola lettura: nessun accesso ai DAO durante la visualizzazione. */
+    public record VehicleRow(Vehicle vehicle, String modelName, BigDecimal base,
+                             BigDecimal recommended, BigDecimal effective, BigDecimal dailyRate) {}
+
+    public record ModelDiscountRow(ModelDiscount discount, String modelName) {}
+
+    public List<VehicleRow> getVehicleRows(VehicleState state) {
+        Map<Long, Model> models = getAllModels().stream()
+                .collect(Collectors.toMap(Model::getId, Function.identity()));
+        Map<Long, Integer> modelDiscounts = getAllModelDiscounts().stream()
+                .collect(Collectors.toMap(ModelDiscount::getModelId, ModelDiscount::getValue));
+        Map<Long, Integer> vehicleDiscounts = getAllVehicleDiscounts().stream()
+                .collect(Collectors.toMap(VehicleDiscount::getVehicleId, VehicleDiscount::getValue));
+        List<Vehicle> vehicles = state == null ? getAllVehicles() : getVehiclesByState(state);
+        return vehicles.stream().map(vehicle -> {
+            Model model = models.get(vehicle.getModelId());
+            if (model == null) throw new IllegalStateException("Modello del veicolo non trovato.");
+            int mDisc = modelDiscounts.getOrDefault(model.getId(), 0);
+            int vDisc = vehicleDiscounts.getOrDefault(vehicle.getId(), 0);
+            BigDecimal effective = priceCalculator.calculateVehiclePrice(model, vehicle, mDisc, vDisc);
+            return new VehicleRow(vehicle, model.getBrand() + " " + model.getName(),
+                    vehicle.getSelectedBasePrice(model),
+                    priceCalculator.calculateRecommendedVehiclePrice(model, vehicle, mDisc, vDisc),
+                    effective, priceCalculator.calculateDailyRentalRate(effective));
+        }).toList();
+    }
+
+    public List<ModelDiscountRow> getModelDiscountRows() {
+        Map<Long, Model> models = getAllModels().stream()
+                .collect(Collectors.toMap(Model::getId, Function.identity()));
+        return getAllModelDiscounts().stream().map(discount -> {
+            Model model = models.get(discount.getModelId());
+            if (model == null) throw new IllegalStateException("Modello dello sconto non trovato.");
+            return new ModelDiscountRow(discount, model.getBrand() + " " + model.getName());
+        }).toList();
+    }
+
     public Optional<Vehicle> getVehicleById(Long id) {
         return vehicleDao.findById(id);
     }
@@ -85,15 +125,40 @@ public final class CatalogService {
         return discountDao.findAllVehicleDiscounts();
     }
 
+    public BigDecimal getVehicleBasePrice(Vehicle vehicle) {
+        Model model = getModelById(vehicle.getModelId())
+                .orElseThrow(() -> new IllegalStateException("Modello del veicolo non trovato."));
+        return vehicle.getSelectedBasePrice(model);
+    }
+
     public BigDecimal getEffectiveVehiclePrice(Vehicle vehicle) {
+        return calculateVehiclePrice(vehicle, false);
+    }
+
+    public BigDecimal getRecommendedVehiclePrice(Vehicle vehicle) {
+        return calculateVehiclePrice(vehicle, true);
+    }
+
+    private BigDecimal calculateVehiclePrice(Vehicle vehicle, boolean recommended) {
         if (vehicle == null) return BigDecimal.ZERO;
-        Model model = getModelById(vehicle.getModelId()).orElse(null);
-        if (model == null) {
-            return vehicle.getPrice();
-        }
+        Model model = getModelById(vehicle.getModelId())
+                .orElseThrow(() -> new IllegalStateException("Modello del veicolo non trovato."));
         Integer mDisc = discountDao.findModelDiscount(model.getId()).map(ModelDiscount::getValue).orElse(0);
         Integer vDisc = discountDao.findVehicleDiscount(vehicle.getId()).map(VehicleDiscount::getValue).orElse(0);
-        return priceCalculator.calculateVehiclePrice(model, vehicle, mDisc, vDisc);
+        return recommended
+                ? priceCalculator.calculateRecommendedVehiclePrice(model, vehicle, mDisc, vDisc)
+                : priceCalculator.calculateVehiclePrice(model, vehicle, mDisc, vDisc);
+    }
+
+    /** Una base nulla ripristina il consigliato; un valore seleziona la modalità manuale. */
+    public void updateVehiclePricing(Long vehicleId, BigDecimal manualBase) {
+        db.executeInTransaction(conn -> {
+            Vehicle vehicle = vehicleDao.findById(vehicleId, conn)
+                    .orElseThrow(() -> new IllegalArgumentException("Veicolo non trovato: " + vehicleId));
+            if (manualBase == null) vehicle.useRecommendedPrice();
+            else vehicle.setPrice(manualBase);
+            vehicleDao.updatePricing(vehicle, conn);
+        });
     }
 
     // --- OPERAZIONI AMMINISTRATIVE DEL MANAGER (PAGINA 4) ---
@@ -122,10 +187,13 @@ public final class CatalogService {
         db.executeInTransaction(conn -> modelDao.delete(modelId, conn));
     }
 
+    /** price è la base manuale; null seleziona la base del modello. */
     public Vehicle addVehicle(Long modelId, String vin, String licencePlate, int km, BigDecimal price, int year, VehicleState state) {
         Model model = getModelById(modelId)
                 .orElseThrow(() -> new IllegalArgumentException("Modello non trovato: " + modelId));
-        Vehicle vehicle = Vehicle.create(null, modelId, vin, licencePlate, km, price, year, state);
+        Vehicle vehicle = Vehicle.create(null, modelId, vin, licencePlate, km,
+                price != null ? price : model.getReleasePrice(), year, state);
+        if (price != null) vehicle.setPrice(price);
         vehicle.validateProductionYear(model.getReleaseYear());
         return db.executeInTransactionWithResult(conn -> vehicleDao.save(vehicle, conn));
     }

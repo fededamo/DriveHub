@@ -1,0 +1,479 @@
+--- a/DriveHub/README.md
++++ b/DriveHub/README.md
+@@ -17,7 +17,7 @@
+ 
+ ### 1.2 Design Pattern GoF Implementati
+ 1. **Factory Method**: creazione protetta delle entità (`Vehicle.create()`, `Client.create()`, `Rent.create()`, ecc.) per verificare a priori tutti gli invarianti di dominio prima dell'istanziazione.
+-2. **Observer**: disaccoppiamento degli eventi di transizione stato del veicolo. Quando un veicolo viene venduto (`SOLD`) o noleggiato (`RENT`), l'evento notifica `TestDriveCancellationObserver` che cancella automaticamente tutti i test drive futuri su quel veicolo (priorità commerciale di vendita/noleggio).
++2. **Observer**: `VehicleCommitmentEvent` segnala una vendita o la conferma di un noleggio. `TestDriveCancellationObserver` applica la priorità commerciale cancellando tutti i test drive futuri del veicolo, anche fuori dal periodo noleggiato, e conservando lo storico. La notifica è sincrona, prima del commit, sulla stessa connessione dell'operazione economica: un errore provoca il rollback dell'intera operazione. Una conferma noleggio non simula una transizione `RENT → RENT`.
+ 3. **Data Access Object (DAO)**: separazione netta tra logica applicativa e persistenza relazionale JDBC, con gestione esplicita delle transazioni atomiche (`DatabaseManager.executeInTransaction`).
+ 4. **Composition Root & Dependency Injection**: classe `AppContext` che assembla e inietta tutte le dipendenze al bootstrap del sistema senza accoppiamenti rigidi.
+ 
+--- a/DriveHub/docs/testing.md
++++ b/DriveHub/docs/testing.md
+@@ -287,3 +287,36 @@
+ [Chiusura e continuità delle evidenze](evidence/r04-agreement/verification.md#tracciabilità-della-chiusura--2-novembre-2026).
+ Le cancellazioni obbligatorie dei test drive e le transizioni degli altri flussi
+ restano ai ticket successivi. Nessuna UI o regola economica nuova.
++
++## Cancellazione atomica dei test drive — ticket 08
++
++```bash
++mvn -Ppostgres-tests -Dtest=TestDriveCancellationIntegrationTest test
++mvn -Ppostgres-tests -Dtest=TestDriveCancellationIntegrationTest,PurchaseConcurrencyIntegrationTest,PurchaseAgreementIntegrationTest,BalanceConcurrencyIntegrationTest,PriceCalculatorServiceTest,PriceSelectionIntegrationTest test
++mvn -Ppostgres-tests clean test
++```
++
++`TestDriveCancellationIntegrationTest` passa da `PurchaseService.completePurchase`
++e `RentalService.bookRental`, composti da `AppContext` sul solo PostgreSQL dedicato.
++La notifica sincrona `VehicleCommitmentEvent` porta la connessione del chiamante
++all'Observer: addebito, vendita/noleggio, richiesta, stato e cancellazioni hanno
++un solo commit/rollback. Nessuna transazione aggiuntiva o eccezione nascosta.
++
++La politica usa `date > CURRENT_TIMESTAMP`, con il timestamp stabile di inizio
++transazione PostgreSQL. Uguale e precedente restano nello storico. La prova del
++confine inserisce da trigger date a −1/0/+1 microsecondo nella stessa transazione;
++imposta solo lì un fuso locale che mantenga l'ora nella fascia 09–16 anche di notte,
++senza cambiare clock o vincoli dello schema. I test drive futuri vengono eliminati
++prima, durante e dopo il periodo noleggiato, per tutti i clienti; quelli di un
++altro veicolo restano. È verificato anche il caso senza test drive futuri.
++
++Un trigger `AFTER DELETE ... FOR EACH STATEMENT` osserva addebito, operazione,
++richiesta consumata/stato venduto e tutte le cancellazioni, poi solleva un errore.
++Il servizio deve fallire; nuovi `AppContext` verificano il rollback integrale,
++inclusi entrambi i test drive eliminati. SQL prepara solo fixture e guasti;
++nessun mock certifica la persistenza. Funzioni/trigger sono rimossi a fine prova.
++
++Formula/base/centesimi 05, accordo 06, conti 04 e unicità elaborazioni 07 sono
++verificati dalle suite precedenti incluse. Nessuna vista modificata; conflitti
++concorrenti di prenotazione al ticket 11, altre transizioni ai rispettivi ticket.
++[Comandi, esiti, versione e review](evidence/r04-test-drive-atomic/verification.md).
+--- a/DriveHub/src/main/java/it/unifi/drivehub/AppContext.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/AppContext.java
+@@ -94,8 +94,8 @@
+         this.passwordHasher = new Pbkdf2PasswordHasher();
+         this.vehicleEventPublisher = new VehicleEventPublisher();
+ 
+-        // Registrazione Observer per cancellazione automatica Test Drive futuri
+-        TestDriveCancellationObserver tdObserver = new TestDriveCancellationObserver(databaseManager, testDriveDao);
++        // La politica di cancellazione partecipa alla transazione di vendita/noleggio.
++        TestDriveCancellationObserver tdObserver = new TestDriveCancellationObserver(testDriveDao);
+         this.vehicleEventPublisher.attach(tdObserver);
+ 
+         // 4. Servizi di Dominio & Business
+--- a/DriveHub/src/main/java/it/unifi/drivehub/dao/TestDriveDao.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/dao/TestDriveDao.java
+@@ -38,6 +38,7 @@
+ 
+     void delete(Long id, Connection conn);
+ 
++    /** Cancella date > CURRENT_TIMESTAMP (inizio transazione), usando la connessione del chiamante. */
+     int deleteFutureByVehicleId(Long vehicleId, Connection conn);
+ }
+ 
+--- /dev/null
++++ b/DriveHub/src/main/java/it/unifi/drivehub/event/VehicleCommitmentEvent.java
+@@ -0,0 +1,4 @@
++package it.unifi.drivehub.event;
++
++/** Conferma di una vendita o di un noleggio, pubblicata prima del commit. */
++public record VehicleCommitmentEvent(Long vehicleId) {}
+--- /dev/null
++++ b/DriveHub/src/main/java/it/unifi/drivehub/event/VehicleCommitmentObserver.java
+@@ -0,0 +1,8 @@
++package it.unifi.drivehub.event;
++
++import java.sql.Connection;
++
++/** Observer sincrono: partecipa alla transazione del chiamante e propaga gli errori. */
++public interface VehicleCommitmentObserver {
++    void onVehicleCommitted(VehicleCommitmentEvent event, Connection conn);
++}
+--- a/DriveHub/src/main/java/it/unifi/drivehub/event/VehicleEventPublisher.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/event/VehicleEventPublisher.java
+@@ -1,37 +1,33 @@
+ package it.unifi.drivehub.event;
+ 
++import java.sql.Connection;
+ import java.util.List;
+ import java.util.concurrent.CopyOnWriteArrayList;
+ 
+ /**
+  * Soggetto osservabile (Subject nel pattern Observer GoF).
+  * Notifica gli osservatori registrati quando si verificano eventi sui veicoli.
+- * Thread-safe tramite CopyOnWriteArrayList e resiliente alle eccezioni degli handler.
++ * Notifica sincrona nella transazione del chiamante: ogni errore deve impedirne il commit.
+  */
+ public class VehicleEventPublisher {
+ 
+-    private final List<VehicleStateObserver> observers = new CopyOnWriteArrayList<>();
++    private final List<VehicleCommitmentObserver> observers = new CopyOnWriteArrayList<>();
+ 
+-    public void attach(VehicleStateObserver observer) {
++    public void attach(VehicleCommitmentObserver observer) {
+         if (observer != null && !observers.contains(observer)) {
+             observers.add(observer);
+         }
+     }
+ 
+-    public void detach(VehicleStateObserver observer) {
++    public void detach(VehicleCommitmentObserver observer) {
+         if (observer != null) {
+             observers.remove(observer);
+         }
+     }
+ 
+-    public void publishStateChange(VehicleStateChangeEvent event) {
+-        for (VehicleStateObserver observer : observers) {
+-            try {
+-                observer.onVehicleStateChanged(event);
+-            } catch (Exception e) {
+-                System.err.println("Avviso: Errore durante la notifica dell'osservatore: " + e.getMessage());
+-            }
++    public void publishCommitment(VehicleCommitmentEvent event, Connection conn) {
++        for (VehicleCommitmentObserver observer : observers) {
++            observer.onVehicleCommitted(event, conn);
+         }
+     }
+ }
+-
+--- a/DriveHub/src/main/java/it/unifi/drivehub/event/VehicleStateChangeEvent.java
++++ /dev/null
+@@ -1,13 +0,0 @@
+-package it.unifi.drivehub.event;
+-
+-import it.unifi.drivehub.domain.vehicle.VehicleState;
+-
+-/**
+- * Evento emesso quando lo stato di un veicolo subisce una transizione.
+- */
+-public record VehicleStateChangeEvent(
+-        Long vehicleId,
+-        VehicleState oldState,
+-        VehicleState newState
+-) {}
+-
+--- a/DriveHub/src/main/java/it/unifi/drivehub/event/VehicleStateObserver.java
++++ /dev/null
+@@ -1,10 +0,0 @@
+-package it.unifi.drivehub.event;
+-
+-/**
+- * Observer per intercettare i cambiamenti di stato di un veicolo.
+- * Pattern Observer (GoF).
+- */
+-public interface VehicleStateObserver {
+-    void onVehicleStateChanged(VehicleStateChangeEvent event);
+-}
+-
+--- a/DriveHub/src/main/java/it/unifi/drivehub/service/PurchaseService.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/service/PurchaseService.java
+@@ -17,7 +17,7 @@
+ import it.unifi.drivehub.domain.vehicle.Vehicle;
+ import it.unifi.drivehub.domain.vehicle.VehicleState;
+ import it.unifi.drivehub.event.VehicleEventPublisher;
+-import it.unifi.drivehub.event.VehicleStateChangeEvent;
++import it.unifi.drivehub.event.VehicleCommitmentEvent;
+ 
+ import java.math.BigDecimal;
+ import java.math.RoundingMode;
+@@ -145,7 +145,7 @@
+      * Si crea la riga in Sale, si cancella la Request, il veicolo diventa SOLD.
+      */
+     public void completePurchase(Long requestId) {
+-        VehicleStateChangeEvent event = db.executeInTransactionWithResult(conn -> {
++        db.executeInTransaction(conn -> {
+             Request request = requestDao.findByIdForUpdate(requestId, conn)
+                     .orElseThrow(() -> new IllegalStateException("Richiesta non trovata: " + requestId));
+             if (request.getType() != RequestType.PURCHASE) {
+@@ -179,13 +179,8 @@
+                 throw new IllegalStateException("Il veicolo della richiesta non è riservato per l'acquisto.");
+             }
+ 
+-            return new VehicleStateChangeEvent(request.getVehicleId(), VehicleState.BLOCKED, VehicleState.SOLD);
+-        });
+-
+-        // Notifica Observer (cancellazione automatica test drive futuri)
+-        if (event != null) {
+-            eventPublisher.publishStateChange(event);
+-        }
++            eventPublisher.publishCommitment(new VehicleCommitmentEvent(request.getVehicleId()), conn);
++        });
+     }
+ 
+     /**
+--- a/DriveHub/src/main/java/it/unifi/drivehub/service/RentalService.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/service/RentalService.java
+@@ -14,7 +14,7 @@
+ import it.unifi.drivehub.domain.vehicle.Vehicle;
+ import it.unifi.drivehub.domain.vehicle.VehicleState;
+ import it.unifi.drivehub.event.VehicleEventPublisher;
+-import it.unifi.drivehub.event.VehicleStateChangeEvent;
++import it.unifi.drivehub.event.VehicleCommitmentEvent;
+ 
+ import java.math.BigDecimal;
+ import java.time.LocalDate;
+@@ -79,7 +79,7 @@
+ 
+         BigDecimal totalCost = calculateRentalCost(vehicleId, start, end);
+ 
+-        Rent createdRent = db.executeInTransactionWithResult(conn -> {
++        return db.executeInTransactionWithResult(conn -> {
+             Vehicle vehicle = vehicleDao.findById(vehicleId, conn)
+                     .orElseThrow(() -> new IllegalStateException("Veicolo non trovato: " + vehicleId));
+             if (vehicle.getState() != VehicleState.RENT) {
+@@ -100,13 +100,11 @@
+ 
+             // Salvataggio tupla Rent
+             Rent rent = Rent.create(null, vehicleId, clientId, totalCost, start, end);
+-            return rentDao.save(rent, conn);
++            Rent createdRent = rentDao.save(rent, conn);
++            eventPublisher.publishCommitment(new VehicleCommitmentEvent(vehicleId), conn);
++            return createdRent;
+         });
+ 
+-        // Notifica evento per annullare eventuali test drive coincidenti
+-        eventPublisher.publishStateChange(new VehicleStateChangeEvent(vehicleId, VehicleState.RENT, VehicleState.RENT));
+-
+-        return createdRent;
+     }
+ 
+     /**
+--- a/DriveHub/src/main/java/it/unifi/drivehub/service/TestDriveCancellationObserver.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/service/TestDriveCancellationObserver.java
+@@ -1,38 +1,26 @@
+ package it.unifi.drivehub.service;
+ 
+-import it.unifi.drivehub.dao.DatabaseManager;
+ import it.unifi.drivehub.dao.TestDriveDao;
+-import it.unifi.drivehub.domain.vehicle.VehicleState;
+-import it.unifi.drivehub.event.VehicleStateChangeEvent;
+-import it.unifi.drivehub.event.VehicleStateObserver;
++import it.unifi.drivehub.event.VehicleCommitmentEvent;
++import it.unifi.drivehub.event.VehicleCommitmentObserver;
++
++import java.sql.Connection;
+ 
+ /**
+- * Observer che garantisce la priorità commerciale di vendita e noleggio rispetto ai Test Drive.
+- * Come specificato negli appunti (Pagina 3):
+- * "Se un veicolo prenotato per un test drive viene venduto o noleggiato, tramite un observer
+- * questo evento deve essere comunicato al sistema, in modo che le prenotazioni future vengano annullate.
+- * Quelli già avvenuti devono rimanere come storico."
++ * Applica la priorità commerciale di vendita e noleggio rispetto ai test drive.
++ * Conserva lo storico e cancella tutti i futuri nella transazione dell'operazione,
++ * anche fuori dal periodo noleggiato. Un errore impedisce il commit del chiamante.
+  */
+-public final class TestDriveCancellationObserver implements VehicleStateObserver {
++public final class TestDriveCancellationObserver implements VehicleCommitmentObserver {
+ 
+-    private final DatabaseManager db;
+     private final TestDriveDao testDriveDao;
+ 
+-    public TestDriveCancellationObserver(DatabaseManager db, TestDriveDao testDriveDao) {
+-        this.db = db;
++    public TestDriveCancellationObserver(TestDriveDao testDriveDao) {
+         this.testDriveDao = testDriveDao;
+     }
+ 
+     @Override
+-    public void onVehicleStateChanged(VehicleStateChangeEvent event) {
+-        if (event.newState() == VehicleState.SOLD || event.newState() == VehicleState.RENT) {
+-            db.executeInTransaction(conn -> {
+-                int cancelled = testDriveDao.deleteFutureByVehicleId(event.vehicleId(), conn);
+-                if (cancelled > 0) {
+-                    System.out.println("[Observer] Annullati " + cancelled + " test drive futuri per il veicolo " + event.vehicleId() + " a seguito di passaggio a stato " + event.newState());
+-                }
+-            });
+-        }
++    public void onVehicleCommitted(VehicleCommitmentEvent event, Connection conn) {
++        testDriveDao.deleteFutureByVehicleId(event.vehicleId(), conn);
+     }
+ }
+-
+--- /dev/null
++++ b/DriveHub/src/test/java/it/unifi/drivehub/TestDriveCancellationIntegrationTest.java
+@@ -0,0 +1,183 @@
++package it.unifi.drivehub;
++
++import it.unifi.drivehub.domain.operation.Request;
++import it.unifi.drivehub.domain.vehicle.Vehicle;
++import it.unifi.drivehub.domain.vehicle.VehicleState;
++import org.junit.jupiter.api.AfterEach;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Tag;
++import org.junit.jupiter.params.ParameterizedTest;
++import org.junit.jupiter.params.provider.ValueSource;
++
++import java.math.BigDecimal;
++import java.time.LocalDate;
++import java.time.Year;
++import java.util.List;
++
++import static org.junit.jupiter.api.Assertions.*;
++
++@Tag("postgres")
++class TestDriveCancellationIntegrationTest {
++    private AppContext ctx;
++    private Vehicle vehicle;
++    private Request request;
++
++    @BeforeEach
++    void setUp() throws Exception {
++        ctx = new AppContext(TestDatabase.fromEnvironment().reset());
++        sql("DELETE FROM sale; DELETE FROM rent; DELETE FROM test_drive; DELETE FROM request;"
++                + "UPDATE bank_account SET balance = 30000 WHERE client = 1");
++    }
++
++    @AfterEach
++    void cleanUp() throws Exception {
++        if (ctx != null) sql("DROP FUNCTION IF EXISTS fail_ticket08() CASCADE;"
++                + "DROP FUNCTION IF EXISTS boundary_ticket08() CASCADE");
++    }
++
++    @ParameterizedTest
++    @ValueSource(booleans = {false, true})
++    void cancellationFailureRollsBackTheCommercialOperation(boolean rental) throws Exception {
++        prepareOperation(rental);
++        sql("INSERT INTO test_drive (id, vehicle, client, date) VALUES "
++                + "(1001, " + vehicle.getId() + ", 2, CURRENT_DATE + 1 + TIME '10:00'),"
++                + "(1002, " + vehicle.getId() + ", 3, CURRENT_DATE + 20 + TIME '10:00')");
++        sql("CREATE FUNCTION fail_ticket08() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN "
++                + "IF (SELECT balance FROM bank_account WHERE client = 1) >= "
++                + (rental ? "30000" : "26000")
++                + " THEN RAISE EXCEPTION 'ticket08_debit_not_observed'; END IF; "
++                + (rental
++                ? "IF NOT EXISTS (SELECT 1 FROM rent WHERE vehicle = " + vehicle.getId() + ") "
++                : "IF NOT EXISTS (SELECT 1 FROM sale WHERE vehicle = " + vehicle.getId() + ") "
++                    + "OR EXISTS (SELECT 1 FROM request WHERE vehicle = " + vehicle.getId() + ") "
++                    + "OR (SELECT state FROM vehicle WHERE id = " + vehicle.getId() + ") <> 'SOLD' ")
++                + "THEN RAISE EXCEPTION 'ticket08_operation_not_observed'; END IF; "
++                + "IF EXISTS (SELECT 1 FROM test_drive WHERE vehicle = " + vehicle.getId() + ") "
++                + "THEN RAISE EXCEPTION 'ticket08_deletions_not_observed'; END IF; "
++                + "RAISE EXCEPTION 'ticket08_cancellation_failed'; END $$; "
++                + "CREATE TRIGGER fail_ticket08 AFTER DELETE ON test_drive "
++                + "FOR EACH STATEMENT EXECUTE FUNCTION fail_ticket08()");
++        RuntimeException failure = assertThrows(RuntimeException.class, () -> confirm(rental));
++        assertTrue(rootMessage(failure).contains("ticket08_cancellation_failed"), rootMessage(failure));
++        ctx = new AppContext(ctx.getDatabaseManager());
++        assertEquals(new BigDecimal(rental ? "30000.00" : "26000.00"),
++                ctx.getAuthService().getClientBankAccount(1L).getBalance());
++        assertTrue(ctx.getOperationQueryService().getAllSales().isEmpty());
++        assertTrue(ctx.getOperationQueryService().getClientRents(1L).isEmpty());
++        assertEquals(rental ? VehicleState.RENT : VehicleState.BLOCKED,
++                ctx.getCatalogService().getVehicleById(vehicle.getId()).orElseThrow().getState());
++        assertEquals(List.of(1001L), testDriveIds(2L));
++        assertEquals(List.of(1002L), testDriveIds(3L));
++        if (rental) {
++            assertTrue(ctx.getOperationQueryService().getClientRequests(1L).isEmpty());
++        } else {
++            var saved = ctx.getOperationQueryService().getClientRequests(1L).getFirst();
++            assertEquals(request.getId(), saved.getId());
++            assertEquals(request.getAgreedTotal(), saved.getAgreedTotal());
++            assertEquals(request.getDeposit(), saved.getDeposit());
++            assertEquals(16L, saved.getSalesmanId());
++            assertEquals(request.getExpDate(), saved.getExpDate());
++        }
++    }
++
++    @ParameterizedTest
++    @ValueSource(booleans = {false, true})
++    void confirmationCancelsEveryFutureAndPreservesHistoryAndOtherVehicles(boolean rental) throws Exception {
++        prepareOperation(rental);
++        var other = ctx.getCatalogService().addVehicle(vehicle.getModelId(), "T0800000000000002", null, 0,
++                null, Year.now().getValue(), VehicleState.SALE);
++        sql("INSERT INTO test_drive (id, vehicle, client, date) VALUES "
++                + "(1000, " + vehicle.getId() + ", 2, CURRENT_DATE - 1 + TIME '10:00'),"
++                + "(1001, " + vehicle.getId() + ", 2, CURRENT_DATE + 1 + TIME '10:00'),"
++                + "(1002, " + vehicle.getId() + ", 3, CURRENT_DATE + 6 + TIME '10:00'),"
++                + "(1003, " + vehicle.getId() + ", 3, CURRENT_DATE + 20 + TIME '10:00'),"
++                + "(1004, " + other.getId() + ", 2, CURRENT_DATE + 1 + TIME '10:00')");
++        confirm(rental);
++        ctx = new AppContext(ctx.getDatabaseManager());
++        assertEquals(List.of(1000L, 1004L), testDriveIds(2L));
++        assertTrue(testDriveIds(3L).isEmpty());
++        assertEquals(rental ? VehicleState.RENT : VehicleState.SOLD,
++                ctx.getCatalogService().getVehicleById(vehicle.getId()).orElseThrow().getState());
++        assertTrue(ctx.getOperationQueryService().getClientRequests(1L).isEmpty());
++        if (rental) {
++            var rents = ctx.getOperationQueryService().getClientRents(1L);
++            assertEquals(1, rents.size());
++            assertEquals(new BigDecimal("57.05"), rents.getFirst().getAmount());
++            assertEquals(LocalDate.now().plusDays(5), rents.getFirst().getStartDate());
++            assertEquals(LocalDate.now().plusDays(7), rents.getFirst().getEndDate());
++            assertEquals(new BigDecimal("29942.95"), ctx.getAuthService().getClientBankAccount(1L).getBalance());
++            assertTrue(ctx.getOperationQueryService().getAllSales().isEmpty());
++        } else {
++            var sales = ctx.getOperationQueryService().getClientSales(1L);
++            assertEquals(1, sales.size());
++            assertEquals(new BigDecimal("20000.00"), sales.getFirst().getAmount());
++            assertEquals(new BigDecimal("10000.00"), ctx.getAuthService().getClientBankAccount(1L).getBalance());
++            assertTrue(ctx.getOperationQueryService().getClientRents(1L).isEmpty());
++        }
++    }
++
++    @ParameterizedTest
++    @ValueSource(booleans = {false, true})
++    void onlyDatesStrictlyAfterTheOperationTransactionStartAreCancelled(boolean rental) throws Exception {
++        prepareOperation(rental);
++        // Mantiene il confine nell'orario 09–16 anche nelle esecuzioni notturne, senza cambiare il clock.
++        sql("CREATE FUNCTION boundary_ticket08() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN "
++                + "PERFORM set_config('TimeZone', 'UTC' || "
++                + "(EXTRACT(HOUR FROM CURRENT_TIMESTAMP AT TIME ZONE 'UTC')::int - 12)::text, true); "
++                + "INSERT INTO test_drive (id, vehicle, client, date) VALUES "
++                + "(1000, " + vehicle.getId() + ", 2, LOCALTIMESTAMP - INTERVAL '1 microsecond'),"
++                + "(1001, " + vehicle.getId() + ", 2, LOCALTIMESTAMP),"
++                + "(1002, " + vehicle.getId() + ", 2, LOCALTIMESTAMP + INTERVAL '1 microsecond'); "
++                + "RETURN NEW; END $$; "
++                + "CREATE TRIGGER boundary_ticket08 AFTER UPDATE ON bank_account "
++                + "FOR EACH ROW EXECUTE FUNCTION boundary_ticket08()");
++        confirm(rental);
++        ctx = new AppContext(ctx.getDatabaseManager());
++        assertEquals(List.of(1000L, 1001L), testDriveIds(2L));
++    }
++
++    @ParameterizedTest
++    @ValueSource(booleans = {false, true})
++    void confirmationAlsoSucceedsWithoutFutureTestDrives(boolean rental) {
++        prepareOperation(rental);
++        assertDoesNotThrow(() -> confirm(rental));
++        ctx = new AppContext(ctx.getDatabaseManager());
++        assertTrue(ctx.getTestDriveService().getClientTestDrives(2L).isEmpty());
++        assertEquals(1, rental ? ctx.getOperationQueryService().getClientRents(1L).size()
++                : ctx.getOperationQueryService().getClientSales(1L).size());
++    }
++
++    private void prepareOperation(boolean rental) {
++        var model = ctx.getCatalogService().addModel("Fiat", "Cancellation08", new BigDecimal("20000"),
++                Year.now().getValue());
++        vehicle = ctx.getCatalogService().addVehicle(model.getId(), "T0800000000000001", null, 0,
++                null, Year.now().getValue(), rental ? VehicleState.RENT : VehicleState.SALE);
++        if (!rental) {
++            request = ctx.getPurchaseService().initiatePurchase(vehicle.getId(), 1L);
++            ctx.getPurchaseService().approvePurchase(request.getId(), 16L);
++            request = ctx.getOperationQueryService().getClientRequests(1L).getFirst();
++        }
++    }
++
++    private void confirm(boolean rental) {
++        if (rental) ctx.getRentalService().bookRental(vehicle.getId(), 1L,
++                LocalDate.now().plusDays(5), LocalDate.now().plusDays(7));
++        else ctx.getPurchaseService().completePurchase(request.getId());
++    }
++
++    private List<Long> testDriveIds(Long clientId) {
++        return ctx.getTestDriveService().getClientTestDrives(clientId).stream()
++                .map(td -> td.getId()).sorted().toList();
++    }
++
++    private void sql(String statement) throws Exception {
++        try (var conn = ctx.getDatabaseManager().getConnection(); var sql = conn.createStatement()) {
++            sql.execute(statement);
++        }
++    }
++
++    private static String rootMessage(Throwable failure) {
++        while (failure.getCause() != null) failure = failure.getCause();
++        return failure.getMessage();
++    }
++}

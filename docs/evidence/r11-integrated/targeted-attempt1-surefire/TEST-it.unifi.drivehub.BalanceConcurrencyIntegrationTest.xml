@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="it.unifi.drivehub.BalanceConcurrencyIntegrationTest" time="461.366" tests="16" errors="2" skipped="0" failures="0">
+  <testcase name="unaffordableConcurrentPurchasesLeaveOnlyTheSuccessfulOperation" classname="it.unifi.drivehub.BalanceConcurrencyIntegrationTest" time="11.794" />
+  <testcase name="missingRefundAccountRollsBackEveryRefundAndCancellation" classname="it.unifi.drivehub.BalanceConcurrencyIntegrationTest" time="11.386" />
+  <testcase name="errorAfterDebitRollsBackBalanceVehicleAndRequest" classname="it.unifi.drivehub.BalanceConcurrencyIntegrationTest" time="19.563" />
+  <testcase name="concurrentPurchaseDepositsKeepBothDebits" classname="it.unifi.drivehub.BalanceConcurrencyIntegrationTest" time="18.134" />
+  <testcase name="errorAfterMultipleRefundsRollsBackAllAccountsAndCancellations" classname="it.unifi.drivehub.BalanceConcurrencyIntegrationTest" time="64.292" />
+  <testcase name="concurrentRefundsAcquireAccountsInClientOrder" classname="it.unifi.drivehub.BalanceConcurrencyIntegrationTest" time="74.1">
+    <error message="ERROR: canceling statement due to user request" type="org.postgresql.util.PSQLException">org.postgresql.util.PSQLException: ERROR: canceling statement due to user request
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2725)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2412)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:371)
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:502)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:419)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:341)
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:326)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:302)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:297)
+	at it.unifi.drivehub.BalanceConcurrencyIntegrationTest.sql(BalanceConcurrencyIntegrationTest.java:293)
+	at it.unifi.drivehub.BalanceConcurrencyIntegrationTest.futureRefunds(BalanceConcurrencyIntegrationTest.java:269)
+	at it.unifi.drivehub.BalanceConcurrencyIntegrationTest.concurrentRefundsAcquireAccountsInClientOrder(BalanceConcurrencyIntegrationTest.java:185)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+</error>
+  </testcase>
+  <testcase name="everyMovementSharesTheAccountProtocol(String, String)[1]" classname="it.unifi.drivehub.BalanceConcurrencyIntegrationTest" time="47.254">
+    <error message="The connection attempt failed." type="org.postgresql.util.PSQLException">org.postgresql.util.PSQLException: The connection attempt failed.
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:358)
+	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:54)
+	at org.postgresql.jdbc.PgConnection.&lt;init&gt;(PgConnection.java:273)
+	at org.postgresql.Driver.makeConnection(Driver.java:446)
+	at org.postgresql.Driver.connect(Driver.java:298)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
+	at it.unifi.drivehub.dao.DatabaseManager.getConnection(DatabaseManager.java:50)
+	at it.unifi.drivehub.BalanceConcurrencyIntegrationTest.race(BalanceConcurrencyIntegrationTest.java:304)
+	at it.unifi.drivehub.BalanceConcurrencyIntegrationTest.race(BalanceConcurrencyIntegrationTest.java:299)
+	at it.unifi.drivehub.BalanceConcurrencyIntegrationTest.everyMovementSharesTheAccountProtocol(BalanceConcurrencyIntegrationTest.java:160)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1708)
+	at java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1708)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1708)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:278)
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:304)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099)
+	at org.postgresql.core.VisibleBufferedInputStream.readMore(VisibleBufferedInputStream.java:162)
+	at org.postgresql.core.VisibleBufferedInputStream.ensureBytes(VisibleBufferedInputStream.java:129)
+	at org.postgresql.core.VisibleBufferedInputStream.ensureBytes(VisibleBufferedInputStream.java:114)
+	at org.postgresql.core.VisibleBufferedInputStream.read(VisibleBufferedInputStream.java:74)
+	at org.postgresql.core.PGStream.receiveChar(PGStream.java:467)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.enableSSL(ConnectionFactoryImpl.java:594)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:195)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:262)
+	... 42 more
+</error>
+  </testcase>
+  <testcase name="everyMovementSharesTheAccountProtocol(String, String)[2]" classname="it.unifi.drivehub.BalanceConcurrencyIntegrationTest" time="48.645" />
+  <testcase name="everyMovementSharesTheAccountProtocol(String, String)[3]" classname="it.unifi.drivehub.BalanceConcurrencyIntegrationTest" time="46.465" />
+  <testcase name="everyMovementSharesTheAccountProtocol(String, String)[4]" classname="it.unifi.drivehub.BalanceConcurrencyIntegrationTest" time="66.198" />
+  <testcase name="everyMovementSharesTheAccountProtocol(String, String)[5]" classname="it.unifi.drivehub.BalanceConcurrencyIntegrationTest" time="51.063" />
+  <testcase name="everyMovementSharesTheAccountProtocol(String, String)[6]" classname="it.unifi.drivehub.BalanceConcurrencyIntegrationTest" time="1.044" />
+  <testcase name="everyMovementSharesTheAccountProtocol(String, String)[7]" classname="it.unifi.drivehub.BalanceConcurrencyIntegrationTest" time="0.374" />
+  <testcase name="everyMovementSharesTheAccountProtocol(String, String)[8]" classname="it.unifi.drivehub.BalanceConcurrencyIntegrationTest" time="0.466" />
+  <testcase name="multipleRefundsToOneAccountKeepEveryCredit" classname="it.unifi.drivehub.BalanceConcurrencyIntegrationTest" time="0.312" />
+  <testcase name="accountLockRequiresAnActiveTransaction" classname="it.unifi.drivehub.BalanceConcurrencyIntegrationTest" time="0.141" />
+</testsuite>

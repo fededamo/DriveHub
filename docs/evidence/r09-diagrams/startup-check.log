@@ -1,0 +1,9 @@
+COMMAND: javac --module-path /home/federico/.m2/repository/org/openjfx/javafx-base/21.0.2/javafx-base-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-graphics/21.0.2/javafx-graphics-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-controls/21.0.2/javafx-controls-21.0.2-linux.jar --add-modules javafx.controls -cp /tmp/drivehub-ticket17-session/install/DriveHub/target/classes:/tmp/drivehub-ticket17-session/install/DriveHub/target/test-classes:/home/federico/.m2/repository/org/postgresql/postgresql/42.7.3/postgresql-42.7.3.jar:/tmp/drivehub-ticket17-session/ui -d /tmp/drivehub-ticket17-session/ui /tmp/drivehub-ticket17-session/install/DriveHub/docs/evidence/r10-cleanup/AppStartupUiCheck.java
+COMMAND: java --module-path /home/federico/.m2/repository/org/openjfx/javafx-base/21.0.2/javafx-base-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-graphics/21.0.2/javafx-graphics-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-controls/21.0.2/javafx-controls-21.0.2-linux.jar --add-modules javafx.controls -Dprism.order=sw -cp /tmp/drivehub-ticket17-session/install/DriveHub/target/classes:/tmp/drivehub-ticket17-session/install/DriveHub/target/test-classes:/home/federico/.m2/repository/org/postgresql/postgresql/42.7.3/postgresql-42.7.3.jar:/tmp/drivehub-ticket17-session/ui it.unifi.drivehub.AppStartupUiCheck /tmp/drivehub-ticket17-session/ui
+PASS JavaFX avviato su Xvfb
+PASS tre frame renderizzati
+PASS App.start mostra LoginView
+PASS titolo applicativo
+PASS tema caricato
+PASS accesso e registrazione disponibili
+APP STARTUP SUCCESS

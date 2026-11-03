@@ -1,0 +1,1293 @@
+--- /dev/null
++++ b/DriveHub/docs/evidence/r06-bookings/spec-review.md
+@@ -0,0 +1,18 @@
++# Review indipendente — Spec
++
++2 novembre 2026. Contesto nuovo, lettura statica del solo diff di sessione
++rispetto a `/tmp/drivehub-ticket11/baseline`; nessuna modifica o esecuzione di test.
++HEAD iniziale `c2a81122ee6be44760ded4160fde229bd33e837c`; nessun commit della sessione.
++[14 file revisionati](review-files.txt), [patch fissata](review.patch), SHA256
++`8344e02efb3cf795d9e287d049a886b51e15dad2e690233416e2587698d2c03e`.
++Relazione_SWE esclusa.
++
++Revisore: agente indipendente `spec_final`.
++
++**0 rilievi Spec.**
++
++Confrontati ticket11, AC05/AC13, confini approvati e codice connesso: transazioni
++prenotazioni, lock cliente/veicolo/conti, vincoli DB, limiti/orari, gare e rollback,
++Observer08, compatibilità con acquisti e perimetro del ticket12. Nessun difetto
++funzionale o sconfinamento rilevato. Chiusura documentale ed esiti della suite
++ancora in corso al momento della review: da finalizzare dopo verifica runtime.
+--- /dev/null
++++ b/DriveHub/docs/evidence/r06-bookings/standards-review.md
+@@ -0,0 +1,18 @@
++# Review indipendente — Standards
++
++2 novembre 2026. Contesto nuovo, lettura statica del solo diff di sessione
++rispetto a `/tmp/drivehub-ticket11/baseline`; nessuna modifica o esecuzione di test.
++HEAD iniziale `c2a81122ee6be44760ded4160fde229bd33e837c`; nessun commit della sessione.
++[14 file revisionati](review-files.txt), [patch fissata](review.patch), SHA256
++`8344e02efb3cf795d9e287d049a886b51e15dad2e690233416e2587698d2c03e`.
++Relazione_SWE esclusa.
++
++Revisore: agente indipendente `standards_final`.
++
++**0 violazioni documentate, 0 smell azionabili.**
++
++Ordine veicolo → cliente `FOR NO KEY UPDATE` → conto coerente; stato test drive
++verificato prima del lock cliente. Overload DAO, chiamanti e test aggiornati;
++protocolli 04 e 08 preservati. Esaminati gli standard di progetto, il contesto
++di dominio e le euristiche della skill code-review, subordinandole alle
++convenzioni del repository. Verifiche runtime demandate alle suite registrate.
+--- /dev/null
++++ b/DriveHub/docs/evidence/r06-bookings/verification.md
+@@ -0,0 +1,160 @@
++# Ticket 11 — prenotazioni concorrenti
++
++Verifica del 2 novembre 2026. Implementato soltanto il ticket 11.
++**6/6 criteri verificati; ticket 11 chiuso.** Suite finale e review indipendenti completate senza rilievi.
++Prerequisito 08 e tutti i ticket 01–10 controllati chiusi: [controllo](prerequisites.json).
++Nessun commit/staging; `Relazione_SWE` esclusa.
++
++## Versione e conservazione
++
++HEAD iniziale `c2a81122ee6be44760ded4160fde229bd33e837c`, indice invariato.
++Prima delle modifiche acquisiti **576 file** in `/tmp/drivehub-ticket11/baseline`,
++compresi piano e tracker esterni, sorgenti e tutte le evidenze preesistenti.
++Esclusi `.git`, `target` e `Relazione_SWE`.
++[Manifest baseline](baseline-sha256.json). La review usa il solo confronto con
++questa baseline locale: un diff da HEAD includerebbe impropriamente il lavoro 01–10.
++
++[Diff fissato per la review](review.patch), [14 file](review-files.txt), SHA256
++`8344e02efb3cf795d9e287d049a886b51e15dad2e690233416e2587698d2c03e`.
++[Hash della versione revisionata](review-files.sha256.json).
++Gli hash di ciascuna esecuzione identificano sorgenti, test, schema, fixture e POM
++realmente compilati; i documenti finali non costituiscono nuove prove runtime.
++
++## Chiamanti e protocollo
++
++| Confine | Cambiamento e verifica |
++|---|---|
++| `RentalService.bookRental` | Veicolo riletto con FOR UPDATE, stato RENT, lock cliente, disponibilità, prezzo, conto, inserimento e Observer sulla stessa connessione fino a commit/rollback |
++| `TestDriveService.bookTestDrive` | Veicolo FOR UPDATE e stato prenotabile prima del lock cliente; limite tre riletto dopo il lock cliente; disponibilità e INSERT nella transazione |
++| `UserDao` / PostgreSQL | Lock della riga client con FOR NO KEY UPDATE: serializza clienti anche su veicoli diversi e senza conto; richiede transazione attiva e cliente esistente |
++| Conti 04 e acquisti 06–07 | Ordine veicolo → cliente → conto per booking; NO KEY UPDATE compatibile con KEY SHARE delle FK dei flussi economici. Conti multipli mantengono ID cliente crescente. Gare con acconto e saldo acquisto verificate |
++| Stato non prenotabile | Rifiuto prima di attendere il cliente: impedisce il ciclo saldo acquisto(conto→FK veicolo), noleggio altro veicolo(cliente→conto), test drive su BLOCKED(veicolo→cliente) |
++| `RentalService.calculateRentalCost` / ModelDao / DiscountDao | Quote e prenotazioni condividono la formula; overload JDBC sulla connessione del chiamante. La prenotazione usa il veicolo riletto dopo il lock, non il prezzo precedente all'attesa |
++| `changeVehicleRentalState` | Stesso lock del veicolo per coordinarsi con booking. Nessuna nuova regola di transizione, rimborso o noleggio in corso del ticket 12 |
++| Observer 08 / publisher / DAO test drive | Invariati: priorità commerciale, cancellazione di tutti i futuri su connessione economica, storico conservato, errore propagato. Gara nei due ordini e rollback dopo cancellazioni effettive verificati |
++| Test drive manuale / letture | Cancellazione riduce il conteggio senza introdurre lock in ordine inverso; letture da nuovi AppContext osservano risultati persistiti |
++| `AppContext` | Unico chiamante dei costruttori modificati; inietta UserDao nei due servizi. Nessun altro costruttore o implementazione DAO nel progetto |
++| UI / messaggi | Azioni cliente preventivo/noleggio/test drive e azione venditore cambio destinazione esaminate. Le firme delle azioni restano uguali; motivi di dominio restituiti dopo rollback, secondo il precedente del servizio cessioni. Viste invariate |
++| Dominio TestDrive | Estremo 16:00 inclusivo anche per frazioni di secondo: 16:00:00.000001 rifiutato coerentemente col DB |
++| Schema / demo / fixture | EXCLUDE su veicolo e daterange inclusivo; UNIQUE test drive e fascia oraria conservati. Demo e fixture 01–10 invariate; dati aggiuntivi solo nel DB dedicato |
++
++L'estensione PostgreSQL `btree_gist` fornisce l'uguaglianza GiST del veicolo;
++il vincolo `ex_rent_vehicle_period` protegge anche INSERT concorrenti diretti,
++senza dipendere dai lock applicativi. Conferma del primo writer → secondo
++rifiutato con SQLSTATE 23P01; rollback del primo → secondo ammesso.
++Periodi che condividono un giorno confliggono, giorni adiacenti distinti restano
++prenotabili. Riferimenti primari PostgreSQL 16:
++[btree_gist trusted](https://www.postgresql.org/docs/16/btree-gist.html),
++[lock di riga](https://www.postgresql.org/docs/16/explicit-locking.html#LOCKING-ROWS).
++
++## Ambiente
++
++[Identità/privilegi/sentinella](environment.txt), [Java e Maven](versions.txt).
++OpenJDK Linux 21.0.12.1, Maven 3.9.16, PostgreSQL 16.15.
++Ricontrollati prima del riuso file privato 0600 e sei variabili senza stamparle,
++binari, PG_VERSION e assenza di postmaster.pid; PostgreSQL e Xvfb arrestati.
++R00 temporaneo assente; riusato solo ambiente temporaneo del ticket 07.
++Nessuna installazione o servizio di sistema aggiunto.
++
++Cluster `/tmp/drivehub-ticket07-pgdata`, solo `127.0.0.1:55432`;
++DB/ruolo `drivehub_test` non amministrativo e copia applicativa distinta `drivehub`
++con `R00_SENTINEL`. Nessun DB applicativo preesistente contattato.
++Primo avvio sandbox negato sui socket; escalation autorizzata sul solo cluster
++sacrificabile. `btree_gist` installata dallo schema col ruolo test non superuser.
++Credenziali fuori repository, mai copiate nelle evidenze.
++
++## Comandi e risultati
++
++Dalla directory esterna:
++`python3 /tmp/drivehub-ticket11/maven.py <etichetta> <argomenti>`.
++Il launcher deriva dal 10, usa JAVA_HOME 21, variabili private 07 e `mvn -B -o`.
++I comandi ripetibili senza launcher sono in [testing.md](../../testing.md).
++
++| Etichetta / selezione Maven | Risultato |
++|---|---|
++| `baseline -Ppostgres-tests clean test` | **259/259**, zero errori/failure/salti: nuova baseline locale, distinta dalla suite storica 10 |
++| `rental-red -Ppostgres-tests -Dtest=BookingConcurrencyIntegrationTest test` | 1 failure attesa: due noleggi sovrapposti confermati |
++| `rental-green`, stessa selezione | 1/1 |
++| `client-red -Ppostgres-tests -Dtest=BookingConcurrencyIntegrationTest#sameClientCannotExceedThreeTestDrivesAcrossDifferentVehicles test` | 1 failure attesa: quattro test drive dello stesso cliente |
++| `client-green -Ppostgres-tests -Dtest=BookingConcurrencyIntegrationTest test` | 2/2 |
++| `mixed-red -Ppostgres-tests -Dtest=BookingConcurrencyIntegrationTest#rentalWinsAgainstATestDriveStartedBeforeItsCommit test` | 1 failure attesa: test drive incompatibile sopravvive al noleggio |
++| `mixed-green -Ppostgres-tests -Dtest=BookingConcurrencyIntegrationTest test` | 3/3 |
++| `constraint-red -Ppostgres-tests -Dtest=BookingConcurrencyIntegrationTest#databaseRejectsInclusiveRentalOverlapWithoutServices test` | 1 failure attesa: scrittura SQL diretta sovrapposta ammessa |
++| `constraint-green -Ppostgres-tests -Dtest=BookingConcurrencyIntegrationTest test` | 4/4 |
++| `price-red -Ppostgres-tests -Dtest=BookingConcurrencyIntegrationTest#rentalUsesThePriceRereadAfterTheVehicleLock test` | 1 failure attesa: addebito 20 invece di 10 dopo modifica base sotto lock |
++| `price-green -Ppostgres-tests -Dtest=BookingConcurrencyIntegrationTest,PriceSelectionIntegrationTest test` | 15/15 |
++| `hours-red -Dtest=BookingRulesTest test` | 1 failure attesa su 2: 16:00:00.000001 ammesso dal dominio |
++| `hours-green`, stessi argomenti | 2/2 |
++| `messages-red -Ppostgres-tests -Dtest=BookingConcurrencyIntegrationTest#rejectedBookingsExposeTheBusinessReasonAfterRollback test` | 2 failure attese: motivo di dominio nascosto dal wrapper transazionale |
++| `messages-green -Ppostgres-tests -Dtest=BookingConcurrencyIntegrationTest test` | 7/7 |
++| `cases -Ppostgres-tests -Dtest=BookingRulesTest,BookingConcurrencyIntegrationTest test` | 34/34 |
++| `targeted`, selezione estesa sotto | 244/244 prima dell'ultima regressione |
++| `full -Ppostgres-tests clean test` | 296/296 **intermedia**: precedente alla correzione finale del deadlock |
++| `lock-order-red -Ppostgres-tests -Dtest=BookingConcurrencyIntegrationTest#purchaseCompletionAndRentalCannotDeadlockWithATestDriveOnTheBlockedVehicle test` | 1 failure attesa; tre PID/blocker osservati e PostgreSQL `deadlock detected` |
++| `lock-order-green`, stessi argomenti | 1/1; rifiuto di stato osservato prima di rilasciare gli altri due servizi |
++| `final-targeted`, selezione estesa sotto | **245/245**, zero errori/failure/salti |
++| `final-full -Ppostgres-tests clean test` | **297/297**, zero failure/errori/salti: **47 senza DB, 250 PostgreSQL** |
++
++Selezione estesa esatta per `targeted` e `final-targeted`:
++
++```bash
++mvn -Ppostgres-tests -Dtest=BookingRulesTest,BookingConcurrencyIntegrationTest,TestDriveCancellationIntegrationTest,BalanceConcurrencyIntegrationTest,PriceCalculatorServiceTest,PriceSelectionIntegrationTest,PurchaseAgreementIntegrationTest,PurchaseConcurrencyIntegrationTest,SaleProposalIntegrationTest,SaleOutcomeIntegrationTest,SaleTypeTest,DemoSqlValidationTest,DatabaseIsolationIntegrationTest test
++```
++
++Log `<etichetta>.log`, XML `<etichetta>-surefire/` e hash
++`<etichetta>-files.sha256.json` sono conservati in questa directory.
++[Identità delle otto regressioni RED/GREEN](regression-identity.json): il sorgente
++completo del test è identico in ogni coppia, anche quando la selezione GREEN
++include i casi già corretti. Gli ampliamenti successivi sono versioni distinte.
++Il primo tentativo della diagnostica PID aveva un cast SQL mancante: corretto
++il solo harness prima del RED riportato; non contato come riproduzione del bug.
++
++## Criteri e prove
++
++| Criterio ticket | Prova |
++|---|---|
++| Stessa transazione e lock coerenti | Gare pubbliche su veicolo, cliente e conto; prezzo/stato riletti dopo attesa; acconto concorrente e saldo acquisto con tre servizi; conti 04 conservati |
++| Vincoli DB | Sovrapposizione inclusiva SQL diretta, due writer concorrenti commit/rollback, SQLSTATE 23P01; unicità TD 23505 e orari 23514 |
++| Noleggi concorrenti | Sovrapposti rifiutati senza addebito del perdente; periodi adiacenti su due connessioni entrambi confermati; stessa data su veicoli diversi con fondi insufficienti senza sovrascrivere il saldo |
++| Test drive concorrenti | Stesso cliente, veicoli diversi, conteggio iniziale due → tre; clienti diversi stesso timestamp → uno; cliente senza conto; 09:00 e 16:00 ammessi |
++| Gara mista / Observer 08 | Noleggio primo → test drive rifiutato; TD primo → cancellazione prima del commit. Errore AFTER DELETE vede addebito, noleggio e cancellazione effettivi, poi rollback ripristina TD già confermato |
++| Date / fondi / rollback | Estremi inclusivi, contenimento, adiacenza, oggi/passato e periodo inverso; test drive su inizio/interno/fine noleggio e fuori periodo; 19.99 insufficienti per 20 senza effetti; AFTER INSERT su rent/TD vede righe effettive e provoca rollback; regressioni 08 rieseguite |
++
++Le nuove prove osservano servizi pubblici e nuovi AppContext; SQL aggiuntivo
++prepara fixture/guasti oppure verifica esplicitamente il confine della persistenza.
++Nessun mock come prova del DB. Worker/gate e connessioni distinti;
++`pg_stat_activity`/`pg_blocking_pids` registrano le attese prima del rilascio.
++Per il solo rifiuto anticipato della gara a tre, il completamento della Future
++costituisce la sincronizzazione osservabile alternativa al terzo lock.
++Nessuno sleep arbitrario; query, attese, future e terminazione worker hanno
++limiti di 10 secondi e cleanup dei gate/query bloccate.
++
++## Review indipendenti
++
++[Standards](standards-review.md): **0 violazioni documentate,0 smell azionabili**.
++[Spec](spec-review.md): **0 rilievi**. Due agenti indipendenti, contesti nuovi,
++solo il diff fissato sopra; nessuna review da HEAD. Nessun codice/test cambiato
++dopo le review o la suite finale. Documenti di chiusura successivi non sono
++nuove prove runtime.
++
++[Riepilogo XML](summary.json), [conservazione](preservation.json),
++[controlli finali](integrity-checks.json), [patch finale sessione](session.patch).
++Ricompilati64sorgenti principali e20file test con Java21;38 casi nuovi (2 senza DB, 
++36 PostgreSQL). Tutti i576file della baseline presenti:562 intatti e14modifiche
++intenzionali inclusi piano e ticket 11. Evidenze e ticket 01–10 identici.
++HEAD/indice invariati. [Sentinella finale](final-environment.txt),
++[arresto cluster](shutdown.txt); Xvfb non avviato. **AC05/#5 chiuso,11/20**;
++R06 resta parziale per 12 e AC13 trasversale. Nessun blocco residuo del11.
++
++## Limiti
++
++Schema ricreabile D02: per installazioni esistenti predisporre `btree_gist`,
++risolvere periodi già sovrapposti e aggiungere il vincolo prima dell'uso.
++Non resettare dati applicativi; non è una migrazione storica automatica.
++Nessuna vista modificata, quindi nessuna nuova prova GUI/tastiera richiesta.
++Warning Maven del modello dipendenze JavaFX preesistente, senza errori javac.
++Nessuna certificazione screen reader o benchmark prestazioni.
++
++01–10 e relative evidenze preservati. Regole aggiuntive di stato, rimborsi e
++noleggi in corso restano al 12; account, rendering e documentazione generale
++non anticipati. Ambiente `/tmp` temporaneo da ricontrollare prima del riuso.
+--- a/DriveHub/docs/testing.md
++++ b/DriveHub/docs/testing.md
+@@ -416,3 +416,58 @@
+ esercita approvazione, sessione obsoleta, rifiuti, saldo cliente, tipi/importi del
+ registro manager e navigazione con frecce, Tab, Spazio e Invio.
+ [Evidenze, comandi ed esiti della versione](evidence/r05-sale-outcome/verification.md).
++
++## Prenotazioni concorrenti — ticket 11
++
++```bash
++mvn -Dtest=BookingRulesTest test
++mvn -Ppostgres-tests -Dtest=BookingConcurrencyIntegrationTest test
++mvn -Ppostgres-tests -Dtest=BookingRulesTest,BookingConcurrencyIntegrationTest,TestDriveCancellationIntegrationTest,BalanceConcurrencyIntegrationTest,PriceSelectionIntegrationTest test
++mvn -Ppostgres-tests clean test
++```
++
++Le prenotazioni usano una sola connessione transazionale: veicolo con `FOR UPDATE`,
++cliente con `FOR NO KEY UPDATE`, quindi conto con il protocollo 04 quando occorre
++un addebito. Il lock cliente serializza anche test drive su veicoli diversi e non
++richiede un conto; `NO KEY UPDATE` resta compatibile con i lock delle chiavi esterne
++presi dagli altri flussi economici. I conti multipli mantengono l'ordine crescente
++per ID cliente. Le cancellazioni manuali riducono le prenotazioni e non introducono
++lock in ordine inverso. Il cambio destinazione prende lo stesso lock veicolo;
++le sue ulteriori regole di stato rimangono al ticket 12.
++
++Il test drive rifiuta lo stato non prenotabile subito dopo il lock veicolo,
++prima di attendere il cliente: la gara a tre con saldo acquisto e noleggio su
++un altro veicolo verifica che non si formi un ciclo veicolo → cliente → conto.
++Il gate osserva tre backend in attesa nel RED; nel GREEN osserva il rifiuto
++completato del terzo servizio prima di rilasciare gli altri due.
++
++Disponibilità, limite tre e prezzo del noleggio vengono riletti dopo i lock;
++modello e sconti usano la connessione del chiamante. La priorità commerciale resta
++quella del ticket 08: se il test drive precede il noleggio, l'Observer lo cancella
++nella transazione economica; se il noleggio precede il test drive, questo rilegge
++il periodo occupato e viene rifiutato. Lo storico temporale dell'Observer resta
++basato su `date > CURRENT_TIMESTAMP` della transazione.
++
++Lo schema ricreabile richiede l'estensione PostgreSQL **btree_gist**, inclusa nei
++contrib PostgreSQL 16 e trusted. `CREATE EXTENSION IF NOT EXISTS btree_gist` viene
++eseguito dal proprietario del DB dedicato durante il reset. Su installazioni
++esistenti predisporre l'estensione e risolvere eventuali periodi sovrapposti prima
++di aggiungere `ex_rent_vehicle_period`; non eseguire schema/demo sui dati applicativi.
++Il vincolo `EXCLUDE` confronta veicolo e `daterange(start, end, '[]')`: entrambi gli
++estremi sono inclusi; due intervalli adiacenti che non condividono un giorno sono
++ammessi. Unicità `(vehicle, date)` e fascia 09:00–16:00 dei test drive sono conservate.
++
++Le regressioni usano servizi pubblici e PostgreSQL dedicato, con connessioni
++distinte, gate SQL e osservazione di PID e `pg_blocking_pids` prima del rilascio.
++SQL diretto verifica anche vincoli e concorrenza senza affidarsi ai lock dei servizi.
++Trigger di errore verificano scritture effettive prima del rollback. Nessuno sleep
++arbitrario e nessun mock certificano la persistenza. Query, attese e worker hanno
++timeout; fixture e guasti esistono soltanto nel DB dedicato. Non eseguire altre
++suite PostgreSQL contemporaneamente sullo stesso DB.
++
++La suite 259/259 del ticket 10 è storica. Baseline locale e verifiche attuali,
++hash delle versioni, RED/GREEN e limiti sono nelle
++[evidenze del ticket 11](evidence/r06-bookings/verification.md).
++
++Riferimenti PostgreSQL 16: [btree_gist trusted](https://www.postgresql.org/docs/16/btree-gist.html)
++e [compatibilità dei lock di riga](https://www.postgresql.org/docs/16/explicit-locking.html#LOCKING-ROWS).
+--- a/DriveHub/src/main/java/it/unifi/drivehub/AppContext.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/AppContext.java
+@@ -105,9 +105,9 @@
+                 requestDao, bankAccountDao, saleDao, priceCalculatorService, vehicleEventPublisher);
+         this.saleToDealershipService = new SaleToDealershipService(databaseManager, vehicleDao, modelDao,
+                 discountDao, requestDao, bankAccountDao, saleDao, priceCalculatorService);
+-        this.rentalService = new RentalService(databaseManager, vehicleDao, modelDao, discountDao,
++        this.rentalService = new RentalService(databaseManager, vehicleDao, userDao, modelDao, discountDao,
+                 rentDao, bankAccountDao, priceCalculatorService, vehicleEventPublisher);
+-        this.testDriveService = new TestDriveService(databaseManager, testDriveDao, vehicleDao);
++        this.testDriveService = new TestDriveService(databaseManager, testDriveDao, vehicleDao, userDao);
+         this.catalogService = new CatalogService(databaseManager, brandDao, modelDao, vehicleDao, discountDao, priceCalculatorService);
+         this.operationQueryService = new OperationQueryService(requestDao, testDriveDao, rentDao, saleDao);
+     }
+--- a/DriveHub/src/main/java/it/unifi/drivehub/dao/DiscountDao.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/dao/DiscountDao.java
+@@ -14,7 +14,11 @@
+ 
+     Optional<ModelDiscount> findModelDiscount(Long modelId);
+ 
++    Optional<ModelDiscount> findModelDiscount(Long modelId, Connection conn);
++
+     Optional<VehicleDiscount> findVehicleDiscount(Long vehicleId);
++
++    Optional<VehicleDiscount> findVehicleDiscount(Long vehicleId, Connection conn);
+ 
+     List<ModelDiscount> findAllModelDiscounts();
+ 
+--- a/DriveHub/src/main/java/it/unifi/drivehub/dao/ModelDao.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/dao/ModelDao.java
+@@ -17,6 +17,8 @@
+ 
+     Optional<Model> findById(Long id);
+ 
++    Optional<Model> findById(Long id, Connection conn);
++
+     Model save(Model model, Connection conn);
+ 
+     void delete(Long id, Connection conn);
+--- a/DriveHub/src/main/java/it/unifi/drivehub/dao/UserDao.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/dao/UserDao.java
+@@ -19,6 +19,9 @@
+ 
+     Optional<Client> findClientById(Long id);
+ 
++    /** Serializza le prenotazioni del cliente nella transazione, dopo il veicolo e prima del conto. */
++    void lockClient(Long id, Connection conn);
++
+     Optional<Salesman> findSalesmanById(Long id);
+ 
+     Optional<Manager> findManagerById(Long id);
+--- a/DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresDiscountDao.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresDiscountDao.java
+@@ -23,9 +23,17 @@
+ 
+     @Override
+     public Optional<ModelDiscount> findModelDiscount(Long modelId) {
++        try (Connection conn = db.getConnection()) {
++            return findModelDiscount(modelId, conn);
++        } catch (SQLException e) {
++            throw new RuntimeException("Errore di connessione durante la ricerca sconto modello: " + modelId, e);
++        }
++    }
++
++    @Override
++    public Optional<ModelDiscount> findModelDiscount(Long modelId, Connection conn) {
+         String sql = "SELECT model, value FROM model_discount WHERE model = ?";
+-        try (Connection conn = db.getConnection();
+-             PreparedStatement ps = conn.prepareStatement(sql)) {
++        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+             ps.setLong(1, modelId);
+             try (ResultSet rs = ps.executeQuery()) {
+                 if (rs.next()) {
+@@ -40,9 +48,17 @@
+ 
+     @Override
+     public Optional<VehicleDiscount> findVehicleDiscount(Long vehicleId) {
++        try (Connection conn = db.getConnection()) {
++            return findVehicleDiscount(vehicleId, conn);
++        } catch (SQLException e) {
++            throw new RuntimeException("Errore di connessione durante la ricerca sconto veicolo: " + vehicleId, e);
++        }
++    }
++
++    @Override
++    public Optional<VehicleDiscount> findVehicleDiscount(Long vehicleId, Connection conn) {
+         String sql = "SELECT vehicle, value FROM vehicle_discount WHERE vehicle = ?";
+-        try (Connection conn = db.getConnection();
+-             PreparedStatement ps = conn.prepareStatement(sql)) {
++        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+             ps.setLong(1, vehicleId);
+             try (ResultSet rs = ps.executeQuery()) {
+                 if (rs.next()) {
+--- a/DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresModelDao.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresModelDao.java
+@@ -68,9 +68,17 @@
+ 
+     @Override
+     public Optional<Model> findById(Long id) {
++        try (Connection conn = db.getConnection()) {
++            return findById(id, conn);
++        } catch (SQLException e) {
++            throw new RuntimeException("Errore di connessione durante la ricerca modello id: " + id, e);
++        }
++    }
++
++    @Override
++    public Optional<Model> findById(Long id, Connection conn) {
+         String sql = "SELECT id, brand, name, release_price, release_year FROM model WHERE id = ?";
+-        try (Connection conn = db.getConnection();
+-             PreparedStatement ps = conn.prepareStatement(sql)) {
++        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+             ps.setLong(1, id);
+             try (ResultSet rs = ps.executeQuery()) {
+                 if (rs.next()) {
+--- a/DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresUserDao.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresUserDao.java
+@@ -102,6 +102,21 @@
+             throw new RuntimeException("Errore durante la ricerca del cliente id: " + id, e);
+         }
+         return Optional.empty();
++    }
++
++    @Override
++    public void lockClient(Long id, Connection conn) {
++        // NO KEY UPDATE non blocca i KEY SHARE delle FK degli altri flussi economici.
++        String sql = "SELECT id FROM client WHERE id = ? FOR NO KEY UPDATE";
++        try (PreparedStatement ps = conn.prepareStatement(sql)) {
++            if (conn.getAutoCommit()) throw new IllegalArgumentException("Il lock del cliente richiede una transazione attiva.");
++            ps.setLong(1, id);
++            try (ResultSet rs = ps.executeQuery()) {
++                if (!rs.next()) throw new IllegalStateException("Cliente non trovato: " + id);
++            }
++        } catch (SQLException e) {
++            throw new RuntimeException("Errore durante il lock del cliente: " + id, e);
++        }
+     }
+ 
+     @Override
+--- a/DriveHub/src/main/java/it/unifi/drivehub/domain/operation/TestDrive.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/domain/operation/TestDrive.java
+@@ -34,7 +34,7 @@
+             throw new IllegalArgumentException("La data e l'ora del test drive non possono essere nulle.");
+         }
+         int hour = date.getHour();
+-        if (hour < 9 || hour > 16 || (hour == 16 && (date.getMinute() > 0 || date.getSecond() > 0))) {
++        if (hour < 9 || hour > 16 || (hour == 16 && (date.getMinute() > 0 || date.getSecond() > 0 || date.getNano() > 0))) {
+             throw new IllegalArgumentException("L'ora di inizio di un TestDrive deve essere compresa nella fascia oraria 9:00 - 16:00.");
+         }
+         return new TestDrive(id, vehicleId, clientId, date);
+--- a/DriveHub/src/main/java/it/unifi/drivehub/service/RentalService.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/service/RentalService.java
+@@ -6,6 +6,7 @@
+ import it.unifi.drivehub.dao.ModelDao;
+ import it.unifi.drivehub.dao.RentDao;
+ import it.unifi.drivehub.dao.VehicleDao;
++import it.unifi.drivehub.dao.UserDao;
+ import it.unifi.drivehub.domain.discount.ModelDiscount;
+ import it.unifi.drivehub.domain.discount.VehicleDiscount;
+ import it.unifi.drivehub.domain.operation.Rent;
+@@ -17,6 +18,7 @@
+ import it.unifi.drivehub.event.VehicleCommitmentEvent;
+ 
+ import java.math.BigDecimal;
++import java.sql.Connection;
+ import java.time.LocalDate;
+ import java.util.Comparator;
+ import java.util.List;
+@@ -28,6 +30,7 @@
+ 
+     private final DatabaseManager db;
+     private final VehicleDao vehicleDao;
++    private final UserDao userDao;
+     private final ModelDao modelDao;
+     private final DiscountDao discountDao;
+     private final RentDao rentDao;
+@@ -35,12 +38,13 @@
+     private final PriceCalculatorService priceCalculator;
+     private final VehicleEventPublisher eventPublisher;
+ 
+-    public RentalService(DatabaseManager db, VehicleDao vehicleDao, ModelDao modelDao,
++    public RentalService(DatabaseManager db, VehicleDao vehicleDao, UserDao userDao, ModelDao modelDao,
+                          DiscountDao discountDao, RentDao rentDao,
+                          BankAccountDao bankAccountDao, PriceCalculatorService priceCalculator,
+                          VehicleEventPublisher eventPublisher) {
+         this.db = db;
+         this.vehicleDao = vehicleDao;
++        this.userDao = userDao;
+         this.modelDao = modelDao;
+         this.discountDao = discountDao;
+         this.rentDao = rentDao;
+@@ -53,13 +57,19 @@
+      * Calcola il preventivo del noleggio per le date selezionate.
+      */
+     public BigDecimal calculateRentalCost(Long vehicleId, LocalDate start, LocalDate end) {
+-        Vehicle vehicle = vehicleDao.findById(vehicleId)
+-                .orElseThrow(() -> new IllegalArgumentException("Veicolo non trovato: " + vehicleId));
+-        Model model = modelDao.findById(vehicle.getModelId())
++        return db.executeInTransactionWithResult(conn -> {
++            Vehicle vehicle = vehicleDao.findById(vehicleId, conn)
++                    .orElseThrow(() -> new IllegalArgumentException("Veicolo non trovato: " + vehicleId));
++            return calculateRentalCost(vehicle, start, end, conn);
++        });
++    }
++
++    private BigDecimal calculateRentalCost(Vehicle vehicle, LocalDate start, LocalDate end, Connection conn) {
++        Model model = modelDao.findById(vehicle.getModelId(), conn)
+                 .orElseThrow(() -> new IllegalArgumentException("Modello non trovato: " + vehicle.getModelId()));
+ 
+-        Integer mDisc = discountDao.findModelDiscount(model.getId()).map(ModelDiscount::getValue).orElse(0);
+-        Integer vDisc = discountDao.findVehicleDiscount(vehicle.getId()).map(VehicleDiscount::getValue).orElse(0);
++        Integer mDisc = discountDao.findModelDiscount(model.getId(), conn).map(ModelDiscount::getValue).orElse(0);
++        Integer vDisc = discountDao.findVehicleDiscount(vehicle.getId(), conn).map(VehicleDiscount::getValue).orElse(0);
+         BigDecimal currentPrice = priceCalculator.calculateVehiclePrice(model, vehicle, mDisc, vDisc);
+ 
+         return priceCalculator.calculateTotalRentalCost(currentPrice, start, end);
+@@ -77,33 +87,42 @@
+             throw new IllegalArgumentException("La data di fine noleggio non può precedere la data di inizio.");
+         }
+ 
+-        BigDecimal totalCost = calculateRentalCost(vehicleId, start, end);
++        try {
++            return db.executeInTransactionWithResult(conn -> {
++                Vehicle vehicle = vehicleDao.findByIdForUpdate(vehicleId, conn)
++                        .orElseThrow(() -> new IllegalStateException("Veicolo non trovato: " + vehicleId));
++                if (vehicle.getState() != VehicleState.RENT) {
++                    throw new IllegalStateException("Il veicolo non è abilitato per il noleggio.");
++                }
++                userDao.lockClient(clientId, conn);
+ 
+-        return db.executeInTransactionWithResult(conn -> {
+-            Vehicle vehicle = vehicleDao.findById(vehicleId, conn)
+-                    .orElseThrow(() -> new IllegalStateException("Veicolo non trovato: " + vehicleId));
+-            if (vehicle.getState() != VehicleState.RENT) {
+-                throw new IllegalStateException("Il veicolo non è abilitato per il noleggio.");
++                // Verifica concorrente delle date nella stessa transazione
++                boolean available = rentDao.isVehicleAvailableForRent(vehicleId, start, end, conn);
++                if (!available) {
++                    throw new IllegalStateException("Il veicolo risulta già prenotato per il periodo o per alcune date selezionate.");
++                }
++
++                BigDecimal totalCost = calculateRentalCost(vehicle, start, end, conn);
++
++                // Addebito al 100% sul conto del cliente
++                BankAccount account = bankAccountDao.findByClientIdForUpdate(clientId, conn)
++                        .orElseThrow(() -> new IllegalStateException("Conto cliente non trovato."));
++                account.withdraw(totalCost);
++                bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
++
++                // Salvataggio tupla Rent
++                Rent rent = Rent.create(null, vehicleId, clientId, totalCost, start, end);
++                Rent createdRent = rentDao.save(rent, conn);
++                eventPublisher.publishCommitment(new VehicleCommitmentEvent(vehicleId), conn);
++                return createdRent;
++            });
++        } catch (RuntimeException failure) {
++            if (failure.getCause() instanceof RuntimeException reason
++                    && (reason instanceof IllegalArgumentException || reason instanceof IllegalStateException)) {
++                throw reason;
+             }
+-
+-            // Verifica concorrente delle date nella stessa transazione
+-            boolean available = rentDao.isVehicleAvailableForRent(vehicleId, start, end, conn);
+-            if (!available) {
+-                throw new IllegalStateException("Il veicolo risulta già prenotato per il periodo o per alcune date selezionate.");
+-            }
+-
+-            // Addebito al 100% sul conto del cliente
+-            BankAccount account = bankAccountDao.findByClientIdForUpdate(clientId, conn)
+-                    .orElseThrow(() -> new IllegalStateException("Conto cliente non trovato."));
+-            account.withdraw(totalCost);
+-            bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
+-
+-            // Salvataggio tupla Rent
+-            Rent rent = Rent.create(null, vehicleId, clientId, totalCost, start, end);
+-            Rent createdRent = rentDao.save(rent, conn);
+-            eventPublisher.publishCommitment(new VehicleCommitmentEvent(vehicleId), conn);
+-            return createdRent;
+-        });
++            throw failure;
++        }
+ 
+     }
+ 
+@@ -120,7 +139,7 @@
+         }
+ 
+         return db.executeInTransactionWithResult(conn -> {
+-            Vehicle vehicle = vehicleDao.findById(vehicleId, conn)
++            Vehicle vehicle = vehicleDao.findByIdForUpdate(vehicleId, conn)
+                     .orElseThrow(() -> new IllegalStateException("Veicolo non trovato: " + vehicleId));
+             VehicleState oldState = vehicle.getState();
+ 
+--- a/DriveHub/src/main/java/it/unifi/drivehub/service/TestDriveService.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/service/TestDriveService.java
+@@ -3,6 +3,7 @@
+ import it.unifi.drivehub.dao.DatabaseManager;
+ import it.unifi.drivehub.dao.TestDriveDao;
+ import it.unifi.drivehub.dao.VehicleDao;
++import it.unifi.drivehub.dao.UserDao;
+ import it.unifi.drivehub.domain.operation.TestDrive;
+ import it.unifi.drivehub.domain.vehicle.Vehicle;
+ import it.unifi.drivehub.domain.vehicle.VehicleState;
+@@ -18,11 +19,13 @@
+     private final DatabaseManager db;
+     private final TestDriveDao testDriveDao;
+     private final VehicleDao vehicleDao;
++    private final UserDao userDao;
+ 
+-    public TestDriveService(DatabaseManager db, TestDriveDao testDriveDao, VehicleDao vehicleDao) {
++    public TestDriveService(DatabaseManager db, TestDriveDao testDriveDao, VehicleDao vehicleDao, UserDao userDao) {
+         this.db = db;
+         this.testDriveDao = testDriveDao;
+         this.vehicleDao = vehicleDao;
++        this.userDao = userDao;
+     }
+ 
+     /**
+@@ -39,28 +42,36 @@
+             throw new IllegalArgumentException("Impossibile prenotare un test drive nel passato.");
+         }
+ 
+-        return db.executeInTransactionWithResult(conn -> {
+-            // Controllo concorrente atomico: massimo 3 test drive attivi per il cliente
+-            int activeCount = testDriveDao.countActiveByClientId(clientId, conn);
+-            if (activeCount >= 3) {
+-                throw new IllegalStateException("Hai già raggiunto il limite massimo di 3 test drive prenotati.");
++        try {
++            return db.executeInTransactionWithResult(conn -> {
++                Vehicle vehicle = vehicleDao.findByIdForUpdate(vehicleId, conn)
++                        .orElseThrow(() -> new IllegalStateException("Veicolo non trovato: " + vehicleId));
++                if (vehicle.getState() != VehicleState.SALE && vehicle.getState() != VehicleState.RENT) {
++                    throw new IllegalStateException("I test drive possono essere prenotati solo su veicoli in vendita o a noleggio.");
++                }
++                userDao.lockClient(clientId, conn);
++                // Controllo concorrente atomico: massimo 3 test drive attivi per il cliente
++                int activeCount = testDriveDao.countActiveByClientId(clientId, conn);
++                if (activeCount >= 3) {
++                    throw new IllegalStateException("Hai già raggiunto il limite massimo di 3 test drive prenotati.");
++                }
++
++                // Verifica disponibilità concorrente
++                boolean available = testDriveDao.isVehicleAvailableForTestDrive(vehicleId, dateTime, conn);
++                if (!available) {
++                    throw new IllegalStateException("Fascia oraria non disponibile: il veicolo è già prenotato o noleggiato per questa data.");
++                }
++
++                TestDrive td = TestDrive.create(null, vehicleId, clientId, dateTime);
++                return testDriveDao.save(td, conn);
++            });
++        } catch (RuntimeException failure) {
++            if (failure.getCause() instanceof RuntimeException reason
++                    && (reason instanceof IllegalArgumentException || reason instanceof IllegalStateException)) {
++                throw reason;
+             }
+-
+-            Vehicle vehicle = vehicleDao.findById(vehicleId, conn)
+-                    .orElseThrow(() -> new IllegalStateException("Veicolo non trovato: " + vehicleId));
+-            if (vehicle.getState() != VehicleState.SALE && vehicle.getState() != VehicleState.RENT) {
+-                throw new IllegalStateException("I test drive possono essere prenotati solo su veicoli in vendita o a noleggio.");
+-            }
+-
+-            // Verifica disponibilità concorrente
+-            boolean available = testDriveDao.isVehicleAvailableForTestDrive(vehicleId, dateTime, conn);
+-            if (!available) {
+-                throw new IllegalStateException("Fascia oraria non disponibile: il veicolo è già prenotato o noleggiato per questa data.");
+-            }
+-
+-            TestDrive td = TestDrive.create(null, vehicleId, clientId, dateTime);
+-            return testDriveDao.save(td, conn);
+-        });
++            throw failure;
++        }
+     }
+ 
+     public List<TestDrive> getClientTestDrives(Long clientId) {
+--- a/DriveHub/src/main/resources/db/schema.sql
++++ b/DriveHub/src/main/resources/db/schema.sql
+@@ -26,6 +26,8 @@
+ DROP TYPE IF EXISTS vehicle_state CASCADE;
+ DROP TYPE IF EXISTS request_type CASCADE;
+ 
++CREATE EXTENSION IF NOT EXISTS btree_gist;
++
+ -- -----------------------------------------------------------------------------
+ -- 0. Tipi Enumerati su PostgreSQL (come da requisiti di dominio)
+ -- -----------------------------------------------------------------------------
+@@ -282,7 +284,9 @@
+     CONSTRAINT "fk_rent_vehicle" FOREIGN KEY ("vehicle") REFERENCES "vehicle" ("id") ON DELETE RESTRICT,
+     CONSTRAINT "fk_rent_client" FOREIGN KEY ("client") REFERENCES "client" ("id") ON DELETE RESTRICT,
+     CONSTRAINT "chk_rent_amount" CHECK ("amount" >= 0),
+-    CONSTRAINT "chk_rent_dates" CHECK ("end" >= "start")
++    CONSTRAINT "chk_rent_dates" CHECK ("end" >= "start"),
++    CONSTRAINT "ex_rent_vehicle_period" EXCLUDE USING gist
++        ("vehicle" WITH =, daterange("start", "end", '[]') WITH &&)
+ );
+ 
+ -- -----------------------------------------------------------------------------
+--- /dev/null
++++ b/DriveHub/src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java
+@@ -0,0 +1,476 @@
++package it.unifi.drivehub;
++
++import it.unifi.drivehub.dao.DatabaseManager;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.AfterEach;
++import org.junit.jupiter.api.Tag;
++import org.junit.jupiter.api.Test;
++import org.junit.jupiter.params.ParameterizedTest;
++import org.junit.jupiter.params.provider.ValueSource;
++import org.junit.jupiter.params.provider.CsvSource;
++
++import java.math.BigDecimal;
++import java.sql.Connection;
++import java.sql.SQLException;
++import java.time.LocalDate;
++import java.util.ArrayList;
++import java.util.List;
++import java.util.concurrent.Callable;
++import java.util.concurrent.Executors;
++import java.util.concurrent.Future;
++import java.util.concurrent.TimeUnit;
++
++import static org.junit.jupiter.api.Assertions.*;
++
++@Tag("postgres")
++class BookingConcurrencyIntegrationTest {
++    private DatabaseManager db;
++    private AppContext ctx;
++    private LocalDate start;
++
++    @BeforeEach
++    void setUp() throws Exception {
++        db = TestDatabase.fromEnvironment().reset();
++        ctx = new AppContext(db);
++        start = LocalDate.now().plusDays(2);
++        sql("""
++                DELETE FROM sale; DELETE FROM rent; DELETE FROM test_drive; DELETE FROM request;
++                UPDATE bank_account SET balance = 30000 WHERE client IN (1, 2);
++                INSERT INTO model (id, brand, name, release_price, release_year)
++                  VALUES (1101, 'Fiat', 'Ticket11', 20000, EXTRACT(YEAR FROM CURRENT_DATE));
++                INSERT INTO vehicle (id, model, vin, kilometers, price, year, state) VALUES
++                  (1101, 1101, 'T1100000000000001', 0, 20000, EXTRACT(YEAR FROM CURRENT_DATE), 'RENT'),
++                  (1102, 1101, 'T1100000000000002', 0, 20000, EXTRACT(YEAR FROM CURRENT_DATE), 'RENT');
++                """);
++    }
++
++    @Test
++    void overlappingRentalsFromDifferentClientsCannotBothBeConfirmed() throws Exception {
++        var failures = race("SELECT id FROM vehicle WHERE id = 1101 FOR UPDATE",
++                () -> new AppContext(db).getRentalService().bookRental(1101L, 1L, start, start),
++                () -> new AppContext(db).getRentalService().bookRental(1101L, 2L, start, start));
++        assertNull(failures.get(0));
++        assertNotNull(failures.get(1), "Due noleggi sovrapposti non possono entrambi riuscire");
++        assertTrue(rootMessage(failures.get(1)).contains("già prenotato"), rootMessage(failures.get(1)));
++        ctx = new AppContext(db);
++        assertEquals(1, ctx.getOperationQueryService().getClientRents(1L).size());
++        assertTrue(ctx.getOperationQueryService().getClientRents(2L).isEmpty());
++        assertEquals(new BigDecimal("30000.00"), ctx.getAuthService().getClientBankAccount(2L).getBalance());
++    }
++
++    @Test
++    void sameClientCannotExceedThreeTestDrivesAcrossDifferentVehicles() throws Exception {
++        sql("INSERT INTO test_drive (vehicle, client, date) VALUES "
++                + "(1101, 1, CURRENT_DATE + 10 + TIME '10:00'),"
++                + "(1101, 1, CURRENT_DATE + 11 + TIME '10:00')");
++        var failures = race("SELECT id FROM client WHERE id = 1 FOR UPDATE",
++                () -> new AppContext(db).getTestDriveService().bookTestDrive(1101L, 1L, start.atTime(10, 0)),
++                () -> new AppContext(db).getTestDriveService().bookTestDrive(1102L, 1L, start.atTime(10, 0)));
++        assertNull(failures.get(0));
++        assertNotNull(failures.get(1), "Lo stesso cliente non deve ottenere quattro test drive");
++        assertTrue(rootMessage(failures.get(1)).contains("limite massimo di 3"), rootMessage(failures.get(1)));
++        assertEquals(3, new AppContext(db).getTestDriveService().getClientTestDrives(1L).size());
++    }
++
++    @Test
++    void rentalWinsAgainstATestDriveStartedBeforeItsCommit() throws Exception {
++        var failures = race("SELECT client FROM bank_account WHERE client = 1 FOR UPDATE",
++                () -> new AppContext(db).getRentalService().bookRental(1101L, 1L, start, start),
++                () -> new AppContext(db).getTestDriveService().bookTestDrive(1101L, 2L, start.atTime(10, 0)));
++        assertNull(failures.get(0));
++        assertNotNull(failures.get(1), "Il test drive non può sopravvivere al noleggio concorrente");
++        assertTrue(rootMessage(failures.get(1)).contains("non disponibile"), rootMessage(failures.get(1)));
++        ctx = new AppContext(db);
++        assertEquals(1, ctx.getOperationQueryService().getClientRents(1L).size());
++        assertTrue(ctx.getTestDriveService().getClientTestDrives(2L).isEmpty());
++    }
++
++    @Test
++    void databaseRejectsInclusiveRentalOverlapWithoutServices() throws Exception {
++        sql("INSERT INTO rent (vehicle, client, amount, start, \"end\") VALUES "
++                + "(1101, 1, 20, CURRENT_DATE + 2, CURRENT_DATE + 4)");
++        var failure = assertThrows(SQLException.class, () -> sql(
++                "INSERT INTO rent (vehicle, client, amount, start, \"end\") VALUES "
++                        + "(1101, 2, 20, CURRENT_DATE + 4, CURRENT_DATE + 5)"));
++        assertEquals("23P01", failure.getSQLState());
++        assertTrue(ctx.getOperationQueryService().getClientRents(2L).isEmpty());
++    }
++
++    @Test
++    void rentalUsesThePriceRereadAfterTheVehicleLock() throws Exception {
++        var rent = behindGate("UPDATE vehicle SET price = 10000, price_mode = 'MANUAL' WHERE id = 1101",
++                true, () -> new AppContext(db).getRentalService().bookRental(1101L, 1L, start, start));
++        assertEquals(new BigDecimal("10.00"), rent.getAmount());
++        assertEquals(new BigDecimal("29990.00"),
++                new AppContext(db).getAuthService().getClientBankAccount(1L).getBalance());
++    }
++
++    @ParameterizedTest
++    @ValueSource(booleans = {false, true})
++    void rejectedBookingsExposeTheBusinessReasonAfterRollback(boolean rental) {
++        if (rental) {
++            ctx.getRentalService().bookRental(1101L, 1L, start, start);
++        } else {
++            for (int day = 0; day < 3; day++) {
++                ctx.getTestDriveService().bookTestDrive(1101L, 1L, start.plusDays(day).atTime(10, 0));
++            }
++        }
++        var failure = assertThrows(IllegalStateException.class, () -> {
++            if (rental) ctx.getRentalService().bookRental(1101L, 2L, start, start);
++            else ctx.getTestDriveService().bookTestDrive(1102L, 1L, start.atTime(10, 0));
++        });
++        assertTrue(failure.getMessage().contains(rental ? "già prenotato" : "limite massimo di 3"));
++    }
++
++    @ParameterizedTest
++    @CsvSource({"-2,-1,true", "-1,0,false", "-1,3,false", "0,0,false", "1,1,false", "2,2,false", "3,4,true"})
++    void rentalPeriodsAreInclusiveAndAdjacentDaysRemainBookable(int from, int to, boolean available) {
++        ctx.getRentalService().bookRental(1101L, 1L, start, start.plusDays(2));
++        Runnable booking = () -> ctx.getRentalService().bookRental(1101L, 2L,
++                start.plusDays(from), start.plusDays(to));
++        if (available) assertDoesNotThrow(booking::run);
++        else assertThrows(IllegalStateException.class, booking::run);
++        ctx = new AppContext(db);
++        assertEquals(available ? 1 : 0, ctx.getOperationQueryService().getClientRents(2L).size());
++        assertEquals(new BigDecimal(available ? "29961.00" : "30000.00"),
++                ctx.getAuthService().getClientBankAccount(2L).getBalance());
++    }
++
++    @Test
++    void concurrentRentalsForSameClientOnDifferentVehiclesCannotOverdraw() throws Exception {
++        sql("UPDATE bank_account SET balance = 25 WHERE client = 1");
++        var failures = race("SELECT id FROM client WHERE id = 1 FOR UPDATE",
++                () -> new AppContext(db).getRentalService().bookRental(1101L, 1L, start, start),
++                () -> new AppContext(db).getRentalService().bookRental(1102L, 1L, start, start));
++        assertNull(failures.get(0));
++        assertNotNull(failures.get(1));
++        assertTrue(failures.get(1).getMessage().contains("Saldo insufficiente"));
++        ctx = new AppContext(db);
++        assertEquals(1, ctx.getOperationQueryService().getClientRents(1L).size());
++        assertEquals(new BigDecimal("5.00"), ctx.getAuthService().getClientBankAccount(1L).getBalance());
++    }
++
++    @ParameterizedTest
++    @ValueSource(booleans = {false, true})
++    void testDriveCommittedFirstIsCancelledAtomicallyByRental(boolean failCancellation) throws Exception {
++        if (failCancellation) {
++            sql("CREATE FUNCTION fail_ticket11() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN "
++                    + "IF (SELECT balance FROM bank_account WHERE client = 1) <> 29980 "
++                    + "OR NOT EXISTS (SELECT 1 FROM rent WHERE vehicle = 1101) "
++                    + "OR EXISTS (SELECT 1 FROM test_drive WHERE vehicle = 1101) "
++                    + "THEN RAISE EXCEPTION 'ticket11_writes_not_observed'; END IF; "
++                    + "RAISE EXCEPTION 'ticket11_after_cancellation'; END $$; "
++                    + "CREATE TRIGGER fail_ticket11 AFTER DELETE ON test_drive FOR EACH STATEMENT "
++                    + "EXECUTE FUNCTION fail_ticket11()");
++        }
++        var failures = race("SELECT id FROM client WHERE id = 2 FOR UPDATE",
++                () -> new AppContext(db).getTestDriveService().bookTestDrive(1101L, 2L, start.atTime(10, 0)),
++                () -> new AppContext(db).getRentalService().bookRental(1101L, 1L, start, start));
++        assertNull(failures.get(0));
++        if (failCancellation) {
++            assertNotNull(failures.get(1));
++            assertTrue(rootMessage(failures.get(1)).contains("ticket11_after_cancellation"));
++        } else assertNull(failures.get(1));
++        ctx = new AppContext(db);
++        assertEquals(failCancellation ? 1 : 0, ctx.getTestDriveService().getClientTestDrives(2L).size());
++        assertEquals(failCancellation ? 0 : 1, ctx.getOperationQueryService().getClientRents(1L).size());
++        assertEquals(new BigDecimal(failCancellation ? "30000.00" : "29980.00"),
++                ctx.getAuthService().getClientBankAccount(1L).getBalance());
++    }
++
++    @Test
++    void twoClientsCannotBookTheSameTestDriveSlot() throws Exception {
++        var failures = race("SELECT id FROM vehicle WHERE id = 1101 FOR UPDATE",
++                () -> new AppContext(db).getTestDriveService().bookTestDrive(1101L, 1L, start.atTime(10, 0)),
++                () -> new AppContext(db).getTestDriveService().bookTestDrive(1101L, 2L, start.atTime(10, 0)));
++        assertNull(failures.get(0));
++        assertNotNull(failures.get(1));
++        assertTrue(failures.get(1).getMessage().contains("non disponibile"));
++        ctx = new AppContext(db);
++        assertEquals(1, ctx.getTestDriveService().getClientTestDrives(1L).size());
++        assertTrue(ctx.getTestDriveService().getClientTestDrives(2L).isEmpty());
++    }
++
++    @ParameterizedTest
++    @ValueSource(ints = {0, 1, 2})
++    void testDriveCannotUseAnyDayOfARental(int day) {
++        ctx.getRentalService().bookRental(1101L, 1L, start, start.plusDays(2));
++        assertThrows(IllegalStateException.class, () -> ctx.getTestDriveService()
++                .bookTestDrive(1101L, 2L, start.plusDays(day).atTime(10, 0)));
++        assertDoesNotThrow(() -> ctx.getTestDriveService().bookTestDrive(1101L, 2L, start.minusDays(1).atTime(9, 0)));
++        assertDoesNotThrow(() -> ctx.getTestDriveService().bookTestDrive(1101L, 2L, start.plusDays(3).atTime(16, 0)));
++        assertEquals(2, new AppContext(db).getTestDriveService().getClientTestDrives(2L).size());
++    }
++
++    @Test
++    void testDriveDoesNotRequireABankAccount() throws Exception {
++        sql("DELETE FROM bank_account WHERE client = 2; UPDATE vehicle SET state = 'SALE' WHERE id = 1102");
++        var td = ctx.getTestDriveService().bookTestDrive(1102L, 2L, start.atTime(9, 0));
++        assertEquals(td.getId(), new AppContext(db).getTestDriveService().getClientTestDrives(2L).getFirst().getId());
++    }
++
++    @Test
++    void clientLockIsCompatibleWithPurchaseForeignKeysAndTheAccountProtocol() throws Exception {
++        sql("UPDATE vehicle SET state = 'SALE' WHERE id = 1102");
++        var failures = race("SELECT client FROM bank_account WHERE client = 1 FOR UPDATE",
++                () -> new AppContext(db).getPurchaseService().initiatePurchase(1102L, 1L),
++                () -> new AppContext(db).getRentalService().bookRental(1101L, 1L, start, start));
++        assertNull(failures.get(0));
++        assertNull(failures.get(1));
++        ctx = new AppContext(db);
++        assertEquals(1, ctx.getOperationQueryService().getClientRequests(1L).size());
++        assertEquals(1, ctx.getOperationQueryService().getClientRents(1L).size());
++        assertEquals(new BigDecimal("25980.00"), ctx.getAuthService().getClientBankAccount(1L).getBalance());
++    }
++
++    @ParameterizedTest
++    @ValueSource(booleans = {false, true})
++    void databaseSerializesOverlapsEvenWhenWritersBypassServices(boolean commitFirst) throws Exception {
++        var error = behindGate("INSERT INTO rent (vehicle, client, amount, start, \"end\") "
++                        + "VALUES (1101, 1, 20, CURRENT_DATE + 2, CURRENT_DATE + 4)", commitFirst, () -> {
++                    try {
++                        sql("INSERT INTO rent (vehicle, client, amount, start, \"end\") "
++                                + "VALUES (1101, 2, 20, CURRENT_DATE + 4, CURRENT_DATE + 5)");
++                        return null;
++                    } catch (SQLException failure) {
++                        return failure;
++                    }
++                });
++        if (commitFirst) {
++            assertNotNull(error);
++            assertEquals("23P01", error.getSQLState());
++        } else assertNull(error);
++        ctx = new AppContext(db);
++        assertEquals(commitFirst ? 1 : 0, ctx.getOperationQueryService().getClientRents(1L).size());
++        assertEquals(commitFirst ? 0 : 1, ctx.getOperationQueryService().getClientRents(2L).size());
++    }
++
++    @ParameterizedTest
++    @CsvSource({"08:59,23514", "16:00:00.000001,23514", "10:00,23505"})
++    void databasePreservesTestDriveHoursAndVehicleTimestampUniqueness(String time, String state) throws Exception {
++        sql("INSERT INTO test_drive (vehicle, client, date) VALUES (1101, 1, CURRENT_DATE + 2 + TIME '10:00')");
++        var failure = assertThrows(SQLException.class, () -> sql(
++                "INSERT INTO test_drive (vehicle, client, date) VALUES (1101, 2, CURRENT_DATE + 2 + TIME '" + time + "')"));
++        assertEquals(state, failure.getSQLState());
++        assertTrue(ctx.getTestDriveService().getClientTestDrives(2L).isEmpty());
++    }
++
++    @Test
++    void insufficientBalanceDoesNotCreateRentalOrCancelTestDrives() throws Exception {
++        sql("UPDATE bank_account SET balance = 19.99 WHERE client = 1");
++        var td = ctx.getTestDriveService().bookTestDrive(1101L, 2L, start.atTime(10, 0));
++        var failure = assertThrows(IllegalStateException.class,
++                () -> ctx.getRentalService().bookRental(1101L, 1L, start, start));
++        assertTrue(failure.getMessage().contains("Saldo insufficiente"));
++        ctx = new AppContext(db);
++        assertTrue(ctx.getOperationQueryService().getClientRents(1L).isEmpty());
++        assertEquals(td.getId(), ctx.getTestDriveService().getClientTestDrives(2L).getFirst().getId());
++        assertEquals(new BigDecimal("19.99"), ctx.getAuthService().getClientBankAccount(1L).getBalance());
++    }
++
++    @ParameterizedTest
++    @ValueSource(booleans = {false, true})
++    void failureAfterBookingInsertRollsBackActualWrites(boolean rental) throws Exception {
++        String table = rental ? "rent" : "test_drive";
++        sql("CREATE FUNCTION fail_ticket11() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN "
++                + "IF NOT EXISTS (SELECT 1 FROM " + table + " WHERE id = NEW.id) "
++                + (rental ? "OR (SELECT balance FROM bank_account WHERE client = 1) <> 29980 " : "")
++                + "THEN RAISE EXCEPTION 'ticket11_writes_not_observed'; END IF; "
++                + "RAISE EXCEPTION 'ticket11_after_insert'; END $$; "
++                + "CREATE TRIGGER fail_ticket11 AFTER INSERT ON " + table
++                + " FOR EACH ROW EXECUTE FUNCTION fail_ticket11()");
++        var failure = assertThrows(RuntimeException.class, () -> {
++            if (rental) ctx.getRentalService().bookRental(1101L, 1L, start, start);
++            else ctx.getTestDriveService().bookTestDrive(1101L, 1L, start.atTime(10, 0));
++        });
++        assertTrue(rootMessage(failure).contains("ticket11_after_insert"), rootMessage(failure));
++        ctx = new AppContext(db);
++        assertTrue(ctx.getOperationQueryService().getClientRents(1L).isEmpty());
++        assertTrue(ctx.getTestDriveService().getClientTestDrives(1L).isEmpty());
++        assertEquals(new BigDecimal("30000.00"), ctx.getAuthService().getClientBankAccount(1L).getBalance());
++    }
++
++    @Test
++    void pastDatesAndReversedRentalPeriodAreRejectedWithoutWrites() {
++        assertThrows(IllegalArgumentException.class, () -> ctx.getRentalService()
++                .bookRental(1101L, 1L, LocalDate.now().minusDays(1), start));
++        assertThrows(IllegalArgumentException.class, () -> ctx.getRentalService()
++                .bookRental(1101L, 1L, start, start.minusDays(1)));
++        assertThrows(IllegalArgumentException.class, () -> ctx.getTestDriveService()
++                .bookTestDrive(1101L, 1L, LocalDate.now().minusDays(1).atTime(10, 0)));
++        assertTrue(ctx.getOperationQueryService().getClientRents(1L).isEmpty());
++        assertTrue(ctx.getTestDriveService().getClientTestDrives(1L).isEmpty());
++    }
++
++    @AfterEach
++    void removeFailureInjection() throws Exception {
++        if (db != null) sql("DROP FUNCTION IF EXISTS fail_ticket11() CASCADE");
++    }
++
++    @Test
++    void concurrentRentalsOnAdjacentDaysCanBothBeConfirmed() throws Exception {
++        var failures = race("SELECT id FROM vehicle WHERE id = 1101 FOR UPDATE",
++                () -> new AppContext(db).getRentalService().bookRental(1101L, 1L, start, start),
++                () -> new AppContext(db).getRentalService().bookRental(1101L, 2L, start.plusDays(1), start.plusDays(1)));
++        assertNull(failures.get(0));
++        assertNull(failures.get(1));
++        ctx = new AppContext(db);
++        assertEquals(1, ctx.getOperationQueryService().getClientRents(1L).size());
++        assertEquals(1, ctx.getOperationQueryService().getClientRents(2L).size());
++        assertEquals(new BigDecimal("29980.00"), ctx.getAuthService().getClientBankAccount(1L).getBalance());
++        assertEquals(new BigDecimal("29980.00"), ctx.getAuthService().getClientBankAccount(2L).getBalance());
++    }
++
++    @ParameterizedTest
++    @ValueSource(booleans = {false, true})
++    void bookingRereadsVehicleStateAfterWaitingForTheLock(boolean rental) throws Exception {
++        String state = rental ? "SALE" : "SOLD";
++        var failure = behindGate("UPDATE vehicle SET state = '" + state + "' WHERE id = 1101", true,
++                outcome(() -> {
++                    if (rental) new AppContext(db).getRentalService().bookRental(1101L, 1L, start, start);
++                    else new AppContext(db).getTestDriveService().bookTestDrive(1101L, 1L, start.atTime(10, 0));
++                }));
++        assertInstanceOf(IllegalStateException.class, failure);
++        ctx = new AppContext(db);
++        assertTrue(ctx.getOperationQueryService().getClientRents(1L).isEmpty());
++        assertTrue(ctx.getTestDriveService().getClientTestDrives(1L).isEmpty());
++        assertEquals(new BigDecimal("30000.00"), ctx.getAuthService().getClientBankAccount(1L).getBalance());
++    }
++
++    private <T> T behindGate(String gateQuery, boolean commitGate, Callable<T> operation) throws Exception {
++        var worker = Executors.newSingleThreadExecutor();
++        try (var gate = db.getConnection(); var observer = db.getConnection()) {
++            gate.setAutoCommit(false);
++            try (var statement = gate.createStatement()) {
++                statement.setQueryTimeout(10);
++                statement.execute(gateQuery);
++            }
++            var result = worker.submit(operation);
++            try {
++                awaitWaiters(observer, 1);
++                if (commitGate) gate.commit();
++                else gate.rollback();
++                return result.get(10, TimeUnit.SECONDS);
++            } finally {
++                gate.rollback();
++            }
++        } finally {
++            worker.shutdownNow();
++            assertTrue(worker.awaitTermination(10, TimeUnit.SECONDS), "Worker JDBC non terminato");
++        }
++    }
++
++    @Test
++    void purchaseCompletionAndRentalCannotDeadlockWithATestDriveOnTheBlockedVehicle() throws Exception {
++        sql("UPDATE vehicle SET state = 'SALE' WHERE id = 1101");
++        var request = ctx.getPurchaseService().initiatePurchase(1101L, 1L);
++        ctx.getPurchaseService().approvePurchase(request.getId(), 16L);
++        var failures = race("SELECT client FROM bank_account WHERE client = 1 FOR UPDATE", true,
++                () -> new AppContext(db).getPurchaseService().completePurchase(request.getId()),
++                () -> new AppContext(db).getRentalService().bookRental(1102L, 1L, start, start),
++                () -> new AppContext(db).getTestDriveService().bookTestDrive(1101L, 1L, start.atTime(10, 0)));
++        assertNull(failures.get(0), "L'acquisto deve completarsi senza deadlock");
++        assertNull(failures.get(1), "Il noleggio deve completarsi senza deadlock");
++        assertInstanceOf(IllegalStateException.class, failures.get(2), () -> rootMessage(failures.get(2)));
++        assertTrue(failures.get(2).getMessage().contains("solo su veicoli"));
++        ctx = new AppContext(db);
++        assertEquals(new BigDecimal("9980.00"), ctx.getAuthService().getClientBankAccount(1L).getBalance());
++        assertEquals(1, ctx.getOperationQueryService().getClientSales(1L).size());
++        assertEquals(1, ctx.getOperationQueryService().getClientRents(1L).size());
++        assertTrue(ctx.getTestDriveService().getClientTestDrives(1L).isEmpty());
++    }
++
++    private List<RuntimeException> race(String gateQuery, Runnable... operations) throws Exception {
++        return race(gateQuery, false, operations);
++    }
++
++    private List<RuntimeException> race(String gateQuery, boolean lastMayRejectImmediately, Runnable... operations) throws Exception {
++        var workers = Executors.newFixedThreadPool(operations.length);
++        try (Connection gate = db.getConnection(); Connection observer = db.getConnection()) {
++            gate.setAutoCommit(false);
++            try (var statement = gate.createStatement()) {
++                statement.setQueryTimeout(10);
++                statement.execute(gateQuery);
++            }
++            try {
++                var attempts = new ArrayList<Future<RuntimeException>>();
++                for (Runnable operation : operations) {
++                    attempts.add(workers.submit(outcome(operation)));
++                    awaitWaiters(observer, attempts.size(),
++                            lastMayRejectImmediately && attempts.size() == operations.length ? attempts.getLast() : null);
++                }
++                gate.rollback();
++                var failures = new ArrayList<RuntimeException>();
++                for (var attempt : attempts) failures.add(attempt.get(10, TimeUnit.SECONDS));
++                return failures;
++            } finally {
++                gate.rollback();
++                try (var statement = observer.createStatement()) {
++                    statement.setQueryTimeout(10);
++                    statement.executeQuery("""
++                            SELECT pg_cancel_backend(pid) FROM pg_stat_activity
++                            WHERE datname = current_database() AND usename = current_user
++                              AND pid <> pg_backend_pid() AND state = 'active' AND wait_event_type = 'Lock'
++                            """).close();
++                }
++            }
++        } finally {
++            workers.shutdownNow();
++            assertTrue(workers.awaitTermination(10, TimeUnit.SECONDS), "Worker JDBC non terminati");
++        }
++    }
++
++    private static Callable<RuntimeException> outcome(Runnable operation) {
++        return () -> {
++            try {
++                operation.run();
++                return null;
++            } catch (RuntimeException e) {
++                return e;
++            }
++        };
++    }
++
++    private static void awaitWaiters(Connection observer, int expected) throws Exception {
++        awaitWaiters(observer, expected, null);
++    }
++
++    private static void awaitWaiters(Connection observer, int expected, Future<?> immediateRejection) throws Exception {
++        long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(10);
++        try (var statement = observer.createStatement()) {
++            statement.setQueryTimeout(10);
++            do {
++                try (var result = statement.executeQuery("""
++                        SELECT count(DISTINCT pid), string_agg(pid || ':' || pg_blocking_pids(pid)::text, ', ')
++                        FROM pg_stat_activity
++                        WHERE datname = current_database() AND usename = current_user
++                          AND pid <> pg_backend_pid() AND state = 'active' AND wait_event_type = 'Lock'
++                          AND cardinality(pg_blocking_pids(pid)) > 0
++                        """)) {
++                    assertTrue(result.next());
++                    if (result.getInt(1) == expected) {
++                        System.out.println("Ticket11 waiters " + expected + " pid:blockers " + result.getString(2));
++                        return;
++                    }
++                }
++                if (immediateRejection != null && immediateRejection.isDone()) {
++                    System.out.println("Ticket11 operation " + expected + " completed before gate release");
++                    return;
++                }
++            } while (System.nanoTime() < deadline);
++        }
++        fail("Attese PostgreSQL distinte mancanti: " + expected);
++    }
++
++    private static String rootMessage(Throwable failure) {
++        while (failure.getCause() != null) failure = failure.getCause();
++        return failure.getMessage();
++    }
++
++    private void sql(String query) throws Exception {
++        try (var conn = db.getConnection(); var statement = conn.createStatement()) {
++            statement.setQueryTimeout(10);
++            statement.execute(query);
++        }
++    }
++}
+--- /dev/null
++++ b/DriveHub/src/test/java/it/unifi/drivehub/BookingRulesTest.java
+@@ -0,0 +1,30 @@
++package it.unifi.drivehub;
++
++import it.unifi.drivehub.domain.operation.Rent;
++import it.unifi.drivehub.domain.operation.TestDrive;
++import org.junit.jupiter.api.Test;
++
++import java.math.BigDecimal;
++import java.time.LocalDate;
++
++import static org.junit.jupiter.api.Assertions.*;
++
++class BookingRulesTest {
++    @Test
++    void testDriveCannotStartAfterSixteenEvenByOneMicrosecond() {
++        var day = LocalDate.of(2030, 1, 10);
++        assertThrows(IllegalArgumentException.class,
++                () -> TestDrive.create(null, 1L, 1L, day.atTime(16, 0).plusNanos(1000)));
++    }
++
++    @Test
++    void rentalOverlapIncludesBothEndpoints() {
++        var day = LocalDate.of(2030, 1, 10);
++        var rent = Rent.create(null, 1L, 1L, new BigDecimal("20.00"), day, day.plusDays(2));
++        assertTrue(rent.overlapsWith(day.minusDays(1), day));
++        assertTrue(rent.overlapsWith(day.plusDays(2), day.plusDays(3)));
++        assertTrue(rent.overlapsWith(day.plusDays(1), day.plusDays(1)));
++        assertFalse(rent.overlapsWith(day.minusDays(2), day.minusDays(1)));
++        assertFalse(rent.overlapsWith(day.plusDays(3), day.plusDays(3)));
++    }
++}
+--- a/PIANO_REVISIONI_DRIVEHUB.md
++++ b/PIANO_REVISIONI_DRIVEHUB.md
+@@ -2,7 +2,21 @@
+ 
+ Registro operativo avviato il 31 ottobre 2026. Punto di ingresso per riprendere il lavoro: avanzamento, decisioni, attività, verifiche e prossimo passo.
+ 
+-## Stato attuale
++## Stato attuale — ticket 11 completato
++
++- **Ticket 01–11 chiusi e verificati**. Implementato soltanto 11, dopo verifica 01–10 e baseline locale **259/259** prima degli interventi.
++- Prenotazioni: lock veicolo → cliente NO KEY UPDATE → conto, disponibilità/limite/prezzo e inserimenti sulla stessa connessione. EXCLUDE PostgreSQL protegge periodi inclusivi, unicità TD e orari conservati; massimo tre anche su veicoli diversi.
++- Gare noleggio/test drive nei due ordini, priorità commerciale e cancellazione atomica Observer 08; rollback dopo scritture effettive e saldo insufficiente. Risolto anche il deadlock a tre con saldo acquisto e test drive su veicolo BLOCKED, riprodotto in RED prima della correzione.
++- Mirati finali **245/245**, suite finale **297/297**, zero failure/errori/salti: **47 senza DB e 250 PostgreSQL**, inclusi fixture, isolamento/sentinella e regressioni 04–10. Nuovi 38 casi. Suite 296 intermedia; 259 del 10 storica.
++- Otto coppie RED/GREEN con sorgente identico. Review indipendenti Standards **0 violazioni/0 smell azionabili**, Spec **0**, sul solo diff di 14 file SHA256 `8344e02efb3cf795d9e287d049a886b51e15dad2e690233416e2587698d2c03e`. Nessun codice/test modificato dopo prove finali/review.
++- [Ticket 11](TRACKER_DRIVEHUB/revisioni/issues/11-prenotazioni-concorrenti.md), [versione, prove, comandi e limiti](DriveHub/docs/evidence/r06-bookings/verification.md).
++- **AC05/#5 chiuso:11/20** (#1,#2,#3,#4,#5,#6,#8,#10,#11,#17,#19). R06 parziale per 12; AC13 trasversale.
++- Ambiente Java 21/PG 16 temporaneo07 ricontrollato prima del riuso; solo 127.0.0.1:55432 e copia sentinella. Cluster arrestato; Xvfb non avviato. Nessun DB applicativo preesistente o installazione di sistema.
++- Baseline576file preservata:562 identici,14 modifiche intenzionali inclusi piano/ticket 11, zero eliminazioni; evidenze/ticket 01–10 intatti. Nessun commit/staging, HEAD/indice invariati; Relazione_SWE sempre esclusa.
++- Limiti: predisporre btree_gist e risolvere overlap prima di aggiungere il vincolo a installazioni esistenti; nessun reset applicativo. Nessuna vista modificata/nuova prova GUI. /tmp temporanea, warning JavaFX preesistente.
++- Nessun blocco residuo del11. Nessun ticket successivo avviato; proseguire solo su nuova richiesta.
++
++## Stato al termine del ticket 10 — storico
+ 
+ - **Ticket 01–10 chiusi e verificati**. In questa sessione lavorato soltanto il 10,
+   dopo controllo dei prerequisiti e baseline locale del lavoro 01–09.
+@@ -137,7 +151,7 @@
+ | R03 | Prezzo consigliato/manuale coerente lungo il flusso | #17 | R00, D04–D05 | Completata: ticket 05 verificato e chiuso |
+ | R04 | Acquisto: totale concordato e conclusione una sola volta | #6, #11, parte #12 | R02, R03, D06 | Completata: 06–08 chiusi e verificati |
+ | R05 | Cessione: titolarità, richiesta unica, pagamento e contabilità | #2, #3, #10 | R02, R03, D07 | Completata: 09–10 chiusi e verificati |
+-| R06 | Noleggi/test drive concorrenti e transizioni valide | #5, #7, restante #12 | R02, R03, D08–D10; coordinamento eventi con R04 | Parziale: 08 chiuso; 11/12 pianificati |
++| R06 | Noleggi/test drive concorrenti e transizioni valide | #5, #7, restante #12 | R02, R03, D08–D10; coordinamento eventi con R04 | Parziale: 08 e 11 chiusi; 12 pianificato |
+ | R07 | Cancellazione account rispettosa di storico e richieste | #9 | R00; fixture aggiornate dai flussi interessati | Pianificata |
+ | R08 | Tabelle JavaFX senza query nel rendering | #16 | R03; verificare aggiornamenti dei flussi corretti | Pianificata |
+ | R09 | README, diagrammi, teoria ed evidenze coerenti | #14, #15, #18; valutazione teorica | Incrementale; chiusura dopo R01–R08 e R10 | Pianificata |
+@@ -265,8 +279,8 @@
+ | Prezzi | Consigliato, base manuale, sconti, ritorno al consigliato | R03 | PriceCalculatorServiceTest 11/11; PriceSelectionIntegrationTest 10/10, PostgreSQL reale; UI Robot/tastiera superata. [Evidenze](DriveHub/docs/evidence/r03-prices/verification.md) |
+ | Acquisto | Acconto, approvazione, saldo; rifiuto/scadenza; fondi insufficienti | R02, R04 | Ticket 07: PurchaseConcurrencyIntegrationTest 60/60, lock/rilettura, gare e penale/rimborsi singoli, errori e scritture saltate con rollback; suite 163/163. Ticket 06 chiuso: RequestAgreementTest 7/7 e PurchaseAgreementIntegrationTest 12/12, accordo/centesimi/rollback e GUI/tastiera; cancellazioni atomiche al ticket 08 |
+ | Cessione | Nuovo VIN, titolarità VIN esistente, accettazione/rifiuto | R02, R05 | Ticket 09–10 chiusi; 60 casi esito PostgreSQL, gare/rollback e GUI/tastiera; suite finale 259/259. [Evidenze](DriveHub/docs/evidence/r05-sale-outcome/verification.md) |
+-| Noleggio | Disponibilità, priorità, cambio destinazione/rimborsi | R02, R06 | Concorrenza, date limite, in corso, rimborsi, rollback |
+-| Test drive | Limite tre, disponibilità, cancellazione/storico | R06 | Concorrenza, tutti i futuri cancellati dopo noleggio, passato conservato |
++| Noleggio | Disponibilità, priorità, cambio destinazione/rimborsi | R02, R06 | Ticket11: concorrenza, date inclusive, prezzo sotto lock, saldo insufficiente e rollback verificati su PostgreSQL reale. Cambio destinazione/in corso/rimborsi ulteriori al12 |
++| Test drive | Limite tre, disponibilità, cancellazione/storico | R06 | Ticket08 e11: limite cliente concorrente anche su veicoli diversi, gare miste nei due ordini, cancellazione atomica, storico e orari verificati. Suite297/297, review indipendenti senza rilievi |
+ | UI | Caricamento, prezzi, errori/riprova | R03, R08 | Rendering senza SQL, reattività, etichette, tastiera |
+ | Consegna | Installazione, UML, teoria, prove della versione | R09–R11 | Installazione pulita, diagrammi correnti, evidenze datate |
+ 
+@@ -675,3 +689,29 @@
+ uso applicativo; /tmp temporanea, screen reader non certificato. Prenotazioni11,
+ altre transizioni, account e prestazioni esclusi. Nessun blocco residuo del ticket10;
+ nessun successivo avviato, ticket11 soltanto su nuova richiesta.
++
++
++### 2 novembre 2026 — chiusura ticket 11
++
++Solo 11 implementato e verificato,01–10 preservati. Baseline locale259/259,
++otto regressioni RED/GREEN identiche e PostgreSQL reale dedicato con PID/gate
++osservati senza sleep. Lock veicolo/cliente/conti, periodi inclusivi nel DB,
++limite tre, orari e gara noleggio/TD nei due ordini verificati. La prova a tre
++con saldo acquisto ha riprodotto un deadlock; il rifiuto dello stato TD prima
++del lock cliente lo elimina senza cambiare protocollo economico04 o Observer 08.
++
++Launcher `/tmp/drivehub-ticket11/maven.py`: `final-targeted -Ppostgres-tests
++-Dtest=BookingRulesTest,BookingConcurrencyIntegrationTest,TestDriveCancellationIntegrationTest,BalanceConcurrencyIntegrationTest,PriceCalculatorServiceTest,PriceSelectionIntegrationTest,PurchaseAgreementIntegrationTest,PurchaseConcurrencyIntegrationTest,SaleProposalIntegrationTest,SaleOutcomeIntegrationTest,SaleTypeTest,DemoSqlValidationTest,DatabaseIsolationIntegrationTest test`
++→245/245; `final-full -Ppostgres-tests clean test` →297/297 (47 senza DB, 
++250 PostgreSQL), zero failure/errori/salti. Suite 296/296 intermedia, storici01–10 invariati.
++Review indipendenti Standards 0/Spec0 sul diff fissato14file; sorgenti e test
++immutati dopo suite/review. [Evidenze](DriveHub/docs/evidence/r06-bookings/verification.md).
++
++6/6 criteri, ticket 11 e AC05/#5 chiusi; totale 11/20. R06 resta parziale per 12,
++AC13 trasversale. Schema ricreabile D02: predisporre btree_gist e risolvere
++overlap preesistenti prima dell'uso; nessuna migrazione o reset applicativo.
++Solo cluster sacrificabile 127.0.0.1:55432 e copia sentinella, riletta dopo suite;
++cluster arrestato. Nessuna vista modificata/Xvfb avviato, nessuna nuova provaGUI.
++Baseline576file:562 intatti,14 aggiornamenti intenzionali, nessuna eliminazione;
++01–10 e prove storiche intatti, HEAD/indice invariati, nessun commit/staging.
++Relazione_SWE esclusa. Nessun blocco residuo e nessun successivo avviato.
+--- a/TRACKER_DRIVEHUB/revisioni/issues/11-prenotazioni-concorrenti.md
++++ b/TRACKER_DRIVEHUB/revisioni/issues/11-prenotazioni-concorrenti.md
+@@ -7,7 +7,7 @@
+ **Blocked by:** 08: Confermare vendita o noleggio insieme alla cancellazione dei test drive
+ 
+ Status: ready-for-agent
+-State: open
++State: closed
+ 
+ **Piano:** R06
+ **Specifica:** AC05, AC13
+@@ -15,12 +15,12 @@
+ 
+ ## Acceptance criteria
+ 
+-- [ ] Controlli e inserimenti coordinati con lock coerenti su veicolo e cliente, usando la stessa transazione e il protocollo dei conti già disponibile.
+-- [ ] DB protegge periodi di noleggio da sovrapposizioni; unicità test drive per veicolo/data esistente conservata.
+-- [ ] Due prenotazioni di noleggio sovrapposte su connessioni distinte non vengono entrambe confermate; periodi validi non sovrapposti restano prenotabili.
+-- [ ] Test drive concorrenti, anche su veicoli differenti dello stesso cliente, non superano il limite tre; orari e regole esistenti preservati.
+-- [ ] Competizione noleggio/test drive rispetta la priorità commerciale e la cancellazione atomica del ticket 08 senza lasciare prenotazioni incompatibili.
+-- [ ] Date inclusive, limiti temporali, saldo insufficiente e rollback verificati con sincronizzazione esplicita e fixture indipendenti.
++- [x] Controlli e inserimenti coordinati con lock coerenti su veicolo e cliente, usando la stessa transazione e il protocollo dei conti già disponibile.
++- [x] DB protegge periodi di noleggio da sovrapposizioni; unicità test drive per veicolo/data esistente conservata.
++- [x] Due prenotazioni di noleggio sovrapposte su connessioni distinte non vengono entrambe confermate; periodi validi non sovrapposti restano prenotabili.
++- [x] Test drive concorrenti, anche su veicoli differenti dello stesso cliente, non superano il limite tre; orari e regole esistenti preservati.
++- [x] Competizione noleggio/test drive rispetta la priorità commerciale e la cancellazione atomica del ticket 08 senza lasciare prenotazioni incompatibili.
++- [x] Date inclusive, limiti temporali, saldo insufficiente e rollback verificati con sincronizzazione esplicita e fixture indipendenti.
+ 
+ ## Note per l'implementazione
+ 
+@@ -33,3 +33,11 @@
+ ## Comments
+ 
+ - 31 ottobre 2026: ticket pubblicato da `to-tickets` dopo approvazione di granularità e dipendenze. Esecuzione non ancora avviata; verificare i blocchi prima di iniziare.
++
++- 2 novembre 2026: implementato solo 11, prerequisito08 e ticket 01–10 verificati chiusi. Baseline locale prima delle modifiche **259/259**, lavoro precedente preservato; nessun commit/staging e Relazione_SWE esclusa.
++- Lock condivisi veicolo → cliente NO KEY UPDATE → conto; controlli/prezzo/scritture sulla stessa transazione. EXCLUDE PostgreSQL dei periodi inclusivi, unicità e orari TD conservati, limite tre anche su veicoli diversi. Priorità commerciale e rollback Observer 08 preservati.
++- Otto regressioni RED/GREEN con sorgenti identici, incluse gara mista e gara a tre con saldo acquisto: riprodotto deadlock reale, poi corretto rifiutando stato non prenotabile prima del lock cliente. Connessioni/PID distinti, gate osservati, nessuno sleep. Rollback dopo INSERT/cancellazioni effettivi e fondi insufficienti verificati.
++- Mirati finali **245/245**; suite finale **297/297**, zero failure/errori/salti (**47 senza DB,  250 PostgreSQL**), isolamento/sentinella inclusi. La suite 296/296 è intermedia, precedente all'ultima correzione; 259/259 del 10 resta storica.
++- Review indipendenti Standards **0 violazioni/0 smell azionabili**, Spec **0 rilievi**, sul solo diff di 14 file dalla baseline locale. Nessun codice/test modificato dopo suite e review.
++- **6/6 criteri verificati, State: closed, AC05/#5 chiuso.** R06 resta parziale per 12, AC13 trasversale. [Versione, comandi, log/XML, review e limiti](../../../DriveHub/docs/evidence/r06-bookings/verification.md).
++- Nessuna vista modificata, quindi nessuna nuova prova GUI/tastiera. PG 16 temporaneo arrestato, Xvfb non avviato. Schema esistente da adeguare con btree_gist e risoluzione degli overlap prima dell'uso; nessun reset applicativo. Nessun ticket successivo avviato.

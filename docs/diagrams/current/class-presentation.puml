@@ -1,0 +1,58 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontSize 16
+skinparam classAttributeIconSize 0
+title Presentazione JavaFX — viste costruite in Java
+class App {
+  + start(primaryStage: Stage): void
+}
+class AppContext
+interface User
+interface UserDashboardNavigator
+class "navigator anonimo in App" as Navigator
+class LoginView
+class ClientDashboardView
+class SalesmanDashboardView
+class ManagerDashboardView
+class AccountManagementDialog
+class "AsyncLoad<T>" as AsyncLoad {
+  ~ load(): void
+  ~ load(source: Supplier<T>): void
+}
+class "javafx.concurrent.Task<T>" as Task
+class "CatalogService.VehicleRow" as VehicleRow <<record>>
+class "CatalogService.ModelDiscountRow" as ModelDiscountRow <<record>>
+App --> AppContext : getInstance()
+App ..> LoginView : AuthService + callback
+App ..> User : openDashboard(navigator)
+App ..> Navigator : costruisce
+Navigator ..|> UserDashboardNavigator
+Navigator ..> ClientDashboardView : Client + servizi + onLogout
+Navigator ..> SalesmanDashboardView : Salesman + servizi + onLogout
+Navigator ..> ManagerDashboardView : Manager + servizi + onLogout
+ClientDashboardView ..> AccountManagementDialog
+SalesmanDashboardView ..> AccountManagementDialog
+ManagerDashboardView ..> AccountManagementDialog
+ClientDashboardView --> AsyncLoad
+SalesmanDashboardView --> AsyncLoad
+ManagerDashboardView --> AsyncLoad
+AsyncLoad --> Task : uno corrente per controllo
+ClientDashboardView ..> VehicleRow
+SalesmanDashboardView ..> VehicleRow
+ManagerDashboardView ..> VehicleRow
+ManagerDashboardView ..> ModelDiscountRow
+note bottom of AppContext
+  Overload di comodo di LoginView, dashboard e dialogo
+  usano ancora getInstance(); nessun currentUser globale.
+end note
+note bottom of AsyncLoad
+  Worker virtuale Java21; applicazione risultato su thread FX.
+  Solo task corrente pubblica; celle su righe già preparate.
+  JDBC già avviato può terminare dopo la cancellazione.
+end note
+note bottom of AccountManagementDialog
+  AuthService + utente + callback; Dialog.showAndWait().
+  Non è un PaymentDialog; nessun FXML o controller FXML.
+end note
+@enduml

@@ -1,0 +1,68 @@
+package it.unifi.drivehub;
+
+import it.unifi.drivehub.dao.DatabaseManager;
+import it.unifi.drivehub.domain.operation.Request;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+
+import java.sql.Connection;
+import java.time.Year;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@Tag("postgres")
+class SaleProposalIntegrationTest {
+    private static final String VIN = "T0900000000000001";
+    private DatabaseManager db;
+    private AppContext ctx;
+    private final int year = Year.now().getValue();
+
+    @BeforeEach
+    void setUp() throws Exception {
+        db = TestDatabase.fromEnvironment().reset();
+        ctx = new AppContext(db);
+        sql("""
+                DELETE FROM sale; DELETE FROM rent; DELETE FROM test_drive; DELETE FROM request;
+                INSERT INTO model (id, brand, name, release_price, release_year)
+                VALUES (1001, 'Fiat', 'Ticket09', 20000, EXTRACT(YEAR FROM CURRENT_DATE));
+                INSERT INTO vehicle (id, model, vin, licence_plate, kilometers, price, price_mode, year, state)
+                VALUES (1001, 1001, 'T0900000000000001', 'AB123CD', 100, 10000, 'MANUAL',
+                        EXTRACT(YEAR FROM CURRENT_DATE), 'SALE');
+                """);
+    }
+
+    @Test
+    void dealershipVinIsRejectedWithoutAnyMutation() throws Exception {
+        String before = snapshot();
+        assertThrows(RuntimeException.class, () -> propose(1L, VIN, "ZZ123ZZ", 250));
+        assertEquals(before, snapshot());
+    }
+
+    private Request propose(Long client, String vin, String plate, int km) {
+        return new AppContext(db).getSaleToDealershipService()
+                .submitSaleProposal(client, 1001L, vin, plate, km, year);
+    }
+
+    private String snapshot() throws Exception {
+        try (Connection conn = db.getConnection(); var statement = conn.createStatement()) {
+            statement.setQueryTimeout(10);
+            try (var rows = statement.executeQuery("""
+                    SELECT (SELECT jsonb_agg(to_jsonb(v) ORDER BY id) FROM vehicle v)::text ||
+                           COALESCE((SELECT jsonb_agg(to_jsonb(r) ORDER BY id) FROM request r)::text, '[]') ||
+                           COALESCE((SELECT jsonb_agg(to_jsonb(s) ORDER BY id) FROM sale s)::text, '[]') ||
+                           (SELECT jsonb_agg(to_jsonb(b) ORDER BY client) FROM bank_account b)::text
+                    """)) {
+                assertTrue(rows.next());
+                return rows.getString(1);
+            }
+        }
+    }
+
+    private void sql(String query) throws Exception {
+        try (Connection conn = db.getConnection(); var statement = conn.createStatement()) {
+            statement.setQueryTimeout(10);
+            statement.execute(query);
+        }
+    }
+}

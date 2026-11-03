@@ -1,0 +1,26 @@
+SEED SUCCESS: tre cessioni 16000, storico effettivo, tipi espliciti anche a zero
+PASS JavaFX avviato nella seconda JVM
+PASS selezione righe con tastiera e focus visibile
+PASS tabella richieste raggiunta con focus tastiera
+PASS importi selezionati leggibili con testo scuro
+PASS cessione selezionata con frecce T1000000000000091
+PASS messaggio di accredito positivo
+PASS conto cliente +16000
+PASS selezione righe con tastiera e focus visibile
+PASS tabella richieste raggiunta con focus tastiera
+PASS importi selezionati leggibili con testo scuro
+PASS cessione selezionata con frecce T1000000000000091
+PASS sessione obsoleta segnala errore senza secondo pagamento
+PASS nessun doppio accredito UI
+PASS selezione righe con tastiera e focus visibile
+PASS tabella richieste raggiunta con focus tastiera
+PASS importi selezionati leggibili con testo scuro
+PASS cessione selezionata con frecce T1000000000000092
+PASS messaggio rifiuto senza accredito
+PASS VIN nuovo rimosso dal catalogo UI
+PASS selezione righe con tastiera e focus visibile
+java.lang.AssertionError: tabella richieste raggiunta con focus tastiera
+	at it.unifi.drivehub.PriceUiCheck.check(PriceUiCheck.java:33)
+	at it.unifi.drivehub.AgreementUiCheck.focusTable(AgreementUiCheck.java:88)
+	at it.unifi.drivehub.SaleOutcomeUiCheck.selectProposal(SaleOutcomeUiCheck.java:70)
+	at it.unifi.drivehub.SaleOutcomeUiCheck.main(SaleOutcomeUiCheck.java:119)

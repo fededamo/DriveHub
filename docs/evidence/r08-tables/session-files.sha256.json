@@ -1,0 +1,16 @@
+{
+  "DriveHub/docs/evidence/r08-tables/ReactiveTablesUiCheck.java": "0666aac9367ba717b1d2c5c207457575adfbb9b1f76905813aba86bb5c5f35c9",
+  "DriveHub/docs/evidence/r08-tables/SlowModelsUiCheck.java": "e48455cfed68106ae4d2b75c7c3a02a8cb3371cc04b3180f0f9bc9b6f76d2cfd",
+  "DriveHub/docs/evidence/r08-tables/TableLifecycleUiCheck.java": "afd4e8a51fa93d03cbd57a3ce063946b0722db14e916f62eadbb5d9ecb56a6e5",
+  "DriveHub/docs/evidence/r08-tables/run-ui.py": "079d2a6f8b37598bde5d6e9e6e9daf0b76f981ce72e7ec086442ed8303594b6d",
+  "DriveHub/docs/evidence/r08-tables/verification.md": "5d4a1d0b139c86e942bd39d12154248933e9e488b6423bdb500bc845b6862254",
+  "DriveHub/docs/testing.md": "00cf76cad0a33e06590a6fb5e0c9a48c2a8f6fcc9f8e071dd11d90752d34974e",
+  "DriveHub/src/main/java/it/unifi/drivehub/presentation/view/AsyncLoad.java": "4fd2af28fc7244174667fd282716f44737df94e9863ef413ed2f9ea0023d5a90",
+  "DriveHub/src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java": "1f5abadeab838af657f6cbc5bca746236cc1d390392f6aa4390c9257c059c154",
+  "DriveHub/src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java": "2836d046331b4483a2c1ef58069ba16972beb0d98643659b8715a366247b0d90",
+  "DriveHub/src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java": "b550225855f7ff80a7afc35ca39c4db56133c88b1527ec9aa6800aee2d256c4e",
+  "DriveHub/src/main/java/it/unifi/drivehub/service/CatalogService.java": "d43633c5d2d19852cc90354fe44bd60b837520ed0259796262c3936ba6d3ea8b",
+  "DriveHub/src/test/java/it/unifi/drivehub/CatalogListingIntegrationTest.java": "ce77d34b78cd8dbb1d54af8f5264a8c0c10a8252a8d7846cdaf33c4480950b56",
+  "PIANO_REVISIONI_DRIVEHUB.md": "43d53babe541bc0a51a3ed0c41c8878c887953a976138950816dd5b6183b62ca",
+  "TRACKER_DRIVEHUB/revisioni/issues/14-tabelle-javafx-reattive.md": "f69ba38b76e56ec2967b2129f2b2848b2581d39bf8674a76f3195babd6ef8674"
+}

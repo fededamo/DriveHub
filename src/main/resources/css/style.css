@@ -134,6 +134,10 @@
     -fx-text-fill: #1e1b4b;
 }
 
+.agreement-requests .table-row-cell:filled:selected .table-cell {
+    -fx-text-fill: #1e1b4b;
+}
+
 /* TabPane */
 .tab-pane .tab-header-area .tab-header-background {
     -fx-background-color: #f1f5f9;

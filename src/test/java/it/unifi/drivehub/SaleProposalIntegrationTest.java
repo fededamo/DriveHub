@@ -1,0 +1,370 @@
+package it.unifi.drivehub;
+
+import it.unifi.drivehub.dao.DatabaseManager;
+import it.unifi.drivehub.domain.operation.Request;
+import it.unifi.drivehub.domain.operation.SaleType;
+import it.unifi.drivehub.domain.vehicle.PriceMode;
+import it.unifi.drivehub.domain.vehicle.VehicleState;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.math.BigDecimal;
+import java.time.Year;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.CsvSource;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@Tag("postgres")
+class SaleProposalIntegrationTest {
+    private static final String VIN = "T0900000000000001";
+    private DatabaseManager db;
+    private AppContext ctx;
+    private final int year = Year.now().getValue();
+
+    @BeforeEach
+    void setUp() throws Exception {
+        db = TestDatabase.fromEnvironment().reset();
+        ctx = new AppContext(db);
+        sql("""
+                DELETE FROM sale; DELETE FROM rent; DELETE FROM test_drive; DELETE FROM request;
+                INSERT INTO model (id, brand, name, release_price, release_year)
+                VALUES (1001, 'Fiat', 'Ticket09', 20000, EXTRACT(YEAR FROM CURRENT_DATE));
+                INSERT INTO vehicle (id, model, vin, licence_plate, kilometers, price, price_mode, year, state)
+                VALUES (1001, 1001, 'T0900000000000001', 'AB123CD', 100, 10000, 'MANUAL',
+                        EXTRACT(YEAR FROM CURRENT_DATE), 'SALE');
+                """);
+    }
+
+    @Test
+    void dealershipVinIsRejectedWithoutAnyMutation() throws Exception {
+        String before = snapshot();
+        assertThrows(RuntimeException.class, () -> propose(1L, VIN, "ZZ123ZZ", 250));
+        assertEquals(before, snapshot());
+    }
+
+    @Test
+    void soldVinWithoutAnEffectiveSaleIsRejected() throws Exception {
+        sql("UPDATE vehicle SET state = 'SOLD' WHERE id = 1001");
+        String before = snapshot();
+        assertThrows(RuntimeException.class, () -> propose(1L, VIN, "ZZ123ZZ", 250));
+        assertEquals(before, snapshot());
+    }
+
+    @Test
+    void rejectionMessageIsAvailableToTheExistingView() {
+        RuntimeException failure = assertThrows(RuntimeException.class, () -> propose(1L, VIN, "ZZ123ZZ", 250));
+        assertTrue(failure.getMessage().contains("veicolo venduto a te"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"SALE", "RENT", "BLOCKED", "WAITING"})
+    void aPastSaleDoesNotAllowADealershipVehicle(String state) throws Exception {
+        soldToClientOne();
+        sql("UPDATE vehicle SET state = '" + state + "' WHERE id = 1001");
+        String before = snapshot();
+        assertThrows(RuntimeException.class, () -> propose(1L, VIN, "ZZ123ZZ", 250));
+        assertEquals(before, snapshot());
+    }
+
+    @Test
+    void onlyTheLatestEffectiveBuyerCanProposeAndHistoryIsPreserved() throws Exception {
+        sql("""
+                UPDATE vehicle SET state = 'SOLD' WHERE id = 1001;
+                INSERT INTO sale (id, vehicle, salesman, client, amount, date, type) VALUES
+                (1003, 1001, 16, 1, 20000, CURRENT_DATE - INTERVAL '2 days', 'PURCHASE'),
+                (1001, 1001, 16, 1, 21000, CURRENT_DATE - INTERVAL '1 day', 'PURCHASE'),
+                (1002, 1001, 16, 2, 22000, CURRENT_DATE - INTERVAL '1 day', 'PURCHASE'),
+                (1004, 1001, 16, 1, -15000, CURRENT_DATE, 'ACQUISITION'),
+                (1005, NULL, NULL, 1, 800, CURRENT_DATE, 'PENALTY');
+                """);
+        String before = snapshot();
+        assertThrows(RuntimeException.class, () -> propose(1L, VIN, "YY123YY", 999));
+        assertEquals(before, snapshot());
+        var history = ctx.getOperationQueryService().getAllSales();
+        assertEquals(SaleType.ACQUISITION, history.stream().filter(s -> s.getId() == 1004).findFirst().orElseThrow().getType());
+        assertEquals(SaleType.PENALTY, history.stream().filter(s -> s.getId() == 1005).findFirst().orElseThrow().getType());
+        var request = propose(2L, " " + VIN.toLowerCase() + " ", "ZZ123ZZ", 250);
+        assertEquals(1001L, request.getVehicleId());
+        var reloaded = new AppContext(db).getCatalogService().getVehicleById(1001L).orElseThrow();
+        assertEquals(PriceMode.MANUAL, reloaded.getPriceMode());
+        assertEquals(new BigDecimal("10000.00"), reloaded.getPrice());
+        assertEquals(VehicleState.WAITING, reloaded.getState());
+        assertEquals(history, ctx.getOperationQueryService().getAllSales());
+        assertEquals(1, ctx.getOperationQueryService().getClientRequests(2L).size());
+    }
+
+    @ParameterizedTest
+    @CsvSource({"SALE,false", "PURCHASE,false", "PURCHASE,true"})
+    void everyOpenRequestBlocksTheProposal(String type, boolean approved) throws Exception {
+        soldToClientOne();
+        sql("""
+                INSERT INTO request (vehicle, client, deposit, agreed_total, type, salesman, exp_date)
+                VALUES (1001, 2, %s, %s, '%s', %s, %s)
+                """.formatted(type.equals("SALE") ? "-16000" : "4000",
+                type.equals("SALE") ? "NULL" : "20000", type, approved ? "16" : "NULL",
+                approved ? "CURRENT_DATE + 7" : "NULL"));
+        String before = snapshot();
+        RuntimeException failure = assertThrows(RuntimeException.class, () -> propose(1L, VIN, "ZZ123ZZ", 250));
+        assertTrue(failure.getMessage().contains("richiesta aperta"));
+        assertEquals(before, snapshot());
+    }
+
+    @Test
+    void newVinKeepsTheExistingEstimateAndRejectsSequentialDuplicates() throws Exception {
+        var service = ctx.getSaleToDealershipService();
+        BigDecimal estimate = service.calculateEstimate(1001L, "ZZ123ZZ", 250, year);
+        var request = propose(1L, "T0900000000000002", "ZZ123ZZ", 250);
+        assertEquals(estimate.negate(), request.getDeposit());
+        assertNull(request.getAgreedTotal());
+        var vehicle = new AppContext(db).getCatalogService().getVehicleById(request.getVehicleId()).orElseThrow();
+        assertEquals(PriceMode.AUTOMATIC, vehicle.getPriceMode());
+        assertEquals(new BigDecimal("20000.00"), vehicle.getPrice());
+        assertEquals(VehicleState.WAITING, vehicle.getState());
+        String before = snapshot();
+        assertThrows(RuntimeException.class, () -> propose(1L, "T0900000000000002", "YY123YY", 999));
+        assertEquals(before, snapshot());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    void requestFailureRollsBackNewAndKnownVehicles(boolean known) throws Exception {
+        if (known) soldToClientOne();
+        String before = snapshot();
+        sql("""
+                CREATE FUNCTION ticket09_fail_request() RETURNS trigger LANGUAGE plpgsql AS $$
+                BEGIN
+                  IF NOT EXISTS (SELECT 1 FROM vehicle WHERE id = NEW.vehicle AND state = 'WAITING'
+                                 AND licence_plate = 'ZZ123ZZ' AND kilometers = 250) THEN
+                    RAISE EXCEPTION 'ticket09_not_written';
+                  END IF;
+                  RAISE EXCEPTION 'ticket09_request_failed_after_vehicle_write';
+                END $$;
+                CREATE TRIGGER ticket09_fail_request AFTER INSERT ON request
+                FOR EACH ROW EXECUTE FUNCTION ticket09_fail_request();
+                """);
+        try {
+            RuntimeException failure = assertThrows(RuntimeException.class,
+                    () -> propose(1L, known ? VIN : "T0900000000000002", "ZZ123ZZ", 250));
+            assertTrue(causes(failure).contains("ticket09_request_failed_after_vehicle_write"));
+            assertEquals(before, snapshot());
+        } finally {
+            sql("DROP TRIGGER ticket09_fail_request ON request; DROP FUNCTION ticket09_fail_request()");
+        }
+    }
+
+    @Test
+    void skippedVehicleUpdateCannotLeaveAnOpenRequest() throws Exception {
+        soldToClientOne();
+        String before = snapshot();
+        sql("""
+                CREATE FUNCTION ticket09_skip_update() RETURNS trigger LANGUAGE plpgsql AS $$
+                BEGIN RETURN NULL; END $$;
+                CREATE TRIGGER ticket09_skip_update BEFORE UPDATE ON vehicle
+                FOR EACH ROW EXECUTE FUNCTION ticket09_skip_update();
+                """);
+        try {
+            assertThrows(RuntimeException.class, () -> propose(1L, VIN, "ZZ123ZZ", 250));
+            assertEquals(before, snapshot());
+        } finally {
+            sql("DROP TRIGGER ticket09_skip_update ON vehicle; DROP FUNCTION ticket09_skip_update()");
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    void aKnownVinCannotUseAnotherModelOrYearForItsEstimate(boolean differentModel) throws Exception {
+        soldToClientOne();
+        String before = snapshot();
+        long anotherModel = ctx.getCatalogService().getAllModels().stream()
+                .filter(m -> m.getId() != 1001).findFirst().orElseThrow().getId();
+        assertThrows(RuntimeException.class, () -> ctx.getSaleToDealershipService().submitSaleProposal(
+                1L, differentModel ? anotherModel : 1001L, VIN, "ZZ123ZZ", 250, differentModel ? year : year - 1));
+        assertEquals(before, snapshot());
+    }
+
+    @Test
+    void invalidNewProposalLeavesNoVehicleOrRequest() throws Exception {
+        String before = snapshot();
+        assertThrows(RuntimeException.class, () -> propose(999999L, "T0900000000000002", "ZZ123ZZ", 250));
+        assertEquals(before, snapshot());
+        assertThrows(RuntimeException.class, () -> propose(1L, "T0900000000000002", null, 250));
+        assertEquals(before, snapshot());
+    }
+
+    @Test
+    void anAcquisitionAloneDoesNotEstablishOwnershipButAZeroPriceSaleDoes() throws Exception {
+        soldToClientOne();
+        sql("UPDATE sale SET type = 'ACQUISITION', amount = -20000");
+        String before = snapshot();
+        assertThrows(RuntimeException.class, () -> propose(1L, VIN, "ZZ123ZZ", 250));
+        assertEquals(before, snapshot());
+        sql("UPDATE sale SET type = 'PURCHASE', amount = 0");
+        assertNotNull(propose(1L, VIN, "ZZ123ZZ", 250).getId());
+    }
+
+    @Test
+    void ownershipQueriesAndVehicleLockRequireATransaction() throws Exception {
+        try (Connection conn = db.getConnection()) {
+            assertTrue(conn.getAutoCommit());
+            assertThrows(IllegalArgumentException.class, () ->
+                    new it.unifi.drivehub.dao.postgres.PostgresVehicleDao(db).findByVinForUpdate(VIN, conn));
+            assertThrows(IllegalArgumentException.class, () ->
+                    new it.unifi.drivehub.dao.postgres.PostgresSaleDao(db).findLatestPurchaseForVehicle(1001L, conn));
+            assertThrows(IllegalArgumentException.class, () ->
+                    new it.unifi.drivehub.dao.postgres.PostgresRequestDao(db).hasOpenRequestForVehicle(1001L, conn));
+        }
+    }
+
+    private static String causes(Throwable failure) {
+        StringBuilder messages = new StringBuilder();
+        for (Throwable cause = failure; cause != null; cause = cause.getCause()) messages.append(cause.getMessage());
+        return messages.toString();
+    }
+
+    @Test
+    void databaseRejectsAnotherOpenRequestOfAnyType() throws Exception {
+        Request request = propose(1L, "T0900000000000002", "ZZ123ZZ", 250);
+        String before = snapshot();
+        SQLException failure = assertThrows(SQLException.class, () -> sql("""
+                INSERT INTO request (vehicle, client, deposit, agreed_total, type, salesman, exp_date)
+                VALUES (%d, 2, 4000, 20000, 'PURCHASE', 16, CURRENT_DATE + 7)
+                """.formatted(request.getVehicleId())));
+        assertEquals("23505", failure.getSQLState());
+        assertEquals(before, snapshot());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    void competingProposalsKeepOnlyTheFirstCompleteVehicleAndRequest(boolean known) throws Exception {
+        if (known) soldToClientOne();
+        String vin = known ? VIN : "T0900000000000002";
+        var outcomes = race(() -> propose(1L, vin, "ZZ123ZZ", 250),
+                () -> propose(known ? 1L : 2L, " " + vin.toLowerCase() + " ", "YY123YY", 999));
+        assertNull(outcomes.get(0));
+        assertNotNull(outcomes.get(1));
+        var requests = new AppContext(db).getOperationQueryService().getClientRequests(1L);
+        assertEquals(1, requests.size());
+        assertTrue(ctx.getOperationQueryService().getClientRequests(2L).isEmpty());
+        var vehicles = ctx.getCatalogService().getAllVehicles().stream().filter(v -> v.getVin().equals(vin)).toList();
+        assertEquals(1, vehicles.size());
+        var vehicle = vehicles.getFirst();
+        assertEquals("ZZ123ZZ", vehicle.getLicencePlate());
+        assertEquals(250, vehicle.getKilometers());
+        assertEquals(requests.getFirst().getVehicleId(), vehicle.getId());
+        assertEquals(VehicleState.WAITING, vehicle.getState());
+        assertEquals(known ? 1 : 0, ctx.getOperationQueryService().getAllSales().size());
+        String before = snapshot();
+        assertThrows(RuntimeException.class, () -> propose(1L, vin, "XX123XX", 800));
+        assertEquals(before, snapshot());
+    }
+
+    private void soldToClientOne() throws Exception {
+        sql("""
+                UPDATE vehicle SET state = 'SOLD' WHERE id = 1001;
+                INSERT INTO sale (vehicle, salesman, client, amount, date, type)
+                VALUES (1001, 16, 1, 20000, CURRENT_TIMESTAMP - INTERVAL '1 day', 'PURCHASE');
+                """);
+    }
+
+    // Il gate ferma l'INSERT richiesta; il concorrente attende il veicolo o il VIN univoco.
+    private List<RuntimeException> race(Runnable first, Runnable second) throws Exception {
+        var workers = Executors.newFixedThreadPool(2);
+        try (Connection gate = db.getConnection(); Connection observer = db.getConnection()) {
+            gate.setAutoCommit(false);
+            try (var statement = gate.createStatement()) {
+                statement.setQueryTimeout(10);
+                statement.execute("LOCK TABLE request IN SHARE MODE");
+            }
+            try {
+                var a = workers.submit(outcome(first));
+                awaitWaiters(observer, 1);
+                var b = workers.submit(outcome(second));
+                awaitWaiters(observer, 2);
+                gate.rollback();
+                return Arrays.asList(a.get(10, TimeUnit.SECONDS), b.get(10, TimeUnit.SECONDS));
+            } finally {
+                gate.rollback();
+                try (var statement = observer.createStatement()) {
+                    statement.setQueryTimeout(10);
+                    statement.executeQuery("""
+                            SELECT pg_cancel_backend(pid) FROM pg_stat_activity
+                            WHERE datname = current_database() AND usename = current_user
+                              AND pid <> pg_backend_pid() AND state = 'active' AND wait_event_type = 'Lock'
+                            """).close();
+                }
+            }
+        } finally {
+            workers.shutdownNow();
+            assertTrue(workers.awaitTermination(10, TimeUnit.SECONDS), "Worker JDBC non terminati");
+        }
+    }
+
+    private static Callable<RuntimeException> outcome(Runnable action) {
+        return () -> {
+            try {
+                action.run();
+                return null;
+            } catch (RuntimeException failure) {
+                return failure;
+            }
+        };
+    }
+
+    private static void awaitWaiters(Connection observer, int expected) throws Exception {
+        long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(10);
+        do {
+            try (var statement = observer.createStatement()) {
+                statement.setQueryTimeout(10);
+                try (var rows = statement.executeQuery("""
+                        SELECT count(DISTINCT pid) FROM pg_stat_activity
+                        WHERE datname = current_database() AND usename = current_user
+                          AND pid <> pg_backend_pid() AND state = 'active' AND wait_event_type = 'Lock'
+                          AND cardinality(pg_blocking_pids(pid)) > 0
+                          AND (query ILIKE 'INSERT INTO request%' OR query ILIKE 'INSERT INTO vehicle%'
+                               OR query ILIKE 'UPDATE vehicle%' OR query ILIKE 'SELECT%FROM vehicle%')
+                        """)) {
+                    assertTrue(rows.next());
+                    if (rows.getInt(1) == expected) return;
+                }
+            }
+        } while (System.nanoTime() < deadline);
+        fail("Attesi " + expected + " backend PostgreSQL distinti bloccati");
+    }
+
+    private Request propose(Long client, String vin, String plate, int km) {
+        return new AppContext(db).getSaleToDealershipService()
+                .submitSaleProposal(client, 1001L, vin, plate, km, year);
+    }
+
+    private String snapshot() throws Exception {
+        try (Connection conn = db.getConnection(); var statement = conn.createStatement()) {
+            statement.setQueryTimeout(10);
+            try (var rows = statement.executeQuery("""
+                    SELECT (SELECT jsonb_agg(to_jsonb(v) ORDER BY id) FROM vehicle v)::text ||
+                           COALESCE((SELECT jsonb_agg(to_jsonb(r) ORDER BY id) FROM request r)::text, '[]') ||
+                           COALESCE((SELECT jsonb_agg(to_jsonb(s) ORDER BY id) FROM sale s)::text, '[]') ||
+                           (SELECT jsonb_agg(to_jsonb(b) ORDER BY client) FROM bank_account b)::text
+                    """)) {
+                assertTrue(rows.next());
+                return rows.getString(1);
+            }
+        }
+    }
+
+    private void sql(String query) throws Exception {
+        try (Connection conn = db.getConnection(); var statement = conn.createStatement()) {
+            statement.setQueryTimeout(10);
+            statement.execute(query);
+        }
+    }
+}

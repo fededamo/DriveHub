@@ -1,0 +1,15 @@
+{
+  "head_unchanged": true,
+  "index_unchanged": true,
+  "review_patch_sha256": "8da69d421468addde119df3ec2105e40c54c9ff892c49bdfb3b4fe6cacf39f53",
+  "session_patch_sha256": "b6ef21f2336943cbb354b477faa61965dc5912cfa812eeaf4d2ac9d5ee25a3d9",
+  "session_patch_reverse_check": true,
+  "added_whitespace_check": true,
+  "final_runtime_manifest_matches_current": true,
+  "final_gui_manifest_matches_current": true,
+  "postgres_stopped": true,
+  "dedicated_xvfb_stopped": true,
+  "ticket10_closed": true,
+  "relazione_swe_excluded": true,
+  "historical_evidence_unchanged": true
+}

@@ -1,0 +1,789 @@
+2026-11-02 22:17:21.263 CET [7] LOG:  starting PostgreSQL 16.15 (Ubuntu 16.15-0ubuntu0.24.04.1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit
+2026-11-02 22:17:21.263 CET [7] LOG:  listening on IPv4 address "127.0.0.1", port 55433
+2026-11-02 22:17:21.263 CET [7] LOG:  listening on Unix socket "/tmp/.s.PGSQL.55433"
+2026-11-02 22:17:21.270 CET [10] LOG:  database system was shut down at 2026-11-02 22:16:53 CET
+2026-11-02 22:17:21.285 CET [7] LOG:  database system is ready to accept connections
+2026-11-02 22:18:53.414 CET [3533] LOG:  starting PostgreSQL 16.15 (Ubuntu 16.15-0ubuntu0.24.04.1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit
+2026-11-02 22:18:53.414 CET [3533] LOG:  listening on IPv4 address "127.0.0.1", port 55433
+2026-11-02 22:18:53.414 CET [3533] LOG:  listening on Unix socket "/tmp/.s.PGSQL.55433"
+2026-11-02 22:18:53.417 CET [3536] LOG:  database system was interrupted; last known up at 2026-11-02 22:17:21 CET
+2026-11-02 22:18:53.424 CET [3536] LOG:  database system was not properly shut down; automatic recovery in progress
+2026-11-02 22:18:53.425 CET [3536] LOG:  redo starts at 0/14EF3D0
+2026-11-02 22:18:53.454 CET [3536] LOG:  invalid record length at 0/1E4DFB0: expected at least 24, got 0
+2026-11-02 22:18:53.454 CET [3536] LOG:  redo done at 0/1E4DF88 system usage: CPU: user: 0.01 s, system: 0.01 s, elapsed: 0.02 s
+2026-11-02 22:18:53.461 CET [3534] LOG:  checkpoint starting: end-of-recovery immediate wait
+2026-11-02 22:18:53.473 CET [3534] LOG:  checkpoint complete: wrote 1991 buffers (12.2%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.011 s, sync=0.001 s, total=0.013 s; sync files=649, longest=0.001 s, average=0.000 s; distance=9595 kB, estimate=9595 kB; lsn=0/1E4DFB0, redo lsn=0/1E4DFB0
+2026-11-02 22:18:53.477 CET [3533] LOG:  database system is ready to accept connections
+2026-11-02 22:19:36.940 CET [3829] ERROR:  ticket06_after_debit
+2026-11-02 22:19:36.940 CET [3829] CONTEXT:  PL/pgSQL function fail_ticket06() line 1 at RAISE
+2026-11-02 22:19:36.940 CET [3829] STATEMENT:  INSERT INTO request (vehicle, client, salesman, deposit, exp_date, type, agreed_total) VALUES ($1, $2, $3, $4, $5, $6::request_type, $7) RETURNING id
+2026-11-02 22:19:37.192 CET [3849] ERROR:  ticket06_after_debit
+2026-11-02 22:19:37.192 CET [3849] CONTEXT:  PL/pgSQL function fail_ticket06() line 1 at RAISE
+2026-11-02 22:19:37.192 CET [3849] STATEMENT:  INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+2026-11-02 22:19:37.412 CET [3869] ERROR:  ticket06_after_debit
+2026-11-02 22:19:37.412 CET [3869] CONTEXT:  PL/pgSQL function fail_ticket06() line 1 at RAISE
+2026-11-02 22:19:37.412 CET [3869] STATEMENT:  DELETE FROM request WHERE id = $1
+2026-11-02 22:19:37.659 CET [3889] ERROR:  ticket06_after_debit
+2026-11-02 22:19:37.659 CET [3889] CONTEXT:  PL/pgSQL function fail_ticket06() line 1 at RAISE
+2026-11-02 22:19:37.659 CET [3889] STATEMENT:  UPDATE vehicle SET state = $1::vehicle_state WHERE id = $2 AND state = $3::vehicle_state
+2026-11-02 22:19:39.339 CET [4033] ERROR:  ticket08_cancellation_failed
+2026-11-02 22:19:39.339 CET [4033] CONTEXT:  PL/pgSQL function fail_ticket08() line 1 at RAISE
+2026-11-02 22:19:39.339 CET [4033] STATEMENT:  DELETE FROM test_drive WHERE vehicle = $1 AND date > CURRENT_TIMESTAMP
+2026-11-02 22:19:39.539 CET [4049] ERROR:  ticket08_cancellation_failed
+2026-11-02 22:19:39.539 CET [4049] CONTEXT:  PL/pgSQL function fail_ticket08() line 1 at RAISE
+2026-11-02 22:19:39.539 CET [4049] STATEMENT:  DELETE FROM test_drive WHERE vehicle = $1 AND date > CURRENT_TIMESTAMP
+2026-11-02 22:19:44.622 CET [4530] ERROR:  insert or update on table "sale" violates foreign key constraint "fk_sale_salesman"
+2026-11-02 22:19:44.622 CET [4530] DETAIL:  Key (salesman)=(999999) is not present in table "salesman".
+2026-11-02 22:19:44.622 CET [4530] STATEMENT:  INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+2026-11-02 22:19:44.831 CET [4548] ERROR:  numeric field overflow
+2026-11-02 22:19:44.831 CET [4548] DETAIL:  A field with precision 10, scale 2 must round to an absolute value less than 10^8.
+2026-11-02 22:19:44.831 CET [4548] STATEMENT:  UPDATE bank_account SET balance = $1 WHERE iban = $2
+2026-11-02 22:19:46.471 CET [4712] ERROR:  new row for relation "sale" violates check constraint "ck_sale_amount_type"
+2026-11-02 22:19:46.471 CET [4712] DETAIL:  Failing row contains (41, 57, 16, 1, -0.01, 2026-11-02 00:00:00, PURCHASE).
+2026-11-02 22:19:46.471 CET [4712] STATEMENT:  INSERT INTO sale (vehicle,salesman,client,amount,date,type) VALUES (57,16,1,-0.01,CURRENT_DATE,'PURCHASE')
+2026-11-02 22:19:46.605 CET [4727] ERROR:  new row for relation "sale" violates check constraint "ck_sale_amount_type"
+2026-11-02 22:19:46.605 CET [4727] DETAIL:  Failing row contains (41, 57, 16, 1, 0.01, 2026-11-02 00:00:00, ACQUISITION).
+2026-11-02 22:19:46.605 CET [4727] STATEMENT:  INSERT INTO sale (vehicle,salesman,client,amount,date,type) VALUES (57,16,1,0.01,CURRENT_DATE,'ACQUISITION')
+2026-11-02 22:19:46.744 CET [4742] ERROR:  new row for relation "sale" violates check constraint "ck_sale_amount_type"
+2026-11-02 22:19:46.744 CET [4742] DETAIL:  Failing row contains (41, 57, 16, 1, -0.01, 2026-11-02 00:00:00, PENALTY).
+2026-11-02 22:19:46.744 CET [4742] STATEMENT:  INSERT INTO sale (vehicle,salesman,client,amount,date,type) VALUES (57,16,1,-0.01,CURRENT_DATE,'PENALTY')
+2026-11-02 22:19:49.651 CET [5101] ERROR:  ticket10_all_effects_observed_then_failed
+2026-11-02 22:19:49.651 CET [5101] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:19:49.651 CET [5101] STATEMENT:  DELETE FROM request WHERE id = $1
+2026-11-02 22:19:49.820 CET [5119] ERROR:  ticket10_all_effects_observed_then_failed
+2026-11-02 22:19:49.820 CET [5119] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:19:49.820 CET [5119] STATEMENT:  DELETE FROM vehicle WHERE id = $1
+2026-11-02 22:19:50.030 CET [5145] ERROR:  ticket10_all_effects_observed_then_failed
+2026-11-02 22:19:50.030 CET [5145] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:19:50.030 CET [5145] STATEMENT:  UPDATE vehicle SET state = $1::vehicle_state WHERE id = $2 AND state = $3::vehicle_state
+2026-11-02 22:19:50.355 CET [5178] ERROR:  ticket10_after_prior_writes
+2026-11-02 22:19:50.355 CET [5178] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:19:50.355 CET [5178] STATEMENT:  UPDATE bank_account SET balance = $1 WHERE iban = $2
+2026-11-02 22:19:50.701 CET [5214] ERROR:  ticket10_after_prior_writes
+2026-11-02 22:19:50.701 CET [5214] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:19:50.701 CET [5214] STATEMENT:  INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+2026-11-02 22:19:51.050 CET [5250] ERROR:  ticket10_after_prior_writes
+2026-11-02 22:19:51.050 CET [5250] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:19:51.050 CET [5250] STATEMENT:  UPDATE vehicle SET state = $1::vehicle_state WHERE id = $2 AND state = $3::vehicle_state
+2026-11-02 22:19:51.401 CET [5286] ERROR:  ticket10_after_prior_writes
+2026-11-02 22:19:51.401 CET [5286] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:19:51.401 CET [5286] STATEMENT:  DELETE FROM request WHERE id = $1
+2026-11-02 22:19:51.724 CET [5322] ERROR:  ticket10_after_prior_writes
+2026-11-02 22:19:51.724 CET [5322] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:19:51.724 CET [5322] STATEMENT:  DELETE FROM request WHERE id = $1
+2026-11-02 22:19:52.057 CET [5358] ERROR:  ticket10_after_prior_writes
+2026-11-02 22:19:52.057 CET [5358] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:19:52.057 CET [5358] STATEMENT:  DELETE FROM vehicle WHERE id = $1
+2026-11-02 22:19:52.411 CET [5402] ERROR:  ticket10_after_prior_writes
+2026-11-02 22:19:52.411 CET [5402] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:19:52.411 CET [5402] STATEMENT:  UPDATE vehicle SET state = $1::vehicle_state WHERE id = $2 AND state = $3::vehicle_state
+2026-11-02 22:19:54.521 CET [5603] ERROR:  new row for relation "test_drive" violates check constraint "chk_test_drive_time_slot"
+2026-11-02 22:19:54.521 CET [5603] DETAIL:  Failing row contains (12, 1101, 2, 2026-11-04 08:59:00).
+2026-11-02 22:19:54.521 CET [5603] STATEMENT:  INSERT INTO test_drive (vehicle, client, date) VALUES (1101, 2, CURRENT_DATE + 2 + TIME '08:59')
+2026-11-02 22:19:54.617 CET [5613] ERROR:  new row for relation "test_drive" violates check constraint "chk_test_drive_time_slot"
+2026-11-02 22:19:54.617 CET [5613] DETAIL:  Failing row contains (12, 1101, 2, 2026-11-04 16:00:00.000001).
+2026-11-02 22:19:54.617 CET [5613] STATEMENT:  INSERT INTO test_drive (vehicle, client, date) VALUES (1101, 2, CURRENT_DATE + 2 + TIME '16:00:00.000001')
+2026-11-02 22:19:54.720 CET [5623] ERROR:  duplicate key value violates unique constraint "uq_test_drive_vehicle_date"
+2026-11-02 22:19:54.720 CET [5623] DETAIL:  Key (vehicle, date)=(1101, 2026-11-04 10:00:00) already exists.
+2026-11-02 22:19:54.720 CET [5623] STATEMENT:  INSERT INTO test_drive (vehicle, client, date) VALUES (1101, 2, CURRENT_DATE + 2 + TIME '10:00')
+2026-11-02 22:19:55.103 CET [5673] ERROR:  ticket11_after_cancellation
+2026-11-02 22:19:55.103 CET [5673] CONTEXT:  PL/pgSQL function fail_ticket11() line 1 at RAISE
+2026-11-02 22:19:55.103 CET [5673] STATEMENT:  DELETE FROM test_drive WHERE vehicle = $1 AND date > CURRENT_TIMESTAMP
+2026-11-02 22:19:55.474 CET [5710] ERROR:  ticket11_after_insert
+2026-11-02 22:19:55.474 CET [5710] CONTEXT:  PL/pgSQL function fail_ticket11() line 1 at RAISE
+2026-11-02 22:19:55.474 CET [5710] STATEMENT:  INSERT INTO test_drive (vehicle, client, date) VALUES ($1, $2, $3) RETURNING id
+2026-11-02 22:19:55.587 CET [5721] ERROR:  ticket11_after_insert
+2026-11-02 22:19:55.587 CET [5721] CONTEXT:  PL/pgSQL function fail_ticket11() line 1 at RAISE
+2026-11-02 22:19:55.587 CET [5721] STATEMENT:  INSERT INTO rent (vehicle, client, amount, start, "end") VALUES ($1, $2, $3, $4, $5) RETURNING id
+2026-11-02 22:19:56.908 CET [5850] ERROR:  conflicting key value violates exclusion constraint "ex_rent_vehicle_period"
+2026-11-02 22:19:56.908 CET [5850] DETAIL:  Key (vehicle, daterange(start, "end", '[]'::text))=(1101, [2026-11-06,2026-11-08)) conflicts with existing key (vehicle, daterange(start, "end", '[]'::text))=(1101, [2026-11-04,2026-11-07)).
+2026-11-02 22:19:56.908 CET [5850] STATEMENT:  INSERT INTO rent (vehicle, client, amount, start, "end") VALUES (1101, 2, 20, CURRENT_DATE + 4, CURRENT_DATE + 5)
+2026-11-02 22:19:59.046 CET [6032] ERROR:  conflicting key value violates exclusion constraint "ex_rent_vehicle_period"
+2026-11-02 22:19:59.046 CET [6032] DETAIL:  Key (vehicle, daterange(start, "end", '[]'::text))=(1101, [2026-11-06,2026-11-08)) conflicts with existing key (vehicle, daterange(start, "end", '[]'::text))=(1101, [2026-11-04,2026-11-07)).
+2026-11-02 22:19:59.046 CET [6032] STATEMENT:  INSERT INTO rent (vehicle, client, amount, start, "end") VALUES (1101, 2, 20, CURRENT_DATE + 4, CURRENT_DATE + 5)
+2026-11-02 22:20:02.383 CET [6454] ERROR:  ticket07_after_movement
+2026-11-02 22:20:02.383 CET [6454] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:20:02.383 CET [6454] STATEMENT:  UPDATE bank_account SET balance = $1 WHERE iban = $2
+2026-11-02 22:20:02.757 CET [6494] ERROR:  ticket07_after_movement
+2026-11-02 22:20:02.757 CET [6494] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:20:02.757 CET [6494] STATEMENT:  INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+2026-11-02 22:20:03.125 CET [6534] ERROR:  ticket07_after_movement
+2026-11-02 22:20:03.125 CET [6534] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:20:03.125 CET [6534] STATEMENT:  DELETE FROM request WHERE id = $1
+2026-11-02 22:20:03.490 CET [6574] ERROR:  ticket07_after_movement
+2026-11-02 22:20:03.490 CET [6574] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:20:03.490 CET [6574] STATEMENT:  UPDATE vehicle SET state = $1::vehicle_state WHERE id = $2 AND state = $3::vehicle_state
+2026-11-02 22:20:03.840 CET [6614] ERROR:  ticket07_after_movement
+2026-11-02 22:20:03.840 CET [6614] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:20:03.840 CET [6614] STATEMENT:  UPDATE bank_account SET balance = $1 WHERE iban = $2
+2026-11-02 22:20:04.192 CET [6654] ERROR:  ticket07_after_movement
+2026-11-02 22:20:04.192 CET [6654] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:20:04.192 CET [6654] STATEMENT:  DELETE FROM request WHERE id = $1
+2026-11-02 22:20:04.556 CET [6694] ERROR:  ticket07_after_movement
+2026-11-02 22:20:04.556 CET [6694] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:20:04.556 CET [6694] STATEMENT:  UPDATE vehicle SET state = $1::vehicle_state WHERE id = $2 AND state = $3::vehicle_state
+2026-11-02 22:20:04.921 CET [6737] ERROR:  ticket07_after_movement
+2026-11-02 22:20:04.921 CET [6737] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:20:04.921 CET [6737] STATEMENT:  UPDATE bank_account SET balance = $1 WHERE iban = $2
+2026-11-02 22:20:05.296 CET [6783] ERROR:  ticket07_after_movement
+2026-11-02 22:20:05.296 CET [6783] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:20:05.296 CET [6783] STATEMENT:  INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+2026-11-02 22:20:05.672 CET [6829] ERROR:  ticket07_after_movement
+2026-11-02 22:20:05.672 CET [6829] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:20:05.672 CET [6829] STATEMENT:  DELETE FROM request WHERE id = $1
+2026-11-02 22:20:06.041 CET [6875] ERROR:  ticket07_after_movement
+2026-11-02 22:20:06.041 CET [6875] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:20:06.041 CET [6875] STATEMENT:  UPDATE vehicle SET state = $1::vehicle_state WHERE id = $2 AND state = $3::vehicle_state
+2026-11-02 22:20:06.415 CET [6920] ERROR:  ticket07_after_movement
+2026-11-02 22:20:06.415 CET [6920] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:20:06.415 CET [6920] STATEMENT:  UPDATE request SET salesman = $1, deposit = $2, exp_date = $3, type = $4::request_type WHERE id = $5
+2026-11-02 22:20:11.559 CET [7490] ERROR:  ticket04_after_debit
+2026-11-02 22:20:11.559 CET [7490] CONTEXT:  PL/pgSQL function fail_ticket04_request() line 6 at RAISE
+2026-11-02 22:20:11.559 CET [7490] STATEMENT:  INSERT INTO request (vehicle, client, salesman, deposit, exp_date, type, agreed_total) VALUES ($1, $2, $3, $4, $5, $6::request_type, $7) RETURNING id
+2026-11-02 22:20:11.877 CET [7529] ERROR:  ticket04_after_refunds
+2026-11-02 22:20:11.877 CET [7529] CONTEXT:  PL/pgSQL function fail_ticket04_vehicle() line 8 at RAISE
+2026-11-02 22:20:11.877 CET [7529] STATEMENT:  UPDATE vehicle SET model = $1, licence_plate = $2, kilometers = $3, price = $4, state = $5::vehicle_state, price_mode = $6 WHERE id = $7
+2026-11-02 22:20:15.883 CET [7934] ERROR:  ticket12_after_writes
+2026-11-02 22:20:15.883 CET [7934] CONTEXT:  PL/pgSQL function ticket12_failure() line 9 at RAISE
+2026-11-02 22:20:15.883 CET [7934] STATEMENT:  UPDATE vehicle SET model = $1, licence_plate = $2, kilometers = $3, price = $4, state = $5::vehicle_state, price_mode = $6 WHERE id = $7
+2026-11-02 22:20:17.858 CET [8125] ERROR:  ticket12_after_writes
+2026-11-02 22:20:17.858 CET [8125] CONTEXT:  PL/pgSQL function ticket12_failure() line 9 at RAISE
+2026-11-02 22:20:17.858 CET [8125] STATEMENT:  UPDATE bank_account SET balance = $1 WHERE iban = $2
+2026-11-02 22:20:18.185 CET [8161] ERROR:  ticket12_after_writes
+2026-11-02 22:20:18.185 CET [8161] CONTEXT:  PL/pgSQL function ticket12_failure() line 9 at RAISE
+2026-11-02 22:20:18.185 CET [8161] STATEMENT:  UPDATE vehicle SET model = $1, licence_plate = $2, kilometers = $3, price = $4, state = $5::vehicle_state, price_mode = $6 WHERE id = $7
+2026-11-02 22:20:20.028 CET [8327] ERROR:  duplicate key value violates unique constraint "uq_request_vehicle"
+2026-11-02 22:20:20.028 CET [8327] DETAIL:  Key (vehicle)=(57) already exists.
+2026-11-02 22:20:20.028 CET [8327] STATEMENT:  INSERT INTO request (vehicle, client, deposit, agreed_total, type, salesman, exp_date)
+	VALUES (57, 2, 4000, 20000, 'PURCHASE', 16, CURRENT_DATE + 7)
+	
+2026-11-02 22:20:20.722 CET [8391] ERROR:  insert or update on table "request" violates foreign key constraint "fk_request_client"
+2026-11-02 22:20:20.722 CET [8391] DETAIL:  Key (client)=(999999) is not present in table "client".
+2026-11-02 22:20:20.722 CET [8391] STATEMENT:  INSERT INTO request (vehicle, client, salesman, deposit, exp_date, type, agreed_total) VALUES ($1, $2, $3, $4, $5, $6::request_type, $7) RETURNING id
+2026-11-02 22:20:21.032 CET [8430] ERROR:  duplicate key value violates unique constraint "uq_vehicle_vin"
+2026-11-02 22:20:21.032 CET [8430] DETAIL:  Key (vin)=(T0900000000000002) already exists.
+2026-11-02 22:20:21.032 CET [8430] STATEMENT:  INSERT INTO vehicle (model, vin, licence_plate, kilometers, price, year, state, price_mode) VALUES ($1, $2, $3, $4, $5, $6, $7::vehicle_state, $8) RETURNING id
+2026-11-02 22:20:21.385 CET [8471] ERROR:  ticket09_request_failed_after_vehicle_write
+2026-11-02 22:20:21.385 CET [8471] CONTEXT:  PL/pgSQL function ticket09_fail_request() line 7 at RAISE
+2026-11-02 22:20:21.385 CET [8471] STATEMENT:  INSERT INTO request (vehicle, client, salesman, deposit, exp_date, type, agreed_total) VALUES ($1, $2, $3, $4, $5, $6::request_type, $7) RETURNING id
+2026-11-02 22:20:21.551 CET [8488] ERROR:  ticket09_request_failed_after_vehicle_write
+2026-11-02 22:20:21.551 CET [8488] CONTEXT:  PL/pgSQL function ticket09_fail_request() line 7 at RAISE
+2026-11-02 22:20:21.551 CET [8488] STATEMENT:  INSERT INTO request (vehicle, client, salesman, deposit, exp_date, type, agreed_total) VALUES ($1, $2, $3, $4, $5, $6::request_type, $7) RETURNING id
+2026-11-02 22:20:27.185 CET [8582] ERROR:  duplicate key value violates unique constraint "uq_client_email"
+2026-11-02 22:20:27.185 CET [8582] DETAIL:  Key (email)=(luigi.verdi@email.it) already exists.
+2026-11-02 22:20:27.185 CET [8582] STATEMENT:  UPDATE client SET email = $1 WHERE id = $2
+2026-11-02 22:20:27.694 CET [8591] ERROR:  duplicate key value violates unique constraint "uq_salesman_email"
+2026-11-02 22:20:27.694 CET [8591] DETAIL:  Key (email)=(laura.gatti@drivehub.it) already exists.
+2026-11-02 22:20:27.694 CET [8591] STATEMENT:  UPDATE salesman SET email = $1 WHERE id = $2
+2026-11-02 22:20:28.277 CET [8600] ERROR:  Violazione vincolo di disgiunzione: email paolo.costa@drivehub.it appartiene già a un venditore.
+2026-11-02 22:20:28.277 CET [8600] CONTEXT:  PL/pgSQL function check_user_email_disjoint() line 7 at RAISE
+2026-11-02 22:20:28.277 CET [8600] STATEMENT:  UPDATE client SET email = $1 WHERE id = $2
+2026-11-02 22:20:29.109 CET [8621] ERROR:  Violazione vincolo di disgiunzione: email vittorio.manager@drivehub.it appartiene già a un manager.
+2026-11-02 22:20:29.109 CET [8621] CONTEXT:  PL/pgSQL function check_user_email_disjoint() line 10 at RAISE
+2026-11-02 22:20:29.109 CET [8621] STATEMENT:  UPDATE salesman SET email = $1 WHERE id = $2
+2026-11-02 22:20:29.939 CET [8637] ERROR:  Violazione vincolo di disgiunzione: email mario.rossi@email.it appartiene già a un cliente.
+2026-11-02 22:20:29.939 CET [8637] CONTEXT:  PL/pgSQL function check_user_email_disjoint() line 4 at RAISE
+2026-11-02 22:20:29.939 CET [8637] STATEMENT:  UPDATE manager SET email = $1 WHERE id = $2
+2026-11-02 22:20:31.489 CET [8709] FATAL:  role "federico" does not exist
+2026-11-02 22:20:42.894 CET [8804] FATAL:  role "federico" does not exist
+2026-11-02 22:23:09.689 CET [9491] ERROR:  update or delete on table "client" violates foreign key constraint "fk_request_client" on table "request"
+2026-11-02 22:23:09.689 CET [9491] DETAIL:  Key (id)=(1) is still referenced from table "request".
+2026-11-02 22:23:09.689 CET [9491] STATEMENT:  DELETE FROM client WHERE id = $1
+2026-11-02 22:23:10.104 CET [9503] ERROR:  update or delete on table "client" violates foreign key constraint "fk_request_client" on table "request"
+2026-11-02 22:23:10.104 CET [9503] DETAIL:  Key (id)=(1) is still referenced from table "request".
+2026-11-02 22:23:10.104 CET [9503] STATEMENT:  DELETE FROM client WHERE id = $1
+2026-11-02 22:23:10.405 CET [9515] ERROR:  update or delete on table "client" violates foreign key constraint "fk_request_client" on table "request"
+2026-11-02 22:23:10.405 CET [9515] DETAIL:  Key (id)=(1) is still referenced from table "request".
+2026-11-02 22:23:10.405 CET [9515] STATEMENT:  DELETE FROM client WHERE id = $1
+2026-11-02 22:23:10.705 CET [9527] ERROR:  update or delete on table "client" violates foreign key constraint "fk_request_client" on table "request"
+2026-11-02 22:23:10.705 CET [9527] DETAIL:  Key (id)=(1) is still referenced from table "request".
+2026-11-02 22:23:10.705 CET [9527] STATEMENT:  DELETE FROM client WHERE id = $1
+2026-11-02 22:23:53.892 CET [3534] LOG:  checkpoint starting: time
+2026-11-02 22:25:56.206 CET [10273] ERROR:  deadlock detected
+2026-11-02 22:25:56.206 CET [10273] DETAIL:  Process 10273 waits for ShareLock on transaction 2622; blocked by process 10256.
+	Process 10256 waits for ShareLock on transaction 2623; blocked by process 10273.
+	Process 10273: DELETE FROM client WHERE id = $1
+	Process 10256: INSERT INTO request (vehicle, client, salesman, deposit, exp_date, type, agreed_total) VALUES ($1, $2, $3, $4, $5, $6::request_type, $7) RETURNING id
+2026-11-02 22:25:56.206 CET [10273] HINT:  See server log for query details.
+2026-11-02 22:25:56.206 CET [10273] CONTEXT:  while deleting tuple (0,16) in relation "bank_account"
+	SQL statement "DELETE FROM ONLY "public"."bank_account" WHERE $1 OPERATOR(pg_catalog.=) "client""
+2026-11-02 22:25:56.206 CET [10273] STATEMENT:  DELETE FROM client WHERE id = $1
+2026-11-02 22:26:57.260 CET [10805] ERROR:  update or delete on table "salesman" violates foreign key constraint "fk_sale_salesman" on table "sale"
+2026-11-02 22:26:57.260 CET [10805] DETAIL:  Key (id)=(16) is still referenced from table "sale".
+2026-11-02 22:26:57.260 CET [10805] STATEMENT:  DELETE FROM salesman WHERE id = 16
+2026-11-02 22:26:57.476 CET [10818] ERROR:  update or delete on table "salesman" violates foreign key constraint "fk_sale_salesman" on table "sale"
+2026-11-02 22:26:57.476 CET [10818] DETAIL:  Key (id)=(16) is still referenced from table "sale".
+2026-11-02 22:26:57.476 CET [10818] STATEMENT:  DELETE FROM salesman WHERE id = 16
+2026-11-02 22:26:57.672 CET [10831] ERROR:  update or delete on table "salesman" violates foreign key constraint "fk_sale_salesman" on table "sale"
+2026-11-02 22:26:57.672 CET [10831] DETAIL:  Key (id)=(16) is still referenced from table "sale".
+2026-11-02 22:26:57.672 CET [10831] STATEMENT:  DELETE FROM salesman WHERE id = 16
+2026-11-02 22:28:11.883 CET [11204] ERROR:  update or delete on table "salesman" violates foreign key constraint "fk_sale_salesman" on table "sale"
+2026-11-02 22:28:11.883 CET [11204] DETAIL:  Key (id)=(16) is still referenced from table "sale".
+2026-11-02 22:28:11.883 CET [11204] STATEMENT:  DELETE FROM salesman WHERE id = 16
+2026-11-02 22:28:12.034 CET [11217] ERROR:  update or delete on table "salesman" violates foreign key constraint "fk_sale_salesman" on table "sale"
+2026-11-02 22:28:12.034 CET [11217] DETAIL:  Key (id)=(16) is still referenced from table "sale".
+2026-11-02 22:28:12.034 CET [11217] STATEMENT:  DELETE FROM salesman WHERE id = 16
+2026-11-02 22:28:12.168 CET [11230] ERROR:  update or delete on table "salesman" violates foreign key constraint "fk_sale_salesman" on table "sale"
+2026-11-02 22:28:12.168 CET [11230] DETAIL:  Key (id)=(16) is still referenced from table "sale".
+2026-11-02 22:28:12.168 CET [11230] STATEMENT:  DELETE FROM salesman WHERE id = 16
+2026-11-02 22:28:23.210 CET [3534] LOG:  checkpoint complete: wrote 2642 buffers (16.1%); 0 WAL file(s) added, 0 removed, 9 recycled; write=269.163 s, sync=0.102 s, total=269.318 s; sync files=15775, longest=0.004 s, average=0.001 s; distance=145831 kB, estimate=145831 kB; lsn=0/C7A6A20, redo lsn=0/ACB7F18
+2026-11-02 22:28:53.247 CET [3534] LOG:  checkpoint starting: time
+2026-11-02 22:29:06.518 CET [11510] LOG:  skipping vacuum of "vehicle" --- lock not available
+2026-11-02 22:29:06.518 CET [11510] LOG:  skipping analyze of "sale" --- lock not available
+2026-11-02 22:29:08.969 CET [11608] ERROR:  update or delete on table "salesman" violates foreign key constraint "fk_sale_salesman" on table "sale"
+2026-11-02 22:29:08.969 CET [11608] DETAIL:  Key (id)=(16) is still referenced from table "sale".
+2026-11-02 22:29:08.969 CET [11608] STATEMENT:  DELETE FROM salesman WHERE id = 16
+2026-11-02 22:29:09.172 CET [11621] ERROR:  update or delete on table "salesman" violates foreign key constraint "fk_sale_salesman" on table "sale"
+2026-11-02 22:29:09.172 CET [11621] DETAIL:  Key (id)=(16) is still referenced from table "sale".
+2026-11-02 22:29:09.172 CET [11621] STATEMENT:  DELETE FROM salesman WHERE id = 16
+2026-11-02 22:29:09.333 CET [11634] ERROR:  update or delete on table "salesman" violates foreign key constraint "fk_sale_salesman" on table "sale"
+2026-11-02 22:29:09.333 CET [11634] DETAIL:  Key (id)=(16) is still referenced from table "sale".
+2026-11-02 22:29:09.333 CET [11634] STATEMENT:  DELETE FROM salesman WHERE id = 16
+2026-11-02 22:30:00.296 CET [3534] LOG:  checkpoint complete: wrote 594 buffers (3.6%); 0 WAL file(s) added, 0 removed, 2 recycled; write=67.039 s, sync=0.003 s, total=67.049 s; sync files=775, longest=0.001 s, average=0.001 s; distance=27584 kB, estimate=134007 kB; lsn=0/D0660B8, redo lsn=0/C7A7FE8
+2026-11-02 22:30:43.574 CET [12074] ERROR:  ticket13_writes_not_observed
+2026-11-02 22:30:43.574 CET [12074] CONTEXT:  PL/pgSQL function ticket13_gate() line 1 at RAISE
+2026-11-02 22:30:43.574 CET [12074] STATEMENT:  INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+2026-11-02 22:30:53.711 CET [12119] ERROR:  ticket13_writes_not_observed
+2026-11-02 22:30:53.711 CET [12119] CONTEXT:  PL/pgSQL function ticket13_gate() line 1 at RAISE
+2026-11-02 22:30:53.711 CET [12119] STATEMENT:  INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+2026-11-02 22:31:06.810 CET [12294] ERROR:  ticket13_credit_not_observed
+2026-11-02 22:31:06.810 CET [12294] CONTEXT:  PL/pgSQL function ticket13_fail() line 1 at RAISE
+2026-11-02 22:31:06.810 CET [12294] STATEMENT:  INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+2026-11-02 22:31:17.119 CET [12352] ERROR:  ticket13_credit_not_observed
+2026-11-02 22:31:17.119 CET [12352] CONTEXT:  PL/pgSQL function ticket13_fail() line 1 at RAISE
+2026-11-02 22:31:17.119 CET [12352] STATEMENT:  INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+2026-11-02 22:31:27.107 CET [12350] ERROR:  ticket13_after_deletion
+2026-11-02 22:31:27.107 CET [12350] CONTEXT:  PL/pgSQL function ticket13_gate() line 1 at RAISE
+2026-11-02 22:31:27.107 CET [12350] STATEMENT:  DELETE FROM salesman WHERE id = $1
+2026-11-02 22:31:27.227 CET [12364] ERROR:  update or delete on table "salesman" violates foreign key constraint "fk_sale_salesman" on table "sale"
+2026-11-02 22:31:27.227 CET [12364] DETAIL:  Key (id)=(16) is still referenced from table "sale".
+2026-11-02 22:31:27.227 CET [12364] STATEMENT:  DELETE FROM salesman WHERE id = 16
+2026-11-02 22:31:27.349 CET [12377] ERROR:  update or delete on table "salesman" violates foreign key constraint "fk_sale_salesman" on table "sale"
+2026-11-02 22:31:27.349 CET [12377] DETAIL:  Key (id)=(16) is still referenced from table "sale".
+2026-11-02 22:31:27.349 CET [12377] STATEMENT:  DELETE FROM salesman WHERE id = 16
+2026-11-02 22:31:27.464 CET [12390] ERROR:  update or delete on table "salesman" violates foreign key constraint "fk_sale_salesman" on table "sale"
+2026-11-02 22:31:27.464 CET [12390] DETAIL:  Key (id)=(16) is still referenced from table "sale".
+2026-11-02 22:31:27.464 CET [12390] STATEMENT:  DELETE FROM salesman WHERE id = 16
+2026-11-02 22:31:27.694 CET [12404] ERROR:  ticket13_after_deletions
+2026-11-02 22:31:27.694 CET [12404] CONTEXT:  PL/pgSQL function ticket13_fail() line 4 at RAISE
+2026-11-02 22:31:27.694 CET [12404] STATEMENT:  DELETE FROM client WHERE id = $1
+2026-11-02 22:31:28.027 CET [12423] ERROR:  ticket13_after_deletions
+2026-11-02 22:31:28.027 CET [12423] CONTEXT:  PL/pgSQL function ticket13_gate() line 5 at RAISE
+2026-11-02 22:31:28.027 CET [12423] STATEMENT:  DELETE FROM client WHERE id = $1
+2026-11-02 22:31:28.304 CET [12446] ERROR:  ticket13_after_deletions
+2026-11-02 22:31:28.304 CET [12446] CONTEXT:  PL/pgSQL function ticket13_gate() line 5 at RAISE
+2026-11-02 22:31:28.304 CET [12446] STATEMENT:  DELETE FROM client WHERE id = $1
+2026-11-02 22:32:34.920 CET [13234] ERROR:  update or delete on table "salesman" violates foreign key constraint "fk_sale_salesman" on table "sale"
+2026-11-02 22:32:34.920 CET [13234] DETAIL:  Key (id)=(16) is still referenced from table "sale".
+2026-11-02 22:32:34.920 CET [13234] STATEMENT:  DELETE FROM salesman WHERE id = $1
+2026-11-02 22:32:35.319 CET [13262] ERROR:  ticket13_after_acquisition
+2026-11-02 22:32:35.319 CET [13262] CONTEXT:  PL/pgSQL function ticket13_gate() line 1 at RAISE
+2026-11-02 22:32:35.319 CET [13262] STATEMENT:  INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+2026-11-02 22:32:38.188 CET [13415] ERROR:  insert or update on table "sale" violates foreign key constraint "fk_sale_salesman"
+2026-11-02 22:32:38.188 CET [13415] DETAIL:  Key (salesman)=(16) is not present in table "salesman".
+2026-11-02 22:32:38.188 CET [13415] STATEMENT:  INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+2026-11-02 22:32:38.514 CET [13444] ERROR:  ticket13_after_deletion
+2026-11-02 22:32:38.514 CET [13444] CONTEXT:  PL/pgSQL function ticket13_gate() line 1 at RAISE
+2026-11-02 22:32:38.514 CET [13444] STATEMENT:  DELETE FROM salesman WHERE id = $1
+2026-11-02 22:32:38.699 CET [13468] ERROR:  update or delete on table "salesman" violates foreign key constraint "fk_sale_salesman" on table "sale"
+2026-11-02 22:32:38.699 CET [13468] DETAIL:  Key (id)=(16) is still referenced from table "sale".
+2026-11-02 22:32:38.699 CET [13468] STATEMENT:  DELETE FROM salesman WHERE id = 16
+2026-11-02 22:32:38.874 CET [13481] ERROR:  update or delete on table "salesman" violates foreign key constraint "fk_sale_salesman" on table "sale"
+2026-11-02 22:32:38.874 CET [13481] DETAIL:  Key (id)=(16) is still referenced from table "sale".
+2026-11-02 22:32:38.874 CET [13481] STATEMENT:  DELETE FROM salesman WHERE id = 16
+2026-11-02 22:32:39.037 CET [13494] ERROR:  update or delete on table "salesman" violates foreign key constraint "fk_sale_salesman" on table "sale"
+2026-11-02 22:32:39.037 CET [13494] DETAIL:  Key (id)=(16) is still referenced from table "sale".
+2026-11-02 22:32:39.037 CET [13494] STATEMENT:  DELETE FROM salesman WHERE id = 16
+2026-11-02 22:32:39.280 CET [13508] ERROR:  ticket13_after_deletions
+2026-11-02 22:32:39.280 CET [13508] CONTEXT:  PL/pgSQL function ticket13_fail() line 4 at RAISE
+2026-11-02 22:32:39.280 CET [13508] STATEMENT:  DELETE FROM client WHERE id = $1
+2026-11-02 22:32:39.635 CET [13527] ERROR:  ticket13_after_deletions
+2026-11-02 22:32:39.635 CET [13527] CONTEXT:  PL/pgSQL function ticket13_gate() line 5 at RAISE
+2026-11-02 22:32:39.635 CET [13527] STATEMENT:  DELETE FROM client WHERE id = $1
+2026-11-02 22:32:39.918 CET [13550] ERROR:  ticket13_after_deletions
+2026-11-02 22:32:39.918 CET [13550] CONTEXT:  PL/pgSQL function ticket13_gate() line 5 at RAISE
+2026-11-02 22:32:39.918 CET [13550] STATEMENT:  DELETE FROM client WHERE id = $1
+2026-11-02 22:33:53.732 CET [3534] LOG:  checkpoint starting: time
+2026-11-02 22:36:02.358 CET [14960] ERROR:  insert or update on table "request" violates foreign key constraint "fk_request_salesman"
+2026-11-02 22:36:02.358 CET [14960] DETAIL:  Key (salesman)=(16) is not present in table "salesman".
+2026-11-02 22:36:02.358 CET [14960] STATEMENT:  UPDATE request SET salesman = $1, deposit = $2, exp_date = $3, type = $4::request_type WHERE id = $5
+2026-11-02 22:36:02.867 CET [14987] ERROR:  ticket13_after_deletion
+2026-11-02 22:36:02.867 CET [14987] CONTEXT:  PL/pgSQL function ticket13_gate() line 1 at RAISE
+2026-11-02 22:36:02.867 CET [14987] STATEMENT:  DELETE FROM salesman WHERE id = $1
+2026-11-02 22:36:05.637 CET [15142] ERROR:  update or delete on table "salesman" violates foreign key constraint "fk_sale_salesman" on table "sale"
+2026-11-02 22:36:05.637 CET [15142] DETAIL:  Key (id)=(16) is still referenced from table "sale".
+2026-11-02 22:36:05.637 CET [15142] STATEMENT:  DELETE FROM salesman WHERE id = $1
+2026-11-02 22:36:05.970 CET [15170] ERROR:  ticket13_after_acquisition
+2026-11-02 22:36:05.970 CET [15170] CONTEXT:  PL/pgSQL function ticket13_gate() line 1 at RAISE
+2026-11-02 22:36:05.970 CET [15170] STATEMENT:  INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+2026-11-02 22:36:06.736 CET [15204] LOG:  skipping analyze of "vehicle" --- lock not available
+2026-11-02 22:36:06.736 CET [15204] LOG:  skipping analyze of "sale" --- lock not available
+2026-11-02 22:36:09.075 CET [15323] ERROR:  insert or update on table "sale" violates foreign key constraint "fk_sale_salesman"
+2026-11-02 22:36:09.075 CET [15323] DETAIL:  Key (salesman)=(16) is not present in table "salesman".
+2026-11-02 22:36:09.075 CET [15323] STATEMENT:  INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+2026-11-02 22:36:09.392 CET [15352] ERROR:  ticket13_after_deletion
+2026-11-02 22:36:09.392 CET [15352] CONTEXT:  PL/pgSQL function ticket13_gate() line 1 at RAISE
+2026-11-02 22:36:09.392 CET [15352] STATEMENT:  DELETE FROM salesman WHERE id = $1
+2026-11-02 22:36:09.573 CET [15376] ERROR:  update or delete on table "salesman" violates foreign key constraint "fk_sale_salesman" on table "sale"
+2026-11-02 22:36:09.573 CET [15376] DETAIL:  Key (id)=(16) is still referenced from table "sale".
+2026-11-02 22:36:09.573 CET [15376] STATEMENT:  DELETE FROM salesman WHERE id = 16
+2026-11-02 22:36:09.703 CET [15389] ERROR:  update or delete on table "salesman" violates foreign key constraint "fk_sale_salesman" on table "sale"
+2026-11-02 22:36:09.703 CET [15389] DETAIL:  Key (id)=(16) is still referenced from table "sale".
+2026-11-02 22:36:09.703 CET [15389] STATEMENT:  DELETE FROM salesman WHERE id = 16
+2026-11-02 22:36:09.838 CET [15402] ERROR:  update or delete on table "salesman" violates foreign key constraint "fk_sale_salesman" on table "sale"
+2026-11-02 22:36:09.838 CET [15402] DETAIL:  Key (id)=(16) is still referenced from table "sale".
+2026-11-02 22:36:09.838 CET [15402] STATEMENT:  DELETE FROM salesman WHERE id = 16
+2026-11-02 22:36:10.064 CET [15416] ERROR:  ticket13_after_deletions
+2026-11-02 22:36:10.064 CET [15416] CONTEXT:  PL/pgSQL function ticket13_fail() line 4 at RAISE
+2026-11-02 22:36:10.064 CET [15416] STATEMENT:  DELETE FROM client WHERE id = $1
+2026-11-02 22:36:10.408 CET [15435] ERROR:  ticket13_after_deletions
+2026-11-02 22:36:10.408 CET [15435] CONTEXT:  PL/pgSQL function ticket13_gate() line 5 at RAISE
+2026-11-02 22:36:10.408 CET [15435] STATEMENT:  DELETE FROM client WHERE id = $1
+2026-11-02 22:36:10.672 CET [15458] ERROR:  ticket13_after_deletions
+2026-11-02 22:36:10.672 CET [15458] CONTEXT:  PL/pgSQL function ticket13_gate() line 5 at RAISE
+2026-11-02 22:36:10.672 CET [15458] STATEMENT:  DELETE FROM client WHERE id = $1
+2026-11-02 22:36:13.262 CET [15621] ERROR:  insert or update on table "request" violates foreign key constraint "fk_request_client"
+2026-11-02 22:36:13.262 CET [15621] DETAIL:  Key (client)=(1) is not present in table "client".
+2026-11-02 22:36:13.262 CET [15621] STATEMENT:  INSERT INTO request (vehicle, client, salesman, deposit, exp_date, type, agreed_total) VALUES ($1, $2, $3, $4, $5, $6::request_type, $7) RETURNING id
+2026-11-02 22:36:13.583 CET [15645] ERROR:  ticket13_after_deletion
+2026-11-02 22:36:13.583 CET [15645] CONTEXT:  PL/pgSQL function ticket13_gate() line 1 at RAISE
+2026-11-02 22:36:13.583 CET [15645] STATEMENT:  DELETE FROM client WHERE id = $1
+2026-11-02 22:36:25.723 CET [3534] LOG:  checkpoint complete: wrote 1396 buffers (8.5%); 0 WAL file(s) added, 0 removed, 4 recycled; write=151.949 s, sync=0.026 s, total=151.992 s; sync files=7651, longest=0.002 s, average=0.001 s; distance=62262 kB, estimate=126832 kB; lsn=0/1215F8F0, redo lsn=0/10475BA8
+2026-11-02 22:37:59.901 CET [16463] ERROR:  ticket06_after_debit
+2026-11-02 22:37:59.901 CET [16463] CONTEXT:  PL/pgSQL function fail_ticket06() line 1 at RAISE
+2026-11-02 22:37:59.901 CET [16463] STATEMENT:  INSERT INTO request (vehicle, client, salesman, deposit, exp_date, type, agreed_total) VALUES ($1, $2, $3, $4, $5, $6::request_type, $7) RETURNING id
+2026-11-02 22:38:00.177 CET [16483] ERROR:  ticket06_after_debit
+2026-11-02 22:38:00.177 CET [16483] CONTEXT:  PL/pgSQL function fail_ticket06() line 1 at RAISE
+2026-11-02 22:38:00.177 CET [16483] STATEMENT:  INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+2026-11-02 22:38:00.436 CET [16503] ERROR:  ticket06_after_debit
+2026-11-02 22:38:00.436 CET [16503] CONTEXT:  PL/pgSQL function fail_ticket06() line 1 at RAISE
+2026-11-02 22:38:00.436 CET [16503] STATEMENT:  DELETE FROM request WHERE id = $1
+2026-11-02 22:38:00.720 CET [16523] ERROR:  ticket06_after_debit
+2026-11-02 22:38:00.720 CET [16523] CONTEXT:  PL/pgSQL function fail_ticket06() line 1 at RAISE
+2026-11-02 22:38:00.720 CET [16523] STATEMENT:  UPDATE vehicle SET state = $1::vehicle_state WHERE id = $2 AND state = $3::vehicle_state
+2026-11-02 22:38:02.567 CET [16667] ERROR:  ticket08_cancellation_failed
+2026-11-02 22:38:02.567 CET [16667] CONTEXT:  PL/pgSQL function fail_ticket08() line 1 at RAISE
+2026-11-02 22:38:02.567 CET [16667] STATEMENT:  DELETE FROM test_drive WHERE vehicle = $1 AND date > CURRENT_TIMESTAMP
+2026-11-02 22:38:02.807 CET [16683] ERROR:  ticket08_cancellation_failed
+2026-11-02 22:38:02.807 CET [16683] CONTEXT:  PL/pgSQL function fail_ticket08() line 1 at RAISE
+2026-11-02 22:38:02.807 CET [16683] STATEMENT:  DELETE FROM test_drive WHERE vehicle = $1 AND date > CURRENT_TIMESTAMP
+2026-11-02 22:38:07.098 CET [17127] ERROR:  insert or update on table "sale" violates foreign key constraint "fk_sale_salesman"
+2026-11-02 22:38:07.098 CET [17127] DETAIL:  Key (salesman)=(999999) is not present in table "salesman".
+2026-11-02 22:38:07.098 CET [17127] STATEMENT:  INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+2026-11-02 22:38:07.254 CET [17143] ERROR:  numeric field overflow
+2026-11-02 22:38:07.254 CET [17143] DETAIL:  A field with precision 10, scale 2 must round to an absolute value less than 10^8.
+2026-11-02 22:38:07.254 CET [17143] STATEMENT:  UPDATE bank_account SET balance = $1 WHERE iban = $2
+2026-11-02 22:38:08.838 CET [17307] ERROR:  new row for relation "sale" violates check constraint "ck_sale_amount_type"
+2026-11-02 22:38:08.838 CET [17307] DETAIL:  Failing row contains (41, 57, 16, 1, -0.01, 2026-11-02 00:00:00, PURCHASE).
+2026-11-02 22:38:08.838 CET [17307] STATEMENT:  INSERT INTO sale (vehicle,salesman,client,amount,date,type) VALUES (57,16,1,-0.01,CURRENT_DATE,'PURCHASE')
+2026-11-02 22:38:08.965 CET [17322] ERROR:  new row for relation "sale" violates check constraint "ck_sale_amount_type"
+2026-11-02 22:38:08.965 CET [17322] DETAIL:  Failing row contains (41, 57, 16, 1, 0.01, 2026-11-02 00:00:00, ACQUISITION).
+2026-11-02 22:38:08.965 CET [17322] STATEMENT:  INSERT INTO sale (vehicle,salesman,client,amount,date,type) VALUES (57,16,1,0.01,CURRENT_DATE,'ACQUISITION')
+2026-11-02 22:38:09.098 CET [17337] ERROR:  new row for relation "sale" violates check constraint "ck_sale_amount_type"
+2026-11-02 22:38:09.098 CET [17337] DETAIL:  Failing row contains (41, 57, 16, 1, -0.01, 2026-11-02 00:00:00, PENALTY).
+2026-11-02 22:38:09.098 CET [17337] STATEMENT:  INSERT INTO sale (vehicle,salesman,client,amount,date,type) VALUES (57,16,1,-0.01,CURRENT_DATE,'PENALTY')
+2026-11-02 22:38:11.980 CET [17704] ERROR:  ticket10_all_effects_observed_then_failed
+2026-11-02 22:38:11.980 CET [17704] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:38:11.980 CET [17704] STATEMENT:  DELETE FROM request WHERE id = $1
+2026-11-02 22:38:12.141 CET [17722] ERROR:  ticket10_all_effects_observed_then_failed
+2026-11-02 22:38:12.141 CET [17722] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:38:12.141 CET [17722] STATEMENT:  DELETE FROM vehicle WHERE id = $1
+2026-11-02 22:38:12.355 CET [17748] ERROR:  ticket10_all_effects_observed_then_failed
+2026-11-02 22:38:12.355 CET [17748] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:38:12.355 CET [17748] STATEMENT:  UPDATE vehicle SET state = $1::vehicle_state WHERE id = $2 AND state = $3::vehicle_state
+2026-11-02 22:38:12.701 CET [17781] ERROR:  ticket10_after_prior_writes
+2026-11-02 22:38:12.701 CET [17781] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:38:12.701 CET [17781] STATEMENT:  UPDATE bank_account SET balance = $1 WHERE iban = $2
+2026-11-02 22:38:13.022 CET [17817] ERROR:  ticket10_after_prior_writes
+2026-11-02 22:38:13.022 CET [17817] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:38:13.022 CET [17817] STATEMENT:  INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+2026-11-02 22:38:13.320 CET [17853] ERROR:  ticket10_after_prior_writes
+2026-11-02 22:38:13.320 CET [17853] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:38:13.320 CET [17853] STATEMENT:  UPDATE vehicle SET state = $1::vehicle_state WHERE id = $2 AND state = $3::vehicle_state
+2026-11-02 22:38:13.631 CET [17889] ERROR:  ticket10_after_prior_writes
+2026-11-02 22:38:13.631 CET [17889] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:38:13.631 CET [17889] STATEMENT:  DELETE FROM request WHERE id = $1
+2026-11-02 22:38:13.970 CET [17926] ERROR:  ticket10_after_prior_writes
+2026-11-02 22:38:13.970 CET [17926] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:38:13.970 CET [17926] STATEMENT:  DELETE FROM request WHERE id = $1
+2026-11-02 22:38:14.364 CET [17962] ERROR:  ticket10_after_prior_writes
+2026-11-02 22:38:14.364 CET [17962] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:38:14.364 CET [17962] STATEMENT:  DELETE FROM vehicle WHERE id = $1
+2026-11-02 22:38:14.865 CET [18015] ERROR:  ticket10_after_prior_writes
+2026-11-02 22:38:14.865 CET [18015] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:38:14.865 CET [18015] STATEMENT:  UPDATE vehicle SET state = $1::vehicle_state WHERE id = $2 AND state = $3::vehicle_state
+2026-11-02 22:38:17.658 CET [18243] ERROR:  new row for relation "test_drive" violates check constraint "chk_test_drive_time_slot"
+2026-11-02 22:38:17.658 CET [18243] DETAIL:  Failing row contains (12, 1101, 2, 2026-11-04 08:59:00).
+2026-11-02 22:38:17.658 CET [18243] STATEMENT:  INSERT INTO test_drive (vehicle, client, date) VALUES (1101, 2, CURRENT_DATE + 2 + TIME '08:59')
+2026-11-02 22:38:17.770 CET [18253] ERROR:  new row for relation "test_drive" violates check constraint "chk_test_drive_time_slot"
+2026-11-02 22:38:17.770 CET [18253] DETAIL:  Failing row contains (12, 1101, 2, 2026-11-04 16:00:00.000001).
+2026-11-02 22:38:17.770 CET [18253] STATEMENT:  INSERT INTO test_drive (vehicle, client, date) VALUES (1101, 2, CURRENT_DATE + 2 + TIME '16:00:00.000001')
+2026-11-02 22:38:17.868 CET [18263] ERROR:  duplicate key value violates unique constraint "uq_test_drive_vehicle_date"
+2026-11-02 22:38:17.868 CET [18263] DETAIL:  Key (vehicle, date)=(1101, 2026-11-04 10:00:00) already exists.
+2026-11-02 22:38:17.868 CET [18263] STATEMENT:  INSERT INTO test_drive (vehicle, client, date) VALUES (1101, 2, CURRENT_DATE + 2 + TIME '10:00')
+2026-11-02 22:38:18.221 CET [18301] ERROR:  ticket11_after_cancellation
+2026-11-02 22:38:18.221 CET [18301] CONTEXT:  PL/pgSQL function fail_ticket11() line 1 at RAISE
+2026-11-02 22:38:18.221 CET [18301] STATEMENT:  DELETE FROM test_drive WHERE vehicle = $1 AND date > CURRENT_TIMESTAMP
+2026-11-02 22:38:18.584 CET [18338] ERROR:  ticket11_after_insert
+2026-11-02 22:38:18.584 CET [18338] CONTEXT:  PL/pgSQL function fail_ticket11() line 1 at RAISE
+2026-11-02 22:38:18.584 CET [18338] STATEMENT:  INSERT INTO test_drive (vehicle, client, date) VALUES ($1, $2, $3) RETURNING id
+2026-11-02 22:38:18.700 CET [18349] ERROR:  ticket11_after_insert
+2026-11-02 22:38:18.700 CET [18349] CONTEXT:  PL/pgSQL function fail_ticket11() line 1 at RAISE
+2026-11-02 22:38:18.700 CET [18349] STATEMENT:  INSERT INTO rent (vehicle, client, amount, start, "end") VALUES ($1, $2, $3, $4, $5) RETURNING id
+2026-11-02 22:38:19.915 CET [18478] ERROR:  conflicting key value violates exclusion constraint "ex_rent_vehicle_period"
+2026-11-02 22:38:19.915 CET [18478] DETAIL:  Key (vehicle, daterange(start, "end", '[]'::text))=(1101, [2026-11-06,2026-11-08)) conflicts with existing key (vehicle, daterange(start, "end", '[]'::text))=(1101, [2026-11-04,2026-11-07)).
+2026-11-02 22:38:19.915 CET [18478] STATEMENT:  INSERT INTO rent (vehicle, client, amount, start, "end") VALUES (1101, 2, 20, CURRENT_DATE + 4, CURRENT_DATE + 5)
+2026-11-02 22:38:21.934 CET [18661] ERROR:  conflicting key value violates exclusion constraint "ex_rent_vehicle_period"
+2026-11-02 22:38:21.934 CET [18661] DETAIL:  Key (vehicle, daterange(start, "end", '[]'::text))=(1101, [2026-11-06,2026-11-08)) conflicts with existing key (vehicle, daterange(start, "end", '[]'::text))=(1101, [2026-11-04,2026-11-07)).
+2026-11-02 22:38:21.934 CET [18661] STATEMENT:  INSERT INTO rent (vehicle, client, amount, start, "end") VALUES (1101, 2, 20, CURRENT_DATE + 4, CURRENT_DATE + 5)
+2026-11-02 22:38:24.987 CET [19083] ERROR:  ticket07_after_movement
+2026-11-02 22:38:24.987 CET [19083] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:38:24.987 CET [19083] STATEMENT:  UPDATE bank_account SET balance = $1 WHERE iban = $2
+2026-11-02 22:38:25.307 CET [19123] ERROR:  ticket07_after_movement
+2026-11-02 22:38:25.307 CET [19123] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:38:25.307 CET [19123] STATEMENT:  INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+2026-11-02 22:38:25.650 CET [19163] ERROR:  ticket07_after_movement
+2026-11-02 22:38:25.650 CET [19163] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:38:25.650 CET [19163] STATEMENT:  DELETE FROM request WHERE id = $1
+2026-11-02 22:38:25.964 CET [19203] ERROR:  ticket07_after_movement
+2026-11-02 22:38:25.964 CET [19203] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:38:25.964 CET [19203] STATEMENT:  UPDATE vehicle SET state = $1::vehicle_state WHERE id = $2 AND state = $3::vehicle_state
+2026-11-02 22:38:26.288 CET [19243] ERROR:  ticket07_after_movement
+2026-11-02 22:38:26.288 CET [19243] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:38:26.288 CET [19243] STATEMENT:  UPDATE bank_account SET balance = $1 WHERE iban = $2
+2026-11-02 22:38:26.603 CET [19283] ERROR:  ticket07_after_movement
+2026-11-02 22:38:26.603 CET [19283] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:38:26.603 CET [19283] STATEMENT:  DELETE FROM request WHERE id = $1
+2026-11-02 22:38:26.914 CET [19323] ERROR:  ticket07_after_movement
+2026-11-02 22:38:26.914 CET [19323] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:38:26.914 CET [19323] STATEMENT:  UPDATE vehicle SET state = $1::vehicle_state WHERE id = $2 AND state = $3::vehicle_state
+2026-11-02 22:38:27.233 CET [19366] ERROR:  ticket07_after_movement
+2026-11-02 22:38:27.233 CET [19366] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:38:27.233 CET [19366] STATEMENT:  UPDATE bank_account SET balance = $1 WHERE iban = $2
+2026-11-02 22:38:27.565 CET [19412] ERROR:  ticket07_after_movement
+2026-11-02 22:38:27.565 CET [19412] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:38:27.565 CET [19412] STATEMENT:  INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+2026-11-02 22:38:27.899 CET [19458] ERROR:  ticket07_after_movement
+2026-11-02 22:38:27.899 CET [19458] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:38:27.899 CET [19458] STATEMENT:  DELETE FROM request WHERE id = $1
+2026-11-02 22:38:28.265 CET [19504] ERROR:  ticket07_after_movement
+2026-11-02 22:38:28.265 CET [19504] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:38:28.265 CET [19504] STATEMENT:  UPDATE vehicle SET state = $1::vehicle_state WHERE id = $2 AND state = $3::vehicle_state
+2026-11-02 22:38:28.607 CET [19549] ERROR:  ticket07_after_movement
+2026-11-02 22:38:28.607 CET [19549] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:38:28.607 CET [19549] STATEMENT:  UPDATE request SET salesman = $1, deposit = $2, exp_date = $3, type = $4::request_type WHERE id = $5
+2026-11-02 22:38:33.348 CET [20056] ERROR:  insert or update on table "request" violates foreign key constraint "fk_request_salesman"
+2026-11-02 22:38:33.348 CET [20056] DETAIL:  Key (salesman)=(16) is not present in table "salesman".
+2026-11-02 22:38:33.348 CET [20056] STATEMENT:  UPDATE request SET salesman = $1, deposit = $2, exp_date = $3, type = $4::request_type WHERE id = $5
+2026-11-02 22:38:33.794 CET [20084] ERROR:  ticket13_after_deletion
+2026-11-02 22:38:33.794 CET [20084] CONTEXT:  PL/pgSQL function ticket13_gate() line 1 at RAISE
+2026-11-02 22:38:33.794 CET [20084] STATEMENT:  DELETE FROM salesman WHERE id = $1
+2026-11-02 22:38:35.729 CET [20237] ERROR:  update or delete on table "salesman" violates foreign key constraint "fk_sale_salesman" on table "sale"
+2026-11-02 22:38:35.729 CET [20237] DETAIL:  Key (id)=(16) is still referenced from table "sale".
+2026-11-02 22:38:35.729 CET [20237] STATEMENT:  DELETE FROM salesman WHERE id = $1
+2026-11-02 22:38:36.022 CET [20265] ERROR:  ticket13_after_acquisition
+2026-11-02 22:38:36.022 CET [20265] CONTEXT:  PL/pgSQL function ticket13_gate() line 1 at RAISE
+2026-11-02 22:38:36.022 CET [20265] STATEMENT:  INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+2026-11-02 22:38:38.359 CET [20419] ERROR:  insert or update on table "sale" violates foreign key constraint "fk_sale_salesman"
+2026-11-02 22:38:38.359 CET [20419] DETAIL:  Key (salesman)=(16) is not present in table "salesman".
+2026-11-02 22:38:38.359 CET [20419] STATEMENT:  INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+2026-11-02 22:38:38.695 CET [20448] ERROR:  ticket13_after_deletion
+2026-11-02 22:38:38.695 CET [20448] CONTEXT:  PL/pgSQL function ticket13_gate() line 1 at RAISE
+2026-11-02 22:38:38.695 CET [20448] STATEMENT:  DELETE FROM salesman WHERE id = $1
+2026-11-02 22:38:38.904 CET [20472] ERROR:  update or delete on table "salesman" violates foreign key constraint "fk_sale_salesman" on table "sale"
+2026-11-02 22:38:38.904 CET [20472] DETAIL:  Key (id)=(16) is still referenced from table "sale".
+2026-11-02 22:38:38.904 CET [20472] STATEMENT:  DELETE FROM salesman WHERE id = 16
+2026-11-02 22:38:39.127 CET [20492] ERROR:  update or delete on table "salesman" violates foreign key constraint "fk_sale_salesman" on table "sale"
+2026-11-02 22:38:39.127 CET [20492] DETAIL:  Key (id)=(16) is still referenced from table "sale".
+2026-11-02 22:38:39.127 CET [20492] STATEMENT:  DELETE FROM salesman WHERE id = 16
+2026-11-02 22:38:39.312 CET [20505] ERROR:  update or delete on table "salesman" violates foreign key constraint "fk_sale_salesman" on table "sale"
+2026-11-02 22:38:39.312 CET [20505] DETAIL:  Key (id)=(16) is still referenced from table "sale".
+2026-11-02 22:38:39.312 CET [20505] STATEMENT:  DELETE FROM salesman WHERE id = 16
+2026-11-02 22:38:39.553 CET [20519] ERROR:  ticket13_after_deletions
+2026-11-02 22:38:39.553 CET [20519] CONTEXT:  PL/pgSQL function ticket13_fail() line 4 at RAISE
+2026-11-02 22:38:39.553 CET [20519] STATEMENT:  DELETE FROM client WHERE id = $1
+2026-11-02 22:38:39.866 CET [20538] ERROR:  ticket13_after_deletions
+2026-11-02 22:38:39.866 CET [20538] CONTEXT:  PL/pgSQL function ticket13_gate() line 5 at RAISE
+2026-11-02 22:38:39.866 CET [20538] STATEMENT:  DELETE FROM client WHERE id = $1
+2026-11-02 22:38:40.103 CET [20561] ERROR:  ticket13_after_deletions
+2026-11-02 22:38:40.103 CET [20561] CONTEXT:  PL/pgSQL function ticket13_gate() line 5 at RAISE
+2026-11-02 22:38:40.103 CET [20561] STATEMENT:  DELETE FROM client WHERE id = $1
+2026-11-02 22:38:42.845 CET [20735] ERROR:  insert or update on table "request" violates foreign key constraint "fk_request_client"
+2026-11-02 22:38:42.845 CET [20735] DETAIL:  Key (client)=(1) is not present in table "client".
+2026-11-02 22:38:42.845 CET [20735] STATEMENT:  INSERT INTO request (vehicle, client, salesman, deposit, exp_date, type, agreed_total) VALUES ($1, $2, $3, $4, $5, $6::request_type, $7) RETURNING id
+2026-11-02 22:38:43.254 CET [20769] ERROR:  ticket13_after_deletion
+2026-11-02 22:38:43.254 CET [20769] CONTEXT:  PL/pgSQL function ticket13_gate() line 1 at RAISE
+2026-11-02 22:38:43.254 CET [20769] STATEMENT:  DELETE FROM client WHERE id = $1
+2026-11-02 22:38:49.139 CET [21142] ERROR:  ticket04_after_debit
+2026-11-02 22:38:49.139 CET [21142] CONTEXT:  PL/pgSQL function fail_ticket04_request() line 6 at RAISE
+2026-11-02 22:38:49.139 CET [21142] STATEMENT:  INSERT INTO request (vehicle, client, salesman, deposit, exp_date, type, agreed_total) VALUES ($1, $2, $3, $4, $5, $6::request_type, $7) RETURNING id
+2026-11-02 22:38:49.445 CET [21181] ERROR:  ticket04_after_refunds
+2026-11-02 22:38:49.445 CET [21181] CONTEXT:  PL/pgSQL function fail_ticket04_vehicle() line 8 at RAISE
+2026-11-02 22:38:49.445 CET [21181] STATEMENT:  UPDATE vehicle SET model = $1, licence_plate = $2, kilometers = $3, price = $4, state = $5::vehicle_state, price_mode = $6 WHERE id = $7
+2026-11-02 22:38:53.199 CET [21586] ERROR:  ticket12_after_writes
+2026-11-02 22:38:53.199 CET [21586] CONTEXT:  PL/pgSQL function ticket12_failure() line 9 at RAISE
+2026-11-02 22:38:53.199 CET [21586] STATEMENT:  UPDATE vehicle SET model = $1, licence_plate = $2, kilometers = $3, price = $4, state = $5::vehicle_state, price_mode = $6 WHERE id = $7
+2026-11-02 22:38:53.212 CET [3534] LOG:  checkpoint starting: time
+2026-11-02 22:38:54.950 CET [21771] ERROR:  ticket12_after_writes
+2026-11-02 22:38:54.950 CET [21771] CONTEXT:  PL/pgSQL function ticket12_failure() line 9 at RAISE
+2026-11-02 22:38:54.950 CET [21771] STATEMENT:  UPDATE bank_account SET balance = $1 WHERE iban = $2
+2026-11-02 22:38:55.253 CET [21807] ERROR:  ticket12_after_writes
+2026-11-02 22:38:55.253 CET [21807] CONTEXT:  PL/pgSQL function ticket12_failure() line 9 at RAISE
+2026-11-02 22:38:55.253 CET [21807] STATEMENT:  UPDATE vehicle SET model = $1, licence_plate = $2, kilometers = $3, price = $4, state = $5::vehicle_state, price_mode = $6 WHERE id = $7
+2026-11-02 22:38:57.115 CET [21971] ERROR:  duplicate key value violates unique constraint "uq_request_vehicle"
+2026-11-02 22:38:57.115 CET [21971] DETAIL:  Key (vehicle)=(57) already exists.
+2026-11-02 22:38:57.115 CET [21971] STATEMENT:  INSERT INTO request (vehicle, client, deposit, agreed_total, type, salesman, exp_date)
+	VALUES (57, 2, 4000, 20000, 'PURCHASE', 16, CURRENT_DATE + 7)
+	
+2026-11-02 22:38:57.803 CET [22036] ERROR:  insert or update on table "request" violates foreign key constraint "fk_request_client"
+2026-11-02 22:38:57.803 CET [22036] DETAIL:  Key (client)=(999999) is not present in table "client".
+2026-11-02 22:38:57.803 CET [22036] STATEMENT:  INSERT INTO request (vehicle, client, salesman, deposit, exp_date, type, agreed_total) VALUES ($1, $2, $3, $4, $5, $6::request_type, $7) RETURNING id
+2026-11-02 22:38:58.131 CET [22075] ERROR:  duplicate key value violates unique constraint "uq_vehicle_vin"
+2026-11-02 22:38:58.131 CET [22075] DETAIL:  Key (vin)=(T0900000000000002) already exists.
+2026-11-02 22:38:58.131 CET [22075] STATEMENT:  INSERT INTO vehicle (model, vin, licence_plate, kilometers, price, year, state, price_mode) VALUES ($1, $2, $3, $4, $5, $6, $7::vehicle_state, $8) RETURNING id
+2026-11-02 22:38:58.504 CET [22116] ERROR:  ticket09_request_failed_after_vehicle_write
+2026-11-02 22:38:58.504 CET [22116] CONTEXT:  PL/pgSQL function ticket09_fail_request() line 7 at RAISE
+2026-11-02 22:38:58.504 CET [22116] STATEMENT:  INSERT INTO request (vehicle, client, salesman, deposit, exp_date, type, agreed_total) VALUES ($1, $2, $3, $4, $5, $6::request_type, $7) RETURNING id
+2026-11-02 22:38:58.729 CET [22133] ERROR:  ticket09_request_failed_after_vehicle_write
+2026-11-02 22:38:58.729 CET [22133] CONTEXT:  PL/pgSQL function ticket09_fail_request() line 7 at RAISE
+2026-11-02 22:38:58.729 CET [22133] STATEMENT:  INSERT INTO request (vehicle, client, salesman, deposit, exp_date, type, agreed_total) VALUES ($1, $2, $3, $4, $5, $6::request_type, $7) RETURNING id
+2026-11-02 22:39:03.505 CET [22219] ERROR:  duplicate key value violates unique constraint "uq_client_email"
+2026-11-02 22:39:03.505 CET [22219] DETAIL:  Key (email)=(luigi.verdi@email.it) already exists.
+2026-11-02 22:39:03.505 CET [22219] STATEMENT:  UPDATE client SET email = $1 WHERE id = $2
+2026-11-02 22:39:04.032 CET [22230] ERROR:  duplicate key value violates unique constraint "uq_salesman_email"
+2026-11-02 22:39:04.032 CET [22230] DETAIL:  Key (email)=(laura.gatti@drivehub.it) already exists.
+2026-11-02 22:39:04.032 CET [22230] STATEMENT:  UPDATE salesman SET email = $1 WHERE id = $2
+2026-11-02 22:39:04.546 CET [22238] ERROR:  Violazione vincolo di disgiunzione: email paolo.costa@drivehub.it appartiene già a un venditore.
+2026-11-02 22:39:04.546 CET [22238] CONTEXT:  PL/pgSQL function check_user_email_disjoint() line 7 at RAISE
+2026-11-02 22:39:04.546 CET [22238] STATEMENT:  UPDATE client SET email = $1 WHERE id = $2
+2026-11-02 22:39:05.040 CET [22246] ERROR:  Violazione vincolo di disgiunzione: email vittorio.manager@drivehub.it appartiene già a un manager.
+2026-11-02 22:39:05.040 CET [22246] CONTEXT:  PL/pgSQL function check_user_email_disjoint() line 10 at RAISE
+2026-11-02 22:39:05.040 CET [22246] STATEMENT:  UPDATE salesman SET email = $1 WHERE id = $2
+2026-11-02 22:39:05.579 CET [22254] ERROR:  Violazione vincolo di disgiunzione: email mario.rossi@email.it appartiene già a un cliente.
+2026-11-02 22:39:05.579 CET [22254] CONTEXT:  PL/pgSQL function check_user_email_disjoint() line 4 at RAISE
+2026-11-02 22:39:05.579 CET [22254] STATEMENT:  UPDATE manager SET email = $1 WHERE id = $2
+2026-11-02 22:40:50.212 CET [22571] ERROR:  ticket06_after_debit
+2026-11-02 22:40:50.212 CET [22571] CONTEXT:  PL/pgSQL function fail_ticket06() line 1 at RAISE
+2026-11-02 22:40:50.212 CET [22571] STATEMENT:  INSERT INTO request (vehicle, client, salesman, deposit, exp_date, type, agreed_total) VALUES ($1, $2, $3, $4, $5, $6::request_type, $7) RETURNING id
+2026-11-02 22:40:50.597 CET [22605] ERROR:  ticket06_after_debit
+2026-11-02 22:40:50.597 CET [22605] CONTEXT:  PL/pgSQL function fail_ticket06() line 1 at RAISE
+2026-11-02 22:40:50.597 CET [22605] STATEMENT:  INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+2026-11-02 22:40:51.080 CET [22636] ERROR:  ticket06_after_debit
+2026-11-02 22:40:51.080 CET [22636] CONTEXT:  PL/pgSQL function fail_ticket06() line 1 at RAISE
+2026-11-02 22:40:51.080 CET [22636] STATEMENT:  DELETE FROM request WHERE id = $1
+2026-11-02 22:40:51.395 CET [22656] ERROR:  ticket06_after_debit
+2026-11-02 22:40:51.395 CET [22656] CONTEXT:  PL/pgSQL function fail_ticket06() line 1 at RAISE
+2026-11-02 22:40:51.395 CET [22656] STATEMENT:  UPDATE vehicle SET state = $1::vehicle_state WHERE id = $2 AND state = $3::vehicle_state
+2026-11-02 22:40:53.584 CET [22800] ERROR:  ticket08_cancellation_failed
+2026-11-02 22:40:53.584 CET [22800] CONTEXT:  PL/pgSQL function fail_ticket08() line 1 at RAISE
+2026-11-02 22:40:53.584 CET [22800] STATEMENT:  DELETE FROM test_drive WHERE vehicle = $1 AND date > CURRENT_TIMESTAMP
+2026-11-02 22:40:53.804 CET [22816] ERROR:  ticket08_cancellation_failed
+2026-11-02 22:40:53.804 CET [22816] CONTEXT:  PL/pgSQL function fail_ticket08() line 1 at RAISE
+2026-11-02 22:40:53.804 CET [22816] STATEMENT:  DELETE FROM test_drive WHERE vehicle = $1 AND date > CURRENT_TIMESTAMP
+2026-11-02 22:40:58.041 CET [23259] ERROR:  insert or update on table "sale" violates foreign key constraint "fk_sale_salesman"
+2026-11-02 22:40:58.041 CET [23259] DETAIL:  Key (salesman)=(999999) is not present in table "salesman".
+2026-11-02 22:40:58.041 CET [23259] STATEMENT:  INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+2026-11-02 22:40:58.198 CET [23275] ERROR:  numeric field overflow
+2026-11-02 22:40:58.198 CET [23275] DETAIL:  A field with precision 10, scale 2 must round to an absolute value less than 10^8.
+2026-11-02 22:40:58.198 CET [23275] STATEMENT:  UPDATE bank_account SET balance = $1 WHERE iban = $2
+2026-11-02 22:40:59.698 CET [23439] ERROR:  new row for relation "sale" violates check constraint "ck_sale_amount_type"
+2026-11-02 22:40:59.698 CET [23439] DETAIL:  Failing row contains (41, 57, 16, 1, -0.01, 2026-11-02 00:00:00, PURCHASE).
+2026-11-02 22:40:59.698 CET [23439] STATEMENT:  INSERT INTO sale (vehicle,salesman,client,amount,date,type) VALUES (57,16,1,-0.01,CURRENT_DATE,'PURCHASE')
+2026-11-02 22:40:59.835 CET [23454] ERROR:  new row for relation "sale" violates check constraint "ck_sale_amount_type"
+2026-11-02 22:40:59.835 CET [23454] DETAIL:  Failing row contains (41, 57, 16, 1, 0.01, 2026-11-02 00:00:00, ACQUISITION).
+2026-11-02 22:40:59.835 CET [23454] STATEMENT:  INSERT INTO sale (vehicle,salesman,client,amount,date,type) VALUES (57,16,1,0.01,CURRENT_DATE,'ACQUISITION')
+2026-11-02 22:40:59.964 CET [23469] ERROR:  new row for relation "sale" violates check constraint "ck_sale_amount_type"
+2026-11-02 22:40:59.964 CET [23469] DETAIL:  Failing row contains (41, 57, 16, 1, -0.01, 2026-11-02 00:00:00, PENALTY).
+2026-11-02 22:40:59.964 CET [23469] STATEMENT:  INSERT INTO sale (vehicle,salesman,client,amount,date,type) VALUES (57,16,1,-0.01,CURRENT_DATE,'PENALTY')
+2026-11-02 22:41:03.090 CET [23826] ERROR:  ticket10_all_effects_observed_then_failed
+2026-11-02 22:41:03.090 CET [23826] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:41:03.090 CET [23826] STATEMENT:  DELETE FROM request WHERE id = $1
+2026-11-02 22:41:03.246 CET [23844] ERROR:  ticket10_all_effects_observed_then_failed
+2026-11-02 22:41:03.246 CET [23844] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:41:03.246 CET [23844] STATEMENT:  DELETE FROM vehicle WHERE id = $1
+2026-11-02 22:41:03.435 CET [23870] ERROR:  ticket10_all_effects_observed_then_failed
+2026-11-02 22:41:03.435 CET [23870] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:41:03.435 CET [23870] STATEMENT:  UPDATE vehicle SET state = $1::vehicle_state WHERE id = $2 AND state = $3::vehicle_state
+2026-11-02 22:41:03.791 CET [23903] ERROR:  ticket10_after_prior_writes
+2026-11-02 22:41:03.791 CET [23903] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:41:03.791 CET [23903] STATEMENT:  UPDATE bank_account SET balance = $1 WHERE iban = $2
+2026-11-02 22:41:04.181 CET [23939] ERROR:  ticket10_after_prior_writes
+2026-11-02 22:41:04.181 CET [23939] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:41:04.181 CET [23939] STATEMENT:  INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+2026-11-02 22:41:04.534 CET [23975] ERROR:  ticket10_after_prior_writes
+2026-11-02 22:41:04.534 CET [23975] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:41:04.534 CET [23975] STATEMENT:  UPDATE vehicle SET state = $1::vehicle_state WHERE id = $2 AND state = $3::vehicle_state
+2026-11-02 22:41:04.857 CET [24011] ERROR:  ticket10_after_prior_writes
+2026-11-02 22:41:04.857 CET [24011] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:41:04.857 CET [24011] STATEMENT:  DELETE FROM request WHERE id = $1
+2026-11-02 22:41:05.239 CET [24047] ERROR:  ticket10_after_prior_writes
+2026-11-02 22:41:05.239 CET [24047] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:41:05.239 CET [24047] STATEMENT:  DELETE FROM request WHERE id = $1
+2026-11-02 22:41:05.562 CET [24083] ERROR:  ticket10_after_prior_writes
+2026-11-02 22:41:05.562 CET [24083] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:41:05.562 CET [24083] STATEMENT:  DELETE FROM vehicle WHERE id = $1
+2026-11-02 22:41:05.888 CET [24127] ERROR:  ticket10_after_prior_writes
+2026-11-02 22:41:05.888 CET [24127] CONTEXT:  PL/pgSQL function ticket10_fault() line 1 at RAISE
+2026-11-02 22:41:05.888 CET [24127] STATEMENT:  UPDATE vehicle SET state = $1::vehicle_state WHERE id = $2 AND state = $3::vehicle_state
+2026-11-02 22:41:08.001 CET [24329] ERROR:  new row for relation "test_drive" violates check constraint "chk_test_drive_time_slot"
+2026-11-02 22:41:08.001 CET [24329] DETAIL:  Failing row contains (12, 1101, 2, 2026-11-04 08:59:00).
+2026-11-02 22:41:08.001 CET [24329] STATEMENT:  INSERT INTO test_drive (vehicle, client, date) VALUES (1101, 2, CURRENT_DATE + 2 + TIME '08:59')
+2026-11-02 22:41:08.098 CET [24339] ERROR:  new row for relation "test_drive" violates check constraint "chk_test_drive_time_slot"
+2026-11-02 22:41:08.098 CET [24339] DETAIL:  Failing row contains (12, 1101, 2, 2026-11-04 16:00:00.000001).
+2026-11-02 22:41:08.098 CET [24339] STATEMENT:  INSERT INTO test_drive (vehicle, client, date) VALUES (1101, 2, CURRENT_DATE + 2 + TIME '16:00:00.000001')
+2026-11-02 22:41:08.195 CET [24349] ERROR:  duplicate key value violates unique constraint "uq_test_drive_vehicle_date"
+2026-11-02 22:41:08.195 CET [24349] DETAIL:  Key (vehicle, date)=(1101, 2026-11-04 10:00:00) already exists.
+2026-11-02 22:41:08.195 CET [24349] STATEMENT:  INSERT INTO test_drive (vehicle, client, date) VALUES (1101, 2, CURRENT_DATE + 2 + TIME '10:00')
+2026-11-02 22:41:08.540 CET [24387] ERROR:  ticket11_after_cancellation
+2026-11-02 22:41:08.540 CET [24387] CONTEXT:  PL/pgSQL function fail_ticket11() line 1 at RAISE
+2026-11-02 22:41:08.540 CET [24387] STATEMENT:  DELETE FROM test_drive WHERE vehicle = $1 AND date > CURRENT_TIMESTAMP
+2026-11-02 22:41:08.897 CET [24424] ERROR:  ticket11_after_insert
+2026-11-02 22:41:08.897 CET [24424] CONTEXT:  PL/pgSQL function fail_ticket11() line 1 at RAISE
+2026-11-02 22:41:08.897 CET [24424] STATEMENT:  INSERT INTO test_drive (vehicle, client, date) VALUES ($1, $2, $3) RETURNING id
+2026-11-02 22:41:09.009 CET [24435] ERROR:  ticket11_after_insert
+2026-11-02 22:41:09.009 CET [24435] CONTEXT:  PL/pgSQL function fail_ticket11() line 1 at RAISE
+2026-11-02 22:41:09.009 CET [24435] STATEMENT:  INSERT INTO rent (vehicle, client, amount, start, "end") VALUES ($1, $2, $3, $4, $5) RETURNING id
+2026-11-02 22:41:13.374 CET [24677] ERROR:  conflicting key value violates exclusion constraint "ex_rent_vehicle_period"
+2026-11-02 22:41:13.374 CET [24677] DETAIL:  Key (vehicle, daterange(start, "end", '[]'::text))=(1101, [2026-11-06,2026-11-08)) conflicts with existing key (vehicle, daterange(start, "end", '[]'::text))=(1101, [2026-11-04,2026-11-07)).
+2026-11-02 22:41:13.374 CET [24677] STATEMENT:  INSERT INTO rent (vehicle, client, amount, start, "end") VALUES (1101, 2, 20, CURRENT_DATE + 4, CURRENT_DATE + 5)
+2026-11-02 22:41:18.157 CET [24913] ERROR:  conflicting key value violates exclusion constraint "ex_rent_vehicle_period"
+2026-11-02 22:41:18.157 CET [24913] DETAIL:  Key (vehicle, daterange(start, "end", '[]'::text))=(1101, [2026-11-06,2026-11-08)) conflicts with existing key (vehicle, daterange(start, "end", '[]'::text))=(1101, [2026-11-04,2026-11-07)).
+2026-11-02 22:41:18.157 CET [24913] STATEMENT:  INSERT INTO rent (vehicle, client, amount, start, "end") VALUES (1101, 2, 20, CURRENT_DATE + 4, CURRENT_DATE + 5)
+2026-11-02 22:41:22.598 CET [25346] ERROR:  ticket07_after_movement
+2026-11-02 22:41:22.598 CET [25346] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:41:22.598 CET [25346] STATEMENT:  UPDATE bank_account SET balance = $1 WHERE iban = $2
+2026-11-02 22:41:22.946 CET [25386] ERROR:  ticket07_after_movement
+2026-11-02 22:41:22.946 CET [25386] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:41:22.946 CET [25386] STATEMENT:  INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+2026-11-02 22:41:23.280 CET [25426] ERROR:  ticket07_after_movement
+2026-11-02 22:41:23.280 CET [25426] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:41:23.280 CET [25426] STATEMENT:  DELETE FROM request WHERE id = $1
+2026-11-02 22:41:23.607 CET [25466] ERROR:  ticket07_after_movement
+2026-11-02 22:41:23.607 CET [25466] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:41:23.607 CET [25466] STATEMENT:  UPDATE vehicle SET state = $1::vehicle_state WHERE id = $2 AND state = $3::vehicle_state
+2026-11-02 22:41:23.962 CET [25507] ERROR:  ticket07_after_movement
+2026-11-02 22:41:23.962 CET [25507] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:41:23.962 CET [25507] STATEMENT:  UPDATE bank_account SET balance = $1 WHERE iban = $2
+2026-11-02 22:41:24.360 CET [25547] ERROR:  ticket07_after_movement
+2026-11-02 22:41:24.360 CET [25547] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:41:24.360 CET [25547] STATEMENT:  DELETE FROM request WHERE id = $1
+2026-11-02 22:41:24.939 CET [25594] ERROR:  ticket07_after_movement
+2026-11-02 22:41:24.939 CET [25594] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:41:24.939 CET [25594] STATEMENT:  UPDATE vehicle SET state = $1::vehicle_state WHERE id = $2 AND state = $3::vehicle_state
+2026-11-02 22:41:25.426 CET [25638] ERROR:  ticket07_after_movement
+2026-11-02 22:41:25.426 CET [25638] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:41:25.426 CET [25638] STATEMENT:  UPDATE bank_account SET balance = $1 WHERE iban = $2
+2026-11-02 22:41:26.251 CET [25685] ERROR:  ticket07_after_movement
+2026-11-02 22:41:26.251 CET [25685] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:41:26.251 CET [25685] STATEMENT:  INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+2026-11-02 22:41:26.838 CET [25731] ERROR:  ticket07_after_movement
+2026-11-02 22:41:26.838 CET [25731] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:41:26.838 CET [25731] STATEMENT:  DELETE FROM request WHERE id = $1
+2026-11-02 22:41:27.323 CET [25778] ERROR:  ticket07_after_movement
+2026-11-02 22:41:27.323 CET [25778] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:41:27.323 CET [25778] STATEMENT:  UPDATE vehicle SET state = $1::vehicle_state WHERE id = $2 AND state = $3::vehicle_state
+2026-11-02 22:41:29.170 CET [25851] ERROR:  ticket07_after_movement
+2026-11-02 22:41:29.170 CET [25851] CONTEXT:  PL/pgSQL function fail_ticket07() line 1 at RAISE
+2026-11-02 22:41:29.170 CET [25851] STATEMENT:  UPDATE request SET salesman = $1, deposit = $2, exp_date = $3, type = $4::request_type WHERE id = $5
+2026-11-02 22:41:48.672 CET [26396] ERROR:  insert or update on table "request" violates foreign key constraint "fk_request_salesman"
+2026-11-02 22:41:48.672 CET [26396] DETAIL:  Key (salesman)=(16) is not present in table "salesman".
+2026-11-02 22:41:48.672 CET [26396] STATEMENT:  UPDATE request SET salesman = $1, deposit = $2, exp_date = $3, type = $4::request_type WHERE id = $5
+2026-11-02 22:41:54.198 CET [26433] ERROR:  ticket13_after_deletion
+2026-11-02 22:41:54.198 CET [26433] CONTEXT:  PL/pgSQL function ticket13_gate() line 1 at RAISE
+2026-11-02 22:41:54.198 CET [26433] STATEMENT:  DELETE FROM salesman WHERE id = $1
+2026-11-02 22:41:59.351 CET [26625] ERROR:  update or delete on table "salesman" violates foreign key constraint "fk_sale_salesman" on table "sale"
+2026-11-02 22:41:59.351 CET [26625] DETAIL:  Key (id)=(16) is still referenced from table "sale".
+2026-11-02 22:41:59.351 CET [26625] STATEMENT:  DELETE FROM salesman WHERE id = $1
+2026-11-02 22:42:00.102 CET [26654] ERROR:  ticket13_after_acquisition
+2026-11-02 22:42:00.102 CET [26654] CONTEXT:  PL/pgSQL function ticket13_gate() line 1 at RAISE
+2026-11-02 22:42:00.102 CET [26654] STATEMENT:  INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+2026-11-02 22:42:18.709 CET [26852] ERROR:  insert or update on table "sale" violates foreign key constraint "fk_sale_salesman"
+2026-11-02 22:42:18.709 CET [26852] DETAIL:  Key (salesman)=(16) is not present in table "salesman".
+2026-11-02 22:42:18.709 CET [26852] STATEMENT:  INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+2026-11-02 22:42:20.046 CET [26882] ERROR:  ticket13_after_deletion
+2026-11-02 22:42:20.046 CET [26882] CONTEXT:  PL/pgSQL function ticket13_gate() line 1 at RAISE
+2026-11-02 22:42:20.046 CET [26882] STATEMENT:  DELETE FROM salesman WHERE id = $1
+2026-11-02 22:42:21.672 CET [26906] ERROR:  update or delete on table "salesman" violates foreign key constraint "fk_sale_salesman" on table "sale"
+2026-11-02 22:42:21.672 CET [26906] DETAIL:  Key (id)=(16) is still referenced from table "sale".
+2026-11-02 22:42:21.672 CET [26906] STATEMENT:  DELETE FROM salesman WHERE id = 16
+2026-11-02 22:42:22.301 CET [26919] ERROR:  update or delete on table "salesman" violates foreign key constraint "fk_sale_salesman" on table "sale"
+2026-11-02 22:42:22.301 CET [26919] DETAIL:  Key (id)=(16) is still referenced from table "sale".
+2026-11-02 22:42:22.301 CET [26919] STATEMENT:  DELETE FROM salesman WHERE id = 16
+2026-11-02 22:42:23.340 CET [26932] ERROR:  update or delete on table "salesman" violates foreign key constraint "fk_sale_salesman" on table "sale"
+2026-11-02 22:42:23.340 CET [26932] DETAIL:  Key (id)=(16) is still referenced from table "sale".
+2026-11-02 22:42:23.340 CET [26932] STATEMENT:  DELETE FROM salesman WHERE id = 16
+2026-11-02 22:42:26.596 CET [26958] ERROR:  ticket13_after_deletions
+2026-11-02 22:42:26.596 CET [26958] CONTEXT:  PL/pgSQL function ticket13_fail() line 4 at RAISE
+2026-11-02 22:42:26.596 CET [26958] STATEMENT:  DELETE FROM client WHERE id = $1
+2026-11-02 22:42:34.358 CET [26978] ERROR:  ticket13_after_deletions
+2026-11-02 22:42:34.358 CET [26978] CONTEXT:  PL/pgSQL function ticket13_gate() line 5 at RAISE
+2026-11-02 22:42:34.358 CET [26978] STATEMENT:  DELETE FROM client WHERE id = $1
+2026-11-02 22:42:36.891 CET [27001] ERROR:  ticket13_after_deletions
+2026-11-02 22:42:36.891 CET [27001] CONTEXT:  PL/pgSQL function ticket13_gate() line 5 at RAISE
+2026-11-02 22:42:36.891 CET [27001] STATEMENT:  DELETE FROM client WHERE id = $1
+2026-11-02 22:42:43.326 CET [27176] ERROR:  insert or update on table "request" violates foreign key constraint "fk_request_client"
+2026-11-02 22:42:43.326 CET [27176] DETAIL:  Key (client)=(1) is not present in table "client".
+2026-11-02 22:42:43.326 CET [27176] STATEMENT:  INSERT INTO request (vehicle, client, salesman, deposit, exp_date, type, agreed_total) VALUES ($1, $2, $3, $4, $5, $6::request_type, $7) RETURNING id
+2026-11-02 22:42:44.224 CET [27201] ERROR:  ticket13_after_deletion
+2026-11-02 22:42:44.224 CET [27201] CONTEXT:  PL/pgSQL function ticket13_gate() line 1 at RAISE
+2026-11-02 22:42:44.224 CET [27201] STATEMENT:  DELETE FROM client WHERE id = $1
+2026-11-02 22:43:07.159 CET [27416] LOG:  skipping analyze of "vehicle" --- lock not available
+2026-11-02 22:43:07.159 CET [27416] LOG:  skipping analyze of "sale" --- lock not available
+2026-11-02 22:43:19.930 CET [27648] ERROR:  ticket04_after_debit
+2026-11-02 22:43:19.930 CET [27648] CONTEXT:  PL/pgSQL function fail_ticket04_request() line 6 at RAISE
+2026-11-02 22:43:19.930 CET [27648] STATEMENT:  INSERT INTO request (vehicle, client, salesman, deposit, exp_date, type, agreed_total) VALUES ($1, $2, $3, $4, $5, $6::request_type, $7) RETURNING id
+2026-11-02 22:43:20.410 CET [27688] ERROR:  ticket04_after_refunds
+2026-11-02 22:43:20.410 CET [27688] CONTEXT:  PL/pgSQL function fail_ticket04_vehicle() line 8 at RAISE
+2026-11-02 22:43:20.410 CET [27688] STATEMENT:  UPDATE vehicle SET model = $1, licence_plate = $2, kilometers = $3, price = $4, state = $5::vehicle_state, price_mode = $6 WHERE id = $7
+2026-11-02 22:43:23.686 CET [3534] LOG:  checkpoint complete: wrote 4894 buffers (29.9%); 0 WAL file(s) added, 0 removed, 10 recycled; write=269.844 s, sync=0.388 s, total=270.475 s; sync files=25980, longest=0.012 s, average=0.001 s; distance=159796 kB, estimate=159796 kB; lsn=0/2400DCF8, redo lsn=0/1A082D60
+2026-11-02 22:43:37.407 CET [28195] ERROR:  ticket12_after_writes
+2026-11-02 22:43:37.407 CET [28195] CONTEXT:  PL/pgSQL function ticket12_failure() line 9 at RAISE
+2026-11-02 22:43:37.407 CET [28195] STATEMENT:  UPDATE vehicle SET model = $1, licence_plate = $2, kilometers = $3, price = $4, state = $5::vehicle_state, price_mode = $6 WHERE id = $7
+2026-11-02 22:43:44.537 CET [28395] ERROR:  ticket12_after_writes
+2026-11-02 22:43:44.537 CET [28395] CONTEXT:  PL/pgSQL function ticket12_failure() line 9 at RAISE
+2026-11-02 22:43:44.537 CET [28395] STATEMENT:  UPDATE bank_account SET balance = $1 WHERE iban = $2
+2026-11-02 22:43:45.579 CET [28431] ERROR:  ticket12_after_writes
+2026-11-02 22:43:45.579 CET [28431] CONTEXT:  PL/pgSQL function ticket12_failure() line 9 at RAISE
+2026-11-02 22:43:45.579 CET [28431] STATEMENT:  UPDATE vehicle SET model = $1, licence_plate = $2, kilometers = $3, price = $4, state = $5::vehicle_state, price_mode = $6 WHERE id = $7
+2026-11-02 22:43:51.446 CET [28648] ERROR:  duplicate key value violates unique constraint "uq_request_vehicle"
+2026-11-02 22:43:51.446 CET [28648] DETAIL:  Key (vehicle)=(57) already exists.
+2026-11-02 22:43:51.446 CET [28648] STATEMENT:  INSERT INTO request (vehicle, client, deposit, agreed_total, type, salesman, exp_date)
+	VALUES (57, 2, 4000, 20000, 'PURCHASE', 16, CURRENT_DATE + 7)
+	
+2026-11-02 22:43:53.276 CET [28722] ERROR:  insert or update on table "request" violates foreign key constraint "fk_request_client"
+2026-11-02 22:43:53.276 CET [28722] DETAIL:  Key (client)=(999999) is not present in table "client".
+2026-11-02 22:43:53.276 CET [28722] STATEMENT:  INSERT INTO request (vehicle, client, salesman, deposit, exp_date, type, agreed_total) VALUES ($1, $2, $3, $4, $5, $6::request_type, $7) RETURNING id
+2026-11-02 22:43:53.461 CET [3534] LOG:  checkpoint starting: time
+2026-11-02 22:43:54.649 CET [28773] ERROR:  duplicate key value violates unique constraint "uq_vehicle_vin"
+2026-11-02 22:43:54.649 CET [28773] DETAIL:  Key (vin)=(T0900000000000002) already exists.
+2026-11-02 22:43:54.649 CET [28773] STATEMENT:  INSERT INTO vehicle (model, vin, licence_plate, kilometers, price, year, state, price_mode) VALUES ($1, $2, $3, $4, $5, $6, $7::vehicle_state, $8) RETURNING id
+2026-11-02 22:43:55.990 CET [28828] ERROR:  ticket09_request_failed_after_vehicle_write
+2026-11-02 22:43:55.990 CET [28828] CONTEXT:  PL/pgSQL function ticket09_fail_request() line 7 at RAISE
+2026-11-02 22:43:55.990 CET [28828] STATEMENT:  INSERT INTO request (vehicle, client, salesman, deposit, exp_date, type, agreed_total) VALUES ($1, $2, $3, $4, $5, $6::request_type, $7) RETURNING id
+2026-11-02 22:43:56.798 CET [28845] ERROR:  ticket09_request_failed_after_vehicle_write
+2026-11-02 22:43:56.798 CET [28845] CONTEXT:  PL/pgSQL function ticket09_fail_request() line 7 at RAISE
+2026-11-02 22:43:56.798 CET [28845] STATEMENT:  INSERT INTO request (vehicle, client, salesman, deposit, exp_date, type, agreed_total) VALUES ($1, $2, $3, $4, $5, $6::request_type, $7) RETURNING id
+2026-11-02 22:44:07.168 CET [28946] LOG:  skipping vacuum of "vehicle" --- lock not available
+2026-11-02 22:44:10.142 CET [28996] ERROR:  duplicate key value violates unique constraint "uq_client_email"
+2026-11-02 22:44:10.142 CET [28996] DETAIL:  Key (email)=(luigi.verdi@email.it) already exists.
+2026-11-02 22:44:10.142 CET [28996] STATEMENT:  UPDATE client SET email = $1 WHERE id = $2
+2026-11-02 22:44:11.238 CET [29005] ERROR:  duplicate key value violates unique constraint "uq_salesman_email"
+2026-11-02 22:44:11.238 CET [29005] DETAIL:  Key (email)=(laura.gatti@drivehub.it) already exists.
+2026-11-02 22:44:11.238 CET [29005] STATEMENT:  UPDATE salesman SET email = $1 WHERE id = $2
+2026-11-02 22:44:12.456 CET [29020] ERROR:  Violazione vincolo di disgiunzione: email paolo.costa@drivehub.it appartiene già a un venditore.
+2026-11-02 22:44:12.456 CET [29020] CONTEXT:  PL/pgSQL function check_user_email_disjoint() line 7 at RAISE
+2026-11-02 22:44:12.456 CET [29020] STATEMENT:  UPDATE client SET email = $1 WHERE id = $2
+2026-11-02 22:44:14.761 CET [29047] ERROR:  Violazione vincolo di disgiunzione: email vittorio.manager@drivehub.it appartiene già a un manager.
+2026-11-02 22:44:14.761 CET [29047] CONTEXT:  PL/pgSQL function check_user_email_disjoint() line 10 at RAISE
+2026-11-02 22:44:14.761 CET [29047] STATEMENT:  UPDATE salesman SET email = $1 WHERE id = $2
+2026-11-02 22:44:16.685 CET [29056] ERROR:  Violazione vincolo di disgiunzione: email mario.rossi@email.it appartiene già a un cliente.
+2026-11-02 22:44:16.685 CET [29056] CONTEXT:  PL/pgSQL function check_user_email_disjoint() line 4 at RAISE
+2026-11-02 22:44:16.685 CET [29056] STATEMENT:  UPDATE manager SET email = $1 WHERE id = $2
+2026-11-02 22:45:22.490 CET [3533] LOG:  received fast shutdown request
+2026-11-02 22:45:22.491 CET [3533] LOG:  aborting any active transactions
+2026-11-02 22:45:22.501 CET [3533] LOG:  background worker "logical replication launcher" (PID 3539) exited with exit code 1
+2026-11-02 22:45:22.645 CET [3534] LOG:  checkpoint complete: wrote 2587 buffers (15.8%); 0 WAL file(s) added, 0 removed, 11 recycled; write=89.056 s, sync=0.025 s, total=89.184 s; sync files=3805, longest=0.001 s, average=0.001 s; distance=189980 kB, estimate=189980 kB; lsn=0/26B0DD80, redo lsn=0/25A09EB8
+2026-11-02 22:45:22.646 CET [3534] LOG:  shutting down
+2026-11-02 22:45:22.646 CET [3534] LOG:  checkpoint starting: shutdown immediate
+2026-11-02 22:45:22.658 CET [3534] LOG:  checkpoint complete: wrote 389 buffers (2.4%); 0 WAL file(s) added, 0 removed, 1 recycled; write=0.003 s, sync=0.001 s, total=0.012 s; sync files=93, longest=0.001 s, average=0.000 s; distance=17423 kB, estimate=172724 kB; lsn=0/26B0DDF8, redo lsn=0/26B0DDF8
+2026-11-02 22:45:22.679 CET [3533] LOG:  database system is shut down

@@ -1,0 +1,96 @@
+package it.unifi.drivehub;
+
+import it.unifi.drivehub.dao.DatabaseManager;
+import it.unifi.drivehub.domain.operation.Request;
+import it.unifi.drivehub.domain.vehicle.VehicleState;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+
+import java.sql.Connection;
+import java.math.BigDecimal;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@Tag("postgres")
+class SaleOutcomeIntegrationTest {
+    private DatabaseManager db;
+    private Request proposal;
+
+    @BeforeEach
+    void setUp() throws Exception {
+        db = TestDatabase.fromEnvironment().reset();
+        sql("""
+                DELETE FROM sale; DELETE FROM rent; DELETE FROM test_drive; DELETE FROM request;
+                UPDATE bank_account SET balance = 1000 WHERE client = 1;
+                INSERT INTO model (id, brand, name, release_price, release_year)
+                VALUES (1001, 'Fiat', 'Ticket10', 20000, EXTRACT(YEAR FROM CURRENT_DATE));
+                """);
+        proposal = new AppContext(db).getSaleToDealershipService().submitSaleProposal(
+                1L, 1001L, "T1000000000000001", "AB123CD", 0, java.time.Year.now().getValue());
+    }
+
+    @ParameterizedTest
+    @CsvSource({"approval,SALE", "approval,SOLD", "approval,RENT", "approval,BLOCKED",
+            "rejection,SALE", "rejection,SOLD", "rejection,RENT", "rejection,BLOCKED"})
+    void onlyAWaitingVehicleCanReceiveAnOutcome(String phase, VehicleState state) throws Exception {
+        sql("UPDATE vehicle SET state = '" + state + "' WHERE id = " + proposal.getVehicleId());
+        String before = snapshot();
+        assertThrows(RuntimeException.class, operation(phase)::run);
+        assertEquals(before, snapshot());
+    }
+
+    @Test
+    void approvalPaysTheClientAndRecordsOneDealershipExpense() throws Exception {
+        operation("approval").run();
+        var reloaded = new AppContext(db);
+        assertEquals(new BigDecimal("17000.00"), reloaded.getAuthService().getClientBankAccount(1L).getBalance());
+        var sales = reloaded.getOperationQueryService().getAllSales();
+        assertEquals(1, sales.size());
+        var acquisition = sales.getFirst();
+        assertEquals(new BigDecimal("-16000.00"), acquisition.getAmount());
+        assertEquals(it.unifi.drivehub.domain.operation.SaleType.ACQUISITION, acquisition.getType());
+        assertEquals(proposal.getVehicleId(), acquisition.getVehicleId());
+        assertEquals(16L, acquisition.getSalesmanId());
+        assertEquals(1L, acquisition.getClientId());
+        assertEquals(sales, reloaded.getOperationQueryService().getClientSales(1L));
+        assertTrue(reloaded.getOperationQueryService().getClientRequests(1L).isEmpty());
+        assertEquals(VehicleState.SALE, reloaded.getCatalogService().getVehicleById(proposal.getVehicleId()).orElseThrow().getState());
+        String after = snapshot();
+        assertThrows(RuntimeException.class, operation("approval")::run);
+        assertThrows(RuntimeException.class, operation("rejection")::run);
+        assertEquals(after, snapshot());
+    }
+
+    private Runnable operation(String phase) {
+        var service = new AppContext(db).getSaleToDealershipService();
+        return switch (phase) {
+            case "approval" -> () -> service.approveSaleProposal(proposal.getId(), 16L);
+            case "rejection" -> () -> service.rejectSaleProposal(proposal.getId());
+            default -> throw new IllegalArgumentException(phase);
+        };
+    }
+
+    private String snapshot() throws Exception {
+        StringBuilder result = new StringBuilder();
+        try (Connection conn = db.getConnection(); var statement = conn.createStatement()) {
+            statement.setQueryTimeout(10);
+            for (String table : new String[]{"vehicle", "request", "sale", "bank_account", "rent", "test_drive"}) {
+                try (var rows = statement.executeQuery("SELECT row_to_json(t)::text FROM " + table + " t ORDER BY 1")) {
+                    result.append(table);
+                    while (rows.next()) result.append(rows.getString(1));
+                }
+            }
+        }
+        return result.toString();
+    }
+
+    private void sql(String query) throws Exception {
+        try (var conn = db.getConnection(); var statement = conn.createStatement()) {
+            statement.setQueryTimeout(10);
+            statement.execute(query);
+        }
+    }
+}

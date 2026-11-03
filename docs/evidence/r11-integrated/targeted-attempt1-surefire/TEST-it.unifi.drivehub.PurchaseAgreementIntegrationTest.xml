@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="it.unifi.drivehub.PurchaseAgreementIntegrationTest" time="3.306" tests="12" errors="0" skipped="0" failures="0">
+  <testcase name="completionStillRequiresApprovalAndUnexpiredRequest" classname="it.unifi.drivehub.PurchaseAgreementIntegrationTest" time="0.35" />
+  <testcase name="insufficientRemainingFundsLeaveAgreementAndReservationUnchanged" classname="it.unifi.drivehub.PurchaseAgreementIntegrationTest" time="0.37" />
+  <testcase name="persistenceFailuresRollBackEveryStep(String, String, String, int)[1]" classname="it.unifi.drivehub.PurchaseAgreementIntegrationTest" time="0.228" />
+  <testcase name="persistenceFailuresRollBackEveryStep(String, String, String, int)[2]" classname="it.unifi.drivehub.PurchaseAgreementIntegrationTest" time="0.279" />
+  <testcase name="persistenceFailuresRollBackEveryStep(String, String, String, int)[3]" classname="it.unifi.drivehub.PurchaseAgreementIntegrationTest" time="0.26" />
+  <testcase name="persistenceFailuresRollBackEveryStep(String, String, String, int)[4]" classname="it.unifi.drivehub.PurchaseAgreementIntegrationTest" time="0.264" />
+  <testcase name="agreementFromEarlierPricingYearDoesNotDepreciateAtCompletion(boolean)[1]" classname="it.unifi.drivehub.PurchaseAgreementIntegrationTest" time="0.228" />
+  <testcase name="agreementFromEarlierPricingYearDoesNotDepreciateAtCompletion(boolean)[2]" classname="it.unifi.drivehub.PurchaseAgreementIntegrationTest" time="0.228" />
+  <testcase name="insufficientDepositLeavesVehicleAccountAndOperationsUnchanged" classname="it.unifi.drivehub.PurchaseAgreementIntegrationTest" time="0.213" />
+  <testcase name="fractionalCentManualBaseKeepsRoundedAgreementAfterReload" classname="it.unifi.drivehub.PurchaseAgreementIntegrationTest" time="0.232" />
+  <testcase name="completionKeepsAgreementAfterPricingChangesAndNewSession(boolean)[1]" classname="it.unifi.drivehub.PurchaseAgreementIntegrationTest" time="0.324" />
+  <testcase name="completionKeepsAgreementAfterPricingChangesAndNewSession(boolean)[2]" classname="it.unifi.drivehub.PurchaseAgreementIntegrationTest" time="0.314" />
+</testsuite>

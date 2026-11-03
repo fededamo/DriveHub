@@ -1,0 +1,2 @@
+$ rg -n -i fxml|currentUser|getCurrentUser|setCurrentUser|\.logout\s*\( src pom.xml
+exit=1

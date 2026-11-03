@@ -1,6 +1,7 @@
 package it.unifi.drivehub.domain.operation;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -8,6 +9,7 @@ import java.util.Objects;
  * Entità Richiesta (acquisto o vendita veicolo).
  * Invarianti:
  * - Tipo obbligatorio (PURCHASE o SALE)
+ * - Per PURCHASE totale concordato e acconto sono immutabili, non negativi e in centesimi
  * - La data di scadenza (se valorizzata) non può essere nel passato rispetto alla creazione
  */
 public final class Request {
@@ -16,21 +18,23 @@ public final class Request {
     private final Long vehicleId;
     private final Long clientId;
     private Long salesmanId;
-    private BigDecimal deposit;
+    private final BigDecimal deposit;
+    private final BigDecimal agreedTotal;
     private LocalDate expDate;
     private final RequestType type;
 
-    private Request(Long id, Long vehicleId, Long clientId, Long salesmanId, BigDecimal deposit, LocalDate expDate, RequestType type) {
+    private Request(Long id, Long vehicleId, Long clientId, Long salesmanId, BigDecimal deposit, BigDecimal agreedTotal, LocalDate expDate, RequestType type) {
         this.id = id;
         this.vehicleId = vehicleId;
         this.clientId = clientId;
         this.salesmanId = salesmanId;
         this.deposit = deposit;
+        this.agreedTotal = agreedTotal;
         this.expDate = expDate;
         this.type = type;
     }
 
-    public static Request create(Long id, Long vehicleId, Long clientId, Long salesmanId, BigDecimal deposit, LocalDate expDate, RequestType type) {
+    public static Request create(Long id, Long vehicleId, Long clientId, Long salesmanId, BigDecimal deposit, BigDecimal agreedTotal, LocalDate expDate, RequestType type) {
         if (vehicleId == null) {
             throw new IllegalArgumentException("L'ID del veicolo non può essere nullo.");
         }
@@ -43,17 +47,28 @@ public final class Request {
         if (type == null) {
             throw new IllegalArgumentException("Il tipo di richiesta non può essere nullo.");
         }
-        return new Request(id, vehicleId, clientId, salesmanId, deposit, expDate, type);
+        if (type == RequestType.PURCHASE) {
+            if (agreedTotal == null || agreedTotal.signum() < 0 || deposit.signum() < 0
+                    || deposit.compareTo(agreedTotal) > 0) {
+                throw new IllegalArgumentException("Totale concordato e acconto non validi per l'acquisto.");
+            }
+            // Gli importi dell'accordo devono essere già espressi in centesimi, come l'addebito.
+            agreedTotal = agreedTotal.setScale(2, RoundingMode.UNNECESSARY);
+            deposit = deposit.setScale(2, RoundingMode.UNNECESSARY);
+        } else if (agreedTotal != null) {
+            throw new IllegalArgumentException("Il totale concordato riguarda solo gli acquisti del cliente.");
+        }
+        return new Request(id, vehicleId, clientId, salesmanId, deposit, agreedTotal, expDate, type);
     }
 
-    public static Request createNewPurchaseRequest(Long vehicleId, Long clientId, BigDecimal deposit) {
-        return create(null, vehicleId, clientId, null, deposit, null, RequestType.PURCHASE);
+    public static Request createNewPurchaseRequest(Long vehicleId, Long clientId, BigDecimal deposit, BigDecimal agreedTotal) {
+        return create(null, vehicleId, clientId, null, deposit, agreedTotal, null, RequestType.PURCHASE);
     }
 
     public static Request createNewSaleRequest(Long vehicleId, Long clientId, BigDecimal estimatedValue) {
         // Valore negativo per indicare la proposta di vendita da parte del cliente
         BigDecimal signedDeposit = estimatedValue.compareTo(BigDecimal.ZERO) > 0 ? estimatedValue.negate() : estimatedValue;
-        return create(null, vehicleId, clientId, null, signedDeposit, null, RequestType.SALE);
+        return create(null, vehicleId, clientId, null, signedDeposit, null, null, RequestType.SALE);
     }
 
     public Long getId() {
@@ -80,8 +95,15 @@ public final class Request {
         return deposit;
     }
 
-    public void setDeposit(BigDecimal deposit) {
-        this.deposit = deposit;
+    public BigDecimal getAgreedTotal() {
+        return agreedTotal;
+    }
+
+    public BigDecimal getRemainingAmount() {
+        if (type != RequestType.PURCHASE) {
+            throw new IllegalStateException("Il saldo da pagare riguarda solo gli acquisti del cliente.");
+        }
+        return agreedTotal.subtract(deposit);
     }
 
     public LocalDate getExpDate() {
@@ -123,6 +145,7 @@ public final class Request {
                 ", clientId=" + clientId +
                 ", salesmanId=" + salesmanId +
                 ", deposit=" + deposit +
+                ", agreedTotal=" + agreedTotal +
                 ", expDate=" + expDate +
                 ", type=" + type +
                 '}';

@@ -1,0 +1,364 @@
+COMMAND: mvn -B -Ppostgres-tests -Dtest=TestDatabaseConfigurationTest,DatabaseIsolationIntegrationTest,DomainInvariantsTest,AuthServiceIntegrationTest,PriceSelectionIntegrationTest,PurchaseAgreementIntegrationTest,PurchaseConcurrencyIntegrationTest,BalanceConcurrencyIntegrationTest,SaleProposalIntegrationTest,SaleOutcomeIntegrationTest,BookingConcurrencyIntegrationTest,TestDriveCancellationIntegrationTest,VehicleDestinationIntegrationTest,IdentityDeletionIntegrationTest,CatalogListingIntegrationTest test
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------< it.unifi.drivehub:DriveHub >---------------------
+[INFO] Building DriveHub 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] 6 problems were encountered while building the effective model for org.openjfx:javafx-controls:jar:21.0.2 during dependency collection step for project (use -X to see details)
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ DriveHub ---
+[INFO] Copying 4 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ DriveHub ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 65 source files with javac [debug target 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ DriveHub ---
+[INFO] skip non existing resourceDirectory /tmp/drivehub-ticket18-session/install/DriveHub/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ DriveHub ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 23 source files with javac [debug target 21] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ DriveHub ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running it.unifi.drivehub.VehicleDestinationIntegrationTest
+Ticket12 waiters 1 pid:blockers 41219:{41215}
+Ticket12 waiters 2 pid:blockers 41219:{41215}, 41221:{41219}
+Ticket12 waiters 1 pid:blockers 41349:{41345}
+Ticket12 waiters 2 pid:blockers 41349:{41345}, 41351:{41349}
+Ticket12 waiters 1 pid:blockers 41370:{41366}
+Ticket12 waiters 2 pid:blockers 41370:{41366}, 41372:{41370}
+Ticket12 waiters 1 pid:blockers 41393:{41389}
+Ticket12 waiters 2 pid:blockers 41393:{41389}, 41395:{41393}
+Ticket12 waiters 1 pid:blockers 41412:{41408}
+Ticket12 waiters 2 pid:blockers 41412:{41408}, 41414:{41412}
+Ticket12 waiters 1 pid:blockers 41438:{41434}
+Ticket12 waiters 2 pid:blockers 41438:{41434}, 41440:{41438}
+[INFO] Tests run: 33, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.856 s -- in it.unifi.drivehub.VehicleDestinationIntegrationTest
+[INFO] Running it.unifi.drivehub.TestDriveCancellationIntegrationTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.500 s -- in it.unifi.drivehub.TestDriveCancellationIntegrationTest
+[INFO] Running it.unifi.drivehub.TestDatabaseConfigurationTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.039 s -- in it.unifi.drivehub.TestDatabaseConfigurationTest
+[INFO] Running it.unifi.drivehub.SaleProposalIntegrationTest
+[INFO] Tests run: 23, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.075 s -- in it.unifi.drivehub.SaleProposalIntegrationTest
+[INFO] Running it.unifi.drivehub.SaleOutcomeIntegrationTest
+Ticket10 waiters 1 pid:blockers 42551:{42547}
+Ticket10 waiters 1 pid:blockers 42569:{42565}
+Ticket10 waiters 1 pid:blockers 42587:{42583}
+Ticket10 waiters 1 pid:blockers 42605:{42601}
+Ticket10 waiters 1 pid:blockers 42623:{42619}
+Ticket10 waiters 1 pid:blockers 42642:{42638}
+Ticket10 waiters 1 pid:blockers 42768:{42764}
+Ticket10 waiters 2 pid:blockers 42768:{42764}, 42770:{42768}
+Ticket10 waiters 1 pid:blockers 42799:{42795}
+Ticket10 waiters 2 pid:blockers 42799:{42795}, 42801:{42799}
+Ticket10 waiters 1 pid:blockers 42830:{42826}
+Ticket10 waiters 2 pid:blockers 42830:{42826}, 42832:{42830}
+Ticket10 waiters 1 pid:blockers 42861:{42857}
+Ticket10 waiters 2 pid:blockers 42861:{42857}, 42863:{42861}
+Ticket10 waiters 1 pid:blockers 42901:{42897}
+Ticket10 waiters 2 pid:blockers 42901:{42897}, 42903:{42901}
+Ticket10 waiters 1 pid:blockers 42940:{42936}
+Ticket10 waiters 2 pid:blockers 42940:{42936}, 42942:{42940}
+Ticket10 waiters 1 pid:blockers 42979:{42975}
+Ticket10 waiters 2 pid:blockers 42979:{42975}, 42981:{42979}
+Ticket10 waiters 1 pid:blockers 43018:{43014}
+Ticket10 waiters 2 pid:blockers 43018:{43014}, 43020:{43018}
+[INFO] Tests run: 60, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 18.55 s -- in it.unifi.drivehub.SaleOutcomeIntegrationTest
+[INFO] Running it.unifi.drivehub.PurchaseConcurrencyIntegrationTest
+[INFO] Tests run: 60, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 90.54 s -- in it.unifi.drivehub.PurchaseConcurrencyIntegrationTest
+[INFO] Running it.unifi.drivehub.PurchaseAgreementIntegrationTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.306 s -- in it.unifi.drivehub.PurchaseAgreementIntegrationTest
+[INFO] Running it.unifi.drivehub.PriceSelectionIntegrationTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.138 s -- in it.unifi.drivehub.PriceSelectionIntegrationTest
+[INFO] Running it.unifi.drivehub.IdentityDeletionIntegrationTest
+Ticket13 waiters 1 pid:blockers 45232:{45227}
+Ticket13 waiters 2 pid:blockers 45232:{45227}, 45234:{45232}
+Ticket13 waiters 1 pid:blockers 45262:{45256}
+Ticket13 waiters 2 pid:blockers 45262:{45256}, 45264:{45262}
+Ticket13 waiters 1 pid:blockers 45285:{45280}
+Ticket13 waiters 1 pid:blockers 45412:{45408}
+Ticket13 waiters 2 pid:blockers 45412:{45408}, 45415:{45412}
+Ticket13 waiters 1 pid:blockers 45443:{45439}
+Ticket13 waiters 2 pid:blockers 45443:{45439}, 45446:{45443}
+Ticket13 waiters 1 pid:blockers 45498:{45494}
+Ticket13 waiters 2 pid:blockers 45498:{45494}, 45504:{45498}
+Ticket13 waiters 1 pid:blockers 45597:{45592}
+Ticket13 waiters 2 pid:blockers 45597:{45592}, 45599:{45597}
+Ticket13 waiters 1 pid:blockers 45629:{45624}
+Ticket13 waiters 2 pid:blockers 45629:{45624}, 45631:{45629}
+Ticket13 waiters 1 pid:blockers 45712:{45707}
+Ticket13 waiters 2 pid:blockers 45712:{45707}, 45714:{45712}
+Ticket13 waiters 1 pid:blockers 45735:{45730}
+Ticket13 waiters 2 pid:blockers 45735:{45730}, 45737:{45735}
+Ticket13 waiters 1 pid:blockers 45821:{45817}
+Ticket13 waiters 2 pid:blockers 45821:{45817}, 45824:{45821}
+Ticket13 waiters 1 pid:blockers 45841:{45836}
+Ticket13 waiters 2 pid:blockers 45841:{45836}, 45843:{45841}
+Ticket13 waiters 1 pid:blockers 45857:{45853}
+Ticket13 waiters 2 pid:blockers 45857:{45853}, 45860:{45857}
+Ticket13 waiters 1 pid:blockers 45877:{45872}
+Ticket13 waiters 2 pid:blockers 45877:{45872}, 45879:{45877}
+Ticket13 waiters 1 pid:blockers 45896:{45891}
+Ticket13 waiters 2 pid:blockers 45896:{45891}, 45898:{45896}
+Ticket13 waiters 1 pid:blockers 45922:{45917}
+Ticket13 waiters 2 pid:blockers 45922:{45917}, 45924:{45922}
+Ticket13 waiters 1 pid:blockers 46245:{46240}
+Ticket13 waiters 2 pid:blockers 46245:{46240}, 46247:{46245}
+[INFO] Tests run: 60, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 35.61 s -- in it.unifi.drivehub.IdentityDeletionIntegrationTest
+[INFO] Running it.unifi.drivehub.DomainInvariantsTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.037 s -- in it.unifi.drivehub.DomainInvariantsTest
+[INFO] Running it.unifi.drivehub.DatabaseIsolationIntegrationTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.193 s -- in it.unifi.drivehub.DatabaseIsolationIntegrationTest
+[INFO] Running it.unifi.drivehub.CatalogListingIntegrationTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.109 s -- in it.unifi.drivehub.CatalogListingIntegrationTest
+[INFO] Running it.unifi.drivehub.BookingConcurrencyIntegrationTest
+Ticket11 waiters 1 pid:blockers 46403:{46399}
+Ticket11 waiters 2 pid:blockers 46403:{46399}, 46406:{46403}
+Ticket11 waiters 1 pid:blockers 46424:{46420}
+Ticket11 waiters 2 pid:blockers 46424:{46420}, 46426:{46424}
+Ticket11 waiters 1 pid:blockers 46446:{46442}
+Ticket11 waiters 2 pid:blockers 46446:{46442}, 46448:{46446}
+Ticket11 waiters 1 pid:blockers 46468:{46464}
+Ticket11 waiters 1 pid:blockers 46533:{46529}
+Ticket11 waiters 2 pid:blockers 46533:{46529}, 46535:{46533}
+Ticket11 waiters 1 pid:blockers 46562:{46558}
+Ticket11 waiters 2 pid:blockers 46562:{46558}, 46567:{46562}
+Ticket11 waiters 1 pid:blockers 46624:{46620}
+Ticket11 waiters 1 pid:blockers 46641:{46637}
+Ticket11 waiters 1 pid:blockers 46655:{46651}
+Ticket11 waiters 2 pid:blockers 46655:{46651}, 46657:{46655}
+Ticket11 waiters 1 pid:blockers 46672:{46668}
+Ticket11 waiters 1 pid:blockers 46684:{46680}
+Ticket11 waiters 1 pid:blockers 46699:{46695}
+Ticket11 waiters 2 pid:blockers 46699:{46695}, 46701:{46699}
+Ticket11 waiters 1 pid:blockers 46792:{46786}
+Ticket11 waiters 2 pid:blockers 46792:{46786}, 46794:{46792}
+Ticket11 waiters 1 pid:blockers 46903:{46899}
+Ticket11 waiters 2 pid:blockers 46903:{46899}, 46905:{46903}
+Ticket11 operation 3 completed before gate release
+Ticket11 waiters 1 pid:blockers 46927:{46923}
+Ticket11 waiters 2 pid:blockers 46927:{46923}, 46929:{46927}
+[ERROR] Tests run: 36, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 491.6 s <<< FAILURE! -- in it.unifi.drivehub.BookingConcurrencyIntegrationTest
+[ERROR] it.unifi.drivehub.BookingConcurrencyIntegrationTest.failureAfterBookingInsertRollsBackActualWrites(boolean)[2] -- Time elapsed: 24.83 s <<< ERROR!
+org.postgresql.util.PSQLException: 
+ERROR: canceling statement due to user request
+  Where: PL/pgSQL function check_vehicle_year_after_model_release() line 4 at statement block
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2725)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2412)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:371)
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:502)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:419)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:341)
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:326)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:302)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:297)
+	at it.unifi.drivehub.BookingConcurrencyIntegrationTest.sql(BookingConcurrencyIntegrationTest.java:473)
+	at it.unifi.drivehub.BookingConcurrencyIntegrationTest.setUp(BookingConcurrencyIntegrationTest.java:36)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:1024)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1708)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1708)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+[ERROR] it.unifi.drivehub.BookingConcurrencyIntegrationTest.rentalPeriodsAreInclusiveAndAdjacentDaysRemainBookable(int, int, boolean)[2] -- Time elapsed: 14.80 s <<< ERROR!
+org.postgresql.util.PSQLException: 
+ERROR: canceling statement due to user request
+  Where: PL/pgSQL function check_vehicle_year_after_model_release() line 4 at statement block
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2725)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2412)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:371)
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:502)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:419)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:341)
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:326)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:302)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:297)
+	at it.unifi.drivehub.BookingConcurrencyIntegrationTest.sql(BookingConcurrencyIntegrationTest.java:473)
+	at it.unifi.drivehub.BookingConcurrencyIntegrationTest.setUp(BookingConcurrencyIntegrationTest.java:36)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1708)
+	at java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1708)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1708)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+[INFO] Running it.unifi.drivehub.BalanceConcurrencyIntegrationTest
+[ERROR] Tests run: 16, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 461.4 s <<< FAILURE! -- in it.unifi.drivehub.BalanceConcurrencyIntegrationTest
+[ERROR] it.unifi.drivehub.BalanceConcurrencyIntegrationTest.concurrentRefundsAcquireAccountsInClientOrder -- Time elapsed: 74.10 s <<< ERROR!
+org.postgresql.util.PSQLException: ERROR: canceling statement due to user request
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2725)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2412)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:371)
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:502)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:419)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:341)
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:326)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:302)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:297)
+	at it.unifi.drivehub.BalanceConcurrencyIntegrationTest.sql(BalanceConcurrencyIntegrationTest.java:293)
+	at it.unifi.drivehub.BalanceConcurrencyIntegrationTest.futureRefunds(BalanceConcurrencyIntegrationTest.java:269)
+	at it.unifi.drivehub.BalanceConcurrencyIntegrationTest.concurrentRefundsAcquireAccountsInClientOrder(BalanceConcurrencyIntegrationTest.java:185)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+[ERROR] it.unifi.drivehub.BalanceConcurrencyIntegrationTest.everyMovementSharesTheAccountProtocol(String, String)[1] -- Time elapsed: 47.25 s <<< ERROR!
+org.postgresql.util.PSQLException: The connection attempt failed.
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:358)
+	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:54)
+	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:273)
+	at org.postgresql.Driver.makeConnection(Driver.java:446)
+	at org.postgresql.Driver.connect(Driver.java:298)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
+	at it.unifi.drivehub.dao.DatabaseManager.getConnection(DatabaseManager.java:50)
+	at it.unifi.drivehub.BalanceConcurrencyIntegrationTest.race(BalanceConcurrencyIntegrationTest.java:304)
+	at it.unifi.drivehub.BalanceConcurrencyIntegrationTest.race(BalanceConcurrencyIntegrationTest.java:299)
+	at it.unifi.drivehub.BalanceConcurrencyIntegrationTest.everyMovementSharesTheAccountProtocol(BalanceConcurrencyIntegrationTest.java:160)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1708)
+	at java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1708)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1708)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:278)
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:304)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099)
+	at org.postgresql.core.VisibleBufferedInputStream.readMore(VisibleBufferedInputStream.java:162)
+	at org.postgresql.core.VisibleBufferedInputStream.ensureBytes(VisibleBufferedInputStream.java:129)
+	at org.postgresql.core.VisibleBufferedInputStream.ensureBytes(VisibleBufferedInputStream.java:114)
+	at org.postgresql.core.VisibleBufferedInputStream.read(VisibleBufferedInputStream.java:74)
+	at org.postgresql.core.PGStream.receiveChar(PGStream.java:467)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.enableSSL(ConnectionFactoryImpl.java:594)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:195)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:262)
+	... 42 more
+
+[INFO] Running it.unifi.drivehub.AuthServiceIntegrationTest
+[INFO] Tests run: 18, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.873 s -- in it.unifi.drivehub.AuthServiceIntegrationTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Errors: 
+[ERROR]   BalanceConcurrencyIntegrationTest.concurrentRefundsAcquireAccountsInClientOrder:185->futureRefunds:269->sql:293 » PSQL ERROR: canceling statement due to user request
+[ERROR]   BalanceConcurrencyIntegrationTest.everyMovementSharesTheAccountProtocol:160->race:299->race:304 » PSQL The connection attempt failed.
+[ERROR]   BookingConcurrencyIntegrationTest.setUp:36->sql:473 » PSQL ERROR: canceling statement due to user request
+  Where: PL/pgSQL function check_vehicle_year_after_model_release() line 4 at statement block
+[ERROR]   BookingConcurrencyIntegrationTest.setUp:36->sql:473 » PSQL ERROR: canceling statement due to user request
+  Where: PL/pgSQL function check_vehicle_year_after_model_release() line 4 at statement block
+[INFO] 
+[ERROR] Tests run: 363, Failures: 0, Errors: 4, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  19:00 min
+[INFO] Finished at: 2026-11-03T14:48:37+01:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.2.5:test (default-test) on project DriveHub: 
+[ERROR] 
+[ERROR] Please refer to /tmp/drivehub-ticket18-session/install/DriveHub/target/surefire-reports for the individual test results.
+[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

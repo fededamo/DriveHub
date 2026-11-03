@@ -3,6 +3,7 @@ package it.unifi.drivehub.dao.postgres;
 import it.unifi.drivehub.dao.DatabaseManager;
 import it.unifi.drivehub.dao.VehicleDao;
 import it.unifi.drivehub.domain.vehicle.Vehicle;
+import it.unifi.drivehub.domain.vehicle.PriceMode;
 import it.unifi.drivehub.domain.vehicle.VehicleState;
 
 import java.sql.Connection;
@@ -25,7 +26,7 @@ public final class PostgresVehicleDao implements VehicleDao {
     @Override
     public List<Vehicle> findAll() {
         List<Vehicle> list = new ArrayList<>();
-        String sql = "SELECT id, model, vin, licence_plate, kilometers, price, year, state::text as state_str FROM vehicle ORDER BY id ASC";
+        String sql = "SELECT id, model, vin, licence_plate, kilometers, price, price_mode, year, state::text as state_str FROM vehicle ORDER BY id ASC";
         try (Connection conn = db.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -41,7 +42,7 @@ public final class PostgresVehicleDao implements VehicleDao {
     @Override
     public List<Vehicle> findByState(VehicleState state) {
         List<Vehicle> list = new ArrayList<>();
-        String sql = "SELECT id, model, vin, licence_plate, kilometers, price, year, state::text as state_str FROM vehicle WHERE state = ?::vehicle_state ORDER BY id ASC";
+        String sql = "SELECT id, model, vin, licence_plate, kilometers, price, price_mode, year, state::text as state_str FROM vehicle WHERE state = ?::vehicle_state ORDER BY id ASC";
         try (Connection conn = db.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, state.name());
@@ -67,8 +68,18 @@ public final class PostgresVehicleDao implements VehicleDao {
 
     @Override
     public Optional<Vehicle> findById(Long id, Connection conn) {
-        String sql = "SELECT id, model, vin, licence_plate, kilometers, price, year, state::text as state_str FROM vehicle WHERE id = ?";
+        return findById(id, conn, false);
+    }
+
+    @Override
+    public Optional<Vehicle> findByIdForUpdate(Long id, Connection conn) {
+        return findById(id, conn, true);
+    }
+
+    private Optional<Vehicle> findById(Long id, Connection conn, boolean forUpdate) {
+        String sql = "SELECT id, model, vin, licence_plate, kilometers, price, price_mode, year, state::text as state_str FROM vehicle WHERE id = ?" + (forUpdate ? " FOR UPDATE" : "");
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            if (forUpdate && conn.getAutoCommit()) throw new IllegalArgumentException("Il lock del veicolo richiede una transazione attiva.");
             ps.setLong(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -92,8 +103,16 @@ public final class PostgresVehicleDao implements VehicleDao {
 
     @Override
     public Optional<Vehicle> findByVin(String vin, Connection conn) {
-        String sql = "SELECT id, model, vin, licence_plate, kilometers, price, year, state::text as state_str FROM vehicle WHERE UPPER(vin) = UPPER(?)";
+        return findByVin(vin, conn, false);
+    }
+    @Override
+    public Optional<Vehicle> findByVinForUpdate(String vin, Connection conn) {
+        return findByVin(vin, conn, true);
+    }
+    private Optional<Vehicle> findByVin(String vin, Connection conn, boolean forUpdate) {
+        String sql = "SELECT id, model, vin, licence_plate, kilometers, price, price_mode, year, state::text as state_str FROM vehicle WHERE UPPER(vin) = UPPER(?)" + (forUpdate ? " FOR UPDATE" : "");
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            if (forUpdate && conn.getAutoCommit()) throw new IllegalArgumentException("Il lock del veicolo richiede una transazione attiva.");
             ps.setString(1, vin.trim());
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -108,8 +127,8 @@ public final class PostgresVehicleDao implements VehicleDao {
 
     @Override
     public Vehicle save(Vehicle vehicle, Connection conn) {
-        String sql = "INSERT INTO vehicle (model, vin, licence_plate, kilometers, price, year, state) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?::vehicle_state) RETURNING id";
+        String sql = "INSERT INTO vehicle (model, vin, licence_plate, kilometers, price, year, state, price_mode) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?::vehicle_state, ?) RETURNING id";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, vehicle.getModelId());
             ps.setString(2, vehicle.getVin());
@@ -122,12 +141,13 @@ public final class PostgresVehicleDao implements VehicleDao {
             ps.setBigDecimal(5, vehicle.getPrice());
             ps.setInt(6, vehicle.getYear());
             ps.setString(7, vehicle.getState().name());
+            ps.setString(8, vehicle.getPriceMode().name());
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     long id = rs.getLong(1);
                     return Vehicle.create(id, vehicle.getModelId(), vehicle.getVin(), vehicle.getLicencePlate(),
-                            vehicle.getKilometers(), vehicle.getPrice(), vehicle.getYear(), vehicle.getState());
+                            vehicle.getKilometers(), vehicle.getPrice(), vehicle.getYear(), vehicle.getState(), vehicle.getPriceMode());
                 }
                 throw new SQLException("Inserimento veicolo non ha restituito l'ID generato.");
             }
@@ -138,7 +158,7 @@ public final class PostgresVehicleDao implements VehicleDao {
 
     @Override
     public void update(Vehicle vehicle, Connection conn) {
-        String sql = "UPDATE vehicle SET model = ?, licence_plate = ?, kilometers = ?, price = ?, state = ?::vehicle_state " +
+        String sql = "UPDATE vehicle SET model = ?, licence_plate = ?, kilometers = ?, price = ?, state = ?::vehicle_state, price_mode = ? " +
                 "WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, vehicle.getModelId());
@@ -150,10 +170,24 @@ public final class PostgresVehicleDao implements VehicleDao {
             ps.setInt(3, vehicle.getKilometers());
             ps.setBigDecimal(4, vehicle.getPrice());
             ps.setString(5, vehicle.getState().name());
-            ps.setLong(6, vehicle.getId());
-            ps.executeUpdate();
+            ps.setString(6, vehicle.getPriceMode().name());
+            ps.setLong(7, vehicle.getId());
+            if (ps.executeUpdate() != 1) throw new SQLException("Veicolo da aggiornare non trovato: " + vehicle.getId());
         } catch (SQLException e) {
             throw new RuntimeException("Errore durante l'aggiornamento del veicolo id: " + vehicle.getId(), e);
+        }
+    }
+
+    @Override
+    public void updatePricing(Vehicle vehicle, Connection conn) {
+        String sql = "UPDATE vehicle SET price = ?, price_mode = ? WHERE id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setBigDecimal(1, vehicle.getPrice());
+            ps.setString(2, vehicle.getPriceMode().name());
+            ps.setLong(3, vehicle.getId());
+            if (ps.executeUpdate() != 1) throw new SQLException("Veicolo non trovato durante l'aggiornamento della base.");
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore durante l'aggiornamento della base del veicolo.", e);
         }
     }
 
@@ -176,7 +210,7 @@ public final class PostgresVehicleDao implements VehicleDao {
         String sql = "DELETE FROM vehicle WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, id);
-            ps.executeUpdate();
+            if (ps.executeUpdate() != 1) throw new SQLException("Veicolo da eliminare non trovato: " + id);
         } catch (SQLException e) {
             throw new RuntimeException("Errore durante l'eliminazione del veicolo id: " + id, e);
         }
@@ -184,13 +218,21 @@ public final class PostgresVehicleDao implements VehicleDao {
 
     @Override
     public boolean hasAssociatedOperations(Long vehicleId) {
+        try (Connection conn = db.getConnection()) {
+            return hasAssociatedOperations(vehicleId, conn);
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore di connessione durante la verifica dello storico del veicolo.", e);
+        }
+    }
+
+    @Override
+    public boolean hasAssociatedOperations(Long vehicleId, Connection conn) {
         String sql = "SELECT (" +
                 "EXISTS(SELECT 1 FROM test_drive WHERE vehicle = ?) OR " +
                 "EXISTS(SELECT 1 FROM rent WHERE vehicle = ?) OR " +
                 "EXISTS(SELECT 1 FROM sale WHERE vehicle = ?)" +
                 ") AS has_ops";
-        try (Connection conn = db.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, vehicleId);
             ps.setLong(2, vehicleId);
             ps.setLong(3, vehicleId);
@@ -214,7 +256,8 @@ public final class PostgresVehicleDao implements VehicleDao {
                 rs.getInt("kilometers"),
                 rs.getBigDecimal("price"),
                 rs.getInt("year"),
-                VehicleState.valueOf(rs.getString("state_str"))
+                VehicleState.valueOf(rs.getString("state_str")),
+                PriceMode.valueOf(rs.getString("price_mode"))
         );
     }
 }

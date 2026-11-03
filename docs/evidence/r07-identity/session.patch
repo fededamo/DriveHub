@@ -1,0 +1,1316 @@
+--- a/DriveHub/src/main/java/it/unifi/drivehub/dao/UserDao.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/dao/UserDao.java
+@@ -32,8 +32,11 @@
+ 
+     void updatePassword(Long id, String role, String newHashPassword, Connection conn);
+ 
++    /** Blocca l'identità prima del conto e della verifica dei vincoli di cancellazione. */
++    void lockUser(Long id, String role, Connection conn);
++
+     void deleteUser(Long id, String role, Connection conn);
+ 
+-    boolean hasAssociatedOperations(Long userId, String role);
++    boolean hasAssociatedOperations(Long userId, String role, Connection conn);
+ }
+ 
+--- a/DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresUserDao.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresUserDao.java
+@@ -212,27 +212,47 @@
+     }
+ 
+     @Override
++    public void lockUser(Long id, String role, Connection conn) {
++        String table = resolveTable(role);
++        // Compatibile con i KEY SHARE delle FK: un acquisto già sul conto può terminare.
++        try (PreparedStatement ps = conn.prepareStatement("SELECT id FROM " + table + " WHERE id = ? FOR NO KEY UPDATE")) {
++            if (conn.getAutoCommit()) throw new IllegalArgumentException("Il lock dell'identità richiede una transazione attiva.");
++            ps.setLong(1, id);
++            try (ResultSet rs = ps.executeQuery()) {
++                if (!rs.next()) throw new IllegalStateException("Identità non trovata per il ruolo indicato.");
++            }
++        } catch (SQLException e) {
++            throw new RuntimeException("Errore durante il lock dell'identità.", e);
++        }
++    }
++
++    @Override
+     public void deleteUser(Long id, String role, Connection conn) {
+         String table = resolveTable(role);
+         String sql = "DELETE FROM " + table + " WHERE id = ?";
+         try (PreparedStatement ps = conn.prepareStatement(sql)) {
+             ps.setLong(1, id);
+-            ps.executeUpdate();
+-        } catch (SQLException e) {
++            if (ps.executeUpdate() != 1) throw new IllegalStateException("Cancellazione dell'identità non eseguita.");
++        } catch (SQLException e) {
++            if ("23503".equals(e.getSQLState())) {
++                throw new IllegalStateException("Impossibile eliminare l'identità: un'operazione associata ne impedisce la cancellazione.", e);
++            }
+             throw new RuntimeException("Errore durante la cancellazione dell'utente.", e);
+         }
+     }
+ 
+     @Override
+-    public boolean hasAssociatedOperations(Long userId, String role) {
++    public boolean hasAssociatedOperations(Long userId, String role, Connection conn) {
++        String table = resolveTable(role);
+         String checkSql;
+-        if ("CLIENT".equalsIgnoreCase(role)) {
++        if ("client".equals(table)) {
+             checkSql = "SELECT (" +
++                    "EXISTS(SELECT 1 FROM request WHERE client = ?) OR " +
+                     "EXISTS(SELECT 1 FROM test_drive WHERE client = ?) OR " +
+                     "EXISTS(SELECT 1 FROM rent WHERE client = ?) OR " +
+                     "EXISTS(SELECT 1 FROM sale WHERE client = ?)" +
+                     ") AS has_ops";
+-        } else if ("SALESMAN".equalsIgnoreCase(role)) {
++        } else if ("salesman".equals(table)) {
+             checkSql = "SELECT (" +
+                     "EXISTS(SELECT 1 FROM request WHERE salesman = ?) OR " +
+                     "EXISTS(SELECT 1 FROM sale WHERE salesman = ?)" +
+@@ -241,12 +261,12 @@
+             return false;
+         }
+ 
+-        try (Connection conn = db.getConnection();
+-             PreparedStatement ps = conn.prepareStatement(checkSql)) {
+-            if ("CLIENT".equalsIgnoreCase(role)) {
++        try (PreparedStatement ps = conn.prepareStatement(checkSql)) {
++            if ("client".equals(table)) {
+                 ps.setLong(1, userId);
+                 ps.setLong(2, userId);
+                 ps.setLong(3, userId);
++                ps.setLong(4, userId);
+             } else {
+                 ps.setLong(1, userId);
+                 ps.setLong(2, userId);
+--- a/DriveHub/src/main/java/it/unifi/drivehub/service/AuthService.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/service/AuthService.java
+@@ -77,11 +77,20 @@
+     }
+ 
+     public void deleteAccount(Long userId, String role, String currentPassword) {
+-        verifyPasswordBeforeAction(userId, currentPassword);
+-        if (userDao.hasAssociatedOperations(userId, role)) {
+-            throw new IllegalStateException("Impossibile eliminare l'account: sono presenti operazioni storiche associate (Test Drive, Noleggi o Vendite).");
++        User user = verifyPasswordBeforeAction(userId, currentPassword);
++        try {
++            db.executeInTransaction(conn -> {
++                userDao.lockUser(userId, role, conn);
++                if (user instanceof Client) bankAccountDao.findByClientIdForUpdate(userId, conn);
++                if (userDao.hasAssociatedOperations(userId, role, conn)) {
++                    throw new IllegalStateException("Impossibile eliminare l'identità: sono presenti richieste o operazioni storiche associate.");
++                }
++                userDao.deleteUser(userId, role, conn);
++            });
++        } catch (RuntimeException failure) {
++            if (failure.getCause() instanceof IllegalStateException reason) throw reason;
++            throw failure;
+         }
+-        db.executeInTransaction(conn -> userDao.deleteUser(userId, role, conn));
+     }
+ 
+     public void topUpClientBalance(Long clientId, BigDecimal amount) {
+--- a/DriveHub/src/main/java/it/unifi/drivehub/presentation/view/AccountManagementDialog.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/presentation/view/AccountManagementDialog.java
+@@ -35,7 +35,7 @@
+         Stage dialog = new Stage();
+         dialog.initOwner(owner);
+         dialog.initModality(Modality.APPLICATION_MODAL);
+-        dialog.setTitle("Gestione Account - " + user.getName() + " " + user.getSurname());
++        dialog.setTitle("Gestione Identità - " + user.getName() + " " + user.getSurname());
+ 
+         TabPane tabPane = new TabPane();
+         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+@@ -129,30 +129,32 @@
+         }
+ 
+         // Tab 4: Elimina Account
+-        Tab deleteTab = new Tab("Elimina Account");
++        Tab deleteTab = new Tab("Elimina Identità");
+         VBox deleteBox = new VBox(15);
+         deleteBox.setPadding(new Insets(20));
+         PasswordField pwdForDeleteField = new PasswordField();
+         pwdForDeleteField.setPromptText("Password attuale per confermare");
+-        Button btnDelete = new Button("Elimina Definitivamente Account");
++        Button btnDelete = new Button("Elimina Definitivamente Identità");
+         btnDelete.getStyleClass().add("button-danger");
+         btnDelete.setOnAction(e -> {
+             boolean confirm = UiUtils.showConfirmation("Conferma Eliminazione",
+-                    "Sei sicuro di voler eliminare il tuo account?",
+-                    "L'operazione è consentita solo se non risultano operazioni storiche associate nel sistema.");
++                    "Sei sicuro di voler eliminare la tua identità di accesso?",
++                    "Richieste e operazioni storiche impediscono la cancellazione. Per il cliente viene rimosso anche il conto dimostrativo con la sua disponibilità.");
+             if (!confirm) return;
+ 
+             try {
+                 authService.deleteAccount(user.getId(), user.getRoleDisplayName(), pwdForDeleteField.getText());
+-                UiUtils.showInfo("Account Eliminato", "L'account è stato cancellato con successo.");
++                UiUtils.showInfo("Identità Eliminata", "L'identità di accesso è stata cancellata con successo.");
+                 dialog.close();
+                 if (onAccountDeleted != null) onAccountDeleted.run();
+             } catch (Exception ex) {
+                 UiUtils.showError("Eliminazione Impossibile", ex.getMessage());
+             }
+         });
++        Label deletionRules = new Label("L'identità può essere eliminata solo senza richieste o operazioni associate, anche storiche. Per il cliente viene rimosso anche il conto dimostrativo con la sua disponibilità.");
++        deletionRules.setWrapText(true);
+         deleteBox.getChildren().addAll(
+-                new Label("Attenzione: l'eliminazione dell'account è consentita solo se non sono state effettuate operazioni (Test Drive, Noleggi, Vendite)."),
++                deletionRules,
+                 new Label("Inserisci la password per confermare:"), pwdForDeleteField,
+                 btnDelete
+         );
+--- a/DriveHub/src/main/resources/db/schema.sql
++++ b/DriveHub/src/main/resources/db/schema.sql
+@@ -306,7 +306,7 @@
+     ),
+     CONSTRAINT "pk_sale" PRIMARY KEY ("id"),
+     CONSTRAINT "fk_sale_vehicle" FOREIGN KEY ("vehicle") REFERENCES "vehicle" ("id") ON DELETE SET NULL,
+-    CONSTRAINT "fk_sale_salesman" FOREIGN KEY ("salesman") REFERENCES "salesman" ("id") ON DELETE SET NULL,
++    CONSTRAINT "fk_sale_salesman" FOREIGN KEY ("salesman") REFERENCES "salesman" ("id") ON DELETE RESTRICT,
+     CONSTRAINT "fk_sale_client" FOREIGN KEY ("client") REFERENCES "client" ("id") ON DELETE RESTRICT
+ );
+ 
+--- /dev/null
++++ b/DriveHub/src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java
+@@ -0,0 +1,519 @@
++package it.unifi.drivehub;
++
++import it.unifi.drivehub.dao.DatabaseManager;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.AfterEach;
++import org.junit.jupiter.api.Tag;
++import org.junit.jupiter.api.Test;
++import org.junit.jupiter.params.ParameterizedTest;
++import org.junit.jupiter.params.provider.CsvSource;
++import org.junit.jupiter.params.provider.ValueSource;
++
++import java.sql.Connection;
++import java.sql.SQLException;
++import java.util.ArrayList;
++import java.util.LinkedHashMap;
++import java.util.List;
++import java.util.Map;
++import java.util.concurrent.Callable;
++import java.util.concurrent.Executors;
++import java.util.concurrent.TimeUnit;
++
++import static org.junit.jupiter.api.Assertions.*;
++
++@Tag("postgres")
++class IdentityDeletionIntegrationTest {
++    private DatabaseManager db;
++    private AppContext ctx;
++
++    @BeforeEach
++    void setUp() throws Exception {
++        db = TestDatabase.fromEnvironment().reset();
++        ctx = new AppContext(db);
++        sql("""
++                DELETE FROM sale; DELETE FROM rent; DELETE FROM test_drive; DELETE FROM request;
++                UPDATE bank_account SET balance = 30000 WHERE client IN (1, 2);
++                INSERT INTO model(id, brand, name, release_price, release_year)
++                VALUES (1301, 'Fiat', 'Ticket13', 20000, EXTRACT(YEAR FROM CURRENT_DATE));
++                INSERT INTO vehicle(id, model, vin, kilometers, price, year, state) VALUES
++                (1301, 1301, 'T1300000000000001', 0, 20000, EXTRACT(YEAR FROM CURRENT_DATE), 'SALE'),
++                (1302, 1301, 'T1300000000000002', 0, 20000, EXTRACT(YEAR FROM CURRENT_DATE), 'RENT');
++                """);
++    }
++
++    @ParameterizedTest
++    @CsvSource({"Venditore,PURCHASE,20000", "SALESMAN,PURCHASE,20000",
++            "Venditore,ACQUISITION,-16000", "SALESMAN,ACQUISITION,-16000",
++            "Venditore,PENALTY,400", "SALESMAN,PENALTY,400"})
++    void salesmanWithOnlyCompletedSalesRetainsIdentityAndAttribution(String role, String type, int amount) throws Exception {
++        sql("INSERT INTO sale(vehicle, salesman, client, amount, date, type) VALUES "
++                + "(1301,16,1," + amount + ",CURRENT_TIMESTAMP,'" + type + "')");
++        var before = snapshot();
++
++        var error = assertThrows(IllegalStateException.class,
++                () -> ctx.getAuthService().deleteAccount(16L, role, "password"));
++
++        assertTrue(error.getMessage().contains("associate"));
++        assertEquals(before, snapshot());
++        assertEquals(16L, new AppContext(db).getAuthService().login("paolo.costa@drivehub.it", "password").getId());
++    }
++
++    @ParameterizedTest
++    @CsvSource({"Cliente,PURCHASE", "CLIENT,PURCHASE", "Cliente,SALE", "CLIENT,SALE"})
++    void clientWithOnlyARequestCannotDeleteIdentity(String role, String type) throws Exception {
++        if (type.equals("PURCHASE")) ctx.getPurchaseService().initiatePurchase(1301L, 1L);
++        else ctx.getSaleToDealershipService().submitSaleProposal(1L, 1301L,
++                "T1300000000000003", null, 0, java.time.LocalDate.now().getYear());
++        var before = snapshot();
++
++        var error = assertThrows(IllegalStateException.class,
++                () -> ctx.getAuthService().deleteAccount(1L, role, "password"));
++
++        assertTrue(error.getMessage().contains("richieste"));
++        assertEquals(before, snapshot());
++        assertEquals(1L, new AppContext(db).getAuthService().login("mario.rossi@email.it", "password").getId());
++    }
++
++    @ParameterizedTest
++    @CsvSource({"PURCHASE,20000", "ACQUISITION,-16000", "PENALTY,400"})
++    void databaseCannotEraseSalesmanAttributionEvenWithoutServices(String type, int amount) throws Exception {
++        sql("INSERT INTO sale(vehicle, salesman, client, amount, date, type) VALUES "
++                + "(1301,16,1," + amount + ",CURRENT_TIMESTAMP,'" + type + "')");
++        var before = snapshot();
++
++        var error = assertThrows(SQLException.class, () -> sql("DELETE FROM salesman WHERE id = 16"));
++
++        assertEquals("23503", error.getSQLState());
++        assertEquals(before, snapshot());
++    }
++
++    @Test
++    void saleCommittedWhileDeletionWaitsPreservesAttributionAndExplainsRefusal() throws Exception {
++        var failures = race("SELECT id FROM salesman WHERE id = 16 FOR NO KEY UPDATE",
++                "INSERT INTO sale(vehicle,salesman,client,amount,date,type) VALUES (1301,16,1,20000,CURRENT_TIMESTAMP,'PURCHASE')",
++                () -> ctx.getAuthService().deleteAccount(16L, "Venditore", "password"));
++
++        assertInstanceOf(IllegalStateException.class, failures.getFirst());
++        assertEquals(16, scalar("SELECT salesman FROM sale WHERE vehicle = 1301"));
++        assertEquals(16L, new AppContext(db).getAuthService().login("paolo.costa@drivehub.it", "password").getId());
++    }
++
++    @Test
++    void purchaseAlreadyWaitingOnBalanceCannotDeadlockWithIdentityDeletion() throws Exception {
++        var failures = race("SELECT client FROM bank_account WHERE client = 1 FOR UPDATE", "",
++                () -> new AppContext(db).getPurchaseService().initiatePurchase(1301L, 1L),
++                () -> new AppContext(db).getAuthService().deleteAccount(1L, "Cliente", "password"));
++
++        assertNull(failures.getFirst(), () -> String.valueOf(failures.getFirst()));
++        assertInstanceOf(IllegalStateException.class, failures.get(1));
++        assertEquals(1, scalar("SELECT count(*) FROM request WHERE client = 1"));
++        assertEquals(26000, scalar("SELECT balance FROM bank_account WHERE client = 1"));
++    }
++
++    @AfterEach
++    void cleanupTriggers() throws Exception {
++        if (db != null) sql("DROP FUNCTION IF EXISTS ticket13_gate() CASCADE; "
++                + "DROP FUNCTION IF EXISTS ticket13_fail() CASCADE; DROP SEQUENCE IF EXISTS ticket13_writes");
++    }
++
++    @Test
++    void skippedDeletionCannotReportSuccess() throws Exception {
++        sql("""
++                CREATE FUNCTION ticket13_fail() RETURNS trigger LANGUAGE plpgsql AS $$
++                BEGIN RETURN NULL; END $$;
++                CREATE TRIGGER ticket13_fail BEFORE DELETE ON client
++                FOR EACH ROW EXECUTE FUNCTION ticket13_fail();
++                """);
++        var before = snapshot();
++
++        assertThrows(IllegalStateException.class,
++                () -> ctx.getAuthService().deleteAccount(1L, "Cliente", "password"));
++
++        assertEquals(before, snapshot());
++    }
++
++    @ParameterizedTest
++    @CsvSource({"1,Cliente,mario.rossi@email.it", "1,CLIENT,mario.rossi@email.it",
++            "16,Venditore,paolo.costa@drivehub.it", "16,SALESMAN,paolo.costa@drivehub.it",
++            "20,Manager,vittorio.manager@drivehub.it", "20,MANAGER,vittorio.manager@drivehub.it"})
++    void identitiesWithoutOperationsRemainDeletableIncludingDemonstrationBalance(long id, String role, String email) throws Exception {
++        var before = snapshot();
++        int accounts = scalar("SELECT count(*) FROM bank_account");
++
++        ctx.getAuthService().deleteAccount(id, role, "password");
++
++        assertThrows(IllegalArgumentException.class, () -> new AppContext(db).getAuthService().login(email, "password"));
++        assertEquals(0, scalar("SELECT count(*) FROM public.\"user\" WHERE id = " + id));
++        assertEquals(accounts - (id == 1 ? 1 : 0), scalar("SELECT count(*) FROM bank_account"));
++        var after = snapshot();
++        String changed = id == 1 ? "client" : id == 16 ? "salesman" : "manager";
++        before.remove(changed); after.remove(changed);
++        if (id == 1) { before.remove("bank_account"); after.remove("bank_account"); }
++        assertEquals(before, after);
++    }
++
++    @Test
++    void clientWithoutADemonstrationAccountIsStillDeletable() throws Exception {
++        sql("DELETE FROM bank_account WHERE client = 1");
++        ctx.getAuthService().deleteAccount(1L, "Cliente", "password");
++        assertEquals(0, scalar("SELECT count(*) FROM client WHERE id = 1"));
++    }
++
++    @ParameterizedTest
++    @CsvSource({"1,Cliente", "16,Venditore", "20,Manager"})
++    void wrongPasswordCannotDeleteAnyRole(long id, String role) throws Exception {
++        var before = snapshot();
++        assertThrows(IllegalArgumentException.class, () -> ctx.getAuthService().deleteAccount(id, role, "errata"));
++        assertEquals(before, snapshot());
++    }
++
++    @ParameterizedTest
++    @CsvSource({"1,Manager", "16,Cliente", "20,Venditore"})
++    void mismatchedRoleCannotReportADeletion(long id, String role) throws Exception {
++        var before = snapshot();
++        assertThrows(IllegalStateException.class, () -> ctx.getAuthService().deleteAccount(id, role, "password"));
++        assertEquals(before, snapshot());
++    }
++
++    @ParameterizedTest
++    @ValueSource(strings = {"unknown", "client;DELETE FROM sale", ""})
++    void unrecognizedRoleCannotChangeAnyData(String role) throws Exception {
++        var before = snapshot();
++        var error = assertThrows(RuntimeException.class,
++                () -> ctx.getAuthService().deleteAccount(1L, role, "password"));
++        assertInstanceOf(IllegalArgumentException.class, rootCause(error));
++        assertEquals(before, snapshot());
++    }
++
++    @ParameterizedTest
++    @CsvSource({"Cliente,TD,-1", "CLIENT,TD,1", "Cliente,RENT,-2", "CLIENT,RENT,0", "Cliente,RENT,2",
++            "Cliente,PURCHASE,0", "CLIENT,ACQUISITION,0", "Cliente,PENALTY,0"})
++    void clientOperationsAndHistoryRemainBinding(String role, String operation, int day) throws Exception {
++        switch (operation) {
++            case "TD" -> sql("INSERT INTO test_drive(vehicle,client,date) VALUES (1302,1,CURRENT_DATE + " + day + " + TIME '10:00')");
++            case "RENT" -> sql("INSERT INTO rent(vehicle,client,amount,start,\"end\") VALUES (1302,1,20,CURRENT_DATE + " + day + ",CURRENT_DATE + " + day + ")");
++            default -> sql("INSERT INTO sale(vehicle,salesman,client,amount,date,type) VALUES (1301,16,1,"
++                    + (operation.equals("ACQUISITION") ? -16000 : 400) + ",CURRENT_TIMESTAMP,'" + operation + "')");
++        }
++        var before = snapshot();
++        assertThrows(IllegalStateException.class, () -> ctx.getAuthService().deleteAccount(1L, role, "password"));
++        assertEquals(before, snapshot());
++    }
++
++    @ParameterizedTest
++    @CsvSource({"Venditore,PURCHASE", "SALESMAN,PURCHASE", "Venditore,SALE", "SALESMAN,SALE"})
++    void salesmanWithOnlyAnAssignedRequestCannotDelete(String role, String type) throws Exception {
++        var request = type.equals("PURCHASE") ? ctx.getPurchaseService().initiatePurchase(1301L, 1L)
++                : ctx.getSaleToDealershipService().submitSaleProposal(1L, 1301L, "T1300000000000003", null, 0, java.time.LocalDate.now().getYear());
++        sql("UPDATE request SET salesman = 16 WHERE id = " + request.getId());
++        var before = snapshot();
++        assertThrows(IllegalStateException.class, () -> ctx.getAuthService().deleteAccount(16L, role, "password"));
++        assertEquals(before, snapshot());
++    }
++
++    @ParameterizedTest
++    @CsvSource({"false,false", "false,true", "true,false", "true,true"})
++    void clientBookingAndDeletionAreCoherentInBothOrders(boolean rental, boolean deleteFirst) throws Exception {
++        Runnable booking = () -> {
++            var fresh = new AppContext(db);
++            var date = java.time.LocalDate.now().plusDays(2);
++            if (rental) fresh.getRentalService().bookRental(1302L, 1L, date, date);
++            else fresh.getTestDriveService().bookTestDrive(1302L, 1L, date.atTime(10, 0));
++        };
++        Runnable deletion = () -> new AppContext(db).getAuthService().deleteAccount(1L, "Cliente", "password");
++        var failures = race("SELECT id FROM client WHERE id = 1 FOR NO KEY UPDATE", "",
++                deleteFirst ? deletion : booking, deleteFirst ? booking : deletion);
++        assertNull(failures.getFirst(), () -> String.valueOf(failures.getFirst()));
++        assertInstanceOf(IllegalStateException.class, failures.get(1));
++        assertEquals(deleteFirst ? 0 : 1, scalar("SELECT count(*) FROM client WHERE id = 1"));
++        assertEquals(deleteFirst ? 0 : 1, scalar("SELECT count(*) FROM " + (rental ? "rent" : "test_drive") + " WHERE client = 1"));
++        if (!deleteFirst) assertEquals(rental ? 29980 : 30000, scalar("SELECT balance FROM bank_account WHERE client = 1"));
++    }
++
++    @Test
++    void deletionAlreadyWaitingOnBalancePreventsPurchaseWithoutPartialVehicleChange() throws Exception {
++        var failures = race("SELECT client FROM bank_account WHERE client = 1 FOR UPDATE", "",
++                () -> new AppContext(db).getAuthService().deleteAccount(1L, "Cliente", "password"),
++                () -> new AppContext(db).getPurchaseService().initiatePurchase(1301L, 1L));
++        assertNull(failures.getFirst());
++        assertNotNull(failures.get(1));
++        assertFalse(rootCause(failures.get(1)) instanceof SQLException error && "40P01".equals(error.getSQLState()));
++        assertEquals(0, scalar("SELECT count(*) FROM request WHERE client = 1"));
++        assertEquals(0, scalar("SELECT count(*) FROM bank_account WHERE client = 1"));
++        assertEquals(1, scalar("SELECT count(*) FROM vehicle WHERE id = 1301 AND state = 'SALE'"));
++    }
++
++    @ParameterizedTest
++    @ValueSource(booleans = {false, true})
++    void acquisitionInsertedBeforeDeletionEitherRetainsAttributionOrRollsBack(boolean failOperation) throws Exception {
++        var request = ctx.getSaleToDealershipService().submitSaleProposal(1L, 1301L, "T1300000000000003", null, 0, java.time.LocalDate.now().getYear());
++        sql("CREATE SEQUENCE ticket13_writes; CREATE FUNCTION ticket13_gate() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN "
++                + "IF (SELECT balance FROM bank_account WHERE client = 1) <> 50000 OR NOT EXISTS (SELECT 1 FROM sale WHERE salesman = 16) "
++                + "THEN RAISE EXCEPTION 'ticket13_writes_not_observed'; END IF; "
++                + "PERFORM nextval('ticket13_writes'); PERFORM pg_advisory_xact_lock(1313); "
++                + (failOperation ? "RAISE EXCEPTION 'ticket13_after_acquisition'; " : "")
++                + "RETURN NEW; END $$; CREATE TRIGGER ticket13_gate AFTER INSERT ON sale FOR EACH ROW EXECUTE FUNCTION ticket13_gate()");
++        var failures = race("SELECT pg_advisory_xact_lock(1313)", "",
++                () -> new AppContext(db).getSaleToDealershipService().approveSaleProposal(request.getId(), 16L),
++                () -> new AppContext(db).getAuthService().deleteAccount(16L, "Venditore", "password"));
++        assertEquals(1, scalar("SELECT last_value FROM ticket13_writes"));
++        if (failOperation) {
++            assertNotNull(failures.getFirst());
++            assertTrue(rootCause(failures.getFirst()).getMessage().contains("ticket13_after_acquisition"));
++            assertNull(failures.get(1));
++        } else {
++            assertNull(failures.getFirst());
++            assertInstanceOf(IllegalStateException.class, failures.get(1));
++        }
++        assertEquals(failOperation ? 0 : 1, scalar("SELECT count(*) FROM salesman WHERE id = 16"));
++        assertEquals(failOperation ? 0 : 1, scalar("SELECT count(*) FROM sale WHERE salesman = 16"));
++        assertEquals(failOperation ? 30000 : 50000, scalar("SELECT balance FROM bank_account WHERE client = 1"));
++        assertEquals(failOperation ? 1 : 0, scalar("SELECT count(*) FROM request WHERE id = " + request.getId()));
++        assertEquals(1, scalar("SELECT count(*) FROM vehicle WHERE vin = 'T1300000000000003' AND state = '" + (failOperation ? "WAITING" : "SALE") + "'"));
++    }
++
++    @ParameterizedTest
++    @ValueSource(booleans = {false, true})
++    void acquisitionAfterActualSalesmanDeletionRollsBackItsCredit(boolean failDeletion) throws Exception {
++        var request = ctx.getSaleToDealershipService().submitSaleProposal(1L, 1301L, "T1300000000000003", null, 0, java.time.LocalDate.now().getYear());
++        sql("CREATE SEQUENCE ticket13_writes; CREATE FUNCTION ticket13_gate() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN "
++                + "IF EXISTS (SELECT 1 FROM salesman WHERE id = 16) THEN RAISE EXCEPTION 'ticket13_delete_not_observed'; END IF; "
++                + "PERFORM nextval('ticket13_writes'); PERFORM pg_advisory_xact_lock(1313); "
++                + (failDeletion ? "RAISE EXCEPTION 'ticket13_after_deletion'; " : "")
++                + "RETURN OLD; END $$; CREATE TRIGGER ticket13_gate AFTER DELETE ON salesman FOR EACH ROW EXECUTE FUNCTION ticket13_gate(); "
++                + "CREATE FUNCTION ticket13_fail() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN "
++                + "IF (SELECT balance FROM bank_account WHERE client = 1) <> 50000 THEN RAISE EXCEPTION 'ticket13_credit_not_observed'; END IF; "
++                + "PERFORM nextval('ticket13_writes'); RETURN NEW; END $$; "
++                + "CREATE TRIGGER ticket13_fail BEFORE INSERT ON sale FOR EACH ROW EXECUTE FUNCTION ticket13_fail()");
++        var failures = race("SELECT pg_advisory_xact_lock(1313)", "",
++                () -> new AppContext(db).getAuthService().deleteAccount(16L, "Venditore", "password"),
++                () -> new AppContext(db).getSaleToDealershipService().approveSaleProposal(request.getId(), 16L));
++        assertEquals(2, scalar("SELECT last_value FROM ticket13_writes"));
++        if (failDeletion) {
++            assertNotNull(failures.getFirst());
++            assertTrue(rootCause(failures.getFirst()).getMessage().contains("ticket13_after_deletion"));
++            assertNull(failures.get(1));
++        } else {
++            assertNull(failures.getFirst());
++            assertInstanceOf(SQLException.class, rootCause(failures.get(1)));
++            assertEquals("23503", ((SQLException) rootCause(failures.get(1))).getSQLState());
++        }
++        assertEquals(failDeletion ? 1 : 0, scalar("SELECT count(*) FROM salesman WHERE id = 16"));
++        assertEquals(failDeletion ? 1 : 0, scalar("SELECT count(*) FROM sale WHERE salesman = 16"));
++        assertEquals(failDeletion ? 50000 : 30000, scalar("SELECT balance FROM bank_account WHERE client = 1"));
++        assertEquals(failDeletion ? 0 : 1, scalar("SELECT count(*) FROM request WHERE id = " + request.getId()));
++        assertEquals(1, scalar("SELECT count(*) FROM vehicle WHERE vin = 'T1300000000000003' AND state = '" + (failDeletion ? "SALE" : "WAITING") + "'"));
++    }
++
++    @Test
++    void errorAfterActualIdentityAndAccountDeletionRollsBackBoth() throws Exception {
++        sql("""
++                CREATE SEQUENCE ticket13_writes;
++                CREATE FUNCTION ticket13_fail() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN
++                IF EXISTS (SELECT 1 FROM client WHERE id = 1) OR EXISTS (SELECT 1 FROM bank_account WHERE client = 1)
++                THEN RAISE EXCEPTION 'ticket13_deletions_not_observed'; END IF;
++                PERFORM nextval('ticket13_writes'); RAISE EXCEPTION 'ticket13_after_deletions'; END $$;
++                CREATE TRIGGER ticket13_fail AFTER DELETE ON client FOR EACH ROW EXECUTE FUNCTION ticket13_fail();
++                """);
++        var before = snapshot();
++        var failure = assertThrows(RuntimeException.class, () -> ctx.getAuthService().deleteAccount(1L, "Cliente", "password"));
++        assertTrue(rootCause(failure).getMessage().contains("ticket13_after_deletions"));
++        assertEquals(1, scalar("SELECT last_value FROM ticket13_writes"));
++        assertEquals(before, snapshot());
++        assertEquals(1L, new AppContext(db).getAuthService().login("mario.rossi@email.it", "password").getId());
++    }
++
++    @ParameterizedTest
++    @ValueSource(booleans = {false, true})
++    void clientDeletionRollbackAllowsWaitingBooking(boolean rental) throws Exception {
++        sql("""
++                CREATE SEQUENCE ticket13_writes;
++                CREATE FUNCTION ticket13_gate() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN
++                IF EXISTS (SELECT 1 FROM client WHERE id = 1) OR EXISTS (SELECT 1 FROM bank_account WHERE client = 1)
++                THEN RAISE EXCEPTION 'ticket13_deletions_not_observed'; END IF;
++                PERFORM nextval('ticket13_writes'); PERFORM pg_advisory_xact_lock(1313);
++                RAISE EXCEPTION 'ticket13_after_deletions'; END $$;
++                CREATE TRIGGER ticket13_gate AFTER DELETE ON client FOR EACH ROW EXECUTE FUNCTION ticket13_gate();
++                """);
++        var failures = race("SELECT pg_advisory_xact_lock(1313)", "",
++                () -> new AppContext(db).getAuthService().deleteAccount(1L, "Cliente", "password"),
++                () -> {
++                    var fresh = new AppContext(db); var date = java.time.LocalDate.now().plusDays(2);
++                    if (rental) fresh.getRentalService().bookRental(1302L, 1L, date, date);
++                    else fresh.getTestDriveService().bookTestDrive(1302L, 1L, date.atTime(10, 0));
++                });
++        assertNotNull(failures.getFirst());
++        assertTrue(rootCause(failures.getFirst()).getMessage().contains("ticket13_after_deletions"));
++        assertNull(failures.get(1));
++        assertEquals(1, scalar("SELECT last_value FROM ticket13_writes"));
++        assertEquals(1, scalar("SELECT count(*) FROM client WHERE id = 1"));
++        assertEquals(1, scalar("SELECT count(*) FROM " + (rental ? "rent" : "test_drive") + " WHERE client = 1"));
++        assertEquals(rental ? 29980 : 30000, scalar("SELECT balance FROM bank_account WHERE client = 1"));
++    }
++
++    @ParameterizedTest
++    @ValueSource(booleans = {false, true})
++    void newVehicleProposalAfterClientDeletionCommitsOnlyIfDeletionRollsBack(boolean failDeletion) throws Exception {
++        sql("CREATE SEQUENCE ticket13_writes; CREATE FUNCTION ticket13_gate() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN "
++                + "IF EXISTS (SELECT 1 FROM client WHERE id = 1) OR EXISTS (SELECT 1 FROM bank_account WHERE client = 1) "
++                + "THEN RAISE EXCEPTION 'ticket13_deletions_not_observed'; END IF; "
++                + "PERFORM nextval('ticket13_writes'); PERFORM pg_advisory_xact_lock(1313); "
++                + (failDeletion ? "RAISE EXCEPTION 'ticket13_after_deletion'; " : "")
++                + "RETURN OLD; END $$; CREATE TRIGGER ticket13_gate AFTER DELETE ON client FOR EACH ROW EXECUTE FUNCTION ticket13_gate(); "
++                + "CREATE FUNCTION ticket13_fail() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN "
++                + "IF NOT EXISTS (SELECT 1 FROM vehicle WHERE vin = 'T1300000000000003' AND state = 'WAITING') "
++                + "THEN RAISE EXCEPTION 'ticket13_vehicle_not_observed'; END IF; "
++                + "PERFORM nextval('ticket13_writes'); RETURN NEW; END $$; "
++                + "CREATE TRIGGER ticket13_fail BEFORE INSERT ON request FOR EACH ROW EXECUTE FUNCTION ticket13_fail()");
++        var failures = race("SELECT pg_advisory_xact_lock(1313)", "",
++                () -> new AppContext(db).getAuthService().deleteAccount(1L, "Cliente", "password"),
++                () -> new AppContext(db).getSaleToDealershipService().submitSaleProposal(1L, 1301L,
++                        "T1300000000000003", null, 0, java.time.LocalDate.now().getYear()));
++        assertEquals(2, scalar("SELECT last_value FROM ticket13_writes"));
++        if (failDeletion) {
++            assertTrue(rootCause(failures.getFirst()).getMessage().contains("ticket13_after_deletion"));
++            assertNull(failures.get(1));
++        } else {
++            assertNull(failures.getFirst());
++            assertInstanceOf(SQLException.class, rootCause(failures.get(1)));
++            assertEquals("23503", ((SQLException) rootCause(failures.get(1))).getSQLState());
++        }
++        assertEquals(failDeletion ? 1 : 0, scalar("SELECT count(*) FROM client WHERE id = 1"));
++        assertEquals(failDeletion ? 1 : 0, scalar("SELECT count(*) FROM request WHERE client = 1"));
++        assertEquals(failDeletion ? 1 : 0, scalar("SELECT count(*) FROM vehicle WHERE vin = 'T1300000000000003'"));
++        if (failDeletion) assertEquals(30000, scalar("SELECT balance FROM bank_account WHERE client = 1"));
++    }
++
++    @ParameterizedTest
++    @ValueSource(booleans = {false, true})
++    void purchaseApprovalCannotReferToADeletedSalesman(boolean failDeletion) throws Exception {
++        var request = ctx.getPurchaseService().initiatePurchase(1301L, 1L);
++        sql("CREATE SEQUENCE ticket13_writes; CREATE FUNCTION ticket13_gate() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN "
++                + "IF EXISTS (SELECT 1 FROM salesman WHERE id = 16) THEN RAISE EXCEPTION 'ticket13_delete_not_observed'; END IF; "
++                + "PERFORM nextval('ticket13_writes'); PERFORM pg_advisory_xact_lock(1313); "
++                + (failDeletion ? "RAISE EXCEPTION 'ticket13_after_deletion'; " : "")
++                + "RETURN OLD; END $$; CREATE TRIGGER ticket13_gate AFTER DELETE ON salesman FOR EACH ROW EXECUTE FUNCTION ticket13_gate()");
++        var failures = race("SELECT pg_advisory_xact_lock(1313)", "",
++                () -> new AppContext(db).getAuthService().deleteAccount(16L, "Venditore", "password"),
++                () -> new AppContext(db).getPurchaseService().approvePurchase(request.getId(), 16L));
++        assertEquals(1, scalar("SELECT last_value FROM ticket13_writes"));
++        if (failDeletion) {
++            assertTrue(rootCause(failures.getFirst()).getMessage().contains("ticket13_after_deletion"));
++            assertNull(failures.get(1));
++        } else {
++            assertNull(failures.getFirst());
++            assertInstanceOf(SQLException.class, rootCause(failures.get(1)));
++            assertEquals("23503", ((SQLException) rootCause(failures.get(1))).getSQLState());
++        }
++        assertEquals(failDeletion ? 1 : 0, scalar("SELECT count(*) FROM salesman WHERE id = 16"));
++        assertEquals(failDeletion ? 1 : 0, scalar("SELECT count(*) FROM request WHERE salesman = 16 AND exp_date IS NOT NULL"));
++        assertEquals(failDeletion ? 0 : 1, scalar("SELECT count(*) FROM request WHERE salesman IS NULL AND exp_date IS NULL"));
++        assertEquals(26000, scalar("SELECT balance FROM bank_account WHERE client = 1"));
++    }
++
++    private static Throwable rootCause(Throwable error) {
++        while (error.getCause() != null) error = error.getCause();
++        return error;
++    }
++
++    private List<RuntimeException> race(String gateQuery, String beforeRelease, Runnable... operations) throws Exception {
++        var workers = Executors.newFixedThreadPool(operations.length);
++        try (var gate = db.getConnection(); var observer = db.getConnection()) {
++            gate.setAutoCommit(false);
++            try (var statement = gate.createStatement()) {
++                statement.setQueryTimeout(10);
++                statement.execute(gateQuery);
++            }
++            try {
++                var attempts = new ArrayList<java.util.concurrent.Future<RuntimeException>>();
++                for (Runnable operation : operations) {
++                    attempts.add(workers.submit(outcome(operation)));
++                    awaitWaiters(observer, attempts.size());
++                }
++                if (!beforeRelease.isEmpty()) {
++                    try (var statement = gate.createStatement()) {
++                        statement.setQueryTimeout(10);
++                        statement.execute(beforeRelease);
++                    }
++                }
++                gate.commit();
++                var failures = new ArrayList<RuntimeException>();
++                for (var attempt : attempts) failures.add(attempt.get(10, TimeUnit.SECONDS));
++                return failures;
++            } finally {
++                gate.rollback();
++                try (var statement = observer.createStatement()) {
++                    statement.setQueryTimeout(10);
++                    statement.executeQuery("""
++                            SELECT pg_cancel_backend(pid) FROM pg_stat_activity
++                            WHERE datname = current_database() AND usename = current_user
++                            AND pid <> pg_backend_pid() AND state = 'active' AND wait_event_type = 'Lock'
++                            """).close();
++                }
++            }
++        } finally {
++            workers.shutdownNow();
++            assertTrue(workers.awaitTermination(10, TimeUnit.SECONDS), "Worker JDBC non terminati");
++        }
++    }
++
++    private static Callable<RuntimeException> outcome(Runnable operation) {
++        return () -> {
++            try { operation.run(); return null; }
++            catch (RuntimeException failure) { return failure; }
++        };
++    }
++
++    private static void awaitWaiters(Connection observer, int expected) throws Exception {
++        long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(10);
++        try (var statement = observer.createStatement()) {
++            statement.setQueryTimeout(10);
++            do {
++                try (var result = statement.executeQuery("""
++                        SELECT count(DISTINCT pid), string_agg(pid || ':' || pg_blocking_pids(pid)::text, ', ')
++                        FROM pg_stat_activity WHERE datname = current_database() AND usename = current_user
++                        AND pid <> pg_backend_pid() AND state = 'active' AND wait_event_type = 'Lock'
++                        AND cardinality(pg_blocking_pids(pid)) > 0
++                        """)) {
++                    assertTrue(result.next());
++                    if (result.getInt(1) == expected) {
++                        System.out.println("Ticket13 waiters " + expected + " pid:blockers " + result.getString(2));
++                        return;
++                    }
++                }
++            } while (System.nanoTime() < deadline);
++        }
++        fail("Attese PostgreSQL distinte mancanti: " + expected);
++    }
++
++    private int scalar(String query) throws Exception {
++        try (var conn = db.getConnection(); var statement = conn.createStatement()) {
++            statement.setQueryTimeout(10);
++            try (var result = statement.executeQuery(query)) {
++                assertTrue(result.next());
++                return result.getInt(1);
++            }
++        }
++    }
++
++    private Map<String, String> snapshot() throws Exception {
++        var rows = new LinkedHashMap<String, String>();
++        try (var conn = db.getConnection(); var statement = conn.createStatement()) {
++            statement.setQueryTimeout(10);
++            for (String table : new String[]{"client", "salesman", "manager", "bank_account", "vehicle", "request", "sale", "rent", "test_drive"}) {
++                try (var result = statement.executeQuery("SELECT COALESCE(jsonb_agg(to_jsonb(t) ORDER BY to_jsonb(t)::text),'[]')::text FROM " + table + " t")) {
++                    assertTrue(result.next());
++                    rows.put(table, result.getString(1));
++                }
++            }
++        }
++        return rows;
++    }
++
++    private void sql(String query) throws Exception {
++        try (var conn = db.getConnection(); var statement = conn.createStatement()) {
++            statement.setQueryTimeout(10);
++            statement.execute(query);
++        }
++    }
++}
+--- a/DriveHub/docs/testing.md
++++ b/DriveHub/docs/testing.md
+@@ -513,3 +513,66 @@
+ Le [evidenze della sessione](evidence/r06-destination/verification.md) distinguono
+ baseline corrente, RED/GREEN, suite finale, GUI e review. Il 297/297 del ticket 11
+ resta storico; l'ambiente `/tmp` va ricontrollato prima di ogni riuso.
++
++## Cancellazione identità e storico — ticket 13
++
++```bash
++mvn -Ppostgres-tests -Dtest=IdentityDeletionIntegrationTest test
++mvn -Ppostgres-tests clean test
++# Dopo la compilazione, sul solo DB dedicato e un display Xvfb isolato:
++python3 docs/evidence/r07-identity/run-ui.py
++```
++
++`AccountManagementDialog` continua a passare il ruolo visualizzato. La sola
++mappatura `PostgresUserDao.resolveTable` accetta Cliente/CLIENT,
++Venditore/SALESMAN e Manager/MANAGER per modifiche e cancellazione; il controllo
++delle associazioni riusa la stessa mappatura, senza traduzioni nella UI o nel
++servizio. Tutti i chiamanti sono elencati nelle [evidenze13](evidence/r07-identity/verification.md).
++
++`AuthService.deleteAccount` verifica la password e usa una sola transazione per
++lock dell'identità `FOR NO KEY UPDATE`, lock del conto se cliente, controllo di
++richieste/test drive/noleggi/vendite e DELETE di esattamente una riga. L'ordine
++identità → conto conserva quello delle prenotazioni11; `NO KEY UPDATE` lascia
++terminare gli inserimenti con FK KEY SHARE di un acquisto già sul conto. Dopo
++l'attesa il controllo rilegge le associazioni. Le FK RESTRICT proteggono anche
++associazioni inserite dopo il controllo e accessi SQL diretti; il vincolo
++`fk_sale_salesman` conserva il venditore invece di azzerarlo. Un conflitto FK
++nella cancellazione è presentato come rifiuto, con rollback. Nessun cambiamento
++all'ordine dei conti04 o agli eventi08, agli accordi06, alle prenotazioni11 o ai
++rimborsi12.
++
++I test usano servizi pubblici e PostgreSQL reale, gate SQL/advisory,
++`pg_stat_activity`/`pg_blocking_pids`, backend distinti e timeout di 10 secondi,
++senza sleep nelle gare. Trigger e sequenze diagnostiche attestano scritture
++prima degli errori: eliminazione di identità e conto, accredito e acquisizione,
++creazione del veicolo di cessione. Si verificano commit, rifiuti e rollback
++nei due ordini delle gare, mantenendo attribuzioni, saldo, richieste e veicoli.
++Una DELETE saltata non può generare un successo. Ruoli/credenziali errati,
++richieste di entrambi i tipi, storico e identità senza vincoli sono inclusi.
++
++L'identità di accesso è distinta dal conto dimostrativo: il solo conto, anche
++con disponibilità positiva, non impedisce la cancellazione secondo le regole
++esistenti e viene rimosso per CASCADE. Il dialogo lo esplicita prima della
++conferma; richieste e storico impediscono invece la cancellazione. La prova
++JavaFX verifica frecce/Tab/Spazio/Invio/Esc, password, conferma e annullamento,
++motivi leggibili e callback soltanto dopo successo. Seed e controllo avvengono
++in JVM distinte; le attese Robot riguardano il rendering, mai le gare DB.
++
++Schema ricreabile secondo D02. Per un'installazione esistente, prima di usare
++il nuovo codice aggiornare **solo il vincolo**, senza eseguire schema/demo:
++
++```sql
++BEGIN;
++ALTER TABLE sale DROP CONSTRAINT fk_sale_salesman;
++ALTER TABLE sale ADD CONSTRAINT fk_sale_salesman
++  FOREIGN KEY (salesman) REFERENCES salesman(id) ON DELETE RESTRICT;
++COMMIT;
++```
++
++Le attribuzioni già azzerate in passato non sono ricostruibili da questo
++vincolo. Nessun aggiornamento o reset applicativo è stato eseguito nella prova.
++L'ambiente13 è temporaneo: Java21/PG16 estratti in
++`/tmp/drivehub-ticket13-tools/root`, nuovo cluster
++`/tmp/drivehub-ticket13-pgdata`, **127.0.0.1:55433**, display Xvfb **:95**.
++Le configurazioni private in `/tmp/drivehub-ticket13-session/env.json` non sono
++conservate nel repository; ricontrollare o ricreare l'ambiente se /tmp scompare.
+--- /dev/null
++++ b/DriveHub/docs/evidence/r07-identity/IdentityUiCheck.java
+@@ -0,0 +1,174 @@
++package it.unifi.drivehub;
++
++import it.unifi.drivehub.dao.DatabaseManager;
++import it.unifi.drivehub.domain.user.User;
++import it.unifi.drivehub.presentation.view.AccountManagementDialog;
++import javafx.application.Platform;
++import javafx.animation.AnimationTimer;
++import javafx.scene.Scene;
++import javafx.scene.control.*;
++import javafx.scene.input.KeyCode;
++import javafx.scene.layout.VBox;
++import javafx.scene.robot.Robot;
++import javafx.stage.Stage;
++import javafx.stage.Window;
++
++import java.util.concurrent.CountDownLatch;
++import java.util.concurrent.TimeUnit;
++import java.util.concurrent.atomic.AtomicInteger;
++
++/** Costruttore pubblico del dialogo e Robot05: nessuna automazione interna del servizio. */
++public class IdentityUiCheck extends PriceUiCheck {
++    static Stage owner;
++    static final AtomicInteger deleted = new AtomicInteger();
++
++    static void seed() throws Exception {
++        ctx = new AppContext(TestDatabase.fromEnvironment().reset());
++        try (var conn = ctx.getDatabaseManager().getConnection(); var sql = conn.createStatement()) {
++            sql.execute("""
++                    DELETE FROM sale; DELETE FROM rent; DELETE FROM test_drive; DELETE FROM request;
++                    INSERT INTO request(vehicle,client,deposit,agreed_total,type)
++                    VALUES (1,1,100,500,'PURCHASE');
++                    INSERT INTO sale(vehicle,salesman,client,amount,date,type)
++                    VALUES (2,16,2,20000,CURRENT_TIMESTAMP,'PURCHASE');
++                    """);
++        }
++        System.out.println("SEED SUCCESS: richiesta cliente, sola vendita conclusa venditore, identità senza vincoli");
++    }
++
++    static void open(User user) throws Exception {
++        Platform.runLater(() -> AccountManagementDialog.show(owner, user, ctx.getAuthService(), deleted::incrementAndGet, null));
++        for (int i = 0; i < 100; i++) {
++            Stage found = fx(() -> Window.getWindows().stream().filter(w -> w.isShowing() && w instanceof Stage s
++                            && s.getTitle() != null && s.getTitle().startsWith("Gestione Identità"))
++                    .map(w -> (Stage) w).findFirst().orElse(null));
++            if (found != null) { stage = found; break; }
++            Thread.sleep(50); // Solo attesa rendering Robot, mai sincronizzazione delle gare PostgreSQL.
++        }
++        check(stage != owner && fx(() -> stage.isShowing()), "dialogo pubblico aperto");
++        TabPane tabs = fx(() -> (TabPane) stage.getScene().getRoot());
++        fx(() -> { tabs.requestFocus(); return null; });
++        key(KeyCode.HOME);
++        for (int i = 1; i < fx(() -> tabs.getTabs().size()); i++) key(KeyCode.RIGHT);
++        check(fx(() -> tabs.getSelectionModel().getSelectedItem().getText().equals("Elimina Identità")),
++                "scheda eliminazione raggiunta con frecce");
++        check(fx(() -> tabs.getSelectionModel().getSelectedItem().getContent().lookupAll(".label").stream()
++                .anyMatch(n -> ((Label) n).getText().contains("conto dimostrativo"))), "identità distinta dal conto dimostrativo");
++    }
++
++    static void password(String value) throws Exception {
++        reach(n -> n instanceof PasswordField);
++        fx(() -> { robot.keyPress(KeyCode.CONTROL); robot.keyType(KeyCode.A); robot.keyRelease(KeyCode.CONTROL); return null; });
++        for (char c : value.toCharArray()) key(KeyCode.valueOf(String.valueOf(c).toUpperCase(java.util.Locale.ROOT)));
++        reach(n -> n instanceof Button b && b.getText().equals("Elimina Definitivamente Identità"));
++        key(KeyCode.SPACE);
++    }
++
++    static DialogPane alert() throws Exception {
++        for (int i = 0; i < 100; i++) {
++            DialogPane pane = fx(() -> Window.getWindows().stream()
++                    .filter(w -> w.isShowing() && w.getScene().getRoot() instanceof DialogPane)
++                    .map(w -> (DialogPane) w.getScene().getRoot()).findFirst().orElse(null));
++            if (pane != null) return pane;
++            Thread.sleep(50);
++        }
++        throw new AssertionError("Alert assente");
++    }
++
++    static String message() throws Exception {
++        var pane = alert();
++        return fx(() -> pane.getHeaderText() + " " + pane.getContentText());
++    }
++
++    static void accept() throws Exception {
++        var pane = alert();
++        fx(() -> { pane.lookupButton(ButtonType.OK).requestFocus(); return null; });
++        key(KeyCode.ENTER);
++    }
++
++    static void capture(String name) throws Exception {
++        Stage original = stage;
++        var pane = alert();
++        var painted = new CountDownLatch(1);
++        fx(() -> {
++            new AnimationTimer() {
++                private int frames;
++                @Override public void handle(long now) {
++                    if (++frames == 3) { stop(); painted.countDown(); }
++                }
++            }.start();
++            return null;
++        });
++        check(painted.await(3, TimeUnit.SECONDS), "alert renderizzato prima della cattura");
++        stage = fx(() -> (Stage) pane.getScene().getWindow());
++        screenshot(name);
++        stage = original;
++    }
++
++    static void closeIdentity() throws Exception {
++        fx(() -> { stage.close(); stage = owner; return null; });
++    }
++
++    public static void main(String[] args) throws Exception {
++        if (args[0].equals("seed")) { seed(); return; }
++        out = args[1] + "/";
++        TestDatabase.fromEnvironment();
++        ctx = new AppContext(new DatabaseManager(System.getenv("DRIVEHUB_TEST_DB_URL"),
++                System.getenv("DRIVEHUB_TEST_DB_USER"), System.getenv("DRIVEHUB_TEST_DB_PASSWORD")));
++        Thread.setDefaultUncaughtExceptionHandler((thread, error) -> { error.printStackTrace(); System.exit(2); });
++        var ready = new CountDownLatch(1);
++        Platform.startup(ready::countDown);
++        check(ready.await(10, TimeUnit.SECONDS), "JavaFX avviato nella JVM distinta dal seed");
++        Platform.setImplicitExit(false);
++        try {
++            fx(() -> {
++                owner = new Stage(); owner.setScene(new Scene(new VBox(new Label("DriveHub — verifica identità")), 600, 400));
++                owner.show(); stage = owner; robot = new Robot(); return null;
++            });
++            open(ctx.getAuthService().login("mario.rossi@email.it", "password"));
++            screenshot("client-rules"); password("password");
++            check(message().toLowerCase(java.util.Locale.ROOT).contains("richieste") && message().contains("conto dimostrativo"), "conferma esplicita prima della cancellazione");
++            capture("confirmation"); key(KeyCode.ESCAPE);
++            check(deleted.get() == 0 && ctx.getAuthService().login("mario.rossi@email.it", "password") != null,
++                    "annullamento da tastiera conserva identità e sessione");
++            key(KeyCode.SPACE); accept();
++            check(message().contains("richieste o operazioni storiche associate"), "richiesta cliente impedisce eliminazione con motivo leggibile");
++            capture("client-request-rejected"); accept();
++            check(deleted.get() == 0 && fx(() -> stage.isShowing()), "rifiuto conserva dialogo e sessione"); closeIdentity();
++
++            open(ctx.getAuthService().login("paolo.costa@drivehub.it", "password"));
++            password("password"); accept();
++            check(message().contains("richieste o operazioni storiche associate"), "sola vendita conclusa impedisce eliminazione venditore");
++            capture("salesman-history-rejected"); accept(); closeIdentity();
++            check(ctx.getOperationQueryService().getAllSales().getFirst().getSalesmanId() == 16L,
++                    "attribuzione venditore persistita");
++
++            open(ctx.getAuthService().login("giovanni.bianchi@email.it", "password"));
++            password("errata"); accept();
++            check(message().contains("Password attuale errata"), "password errata impedisce cancellazione");
++            capture("wrong-password"); accept(); closeIdentity();
++
++            open(ctx.getAuthService().login("giovanni.bianchi@email.it", "password"));
++            password("password"); accept();
++            check(message().contains("cancellata con successo"), "identità senza vincoli eliminata con successo dopo commit");
++            capture("client-deleted"); accept();
++            check(deleted.get() == 1, "callback di uscita invocata soltanto dopo successo");
++            try { ctx.getAuthService().login("giovanni.bianchi@email.it", "password"); throw new AssertionError("Identità ancora presente"); }
++            catch (IllegalArgumentException expected) { System.out.println("PASS login eliminato"); }
++            try { ctx.getAuthService().getClientBankAccount(3L); throw new AssertionError("Conto dimostrativo ancora presente"); }
++            catch (IllegalStateException expected) { System.out.println("PASS conto dimostrativo rimosso"); }
++            stage = owner;
++
++            open(ctx.getAuthService().login("laura.gatti@drivehub.it", "password"));
++            password("password"); accept(); check(message().contains("cancellata con successo"), "venditore senza vincoli eliminabile"); accept();
++            stage = owner;
++            open(ctx.getAuthService().login("vittorio.manager@drivehub.it", "password"));
++            password("password"); accept(); check(message().contains("cancellata con successo"), "manager senza vincoli eliminabile"); accept();
++            check(deleted.get() == 3, "tre cancellazioni effettive e nessun callback sui rifiuti");
++            System.out.println("UI CHECK SUCCESS");
++        } finally {
++            fx(() -> { for (var window : java.util.List.copyOf(Window.getWindows())) window.hide(); return null; });
++            Platform.exit();
++        }
++    }
++}
+--- /dev/null
++++ b/DriveHub/docs/evidence/r07-identity/run-ui.py
+@@ -0,0 +1,25 @@
++from pathlib import Path
++import os
++import subprocess
++
++repo = Path(__file__).resolve().parents[3]
++out = Path(os.environ.get("DRIVEHUB_UI_DIR", "/tmp/drivehub-ticket13-session/ui"))
++out.mkdir(parents=True, exist_ok=True)
++env = os.environ.copy()
++assert env.get("DISPLAY"), "Impostare DISPLAY su un display di test isolato"
++java = Path(env["JAVA_HOME"]) / "bin"
++modules = ":".join(str(next((Path.home() / ".m2/repository/org/openjfx" / name / "21.0.2").glob("*-linux.jar")))
++                   for name in ["javafx-base", "javafx-graphics", "javafx-controls"])
++classpath = ":".join([str(repo / "target/classes"), str(repo / "target/test-classes"),
++                      str(Path.home() / ".m2/repository/org/postgresql/postgresql/42.7.3/postgresql-42.7.3.jar"), str(out)])
++sources = [repo / "docs/evidence" / folder / name for folder, name in [
++    ("r03-prices", "PriceUiCheck.java"), ("r07-identity", "IdentityUiCheck.java")]]
++with (out / "ui.log").open("w") as log:
++    subprocess.run([str(java / "javac"), "--module-path", modules, "--add-modules", "javafx.controls",
++                    "-cp", classpath, "-d", str(out), *map(str, sources)], env=env, stdout=log, stderr=subprocess.STDOUT, check=True)
++    for phase in ["seed", "check"]:
++        subprocess.run([str(java / "java"), "--module-path", modules, "--add-modules", "javafx.controls",
++                        "-Dprism.order=sw", "-cp", classpath, "it.unifi.drivehub.IdentityUiCheck", phase, str(out)],
++                       env=env, stdout=log, stderr=subprocess.STDOUT, timeout=180, check=True)
++assert "UI CHECK SUCCESS" in (out / "ui.log").read_text()
++print("UI CHECK SUCCESS; log e schermate:", out)
+--- /dev/null
++++ b/DriveHub/docs/evidence/r07-identity/verification.md
+@@ -0,0 +1,182 @@
++# Ticket 13 — cancellazione identità e storico
++
++Sessione del 2 novembre 2026, soltanto ticket13. Prerequisito01 e ticket01–12
++verificati `State: closed`, senza criteri aperti:
++[stati e hash](prerequisites.json). Letti AGENTS, piano, glossario, ADR0001,
++specifica e testing; riusati i confini già approvati. `Relazione_SWE` esclusa.
++Nessun commit/staging, nessun ticket successivo.
++
++## Versione e baseline
++
++Fotografia iniziale di **846 file** in `/tmp/drivehub-ticket13-session/before`:
++progetto, evidenze precedenti, intero tracker e piano esterni. Esclusi `.git`,
++`target` e `Relazione_SWE`. [Manifest](baseline-sha256.json),
++[HEAD](initial-head.txt), [indice](initial-index.sha256).
++Un diff da HEAD includerebbe impropriamente il lavoro precedente: la review
++usa esclusivamente il confronto con questa fotografia locale.
++
++Nuova baseline prima di modificare sorgenti/test: **330/330**, zero failure,
++errori o salti, distinta dal risultato storico12:
++[log](baseline.log), [XML](baseline-surefire/), [input](baseline-files.sha256.json).
++Il primo tentativo nella sandbox fallì con 283 errori di connessione perché
++il server non persisteva fra comandi; [log separato](baseline-sandbox-failed.log).
++Non è una baseline riuscita né una regressione del prodotto.
++
++## Chiamanti e responsabilità
++
++| Confine / chiamanti | Comportamento verificato |
++|---|---|
++| `AccountManagementDialog.show` | Unico chiamante applicativo di `deleteAccount`; continua a passare `getRoleDisplayName`, come email/password. Il dialogo è aperto dalle dashboard cliente, venditore e manager; l'overload con AppContext resta invariato |
++| `AuthService.deleteAccount` | Firma pubblica conservata. Password richiesta; lock identità → conto cliente → verifica associazioni → DELETE di una riga sulla stessa connessione. Rifiuti di dominio leggibili dopo rollback; successo soltanto al ritorno |
++| `PostgresUserDao.resolveTable` | Mappatura unica già esistente Cliente/CLIENT, Venditore/SALESMAN, Manager/MANAGER, riusata ora anche dal controllo associazioni; nessuna conversione aggiunta a dialogo o servizio |
++| `UserDao.hasAssociatedOperations` | Unico chiamante AuthService aggiornato alla connessione transazionale; unica implementazione PostgreSQL. Cliente: request/test_drive/rent/sale; venditore: request/sale; manager senza associazioni di dominio |
++| `UserDao.lockUser` / `deleteUser` | Chiamati solo da AuthService; lock NO KEY UPDATE con transazione obbligatoria, identità/ruolo esistenti; DELETE richiede esattamente una riga e traduce FK23503 in rifiuto leggibile |
++| Email/password | Firme, tre chiamanti nel dialogo e mappatura condivisa invariati; regressioni email03 e suite completa verificano il comportamento precedente |
++| Acquisto | `initiatePurchase`, `approvePurchase`, `completePurchase`, `rejectPurchase`, scadenze: firme invariate; FK richiesta/storico protegge identità e venditore. Gara contro acquisto già sul conto riproduceva un deadlock: NO KEY UPDATE lascia terminare il KEY SHARE della FK, poi si rilegge sotto lock del conto |
++| Prenotazioni11 | `bookRental`/`bookTestDrive` restano veicolo → cliente NO KEY UPDATE → conto; gare con cancellazione nei due ordini, anche dopo rollback effettivo di identità/conto |
++| Cessione09–10 | `submitSaleProposal`/`approveSaleProposal`: FK cliente/venditore sulla stessa transazione; provati inserimento del nuovo veicolo, accredito e acquisizione effettivi prima di conflitto/rollback. Nessun altro servizio modificato |
++| Schema / fixture | Solo `fk_sale_salesman`: SET NULL → RESTRICT. Le altre FK identità erano già RESTRICT. `bank_account.client` resta CASCADE per il conto dimostrativo; demo intatta |
++
++Le ricerche sono limitate a src, istruzioni e documenti pertinenti; nessun grafo
++esistente da consultare, nessuna generazione Graphify o nuova dipendenza.
++
++## Ambiente ricreato
++
++`/tmp` precedente assente. Java17 iniziale insufficiente; scaricati pacchetti
++Ubuntu ufficiali ed estratti senza installazioni di sistema in
++`/tmp/drivehub-ticket13-tools/root`. OpenJDK **21.0.12.1**, Maven **3.9.16**,
++PostgreSQL **16.15**: [versioni](versions.txt). Corrette solo nelle copie
++estratte le symlink Java e il percorso xkbcomp di Xvfb; aggiunte le librerie
++necessarie. Nessuna modifica alle versioni richieste dal POM.
++
++Nuovo cluster `/tmp/drivehub-ticket13-pgdata`, solo **127.0.0.1:55433**, socket
++in /tmp. Database/ruolo `drivehub_test` non amministrativo, senza appartenenze
++o altri DB posseduti; separata copia sacrificabile `drivehub` con sentinella.
++[Identità e privilegi](environment.txt), [log PostgreSQL](postgres.log).
++Avvio e prove autorizzati fuori sandbox per mantenere il processo e la rete
++raggiungibili fra comandi. Nessun DB applicativo preesistente contattato.
++Sei variabili private in `env.json` con permessi0600, mai copiate nelle prove.
++
++Xvfb isolato **:95**, 1440×1000, senza TCP, rendering JavaFX software.
++[Log Xvfb](xvfb95.log): warning EGL su /dev/dri e listener Unix, display attivo
++tramite socket locale astratto e prove Robot riuscite. Nessun servizio di
++sistema avviato; ambiente temporaneo da ricontrollare al riuso.
++
++## TDD e PostgreSQL reale
++
++Launcher privato `python3 /tmp/drivehub-ticket13-session/maven.py <etichetta>
++<argomenti>`: Java21, variabili private e `mvn -B -o`. Comandi portabili in
++[testing](../../testing.md). Ogni esecuzione conserva log, XML e hash di src,
++POM, schema e demo. [Riepilogo machine-readable](summary.json).
++
++| Etichetta / comando Maven | Esito |
++|---|---|
++| baseline `-Ppostgres-tests clean test` | 330/330, zero failure/errori/salti |
++| roles-red `-Ppostgres-tests -Dtest=IdentityDeletionIntegrationTest test` | 3 failure attese su6: ruolo Venditore permetteva DELETE e azzeramento storico |
++| roles-green, stesso comando | 6/6 |
++| requests-red, stesso comando | 4 failure attese su10: sola richiesta non riconosciuta dal controllo, errore generico FK |
++| requests-green, stesso comando | 10/10 |
++| history-race-red, stesso comando | 5 failure attese su15: tre DELETE dirette azzeravano l'attribuzione; gara vendita/cancellazione perdeva il venditore; acquisto/cancellazione produceva deadlock PostgreSQL reale |
++| history-race-green, stesso comando | 15/15 |
++| skipped-delete-red, stesso comando | 1 failure attesa su16: DELETE saltata riportava successo |
++| skipped-delete-green, stesso comando | 16/16 |
++| extended-cases, stesso comando | 56 casi,4 failure del nuovo test: attesi16000 invece di20000 per l'accredito della fixture, quindi gate non raggiunti |
++| extended-fixed, stesso comando | 56/56, corretta solo l'aspettativa della prova |
++| final-cases, stesso comando | **60/60**, zero failure/errori/salti |
++| targeted, selezione estesa sotto | **356/356**, zero failure/errori/salti |
++| final-full `-Ppostgres-tests clean test` | **390/390**, zero failure/errori/salti;47 senzaDB/343 PostgreSQL |
++
++Selezione esatta di `targeted`:
++
++```bash
++mvn -Ppostgres-tests -Dtest=IdentityDeletionIntegrationTest,AuthServiceIntegrationTest,VehicleDestinationIntegrationTest,BookingRulesTest,BookingConcurrencyIntegrationTest,TestDriveCancellationIntegrationTest,BalanceConcurrencyIntegrationTest,PriceCalculatorServiceTest,PriceSelectionIntegrationTest,PurchaseAgreementIntegrationTest,PurchaseConcurrencyIntegrationTest,SaleProposalIntegrationTest,SaleOutcomeIntegrationTest,SaleTypeTest,DemoSqlValidationTest,DatabaseIsolationIntegrationTest test
++```
++
++Quattro [coppie RED/GREEN con test identico](regression-identity.json).
++Gli ampliamenti successivi hanno hash propri; non sono spacciati per RED
++precedenti. Il deadlock è anche nel log PostgreSQL. Le prove di cessione
++corrette non sono regressioni del prodotto.
++
++I60 casi coprono nomi ruolo visualizzati/persistiti, ruoli errati/iniezione,
++password, cliente con richieste PURCHASE/SALE, venditore con sola richiesta
++assegnata o sole vendite PURCHASE/ACQUISITION/PENALTY, storico test drive e
++noleggi, identità prive di vincoli, cliente con/senza conto dimostrativo.
++Le attribuzioni e tutti i dati sono confrontati da connessioni nuove.
++
++Gare con connessioni distinte, gate SQL o advisory, PID e `pg_blocking_pids`
++registrati **prima** del rilascio; nessuno sleep nelle gare. Timeout di10s per
++query, osservazione, future e cleanup; gate sempre rilasciato e worker
++cancellati/chiusi in uscita. Ordini coperti: prenotazione/cancellazione,
++acquisto/cancellazione, acquisizione/cancellazione venditore e operazioni
++in attesa durante una cancellazione fallita. Anche proposta di nuovo VIN e
++approvazione acquisto non possono lasciare FK a identità già cancellate.
++
++Trigger PostgreSQL AFTER DELETE attestano identità e conto realmente assenti
++prima dell'errore; AFTER INSERT acquisizione controlla saldo50000 e record
++storico già scritti; BEFORE INSERT richiesta vede il nuovo veicolo WAITING.
++Sequenze diagnostiche e motivi di errore attestano le scritture anche dopo
++rollback. Verificati rollback di conto, accredito, acquisizione, richiesta,
++nuovo veicolo e approvazione; la seconda operazione può riuscire quando la
++cancellazione fallisce. Nessun mock certifica vincoli o transazioni.
++
++## GUI e tastiera
++
++[Harness](IdentityUiCheck.java), [launcher](run-ui.py), [log finale](ui.log),
++[hash input UI](ui-files.sha256.json): **UI CHECK SUCCESS**. Costruttore pubblico
++del dialogo, iniezione AuthService e Robot05; seed/check in JVM distinte sul
++solo DB dedicato. Frecce per le schede, Tab ai campi/pulsanti, password digitata,
++Spazio, Invio ed Esc. Callback solo dopo commit/successo e uscita; nessun
++callback per annullamento, password errata, richiesta o storico.
++
++Sei schermate finali ispezionate: [regole cliente](client-rules.png),
++[conferma](confirmation.png), [richiesta cliente](client-request-rejected.png),
++[storico venditore](salesman-history-rejected.png),
++[password errata](wrong-password.png), [successo](client-deleted.png).
++La descrizione va a capo entro480px; focus e pulsante sono visibili. Il cliente
++senza vincoli perde identità e conto dimostrativo, venditore e manager senza
++vincoli sono eliminabili. Prima del consenso la UI distingue identità e conto.
++
++Due avvii harness falliti sono conservati: titolo null di una finestra JavaFX
++([log](ui-title-failed.log)), maiuscola iniziale del testo atteso
++([log](ui-case-failed.log)); nessun cambiamento prodotto per correggerli.
++Una prima esecuzione funzionale riusciva ma alcune catture erano premature:
++la finale aspetta tre frame con AnimationTimer prima di catturare gli alert.
++Le pause Robot ereditate riguardano il rendering, mai le gare DB.
++Nessuna certificazione screen reader o benchmark prestazioni.
++
++## Verifica finale e review
++
++Suite finale **390/390**, inclusi isolamento/sentinella e tutte le regressioni:
++[log](final-full.log), [XML](final-full-surefire/),
++[hash input](final-full-files.sha256.json). Input runtime e harness identici
++alle versioni verificate. [Sentinella finale in sola lettura](sentinel-final.txt),
++[arresto PostgreSQL e Xvfb](shutdown.txt): porta dedicata non risponde,
++display non in esecuzione. Nessun altro servizio arrestato.
++
++Review indipendenti: [Standards](standards-review.md) **0 violazioni/0 smell
++azionabili**, [Spec](spec-review.md) **0 rilievi**, sul solo diff congelato della
++sessione: [patch](review.patch), [elenco](review-files.txt),
++[hash snapshot](review-files.sha256.json),12file; SHA256
++`08237df074ee2e3074135d31497fb0e627823fef856bf2da548cf32233aab68d`.
++Nessun codice/test/harness cambiato dopo prove finali e review. I documenti di
++chiusura successivi non costituiscono nuove prove runtime. Anche il
++[delta documentale di chiusura](closing-docs.patch) è stato controllato da
++entrambi i revisori indipendenti: **0 rilievi per asse**; SHA256
++`cd141623bf5f1335067cc61b1a75bd33bd9de4e2dafcf4e273732ecfc1792c16`.
++Il [diff finale della sessione](session.patch) include gli aggiornamenti
++documentali; [hash finali](session-files.sha256.json).
++
++[Conservazione](preservation.json):846file iniziali presenti,838 identici,
++8aggiornamenti intenzionali (cinque file prodotto, testing, piano e ticket13),
++zero eliminazioni. Ticket/evidenze01–12 e successivi intatti, HEAD/indice
++invariati. [Controlli](integrity-checks.json): whitespace del diff, link locali,
++input runtime/UI identici, perimetro e assenza credenziali private nelle prove.
++Non si correggono spazi preesistenti dei documenti storici per alterarne gli hash.
++
++**5/5 criteri verificati, ticket13 chiuso; R07 e AC09/#9 completati,13/20 rilievi
++integralmente chiusi.** AC13 resta trasversale; nessun ticket successivo,
++nessun commit/staging. Relazione_SWE esclusa.
++Per installazioni
++esistenti applicare il solo cambio FK documentato in testing prima del nuovo
++codice; nessun reset applicativo e nessun recupero automatico delle
++attribuzioni eventualmente già azzerate in passato.
+--- a/PIANO_REVISIONI_DRIVEHUB.md
++++ b/PIANO_REVISIONI_DRIVEHUB.md
+@@ -2,7 +2,19 @@
+ 
+ Registro operativo avviato il 31 ottobre 2026. Punto di ingresso per riprendere il lavoro: avanzamento, decisioni, attività, verifiche e prossimo passo.
+ 
+-## Stato attuale — ticket 12 completato
++## Stato attuale — ticket 13 completato
++
++- Soltanto13 implementato, prerequisito01 e ticket01–12 verificati chiusi; fotografia iniziale846 file e nuova baseline **330/330** prima delle modifiche.
++- Mappatura ruoli UI/DAO riusata; richieste e storico impediscono la cancellazione, FK venditore RESTRICT conserva attribuzioni. Identità prive di vincoli cancellabili; conto dimostrativo distinto ed eliminato per CASCADE secondo le regole esistenti.
++- Lock identità NO KEY UPDATE → conto → controllo/DELETE nella stessa transazione, una riga effettiva. Gare nei due ordini, vincoli reali e rollback dopo scritture effettive, senza sleep nelle gare. Riprodotto e risolto anche deadlock acquisto/cancellazione; garanzie04–12 preservate.
++- Quattro coppie TDD identiche RED/GREEN; nuovi **60/60**, mirati **356/356**, suite completa finale **390/390** (47 senzaDB/343 PostgreSQL), zero failure/errori/salti, inclusi isolamento/sentinella.
++- JavaFX/Robot/tastiera **UI CHECK SUCCESS**, sei schermate finali ispezionate. Review indipendenti Standards **0 violazioni/0 smell azionabili**, Spec **0**, sul solo diff congelato della sessione. Nessun codice/test/harness cambiato dopo prove finali e review.
++- **Ticket13 chiuso,5/5 criteri; R07 e AC09/#9 completati. Rilievi chiusi13/20** (#1,#2,#3,#4,#5,#6,#7,#8,#9,#10,#11,#17,#19); AC13 resta trasversale.
++- [Ticket13](TRACKER_DRIVEHUB/revisioni/issues/13-cancellazione-identita-e-storico.md), [comandi, log/XML, gare, GUI, review e limiti](DriveHub/docs/evidence/r07-identity/verification.md).
++- Ambiente Java21/PG16/Xvfb ricreato, solo127.0.0.1:55433 e copia sentinella; sentinella finale in sola lettura, cluster/display arrestati.846 file iniziali presenti,838 identici e8 aggiornamenti intenzionali, nessuna eliminazione; prove/ticket01–12 e successivi intatti. HEAD/indice invariati, nessun commit/staging, Relazione_SWE esclusa.
++- Nessun residuo del13 o ticket successivo avviato. Per installazioni esistenti applicare il solo cambio FK prima del codice; attribuzioni già azzerate non ricostruite. Ambiente /tmp temporaneo, screen reader/prestazioni non certificati.
++
++## Stato al termine del ticket 12 — storico
+ 
+ - Solo ticket 12 implementato dopo verifica dei prerequisiti 01–11 chiusi e nuova baseline **297/297**.
+ - SALE↔RENT soltanto fra stati opposti; SOLD/BLOCKED/WAITING e noleggi in corso con date inclusive protetti. Futuri da domani cancellati e rimborsati integralmente nella transazione; DELETE incompleta, conto mancante o rimborso fallito annullano tutto.
+@@ -163,7 +175,7 @@
+ | R04 | Acquisto: totale concordato e conclusione una sola volta | #6, #11, parte #12 | R02, R03, D06 | Completata: 06–08 chiusi e verificati |
+ | R05 | Cessione: titolarità, richiesta unica, pagamento e contabilità | #2, #3, #10 | R02, R03, D07 | Completata: 09–10 chiusi e verificati |
+ | R06 | Noleggi/test drive concorrenti e transizioni valide | #5, #7, restante #12 | R02, R03, D08–D10; coordinamento eventi con R04 | Completata: ticket 08, 11 e 12 chiusi e verificati |
+-| R07 | Cancellazione account rispettosa di storico e richieste | #9 | R00; fixture aggiornate dai flussi interessati | Pianificata |
++| R07 | Cancellazione account rispettosa di storico e richieste | #9 | R00; fixture aggiornate dai flussi interessati | Completata: ticket13 chiuso e verificato |
+ | R08 | Tabelle JavaFX senza query nel rendering | #16 | R03; verificare aggiornamenti dei flussi corretti | Pianificata |
+ | R09 | README, diagrammi, teoria ed evidenze coerenti | #14, #15, #18; valutazione teorica | Incrementale; chiusura dopo R01–R08 e R10 | Pianificata |
+ | R10 | Rimozione dei componenti inutilizzati | #20 | R00; controllo riferimenti prima di rimuovere | Pianificata |
+@@ -286,7 +298,7 @@
+ | Flusso | Regole/alternative | Attività | Verifiche da collegare |
+ |---|---|---|---|
+ | Dati di test | Isolamento, reset, configurazione errata | R00 | Java 21/PostgreSQL 16: configurazione, fixture, sentinella e scadenza superate; suite completa 28/28, evidenze R00 |
+-| Account/dominio | Email, duplicati, targa/km, cancellazione con storico | R01, R07 | Ticket 02: targa/km e dati invariati dopo rifiuto, dominio 15/15; ticket 03: AuthServiceIntegrationTest 18/18 PostgreSQL per email invalida, normalizzazione/successo, duplicati e credenziali preservate. Cancellazione/storico ancora da verificare (R07) |
++| Account/dominio | Email, duplicati, targa/km, cancellazione con storico | R01, R07 | Ticket 02: targa/km e dati invariati dopo rifiuto, dominio 15/15; ticket 03: AuthServiceIntegrationTest 18/18 PostgreSQL per email invalida, normalizzazione/successo, duplicati e credenziali preservate. Ticket13/R07 completato:60 casi PostgreSQL su ruoli, richieste, storico, identità senza vincoli, gare/FK e rollback effettivi; mirati356/356, suite390/390 e GUI/tastiera verificati |
+ | Prezzi | Consigliato, base manuale, sconti, ritorno al consigliato | R03 | PriceCalculatorServiceTest 11/11; PriceSelectionIntegrationTest 10/10, PostgreSQL reale; UI Robot/tastiera superata. [Evidenze](DriveHub/docs/evidence/r03-prices/verification.md) |
+ | Acquisto | Acconto, approvazione, saldo; rifiuto/scadenza; fondi insufficienti | R02, R04 | Ticket 07: PurchaseConcurrencyIntegrationTest 60/60, lock/rilettura, gare e penale/rimborsi singoli, errori e scritture saltate con rollback; suite 163/163. Ticket 06 chiuso: RequestAgreementTest 7/7 e PurchaseAgreementIntegrationTest 12/12, accordo/centesimi/rollback e GUI/tastiera; cancellazioni atomiche al ticket 08 |
+ | Cessione | Nuovo VIN, titolarità VIN esistente, accettazione/rifiuto | R02, R05 | Ticket 09–10 chiusi; 60 casi esito PostgreSQL, gare/rollback e GUI/tastiera; suite finale 259/259. [Evidenze](DriveHub/docs/evidence/r05-sale-outcome/verification.md) |
+@@ -736,3 +748,48 @@
+ Review indipendenti Standards **0 violazioni/0 smell azionabili**, Spec **0**, sul solo diff rispetto alla fotografia iniziale. [Evidenze, comandi, hash, log/XML e limiti](DriveHub/docs/evidence/r06-destination/verification.md). Nessun codice/test/harness cambiato dopo prove finali/review; i documenti di chiusura non costituiscono nuove prove runtime. Conservazione: 617 file presenti, 612 identici, 5 aggiornamenti intenzionali, zero eliminazioni; HEAD/indice invariati, nessun commit/staging. Alla ripresa l’ambiente temporaneo era già assente e non risultano processi PostgreSQL/Xvfb residui. Relazione_SWE sempre esclusa.
+ 
+ **Ticket12 chiuso, 6/6 criteri; R06 completata per 08/11/12, AC07/#7 chiuso, totale12/20.** AC13 resta trasversale; nessun ticket successivo avviato. Ambiente /tmp da ricreare prima di nuove prove.
++
++
++### 2 novembre 2026 — ticket 13 completato
++
++Solo13,01–12 controllati chiusi. Letti AGENTS, piano, glossario, ADR0001,
++testing ed evidenze12; ambiente /tmp precedente assente. Nuovo Java21 Linux,
++PostgreSQL16 e Xvfb estratti da pacchetti Ubuntu ufficiali, senza installazioni
++di sistema. Solo cluster sacrificabile127.0.0.1:55433, ruolo/DB di test non
++amministrativo e copia applicativa sentinella. Nuova baseline **330/330**;
++primo tentativo sandbox283 errori di connessione documentato separatamente,
++non presentato come regressione o verifica riuscita.
++
++Mappatura ruoli unica riusata, richieste incluse e attribuzione venditore
++RESTRICT. Lock identità NO KEY UPDATE → conto → controllo e cancellazione
++nella stessa transazione; rifiuti leggibili, DELETE verificata. Conservata
++cancellabilità delle identità senza vincoli e distinzione dal conto dimostrativo.
++Quattro coppie identiche RED/GREEN: ruoli3failure→6/6, richieste4→10/10,
++storico/gare5→15/15 (deadlock PostgreSQL reale incluso), DELETE saltata1→16/16.
++Estesi **60/60**, mirati **356/356**, suite finale **390/390** (47 senzaDB,
++343 PostgreSQL), zero failure/errori/salti; isolamento/sentinella e regressioni
++precedenti compresi. Gare nei due ordini con backend distinti e blocker osservati
++senza sleep; rollback dopo scritture effettive di identità/conto, accredito e
++acquisizione, nuovo veicolo e approvazione. Un'aspettativa errata della fixture
++estesa e due errori dell'harness GUI registrati, senza attribuirli al prodotto.
++
++JavaFX/Robot/tastiera **UI CHECK SUCCESS**, sei schermate finali ispezionate;
++conferma/annullamento, password, richiesta cliente e sola vendita storica
++venditore, successo senza vincoli e callback verificati. Review indipendenti
++Standards **0 violazioni/0 smell azionabili**, Spec **0**, sul solo diff della
++sessione rispetto alla fotografia locale846 file. Nessun codice/test/harness
++modificato dopo prove finali e review; aggiornamenti documentali di chiusura
++non sono nuove prove runtime.
++
++Conservazione:846 file presenti,838 identici,8 aggiornamenti intenzionali,
++zero eliminazioni. Ticket/evidenze01–12 e successivi intatti, HEAD/indice
++invariati, nessun commit/staging. Sentinella finale riletta in sola lettura,
++cluster e Xvfb arrestati; nessun DB applicativo preesistente contattato.
++Relazione_SWE sempre esclusa. [Evidenze](DriveHub/docs/evidence/r07-identity/verification.md).
++
++**Ticket13 chiuso,5/5 criteri, R07 e AC09/#9 completati;13/20 rilievi chiusi.**
++AC13 resta trasversale. Nessun ticket successivo. Prima dell'uso su installazioni
++esistenti aggiornare il solo vincolo FK secondo testing; eventuali attribuzioni
++già azzerate non ricostruite. /tmp temporanea, nessuna certificazione screen
++reader o benchmark prestazioni. Prossimo passo: nessun residuo del13;
++proseguire solo su nuova richiesta.
+--- a/TRACKER_DRIVEHUB/revisioni/issues/13-cancellazione-identita-e-storico.md
++++ b/TRACKER_DRIVEHUB/revisioni/issues/13-cancellazione-identita-e-storico.md
+@@ -7,7 +7,7 @@
+ **Blocked by:** 01: Rendere build e test ripetibili senza toccare i dati applicativi
+ 
+ Status: ready-for-agent
+-State: open
++State: closed
+ 
+ **Piano:** R07
+ **Specifica:** AC09, AC13
+@@ -15,11 +15,11 @@
+ 
+ ## Acceptance criteria
+ 
+-- [ ] Ruolo rappresentato coerentemente fra dialog, servizio e DAO, con tutti i chiamanti aggiornati e senza conversioni duplicate.
+-- [ ] Cliente con richieste o operazioni vincolanti non cancellabile; venditore con sole vendite concluse non cancellabile.
+-- [ ] Le attribuzioni storiche non vengono azzerate; identità realmente prive di vincoli restano cancellabili secondo le regole esistenti.
+-- [ ] Controllo e cancellazione restano coerenti in presenza di un'operazione associata concorrente; verificati vincoli e rollback reali.
+-- [ ] Test su ruoli, richieste, storico e casi senza vincoli, con controllo della gestione identità nella UI.
++- [x] Ruolo rappresentato coerentemente fra dialog, servizio e DAO, con tutti i chiamanti aggiornati e senza conversioni duplicate.
++- [x] Cliente con richieste o operazioni vincolanti non cancellabile; venditore con sole vendite concluse non cancellabile.
++- [x] Le attribuzioni storiche non vengono azzerate; identità realmente prive di vincoli restano cancellabili secondo le regole esistenti.
++- [x] Controllo e cancellazione restano coerenti in presenza di un'operazione associata concorrente; verificati vincoli e rollback reali.
++- [x] Test su ruoli, richieste, storico e casi senza vincoli, con controllo della gestione identità nella UI.
+ 
+ ## Note per l'implementazione
+ 
+@@ -32,3 +32,42 @@
+ ## Comments
+ 
+ - 31 ottobre 2026: ticket pubblicato da `to-tickets` dopo approvazione di granularità e dipendenze. Esecuzione non ancora avviata; verificare i blocchi prima di iniziare.
++
++- 2 novembre 2026: avviata soltanto la sessione 13; prerequisito 01 e ticket 01–12 chiusi verificati. Nuova baseline completa Java21/PostgreSQL dedicato **330/330**, distinta dal risultato storico12. Fotografia iniziale acquisita; TDD ai confini già approvati, nessun commit.
++
++### 2 novembre 2026 — implementazione e chiusura verificata
++
++- Prerequisito01 e ticket01–12 verificati chiusi prima del lavoro; AGENTS,
++  piano, glossario, ADR0001, testing ed evidenze12 letti. Nuova baseline
++  Java21/PostgreSQL dedicato **330/330**, distinta dal risultato storico12.
++- Riutilizzata la sola mappatura ruoli del DAO in controllo e cancellazione;
++  chiamanti dialogo/servizio/DAO censiti nelle evidenze. Richieste cliente e
++  richieste/vendite concluse venditore impediscono la cancellazione; storico
++  e attribuzioni preservati. Identità senza vincoli cancellabili, conto
++  dimostrativo distinto, anche con disponibilità positiva, rimosso per CASCADE.
++- Lock identità NO KEY UPDATE → conto → verifica/DELETE sulla stessa
++  connessione, esattamente una riga. FK venditore RESTRICT e conflitto FK
++  leggibile proteggono anche associazioni successive al controllo. Riprodotto
++  e risolto deadlock contro acquisto già sul conto; garanzie04–12 conservate.
++- Quattro coppie TDD con sorgente del test identico RED/GREEN. **60/60** casi
++  nuovi, mirati **356/356**, suite completa finale **390/390**:47 senzaDB,
++  343 PostgreSQL, zero failure/errori/salti, inclusi isolamento e sentinella.
++  Gate osservabili, backend distinti, nessuno sleep nelle gare; rollback dopo
++  cancellazione identità/conto, accredito/acquisizione e creazione veicolo.
++- JavaFX/Robot/tastiera **UI CHECK SUCCESS**, sei schermate finali ispezionate:
++  regole/conferma/annullamento, richiesta cliente, storico venditore, password,
++  successo; callback solo dopo successo, tutti i ruoli senza vincoli eliminabili.
++- Review indipendenti Standards **0 violazioni/0 smell azionabili**, Spec **0**,
++  sul solo diff congelato della sessione. Nessun codice/test/harness cambiato
++  dopo prove finali e review; documenti di chiusura successivi non sono prove runtime.
++- Nuovo ambiente Java21/PG16/Xvfb temporaneo: solo127.0.0.1:55433, ruolo/DB
++  dedicati e copia sentinella, riletta in sola lettura dopo suite. Cluster e
++  Xvfb arrestati; nessun DB applicativo preesistente contattato. Fotografia846
++  file preservata:838 identici,8 aggiornamenti intenzionali, zero eliminazioni;
++  ticket/evidenze01–12 e successivi intatti, HEAD/indice invariati, nessun commit.
++- **5/5 criteri verificati, ticket13 chiuso, R07 e AC09/#9 completati;13/20
++  rilievi integralmente chiusi.** AC13 resta trasversale. Nessun ticket successivo.
++- [Evidenze complete, comandi, hash, XML, gare, GUI, review e limiti](../../../DriveHub/docs/evidence/r07-identity/verification.md).
++  Prima dell'uso su installazioni esistenti applicare il solo cambio FK
++  documentato in testing: non ricostruisce attribuzioni già azzerate. /tmp
++  temporanea; nessuna certificazione screen reader o prestazioni.

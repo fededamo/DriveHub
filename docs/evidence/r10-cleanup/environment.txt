@@ -1,0 +1,29 @@
+BEGIN
+ current_database | current_user  | inet_server_addr | inet_server_port |     owner     | rolsuper | rolcreatedb | rolcreaterole | rolreplication | rolbypassrls 
+------------------+---------------+------------------+------------------+---------------+----------+-------------+---------------+----------------+--------------
+ drivehub_test    | drivehub_test | 127.0.0.1        |            55433 | drivehub_test | f        | f           | f             | f              | f
+(1 row)
+
+ memberships 
+-------------
+           0
+(1 row)
+
+ owned_database 
+----------------
+ drivehub_test
+(1 row)
+
+COMMIT
+BEGIN
+ current_database | current_user | inet_server_addr | inet_server_port |  owner   | rolsuper | rolcreatedb | rolcreaterole | rolreplication | rolbypassrls 
+------------------+--------------+------------------+------------------+----------+----------+-------------+---------------+----------------+--------------
+ drivehub         | drivehub     | 127.0.0.1        |            55433 | drivehub | f        | f           | f             | f              | f
+(1 row)
+
+     name     
+--------------
+ R00_SENTINEL
+(1 row)
+
+COMMIT

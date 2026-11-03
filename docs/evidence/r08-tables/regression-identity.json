@@ -1,0 +1,23 @@
+[
+  {
+    "red": "render-red-final",
+    "green": "render-green",
+    "source": "tdd/1/ReactiveTablesUiCheck.java",
+    "sha256": "8d14d96ff8d4b9837602631e558d048d9ec6ccffa2d526b3a4d5e7113d8110a9",
+    "note": "Sorgente non modificato fra i due comandi; copia fotografata alla fine della coppia."
+  },
+  {
+    "red": "slow-red",
+    "green": "slow-green",
+    "source": "tdd/2/SlowModelsUiCheck.java",
+    "sha256": "fd2d253d2de772c0b22684e4f252a6b3f886af07f96c7580c0cb171270cc0646",
+    "note": "Sorgente non modificato fra i due comandi; copia fotografata alla fine della coppia."
+  },
+  {
+    "red": "obsolete-red",
+    "green": "obsolete-green-fixed",
+    "source": "tdd/3/SlowModelsUiCheck.java",
+    "sha256": "e48455cfed68106ae4d2b75c7c3a02a8cb3371cc04b3180f0f9bc9b6f76d2cfd",
+    "note": "Sorgente non modificato fra i due comandi; copia fotografata alla fine della coppia."
+  }
+]

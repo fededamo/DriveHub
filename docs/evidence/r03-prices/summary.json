@@ -1,0 +1,11 @@
+{
+  "tests": 84,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "postgres": 51,
+  "without_database": 33,
+  "targeted": 21,
+  "standards_findings": 0,
+  "spec_remaining_findings": 0
+}

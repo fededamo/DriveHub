@@ -1,0 +1,59 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontSize 16
+skinparam maxMessageSize 280
+title Acquisto del cliente — acconto, approvazione, saldo
+autonumber
+actor Cliente
+actor Venditore
+control PurchaseService as service
+participant DatabaseManager as db
+participant VehicleDao as vehicle
+participant RequestDao as request
+participant BankAccountDao as account
+participant SaleDao as sale
+participant VehicleEventPublisher as publisher
+group initiatePurchase(vehicleId, clientId) — transazione 1
+Cliente -> service : dalla ClientDashboardView
+service -> db : executeInTransactionWithResult(callback)
+note over service,db : Connessione aperta; autocommit=false; callback del servizio.
+service -> vehicle : updateStateAtomically(SALE, BLOCKED, conn)
+service -> vehicle : findById(vehicleId, conn)
+note over service,vehicle
+  Legge modello/sconti e calcola il prezzo effettivo.
+  Queste letture aprono anche connessioni proprie:
+  nessuno snapshot unico del listino.
+end note
+service -> account : findByClientIdForUpdate(clientId, conn)
+service -> account : updateBalance(..., saldo - acconto20%, conn)
+service -> request : save(Request PURCHASE con totale/acconto, conn)
+db -> db : commit / close
+service --> Cliente : richiesta; successo dopo commit
+end
+group approvePurchase(requestId, salesmanId) — transazione 2
+Venditore -> service : dalla SalesmanDashboardView
+service -> db : executeInTransaction(callback)
+service -> request : findByIdForUpdate(requestId, conn)
+service -> request : update(salesmanId, expDate = oggi + 1 mese, conn)
+db -> db : commit / close
+end
+group completePurchase(requestId) — transazione 3
+Cliente -> service : paga saldo da Le Mie Operazioni
+service -> db : executeInTransaction(callback)
+service -> request : findByIdForUpdate(requestId, conn)
+note over service,request : Verifica PURCHASE approvata e non scaduta.
+service -> account : findByClientIdForUpdate(clientId, conn)
+service -> account : updateBalance(..., saldo - (agreedTotal - deposit), conn)
+service -> sale : save(Sale PURCHASE positiva, conn)
+service -> request : delete(requestId, conn)
+service -> vehicle : updateStateAtomically(BLOCKED, SOLD, conn)
+service -> publisher : publishCommitment(event, conn)
+note over service,publisher : Observer sincrono cancella test drive futuri prima del commit.
+db -> db : commit / close
+service --> Cliente : esito; nessun ricalcolo del listino al saldo
+end
+note over service,db
+  Ogni gruppo ha la propria transazione. Eccezione: tenta rollback, close, errore UI.
+  Richiesta già rimossa o stato incoerente: nessun secondo addebito riuscito.
+end note
+@enduml

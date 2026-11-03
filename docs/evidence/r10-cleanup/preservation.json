@@ -1,0 +1,14 @@
+{
+  "initial_files": 1276,
+  "identical": 1271,
+  "modified": [
+    "DriveHub/pom.xml",
+    "DriveHub/docs/testing.md",
+    "DriveHub/src/main/java/it/unifi/drivehub/AppContext.java",
+    "TRACKER_DRIVEHUB/revisioni/issues/15-pulizia-componenti-inutilizzati.md",
+    "PIANO_REVISIONI_DRIVEHUB.md"
+  ],
+  "deleted": [],
+  "head_unchanged": true,
+  "index_unchanged": true
+}

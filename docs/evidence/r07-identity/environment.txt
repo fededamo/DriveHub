@@ -1,0 +1,10 @@
+ current_database | current_user  |     owner     | rolsuper | rolcreatedb | rolcreaterole | rolreplication | rolbypassrls 
+------------------+---------------+---------------+----------+-------------+---------------+----------------+--------------
+ drivehub_test    | drivehub_test | drivehub_test | f        | f           | f             | f              | f
+(1 row)
+
+ current_database | current_user |     name     
+------------------+--------------+--------------
+ drivehub         | drivehub     | R00_SENTINEL
+(1 row)
+

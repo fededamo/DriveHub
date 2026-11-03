@@ -1,0 +1,8 @@
+PASS JavaFX avviato
+OBSERVED model loader PID=46068 blocker=46066
+PASS lettura modelli realmente in attesa PostgreSQL
+PASS selezione modello torna mentre PostgreSQL è bloccato
+PASS finestra reattiva durante caricamento lento
+OBSERVED loader=46071 blocker=46070
+PASS risultato superato non ripopola modelli senza marca
+UI CHECK SUCCESS

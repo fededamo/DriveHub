@@ -1,0 +1,19 @@
+{
+  "source": "session snapshot of current local working tree including untracked files; not HEAD",
+  "files_copied": 1400,
+  "runtime_differences": [
+    "src/main/resources/application.properties: private configuration to new isolated application copy only"
+  ],
+  "documentation_updated": [
+    "README.md",
+    "docs/testing.md",
+    "docs/installation.md",
+    "docs/architecture.md"
+  ],
+  "excluded": [
+    ".git",
+    "target",
+    "Relazione_SWE"
+  ],
+  "source_files_unchanged": true
+}

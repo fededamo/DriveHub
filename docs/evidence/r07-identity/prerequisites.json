@@ -1,0 +1,74 @@
+[
+  {
+    "path": "TRACKER_DRIVEHUB/revisioni/issues/01-ambiente-e-test-isolati.md",
+    "state": "closed",
+    "criteria_checked": 6,
+    "sha256": "9321f169ba8be3d6c8f9a3519cdb3d2c86cf4f723d276e7ba3ca9219c85669db"
+  },
+  {
+    "path": "TRACKER_DRIVEHUB/revisioni/issues/02-invarianti-veicolo.md",
+    "state": "closed",
+    "criteria_checked": 4,
+    "sha256": "48e94bb4418e8abe31c843f20e48f605302be8379aad1bdd1a0b8f94422a9a99"
+  },
+  {
+    "path": "TRACKER_DRIVEHUB/revisioni/issues/03-cambio-email-sicuro.md",
+    "state": "closed",
+    "criteria_checked": 4,
+    "sha256": "1efbf2427a750fafbcb0d37f68746a022b5a63b0887f9cfc18f55c55bfc70b84"
+  },
+  {
+    "path": "TRACKER_DRIVEHUB/revisioni/issues/04-saldi-concorrenti.md",
+    "state": "closed",
+    "criteria_checked": 5,
+    "sha256": "fe53deda7ca0caa9122e3f3c5df4fa7ec5aa7b3b78abfaa61a17c5e7b0414e63"
+  },
+  {
+    "path": "TRACKER_DRIVEHUB/revisioni/issues/05-prezzo-consigliato-e-base-manuale.md",
+    "state": "closed",
+    "criteria_checked": 6,
+    "sha256": "6a139d68113a48bb13678b9b5ddca7d14bf40d534b1e6c06d1d1c33cedfc80b9"
+  },
+  {
+    "path": "TRACKER_DRIVEHUB/revisioni/issues/06-totale-concordato-acquisto.md",
+    "state": "closed",
+    "criteria_checked": 6,
+    "sha256": "1c2883bee011294a9a1134bb6618c6aa1ee82e22397bb5d9c1781b89099cf80e"
+  },
+  {
+    "path": "TRACKER_DRIVEHUB/revisioni/issues/07-richieste-acquisto-una-volta.md",
+    "state": "closed",
+    "criteria_checked": 6,
+    "sha256": "a3b9726f6c6fb7101a6429e5c6f30bdf7c1f5894fc474060a43436d25d5097e2"
+  },
+  {
+    "path": "TRACKER_DRIVEHUB/revisioni/issues/08-cancellazioni-test-drive-atomiche.md",
+    "state": "closed",
+    "criteria_checked": 5,
+    "sha256": "eb8f188afa308f461686afde5eb54dddaebd4c9caaeccce429b47a34c95d4249"
+  },
+  {
+    "path": "TRACKER_DRIVEHUB/revisioni/issues/09-proposta-cessione-e-titolarita.md",
+    "state": "closed",
+    "criteria_checked": 6,
+    "sha256": "74816ad9375e3c57f8d7bf9b499081295d6b7ac7a38ad5f0c3963f62b2e2b1b9"
+  },
+  {
+    "path": "TRACKER_DRIVEHUB/revisioni/issues/10-esito-cessione-e-registro.md",
+    "state": "closed",
+    "criteria_checked": 6,
+    "sha256": "1da85ab7b3e555bc4c997375fcb3a27148a2b0bf06b34ca760878fb9063c7594"
+  },
+  {
+    "path": "TRACKER_DRIVEHUB/revisioni/issues/11-prenotazioni-concorrenti.md",
+    "state": "closed",
+    "criteria_checked": 6,
+    "sha256": "eaf1883bd34f00492e7a478e94098366c36e9f61a788fbdb858dbef503b810b2"
+  },
+  {
+    "path": "TRACKER_DRIVEHUB/revisioni/issues/12-destinazione-veicolo-e-rimborsi.md",
+    "state": "closed",
+    "criteria_checked": 6,
+    "sha256": "22fcd467f7490cc628d22237036a1ccc3746433c10b3b62b505a219b2fb3e35a"
+  }
+]

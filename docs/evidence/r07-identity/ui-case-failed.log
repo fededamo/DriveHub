@@ -1,0 +1,8 @@
+SEED SUCCESS: richiesta cliente, sola vendita conclusa venditore, identità senza vincoli
+PASS JavaFX avviato nella JVM distinta dal seed
+PASS dialogo pubblico aperto
+PASS scheda eliminazione raggiunta con frecce
+PASS identità distinta dal conto dimostrativo
+java.lang.AssertionError: conferma esplicita prima della cancellazione
+	at it.unifi.drivehub.PriceUiCheck.check(PriceUiCheck.java:33)
+	at it.unifi.drivehub.IdentityUiCheck.main(IdentityUiCheck.java:118)

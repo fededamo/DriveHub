@@ -1,0 +1,289 @@
+--- closure-baseline/docs/testing.md
++++ closure-final/docs/testing.md
+@@ -281,6 +281,9 @@
+ confermano saldo, accordo, prenotazione e registro dopo rollback.
+ 
+ [Evidenze della sessione e diff rispetto alla baseline dedicata](evidence/r04-purchase-once/verification.md).
+-Ticket 06 ancora aperto in verifica finale; il suo lavoro locale è preservato.
++Ticket 06 chiuso il 2 novembre 2026 dopo registrazione delle prove e review
++indipendenti Standards/Spec senza rilievi. I suoi 19 test sono inclusi nella suite
++163/163 del 07; viste/harness GUI del 06 e lavoro locale precedente preservati.
++[Chiusura e continuità delle evidenze](evidence/r04-agreement/verification.md#tracciabilità-della-chiusura--2-novembre-2026).
+ Le cancellazioni obbligatorie dei test drive e le transizioni degli altri flussi
+ restano ai ticket successivi. Nessuna UI o regola economica nuova.
+--- closure-baseline/docs/evidence/r04-agreement/verification.md
++++ closure-final/docs/evidence/r04-agreement/verification.md
+@@ -1,6 +1,6 @@
+ # Ticket 06 / R04 — totale concordato all'acconto
+ 
+-Verifica del 31 ottobre 2026, solo ticket 06. Ticket 01–05 e prerequisiti 04/05
++Verifica del 31 ottobre 2026, chiusura il 2 novembre 2026: **ticket 06 chiuso, 6/6 criteri**. Ticket 01–05 e prerequisiti 04/05
+ controllati chiusi prima di iniziare. Nessun commit/staging; Relazione_SWE esclusa
+ da letture, ricerche, copie, modifiche, generazioni e verifiche.
+ 
+@@ -109,9 +109,11 @@
+ 
+ ## Revisione e limiti
+ 
+-Revisione indipendente Standards/Spec sulla patch della sola sessione in corso;
+-report e stato finale saranno registrati dopo la restituzione dei due agenti.
+-Ticket aperto fino alla conclusione della review.
++Review indipendenti sul diff fissato della sola sessione concluse:
++[Standards](standards-review.md) **0 violazioni / 0 smell**, [Spec](spec-review.md)
++**0 rilievi**. Il 2 novembre entrambi i revisori hanno confermato l'esito anche
++sul codice corrente dopo il ticket 07, autorizzato e verificato separatamente.
++**Ticket 06 chiuso con 6/6 criteri verificati.**
+ 
+ Schema ricreabile D02, nessuna migrazione storica: installazioni esistenti richiedono
+ schema adeguato e totali realmente concordati, mai inferiti dal listino corrente.
+@@ -119,3 +121,26 @@
+ Competizione completamento/rifiuto/scadenza al ticket 07, eventi/transizioni ai
+ rispettivi ticket, prestazioni tabelle al 14. Nessun altro ticket lavorato.
+ Ambiente /tmp temporaneo; arresto di PostgreSQL/Xvfb a fine sessione.
++
++
++## Tracciabilità della chiusura — 2 novembre 2026
++
++Nessuna modifica a codice, test, schema, fixture o viste in questa ripresa.
++I 17 file interni dello snapshot del 06 corrispondono esattamente alla copia
++`/tmp/drivehub-ticket07-baseline/repo`; i 7 file del manifest verificato del 07
++corrispondevano ai file correnti prima degli aggiornamenti documentali di chiusura,
++senza altri cambi ai sorgenti. La baseline /tmp
++originale del 06 non esiste più: patch e hash qui conservati restano la fotografia
++storica revisionata e non vengono sostituiti con un diff cumulativo del 07.
++
++Gli XML della [suite finale 07](../r04-purchase-once/verification.md) sono stati
++ricontrollati: **163/163**, zero failure/errori/saltati, compresi i 7 test di dominio
+++ 12 PostgreSQL del 06, isolamento/sentinella e conti concorrenti. Non sono nuove
++esecuzioni in questa ripresa. Le prove GUI/tastiera sopra rimangono quelle eseguite
++sulle viste e sull'harness immutati, con nuova JVM e importi riletti.
++
++[Controlli e hash di continuità](closure-checks.json), [solo delta documentale di
++chiusura](closure.patch). Baseline di questa ripresa acquisita prima degli interventi
++in `/tmp/drivehub-ticket06-closure-20261102`; il confronto non comprende lavoro
++preesistente. HEAD e indice invariati, nessun commit/staging. R04 parziale per il
++solo 08, non avviato; nessun lavoro aggiuntivo. Limiti sopra invariati.
+--- closure-baseline/../PIANO_REVISIONI_DRIVEHUB.md
++++ closure-final/../PIANO_REVISIONI_DRIVEHUB.md
+@@ -4,26 +4,29 @@
+ 
+ ## Stato attuale
+ 
+-- **Ticket 07 chiuso** il 2 novembre 2026: richiesta riletta e bloccata nella
+-  transazione, saldo/rifiuto/scadenza una sola volta; prerequisito 04 chiuso.
+-  Il passaggio al 07 è stato autorizzato esplicitamente dall'utente.
+-- **Ticket 06 resta aperto in verifica finale**: il suo file e tutto il lavoro locale
+-  sono preservati. Nessuna chiusura implicita del 06 e nessun altro ticket avviato.
+-- Java 21.0.12.1/PostgreSQL 16.15 ripredisposti in /tmp, Maven 3.9.16. Regressione
+-  saldo/saldo RED 1 failure attesa, stessa prova GREEN 1/1; mirati 88/88 e suite
+-  completa **163/163**, zero failure/errori/saltati, isolamento/sentinella passati.
+-- Review solo sul diff dalla baseline dedicata: Standards 0 violazioni / 1 osservazione
+-  non bloccante, Spec 0 rilievi. 266/272 file precedenti identici, 6 aggiornati
+-  intenzionalmente più un test nuovo. HEAD/indice invariati, nessun commit/staging.
+-- R04 resta parziale: **06 aperto, 07 chiuso, 08 non avviato**. Chiuso rilievo #6:
+-  **6/20** (#1, #4, #6, #8, #17, #19). #11 non chiuso per conseguenza del 07;
+-  #12 e #13 restano parziali/non conclusi.
+-- [Ticket 07](TRACKER_DRIVEHUB/revisioni/issues/07-richieste-acquisto-una-volta.md),
+-  [evidenze](DriveHub/docs/evidence/r04-purchase-once/verification.md),
+-  [comandi](DriveHub/docs/testing.md#richieste-di-acquisto-elaborate-una-sola-volta--ticket-07).
+-  Evidenze precedenti conservate. Relazione_SWE esclusa da ogni operazione.
+-- Cluster temporaneo arrestato; nessun contatto al DB applicativo preesistente.
+-  Prossimo passo: riprendere la verifica finale del 06; altri ticket su richiesta successiva.
++- **Ticket 06 chiuso il 2 novembre 2026, 6/6 criteri verificati**: totale concordato
++  persistito all'acconto, saldo/vendita dagli importi salvati; GUI cliente/venditore
++  e tastiera verificate in due JVM. Review indipendenti **Standards 0 / Spec 0**,
++  confermate sul codice corrente dopo le modifiche del 07.
++- **Ticket 07 chiuso**, autorizzato e verificato separatamente: rilettura/lock e
++  saldo/rifiuto/scadenza una sola volta. Il suo codice e tutte le modifiche locali
++  sono preservati; nessun codice cambiato nella chiusura del 06.
++- Suite corrente del 07 **163/163**, zero failure/errori/saltati, comprende i 7 test
++  di dominio e 12 PostgreSQL del 06, isolamento/sentinella e conti. XML e hash
++  ricontrollati, senza nuove esecuzioni nella ripresa documentale del 06.
++  Evidenze 06 conservate: RED/GREEN, mirati 57/57, suite 103/103 e GUI/tastiera.
++- R04 resta parziale: **06 e 07 chiusi; 08 non avviato**. Rilievi #11 e #6 chiusi:
++  **7/20** (#1, #4, #6, #8, #11, #17, #19). #12 e #13 restano parziali/non conclusi.
++- [Ticket 06](TRACKER_DRIVEHUB/revisioni/issues/06-totale-concordato-acquisto.md),
++  [evidenze e chiusura](DriveHub/docs/evidence/r04-agreement/verification.md),
++  [ticket 07](TRACKER_DRIVEHUB/revisioni/issues/07-richieste-acquisto-una-volta.md),
++  [evidenze 07](DriveHub/docs/evidence/r04-purchase-once/verification.md).
++- Java 21/PostgreSQL dedicato verificati nelle prove registrate; cluster arrestato.
++  Nessun accesso al DB applicativo preesistente. Nessun commit/staging; HEAD invariato.
++  Relazione_SWE sempre esclusa. Schema ricreabile senza migrazione storica; GUI su
++  fixture ridotta, prestazioni e screen reader non certificati, /tmp temporaneo.
++- Prossimo passo: ticket 08 soltanto su una successiva richiesta. Nessun altro
++  ticket avviato in questa ripresa.
+ 
+ ## Perimetro e fonti
+ 
+@@ -76,7 +79,7 @@
+ | R01 | Invarianti preservati e cambio email sicuro | #8, #19 | R00 per eseguire le prove | Completata: ticket 02 (#19) e 03 (#8) verificati e chiusi |
+ | R02 | Movimenti del conto corretti sotto concorrenza | #4 | R00 | Completata: ticket 04 verificato e chiuso |
+ | R03 | Prezzo consigliato/manuale coerente lungo il flusso | #17 | R00, D04–D05 | Completata: ticket 05 verificato e chiuso |
+-| R04 | Acquisto: totale concordato e conclusione una sola volta | #6, #11, parte #12 | R02, R03, D06 | In corso: 06 aperto in verifica finale; 07 chiuso e verificato; 08 non avviato |
++| R04 | Acquisto: totale concordato e conclusione una sola volta | #6, #11, parte #12 | R02, R03, D06 | In corso: 06 e 07 chiusi e verificati; 08 non avviato |
+ | R05 | Cessione: titolarità, richiesta unica, pagamento e contabilità | #2, #3, #10 | R02, R03, D07 | Pianificata |
+ | R06 | Noleggi/test drive concorrenti e transizioni valide | #5, #7, restante #12 | R02, R03, D08–D10; coordinamento eventi con R04 | Pianificata |
+ | R07 | Cancellazione account rispettosa di storico e richieste | #9 | R00; fixture aggiornate dai flussi interessati | Pianificata |
+@@ -204,7 +207,7 @@
+ | Dati di test | Isolamento, reset, configurazione errata | R00 | Java 21/PostgreSQL 16: configurazione, fixture, sentinella e scadenza superate; suite completa 28/28, evidenze R00 |
+ | Account/dominio | Email, duplicati, targa/km, cancellazione con storico | R01, R07 | Ticket 02: targa/km e dati invariati dopo rifiuto, dominio 15/15; ticket 03: AuthServiceIntegrationTest 18/18 PostgreSQL per email invalida, normalizzazione/successo, duplicati e credenziali preservate. Cancellazione/storico ancora da verificare (R07) |
+ | Prezzi | Consigliato, base manuale, sconti, ritorno al consigliato | R03 | PriceCalculatorServiceTest 11/11; PriceSelectionIntegrationTest 10/10, PostgreSQL reale; UI Robot/tastiera superata. [Evidenze](DriveHub/docs/evidence/r03-prices/verification.md) |
+-| Acquisto | Acconto, approvazione, saldo; rifiuto/scadenza; fondi insufficienti | R02, R04 | Ticket 07: PurchaseConcurrencyIntegrationTest 60/60, lock/rilettura, gare e penale/rimborsi singoli, errori e scritture saltate con rollback; suite 163/163. Ticket 06 aperto in verifica finale, cancellazioni atomiche al ticket 08 |
++| Acquisto | Acconto, approvazione, saldo; rifiuto/scadenza; fondi insufficienti | R02, R04 | Ticket 07: PurchaseConcurrencyIntegrationTest 60/60, lock/rilettura, gare e penale/rimborsi singoli, errori e scritture saltate con rollback; suite 163/163. Ticket 06 chiuso: RequestAgreementTest 7/7 e PurchaseAgreementIntegrationTest 12/12, accordo/centesimi/rollback e GUI/tastiera; cancellazioni atomiche al ticket 08 |
+ | Cessione | Nuovo VIN, titolarità VIN esistente, accettazione/rifiuto | R02, R05 | Richiesta unica, un accredito, segno contabile, storico |
+ | Noleggio | Disponibilità, priorità, cambio destinazione/rimborsi | R02, R06 | Concorrenza, date limite, in corso, rimborsi, rollback |
+ | Test drive | Limite tre, disponibilità, cancellazione/storico | R06 | Concorrenza, tutti i futuri cancellati dopo noleggio, passato conservato |
+@@ -460,3 +463,28 @@
+   nuova regola economica o migrazione. Ambiente /tmp temporaneo.
+ - Prossimo passo: riprendere la verifica finale del 06; altri ticket soltanto in
+   successiva richiesta. Voci storiche precedenti conservate senza riscriverne gli esiti.
++
++
++### Chiusura ticket 06 — 2 novembre 2026
++
++- Registrati gli esiti delle review indipendenti della sessione del 31 ottobre:
++  Standards 0 violazioni / 0 smell, Spec 0 rilievi. Conferma read-only di entrambi
++  i revisori sul codice corrente dopo il 07: nessun impedimento alla chiusura 06.
++- Verificati 17/17 file interni dello snapshot 06 nella baseline 07; i 7 file
++  certificati del 07 erano identici al corrente prima degli aggiornamenti documentali
++  di chiusura; nessun altro sorgente cambiato.
++  XML della suite 07 ricontrollati: 163/163, zero failure/errori/salti, compresi i
++  19 test del 06, conti e isolamento/sentinella. Nessun test/DB/GUI rieseguito:
++  questa ripresa modifica soltanto documenti, stato e prove di chiusura.
++- Restano valide le prove RED/GREEN, 57 mirati, 103 della suite del 06 e GUI/tastiera
++  in due JVM; viste e harness immutati. Patch e hash originali del 06 conservati,
++  senza includere il lavoro successivo del 07 nel diff. Vecchia /tmp del 06 rimossa;
++  nuova baseline documentale in /tmp/drivehub-ticket06-closure-20261102.
++- **6/6 criteri verificati, State: closed, rilievo #11 chiuso**. Totale aggiornato
++  **7/20** con #6 già chiuso dal 07; AC13 resta trasversale e parziale. R04 in corso
++  soltanto per 08. Le sezioni precedenti descrivono lo stato storico di ogni sessione.
++- Tutti gli 81 file src sono rimasti identici durante la chiusura; controllati hash,
++  link, whitespace, HEAD e indice. Nessun commit/staging, nessuna modifica al 07 o
++  agli altri ticket, Relazione_SWE sempre esclusa. Limiti schema/GUI già documentati.
++- Prossimo passo: 08 su nuova richiesta; nessun altro lavoro avviato.
++  [Evidenze](DriveHub/docs/evidence/r04-agreement/verification.md).
+--- closure-baseline/../TRACKER_DRIVEHUB/revisioni/issues/06-totale-concordato-acquisto.md
++++ closure-final/../TRACKER_DRIVEHUB/revisioni/issues/06-totale-concordato-acquisto.md
+@@ -7,7 +7,7 @@
+ **Blocked by:** 04: Eseguire addebiti e rimborsi senza perdere aggiornamenti; 05: Usare prezzo consigliato o base manuale lungo catalogo e noleggio
+ 
+ Status: ready-for-agent
+-State: in-progress
++State: closed
+ 
+ **Piano:** R04
+ **Specifica:** AC11, AC13
+@@ -15,12 +15,12 @@
+ 
+ ## Acceptance criteria
+ 
+-- [ ] Totale concordato conservato nella richiesta quando viene addebitato l'acconto del 20%; dominio, persistenza e fixture aggiornati insieme.
+-- [ ] Avvio e completamento mantengono prenotazione atomica del veicolo, controlli di approvazione/scadenza e addebiti protetti del conto.
+-- [ ] Con totale 20.000 € e acconto 4.000 €, modifiche successive di basi/sconti lasciano saldo 16.000 € e vendita registrata da 20.000 €.
+-- [ ] La regola vale sia per base del modello sia per base manuale e non dipende dall'anno corrente al momento del saldo.
+-- [ ] Interfaccia mostra totale concordato e saldo coerenti dopo rilettura in una nuova sessione; fondi insufficienti o errori lasciano dati e saldo invariati.
+-- [ ] Flusso servizio/persistenza verificato e documentazione del percorso aggiornata.
++- [x] Totale concordato conservato nella richiesta quando viene addebitato l'acconto del 20%; dominio, persistenza e fixture aggiornati insieme.
++- [x] Avvio e completamento mantengono prenotazione atomica del veicolo, controlli di approvazione/scadenza e addebiti protetti del conto.
++- [x] Con totale 20.000 € e acconto 4.000 €, modifiche successive di basi/sconti lasciano saldo 16.000 € e vendita registrata da 20.000 €.
++- [x] La regola vale sia per base del modello sia per base manuale e non dipende dall'anno corrente al momento del saldo.
++- [x] Interfaccia mostra totale concordato e saldo coerenti dopo rilettura in una nuova sessione; fondi insufficienti o errori lasciano dati e saldo invariati.
++- [x] Flusso servizio/persistenza verificato e documentazione del percorso aggiornata.
+ 
+ ## Note per l'implementazione
+ 
+@@ -86,6 +86,33 @@
+ La competizione fra completamento/rifiuto/scadenza resta al ticket 07; eventi e
+ transizioni ai rispettivi ticket. Ambiente `/tmp` temporaneo.
+ 
+-Prossimo passo: completare raccolta evidenze GUI e review indipendente Standards/Spec;
+-finché non concluse, ticket aperto. Riprendere solo questo ticket in caso di blocco.
++Raccolta GUI e review indipendente concluse; chiusura registrata qui sotto.
+ [Evidenze della sessione](../../../DriveHub/docs/evidence/r04-agreement/verification.md).
++
++
++## Chiusura — 2 novembre 2026
++
++**6/6 criteri verificati, State: closed.** Rilievo #11 / AC11 chiuso.
++
++- Le review indipendenti sul diff della sola sessione, già concluse il 31 ottobre,
++  sono ora registrate: [Standards 0 violazioni / 0 smell](../../../DriveHub/docs/evidence/r04-agreement/standards-review.md)
++  e [Spec 0 rilievi](../../../DriveHub/docs/evidence/r04-agreement/spec-review.md).
++- Confermata da entrambi i revisori la compatibilità con il ticket 07, autorizzato
++  e chiuso separatamente: nessun impedimento alla chiusura del 06.
++- Verificati i 17 hash interni dello snapshot 06 contro la baseline 07 e i 7 hash
++  certificati dal 07 contro i file correnti prima degli aggiornamenti documentali
++  di chiusura. Nessun altro sorgente alterato.
++  Il vecchio /tmp della sessione 06 è stato rimosso; patch/hash persistenti e
++  baseline 07 conservano la tracciabilità. Nessuna rigenerazione del diff 06
++  includendo per errore le modifiche del 07.
++- XML della [suite corrente del 07](../../../DriveHub/docs/evidence/r04-purchase-once/verification.md)
++  ricontrollati: **163/163**, zero failure/errori/salti, compresi i **7 test di dominio
++  e 12 PostgreSQL del 06**, isolamento/sentinella e protocollo conti. Restano valide
++  le prove RED/GREEN e GUI/tastiera in due JVM del 06: viste e harness immutati.
++- Questa ripresa cambia solo documentazione, stato e prove di chiusura: nessun codice,
++  test, schema o fixture modificato; nessun nuovo test/DB/GUI eseguito. Hash dei sorgenti,
++  collegamenti, whitespace, HEAD e indice verificati. Tutto il lavoro locale, incluso
++  il 07, preservato; nessun commit/staging. Relazione_SWE sempre esclusa.
++- R04 resta parziale per il solo ticket 08, non avviato. Nessun altro ticket lavorato;
++  prossimo passo soltanto su nuova richiesta. Limiti storici/schema ricreabile e GUI
++  su fixture ridotta rimangono documentati nelle evidenze.
+--- closure-baseline/docs/evidence/r04-agreement/standards-review.md
++++ closure-final/docs/evidence/r04-agreement/standards-review.md
+@@ -0,0 +1,25 @@
++# Standards — review indipendente ticket 06
++
++Review sulla patch fissata della sola sessione del 31 ottobre 2026, rispetto alla
++baseline locale comprendente i ticket precedenti: **0 violazioni concrete,
++0 smell con impatto da segnalare**.
++
++La modifica segue struttura e convenzioni esistenti: importi immutabili e validati
++nel dominio, saldo calcolato da Request, cinque SELECT e INSERT aggiornati,
++fixture coerenti, transazioni/rollback mantenuti, messaggi e colonne JavaFX coerenti.
++I test esercitano dominio e servizi pubblici, rilettura PostgreSQL e guasti dopo
++l'addebito. Nessuna dipendenza o astrazione speculativa aggiunta.
++
++Controllati chiamanti e hash 19/19. Il manifest della baseline non contiene
++CODING_STANDARDS.md o CONTRIBUTING.md. Nessun file modificato, test eseguito o DB
++contattato dal revisore; Relazione_SWE sempre esclusa.
++
++## Conferma sul codice corrente — 2 novembre 2026
++
++**Standards 0 violazioni / 0 smell del ticket 06 resta applicabile; nessun
++impedimento concreto alla chiusura.** I 17 file interni dello snapshot 06
++corrispondono alla baseline 07 e i 7 file certificati del 07 ai file correnti prima della chiusura documentale.
++Servizio e DAO mantengono totale/acconto/saldo; gli XML 07 confermano tutti i
++19 test del 06 superati senza errori o salti. Il 07 resta lavoro separatamente
++autorizzato; la sua osservazione non bloccante sui test concorrenti non cambia
++l'esito del 06. Verifica statica, nessuna modifica, test o accesso DB.
+--- closure-baseline/docs/evidence/r04-agreement/spec-review.md
++++ closure-final/docs/evidence/r04-agreement/spec-review.md
+@@ -0,0 +1,28 @@
++# Spec — review indipendente ticket 06
++
++Review sulla patch fissata della sola sessione del 31 ottobre 2026, rispetto alla
++baseline locale comprendente i ticket precedenti: **0 rilievi**.
++
++- Requisiti mancanti/parziali: nessuno. Totale e acconto salvati insieme all'addebito;
++  saldo e vendita dagli importi persistiti. DAO, schema, fixture, UI e documentazione
++  allineati.
++- Scope creep: nessuno. CSS limitato alle due tabelle modificate; ticket 07/08/14
++  esclusi dal diff del 06.
++- Implementazione errata: nessuna individuata. Formula e base esplicita del 05,
++  controlli e transazioni del 04 e distinzione delle cessioni preservati.
++
++Esaminati ticket 01–05 chiusi, dominio/servizi pubblici, prove PostgreSQL di cambio
++listino, nuova sessione, anno precedente, centesimi, fondi insufficienti e rollback.
++Il revisore non ha eseguito test, usato database o modificato file.
++
++## Conferma sul codice corrente — 2 novembre 2026
++
++Dopo le modifiche del ticket 07, autorizzato e revisionato separatamente:
++**SPEC 0 rilievi, confermato valido per chiudere il ticket 06.**
++
++PurchaseService continua a salvare totale/acconto nella stessa transazione e usa
++soltanto gli importi persistiti al completamento. PostgresRequestDao conserva
++agreed_total in inserimento, rilettura e approvazione. Le modifiche del 07 sono
++compatibili con l'accordo del 06. Evidenze 07: 163/163, inclusi 7 test di dominio
+++ 12 PostgreSQL del 06, zero failure/errori/salti. Nessun nuovo rischio individuato.
++Verifica mirata read-only, nessun nuovo test o accesso al database.

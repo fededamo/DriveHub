@@ -129,6 +129,10 @@ INSERT INTO "vehicle" ("id", "model", "vin", "licence_plate", "kilometers", "pri
     (54, 13, 'ZFA31200000000054', 'GA054CH',  8000, 15000.00, 2023, 'BLOCKED'),
     (55, 17, 'WDD17700000000055', 'GA055CJ', 12500, 32500.00, 2023, 'BLOCKED'),
     (56, 18, 'WDD20500000000056', 'GA056CK', 15000, 48000.00, 2024, 'BLOCKED');
+-- La demo usa il consigliato: price è una base, non una stima già svalutata.
+UPDATE "vehicle" v SET "price_mode" = 'AUTOMATIC', "price" = m."release_price"
+FROM "model" m WHERE v."model" = m."id";
+
 
 -- -----------------------------------------------------------------------------
 -- 6. Sconti per Singolo Veicolo (5 veicoli scontati singolarmente)
@@ -195,23 +199,23 @@ INSERT INTO "manager" ("id", "name", "surname", "email", "hash_password") VALUES
 -- -----------------------------------------------------------------------------
 -- 8. Richieste d'acquisto e Proposte di vendita ("request")
 -- -----------------------------------------------------------------------------
-INSERT INTO "request" ("id", "vehicle", "client", "salesman", "deposit", "exp_date", "type") VALUES
+INSERT INTO "request" ("id", "vehicle", "client", "salesman", "deposit", "agreed_total", "exp_date", "type") VALUES
     -- 10 Richieste d'acquisto su veicoli BLOCKED (alcune approvate con exp_date, altre in attesa di approvazione)
-    (1,  47, 1,  16,   3600.00, DATE '2026-10-25', 'PURCHASE'),
-    (2,  48, 2,  17,   4400.00, DATE '2026-10-28', 'PURCHASE'),
-    (3,  49, 3,  18,   4150.00, DATE '2026-10-22', 'PURCHASE'),
-    (4,  50, 4,  19,   3580.00, DATE '2026-10-30', 'PURCHASE'),
-    (5,  51, 5,  16,   5100.00, DATE '2026-10-18', 'PURCHASE'),
-    (6,  52, 6,  17,   4290.00, DATE '2026-10-20', 'PURCHASE'),
-    (7,  53, 7,  NULL, 3750.00, NULL,               'PURCHASE'),
-    (8,  54, 8,  NULL, 1500.00, NULL,               'PURCHASE'),
-    (9,  55, 9,  NULL, 3250.00, NULL,               'PURCHASE'),
-    (10, 56, 10, NULL, 4800.00, NULL,               'PURCHASE'),
+    (1,  47, 1,  16,   3600.00, 18000.00, DATE '2026-10-25', 'PURCHASE'),
+    (2,  48, 2,  17,   4400.00, 22000.00, DATE '2026-10-28', 'PURCHASE'),
+    (3,  49, 3,  18,   4150.00, 20750.00, DATE '2026-10-22', 'PURCHASE'),
+    (4,  50, 4,  19,   3580.00, 17900.00, DATE '2026-10-30', 'PURCHASE'),
+    (5,  51, 5,  16,   5100.00, 25500.00, DATE '2026-10-18', 'PURCHASE'),
+    (6,  52, 6,  17,   4290.00, 21450.00, DATE '2026-10-20', 'PURCHASE'),
+    (7,  53, 7,  NULL, 3750.00, 18750.00, NULL,               'PURCHASE'),
+    (8,  54, 8,  NULL, 1500.00, 7500.00, NULL,               'PURCHASE'),
+    (9,  55, 9,  NULL, 3250.00, 16250.00, NULL,               'PURCHASE'),
+    (10, 56, 10, NULL, 4800.00, 24000.00, NULL,               'PURCHASE'),
     -- 4 Proposte di vendita inserite dai clienti sui veicoli in stato WAITING (43, 44, 45, 46)
-    (11, 43, 11, NULL, -13500.00, NULL,             'SALE'),
-    (12, 44, 12, NULL, -16800.00, NULL,             'SALE'),
-    (13, 45, 13, NULL, -23000.00, NULL,             'SALE'),
-    (14, 46, 14, NULL, -25500.00, NULL,             'SALE');
+    (11, 43, 11, NULL, -13500.00, NULL, NULL,             'SALE'),
+    (12, 44, 12, NULL, -16800.00, NULL, NULL,             'SALE'),
+    (13, 45, 13, NULL, -23000.00, NULL, NULL,             'SALE'),
+    (14, 46, 14, NULL, -25500.00, NULL, NULL,             'SALE');
 
 -- -----------------------------------------------------------------------------
 -- 9. Test Drive (10 prenotazioni in attesa)
@@ -248,49 +252,49 @@ INSERT INTO "rent" ("id", "vehicle", "client", "amount", "start", "end") VALUES
 -- -----------------------------------------------------------------------------
 -- 11. Operazioni di Compravendita (40 operazioni totali in "sale")
 -- -----------------------------------------------------------------------------
-INSERT INTO "sale" ("id", "vehicle", "salesman", "client", "amount", "date") VALUES
-    (1,  1,  16, 1,  34500.00, TIMESTAMP '2025-02-10 10:00:00'),
-    (2,  2,  17, 2,  38900.00, TIMESTAMP '2025-03-15 11:30:00'),
-    (3,  3,  18, 3,  42000.00, TIMESTAMP '2025-04-20 14:00:00'),
-    (4,  4,  19, 4,  33500.00, TIMESTAMP '2025-05-12 16:15:00'),
-    (5,  5,  16, 5,  14800.00, TIMESTAMP '2025-06-08 09:45:00'),
-    (6,  6,  17, 6,  26900.00, TIMESTAMP '2025-07-22 15:20:00'),
-    (7,  7,  18, 7,  39500.00, TIMESTAMP '2025-08-30 11:00:00'),
-    (8,  8,  19, 8,  48500.00, TIMESTAMP '2025-09-14 17:30:00'),
-    (9,  9,  16, 9,  33000.00, TIMESTAMP '2025-10-05 10:10:00'),
-    (10, 10, 17, 10, 28900.00, TIMESTAMP '2025-11-18 12:00:00'),
-    (11, 11, 18, 11, 41000.00, TIMESTAMP '2025-12-02 16:40:00'),
-    (12, 12, 19, 12, 36500.00, TIMESTAMP '2026-01-15 14:00:00'),
-    (13, 13, 16, 13, 49800.00, TIMESTAMP '2026-02-20 10:30:00'),
-    (14, 14, 17, 14, 14200.00, TIMESTAMP '2026-03-05 15:50:00'),
-    (15, 15, 18, 15, 12900.00, TIMESTAMP '2026-03-25 11:15:00'),
-    (16, 16, 19, 1,  18500.00, TIMESTAMP '2026-04-10 09:20:00'),
-    (17, 17, 16, 2,  17900.00, TIMESTAMP '2026-04-28 16:00:00'),
-    (18, 18, 17, 3,  31500.00, TIMESTAMP '2026-05-15 14:45:00'),
-    (19, 19, 18, 4,  46900.00, TIMESTAMP '2026-05-30 10:00:00'),
-    (20, 20, 19, 5,  38500.00, TIMESTAMP '2026-06-12 11:30:00'),
-    (21, 21, 16, 6,  54500.00, TIMESTAMP '2026-06-25 17:00:00'),
-    (22, 22, 17, 7,  31000.00, TIMESTAMP '2026-07-04 12:15:00'),
-    (23, 23, 18, 8,  37000.00, TIMESTAMP '2026-07-19 15:40:00'),
-    (24, 24, 19, 9,  39500.00, TIMESTAMP '2026-08-02 10:50:00'),
-    (25, 25, 16, 10, 13800.00, TIMESTAMP '2026-08-16 16:30:00'),
-    (26, 26, 17, 11, 29800.00, TIMESTAMP '2026-08-28 14:10:00'),
-    (27, 1,  18, 12, 33900.00, TIMESTAMP '2026-09-02 09:30:00'),
-    (28, 2,  19, 13, 37500.00, TIMESTAMP '2026-09-10 11:20:00'),
-    (29, 6,  16, 14, 26000.00, TIMESTAMP '2026-09-15 15:00:00'),
-    (30, 7,  17, 15, 38800.00, TIMESTAMP '2026-09-20 16:45:00'),
-    (31, 10, 18, 1,  27500.00, TIMESTAMP '2026-09-25 10:00:00'),
-    (32, 14, 19, 2,  12500.00, TIMESTAMP '2026-09-28 12:30:00'),
+INSERT INTO "sale" ("id", "vehicle", "salesman", "client", "amount", "date", "type") VALUES
+    (1,  1,  16, 1,  34500.00, TIMESTAMP '2025-02-10 10:00:00', 'PURCHASE'),
+    (2,  2,  17, 2,  38900.00, TIMESTAMP '2025-03-15 11:30:00', 'PURCHASE'),
+    (3,  3,  18, 3,  42000.00, TIMESTAMP '2025-04-20 14:00:00', 'PURCHASE'),
+    (4,  4,  19, 4,  33500.00, TIMESTAMP '2025-05-12 16:15:00', 'PURCHASE'),
+    (5,  5,  16, 5,  14800.00, TIMESTAMP '2025-06-08 09:45:00', 'PURCHASE'),
+    (6,  6,  17, 6,  26900.00, TIMESTAMP '2025-07-22 15:20:00', 'PURCHASE'),
+    (7,  7,  18, 7,  39500.00, TIMESTAMP '2025-08-30 11:00:00', 'PURCHASE'),
+    (8,  8,  19, 8,  48500.00, TIMESTAMP '2025-09-14 17:30:00', 'PURCHASE'),
+    (9,  9,  16, 9,  33000.00, TIMESTAMP '2025-10-05 10:10:00', 'PURCHASE'),
+    (10, 10, 17, 10, 28900.00, TIMESTAMP '2025-11-18 12:00:00', 'PURCHASE'),
+    (11, 11, 18, 11, 41000.00, TIMESTAMP '2025-12-02 16:40:00', 'PURCHASE'),
+    (12, 12, 19, 12, 36500.00, TIMESTAMP '2026-01-15 14:00:00', 'PURCHASE'),
+    (13, 13, 16, 13, 49800.00, TIMESTAMP '2026-02-20 10:30:00', 'PURCHASE'),
+    (14, 14, 17, 14, 14200.00, TIMESTAMP '2026-03-05 15:50:00', 'PURCHASE'),
+    (15, 15, 18, 15, 12900.00, TIMESTAMP '2026-03-25 11:15:00', 'PURCHASE'),
+    (16, 16, 19, 1,  18500.00, TIMESTAMP '2026-04-10 09:20:00', 'PURCHASE'),
+    (17, 17, 16, 2,  17900.00, TIMESTAMP '2026-04-28 16:00:00', 'PURCHASE'),
+    (18, 18, 17, 3,  31500.00, TIMESTAMP '2026-05-15 14:45:00', 'PURCHASE'),
+    (19, 19, 18, 4,  46900.00, TIMESTAMP '2026-05-30 10:00:00', 'PURCHASE'),
+    (20, 20, 19, 5,  38500.00, TIMESTAMP '2026-06-12 11:30:00', 'PURCHASE'),
+    (21, 21, 16, 6,  54500.00, TIMESTAMP '2026-06-25 17:00:00', 'PURCHASE'),
+    (22, 22, 17, 7,  31000.00, TIMESTAMP '2026-07-04 12:15:00', 'PURCHASE'),
+    (23, 23, 18, 8,  37000.00, TIMESTAMP '2026-07-19 15:40:00', 'PURCHASE'),
+    (24, 24, 19, 9,  39500.00, TIMESTAMP '2026-08-02 10:50:00', 'PURCHASE'),
+    (25, 25, 16, 10, 13800.00, TIMESTAMP '2026-08-16 16:30:00', 'PURCHASE'),
+    (26, 26, 17, 11, 29800.00, TIMESTAMP '2026-08-28 14:10:00', 'PURCHASE'),
+    (27, 1,  18, 12, 33900.00, TIMESTAMP '2026-09-02 09:30:00', 'PURCHASE'),
+    (28, 2,  19, 13, 37500.00, TIMESTAMP '2026-09-10 11:20:00', 'PURCHASE'),
+    (29, 6,  16, 14, 26000.00, TIMESTAMP '2026-09-15 15:00:00', 'PURCHASE'),
+    (30, 7,  17, 15, 38800.00, TIMESTAMP '2026-09-20 16:45:00', 'PURCHASE'),
+    (31, 10, 18, 1,  27500.00, TIMESTAMP '2026-09-25 10:00:00', 'PURCHASE'),
+    (32, 14, 19, 2,  12500.00, TIMESTAMP '2026-09-28 12:30:00', 'PURCHASE'),
 
     -- 8 penali per mancato pagamento / recesso (20% della caparra trattenuto come penale all'azienda, vehicle e salesman NULL)
-    (33, NULL, NULL, 3,  680.00, TIMESTAMP '2026-05-20 12:00:00'),
-    (34, NULL, NULL, 5,  820.00, TIMESTAMP '2026-06-18 12:00:00'),
-    (35, NULL, NULL, 7,  710.00, TIMESTAMP '2026-07-10 12:00:00'),
-    (36, NULL, NULL, 9,  900.00, TIMESTAMP '2026-08-05 12:00:00'),
-    (37, NULL, NULL, 11, 550.00, TIMESTAMP '2026-08-22 12:00:00'),
-    (38, NULL, NULL, 12, 480.00, TIMESTAMP '2026-09-05 12:00:00'),
-    (39, NULL, NULL, 14, 760.00, TIMESTAMP '2026-09-18 12:00:00'),
-    (40, NULL, NULL, 15, 840.00, TIMESTAMP '2026-09-26 12:00:00');
+    (33, NULL, NULL, 3,  680.00, TIMESTAMP '2026-05-20 12:00:00', 'PENALTY'),
+    (34, NULL, NULL, 5,  820.00, TIMESTAMP '2026-06-18 12:00:00', 'PENALTY'),
+    (35, NULL, NULL, 7,  710.00, TIMESTAMP '2026-07-10 12:00:00', 'PENALTY'),
+    (36, NULL, NULL, 9,  900.00, TIMESTAMP '2026-08-05 12:00:00', 'PENALTY'),
+    (37, NULL, NULL, 11, 550.00, TIMESTAMP '2026-08-22 12:00:00', 'PENALTY'),
+    (38, NULL, NULL, 12, 480.00, TIMESTAMP '2026-09-05 12:00:00', 'PENALTY'),
+    (39, NULL, NULL, 14, 760.00, TIMESTAMP '2026-09-18 12:00:00', 'PENALTY'),
+    (40, NULL, NULL, 15, 840.00, TIMESTAMP '2026-09-26 12:00:00', 'PENALTY');
 
 -- -----------------------------------------------------------------------------
 -- 12. Riallineamento sequenze ID per PostgreSQL

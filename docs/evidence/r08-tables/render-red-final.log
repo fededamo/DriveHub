@@ -1,0 +1,7 @@
+PASS JavaFX avviato
+PASS tre frame renderizzati
+PASS tre frame renderizzati
+java.lang.AssertionError: celle e scorrimento: zero connessioni/query, connessioni=856, query=856
+	at it.unifi.drivehub.PriceUiCheck.check(PriceUiCheck.java:33)
+	at it.unifi.drivehub.ReactiveTablesUiCheck.cells(ReactiveTablesUiCheck.java:78)
+	at it.unifi.drivehub.ReactiveTablesUiCheck.main(ReactiveTablesUiCheck.java:99)

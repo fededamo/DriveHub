@@ -1,0 +1,60 @@
+--- docs/evidence/r04-agreement/AgreementUiCheck.java
++++ AgreementUiCheck.java
+@@ -113,7 +113,7 @@
+     public static void main(String[] args) throws Exception {
+         if (args[0].equals("seed")) { seed(); return; }
+         Thread.setDefaultUncaughtExceptionHandler((thread, error) -> { error.printStackTrace(); System.exit(2); });
+-        out = "/tmp/drivehub-ticket06-ui/";
++        out = "/tmp/drivehub-ticket18-session/ui/TableLifecycleUiCheck/";
+         TestDatabase.fromEnvironment();
+         ctx = new AppContext(new DatabaseManager(System.getenv("DRIVEHUB_TEST_DB_URL"),
+                 System.getenv("DRIVEHUB_TEST_DB_USER"), System.getenv("DRIVEHUB_TEST_DB_PASSWORD")));
+--- docs/evidence/r06-destination/DestinationUiCheck.java
++++ DestinationUiCheck.java
+@@ -44,8 +44,8 @@
+     }
+ 
+     @SuppressWarnings("unchecked")
+-    static TableView<Vehicle> inventory() {
+-        return (TableView<Vehicle>) stage.getScene().getRoot().lookupAll(".table-view").stream()
++    static TableView<it.unifi.drivehub.service.CatalogService.VehicleRow> inventory() {
++        return (TableView<it.unifi.drivehub.service.CatalogService.VehicleRow>) stage.getScene().getRoot().lookupAll(".table-view").stream()
+                 .filter(n -> ((TableView<?>) n).getColumns().stream().anyMatch(c -> c.getText().equals("VIN")))
+                 .findFirst().orElseThrow();
+     }
+@@ -63,11 +63,11 @@
+         var table = fx(DestinationUiCheck::inventory);
+         focusTable(table);
+         int index = fx(() -> {
+-            for (int i=0; i<table.getItems().size(); i++) if (table.getItems().get(i).getId()==id) return i;
++            for (int i=0; i<table.getItems().size(); i++) if (table.getItems().get(i).vehicle().getId()==id) return i;
+             throw new AssertionError("Veicolo assente " + id);
+         });
+         for (int i=0; i<index; i++) key(KeyCode.DOWN);
+-        check(fx(() -> table.getSelectionModel().getSelectedItem().getId())==id, "selezione con frecce " + id);
++        check(fx(() -> table.getSelectionModel().getSelectedItem().vehicle().getId())==id, "selezione con frecce " + id);
+         press("Modifica Stato (Da RENT a SALE o viceversa)");
+     }
+ 
+--- docs/evidence/r03-prices/PriceUiCheck.java
++++ PriceUiCheck.java
+@@ -23,7 +23,7 @@
+     static Robot robot;
+     static AppContext ctx;
+     static Long vehicleId;
+-    static String out = "/tmp/drivehub-ticket05-ui/";
++    static String out = "/tmp/drivehub-ticket18-session/ui/TableLifecycleUiCheck/";
+     static <T> T fx(Callable<T> work) throws Exception {
+         FutureTask<T> task = new FutureTask<>(work);
+         Platform.runLater(task);
+--- docs/evidence/r05-sale-outcome/SaleOutcomeUiCheck.java
++++ SaleOutcomeUiCheck.java
+@@ -154,7 +154,7 @@
+             check(fx(() -> table.getSelectionModel().getSelectedIndex())==4, "registro navigabile fino all'ultima operazione");
+             screenshot("manager-ledger");
+             System.out.println("UI CHECK SUCCESS");
+-        } finally {
++        } catch (Throwable error) { error.printStackTrace(); throw error; } finally {
+             fx(() -> { stage.close(); return null; }); Platform.exit();
+         }
+     }

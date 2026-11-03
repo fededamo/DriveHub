@@ -1,0 +1,92 @@
+{
+  "baseline-sandbox-failed": {
+    "tests": 330,
+    "failures": 0,
+    "errors": 283,
+    "skipped": 0
+  },
+  "baseline": {
+    "tests": 330,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "roles-red": {
+    "tests": 6,
+    "failures": 3,
+    "errors": 0,
+    "skipped": 0
+  },
+  "roles-green": {
+    "tests": 6,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "requests-red": {
+    "tests": 10,
+    "failures": 4,
+    "errors": 0,
+    "skipped": 0
+  },
+  "requests-green": {
+    "tests": 10,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "history-race-red": {
+    "tests": 15,
+    "failures": 5,
+    "errors": 0,
+    "skipped": 0
+  },
+  "history-race-green": {
+    "tests": 15,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "skipped-delete-red": {
+    "tests": 16,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "skipped-delete-green": {
+    "tests": 16,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "extended-cases": {
+    "tests": 56,
+    "failures": 4,
+    "errors": 0,
+    "skipped": 0
+  },
+  "extended-fixed": {
+    "tests": 56,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "final-cases": {
+    "tests": 60,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "targeted": {
+    "tests": 356,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "final-full": {
+    "tests": 390,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

@@ -23,7 +23,13 @@ public interface RequestDao {
         return findById(id);
     }
 
+    /** Rilegge e blocca la richiesta fino al commit/rollback della transazione attiva. */
+    Optional<Request> findByIdForUpdate(Long id, Connection conn);
+
     Optional<Request> findActivePurchaseRequestForVehicle(Long vehicleId);
+
+    /** Tutte le righe di request sono aperte, anche gli acquisti già approvati. */
+    boolean hasOpenRequestForVehicle(Long vehicleId, Connection conn);
 
     Request save(Request request, Connection conn);
 

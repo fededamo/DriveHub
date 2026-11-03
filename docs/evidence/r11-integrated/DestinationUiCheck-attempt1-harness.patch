@@ -1,0 +1,33 @@
+--- docs/evidence/r04-agreement/AgreementUiCheck.java
++++ AgreementUiCheck.java
+@@ -113,7 +113,7 @@
+     public static void main(String[] args) throws Exception {
+         if (args[0].equals("seed")) { seed(); return; }
+         Thread.setDefaultUncaughtExceptionHandler((thread, error) -> { error.printStackTrace(); System.exit(2); });
+-        out = "/tmp/drivehub-ticket06-ui/";
++        out = "/tmp/drivehub-ticket18-session/ui/DestinationUiCheck/";
+         TestDatabase.fromEnvironment();
+         ctx = new AppContext(new DatabaseManager(System.getenv("DRIVEHUB_TEST_DB_URL"),
+                 System.getenv("DRIVEHUB_TEST_DB_USER"), System.getenv("DRIVEHUB_TEST_DB_PASSWORD")));
+--- docs/evidence/r03-prices/PriceUiCheck.java
++++ PriceUiCheck.java
+@@ -23,7 +23,7 @@
+     static Robot robot;
+     static AppContext ctx;
+     static Long vehicleId;
+-    static String out = "/tmp/drivehub-ticket05-ui/";
++    static String out = "/tmp/drivehub-ticket18-session/ui/DestinationUiCheck/";
+     static <T> T fx(Callable<T> work) throws Exception {
+         FutureTask<T> task = new FutureTask<>(work);
+         Platform.runLater(task);
+--- docs/evidence/r05-sale-outcome/SaleOutcomeUiCheck.java
++++ SaleOutcomeUiCheck.java
+@@ -154,7 +154,7 @@
+             check(fx(() -> table.getSelectionModel().getSelectedIndex())==4, "registro navigabile fino all'ultima operazione");
+             screenshot("manager-ledger");
+             System.out.println("UI CHECK SUCCESS");
+-        } finally {
++        } catch (Throwable error) { error.printStackTrace(); throw error; } finally {
+             fx(() -> { stage.close(); return null; }); Platform.exit();
+         }
+     }

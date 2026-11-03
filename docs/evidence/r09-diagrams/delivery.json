@@ -1,0 +1,18 @@
+{
+  "archives_sha256": {
+    "baseline.json": "ee78a986afcee68ae54dda2cb516127c1c6d321a3b1bdf0ffe88e0e425bbe945",
+    "review.patch": "1d07fb5bca5373935e98d7ea833d334aade090683d0ebe4f1290a6fe7c6317cc",
+    "review-correction.patch": "cc93bd7778f40c56e2e55022e05d2ebda70fecaabb3bec69fa0b86fde29d5abc",
+    "closing-docs.patch": "0d98e0159ad7c90b2482d0c787fa8e4311dd30e62cf9a6c51d6e2b8366a701a4",
+    "session.patch": "37b27641a028e0b994eeb2d0741b2b7078fa2bbace9ddc627d00dabefbd80bc2",
+    "session-files.sha256.json": "88256b62633a54312421a9205109a391169b4eec9066546a05be13d42b2f4419",
+    "final-checks.json": "189563c12910d49fa30ea3c4f8cbb8789a2ce6416e146d0c773dce6ab8f8d713"
+  },
+  "session_files": 144,
+  "self_manifest_exclusions": [
+    "delivery.json",
+    "session-files.sha256.json",
+    "session.patch"
+  ],
+  "diff_scope": "local baseline to final; includes text, generated artifacts and Git binary patches; no HEAD-only attribution"
+}

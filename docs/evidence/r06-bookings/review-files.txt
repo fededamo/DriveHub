@@ -1,0 +1,14 @@
+DriveHub/docs/testing.md
+DriveHub/src/main/java/it/unifi/drivehub/AppContext.java
+DriveHub/src/main/java/it/unifi/drivehub/dao/DiscountDao.java
+DriveHub/src/main/java/it/unifi/drivehub/dao/ModelDao.java
+DriveHub/src/main/java/it/unifi/drivehub/dao/UserDao.java
+DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresDiscountDao.java
+DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresModelDao.java
+DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresUserDao.java
+DriveHub/src/main/java/it/unifi/drivehub/domain/operation/TestDrive.java
+DriveHub/src/main/java/it/unifi/drivehub/service/RentalService.java
+DriveHub/src/main/java/it/unifi/drivehub/service/TestDriveService.java
+DriveHub/src/main/resources/db/schema.sql
+DriveHub/src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java
+DriveHub/src/test/java/it/unifi/drivehub/BookingRulesTest.java

@@ -1,0 +1,26 @@
+{
+  "session_patch_sha256": "51842753797e347dade9a0ebaa4399c9924fd44d49c163d41a99a4b91bbf7996",
+  "review_patch_sha256": "59bb122564c1a085fc68bb6f0e1b15b612b375638786eee1e6b86cfff50adb4a",
+  "standards": {
+    "reviewer": "/root/review_standards",
+    "documented_violations": 0,
+    "actionable_smells": 0,
+    "final_documents_inconsistencies": 0
+  },
+  "spec": {
+    "reviewer": "/root/review_spec",
+    "findings": 0,
+    "final_documents_inconsistencies": 0
+  },
+  "full_suite": {
+    "tests": 195,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "targeted_tests": 142,
+  "new_tests": 24,
+  "runtime_files_unchanged_after_full_and_reviews": true,
+  "ticket_state": "closed",
+  "next_ticket_not_started": true
+}

@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="it.unifi.drivehub.PriceSelectionIntegrationTest" time="2.222" tests="10" errors="0" skipped="0" failures="0">
+  <testcase name="existingCessionKeepsManagerBaseSeparateFromEstimate" classname="it.unifi.drivehub.PriceSelectionIntegrationTest" time="0.187" />
+  <testcase name="rentalUsesCatalogPriceWithGeometricFormulaAndInclusiveDays(BigDecimal, BigDecimal, BigDecimal)[1]" classname="it.unifi.drivehub.PriceSelectionIntegrationTest" time="0.199" />
+  <testcase name="rentalUsesCatalogPriceWithGeometricFormulaAndInclusiveDays(BigDecimal, BigDecimal, BigDecimal)[2]" classname="it.unifi.drivehub.PriceSelectionIntegrationTest" time="0.185" />
+  <testcase name="newCessionUsesRecommendedBaseAndKeepsEstimateInRequest" classname="it.unifi.drivehub.PriceSelectionIntegrationTest" time="0.274" />
+  <testcase name="fractionalCentBaseHasSameEffectivePriceBeforeAndAfterReload" classname="it.unifi.drivehub.PriceSelectionIntegrationTest" time="0.225" />
+  <testcase name="invalidBaseDoesNotChangePersistedSelection" classname="it.unifi.drivehub.PriceSelectionIntegrationTest" time="0.192" />
+  <testcase name="purchaseUsesCatalogPriceInBothModes(BigDecimal, BigDecimal, BigDecimal)[1]" classname="it.unifi.drivehub.PriceSelectionIntegrationTest" time="0.243" />
+  <testcase name="purchaseUsesCatalogPriceInBothModes(BigDecimal, BigDecimal, BigDecimal)[2]" classname="it.unifi.drivehub.PriceSelectionIntegrationTest" time="0.242" />
+  <testcase name="catalogPersistsManualBaseAndAppliesPromotionOnce" classname="it.unifi.drivehub.PriceSelectionIntegrationTest" time="0.146" />
+  <testcase name="equalManualBaseAndReturnToRecommendedSurviveReloadAndModelChange" classname="it.unifi.drivehub.PriceSelectionIntegrationTest" time="0.314" />
+</testsuite>

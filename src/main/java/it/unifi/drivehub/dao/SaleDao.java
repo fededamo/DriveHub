@@ -17,8 +17,10 @@ public interface SaleDao {
 
     Optional<Sale> findById(Long id);
 
+    /** Ultima vendita effettiva al cliente, ordinata per data e ID a parità di data. */
+    Optional<Sale> findLatestPurchaseForVehicle(Long vehicleId, Connection conn);
+
     Sale save(Sale sale, Connection conn);
 
-    boolean hasSaleOperationsForVehicle(Long vehicleId);
 }
 

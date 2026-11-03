@@ -1,0 +1,16 @@
+src/main/resources/db/schema.sql
+src/main/java/it/unifi/drivehub/dao/VehicleDao.java
+src/main/java/it/unifi/drivehub/dao/SaleDao.java
+src/main/java/it/unifi/drivehub/service/SaleToDealershipService.java
+src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java
+src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java
+src/main/java/it/unifi/drivehub/domain/operation/Sale.java
+src/main/java/it/unifi/drivehub/dao/postgres/PostgresVehicleDao.java
+src/main/java/it/unifi/drivehub/dao/postgres/PostgresSaleDao.java
+src/test/java/it/unifi/drivehub/SaleProposalIntegrationTest.java
+src/test/java/it/unifi/drivehub/PriceSelectionIntegrationTest.java
+src/test/java/it/unifi/drivehub/SaleOutcomeIntegrationTest.java
+src/test/java/it/unifi/drivehub/SaleTypeTest.java
+docs/testing.md
+docs/evidence/r05-sale-outcome/SaleOutcomeUiCheck.java
+docs/evidence/r05-sale-outcome/run-ui.py

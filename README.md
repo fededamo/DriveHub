@@ -1,35 +1,62 @@
 # DriveHub - Progetto di Ingegneria del Software
 
-Applicazione Desktop JavaFX con persistenza su **PostgreSQL 16**, sviluppata secondo i paradigmi del **Domain-Driven Design (DDD)**, i principi **SOLID** e i **Design Pattern GoF**.
+Avanzamento delle revisioni, decisioni e verifiche: [registro di revisione esterno al progetto](../PIANO_REVISIONI_DRIVEHUB.md). Terminologia: [glossario](GLOSSARY.md).
 
----
+Applicazione desktop **JavaFX**, con **JDK21**, **Maven3.9+** e persistenza su
+**PostgreSQL16**. Entità di dominio, servizi applicativi e DAO JDBC separano le
+responsabilità; pattern e compromessi sono descritti sulla base dei sorgenti.
 
-## 1. Principi e Paradigmi Architetturali
+## 1. Preparazione e architettura
 
-### 1.1 Flusso a Strati e Persistenza On-Demand
-Il software adotta una rigida architettura a strati:
-$$\text{DAO (PostgreSQL)} \longrightarrow \text{Domain (Entità pure)} \longrightarrow \text{Business (Services)} \longrightarrow \text{Presentation (JavaFX)}$$
+Per una nuova installazione seguire [installazione e avvio](docs/installation.md):
+strumenti, ruolo/database, `application.properties`, schema e demo facoltativa.
+`schema.sql` e `demo.sql` sono **distruttivi** su un database popolato e non fanno
+parte dell'avvio ordinario. Dopo la preparazione, dalla radice del progetto:
 
-* **Single Source of Truth**: il database PostgreSQL è l'unica sorgente permanente di verità. La memoria RAM opera in modalità **On-Demand** (i dati vengono prelevati per il tempo necessario all'elaborazione e poi rilasciati).
-* **Aggiornamento Interfaccia Posticipato**: l'interfaccia utente si aggiorna **solo dopo** il successo definitivo e il commit della transazione su database, garantendo rollback immediato in caso di fallimento o violazione di vincoli.
+```bash
+mvn javafx:run
+```
 
-### 1.2 Design Pattern GoF Implementati
-1. **Factory Method**: creazione protetta delle entità (`Vehicle.create()`, `Client.create()`, `Rent.create()`, ecc.) per verificare a priori tutti gli invarianti di dominio prima dell'istanziazione.
-2. **Observer**: disaccoppiamento degli eventi di transizione stato del veicolo. Quando un veicolo viene venduto (`SOLD`) o noleggiato (`RENT`), l'evento notifica `TestDriveCancellationObserver` che cancella automaticamente tutti i test drive futuri su quel veicolo (priorità commerciale di vendita/noleggio).
-3. **Data Access Object (DAO)**: separazione netta tra logica applicativa e persistenza relazionale JDBC, con gestione esplicita delle transazioni atomiche (`DatabaseManager.executeInTransaction`).
-4. **Composition Root & Dependency Injection**: classe `AppContext` che assembla e inietta tutte le dipendenze al bootstrap del sistema senza accoppiamenti rigidi.
-
-### 1.3 Rispetto dei Principi SOLID
-* **Single Responsibility (SRP)**: classi separate e focalizzate (`PriceCalculatorService`, `PurchaseService`, `RentalService`, `PostgresVehicleDao`, ecc.).
-* **Open-Closed (OCP) & Liskov Substitution (LSP)**: gerarchia utenti basata sull'interfaccia polimorfica `User` implementata da `Client`, `Salesman`, `Manager`. **Nessuna enumerazione discriminante sui ruoli**, garantendo estendibilità e comportamenti dedicati.
-* **Interface Segregation (ISP)**: interfacce DAO granulari e dedicate per ogni aggregato del dominio.
-* **Dependency Inversion (DIP)**: i servizi dipendono da astrazioni (`UserDao`, `VehicleDao`, `PasswordHasher`), non da implementazioni concrete.
+[Responsabilità, dipendenze e flussi](docs/architecture.md) distingue factory
+statiche da Factory Method GoF, Observer/Visitor/Singleton da DAO/DI e composition
+root, e motiva SOLID e l'ispirazione DDD con esempi e limiti. `AppContext`
+costruisce i servizi; restano accessi globali negli overload delle viste.
+La direzione delle dipendenze non coincide con il ritorno dei dati dal DB alla UI.
+I [diagrammi correnti con sorgenti, render e riscontri](docs/diagrams/README.md)
+descrivono classi, package, sequenze, stati, casi d'uso e navigazione.
+L'indice distingue gli originali storici conservati dalle viste usate.
 
 ---
 
 ## 2. Regole di Business e Formule di Calcolo
 
 ### 2.1 Calcolo Prezzo Veicolo a Cascata
+
+Il manager sceglie in **Veicoli** la modalità automatica (base del modello) oppure
+una **base manuale**, poi salva con «Applica base alla selezione». La stessa scelta
+vale quando aggiunge un veicolo. Riattivando «Automatico» e salvando torna al consigliato.
+La modalità è persistita esplicitamente in `vehicle.price_mode`; `vehicle.price`
+contiene una base, mai il risultato della formula. Le basi manuali vengono arrotondate
+ai centesimi (HALF_UP) prima del calcolo, coerentemente con PostgreSQL. Una base manuale uguale a quella
+del modello resta manuale anche se la base del modello cambia.
+
+Il **prezzo consigliato** applica la formula alla base del modello; il **prezzo effettivo**
+la applica una sola volta alla base selezionata. Ad esempio 10.000 € manuali e sconto
+10%, senza altre riduzioni, danno 9.000 €. Catalogo, acquisto e tariffa di noleggio
+usano il prezzo effettivo. La stima iniziale della cessione resta nella richiesta e
+non imposta una base manuale: un nuovo veicolo usa l'automatico; uno già presente
+conserva la scelta commerciale del manager. Vedere [ADR 0001](docs/adr/0001-base-manuale-e-prezzo-concordato.md).
+
+All'avvio dell'acquisto il prezzo effettivo diventa il **totale concordato**, salvato
+in `request.agreed_total` nella stessa transazione dell'acconto del 20% e della
+prenotazione del veicolo. Dopo l'approvazione, «Paga saldo concordato e completa
+acquisto» addebita il totale persistito meno l'acconto già versato e registra la
+vendita per quel totale. Su 20.000 € e 4.000 € versati restano 16.000 €, anche dopo
+cambi di base, modalità, sconti o anno. Cliente e venditore vedono i tre importi
+nelle richieste rilette; la stima delle cessioni resta separata.
+Schema, fixture e verifiche: [testing.md](docs/testing.md#totale-concordato-allacconto--ticket-06).
+
+
 Gli sconti non si sommano, ma agiscono in cascata sulla cifra progressivamente ridotta:
 1. **Sconto Promozionale**: $\max(\text{scontoVeicolo}, \text{scontoModello})$:
    $$\text{prezzo} = \text{prezzo\_base} \times (1 - \text{sconto})$$
@@ -42,40 +69,45 @@ Gli sconti non si sommano, ma agiscono in cascata sulla cifra progressivamente r
 
 ### 2.2 Tariffe Noleggio
 * Costo base giornaliero: $0.1\%$ del valore attuale del veicolo ($\text{prezzo\_veicolo} / 1000$).
-* Calcolo costo complessivo per $n$ giorni (serie geometrica):
+* Calcolo costo complessivo per $n$ giorni inclusivi di inizio e fine (serie geometrica):
   $$\text{totale} = (\text{prezzo\_attuale} \times 0.001) \times \frac{1 - 0.95^n}{1 - 0.95}$$
 * Addebito $100\%$ immediato sul conto all'atto della conferma.
 
 ### 2.3 Gestione Concorrenza su Database
-* **Acquisto**: aggiornamento atomico con clausola `WHERE id = ? AND state = 'SALE'::vehicle_state` per evitare sovrapposizioni o race condition tra clienti.
-* **Noleggio e Test Drive**: verifica di disponibilità e inserimento nella stessa transazione con lock.
+* **Acquisto**: prenotazione atomica da `SALE` a `BLOCKED`. Saldo, rifiuto e scadenza rileggono e bloccano la richiesta nella stessa transazione dei movimenti del conto e della transizione da `BLOCKED`: una richiesta genera un solo esito economico. Anche l'approvazione usa il lock della richiesta. [Protocollo e prove PostgreSQL](docs/testing.md#richieste-di-acquisto-elaborate-una-sola-volta--ticket-07).
+* **Noleggio e Test Drive**: lock veicolo/cliente e disponibilità riletta nella transazione; conto protetto per gli addebiti, vincolo PostgreSQL contro periodi di noleggio sovrapposti. Conferma noleggio e cancellazione test drive futuri sono atomiche. Cambio destinazione e cancellazione identità conservano rimborsi e storico secondo i [flussi verificati](docs/architecture.md#flussi-economici-e-transazionali).
 
 ---
 
-## 3. Account Demo Precaricati
+## 3. Demo facoltativa
 
-Tutti gli account esistenti nel database hanno password: **`password`**
+Solo dopo il caricamento di `demo.sql`, la password delle identità della fixture
+è **`password`**: cliente `mario.rossi@email.it`, venditore
+`paolo.costa@drivehub.it`, manager `vittorio.manager@drivehub.it`.
+Non è la password di tutti gli utenti registrati. Date e operazioni demo sono
+storiche; le scadenze vengono elaborate all'accesso del cliente.
 
-* **Cliente**: `mario.rossi@email.it`
-* **Venditore**: `paolo.costa@drivehub.it`
-* **Manager**: `vittorio.manager@drivehub.it`
+La registrazione pubblica crea nuovi clienti con conto dimostrativo a zero;
+l'identificativo generato non certifica un IBAN bancario reale. Schema vuoto,
+limiti e precauzioni della demo: [installazione](docs/installation.md).
 
-È inoltre possibile registrare in tempo reale nuovi clienti dalla schermata iniziale: il sistema provvederà a generare in automatico un IBAN italiano standard e un conto corrente a saldo zero.
+## 4. Verifiche
 
----
-
-## 4. Avvio ed Esecuzione
-
-Prerequisiti: **JDK 21** e **Maven 3.9+**.
-
-### Avvio dell'Applicazione
 ```bash
-mvn javafx:run
-```
-Oppure tramite doppio clic sul file `run.bat`.
-
-### Esecuzione dei Test Unitari e di Integrazione
-```bash
+# Compila e produce il JAR, senza eseguire test
+mvn -DskipTests clean package
+# Solo prove senza database
 mvn test
+# Suite completa: richiede configurazioni esplicite di test e sentinella
+mvn -Ppostgres-tests clean test
 ```
 
+Preparazione del PostgreSQL dedicato, sei variabili richieste, comandi mirati e
+confini delle verifiche grafiche: [Build e test isolati](docs/testing.md).
+Nessun test usa implicitamente il DB applicativo: il reset è consentito solo
+su `drivehub_test` con ruolo dedicato e privilegi controllati.
+
+Le [evidenze17](docs/evidence/r09-diagrams/verification.md) registrano baseline
+locale, diff, render e nuove prove con DB sacrificabili e sentinella distinta.
+Le [evidenze16](docs/evidence/r09-instructions/verification.md) conservano la
+verifica d'installazione; tutti i risultati01–16 restano riferiti a quelle sessioni.

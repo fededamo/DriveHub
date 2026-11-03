@@ -1,0 +1,23 @@
+{
+  "initial_files": 1796,
+  "identical": 1792,
+  "intentional_changes": [
+    "DriveHub/docs/evidence/README.md",
+    "DriveHub/docs/testing.md",
+    "PIANO_REVISIONI_DRIVEHUB.md",
+    "TRACKER_DRIVEHUB/revisioni/issues/18-verifica-integrata-e-chiusura.md"
+  ],
+  "missing": [],
+  "new_files": 167,
+  "head_unchanged": true,
+  "index_unchanged": true,
+  "ignored_and_target_included": true,
+  "excluded": [
+    "delivery.json",
+    "preservation.json",
+    "review-files.sha256.json",
+    "review.patch",
+    "session-files.sha256.json",
+    "session.patch"
+  ]
+}

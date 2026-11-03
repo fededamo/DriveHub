@@ -1,0 +1,12 @@
+{
+  "review_patch_verified": true,
+  "new_source_whitespace_ok": true,
+  "evidence_links_exist": true,
+  "runtime_inputs_match_final_full": true,
+  "head_and_index_unchanged": true,
+  "review_snapshot_verified_before_closure": true,
+  "runtime_and_harness_unchanged_since_reviews": true,
+  "session_patch_sha256": "5e6bf05c2dcd04c9415d3af0a05ea9fd5280fd07635c6eaaa782730bafa655f4",
+  "closed_ticket_criteria": 6,
+  "final_links_ok": true
+}

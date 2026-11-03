@@ -1,0 +1,20 @@
+{
+  "reviewed_closing_bytes_applied": {
+    "closing-plan.md": "2855d15dddcbc21b82fadb8aff32f4178245b3d973bece4185c83d24a8ab578b",
+    "closing-ticket.md": "221bcf0cf14db7bf0c18f545ab4cf1621d71ded625a6434d13c8bbf445b0e650",
+    "closing-verification.md": "3e946c10b1720f1bee7dac7b6dcabd48eda8cf8f8a71273a6001a708fa551ee2"
+  },
+  "full_summary": {
+    "tests": 394,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "groups": {
+    "without_database": 47,
+    "postgresql": 347
+  },
+  "phase2_sentinel_identical": true,
+  "local_references_resolve": true,
+  "changed_existing_docs_whitespace_ok": true
+}

@@ -1,0 +1,1130 @@
+{
+  "checked_local_links": 280,
+  "broken": [],
+  "links": [
+    {
+      "file": "DriveHub/README.md",
+      "target": "PIANO_REVISIONI_DRIVEHUB.md"
+    },
+    {
+      "file": "DriveHub/README.md",
+      "target": "DriveHub/GLOSSARY.md"
+    },
+    {
+      "file": "DriveHub/README.md",
+      "target": "DriveHub/docs/installation.md"
+    },
+    {
+      "file": "DriveHub/README.md",
+      "target": "DriveHub/docs/architecture.md"
+    },
+    {
+      "file": "DriveHub/README.md",
+      "target": "DriveHub/docs/diagrams/README.md"
+    },
+    {
+      "file": "DriveHub/README.md",
+      "target": "DriveHub/docs/adr/0001-base-manuale-e-prezzo-concordato.md"
+    },
+    {
+      "file": "DriveHub/README.md",
+      "target": "DriveHub/docs/testing.md"
+    },
+    {
+      "file": "DriveHub/README.md",
+      "target": "DriveHub/docs/testing.md"
+    },
+    {
+      "file": "DriveHub/README.md",
+      "target": "DriveHub/docs/architecture.md"
+    },
+    {
+      "file": "DriveHub/README.md",
+      "target": "DriveHub/docs/installation.md"
+    },
+    {
+      "file": "DriveHub/README.md",
+      "target": "DriveHub/docs/testing.md"
+    },
+    {
+      "file": "DriveHub/README.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/verification.md"
+    },
+    {
+      "file": "DriveHub/README.md",
+      "target": "DriveHub/docs/evidence/r09-instructions/verification.md"
+    },
+    {
+      "file": "DriveHub/docs/architecture.md",
+      "target": "DriveHub/docs/diagrams/README.md"
+    },
+    {
+      "file": "DriveHub/docs/architecture.md",
+      "target": "DriveHub/docs/adr/0001-base-manuale-e-prezzo-concordato.md"
+    },
+    {
+      "file": "DriveHub/docs/architecture.md",
+      "target": "DriveHub/docs/testing.md"
+    },
+    {
+      "file": "DriveHub/docs/architecture.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/App.java"
+    },
+    {
+      "file": "DriveHub/docs/architecture.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/AppContext.java"
+    },
+    {
+      "file": "DriveHub/docs/architecture.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/presentation/view"
+    },
+    {
+      "file": "DriveHub/docs/architecture.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/service"
+    },
+    {
+      "file": "DriveHub/docs/architecture.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/domain"
+    },
+    {
+      "file": "DriveHub/docs/architecture.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/dao"
+    },
+    {
+      "file": "DriveHub/docs/architecture.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/dao/postgres"
+    },
+    {
+      "file": "DriveHub/docs/architecture.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/PurchaseAgreementIntegrationTest.java"
+    },
+    {
+      "file": "DriveHub/docs/architecture.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java"
+    },
+    {
+      "file": "DriveHub/docs/architecture.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/SaleProposalIntegrationTest.java"
+    },
+    {
+      "file": "DriveHub/docs/architecture.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/SaleOutcomeIntegrationTest.java"
+    },
+    {
+      "file": "DriveHub/docs/architecture.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java"
+    },
+    {
+      "file": "DriveHub/docs/architecture.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/TestDriveCancellationIntegrationTest.java"
+    },
+    {
+      "file": "DriveHub/docs/architecture.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java"
+    },
+    {
+      "file": "DriveHub/docs/architecture.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java"
+    },
+    {
+      "file": "DriveHub/docs/architecture.md",
+      "target": "DriveHub/docs/evidence/r08-tables/verification.md"
+    },
+    {
+      "file": "DriveHub/docs/architecture.md",
+      "target": "DriveHub/docs/evidence/r09-instructions/verification.md"
+    },
+    {
+      "file": "DriveHub/docs/testing.md",
+      "target": "DriveHub/docs/installation.md"
+    },
+    {
+      "file": "DriveHub/docs/testing.md",
+      "target": "DriveHub/docs/evidence/r09-instructions/verification.md"
+    },
+    {
+      "file": "DriveHub/docs/testing.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/verification.md"
+    },
+    {
+      "file": "DriveHub/docs/testing.md",
+      "target": "DriveHub/docs/diagrams/README.md"
+    },
+    {
+      "file": "DriveHub/docs/testing.md",
+      "target": "DriveHub/docs/evidence/README.md"
+    },
+    {
+      "file": "DriveHub/docs/testing.md",
+      "target": "DriveHub/docs/evidence/r02-balances/verification.md"
+    },
+    {
+      "file": "DriveHub/docs/testing.md",
+      "target": "DriveHub/docs/evidence/r03-prices/verification.md"
+    },
+    {
+      "file": "DriveHub/docs/testing.md",
+      "target": "DriveHub/docs/evidence/r04-agreement/AgreementUiCheck.java"
+    },
+    {
+      "file": "DriveHub/docs/testing.md",
+      "target": "DriveHub/docs/evidence/r04-agreement/run-ui.py"
+    },
+    {
+      "file": "DriveHub/docs/testing.md",
+      "target": "DriveHub/docs/evidence/r04-agreement/verification.md"
+    },
+    {
+      "file": "DriveHub/docs/testing.md",
+      "target": "DriveHub/docs/evidence/r04-purchase-once/verification.md"
+    },
+    {
+      "file": "DriveHub/docs/testing.md",
+      "target": "DriveHub/docs/evidence/r04-agreement/verification.md"
+    },
+    {
+      "file": "DriveHub/docs/testing.md",
+      "target": "DriveHub/docs/evidence/r04-test-drive-atomic/verification.md"
+    },
+    {
+      "file": "DriveHub/docs/testing.md",
+      "target": "DriveHub/docs/evidence/r05-sale-proposal/verification.md"
+    },
+    {
+      "file": "DriveHub/docs/testing.md",
+      "target": "DriveHub/docs/evidence/r05-sale-outcome/SaleOutcomeUiCheck.java"
+    },
+    {
+      "file": "DriveHub/docs/testing.md",
+      "target": "DriveHub/docs/evidence/r05-sale-outcome/run-ui.py"
+    },
+    {
+      "file": "DriveHub/docs/testing.md",
+      "target": "DriveHub/docs/evidence/r05-sale-outcome/verification.md"
+    },
+    {
+      "file": "DriveHub/docs/testing.md",
+      "target": "DriveHub/docs/evidence/r06-bookings/verification.md"
+    },
+    {
+      "file": "DriveHub/docs/testing.md",
+      "target": "DriveHub/docs/evidence/r06-destination/verification.md"
+    },
+    {
+      "file": "DriveHub/docs/testing.md",
+      "target": "DriveHub/docs/evidence/r07-identity/verification.md"
+    },
+    {
+      "file": "DriveHub/docs/testing.md",
+      "target": "DriveHub/docs/evidence/r08-tables/verification.md"
+    },
+    {
+      "file": "DriveHub/docs/testing.md",
+      "target": "DriveHub/docs/evidence/r10-cleanup/AppStartupUiCheck.java"
+    },
+    {
+      "file": "DriveHub/docs/testing.md",
+      "target": "DriveHub/docs/evidence/r10-cleanup/verification.md"
+    },
+    {
+      "file": "DriveHub/docs/evidence/README.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/verification.md"
+    },
+    {
+      "file": "DriveHub/docs/evidence/README.md",
+      "target": "DriveHub/docs/diagrams/README.md"
+    },
+    {
+      "file": "DriveHub/docs/evidence/README.md",
+      "target": "DriveHub/docs/evidence/r09-instructions/verification.md"
+    },
+    {
+      "file": "DriveHub/docs/evidence/README.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/historical-artifacts.json"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/prerequisites.json"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/baseline.json"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/baseline-head.patch"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/baseline-status.txt"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/baseline-index.patch"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/runtime-identity.json"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/full-inputs.sha256.json"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/review.patch"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/review-files.sha256.json"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/diagrams/README.md"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/historical-artifacts.json"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/README.md"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/commands.md"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/environment.txt"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/versions.txt"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/targeted.log"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/targeted-surefire"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/targeted-summary.json"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/table-lifecycle.log"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/startup-check.log"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/full.log"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/full-surefire"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/full-summary.json"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/full-groups.json"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/render.log"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/render-inventory.json"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/before-suite-application.sha256.json"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/after-suite-application.sha256.json"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/after-suite-environment.txt"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/shutdown.txt"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/startup-login.png"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/manager-prices.png"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/loading.png"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/retry.png"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/client-sale.png"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/client-rent.png"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/client-refreshed.png"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/verification.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/salesman-inventory.png"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/commands.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/prerequisites.json"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/commands.md",
+      "target": "DriveHub/docs/evidence/r09-instructions/tool-archives.json"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/commands.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/environment.txt"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/commands.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/versions.txt"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/commands.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/prepare.py"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/commands.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/setup-db.py"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/commands.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/sandbox-failed-targeted.log"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/commands.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/sandbox-failed-targeted-summary.json"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/commands.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/xvfb-command.txt"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/commands.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/run-maven.py"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/commands.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/startup-check.log"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/commands.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/interrupted-full.log"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/commands.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/interrupted-full-inputs.sha256.json"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/commands.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/complete-full.py"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/commands.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/full-launcher.log"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/commands.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/check-db.py"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/commands.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/shutdown.txt"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/commands.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/renderer.json"
+    },
+    {
+      "file": "DriveHub/docs/evidence/r09-diagrams/commands.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/render.log"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/verification.md"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/package-diagram.svg"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/package-diagram.puml"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/AppContext.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/presentation/view"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/service"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/dao"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/domain"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/class-domain.svg"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/class-domain.puml"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/domain/vehicle/Vehicle.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/domain/discount"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/DomainInvariantsTest.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/PriceSelectionIntegrationTest.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/class-domain-workflows.svg"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/class-domain-workflows.puml"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/domain/user"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/domain/operation"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/RequestAgreementTest.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/SaleTypeTest.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/class-business.svg"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/class-business.puml"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/AppContext.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/event/VehicleEventPublisher.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/service/TestDriveCancellationObserver.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/TestDriveCancellationIntegrationTest.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/class-dao.svg"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/class-dao.puml"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/dao/DatabaseManager.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/dao"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/DatabaseIsolationIntegrationTest.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/class-presentation.svg"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/class-presentation.puml"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/App.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/presentation/view/AsyncLoad.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/evidence/r08-tables/TableLifecycleUiCheck.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/architecture.md"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/sequence-sale-payment.svg"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/sequence-sale-payment.puml"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/service/PurchaseService.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/PurchaseAgreementIntegrationTest.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/sequence-purchase-outcomes.svg"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/sequence-purchase-outcomes.puml"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/sequence-purchase-proposal-approval.svg"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/sequence-purchase-proposal-approval.puml"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/service/SaleToDealershipService.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/SaleProposalIntegrationTest.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/SaleOutcomeIntegrationTest.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/sequence-rent-payment.svg"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/sequence-rent-payment.puml"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/service/RentalService.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/TestDriveCancellationIntegrationTest.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/sequence-test-drive.svg"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/sequence-test-drive.puml"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/service/TestDriveService.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/BookingRulesTest.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/sequence-table-load.svg"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/sequence-table-load.puml"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/presentation/view/AsyncLoad.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/service/CatalogService.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/CatalogListingIntegrationTest.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/evidence/r08-tables/verification.md"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/vehicle-states.svg"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/vehicle-states.puml"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/domain/vehicle/VehicleState.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/resources/db/schema.sql"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/adr/0001-base-manuale-e-prezzo-concordato.md"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/use-cases.svg"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/use-cases.puml"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/service/AuthService.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/AuthServiceIntegrationTest.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/use-cases-staff.svg"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/use-cases-staff.puml"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/page-navigation.svg"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/page-navigation.puml"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/App.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/presentation/view/LoginView.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/presentation/view/AccountManagementDialog.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/evidence/r10-cleanup/AppStartupUiCheck.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/page-navigation-customer.svg"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/page-navigation-customer.puml"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/evidence/r08-tables/TableLifecycleUiCheck.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/src/test/java/it/unifi/drivehub/PurchaseAgreementIntegrationTest.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/page-navigation-staff.svg"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/diagrams/current/page-navigation-staff.puml"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/evidence/r08-tables/TableLifecycleUiCheck.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/evidence/r05-sale-outcome/SaleOutcomeUiCheck.java"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/historical-artifacts.json"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/evidence/README.md"
+    },
+    {
+      "file": "DriveHub/docs/diagrams/README.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/renderer.json"
+    },
+    {
+      "file": "TRACKER_DRIVEHUB/revisioni/issues/17-diagrammi-ed-evidenze-correnti.md",
+      "target": "TRACKER_DRIVEHUB/revisioni/spec.md"
+    },
+    {
+      "file": "TRACKER_DRIVEHUB/revisioni/issues/17-diagrammi-ed-evidenze-correnti.md",
+      "target": "PIANO_REVISIONI_DRIVEHUB.md"
+    },
+    {
+      "file": "TRACKER_DRIVEHUB/revisioni/issues/17-diagrammi-ed-evidenze-correnti.md",
+      "target": "DriveHub/GLOSSARY.md"
+    },
+    {
+      "file": "TRACKER_DRIVEHUB/revisioni/issues/17-diagrammi-ed-evidenze-correnti.md",
+      "target": "DriveHub/docs/adr/0001-base-manuale-e-prezzo-concordato.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r09-diagrams/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/installation.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/architecture.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r09-instructions/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r09-instructions/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "TRACKER_DRIVEHUB/revisioni/issues/15-pulizia-componenti-inutilizzati.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r10-cleanup/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "TRACKER_DRIVEHUB/revisioni/issues/14-tabelle-javafx-reattive.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r08-tables/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "TRACKER_DRIVEHUB/revisioni/issues/13-cancellazione-identita-e-storico.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r07-identity/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "TRACKER_DRIVEHUB/revisioni/issues/12-destinazione-veicolo-e-rimborsi.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r06-destination/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "TRACKER_DRIVEHUB/revisioni/issues/11-prenotazioni-concorrenti.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r06-bookings/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "TRACKER_DRIVEHUB/revisioni/issues/10-esito-cessione-e-registro.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r05-sale-outcome/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "TRACKER_DRIVEHUB/revisioni/issues/09-proposta-cessione-e-titolarita.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r05-sale-proposal/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "TRACKER_DRIVEHUB/revisioni/issues/08-cancellazioni-test-drive-atomiche.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r04-test-drive-atomic/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r04-agreement/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r04-purchase-once/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "AUDIT_DRIVEHUB_2026-10-30.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "VALUTAZIONE_TEORICA_DRIVEHUB_2026-10-30.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/adr/0001-base-manuale-e-prezzo-concordato.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/GLOSSARY.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "TRACKER_DRIVEHUB/README.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/agents/issue-tracker.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/agents/triage-labels.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/agents/domain.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "TRACKER_DRIVEHUB/revisioni/spec.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "TRACKER_DRIVEHUB/revisioni/proposta-ticket.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r03-prices/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r05-sale-outcome/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r08-tables/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r09-instructions/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r10-cleanup/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r01-vehicle/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "TRACKER_DRIVEHUB/revisioni/issues/02-invarianti-veicolo.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r01-email/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "TRACKER_DRIVEHUB/revisioni/issues/03-cambio-email-sicuro.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "TRACKER_DRIVEHUB/revisioni/issues/04-saldi-concorrenti.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r02-balances/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r03-prices/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r04-agreement/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r04-purchase-once/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r04-agreement/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r04-test-drive-atomic/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r05-sale-proposal/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r05-sale-proposal/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "TRACKER_DRIVEHUB/revisioni/issues/10-esito-cessione-e-registro.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r05-sale-outcome/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r06-bookings/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r06-destination/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r07-identity/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r08-tables/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r10-cleanup/verification.md"
+    },
+    {
+      "file": "PIANO_REVISIONI_DRIVEHUB.md",
+      "target": "DriveHub/docs/evidence/r09-instructions/verification.md"
+    }
+  ],
+  "added_line_whitespace_errors": [],
+  "private_password_matches": 0,
+  "historical_artifacts_preserved": 37,
+  "runtime_identity": "runtime-identity.json"
+}

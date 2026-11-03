@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="20.277" tests="60" errors="0" skipped="0" failures="0">
+  <testcase name="rejectionPreservesEveryKindOfHistoryAndRemovesOnlyANewVehicle(String)[1]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.726" />
+  <testcase name="rejectionPreservesEveryKindOfHistoryAndRemovesOnlyANewVehicle(String)[2]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.394" />
+  <testcase name="rejectionPreservesEveryKindOfHistoryAndRemovesOnlyANewVehicle(String)[3]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.387" />
+  <testcase name="rejectionPreservesEveryKindOfHistoryAndRemovesOnlyANewVehicle(String)[4]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.399" />
+  <testcase name="rejectionPreservesEveryKindOfHistoryAndRemovesOnlyANewVehicle(String)[5]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.377" />
+  <testcase name="rejectionPreservesEveryKindOfHistoryAndRemovesOnlyANewVehicle(String)[6]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.484" />
+  <testcase name="onlyAWaitingVehicleCanReceiveAnOutcome(String, VehicleState)[1]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.244" />
+  <testcase name="onlyAWaitingVehicleCanReceiveAnOutcome(String, VehicleState)[2]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.236" />
+  <testcase name="onlyAWaitingVehicleCanReceiveAnOutcome(String, VehicleState)[3]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.21" />
+  <testcase name="onlyAWaitingVehicleCanReceiveAnOutcome(String, VehicleState)[4]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.226" />
+  <testcase name="onlyAWaitingVehicleCanReceiveAnOutcome(String, VehicleState)[5]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.223" />
+  <testcase name="onlyAWaitingVehicleCanReceiveAnOutcome(String, VehicleState)[6]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.23" />
+  <testcase name="onlyAWaitingVehicleCanReceiveAnOutcome(String, VehicleState)[7]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.198" />
+  <testcase name="onlyAWaitingVehicleCanReceiveAnOutcome(String, VehicleState)[8]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.204" />
+  <testcase name="missingOrInvalidDataCannotLeaveAnyWrite(String)[1]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.191" />
+  <testcase name="missingOrInvalidDataCannotLeaveAnyWrite(String)[2]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.246" />
+  <testcase name="missingOrInvalidDataCannotLeaveAnyWrite(String)[3]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.223" />
+  <testcase name="missingOrInvalidDataCannotLeaveAnyWrite(String)[4]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.231" />
+  <testcase name="missingOrInvalidDataCannotLeaveAnyWrite(String)[5]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.282" />
+  <testcase name="missingOrInvalidDataCannotLeaveAnyWrite(String)[6]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.342" />
+  <testcase name="approvalPaysTheClientAndRecordsOneDealershipExpense" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.377" />
+  <testcase name="typeAndStateAreCheckedAfterWaitingForTheirLocks(String, String)[1]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.321">
+    <system-out>Ticket10 waiters 1 pid:blockers 49898:{49894}
+</system-out>
+  </testcase>
+  <testcase name="typeAndStateAreCheckedAfterWaitingForTheirLocks(String, String)[2]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.393">
+    <system-out>Ticket10 waiters 1 pid:blockers 49918:{49914}
+</system-out>
+  </testcase>
+  <testcase name="typeAndStateAreCheckedAfterWaitingForTheirLocks(String, String)[3]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.482">
+    <system-out>Ticket10 waiters 1 pid:blockers 49936:{49932}
+</system-out>
+  </testcase>
+  <testcase name="typeAndStateAreCheckedAfterWaitingForTheirLocks(String, String)[4]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.57">
+    <system-out>Ticket10 waiters 1 pid:blockers 49954:{49950}
+</system-out>
+  </testcase>
+  <testcase name="anObsoleteSessionUsesTheRequestRereadAfterTheLock(String)[1]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.585">
+    <system-out>Ticket10 waiters 1 pid:blockers 49972:{49968}
+</system-out>
+  </testcase>
+  <testcase name="anObsoleteSessionUsesTheRequestRereadAfterTheLock(String)[2]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.489">
+    <system-out>Ticket10 waiters 1 pid:blockers 49991:{49987}
+</system-out>
+  </testcase>
+  <testcase name="databaseRejectsAnAmountWhoseSignContradictsTheExplicitType(String, BigDecimal)[1]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.441" />
+  <testcase name="databaseRejectsAnAmountWhoseSignContradictsTheExplicitType(String, BigDecimal)[2]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.503" />
+  <testcase name="databaseRejectsAnAmountWhoseSignContradictsTheExplicitType(String, BigDecimal)[3]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.367" />
+  <testcase name="aSkippedVehicleDeletionCannotConsumeTheRequest" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.352" />
+  <testcase name="zeroPaymentCannotConsumeTheProposalOrWriteAnAcquisition" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.244" />
+  <testcase name="approvalNeedsASalesmanBeforePaying" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.192" />
+  <testcase name="vehicleLockRequiresAnActiveTransaction" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.147" />
+  <testcase name="competingOutcomesHaveExactlyOnePaymentAndAvailabilityChange(String, String, boolean)[1]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.372">
+    <system-out>Ticket10 waiters 1 pid:blockers 50118:{50114}
+Ticket10 waiters 2 pid:blockers 50118:{50114}, 50120:{50118}
+</system-out>
+  </testcase>
+  <testcase name="competingOutcomesHaveExactlyOnePaymentAndAvailabilityChange(String, String, boolean)[2]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.378">
+    <system-out>Ticket10 waiters 1 pid:blockers 50149:{50145}
+Ticket10 waiters 2 pid:blockers 50149:{50145}, 50151:{50149}
+</system-out>
+  </testcase>
+  <testcase name="competingOutcomesHaveExactlyOnePaymentAndAvailabilityChange(String, String, boolean)[3]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.333">
+    <system-out>Ticket10 waiters 1 pid:blockers 50180:{50176}
+Ticket10 waiters 2 pid:blockers 50180:{50176}, 50182:{50180}
+</system-out>
+  </testcase>
+  <testcase name="competingOutcomesHaveExactlyOnePaymentAndAvailabilityChange(String, String, boolean)[4]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.349">
+    <system-out>Ticket10 waiters 1 pid:blockers 50211:{50207}
+Ticket10 waiters 2 pid:blockers 50211:{50207}, 50213:{50211}
+</system-out>
+  </testcase>
+  <testcase name="competingOutcomesHaveExactlyOnePaymentAndAvailabilityChange(String, String, boolean)[5]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.45">
+    <system-out>Ticket10 waiters 1 pid:blockers 50250:{50246}
+Ticket10 waiters 2 pid:blockers 50250:{50246}, 50252:{50250}
+</system-out>
+  </testcase>
+  <testcase name="competingOutcomesHaveExactlyOnePaymentAndAvailabilityChange(String, String, boolean)[6]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.388">
+    <system-out>Ticket10 waiters 1 pid:blockers 50289:{50285}
+Ticket10 waiters 2 pid:blockers 50289:{50285}, 50291:{50289}
+</system-out>
+  </testcase>
+  <testcase name="competingOutcomesHaveExactlyOnePaymentAndAvailabilityChange(String, String, boolean)[7]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.361">
+    <system-out>Ticket10 waiters 1 pid:blockers 50328:{50324}
+Ticket10 waiters 2 pid:blockers 50328:{50324}, 50330:{50328}
+</system-out>
+  </testcase>
+  <testcase name="competingOutcomesHaveExactlyOnePaymentAndAvailabilityChange(String, String, boolean)[8]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.365">
+    <system-out>Ticket10 waiters 1 pid:blockers 50367:{50363}
+Ticket10 waiters 2 pid:blockers 50367:{50363}, 50369:{50367}
+</system-out>
+  </testcase>
+  <testcase name="failureAfterTheFinalWriteRollsBackEveryActualEffect(String)[1]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.252" />
+  <testcase name="failureAfterTheFinalWriteRollsBackEveryActualEffect(String)[2]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.358" />
+  <testcase name="failureAfterTheFinalWriteRollsBackEveryActualEffect(String)[3]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.388" />
+  <testcase name="rejectionReadsHistoryWrittenInItsOwnTransaction" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.336" />
+  <testcase name="errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[1]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.8" />
+  <testcase name="errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[2]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.284" />
+  <testcase name="errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[3]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.276" />
+  <testcase name="errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[4]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.284" />
+  <testcase name="errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[5]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.277" />
+  <testcase name="errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[6]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.313" />
+  <testcase name="errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[7]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.388" />
+  <testcase name="errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[8]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.278" />
+  <testcase name="errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[9]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.239" />
+  <testcase name="errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[10]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.216" />
+  <testcase name="errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[11]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.217" />
+  <testcase name="errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[12]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.216" />
+  <testcase name="errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[13]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.265" />
+  <testcase name="errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[14]" classname="it.unifi.drivehub.SaleOutcomeIntegrationTest" time="0.251" />
+</testsuite>

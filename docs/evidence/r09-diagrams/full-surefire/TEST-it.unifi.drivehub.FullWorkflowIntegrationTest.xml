@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="it.unifi.drivehub.FullWorkflowIntegrationTest" time="1.477" tests="4" errors="0" skipped="0" failures="0">
+  <testcase name="testSalesmanLoginAndDataLoading" classname="it.unifi.drivehub.FullWorkflowIntegrationTest" time="0.163" />
+  <testcase name="testManagerLoginAndDataLoading" classname="it.unifi.drivehub.FullWorkflowIntegrationTest" time="0.191" />
+  <testcase name="testClientLoginAndDataLoading" classname="it.unifi.drivehub.FullWorkflowIntegrationTest" time="1.007" />
+  <testcase name="expirationUsesOnlyTheIsolatedFixture" classname="it.unifi.drivehub.FullWorkflowIntegrationTest" time="0.114" />
+</testsuite>

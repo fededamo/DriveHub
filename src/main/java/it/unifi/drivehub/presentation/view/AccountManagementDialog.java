@@ -35,7 +35,7 @@ public final class AccountManagementDialog {
         Stage dialog = new Stage();
         dialog.initOwner(owner);
         dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.setTitle("Gestione Account - " + user.getName() + " " + user.getSurname());
+        dialog.setTitle("Gestione Identità - " + user.getName() + " " + user.getSurname());
 
         TabPane tabPane = new TabPane();
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
@@ -129,30 +129,32 @@ public final class AccountManagementDialog {
         }
 
         // Tab 4: Elimina Account
-        Tab deleteTab = new Tab("Elimina Account");
+        Tab deleteTab = new Tab("Elimina Identità");
         VBox deleteBox = new VBox(15);
         deleteBox.setPadding(new Insets(20));
         PasswordField pwdForDeleteField = new PasswordField();
         pwdForDeleteField.setPromptText("Password attuale per confermare");
-        Button btnDelete = new Button("Elimina Definitivamente Account");
+        Button btnDelete = new Button("Elimina Definitivamente Identità");
         btnDelete.getStyleClass().add("button-danger");
         btnDelete.setOnAction(e -> {
             boolean confirm = UiUtils.showConfirmation("Conferma Eliminazione",
-                    "Sei sicuro di voler eliminare il tuo account?",
-                    "L'operazione è consentita solo se non risultano operazioni storiche associate nel sistema.");
+                    "Sei sicuro di voler eliminare la tua identità di accesso?",
+                    "Richieste e operazioni storiche impediscono la cancellazione. Per il cliente viene rimosso anche il conto dimostrativo con la sua disponibilità.");
             if (!confirm) return;
 
             try {
                 authService.deleteAccount(user.getId(), user.getRoleDisplayName(), pwdForDeleteField.getText());
-                UiUtils.showInfo("Account Eliminato", "L'account è stato cancellato con successo.");
+                UiUtils.showInfo("Identità Eliminata", "L'identità di accesso è stata cancellata con successo.");
                 dialog.close();
                 if (onAccountDeleted != null) onAccountDeleted.run();
             } catch (Exception ex) {
                 UiUtils.showError("Eliminazione Impossibile", ex.getMessage());
             }
         });
+        Label deletionRules = new Label("L'identità può essere eliminata solo senza richieste o operazioni associate, anche storiche. Per il cliente viene rimosso anche il conto dimostrativo con la sua disponibilità.");
+        deletionRules.setWrapText(true);
         deleteBox.getChildren().addAll(
-                new Label("Attenzione: l'eliminazione dell'account è consentita solo se non sono state effettuate operazioni (Test Drive, Noleggi, Vendite)."),
+                deletionRules,
                 new Label("Inserisci la password per confermare:"), pwdForDeleteField,
                 btnDelete
         );

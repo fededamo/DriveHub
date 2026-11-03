@@ -17,7 +17,7 @@ import it.unifi.drivehub.domain.vehicle.Model;
 import it.unifi.drivehub.domain.vehicle.Vehicle;
 import it.unifi.drivehub.domain.vehicle.VehicleState;
 import it.unifi.drivehub.event.VehicleEventPublisher;
-import it.unifi.drivehub.event.VehicleStateChangeEvent;
+import it.unifi.drivehub.event.VehicleCommitmentEvent;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -82,14 +82,14 @@ public final class PurchaseService {
             BigDecimal deposit = priceCalculator.calculatePurchaseDeposit(currentPrice);
 
             // 3. Verifica e addebito sul conto corrente del cliente
-            BankAccount account = bankAccountDao.findByClientId(clientId, conn)
+            BankAccount account = bankAccountDao.findByClientIdForUpdate(clientId, conn)
                     .orElseThrow(() -> new IllegalStateException("Conto corrente non trovato per il cliente id: " + clientId));
 
             account.withdraw(deposit);
             bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
 
             // 4. Creazione tupla in Request con salesman = null e exp_date = null
-            Request newRequest = Request.createNewPurchaseRequest(vehicleId, clientId, deposit);
+            Request newRequest = Request.createNewPurchaseRequest(vehicleId, clientId, deposit, currentPrice);
             return requestDao.save(newRequest, conn);
         });
     }
@@ -100,23 +100,22 @@ public final class PurchaseService {
      */
     public void rejectPurchase(Long requestId) {
         db.executeInTransaction(conn -> {
-            Request request = requestDao.findById(requestId, conn)
+            Request request = requestDao.findByIdForUpdate(requestId, conn)
                     .orElseThrow(() -> new IllegalStateException("Richiesta non trovata: " + requestId));
             if (request.getType() != RequestType.PURCHASE) {
                 throw new IllegalArgumentException("La richiesta non è di acquisto.");
             }
 
             // Restituzione acconto
-            BankAccount account = bankAccountDao.findByClientId(request.getClientId(), conn)
+            BankAccount account = bankAccountDao.findByClientIdForUpdate(request.getClientId(), conn)
                     .orElseThrow(() -> new IllegalStateException("Conto cliente non trovato."));
             account.deposit(request.getDeposit());
             bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
 
             // Stato veicolo torna SALE
-            Vehicle vehicle = vehicleDao.findById(request.getVehicleId(), conn)
-                    .orElseThrow(() -> new IllegalStateException("Veicolo non trovato."));
-            vehicle.setState(VehicleState.SALE);
-            vehicleDao.update(vehicle, conn);
+            if (!vehicleDao.updateStateAtomically(request.getVehicleId(), VehicleState.BLOCKED, VehicleState.SALE, conn)) {
+                throw new IllegalStateException("Il veicolo della richiesta non è riservato per l'acquisto.");
+            }
 
             // Eliminazione richiesta
             requestDao.delete(requestId, conn);
@@ -129,7 +128,7 @@ public final class PurchaseService {
      */
     public void approvePurchase(Long requestId, Long salesmanId) {
         db.executeInTransaction(conn -> {
-            Request request = requestDao.findById(requestId, conn)
+            Request request = requestDao.findByIdForUpdate(requestId, conn)
                     .orElseThrow(() -> new IllegalStateException("Richiesta non trovata: " + requestId));
             if (request.getType() != RequestType.PURCHASE) {
                 throw new IllegalArgumentException("La richiesta non è di acquisto.");
@@ -146,52 +145,42 @@ public final class PurchaseService {
      * Si crea la riga in Sale, si cancella la Request, il veicolo diventa SOLD.
      */
     public void completePurchase(Long requestId) {
-        VehicleStateChangeEvent event = db.executeInTransactionWithResult(conn -> {
-            Request request = requestDao.findById(requestId, conn)
+        db.executeInTransaction(conn -> {
+            Request request = requestDao.findByIdForUpdate(requestId, conn)
                     .orElseThrow(() -> new IllegalStateException("Richiesta non trovata: " + requestId));
-            if (request.getSalesmanId() == null) {
+            if (request.getType() != RequestType.PURCHASE) {
+                throw new IllegalArgumentException("La richiesta non è di acquisto.");
+            }
+            if (request.getSalesmanId() == null || request.getExpDate() == null) {
                 throw new IllegalStateException("La richiesta deve essere prima approvata da un venditore.");
             }
             if (request.isExpired()) {
                 throw new IllegalStateException("La richiesta è scaduta e non può più essere saldata.");
             }
 
-            Vehicle vehicle = vehicleDao.findById(request.getVehicleId(), conn)
-                    .orElseThrow(() -> new IllegalStateException("Veicolo non trovato."));
-            Model model = modelDao.findById(vehicle.getModelId())
-                    .orElseThrow(() -> new IllegalStateException("Modello non trovato."));
-
-            Integer mDisc = discountDao.findModelDiscount(model.getId()).map(ModelDiscount::getValue).orElse(0);
-            Integer vDisc = discountDao.findVehicleDiscount(vehicle.getId()).map(VehicleDiscount::getValue).orElse(0);
-            BigDecimal fullPrice = priceCalculator.calculateVehiclePrice(model, vehicle, mDisc, vDisc);
-
-            // Saldo restante: 80% del totale (prezzo pieno - acconto già versato)
-            BigDecimal remainingAmount = fullPrice.subtract(request.getDeposit());
+            BigDecimal fullPrice = request.getAgreedTotal();
+            BigDecimal remainingAmount = request.getRemainingAmount();
 
             // Addebito saldo restante
-            BankAccount account = bankAccountDao.findByClientId(request.getClientId(), conn)
+            BankAccount account = bankAccountDao.findByClientIdForUpdate(request.getClientId(), conn)
                     .orElseThrow(() -> new IllegalStateException("Conto cliente non trovato."));
             account.withdraw(remainingAmount);
             bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
 
             // Generazione riga in Sale (importo totale veicolo)
-            Sale saleRecord = Sale.createPurchaseRecord(vehicle.getId(), request.getSalesmanId(), request.getClientId(), fullPrice);
+            Sale saleRecord = Sale.createPurchaseRecord(request.getVehicleId(), request.getSalesmanId(), request.getClientId(), fullPrice);
             saleDao.save(saleRecord, conn);
 
             // Cancellazione riga Request
             requestDao.delete(requestId, conn);
 
             // Stato veicolo impostato su SOLD
-            vehicle.setState(VehicleState.SOLD);
-            vehicleDao.update(vehicle, conn);
+            if (!vehicleDao.updateStateAtomically(request.getVehicleId(), VehicleState.BLOCKED, VehicleState.SOLD, conn)) {
+                throw new IllegalStateException("Il veicolo della richiesta non è riservato per l'acquisto.");
+            }
 
-            return new VehicleStateChangeEvent(vehicle.getId(), VehicleState.BLOCKED, VehicleState.SOLD);
+            eventPublisher.publishCommitment(new VehicleCommitmentEvent(request.getVehicleId()), conn);
         });
-
-        // Notifica Observer (cancellazione automatica test drive futuri)
-        if (event != null) {
-            eventPublisher.publishStateChange(event);
-        }
     }
 
     /**
@@ -207,42 +196,39 @@ public final class PurchaseService {
         List<String> notifications = new ArrayList<>();
         List<Request> clientRequests = requestDao.findByClientId(clientId);
 
-        for (Request req : clientRequests) {
-            if (req.getType() == RequestType.PURCHASE && req.isExpired()) {
-                db.executeInTransaction(conn -> {
-                    BigDecimal deposit = req.getDeposit();
-                    // Penale: 20% della caparra trattenuta dall'azienda
-                    BigDecimal penalty = deposit.multiply(BigDecimal.valueOf(0.20)).setScale(2, RoundingMode.HALF_UP);
-                    // Rimborsato: 80% della caparra restituito al cliente
-                    BigDecimal refunded = deposit.subtract(penalty);
+        for (Request candidate : clientRequests) {
+            String notification = db.executeInTransactionWithResult(conn -> {
+                Request request = requestDao.findByIdForUpdate(candidate.getId(), conn).orElse(null);
+                if (request == null || request.getType() != RequestType.PURCHASE
+                        || !request.getClientId().equals(clientId) || request.getSalesmanId() == null
+                        || !request.isExpired()) {
+                    return null;
+                }
 
-                    BankAccount account = bankAccountDao.findByClientId(clientId, conn)
-                            .orElseThrow(() -> new IllegalStateException("Conto cliente non trovato."));
-                    account.deposit(refunded);
-                    bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
+                BigDecimal deposit = request.getDeposit();
+                BigDecimal penalty = deposit.multiply(BigDecimal.valueOf(0.20)).setScale(2, RoundingMode.HALF_UP);
+                BigDecimal refunded = deposit.subtract(penalty);
 
-                    // Registrazione penale in Sale (salesman = null, vehicle = null)
-                    Sale penaltyRecord = Sale.createPenaltyRecord(clientId, penalty);
-                    saleDao.save(penaltyRecord, conn);
+                BankAccount account = bankAccountDao.findByClientIdForUpdate(clientId, conn)
+                        .orElseThrow(() -> new IllegalStateException("Conto cliente non trovato."));
+                account.deposit(refunded);
+                bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
 
-                    // Eliminazione tupla Request
-                    requestDao.delete(req.getId(), conn);
+                Sale penaltyRecord = Sale.createPenaltyRecord(clientId, penalty);
+                saleDao.save(penaltyRecord, conn);
+                requestDao.delete(request.getId(), conn);
 
-                    // Ripristino stato veicolo a SALE
-                    Vehicle vehicle = vehicleDao.findById(req.getVehicleId(), conn).orElse(null);
-                    if (vehicle != null && vehicle.getState() == VehicleState.BLOCKED) {
-                        vehicle.setState(VehicleState.SALE);
-                        vehicleDao.update(vehicle, conn);
-                    }
-                });
+                if (!vehicleDao.updateStateAtomically(request.getVehicleId(), VehicleState.BLOCKED, VehicleState.SALE, conn)) {
+                    throw new IllegalStateException("Il veicolo della richiesta non è riservato per l'acquisto.");
+                }
 
-                notifications.add("La richiesta di acquisto per il veicolo #" + req.getVehicleId() +
-                        " è scaduta in data " + req.getExpDate() +
-                        ". Come da regolamento, è stata applicata una penale del 20% sull'acconto. Ti sono stati rimborsati € " +
-                        req.getDeposit().multiply(BigDecimal.valueOf(0.80)).setScale(2, RoundingMode.HALF_UP) + ".");
-            }
+                return "La richiesta di acquisto per il veicolo #" + request.getVehicleId()
+                        + " è scaduta in data " + request.getExpDate()
+                        + ". Come da regolamento, è stata applicata una penale del 20% sull'acconto. Ti sono stati rimborsati € "
+                        + refunded + ".";
+            });
+            if (notification != null) notifications.add(notification);
         }
         return notifications;
     }
 }
-

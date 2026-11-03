@@ -1,0 +1,43 @@
+COMMAND: /tmp/drivehub-ticket16-tools/root/usr/lib/jvm/java-21-openjdk-amd64/bin/javac --module-path /home/federico/.m2/repository/org/openjfx/javafx-base/21.0.2/javafx-base-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-graphics/21.0.2/javafx-graphics-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-controls/21.0.2/javafx-controls-21.0.2-linux.jar --add-modules javafx.controls -cp /tmp/drivehub-ticket18-session/install/DriveHub/target/classes:/tmp/drivehub-ticket18-session/install/DriveHub/target/test-classes:/home/federico/.m2/repository/org/postgresql/postgresql/42.7.3/postgresql-42.7.3.jar:/tmp/drivehub-ticket18-session/ui/IdentityUiCheck -d /tmp/drivehub-ticket18-session/ui/IdentityUiCheck /tmp/drivehub-ticket18-session/ui/IdentityUiCheck/sources/AgreementUiCheck.java /tmp/drivehub-ticket18-session/ui/IdentityUiCheck/sources/AppStartupUiCheck.java /tmp/drivehub-ticket18-session/ui/IdentityUiCheck/sources/DestinationUiCheck.java /tmp/drivehub-ticket18-session/ui/IdentityUiCheck/sources/IdentityUiCheck.java /tmp/drivehub-ticket18-session/ui/IdentityUiCheck/sources/PriceUiCheck.java /tmp/drivehub-ticket18-session/ui/IdentityUiCheck/sources/ReactiveTablesUiCheck.java /tmp/drivehub-ticket18-session/ui/IdentityUiCheck/sources/SaleOutcomeUiCheck.java /tmp/drivehub-ticket18-session/ui/IdentityUiCheck/sources/SlowModelsUiCheck.java /tmp/drivehub-ticket18-session/ui/IdentityUiCheck/sources/TableLifecycleUiCheck.java
+COMMAND: /tmp/drivehub-ticket16-tools/root/usr/lib/jvm/java-21-openjdk-amd64/bin/java --module-path /home/federico/.m2/repository/org/openjfx/javafx-base/21.0.2/javafx-base-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-graphics/21.0.2/javafx-graphics-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-controls/21.0.2/javafx-controls-21.0.2-linux.jar --add-modules javafx.controls -Dprism.order=sw -cp /tmp/drivehub-ticket18-session/install/DriveHub/target/classes:/tmp/drivehub-ticket18-session/install/DriveHub/target/test-classes:/home/federico/.m2/repository/org/postgresql/postgresql/42.7.3/postgresql-42.7.3.jar:/tmp/drivehub-ticket18-session/ui/IdentityUiCheck it.unifi.drivehub.IdentityUiCheck seed /tmp/drivehub-ticket18-session/ui/IdentityUiCheck
+SEED SUCCESS: richiesta cliente, sola vendita conclusa venditore, identità senza vincoli
+COMMAND: /tmp/drivehub-ticket16-tools/root/usr/lib/jvm/java-21-openjdk-amd64/bin/java --module-path /home/federico/.m2/repository/org/openjfx/javafx-base/21.0.2/javafx-base-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-graphics/21.0.2/javafx-graphics-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-controls/21.0.2/javafx-controls-21.0.2-linux.jar --add-modules javafx.controls -Dprism.order=sw -cp /tmp/drivehub-ticket18-session/install/DriveHub/target/classes:/tmp/drivehub-ticket18-session/install/DriveHub/target/test-classes:/home/federico/.m2/repository/org/postgresql/postgresql/42.7.3/postgresql-42.7.3.jar:/tmp/drivehub-ticket18-session/ui/IdentityUiCheck it.unifi.drivehub.IdentityUiCheck check /tmp/drivehub-ticket18-session/ui/IdentityUiCheck
+PASS JavaFX avviato nella JVM distinta dal seed
+PASS dialogo pubblico aperto
+PASS scheda eliminazione raggiunta con frecce
+PASS identità distinta dal conto dimostrativo
+PASS conferma esplicita prima della cancellazione
+PASS alert renderizzato prima della cattura
+PASS annullamento da tastiera conserva identità e sessione
+PASS richiesta cliente impedisce eliminazione con motivo leggibile
+PASS alert renderizzato prima della cattura
+PASS rifiuto conserva dialogo e sessione
+PASS dialogo pubblico aperto
+PASS scheda eliminazione raggiunta con frecce
+PASS identità distinta dal conto dimostrativo
+PASS sola vendita conclusa impedisce eliminazione venditore
+PASS alert renderizzato prima della cattura
+PASS attribuzione venditore persistita
+PASS dialogo pubblico aperto
+PASS scheda eliminazione raggiunta con frecce
+PASS identità distinta dal conto dimostrativo
+PASS password errata impedisce cancellazione
+PASS alert renderizzato prima della cattura
+PASS dialogo pubblico aperto
+PASS scheda eliminazione raggiunta con frecce
+PASS identità distinta dal conto dimostrativo
+PASS identità senza vincoli eliminata con successo dopo commit
+PASS alert renderizzato prima della cattura
+PASS callback di uscita invocata soltanto dopo successo
+PASS login eliminato
+PASS conto dimostrativo rimosso
+PASS dialogo pubblico aperto
+PASS scheda eliminazione raggiunta con frecce
+PASS identità distinta dal conto dimostrativo
+PASS venditore senza vincoli eliminabile
+PASS dialogo pubblico aperto
+PASS scheda eliminazione raggiunta con frecce
+PASS identità distinta dal conto dimostrativo
+PASS manager senza vincoli eliminabile
+PASS tre cancellazioni effettive e nessun callback sui rifiuti
+UI CHECK SUCCESS

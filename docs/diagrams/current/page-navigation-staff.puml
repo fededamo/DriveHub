@@ -1,0 +1,44 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontSize 16
+hide empty description
+title Dashboard staff — tab e azioni effettivamente disponibili
+state SalesmanDashboardView {
+  state "Richieste in Sospeso" as Requests
+  state "Gestione Stato Inventario (SALE / RENT)" as Inventory
+  [*] --> Requests
+  Requests --> Inventory : tab
+  Inventory --> Requests : tab
+  Requests --> Requests : approva/rifiuta PURCHASE o SALE; rilegge richieste/inventario
+  Inventory --> Inventory : cambia SALE ↔ RENT; conferma / esito e rimborsi
+}
+state ManagerDashboardView {
+  state Marchi
+  state Modelli
+  state Veicoli
+  state Sconti
+  state "Registro economico" as Register
+  [*] --> Marchi
+  Marchi --> Modelli : tab
+  Modelli --> Veicoli : tab
+  Veicoli --> Sconti : tab
+  Sconti --> Register : tab
+  Marchi --> Marchi : aggiungi / elimina
+  Modelli --> Modelli : aggiungi / elimina
+  Veicoli --> Veicoli : aggiungi / elimina / base automatica o manuale
+  Sconti --> Sconti : salva / rimuovi per modello o veicolo
+  Register --> Register : Aggiorna / Riprova
+}
+SalesmanDashboardView -[hidden]down-> ManagerDashboardView
+note bottom of SalesmanDashboardView
+  Nessun passaggio diretto fra dashboard di ruoli diversi.
+  Gestione Account e Disconnetti in entrambe: navigazione generale.
+end note
+note bottom of ManagerDashboardView
+  Ogni tab selezionabile direttamente in ogni ordine.
+  Caricamenti AsyncLoad: dati disabilitati durante caricamento/errore,
+  riprova; successo riabilita. Non tutte le azioni usano worker.
+  Non esistono tab StockOrder, Approvazioni o Dashboard statistica.
+end note
+@enduml

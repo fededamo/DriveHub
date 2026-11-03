@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="it.unifi.drivehub.CatalogListingIntegrationTest" time="0.016" tests="4" errors="4" skipped="0" failures="0">
+  <testcase name="nextRefreshReadsNewModelBaseAndNameWithoutChangingManualBase" classname="it.unifi.drivehub.CatalogListingIntegrationTest" time="0.003">
+    <error message="Connection to 127.0.0.1:55435 refused. Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections." type="org.postgresql.util.PSQLException">org.postgresql.util.PSQLException: Connection to 127.0.0.1:55435 refused. Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:346)
+	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:54)
+	at org.postgresql.jdbc.PgConnection.&lt;init&gt;(PgConnection.java:273)
+	at org.postgresql.Driver.makeConnection(Driver.java:446)
+	at org.postgresql.Driver.connect(Driver.java:298)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
+	at it.unifi.drivehub.dao.DatabaseManager.getConnection(DatabaseManager.java:50)
+	at it.unifi.drivehub.TestDatabase.executeScripts(TestDatabase.java:67)
+	at it.unifi.drivehub.TestDatabase.reset(TestDatabase.java:58)
+	at it.unifi.drivehub.CatalogListingIntegrationTest.setUp(CatalogListingIntegrationTest.java:17)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+Caused by: java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:694)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:592)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:751)
+	at org.postgresql.core.PGStream.createSocket(PGStream.java:243)
+	at org.postgresql.core.PGStream.&lt;init&gt;(PGStream.java:98)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:136)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:262)
+	... 13 more
+</error>
+  </testcase>
+  <testcase name="stateFilteringEmptyResultsAndNewSessionRemainCorrect" classname="it.unifi.drivehub.CatalogListingIntegrationTest" time="0.003">
+    <error message="Connection to 127.0.0.1:55435 refused. Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections." type="org.postgresql.util.PSQLException">org.postgresql.util.PSQLException: Connection to 127.0.0.1:55435 refused. Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:346)
+	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:54)
+	at org.postgresql.jdbc.PgConnection.&lt;init&gt;(PgConnection.java:273)
+	at org.postgresql.Driver.makeConnection(Driver.java:446)
+	at org.postgresql.Driver.connect(Driver.java:298)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
+	at it.unifi.drivehub.dao.DatabaseManager.getConnection(DatabaseManager.java:50)
+	at it.unifi.drivehub.TestDatabase.executeScripts(TestDatabase.java:67)
+	at it.unifi.drivehub.TestDatabase.reset(TestDatabase.java:58)
+	at it.unifi.drivehub.CatalogListingIntegrationTest.setUp(CatalogListingIntegrationTest.java:17)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+Caused by: java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:694)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:592)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:751)
+	at org.postgresql.core.PGStream.createSocket(PGStream.java:243)
+	at org.postgresql.core.PGStream.&lt;init&gt;(PGStream.java:98)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:136)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:262)
+	... 13 more
+</error>
+  </testcase>
+  <testcase name="usedVehicleAndDailyRateKeepDepreciationAndMaximumDiscount" classname="it.unifi.drivehub.CatalogListingIntegrationTest" time="0.002">
+    <error message="Connection to 127.0.0.1:55435 refused. Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections." type="org.postgresql.util.PSQLException">org.postgresql.util.PSQLException: Connection to 127.0.0.1:55435 refused. Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:346)
+	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:54)
+	at org.postgresql.jdbc.PgConnection.&lt;init&gt;(PgConnection.java:273)
+	at org.postgresql.Driver.makeConnection(Driver.java:446)
+	at org.postgresql.Driver.connect(Driver.java:298)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
+	at it.unifi.drivehub.dao.DatabaseManager.getConnection(DatabaseManager.java:50)
+	at it.unifi.drivehub.TestDatabase.executeScripts(TestDatabase.java:67)
+	at it.unifi.drivehub.TestDatabase.reset(TestDatabase.java:58)
+	at it.unifi.drivehub.CatalogListingIntegrationTest.setUp(CatalogListingIntegrationTest.java:17)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+Caused by: java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:694)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:592)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:751)
+	at org.postgresql.core.PGStream.createSocket(PGStream.java:243)
+	at org.postgresql.core.PGStream.&lt;init&gt;(PGStream.java:98)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:136)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:262)
+	... 13 more
+</error>
+  </testcase>
+  <testcase name="automaticAndManualUseTheSameFormulaAfterRefresh" classname="it.unifi.drivehub.CatalogListingIntegrationTest" time="0.003">
+    <error message="Connection to 127.0.0.1:55435 refused. Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections." type="org.postgresql.util.PSQLException">org.postgresql.util.PSQLException: Connection to 127.0.0.1:55435 refused. Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:346)
+	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:54)
+	at org.postgresql.jdbc.PgConnection.&lt;init&gt;(PgConnection.java:273)
+	at org.postgresql.Driver.makeConnection(Driver.java:446)
+	at org.postgresql.Driver.connect(Driver.java:298)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
+	at it.unifi.drivehub.dao.DatabaseManager.getConnection(DatabaseManager.java:50)
+	at it.unifi.drivehub.TestDatabase.executeScripts(TestDatabase.java:67)
+	at it.unifi.drivehub.TestDatabase.reset(TestDatabase.java:58)
+	at it.unifi.drivehub.CatalogListingIntegrationTest.setUp(CatalogListingIntegrationTest.java:17)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+Caused by: java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:694)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:592)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:751)
+	at org.postgresql.core.PGStream.createSocket(PGStream.java:243)
+	at org.postgresql.core.PGStream.&lt;init&gt;(PGStream.java:98)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:136)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:262)
+	... 13 more
+</error>
+  </testcase>
+</testsuite>

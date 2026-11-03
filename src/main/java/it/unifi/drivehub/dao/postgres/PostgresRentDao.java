@@ -76,7 +76,7 @@ public final class PostgresRentDao implements RentDao {
     @Override
     public List<Rent> findFutureByVehicleId(Long vehicleId) {
         List<Rent> list = new ArrayList<>();
-        String sql = "SELECT id, vehicle, client, amount, start, \"end\" FROM rent WHERE vehicle = ? AND start >= CURRENT_DATE ORDER BY start ASC";
+        String sql = "SELECT id, vehicle, client, amount, start, \"end\" FROM rent WHERE vehicle = ? AND start > CURRENT_DATE ORDER BY start ASC";
         try (Connection conn = db.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, vehicleId);
@@ -150,7 +150,7 @@ public final class PostgresRentDao implements RentDao {
     public List<Rent> deleteFutureByVehicleId(Long vehicleId, Connection conn) {
         // Seleziona prima i noleggi futuri per poter rimborsare i clienti
         List<Rent> futureRents = new ArrayList<>();
-        String selectSql = "SELECT id, vehicle, client, amount, start, \"end\" FROM rent WHERE vehicle = ? AND start >= CURRENT_DATE";
+        String selectSql = "SELECT id, vehicle, client, amount, start, \"end\" FROM rent WHERE vehicle = ? AND start > CURRENT_DATE";
         try (PreparedStatement ps = conn.prepareStatement(selectSql)) {
             ps.setLong(1, vehicleId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -162,10 +162,12 @@ public final class PostgresRentDao implements RentDao {
             throw new RuntimeException("Errore durante la selezione dei noleggi futuri da annullare.", e);
         }
 
-        String deleteSql = "DELETE FROM rent WHERE vehicle = ? AND start >= CURRENT_DATE";
+        String deleteSql = "DELETE FROM rent WHERE vehicle = ? AND start > CURRENT_DATE";
         try (PreparedStatement ps = conn.prepareStatement(deleteSql)) {
             ps.setLong(1, vehicleId);
-            ps.executeUpdate();
+            if (ps.executeUpdate() != futureRents.size()) {
+                throw new SQLException("Cancellazione incompleta dei noleggi futuri.");
+            }
         } catch (SQLException e) {
             throw new RuntimeException("Errore durante la cancellazione dei noleggi futuri per il veicolo: " + vehicleId, e);
         }

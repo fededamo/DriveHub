@@ -1,0 +1,29 @@
+{
+  "01-ambiente-e-test-isolati.md": {
+    "state": "closed"
+  },
+  "02-invarianti-veicolo.md": {
+    "state": "closed"
+  },
+  "03-cambio-email-sicuro.md": {
+    "state": "closed"
+  },
+  "04-saldi-concorrenti.md": {
+    "state": "closed"
+  },
+  "05-prezzo-consigliato-e-base-manuale.md": {
+    "state": "closed"
+  },
+  "06-totale-concordato-acquisto.md": {
+    "state": "closed"
+  },
+  "07-richieste-acquisto-una-volta.md": {
+    "state": "closed"
+  },
+  "08-cancellazioni-test-drive-atomiche.md": {
+    "state": "closed"
+  },
+  "09-proposta-cessione-e-titolarita.md": {
+    "state": "closed"
+  }
+}

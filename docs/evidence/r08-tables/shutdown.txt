@@ -1,0 +1,5 @@
+waiting for server to shut down.... done
+server stopped
+Verified Xvfb :94 PID 39648 stopped with SIGTERM
+127.0.0.1:55433 - no response
+Xvfb :94 verified final process state: absent (not running)

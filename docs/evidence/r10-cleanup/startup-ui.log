@@ -1,0 +1,7 @@
+PASS JavaFX avviato su Xvfb
+PASS tre frame renderizzati
+PASS App.start mostra LoginView
+PASS titolo applicativo
+PASS tema caricato
+PASS accesso e registrazione disponibili
+APP STARTUP SUCCESS

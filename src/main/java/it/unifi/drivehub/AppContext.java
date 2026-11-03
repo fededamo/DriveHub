@@ -21,7 +21,6 @@ import it.unifi.drivehub.dao.postgres.PostgresSaleDao;
 import it.unifi.drivehub.dao.postgres.PostgresTestDriveDao;
 import it.unifi.drivehub.dao.postgres.PostgresUserDao;
 import it.unifi.drivehub.dao.postgres.PostgresVehicleDao;
-import it.unifi.drivehub.domain.user.User;
 import it.unifi.drivehub.event.VehicleEventPublisher;
 import it.unifi.drivehub.security.PasswordHasher;
 import it.unifi.drivehub.security.Pbkdf2PasswordHasher;
@@ -68,11 +67,13 @@ public final class AppContext {
     private final CatalogService catalogService;
     private final OperationQueryService operationQueryService;
 
-    private User currentUser;
-
     private AppContext() {
+        this(new DatabaseManager());
+    }
+
+    public AppContext(DatabaseManager databaseManager) {
         // 1. Persistenza & Database Manager
-        this.databaseManager = new DatabaseManager();
+        this.databaseManager = java.util.Objects.requireNonNull(databaseManager, "databaseManager");
 
         // 2. Data Access Objects (PostgreSQL implementations)
         this.userDao = new PostgresUserDao(databaseManager);
@@ -90,8 +91,8 @@ public final class AppContext {
         this.passwordHasher = new Pbkdf2PasswordHasher();
         this.vehicleEventPublisher = new VehicleEventPublisher();
 
-        // Registrazione Observer per cancellazione automatica Test Drive futuri
-        TestDriveCancellationObserver tdObserver = new TestDriveCancellationObserver(databaseManager, testDriveDao);
+        // La politica di cancellazione partecipa alla transazione di vendita/noleggio.
+        TestDriveCancellationObserver tdObserver = new TestDriveCancellationObserver(testDriveDao);
         this.vehicleEventPublisher.attach(tdObserver);
 
         // 4. Servizi di Dominio & Business
@@ -101,9 +102,9 @@ public final class AppContext {
                 requestDao, bankAccountDao, saleDao, priceCalculatorService, vehicleEventPublisher);
         this.saleToDealershipService = new SaleToDealershipService(databaseManager, vehicleDao, modelDao,
                 discountDao, requestDao, bankAccountDao, saleDao, priceCalculatorService);
-        this.rentalService = new RentalService(databaseManager, vehicleDao, modelDao, discountDao,
+        this.rentalService = new RentalService(databaseManager, vehicleDao, userDao, modelDao, discountDao,
                 rentDao, bankAccountDao, priceCalculatorService, vehicleEventPublisher);
-        this.testDriveService = new TestDriveService(databaseManager, testDriveDao, vehicleDao);
+        this.testDriveService = new TestDriveService(databaseManager, testDriveDao, vehicleDao, userDao);
         this.catalogService = new CatalogService(databaseManager, brandDao, modelDao, vehicleDao, discountDao, priceCalculatorService);
         this.operationQueryService = new OperationQueryService(requestDao, testDriveDao, rentDao, saleDao);
     }
@@ -151,16 +152,5 @@ public final class AppContext {
         return priceCalculatorService;
     }
 
-    public User getCurrentUser() {
-        return currentUser;
-    }
-
-    public void setCurrentUser(User currentUser) {
-        this.currentUser = currentUser;
-    }
-
-    public void logout() {
-        this.currentUser = null;
-    }
 }
 

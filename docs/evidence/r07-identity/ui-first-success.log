@@ -1,0 +1,35 @@
+SEED SUCCESS: richiesta cliente, sola vendita conclusa venditore, identità senza vincoli
+PASS JavaFX avviato nella JVM distinta dal seed
+PASS dialogo pubblico aperto
+PASS scheda eliminazione raggiunta con frecce
+PASS identità distinta dal conto dimostrativo
+PASS conferma esplicita prima della cancellazione
+PASS annullamento da tastiera conserva identità e sessione
+PASS richiesta cliente impedisce eliminazione con motivo leggibile
+PASS rifiuto conserva dialogo e sessione
+PASS dialogo pubblico aperto
+PASS scheda eliminazione raggiunta con frecce
+PASS identità distinta dal conto dimostrativo
+PASS sola vendita conclusa impedisce eliminazione venditore
+PASS attribuzione venditore persistita
+PASS dialogo pubblico aperto
+PASS scheda eliminazione raggiunta con frecce
+PASS identità distinta dal conto dimostrativo
+PASS password errata impedisce cancellazione
+PASS dialogo pubblico aperto
+PASS scheda eliminazione raggiunta con frecce
+PASS identità distinta dal conto dimostrativo
+PASS identità senza vincoli eliminata con successo dopo commit
+PASS callback di uscita invocata soltanto dopo successo
+PASS login eliminato
+PASS conto dimostrativo rimosso
+PASS dialogo pubblico aperto
+PASS scheda eliminazione raggiunta con frecce
+PASS identità distinta dal conto dimostrativo
+PASS venditore senza vincoli eliminabile
+PASS dialogo pubblico aperto
+PASS scheda eliminazione raggiunta con frecce
+PASS identità distinta dal conto dimostrativo
+PASS manager senza vincoli eliminabile
+PASS tre cancellazioni effettive e nessun callback sui rifiuti
+UI CHECK SUCCESS

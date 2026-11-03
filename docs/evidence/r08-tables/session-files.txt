@@ -1,0 +1,14 @@
+DriveHub/docs/evidence/r08-tables/ReactiveTablesUiCheck.java
+DriveHub/docs/evidence/r08-tables/SlowModelsUiCheck.java
+DriveHub/docs/evidence/r08-tables/TableLifecycleUiCheck.java
+DriveHub/docs/evidence/r08-tables/run-ui.py
+DriveHub/docs/evidence/r08-tables/verification.md
+DriveHub/docs/testing.md
+DriveHub/src/main/java/it/unifi/drivehub/presentation/view/AsyncLoad.java
+DriveHub/src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java
+DriveHub/src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java
+DriveHub/src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java
+DriveHub/src/main/java/it/unifi/drivehub/service/CatalogService.java
+DriveHub/src/test/java/it/unifi/drivehub/CatalogListingIntegrationTest.java
+PIANO_REVISIONI_DRIVEHUB.md
+TRACKER_DRIVEHUB/revisioni/issues/14-tabelle-javafx-reattive.md

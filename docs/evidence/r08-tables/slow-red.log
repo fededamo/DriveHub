@@ -1,0 +1,6 @@
+PASS JavaFX avviato
+OBSERVED model loader PID=44281 blocker=44279
+PASS lettura modelli realmente in attesa PostgreSQL
+java.util.concurrent.TimeoutException
+	at java.base/java.util.concurrent.FutureTask.get(FutureTask.java:204)
+	at it.unifi.drivehub.SlowModelsUiCheck.main(SlowModelsUiCheck.java:41)

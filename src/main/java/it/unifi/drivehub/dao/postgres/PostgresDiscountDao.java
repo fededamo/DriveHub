@@ -23,9 +23,17 @@ public final class PostgresDiscountDao implements DiscountDao {
 
     @Override
     public Optional<ModelDiscount> findModelDiscount(Long modelId) {
+        try (Connection conn = db.getConnection()) {
+            return findModelDiscount(modelId, conn);
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore di connessione durante la ricerca sconto modello: " + modelId, e);
+        }
+    }
+
+    @Override
+    public Optional<ModelDiscount> findModelDiscount(Long modelId, Connection conn) {
         String sql = "SELECT model, value FROM model_discount WHERE model = ?";
-        try (Connection conn = db.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, modelId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -40,9 +48,17 @@ public final class PostgresDiscountDao implements DiscountDao {
 
     @Override
     public Optional<VehicleDiscount> findVehicleDiscount(Long vehicleId) {
+        try (Connection conn = db.getConnection()) {
+            return findVehicleDiscount(vehicleId, conn);
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore di connessione durante la ricerca sconto veicolo: " + vehicleId, e);
+        }
+    }
+
+    @Override
+    public Optional<VehicleDiscount> findVehicleDiscount(Long vehicleId, Connection conn) {
         String sql = "SELECT vehicle, value FROM vehicle_discount WHERE vehicle = ?";
-        try (Connection conn = db.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, vehicleId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {

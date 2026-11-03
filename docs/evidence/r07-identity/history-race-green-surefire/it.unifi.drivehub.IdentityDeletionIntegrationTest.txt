@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: it.unifi.drivehub.IdentityDeletionIntegrationTest
+-------------------------------------------------------------------------------
+Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.889 s -- in it.unifi.drivehub.IdentityDeletionIntegrationTest

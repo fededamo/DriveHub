@@ -1,0 +1,1422 @@
+--- before/DriveHub/docs/evidence/r08-tables/ReactiveTablesUiCheck.java
++++ after/DriveHub/docs/evidence/r08-tables/ReactiveTablesUiCheck.java
+@@ -0,0 +1,135 @@
++package it.unifi.drivehub;
++
++import it.unifi.drivehub.domain.user.*;
++import it.unifi.drivehub.presentation.view.*;
++import javafx.application.Platform;
++import javafx.animation.AnimationTimer;
++import javafx.scene.control.*;
++import java.sql.*;
++import java.util.*;
++import java.util.concurrent.*;
++import java.util.concurrent.atomic.AtomicInteger;
++
++/** Viste pubbliche e JDBC reale: misura connessioni/query durante le celle. */
++public class ReactiveTablesUiCheck extends PriceUiCheck {
++    static final AtomicInteger connections = new AtomicInteger();
++    static final AtomicInteger queries = new AtomicInteger();
++    static final java.util.concurrent.atomic.AtomicReference<QueryHold> hold = new java.util.concurrent.atomic.AtomicReference<>();
++    static final class QueryHold {
++        final boolean fail;
++        final CountDownLatch observed=new CountDownLatch(1), release=new CountDownLatch(1), closed=new CountDownLatch(1);
++        QueryHold(boolean fail) {this.fail=fail;}
++        void awaitRelease() throws SQLException {
++            observed.countDown();
++            long deadline=System.nanoTime()+TimeUnit.SECONDS.toNanos(15);
++            boolean interrupted=false;
++            try {
++                while(release.getCount()!=0) {
++                    long left=deadline-System.nanoTime();
++                    if(left<=0)throw new SQLException("Timeout gate di prova");
++                    try {release.await(left,TimeUnit.NANOSECONDS);}catch(InterruptedException e){interrupted=true;}
++                }
++                if(fail)throw new SQLException("Errore della vecchia lettura dopo query reale");
++            } finally {if(interrupted)Thread.currentThread().interrupt();}
++        }
++    }
++
++    static void probe() throws Exception {
++        Driver delegate = new org.postgresql.Driver();
++        for (Driver driver : Collections.list(DriverManager.getDrivers())) DriverManager.deregisterDriver(driver);
++        DriverManager.registerDriver(new Driver() {
++            public boolean acceptsURL(String url) throws SQLException { return delegate.acceptsURL(url); }
++            public Connection connect(String url, Properties info) throws SQLException {
++                if (!acceptsURL(url)) return null;
++                connections.incrementAndGet();
++                Connection connection = delegate.connect(url, info);
++                java.util.concurrent.atomic.AtomicReference<QueryHold> captured = new java.util.concurrent.atomic.AtomicReference<>();
++                return (Connection) java.lang.reflect.Proxy.newProxyInstance(getClass().getClassLoader(), new Class<?>[]{Connection.class}, (p,m,a) -> {
++                    try {
++                        Object value = m.invoke(connection, a);
++                        if(m.getName().equals("close") && captured.get()!=null)captured.get().closed.countDown();
++                        String sqlText = a!=null && a.length>0 && a[0] instanceof String ? (String)a[0] : "";
++                        if (value instanceof Statement statement) {
++                            Class<?> type = value instanceof PreparedStatement ? PreparedStatement.class : Statement.class;
++                            return java.lang.reflect.Proxy.newProxyInstance(getClass().getClassLoader(), new Class<?>[]{type}, (sp,sm,sa) -> {
++                                if (sm.getName().startsWith("execute")) queries.incrementAndGet();
++                                try {
++                                    Object answer=sm.invoke(statement,sa);
++                                    QueryHold gate=hold.get();
++                                    if(answer instanceof ResultSet && sqlText.contains("FROM vehicle") && gate!=null && hold.compareAndSet(gate,null)) {
++                                        captured.set(gate);gate.awaitRelease();
++                                    }
++                                    return answer;
++                                }
++                                catch (java.lang.reflect.InvocationTargetException e) { throw e.getCause(); }
++                            });
++                        }
++                        return value;
++                    } catch (java.lang.reflect.InvocationTargetException e) { throw e.getCause(); }
++                });
++            }
++            public DriverPropertyInfo[] getPropertyInfo(String url, Properties p) throws SQLException { return delegate.getPropertyInfo(url,p); }
++            public int getMajorVersion() { return delegate.getMajorVersion(); }
++            public int getMinorVersion() { return delegate.getMinorVersion(); }
++            public boolean jdbcCompliant() { return delegate.jdbcCompliant(); }
++            public java.util.logging.Logger getParentLogger() { return java.util.logging.Logger.getGlobal(); }
++        });
++    }
++
++    static void frames() throws Exception {
++        CountDownLatch rendered = new CountDownLatch(1);
++        fx(() -> { new AnimationTimer() {
++            int frames;
++            public void handle(long now) { if (++frames == 3) { stop(); rendered.countDown(); } }
++        }.start(); return null; });
++        check(rendered.await(10, TimeUnit.SECONDS), "tre frame renderizzati");
++    }
++
++    static void loaded(TableView<?> table) throws Exception {
++        CompletableFuture<Void> ready = new CompletableFuture<>();
++        fx(() -> {
++            if (!table.isDisabled()) ready.complete(null);
++            else table.disabledProperty().addListener((obs,old,value) -> { if (!value) ready.complete(null); });
++            return null;
++        });
++        ready.get(15, TimeUnit.SECONDS);
++    }
++
++    static void cells(TableView<?> table) throws Exception {
++        loaded(table);
++        int beforeConnections = connections.get(), beforeQueries = queries.get();
++        fx(() -> {
++            for (Object item : table.getItems()) for (TableColumn<?,?> column : table.getColumns()) cell(column,item);
++            table.refresh(); table.scrollTo(table.getItems().size()-1);
++            return null;
++        });
++        frames();
++        check(connections.get() == beforeConnections && queries.get() == beforeQueries,
++                "celle e scorrimento: zero connessioni/query, connessioni=" + (connections.get()-beforeConnections) + ", query=" + (queries.get()-beforeQueries));
++    }
++    @SuppressWarnings({"rawtypes", "unchecked"})
++    static void cell(TableColumn column, Object item) { column.getCellObservableValue(item).getValue(); }
++
++    public static void main(String[] args) throws Exception {
++        Thread.setDefaultUncaughtExceptionHandler((t,e) -> { e.printStackTrace(); System.exit(2); });
++        try {
++            ctx = new AppContext(TestDatabase.fromEnvironment().reset());
++            probe();
++            Manager manager = (Manager) ctx.getAuthService().login("vittorio.manager@drivehub.it", "password");
++            CountDownLatch ready = new CountDownLatch(1); Platform.startup(ready::countDown);
++            check(ready.await(10,TimeUnit.SECONDS), "JavaFX avviato");
++            fx(() -> { Platform.setImplicitExit(false); stage = new javafx.stage.Stage(); robot = new javafx.scene.robot.Robot(); return null; });
++            var view = fx(() -> new ManagerDashboardView(manager,ctx.getAuthService(),ctx.getCatalogService(),ctx.getOperationQueryService(), () -> {}));
++            TabPane tabs = fx(() -> (TabPane) view.getCenter());
++            TableView<?> vehicles = fx(() -> (TableView<?>) tabs.getTabs().get(2).getContent().lookup(".table-view"));
++            loaded(vehicles);
++            show(view);
++            fx(() -> { tabs.getSelectionModel().select(2); return null; }); frames();
++            cells(vehicles);
++            fx(() -> { tabs.getSelectionModel().select(3); return null; }); frames();
++            for (var node : fx(() -> tabs.getTabs().get(3).getContent().lookupAll(".table-view"))) cells((TableView<?>)node);
++            System.out.println("UI CHECK SUCCESS");
++        } catch (Throwable error) { error.printStackTrace(); System.exit(1); }
++        Platform.exit();
++    }
++}
+--- before/DriveHub/docs/evidence/r08-tables/SlowModelsUiCheck.java
++++ after/DriveHub/docs/evidence/r08-tables/SlowModelsUiCheck.java
+@@ -0,0 +1,74 @@
++package it.unifi.drivehub;
++
++import it.unifi.drivehub.domain.user.Client;
++import it.unifi.drivehub.presentation.view.ClientDashboardView;
++import javafx.application.Platform;
++import javafx.scene.control.*;
++import java.util.concurrent.*;
++
++/** Lock PostgreSQL osservato; nessuno sleep per simulare un caricamento lento. */
++public class SlowModelsUiCheck extends ReactiveTablesUiCheck {
++    static void awaitBlocked(int blocker) throws Exception {
++        long deadline=System.nanoTime()+TimeUnit.SECONDS.toNanos(10);
++        try(var observer=ctx.getDatabaseManager().getConnection();var sql=observer.prepareStatement("SELECT pid FROM pg_stat_activity WHERE ?=ANY(pg_blocking_pids(pid)) AND query LIKE '%brand =%'")) {
++            sql.setInt(1,blocker);sql.setQueryTimeout(2);
++            while(System.nanoTime()<deadline)try(var rs=sql.executeQuery()){if(rs.next()){System.out.println("OBSERVED loader="+rs.getInt(1)+" blocker="+blocker);return;}}
++        }
++        throw new AssertionError("Lettura modelli non osservata");
++    }
++    public static void main(String[] args) throws Exception {
++        Thread.setDefaultUncaughtExceptionHandler((t,e) -> { e.printStackTrace(); System.exit(2); });
++        try {
++            ctx = new AppContext(TestDatabase.fromEnvironment().reset());
++            try (var conn = ctx.getDatabaseManager().getConnection(); var sql = conn.createStatement()) {
++                sql.execute("DELETE FROM request");
++            }
++            Client client = (Client)ctx.getAuthService().login("mario.rossi@email.it", "password");
++            CountDownLatch ready = new CountDownLatch(1);Platform.startup(ready::countDown);
++            check(ready.await(10,TimeUnit.SECONDS), "JavaFX avviato");
++            fx(() -> { Platform.setImplicitExit(false); stage = new javafx.stage.Stage();robot = new javafx.scene.robot.Robot();return null; });
++            var view = fx(() -> new ClientDashboardView(client,ctx.getAuthService(),ctx.getPurchaseService(),ctx.getSaleToDealershipService(),ctx.getRentalService(),ctx.getTestDriveService(),ctx.getCatalogService(),ctx.getOperationQueryService(),ctx.getPriceCalculatorService(), () -> {}));
++            show(view);
++            var tabs = fx(() -> (TabPane)view.getCenter());
++            var combo = fx(() -> (ComboBox<?>)tabs.getTabs().get(2).getContent().lookupAll(".combo-box").stream().filter(n -> ((ComboBox<?>)n).getItems().stream().anyMatch(i -> i instanceof it.unifi.drivehub.domain.vehicle.Brand)).findFirst().orElseThrow());
++            try (var gate = ctx.getDatabaseManager().getConnection()) {
++                gate.setAutoCommit(false);
++                try (var sql = gate.createStatement()) { sql.execute("LOCK TABLE model IN ACCESS EXCLUSIVE MODE"); }
++                FutureTask<Void> select = new FutureTask<>(() -> { combo.getSelectionModel().selectFirst();return null; });
++                Platform.runLater(select);
++                try {
++                    int gatePid;
++                    try (var sql = gate.createStatement(); var rs = sql.executeQuery("SELECT pg_backend_pid()")) { rs.next();gatePid=rs.getInt(1); }
++                    long deadline = System.nanoTime()+TimeUnit.SECONDS.toNanos(10);
++                    boolean blocked=false;
++                    try(var observer=ctx.getDatabaseManager().getConnection();var sql=observer.prepareStatement("SELECT pid FROM pg_stat_activity WHERE ?=ANY(pg_blocking_pids(pid)) AND query LIKE '%brand =%'") ) {
++                        sql.setInt(1,gatePid);sql.setQueryTimeout(2);
++                        while(System.nanoTime()<deadline && !blocked) try(var rs=sql.executeQuery()) { if(rs.next()) { blocked=true;System.out.println("OBSERVED model loader PID="+rs.getInt(1)+" blocker="+gatePid); } }
++                    }
++                    check(blocked,"lettura modelli realmente in attesa PostgreSQL");
++                    select.get(2,TimeUnit.SECONDS);
++                    check(true, "selezione modello torna mentre PostgreSQL è bloccato");
++                    check(fx(() -> view.getScene().getWindow().isShowing()), "finestra reattiva durante caricamento lento");
++                } finally { gate.rollback(); }
++            }
++            // Una richiesta vuota più recente deve superare anche il risultato di una lettura già avviata.
++            ComboBox<?> models = fx(() -> (ComboBox<?>)tabs.getTabs().get(2).getContent().lookupAll(".combo-box").stream().filter(n -> n != combo).findFirst().orElseThrow());
++            try(var gate=ctx.getDatabaseManager().getConnection()) {
++                gate.setAutoCommit(false);
++                try(var sql=gate.createStatement()) { sql.execute("LOCK TABLE model IN ACCESS EXCLUSIVE MODE"); }
++                fx(() -> { combo.getSelectionModel().clearSelection();combo.getSelectionModel().selectFirst();return null; });
++                int pid;
++                try(var sql=gate.createStatement();var rs=sql.executeQuery("SELECT pg_backend_pid()")) {rs.next();pid=rs.getInt(1);}
++                awaitBlocked(pid);
++                fx(() -> {combo.getSelectionModel().clearSelection();return null;});
++                gate.rollback();
++                CompletableFuture<Void> done=new CompletableFuture<>();
++                fx(() -> {if(!models.isDisabled())done.complete(null);else models.disabledProperty().addListener((o,a,b)->{if(!b)done.complete(null);});return null;});
++                done.get(10,TimeUnit.SECONDS);
++                check(fx(() -> models.getItems().isEmpty()),"risultato superato non ripopola modelli senza marca");
++            }
++            System.out.println("UI CHECK SUCCESS");
++        } catch(Throwable error) { error.printStackTrace();System.exit(1); }
++        Platform.exit();
++    }
++}
+--- before/DriveHub/docs/evidence/r08-tables/TableLifecycleUiCheck.java
++++ after/DriveHub/docs/evidence/r08-tables/TableLifecycleUiCheck.java
+@@ -0,0 +1,159 @@
++package it.unifi.drivehub;
++
++import it.unifi.drivehub.domain.user.*;
++import it.unifi.drivehub.domain.vehicle.*;
++import it.unifi.drivehub.presentation.view.*;
++import it.unifi.drivehub.service.CatalogService.VehicleRow;
++import javafx.application.Platform;
++import javafx.beans.value.ChangeListener;
++import javafx.scene.*;
++import javafx.scene.control.*;
++import javafx.scene.input.KeyCode;
++import javafx.scene.layout.HBox;
++import java.math.BigDecimal;
++import java.time.Year;
++import java.util.concurrent.*;
++import java.util.concurrent.atomic.AtomicBoolean;
++
++/** Caricamenti reali, callback osservabili, tastiera e dati aggiornati nelle viste pubbliche. */
++public class TableLifecycleUiCheck extends ReactiveTablesUiCheck {
++    static Button refresh(Parent view,String name) throws Exception {
++        return fx(() -> (Button)view.lookupAll(".button").stream().filter(n -> ("Aggiorna o riprova: "+name).equals(n.getAccessibleText())).findFirst().orElseThrow());
++    }
++    static Label status(Button button) throws Exception {
++        return fx(() -> (Label)((HBox)button.getParent()).getChildren().stream().filter(n->n instanceof Label).findFirst().orElseThrow());
++    }
++    static void text(Label label,String expected) throws Exception {
++        CompletableFuture<Void> done=new CompletableFuture<>();
++        ChangeListener<String> listener=(obs,old,value)->{if(expected.equals(value))done.complete(null);};
++        fx(() -> {label.textProperty().addListener(listener);if(expected.equals(label.getText()))done.complete(null);return null;});
++        try {done.get(15,TimeUnit.SECONDS);}finally{fx(() -> {label.textProperty().removeListener(listener);return null;});}
++    }
++    static TableView<?> table(TabPane tabs,int tab) throws Exception {
++        return fx(() -> (TableView<?>)tabs.getTabs().get(tab).getContent().lookup(".table-view"));
++    }
++    static void allLoaded(Parent view) throws Exception {
++        for(Node node:fx(()->view.lookupAll(".table-view")))loaded((TableView<?>)node);
++    }
++    static String value(TableView<?> table,int row,String column) throws Exception {
++        return fx(() -> {
++            var col=table.getColumns().stream().filter(c->c.getText().equals(column)).findFirst().orElseThrow();
++            return String.valueOf(col.getCellObservableValue(row).getValue());
++        });
++    }
++    static void expected(TableView<?> table,int row,String column,String expected) throws Exception {
++        check(value(table,row,column).equals(expected),column+" = "+expected);
++    }
++    static void sql(String statement) throws Exception {
++        try(var conn=ctx.getDatabaseManager().getConnection();var sql=conn.createStatement()){sql.setQueryTimeout(5);sql.execute(statement);}
++    }
++    static void screenshotReady(String name) throws Exception {frames();screenshot(name);}
++
++    public static void main(String[] args) throws Exception {
++        Thread.setDefaultUncaughtExceptionHandler((t,e)->{e.printStackTrace();System.exit(2);});
++        try {
++            out=args[1]+"/";
++            ctx=new AppContext(TestDatabase.fromEnvironment().reset());
++            sql("DELETE FROM sale;DELETE FROM rent;DELETE FROM test_drive;DELETE FROM request;DELETE FROM vehicle_discount;DELETE FROM vehicle;DELETE FROM model_discount;");
++            int year=Year.now().getValue();
++            var model=ctx.getCatalogService().addModel("Fiat","UI14",new BigDecimal("20000"),year);
++            ctx.getCatalogService().setModelDiscount(model.getId(),10);
++            var auto=ctx.getCatalogService().addVehicle(model.getId(),"T1400000000000100",null,0,null,year,VehicleState.SALE);
++            var manual=ctx.getCatalogService().addVehicle(model.getId(),"T1400000000000101",null,0,new BigDecimal("10000"),year,VehicleState.SALE);
++            ctx.getCatalogService().addVehicle(model.getId(),"T1400000000000102",null,0,new BigDecimal("10000"),year,VehicleState.RENT);
++            for(int i=0;i<30;i++)ctx.getCatalogService().addVehicle(model.getId(),String.format("T14000000000002%02d",i),null,0,null,year,VehicleState.SALE);
++            Manager manager=(Manager)ctx.getAuthService().login("vittorio.manager@drivehub.it","password");
++            Client client=(Client)ctx.getAuthService().login("mario.rossi@email.it","password");
++            Salesman salesman=(Salesman)ctx.getAuthService().login("paolo.costa@drivehub.it","password");
++            probe();
++            int beforeConnections=connections.get(),beforeQueries=queries.get();
++            ctx.getCatalogService().getVehicleRows(null);
++            check(connections.get()-beforeConnections==4 && queries.get()-beforeQueries==4,"listino intero: quattro query/connessioni indipendenti dal numero di righe");
++            CountDownLatch ready=new CountDownLatch(1);Platform.startup(ready::countDown);check(ready.await(10,TimeUnit.SECONDS),"JavaFX avviato");
++            fx(()->{Platform.setImplicitExit(false);stage=new javafx.stage.Stage();robot=new javafx.scene.robot.Robot();return null;});
++            var managerView=fx(()->new ManagerDashboardView(manager,ctx.getAuthService(),ctx.getCatalogService(),ctx.getOperationQueryService(),()->{}));
++            allLoaded(managerView);show(managerView);
++            TabPane tabs=fx(()->(TabPane)managerView.getCenter());
++            TableView<?> vehicles=table(tabs,2);
++            fx(()->{tabs.requestFocus();return null;});key(KeyCode.HOME);key(KeyCode.RIGHT);key(KeyCode.RIGHT);
++            check(fx(()->tabs.getSelectionModel().getSelectedIndex()==2),"scheda veicoli raggiunta con frecce");
++            fx(()->{vehicles.requestFocus();return null;});key(KeyCode.HOME);key(KeyCode.DOWN);
++            check(fx(()->vehicles.getSelectionModel().getSelectedIndex()==1),"selezione veicolo con tastiera");
++            expected(vehicles,0,"Prezzo effettivo","18.000,00\u00a0€");
++            expected(vehicles,1,"Prezzo effettivo","9.000,00\u00a0€");
++            reach(n->n instanceof TextField && "Base manuale in euro, prima di sconti e svalutazioni".equals(n.getAccessibleText()));
++            fx(()->{robot.keyPress(KeyCode.CONTROL);robot.keyType(KeyCode.A);robot.keyRelease(KeyCode.CONTROL);return null;});
++            for(var key:new KeyCode[]{KeyCode.DIGIT1,KeyCode.DIGIT2,KeyCode.DIGIT0,KeyCode.DIGIT0,KeyCode.DIGIT0})key(key);
++            reach(n->n instanceof Button b && b.getText().equals("Applica base alla selezione"));key(KeyCode.SPACE);closeAlert();loaded(vehicles);
++            expected(vehicles,1,"Base applicata","12.000,00\u00a0€");expected(vehicles,1,"Prezzo effettivo","10.800,00\u00a0€");
++            expected(vehicles,1,"Prezzo consigliato","18.000,00\u00a0€");
++            screenshotReady("manager-prices");
++            Button reload=refresh(managerView,"veicoli");Label state=status(reload);
++            AtomicBoolean fxUpdates=new AtomicBoolean(true);
++            fx(()->{vehicles.getItems().addListener((javafx.collections.ListChangeListener<Object>)c->{if(!Platform.isFxApplicationThread())fxUpdates.set(false);});return null;});
++            // Una query veramente bloccata non deve impedire frame o uso da tastiera.
++            try(var gate=ctx.getDatabaseManager().getConnection()) {
++                gate.setAutoCommit(false);int pid;
++                try(var q=gate.createStatement();var rs=q.executeQuery("SELECT pg_backend_pid()")){rs.next();pid=rs.getInt(1);}
++                try(var q=gate.createStatement()){q.execute("LOCK TABLE model IN ACCESS EXCLUSIVE MODE");}
++                fx(()->{reload.fire();return null;});
++                long deadline=System.nanoTime()+TimeUnit.SECONDS.toNanos(10);boolean observed=false;
++                try(var observer=ctx.getDatabaseManager().getConnection();var q=observer.prepareStatement("SELECT pid FROM pg_stat_activity WHERE ?=ANY(pg_blocking_pids(pid))")) {
++                    q.setInt(1,pid);q.setQueryTimeout(2);
++                    while(!observed && System.nanoTime()<deadline)try(var rs=q.executeQuery()){if(rs.next()){observed=true;System.out.println("OBSERVED slow catalog PID="+rs.getInt(1)+" blocker="+pid);}}
++                }
++                check(observed,"caricamento catalogo in attesa osservabile");
++                check(fx(()->state.getText().equals("Caricamento in corso…") && vehicles.isDisabled()),"stato caricamento e dati temporaneamente non azionabili");
++                fx(()->{tabs.requestFocus();return null;});key(KeyCode.RIGHT);check(fx(()->tabs.getSelectionModel().getSelectedIndex()==3),"tastiera reattiva durante query bloccata");
++                fx(()->{tabs.getSelectionModel().select(2);return null;});screenshotReady("loading");gate.rollback();
++            }
++            text(state,"Aggiornato");
++            sql("ALTER TABLE vehicle RENAME TO vehicle_unavailable14");
++            try {
++                fx(()->{reload.fire();return null;});text(state,"Caricamento non riuscito. Riprova.");
++                check(fx(()->reload.getText().equals("Riprova") && vehicles.isDisabled()),"errore visibile, riprova disponibile e vecchi dati non azionabili");screenshotReady("retry");
++            }finally{sql("ALTER TABLE vehicle_unavailable14 RENAME TO vehicle");}
++            fx(()->{reload.requestFocus();return null;});key(KeyCode.SPACE);text(state,"Aggiornato");check(!fx(vehicles::isDisabled),"riprova da tastiera riuscita");
++            for(boolean staleError:new boolean[]{false,true}) {
++                QueryHold old=new QueryHold(staleError);hold.set(old);
++                fx(()->{reload.fire();return null;});check(old.observed.await(10,TimeUnit.SECONDS),"vecchia query reale acquisita prima della seconda richiesta");
++                try {
++                    ctx.getCatalogService().updateVehiclePricing(manual.getId(),new BigDecimal(staleError?"14000":"13000"));
++                    fx(()->{reload.fire();return null;});text(state,"Aggiornato");
++                    expected(vehicles,1,"Prezzo effettivo",staleError?"12.600,00\u00a0€":"11.700,00\u00a0€");
++                }finally{old.release.countDown();}
++                check(old.closed.await(10,TimeUnit.SECONDS),"vecchia lettura terminata e connessione chiusa");frames();
++                expected(vehicles,1,"Prezzo effettivo",staleError?"12.600,00\u00a0€":"11.700,00\u00a0€");
++                check(fx(()->state.getText().equals("Aggiornato")),"risultato/errore obsoleto ignorato");
++            }
++            check(fxUpdates.get(),"aggiornamenti osservati sul thread JavaFX");
++            // Modifica sconto dalla UI: la tabella veicoli deve aggiornarsi automaticamente.
++            fx(()->{tabs.getSelectionModel().select(3);return null;});
++            TextField discount=fx(()->(TextField)tabs.getTabs().get(3).getContent().lookupAll(".text-field").stream().filter(n->"% (0-50)".equals(((TextField)n).getPromptText())).findFirst().orElseThrow());
++            ComboBox<?> models=fx(()->(ComboBox<?>)tabs.getTabs().get(3).getContent().lookup(".combo-box"));
++            fx(()->{for(int i=0;i<models.getItems().size();i++)if(((Model)models.getItems().get(i)).getId().equals(model.getId()))models.getSelectionModel().select(i);discount.setText("20");return null;});
++            Button setDiscount=fx(()->(Button)tabs.getTabs().get(3).getContent().lookupAll(".button").stream().filter(n->((Button)n).getText().equals("Salva")).findFirst().orElseThrow());
++            Platform.runLater(setDiscount::fire);closeAlert();text(state,"Aggiornato");
++            expected(vehicles,0,"Prezzo effettivo","16.000,00\u00a0€");expected(vehicles,1,"Prezzo effettivo","11.200,00\u00a0€");
++            allLoaded(managerView);
++            for(int i=0;i<5;i++){final int tab=i;fx(()->{tabs.getSelectionModel().select(tab);return null;});frames();for(Node n:fx(()->tabs.getTabs().get(tab).getContent().lookupAll(".table-view")))cells((TableView<?>)n);}
++            var clientView=fx(()->new ClientDashboardView(client,ctx.getAuthService(),ctx.getPurchaseService(),ctx.getSaleToDealershipService(),ctx.getRentalService(),ctx.getTestDriveService(),ctx.getCatalogService(),ctx.getOperationQueryService(),ctx.getPriceCalculatorService(),()->{}));
++            allLoaded(clientView);show(clientView);TabPane clientTabs=fx(()->(TabPane)clientView.getCenter());
++            var sale=table(clientTabs,0);expected(sale,0,"Prezzo effettivo","16.000,00\u00a0€");expected(sale,1,"Prezzo effettivo","11.200,00\u00a0€");cells(sale);fx(()->{sale.scrollTo(0);return null;});screenshotReady("client-sale");
++            fx(()->{clientTabs.requestFocus();return null;});key(KeyCode.HOME);key(KeyCode.RIGHT);
++            var rent=table(clientTabs,1);expected(rent,0,"Prezzo effettivo","8.000,00\u00a0€");expected(rent,0,"Tariffa iniziale/giorno","8,00\u00a0€/giorno");cells(rent);screenshotReady("client-rent");
++            ctx.getCatalogService().updateVehiclePricing(manual.getId(),null);
++            Button clientRefresh=refresh(clientView,"catalogo vendita");
++            fx(()->{clientTabs.getSelectionModel().select(0);clientRefresh.requestFocus();return null;});key(KeyCode.SPACE);text(status(clientRefresh),"Aggiornato");
++            expected(sale,1,"Base applicata","20.000,00\u00a0€");expected(sale,1,"Prezzo effettivo","16.000,00\u00a0€");
++            sql("UPDATE model SET release_price=30000,name='UI14 nuovo' WHERE id="+model.getId());
++            fx(()->{clientRefresh.fire();return null;});text(status(clientRefresh),"Aggiornato");
++            expected(sale,0,"Prezzo effettivo","24.000,00\u00a0€");expected(sale,1,"Prezzo effettivo","24.000,00\u00a0€");
++            check(value(sale,0,"Modello").contains("UI14 nuovo"),"descrizione e base modello aggiornate nella vista già aperta");cells(sale);fx(()->{sale.scrollTo(0);return null;});screenshotReady("client-refreshed");
++            var salesView=fx(()->new SalesmanDashboardView(salesman,ctx.getAuthService(),ctx.getPurchaseService(),ctx.getSaleToDealershipService(),ctx.getRentalService(),ctx.getCatalogService(),ctx.getOperationQueryService(),()->{}));
++            allLoaded(salesView);show(salesView);TabPane salesTabs=fx(()->(TabPane)salesView.getCenter());fx(()->{salesTabs.getSelectionModel().select(1);return null;});cells(table(salesTabs,1));screenshotReady("salesman-inventory");
++            System.out.println("UI CHECK SUCCESS");
++        }catch(Throwable error){error.printStackTrace();System.exit(1);}
++        Platform.exit();
++    }
++}
+--- before/DriveHub/docs/evidence/r08-tables/run-ui.py
++++ after/DriveHub/docs/evidence/r08-tables/run-ui.py
+@@ -0,0 +1,25 @@
++from pathlib import Path
++import os
++import subprocess
++
++repo = Path(__file__).resolve().parents[3]
++out = Path(os.environ.get("DRIVEHUB_UI_DIR", "/tmp/drivehub-ticket14-session/ui"))
++out.mkdir(parents=True, exist_ok=True)
++env = os.environ.copy()
++assert env.get("DISPLAY"), "Impostare DISPLAY su un display di test isolato"
++java = Path(env["JAVA_HOME"]) / "bin"
++modules = ":".join(str(next((Path.home() / ".m2/repository/org/openjfx" / name / "21.0.2").glob("*-linux.jar")))
++                   for name in ["javafx-base", "javafx-graphics", "javafx-controls"])
++classpath = ":".join([str(repo / "target/classes"), str(repo / "target/test-classes"),
++                      str(Path.home() / ".m2/repository/org/postgresql/postgresql/42.7.3/postgresql-42.7.3.jar"), str(out)])
++sources = [repo / "docs/evidence" / folder / name for folder, name in [
++    ("r03-prices", "PriceUiCheck.java"), ("r08-tables", "ReactiveTablesUiCheck.java"), ("r08-tables", "SlowModelsUiCheck.java"), ("r08-tables", "TableLifecycleUiCheck.java")]]
++with (out / "ui.log").open("w") as log:
++    subprocess.run([str(java / "javac"), "--module-path", modules, "--add-modules", "javafx.controls",
++                    "-cp", classpath, "-d", str(out), *map(str, sources)], env=env, stdout=log, stderr=subprocess.STDOUT, check=True)
++    for phase in ["check"]:
++        subprocess.run([str(java / "java"), "--module-path", modules, "--add-modules", "javafx.controls",
++                        "-Dprism.order=sw", "-cp", classpath, os.environ.get("DRIVEHUB_UI_CLASS", "it.unifi.drivehub.ReactiveTablesUiCheck"), phase, str(out)],
++                       env=env, stdout=log, stderr=subprocess.STDOUT, timeout=180, check=True)
++assert "UI CHECK SUCCESS" in (out / "ui.log").read_text()
++print("UI CHECK SUCCESS; log e schermate:", out)
+--- before/DriveHub/docs/evidence/r08-tables/verification.md
++++ after/DriveHub/docs/evidence/r08-tables/verification.md
+@@ -0,0 +1,143 @@
++# Ticket 14 — tabelle reattive
++
++Solo ticket14, prerequisito05 e ticket01–13 controllati chiusi prima degli
++interventi. Letti AGENTS, piano, glossario, ADR0001, testing, specifica ed
++[evidenze13](../r07-identity/verification.md). Confini già approvati: servizi
++pubblici con PostgreSQL reale e costruttori/controlli pubblici JavaFX con Robot.
++Nessun commit/staging; nessun ticket successivo; `Relazione_SWE` sempre esclusa.
++
++## Baseline e conservazione
++
++Fotografia iniziale **1089 file** in `/tmp/drivehub-ticket14-session/before`,
++progetto, piano e tracker esterni, senza `.git`, `target` e `Relazione_SWE`.
++[Manifest](baseline-sha256.json), [HEAD](initial-head.txt),
++[indice](initial-index.sha256). Il diff da HEAD includerebbe il lavoro01–13:
++si confronta soltanto la fotografia della sessione.
++
++Nuova baseline effettiva **390/390**, zero failure/errori/salti,47 senza DB e
++343 PostgreSQL, prima delle modifiche ai sorgenti/test; coincide nel conteggio
++con il risultato storico13 ma è una nuova esecuzione:
++[log](baseline.log), [XML](baseline-surefire/), [input](baseline-files.sha256.json).
++Il lavoro precedente e le evidenze storiche non vengono riscritti.
++
++## Perimetro e responsabilità
++
++| Confine/chiamanti | Modifica e verifica |
++|---|---|
++| `CatalogService.getVehicleRows` | Una lettura collettiva per modelli, sconti modello, sconti veicolo e veicoli: quattro query indipendenti dal numero di righe. Prepara descrizione, base, consigliato, effettivo e tariffa con il calcolatore esistente; nessuna cache persistente |
++| `getModelDiscountRows` | Due letture collettive preparano nome e sconto, senza query delle celle |
++| `ClientDashboardView` | Due caricamenti indipendenti vendita/noleggio, celle con soli dati preparati. Anche selettori marca/modello asincroni, con invalidazione della marca svuotata. Acquisto, noleggio e test drive continuano a usare i servizi pubblici e il veicolo della riga |
++| `ManagerDashboardView` | Tabelle e selettori riusano i dati caricati. Modifica base aggiorna i veicoli; modifica/rimozione sconti aggiorna anche i prezzi. Celle dei modelli scontati leggono la descrizione preparata |
++| `SalesmanDashboardView` | Inventario con descrizioni preparate; dopo approvazione/rifiuto e cambio destinazione ricarica il listino. Comandi e filtri SALE/RENT conservati |
++| `AsyncLoad` | `Task` JavaFX, worker virtuale21, stato/progresso e Aggiorna/Riprova da tastiera. Solo il task corrente pubblica, sul thread JavaFX. Sostituzione e distacco cancellano il task precedente; dati del controllo disabilitati durante caricamento/errore |
++| Persistenza/prezzi | Nessuna modifica a DAO, schema, demo, AppContext, formule o accordi. I metodi di prezzo esistenti rimangono per i comandi. Nessuna dipendenza nuova, nessuna riscrittura generale |
++
++Nessun grafo Graphify presente, nessuna generazione necessaria per queste
++relazioni verificate sul codice. Tutti i chiamanti delle tabelle convertite e
++le selezioni dei relativi comandi sono stati ricontrollati.
++
++## Ambiente ricontrollato
++
++Il Java predefinito è17: non usato per le prove. Riutilizzati soltanto dopo
++verifica i file13 ancora presenti: Java Linux **21.0.12.1**, Maven **3.9.16**,
++PostgreSQL **16.15**, binari estratti in `/tmp/drivehub-ticket13-tools/root`.
++Solo cluster sacrificabile `/tmp/drivehub-ticket13-pgdata`, **127.0.0.1:55433**,
++ruolo/DB `drivehub_test` non amministrativo e copia applicativa sentinella
++separata. Sei variabili private copiate in `/tmp/drivehub-ticket14-session/env.json`
++0600, mai nelle evidenze. Nessun DB applicativo preesistente contattato.
++
++Xvfb isolato **:94**,1440×1000, rendering software, senza TCP, solo socket locale
++astratto. I primi avvii con listener filesystem fallirono; un processo shell
++non rimaneva attivo tra comandi. Risolto avviando esplicitamente il processo
++distaccato e disabilitando il listener Unix filesystem, senza cambiare socket
++altrui. Il primo harness restò nell'uscita JavaFX dopo il fallimento del display;
++aggiunto soltanto reporting immediato dell'errore nell'harness. Tentativi separati
++conservati, **non sono RED del prodotto**. Warning EGL preesistenti su `/dev/dri`.
++L'ambiente è temporaneo: se /tmp scompare occorre ricrearlo secondo testing.
++
++## TDD e mirati
++
++Launcher privato `python3 /tmp/drivehub-ticket14-session/maven.py <etichetta>
++<argomenti>`: Java21, variabili private, `mvn -B -o`, log/XML e hash input.
++[Comandi portabili](../../testing.md#tabelle-reattive--ticket-14).
++
++| Esecuzione | Risultato |
++|---|---|
++| baseline `-Ppostgres-tests clean test` |390/390, zero failure/errori/salti |
++| render-red-final / render-green |Stesso harness:856 connessioni e query nelle celle/scorrimento →0/0 |
++| slow-red / slow-green |Stesso harness: query `model WHERE brand` bloccata, PID/blocker osservati, selezione sul thread grafico in timeout →selezione ritorna e finestra risponde con lock ancora tenuto |
++| obsolete-red / obsolete-green-fixed |Stesso harness esteso: la vecchia query ripopola i modelli senza marca →selezione vuota prevale; caricamento in PostgreSQL osservato prima di svuotare |
++| listing `-Ppostgres-tests -Dtest=CatalogListingIntegrationTest,PriceCalculatorServiceTest,PriceSelectionIntegrationTest test` |25 casi,1 errore della nuova fixture: veicolo2025 su modello2026. Corretto solo l'anno rilascio del modello della fixture |
++| listing-fixed, stesso comando |25/25 |
++| targeted, selezione sotto |148/148, zero failure/errori/salti |
++
++Le tre coppie conservano sorgenti identici RED/GREEN; gli ampliamenti successivi
++sono verifiche estese, non vengono presentati come RED precedenti. Le copie del
++sorgente sono fotografate alla fine di ciascuna coppia. Un tentativo del terzo
++GREEN non compilava il nuovo harness esteso per wildcard ComboBox; corretto solo
++l'harness, non attribuito al prodotto.
++
++Selezione `targeted`:
++
++```bash
++mvn -Ppostgres-tests -Dtest=CatalogListingIntegrationTest,PriceCalculatorServiceTest,PriceSelectionIntegrationTest,PurchaseAgreementIntegrationTest,PurchaseConcurrencyIntegrationTest,BalanceConcurrencyIntegrationTest,VehicleDestinationIntegrationTest,DemoSqlValidationTest,DatabaseIsolationIntegrationTest test
++```
++
++I quattro nuovi test PostgreSQL verificano valori letterali: automatico20.000
++con10%→18.000; manuale10.000→9.000; sconto veicolo20%→8.000 e consigliato16.000;
++rimozione sconti e ritorno all'automatico; manuale10.000,005 arrotondato prima
++formula→9.000,01; nuova base modello30.000→consigliato27.000 con manuale invariato;
++usato, anno e20.000km→5.776 e tariffa5,78; filtro stato e nuova sessione.
++SQL aggiuntivo prepara fixture, nessun DAO simulato certifica la persistenza.
++
++## GUI, caricamenti e tastiera
++
++[Harness rendering/JDBC](ReactiveTablesUiCheck.java),
++[harness modelli lenti/obsoleti](SlowModelsUiCheck.java),
++[harness ciclo completo](TableLifecycleUiCheck.java), [launcher](run-ui.py).
++Ciclo completo iniziale e finale: **UI CHECK SUCCESS**.
++
++Il driver diagnostico delega a PostgreSQL reale e conta sia connessioni sia
++esecuzioni; le celle di tutte le tabelle manager, catalogo vendita/noleggio
++cliente e inventario venditore sono percorse, rinfrescate e scorse: **0/0**.
++Una lettura collettiva di33 veicoli richiede quattro query/connessioni totali.
++
++Il lock esclusivo su `model` trattiene la lettura, `pg_stat_activity` e
++`pg_blocking_pids` osservano backend e blocker prima delle asserzioni. Stato
++"Caricamento in corso…", frame e spostamento della scheda con frecce funzionano
++mentre il lock è ancora tenuto. Nessuno sleep simula i caricamenti.
++
++Errore SQL reale: tabella `vehicle` temporaneamente rinominata nel DB dedicato,
++sempre ripristinata in `finally`. Messaggio inline, dati disabilitati e Riprova;
++Spazio sul pulsante completa il nuovo caricamento. Per gli obsoleti un gate
++trattiene dopo l'esecuzione una vera query JDBC e ignora l'interruzione soltanto
++nella prova; la seconda lettura mostra11.700/12.600, poi si rilascia la vecchia
++lettura, si osserva la chiusura della sua connessione e si verificano prezzi e
++stato invariati, sia per risultato vecchio sia per errore vecchio. Il solo errore
++obsoleto è iniettato al confine JDBC dopo la query; non certifica effetti SQL.
++Listener pubblici osservano gli aggiornamenti sul thread JavaFX.
++
++Robot05 riusato: frecce per schede/righe, Tab ai controlli, Ctrl+A e cifre per
++base manuale, Spazio su applicazione e riprova, Invio sull'alert. Base10.000→12.000
++produce10.800 mantenendo consigliato18.000; sconto modello20% aggiorna anche la
++tabella veicoli a16.000/11.200. Vendita/noleggio cliente verificano entrambi i
++prezzi e tariffa8,00/giorno; nella vista cliente già aperta il ritorno all'automatico
++e il successivo cambio base/nome modello vengono riletti correttamente.
++Attese di caricamento tramite proprietà/latch, frame tramite AnimationTimer;
++le pause ereditate Robot riguardano soltanto gesti e rendering.
++
++Sette schermate ispezionate: manager prezzi, caricamento, errore/riprova,
++vendita, noleggio, aggiornamento cliente e inventario venditore. Stato e focus
++visibili, importi leggibili. A1280px il titolo manager "Prezzo consigliato" è
++abbreviato dalla larghezza della colonna, come prima: testo completo conservato
++e colonna ridimensionabile; non si amplia questo ticket in un redesign.
++Nessuna certificazione screen reader, altri display/OS o benchmark quantitativo.
++La reattività qui è verificata con query bloccata e gesti/frame riusciti.
++La cancellazione non promette interruzione immediata di JDBC già avviato;
++il risultato è scartato e le risorse chiuse dal worker.
++
++## Verifica finale
++
++Suite completa, verifica di conservazione, sentinella finale e review indipendenti
++Standards/Spec sul solo diff della sessione ancora da completare. Ticket14 resta
++in-progress finché tutte queste verifiche sono registrate.
+--- before/DriveHub/docs/testing.md
++++ after/DriveHub/docs/testing.md
+@@ -576,3 +576,48 @@
+ `/tmp/drivehub-ticket13-pgdata`, **127.0.0.1:55433**, display Xvfb **:95**.
+ Le configurazioni private in `/tmp/drivehub-ticket13-session/env.json` non sono
+ conservate nel repository; ricontrollare o ricreare l'ambiente se /tmp scompare.
++
++
++## Tabelle reattive — ticket 14
++
++```bash
++mvn -Ppostgres-tests -Dtest=CatalogListingIntegrationTest,PriceCalculatorServiceTest,PriceSelectionIntegrationTest test
++# Con Java21, variabili DB dedicate e un display Xvfb isolato già attivo:
++DRIVEHUB_UI_CLASS=it.unifi.drivehub.TableLifecycleUiCheck python3 docs/evidence/r08-tables/run-ui.py
++DRIVEHUB_UI_CLASS=it.unifi.drivehub.SlowModelsUiCheck python3 docs/evidence/r08-tables/run-ui.py
++mvn -Ppostgres-tests clean test
++```
++
++`CatalogListingIntegrationTest` usa i servizi pubblici e PostgreSQL reale per
++prezzi automatici/manuali, massimo sconto, centesimi, usato/anno/chilometri,
++tariffa iniziale, rimozione sconti, nuova base/nome modello e nuova sessione.
++Le righe preparate sono sostituite a ogni lettura: nessuna cache persistente,
++nessuna modifica a schema, DAO o ai comandi economici. Il listino usa quattro
++letture collettive indipendenti dal numero di veicoli; gli sconti modello due.
++
++Le viste usano `Task` JavaFX e worker virtuali Java21. Soltanto il task corrente
++può aggiornare dati e stato; cancellazione/sostituzione impediscono pubblicazioni
++obsolete, anche dopo un errore. Durante caricamento o errore i dati del controllo
++sono disabilitati; Aggiorna/Riprova rimane raggiungibile con Tab e Spazio.
++La cancellazione non promette l'interruzione immediata di una query JDBC già
++avviata: il worker chiude le risorse e il suo risultato non viene pubblicato.
++Le azioni di dominio conservano le verifiche e i prezzi correnti dei servizi.
++
++Gli harness osservano i caricamenti tramite proprietà JavaFX, latch e lock
++PostgreSQL (`pg_stat_activity`/`pg_blocking_pids`), senza sleep per sincronizzare
++letture. Un driver diagnostico delega a JDBC reale e conta connessioni e
++esecuzioni durante celle, refresh e scorrimento. Un gate dopo una vera query
++trattiene il vecchio risultato/errore fino al completamento della nuova richiesta;
++la chiusura della connessione viene osservata prima delle asserzioni finali.
++La prova d'errore rinomina temporaneamente una tabella soltanto nel DB dedicato
++e la ripristina in `finally`. I timeout limitano attese e query di controllo.
++Le pause Robot05 riusate riguardano solo i gesti/rendering; le attese di frame
++aggiuntive usano `AnimationTimer`. Non eseguire harness e suite contemporaneamente.
++
++Il launcher richiede `JAVA_HOME`, `DISPLAY` e le variabili DB di testing;
++`DRIVEHUB_UI_DIR` sceglie una directory separata per ogni esecuzione,
++`DRIVEHUB_UI_CLASS` sceglie l'harness. L'ambiente13 è stato ricontrollato:
++Java21/PG16 estratti, cluster dedicato127.0.0.1:55433 e copia sentinella,
++Xvfb94 sul solo socket astratto, senza TCP. Il Java predefinito è17 e non va
++usato per queste prove. Se /tmp manca ricreare gli strumenti come sopra.
++[Evidenze e limiti della sessione14](evidence/r08-tables/verification.md).
+--- before/DriveHub/src/main/java/it/unifi/drivehub/presentation/view/AsyncLoad.java
++++ after/DriveHub/src/main/java/it/unifi/drivehub/presentation/view/AsyncLoad.java
+@@ -0,0 +1,75 @@
++package it.unifi.drivehub.presentation.view;
++
++import javafx.concurrent.Task;
++import javafx.geometry.Pos;
++import javafx.scene.Node;
++import javafx.scene.control.Button;
++import javafx.scene.control.Label;
++import javafx.scene.control.ProgressIndicator;
++import javafx.scene.layout.HBox;
++
++import java.util.function.Consumer;
++import java.util.function.Supplier;
++
++/** Un caricamento per controllo: solo l'ultima richiesta può pubblicare il risultato. */
++final class AsyncLoad<T> extends HBox {
++    private final Node target;
++    private final Consumer<T> apply;
++    private final Label status = new Label();
++    private final ProgressIndicator progress = new ProgressIndicator();
++    private final Button refresh = new Button("Aggiorna");
++    private Supplier<T> source;
++    private Task<T> current;
++
++    AsyncLoad(String name, Node target, Supplier<T> source, Consumer<T> apply) {
++        super(8);
++        this.target = target;
++        this.source = source;
++        this.apply = apply;
++        setAlignment(Pos.CENTER_LEFT);
++        progress.setMaxSize(20, 20);
++        progress.setFocusTraversable(false);
++        status.setWrapText(true);
++        refresh.setAccessibleText("Aggiorna o riprova: " + name);
++        refresh.setOnAction(event -> load());
++        getChildren().addAll(refresh, progress, status);
++        target.sceneProperty().addListener((obs, oldScene, scene) -> {
++            if (oldScene != null && scene == null && current != null) {
++                current.cancel();
++                current = null;
++            }
++        });
++    }
++
++    void load(Supplier<T> source) {
++        this.source = source;
++        load();
++    }
++
++    void load() {
++        if (current != null) current.cancel();
++        Supplier<T> request = source;
++        Task<T> task = new Task<>() {
++            @Override protected T call() { return request.get(); }
++        };
++        current = task;
++        target.setDisable(true);
++        progress.setVisible(true);
++        status.setText("Caricamento in corso…");
++        refresh.setText("Aggiorna");
++        task.setOnSucceeded(event -> {
++            if (current != task) return;
++            apply.accept(task.getValue());
++            progress.setVisible(false);
++            status.setText("Aggiornato");
++            target.setDisable(false);
++        });
++        task.setOnFailed(event -> {
++            if (current != task) return;
++            progress.setVisible(false);
++            status.setText("Caricamento non riuscito. Riprova.");
++            refresh.setText("Riprova");
++        });
++        Thread.ofVirtual().name("drivehub-table-load").start(task);
++    }
++}
+--- before/DriveHub/src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java
++++ after/DriveHub/src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java
+@@ -12,6 +12,7 @@
+ import it.unifi.drivehub.domain.vehicle.VehicleState;
+ import it.unifi.drivehub.service.AuthService;
+ import it.unifi.drivehub.service.CatalogService;
++import it.unifi.drivehub.service.CatalogService.VehicleRow;
+ import it.unifi.drivehub.service.OperationQueryService;
+ import it.unifi.drivehub.service.PriceCalculatorService;
+ import it.unifi.drivehub.service.PurchaseService;
+@@ -49,8 +50,10 @@
+     private final Runnable onLogout;
+ 
+     private Label balanceLabel;
+-    private TableView<Vehicle> saleTable;
+-    private TableView<Vehicle> rentTable;
++    private AsyncLoad<List<VehicleRow>> saleLoad;
++    private AsyncLoad<List<VehicleRow>> rentLoad;
++    private TableView<VehicleRow> saleTable;
++    private TableView<VehicleRow> rentTable;
+     private TableView<Request> requestsTable;
+     private TableView<Rent> myRentsTable;
+     private TableView<TestDrive> myTestDrivesTable;
+@@ -184,10 +187,11 @@
+ 
+         Button btnTestDrive = new Button("Prenota Test Drive");
+         btnTestDrive.getStyleClass().add("button-secondary");
+-        btnTestDrive.setOnAction(e -> handleTestDriveAction(saleTable.getSelectionModel().getSelectedItem()));
++        btnTestDrive.setOnAction(e -> handleTestDriveAction(saleTable.getSelectionModel().getSelectedItem() == null ? null : saleTable.getSelectionModel().getSelectedItem().vehicle()));
+ 
+         HBox actions = new HBox(10, btnBuy, btnTestDrive);
+-        box.getChildren().addAll(saleTable, actions);
++        saleLoad = new AsyncLoad<>("catalogo vendita", saleTable, () -> catalogService.getVehicleRows(VehicleState.SALE), rows -> saleTable.getItems().setAll(rows));
++        box.getChildren().addAll(saleLoad, saleTable, actions);
+         VBox.setVgrow(saleTable, Priority.ALWAYS);
+ 
+         loadSaleVehicles();
+@@ -195,11 +199,12 @@
+     }
+ 
+     private void loadSaleVehicles() {
+-        saleTable.getItems().setAll(catalogService.getVehiclesByState(VehicleState.SALE));
++        saleLoad.load();
+     }
+ 
+     private void handlePurchaseAction() {
+-        Vehicle v = saleTable.getSelectionModel().getSelectedItem();
++        VehicleRow selected = saleTable.getSelectionModel().getSelectedItem();
++        Vehicle v = selected == null ? null : selected.vehicle();
+         if (v == null) {
+             UiUtils.showError("Selezione mancante", "Seleziona un veicolo dalla tabella.");
+             return;
+@@ -242,10 +247,11 @@
+ 
+         Button btnTestDrive = new Button("Prenota Test Drive");
+         btnTestDrive.getStyleClass().add("button-secondary");
+-        btnTestDrive.setOnAction(e -> handleTestDriveAction(rentTable.getSelectionModel().getSelectedItem()));
++        btnTestDrive.setOnAction(e -> handleTestDriveAction(rentTable.getSelectionModel().getSelectedItem() == null ? null : rentTable.getSelectionModel().getSelectedItem().vehicle()));
+ 
+         HBox actions = new HBox(10, btnRent, btnTestDrive);
+-        box.getChildren().addAll(rentTable, actions);
++        rentLoad = new AsyncLoad<>("catalogo noleggio", rentTable, () -> catalogService.getVehicleRows(VehicleState.RENT), rows -> rentTable.getItems().setAll(rows));
++        box.getChildren().addAll(rentLoad, rentTable, actions);
+         VBox.setVgrow(rentTable, Priority.ALWAYS);
+ 
+         loadRentVehicles();
+@@ -253,11 +259,12 @@
+     }
+ 
+     private void loadRentVehicles() {
+-        rentTable.getItems().setAll(catalogService.getVehiclesByState(VehicleState.RENT));
++        rentLoad.load();
+     }
+ 
+     private void handleRentAction() {
+-        Vehicle v = rentTable.getSelectionModel().getSelectedItem();
++        VehicleRow selected = rentTable.getSelectionModel().getSelectedItem();
++        Vehicle v = selected == null ? null : selected.vehicle();
+         if (v == null) {
+             UiUtils.showError("Selezione mancante", "Seleziona un veicolo per il noleggio.");
+             return;
+@@ -358,13 +365,21 @@
+         lbl.getStyleClass().add("card-title");
+ 
+         ComboBox<Brand> brandCombo = new ComboBox<>();
+-        brandCombo.getItems().setAll(catalogService.getAllBrands());
+         ComboBox<Model> modelCombo = new ComboBox<>();
++        AsyncLoad<List<Brand>> brandsLoad = new AsyncLoad<>("marchi per cessione", brandCombo,
++                catalogService::getAllBrands, rows -> brandCombo.getItems().setAll(rows));
++        AsyncLoad<List<Model>> modelsLoad = new AsyncLoad<>("modelli per cessione", modelCombo,
++                List::of, rows -> modelCombo.getItems().setAll(rows));
++        brandsLoad.load();
++        modelsLoad.load();
+ 
+         brandCombo.setOnAction(e -> {
+             Brand b = brandCombo.getValue();
+             if (b != null) {
+-                modelCombo.getItems().setAll(catalogService.getModelsByBrand(b.getName()));
++                modelCombo.getSelectionModel().clearSelection();
++                modelsLoad.load(() -> catalogService.getModelsByBrand(b.getName()));
++            } else {
++                modelsLoad.load(List::of);
+             }
+         });
+ 
+@@ -414,7 +429,7 @@
+         });
+ 
+         box.getChildren().addAll(
+-                lbl,
++                lbl, brandsLoad, modelsLoad,
+                 new Label("Marca:"), brandCombo,
+                 new Label("Modello:"), modelCombo,
+                 new Label("VIN:"), vinField,
+@@ -520,56 +535,47 @@
+         myTestDrivesTable.getItems().setAll(operationQueryService.getClientTestDrives(client.getId()));
+     }
+ 
+-    private void configureVehicleTable(TableView<Vehicle> table, boolean isSale) {
+-        TableColumn<Vehicle, String> colModel = new TableColumn<>("Modello");
++    private void configureVehicleTable(TableView<VehicleRow> table, boolean isSale) {
++        TableColumn<VehicleRow, String> colModel = new TableColumn<>("Modello");
+         colModel.setCellValueFactory(data -> {
+             if (data == null || data.getValue() == null) return new SimpleStringProperty("");
+-            return new SimpleStringProperty(getVehicleDesc(data.getValue()));
+-        });
+-
+-        TableColumn<Vehicle, String> colYear = new TableColumn<>("Anno");
++            return new SimpleStringProperty(data.getValue().modelName() + " (" + data.getValue().vehicle().getYear() + ")");
++        });
++
++        TableColumn<VehicleRow, String> colYear = new TableColumn<>("Anno");
+         colYear.setCellValueFactory(data -> {
+             if (data == null || data.getValue() == null) return new SimpleStringProperty("");
+-            return new SimpleStringProperty(String.valueOf(data.getValue().getYear()));
+-        });
+-
+-        TableColumn<Vehicle, String> colPlate = new TableColumn<>("Targa / Usato");
++            return new SimpleStringProperty(String.valueOf(data.getValue().vehicle().getYear()));
++        });
++
++        TableColumn<VehicleRow, String> colPlate = new TableColumn<>("Targa / Usato");
+         colPlate.setCellValueFactory(data -> {
+             if (data == null || data.getValue() == null) return new SimpleStringProperty("");
+-            return new SimpleStringProperty(data.getValue().isUsed() ? data.getValue().getLicencePlate() : "Nuovo (0 km)");
+-        });
+-
+-        TableColumn<Vehicle, String> colKm = new TableColumn<>("Km");
++            return new SimpleStringProperty(data.getValue().vehicle().isUsed() ? data.getValue().vehicle().getLicencePlate() : "Nuovo (0 km)");
++        });
++
++        TableColumn<VehicleRow, String> colKm = new TableColumn<>("Km");
+         colKm.setCellValueFactory(data -> {
+             if (data == null || data.getValue() == null) return new SimpleStringProperty("");
+-            return new SimpleStringProperty(String.valueOf(data.getValue().getKilometers()));
+-        });
+-
+-        TableColumn<Vehicle, String> colPrice = new TableColumn<>(isSale ? "Prezzo effettivo" : "Tariffa iniziale/giorno");
++            return new SimpleStringProperty(String.valueOf(data.getValue().vehicle().getKilometers()));
++        });
++
++        TableColumn<VehicleRow, String> colPrice = new TableColumn<>(isSale ? "Prezzo effettivo" : "Tariffa iniziale/giorno");
+         colPrice.setCellValueFactory(data -> {
+             if (data == null || data.getValue() == null) return new SimpleStringProperty("");
+-            try {
+-                if (isSale) {
+-                    BigDecimal effPrice = catalogService.getEffectiveVehiclePrice(data.getValue());
+-                    return new SimpleStringProperty(UiUtils.formatCurrency(effPrice));
+-                } else {
+-                    BigDecimal effPrice = catalogService.getEffectiveVehiclePrice(data.getValue());
+-                    BigDecimal dailyRate = priceCalculatorService.calculateDailyRentalRate(effPrice);
+-                    return new SimpleStringProperty(UiUtils.formatCurrency(dailyRate) + "/giorno");
+-                }
+-            } catch (Exception ex) {
+-                return new SimpleStringProperty("N/D");
+-            }
+-        });
+-
+-        TableColumn<Vehicle, String> colBase = new TableColumn<>("Base applicata");
+-        colBase.setCellValueFactory(d -> new SimpleStringProperty(UiUtils.formatCurrency(catalogService.getVehicleBasePrice(d.getValue()))));
+-        TableColumn<Vehicle, String> colRecommended = new TableColumn<>("Prezzo consigliato");
+-        colRecommended.setCellValueFactory(d -> new SimpleStringProperty(UiUtils.formatCurrency(catalogService.getRecommendedVehiclePrice(d.getValue()))));
++            return new SimpleStringProperty(isSale
++                    ? UiUtils.formatCurrency(data.getValue().effective())
++                    : UiUtils.formatCurrency(data.getValue().dailyRate()) + "/giorno");
++        });
++
++        TableColumn<VehicleRow, String> colBase = new TableColumn<>("Base applicata");
++        colBase.setCellValueFactory(d -> new SimpleStringProperty(UiUtils.formatCurrency(d.getValue().base())));
++        TableColumn<VehicleRow, String> colRecommended = new TableColumn<>("Prezzo consigliato");
++        colRecommended.setCellValueFactory(d -> new SimpleStringProperty(UiUtils.formatCurrency(d.getValue().recommended())));
+         table.getColumns().addAll(List.of(colModel, colYear, colPlate, colKm, colBase, colRecommended));
+         if (!isSale) {
+-            TableColumn<Vehicle, String> colEffective = new TableColumn<>("Prezzo effettivo");
+-            colEffective.setCellValueFactory(d -> new SimpleStringProperty(UiUtils.formatCurrency(catalogService.getEffectiveVehiclePrice(d.getValue()))));
++            TableColumn<VehicleRow, String> colEffective = new TableColumn<>("Prezzo effettivo");
++            colEffective.setCellValueFactory(d -> new SimpleStringProperty(UiUtils.formatCurrency(d.getValue().effective())));
+             table.getColumns().add(colEffective);
+         }
+         table.getColumns().add(colPrice);
+--- before/DriveHub/src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java
++++ after/DriveHub/src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java
+@@ -12,6 +12,8 @@
+ import it.unifi.drivehub.domain.vehicle.VehicleState;
+ import it.unifi.drivehub.service.AuthService;
+ import it.unifi.drivehub.service.CatalogService;
++import it.unifi.drivehub.service.CatalogService.VehicleRow;
++import it.unifi.drivehub.service.CatalogService.ModelDiscountRow;
+ import it.unifi.drivehub.service.OperationQueryService;
+ import javafx.beans.property.SimpleStringProperty;
+ import javafx.geometry.Insets;
+@@ -38,9 +40,15 @@
+     private final Runnable onLogout;
+ 
+     private TableView<Brand> brandTable;
++    private AsyncLoad<List<Brand>> brandLoad;
++    private AsyncLoad<List<Model>> modelLoad;
++    private AsyncLoad<List<VehicleRow>> vehicleLoad;
++    private AsyncLoad<List<ModelDiscountRow>> modelDiscountLoad;
++    private AsyncLoad<List<VehicleDiscount>> vehicleDiscountLoad;
++    private AsyncLoad<List<Sale>> saleLoad;
+     private TableView<Model> modelTable;
+-    private TableView<Vehicle> vehicleTable;
+-    private TableView<ModelDiscount> modelDiscTable;
++    private TableView<VehicleRow> vehicleTable;
++    private TableView<ModelDiscountRow> modelDiscTable;
+     private TableView<VehicleDiscount> vehicleDiscTable;
+     private TableView<Sale> saleTable;
+ 
+@@ -138,7 +146,8 @@
+         });
+ 
+         addBox.getChildren().addAll(nameField, btnAdd, btnDelete);
+-        box.getChildren().addAll(brandTable, addBox);
++        brandLoad = new AsyncLoad<>("marchi", brandTable, catalogService::getAllBrands, rows -> brandTable.getItems().setAll(rows));
++        box.getChildren().addAll(brandLoad, brandTable, addBox);
+         VBox.setVgrow(brandTable, Priority.ALWAYS);
+ 
+         loadBrands();
+@@ -146,7 +155,7 @@
+     }
+ 
+     private void loadBrands() {
+-        brandTable.getItems().setAll(catalogService.getAllBrands());
++        brandLoad.load();
+     }
+ 
+     // --- TAB MODELLI ---
+@@ -171,7 +180,7 @@
+ 
+         HBox addBox = new HBox(10);
+         ComboBox<Brand> brandCombo = new ComboBox<>();
+-        brandCombo.getItems().setAll(catalogService.getAllBrands());
++        javafx.beans.binding.Bindings.bindContent(brandCombo.getItems(), brandTable.getItems());
+         TextField nameField = new TextField();
+         nameField.setPromptText("Nome modello");
+         TextField priceField = new TextField();
+@@ -210,7 +219,8 @@
+         });
+ 
+         addBox.getChildren().addAll(brandCombo, nameField, priceField, yearField, btnAdd, btnDelete);
+-        box.getChildren().addAll(modelTable, addBox);
++        modelLoad = new AsyncLoad<>("modelli", modelTable, catalogService::getAllModels, rows -> modelTable.getItems().setAll(rows));
++        box.getChildren().addAll(modelLoad, modelTable, addBox);
+         VBox.setVgrow(modelTable, Priority.ALWAYS);
+ 
+         loadModels();
+@@ -218,7 +228,7 @@
+     }
+ 
+     private void loadModels() {
+-        modelTable.getItems().setAll(catalogService.getAllModels());
++        modelLoad.load();
+     }
+ 
+     // --- TAB VEICOLI ---
+@@ -227,41 +237,40 @@
+         box.setPadding(new Insets(20));
+ 
+         vehicleTable = new TableView<>();
+-        TableColumn<Vehicle, String> colId = new TableColumn<>("ID");
+-        colId.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null ? "#" + d.getValue().getId() : ""));
+-        TableColumn<Vehicle, String> colMod = new TableColumn<>("Modello");
++        TableColumn<VehicleRow, String> colId = new TableColumn<>("ID");
++        colId.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null ? "#" + d.getValue().vehicle().getId() : ""));
++        TableColumn<VehicleRow, String> colMod = new TableColumn<>("Modello");
+         colMod.setCellValueFactory(d -> {
+             if (d == null || d.getValue() == null) return new SimpleStringProperty("");
+             return new SimpleStringProperty(
+-                    catalogService.getModelById(d.getValue().getModelId())
+-                            .map(m -> m.getBrand() + " " + m.getName()).orElse("N/D")
++                    d.getValue().modelName()
+             );
+         });
+-        TableColumn<Vehicle, String> colVin = new TableColumn<>("VIN");
+-        colVin.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null ? d.getValue().getVin() : ""));
+-        TableColumn<Vehicle, String> colPlate = new TableColumn<>("Targa");
+-        colPlate.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null && d.getValue().getLicencePlate() != null ? d.getValue().getLicencePlate() : "N/D"));
+-        TableColumn<Vehicle, String> colKm = new TableColumn<>("Km");
+-        colKm.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null ? String.valueOf(d.getValue().getKilometers()) : ""));
+-        TableColumn<Vehicle, String> colState = new TableColumn<>("Stato");
+-        colState.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null && d.getValue().getState() != null ? d.getValue().getState().name() : ""));
+-
+-        TableColumn<Vehicle, String> colMode = new TableColumn<>("Modalità prezzo");
++        TableColumn<VehicleRow, String> colVin = new TableColumn<>("VIN");
++        colVin.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null ? d.getValue().vehicle().getVin() : ""));
++        TableColumn<VehicleRow, String> colPlate = new TableColumn<>("Targa");
++        colPlate.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null && d.getValue().vehicle().getLicencePlate() != null ? d.getValue().vehicle().getLicencePlate() : "N/D"));
++        TableColumn<VehicleRow, String> colKm = new TableColumn<>("Km");
++        colKm.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null ? String.valueOf(d.getValue().vehicle().getKilometers()) : ""));
++        TableColumn<VehicleRow, String> colState = new TableColumn<>("Stato");
++        colState.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null && d.getValue().vehicle().getState() != null ? d.getValue().vehicle().getState().name() : ""));
++
++        TableColumn<VehicleRow, String> colMode = new TableColumn<>("Modalità prezzo");
+         colMode.setCellValueFactory(d -> new SimpleStringProperty(
+-                d.getValue().getPriceMode() == PriceMode.MANUAL ? "Manuale" : "Automatica"));
+-        TableColumn<Vehicle, String> colBase = new TableColumn<>("Base applicata");
+-        colBase.setCellValueFactory(d -> new SimpleStringProperty(UiUtils.formatCurrency(catalogService.getVehicleBasePrice(d.getValue()))));
+-        TableColumn<Vehicle, String> colRecommended = new TableColumn<>("Prezzo consigliato");
+-        colRecommended.setCellValueFactory(d -> new SimpleStringProperty(UiUtils.formatCurrency(catalogService.getRecommendedVehiclePrice(d.getValue()))));
+-        TableColumn<Vehicle, String> colEffective = new TableColumn<>("Prezzo effettivo");
+-        colEffective.setCellValueFactory(d -> new SimpleStringProperty(UiUtils.formatCurrency(catalogService.getEffectiveVehiclePrice(d.getValue()))));
++                d.getValue().vehicle().getPriceMode() == PriceMode.MANUAL ? "Manuale" : "Automatica"));
++        TableColumn<VehicleRow, String> colBase = new TableColumn<>("Base applicata");
++        colBase.setCellValueFactory(d -> new SimpleStringProperty(UiUtils.formatCurrency(d.getValue().base())));
++        TableColumn<VehicleRow, String> colRecommended = new TableColumn<>("Prezzo consigliato");
++        colRecommended.setCellValueFactory(d -> new SimpleStringProperty(UiUtils.formatCurrency(d.getValue().recommended())));
++        TableColumn<VehicleRow, String> colEffective = new TableColumn<>("Prezzo effettivo");
++        colEffective.setCellValueFactory(d -> new SimpleStringProperty(UiUtils.formatCurrency(d.getValue().effective())));
+         vehicleTable.getColumns().addAll(List.of(colId, colMod, colVin, colPlate, colKm, colState,
+                 colMode, colBase, colRecommended, colEffective));
+         vehicleTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
+ 
+         FlowPane addBox = new FlowPane(8, 8);
+         ComboBox<Model> modelCombo = new ComboBox<>();
+-        modelCombo.getItems().setAll(catalogService.getAllModels());
++        javafx.beans.binding.Bindings.bindContent(modelCombo.getItems(), modelTable.getItems());
+         TextField vinField = new TextField();
+         vinField.setPromptText("VIN (17 car.)");
+         TextField plateField = new TextField();
+@@ -280,13 +289,14 @@
+         priceHelp.setWrapText(true);
+         vehicleTable.getSelectionModel().selectedItemProperty().addListener((obs, old, vehicle) -> {
+             if (vehicle != null) {
+-                recommended.setSelected(vehicle.getPriceMode() == PriceMode.AUTOMATIC);
+-                priceField.setText(vehicle.getPrice().toPlainString());
++                recommended.setSelected(vehicle.vehicle().getPriceMode() == PriceMode.AUTOMATIC);
++                priceField.setText(vehicle.vehicle().getPrice().toPlainString());
+             }
+         });
+         Button btnApplyPrice = new Button("Applica base alla selezione");
+         btnApplyPrice.setOnAction(e -> {
+-            Vehicle vehicle = vehicleTable.getSelectionModel().getSelectedItem();
++            VehicleRow selected = vehicleTable.getSelectionModel().getSelectedItem();
++            Vehicle vehicle = selected == null ? null : selected.vehicle();
+             if (vehicle == null) {
+                 UiUtils.showError("Selezione mancante", "Seleziona un veicolo dalla tabella.");
+                 return;
+@@ -326,7 +336,8 @@
+         Button btnDelete = new Button("Elimina Selezionato");
+         btnDelete.getStyleClass().add("button-danger");
+         btnDelete.setOnAction(e -> {
+-            Vehicle v = vehicleTable.getSelectionModel().getSelectedItem();
++            VehicleRow selected = vehicleTable.getSelectionModel().getSelectedItem();
++            Vehicle v = selected == null ? null : selected.vehicle();
+             if (v != null) {
+                 try {
+                     catalogService.deleteVehicle(v.getId());
+@@ -339,7 +350,8 @@
+         });
+ 
+         addBox.getChildren().addAll(modelCombo, vinField, plateField, kmField, yearField, stateCombo, btnAdd, btnDelete);
+-        box.getChildren().addAll(vehicleTable, priceHelp, pricingBox, addBox);
++        vehicleLoad = new AsyncLoad<>("veicoli", vehicleTable, () -> catalogService.getVehicleRows(null), rows -> vehicleTable.getItems().setAll(rows));
++        box.getChildren().addAll(vehicleLoad, vehicleTable, priceHelp, pricingBox, addBox);
+         VBox.setVgrow(vehicleTable, Priority.ALWAYS);
+ 
+         loadVehicles();
+@@ -347,7 +359,7 @@
+     }
+ 
+     private void loadVehicles() {
+-        vehicleTable.getItems().setAll(catalogService.getAllVehicles());
++        vehicleLoad.load();
+     }
+ 
+     // --- TAB SCONTI ---
+@@ -360,22 +372,21 @@
+         Label mTitle = new Label("Sconti su Modelli (0 - 50%)");
+         mTitle.getStyleClass().add("card-title");
+         modelDiscTable = new TableView<>();
+-        TableColumn<ModelDiscount, String> mColMod = new TableColumn<>("Modello");
++        TableColumn<ModelDiscountRow, String> mColMod = new TableColumn<>("Modello");
+         mColMod.setCellValueFactory(d -> {
+             if (d == null || d.getValue() == null) return new SimpleStringProperty("");
+             return new SimpleStringProperty(
+-                    catalogService.getModelById(d.getValue().getModelId())
+-                            .map(m -> m.getBrand() + " " + m.getName()).orElse("#" + d.getValue().getModelId())
++                    d.getValue().modelName()
+             );
+         });
+-        TableColumn<ModelDiscount, String> mColVal = new TableColumn<>("Sconto %");
+-        mColVal.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null ? d.getValue().getValue() + "%" : ""));
++        TableColumn<ModelDiscountRow, String> mColVal = new TableColumn<>("Sconto %");
++        mColVal.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null ? d.getValue().discount().getValue() + "%" : ""));
+         modelDiscTable.getColumns().addAll(List.of(mColMod, mColVal));
+         modelDiscTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
+ 
+         HBox mControls = new HBox(8);
+         ComboBox<Model> mCombo = new ComboBox<>();
+-        mCombo.getItems().setAll(catalogService.getAllModels());
++        javafx.beans.binding.Bindings.bindContent(mCombo.getItems(), modelTable.getItems());
+         TextField mValField = new TextField();
+         mValField.setPromptText("% (0-50)");
+         Button btnSetM = new Button("Salva");
+@@ -393,14 +404,16 @@
+         Button btnDelM = new Button("Rimuovi");
+         btnDelM.getStyleClass().add("button-danger");
+         btnDelM.setOnAction(e -> {
+-            ModelDiscount md = modelDiscTable.getSelectionModel().getSelectedItem();
++            ModelDiscountRow selected = modelDiscTable.getSelectionModel().getSelectedItem();
++            ModelDiscount md = selected == null ? null : selected.discount();
+             if (md != null) {
+                 catalogService.removeModelDiscount(md.getModelId());
+                 loadDiscounts();
+             }
+         });
+         mControls.getChildren().addAll(mCombo, mValField, btnSetM, btnDelM);
+-        modelBox.getChildren().addAll(mTitle, modelDiscTable, mControls);
++        modelDiscountLoad = new AsyncLoad<>("sconti modello", modelDiscTable, catalogService::getModelDiscountRows, rows -> modelDiscTable.getItems().setAll(rows));
++        modelBox.getChildren().addAll(modelDiscountLoad, mTitle, modelDiscTable, mControls);
+         HBox.setHgrow(modelBox, Priority.ALWAYS);
+ 
+         // Sconti Veicolo
+@@ -442,7 +455,8 @@
+             }
+         });
+         vControls.getChildren().addAll(vIdField, vValField, btnSetV, btnDelV);
+-        vehBox.getChildren().addAll(vTitle, vehicleDiscTable, vControls);
++        vehicleDiscountLoad = new AsyncLoad<>("sconti veicolo", vehicleDiscTable, catalogService::getAllVehicleDiscounts, rows -> vehicleDiscTable.getItems().setAll(rows));
++        vehBox.getChildren().addAll(vTitle, vehicleDiscountLoad, vehicleDiscTable, vControls);
+         HBox.setHgrow(vehBox, Priority.ALWAYS);
+ 
+         box.getChildren().addAll(modelBox, vehBox);
+@@ -451,8 +465,9 @@
+     }
+ 
+     private void loadDiscounts() {
+-        modelDiscTable.getItems().setAll(catalogService.getAllModelDiscounts());
+-        vehicleDiscTable.getItems().setAll(catalogService.getAllVehicleDiscounts());
++        modelDiscountLoad.load();
++        vehicleDiscountLoad.load();
++        loadVehicles();
+     }
+ 
+     // --- TAB REGISTRO VENDITE ---
+@@ -507,7 +522,8 @@
+         saleTable.getColumns().addAll(List.of(colId, colType, colDate, colClient, colSalesman, colVehicle, colAmount));
+         saleTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
+ 
+-        box.getChildren().addAll(title, saleTable);
++        saleLoad = new AsyncLoad<>("registro economico", saleTable, operationQueryService::getAllSales, rows -> saleTable.getItems().setAll(rows));
++        box.getChildren().addAll(title, saleLoad, saleTable);
+         VBox.setVgrow(saleTable, Priority.ALWAYS);
+ 
+         loadSales();
+@@ -515,6 +531,6 @@
+     }
+ 
+     private void loadSales() {
+-        saleTable.getItems().setAll(operationQueryService.getAllSales());
++        saleLoad.load();
+     }
+ }
+--- before/DriveHub/src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java
++++ after/DriveHub/src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java
+@@ -9,6 +9,7 @@
+ import it.unifi.drivehub.domain.vehicle.VehicleState;
+ import it.unifi.drivehub.service.AuthService;
+ import it.unifi.drivehub.service.CatalogService;
++import it.unifi.drivehub.service.CatalogService.VehicleRow;
+ import it.unifi.drivehub.service.OperationQueryService;
+ import it.unifi.drivehub.service.PurchaseService;
+ import it.unifi.drivehub.service.RentalService;
+@@ -38,7 +39,8 @@
+     private final Runnable onLogout;
+ 
+     private TableView<Request> pendingTable;
+-    private TableView<Vehicle> inventoryTable;
++    private AsyncLoad<List<VehicleRow>> inventoryLoad;
++    private TableView<VehicleRow> inventoryTable;
+ 
+     public SalesmanDashboardView(Salesman salesman, Runnable onLogout) {
+         this(salesman,
+@@ -187,7 +189,10 @@
+         Button btnToggle = new Button("Modifica Stato (Da RENT a SALE o viceversa)");
+         btnToggle.setOnAction(e -> handleToggleState());
+ 
+-        box.getChildren().addAll(title, inventoryTable, btnToggle);
++        inventoryLoad = new AsyncLoad<>("inventario", inventoryTable,
++                () -> catalogService.getVehicleRows(null).stream().filter(row -> row.vehicle().getState() == VehicleState.SALE || row.vehicle().getState() == VehicleState.RENT).toList(),
++                rows -> inventoryTable.getItems().setAll(rows));
++        box.getChildren().addAll(title, inventoryLoad, inventoryTable, btnToggle);
+         VBox.setVgrow(inventoryTable, Priority.ALWAYS);
+ 
+         loadInventoryVehicles();
+@@ -195,14 +200,12 @@
+     }
+ 
+     private void loadInventoryVehicles() {
+-        List<Vehicle> list = catalogService.getAllVehicles().stream()
+-                .filter(v -> v.getState() == VehicleState.SALE || v.getState() == VehicleState.RENT)
+-                .toList();
+-        inventoryTable.getItems().setAll(list);
++        inventoryLoad.load();
+     }
+ 
+     private void handleToggleState() {
+-        Vehicle v = inventoryTable.getSelectionModel().getSelectedItem();
++        VehicleRow selected = inventoryTable.getSelectionModel().getSelectedItem();
++        Vehicle v = selected == null ? null : selected.vehicle();
+         if (v == null) {
+             UiUtils.showError("Selezione mancante", "Seleziona un veicolo da modificare.");
+             return;
+@@ -291,37 +294,36 @@
+     }
+ 
+     private void configureInventoryTable() {
+-        TableColumn<Vehicle, String> colId = new TableColumn<>("ID");
++        TableColumn<VehicleRow, String> colId = new TableColumn<>("ID");
+         colId.setCellValueFactory(data -> {
+             if (data == null || data.getValue() == null) return new SimpleStringProperty("");
+-            return new SimpleStringProperty("#" + data.getValue().getId());
+-        });
+-
+-        TableColumn<Vehicle, String> colModel = new TableColumn<>("Modello");
++            return new SimpleStringProperty("#" + data.getValue().vehicle().getId());
++        });
++
++        TableColumn<VehicleRow, String> colModel = new TableColumn<>("Modello");
+         colModel.setCellValueFactory(data -> {
+             if (data == null || data.getValue() == null) return new SimpleStringProperty("");
+             return new SimpleStringProperty(
+-                    catalogService.getModelById(data.getValue().getModelId())
+-                            .map(m -> m.getBrand() + " " + m.getName()).orElse("N/D")
++                    data.getValue().modelName()
+             );
+         });
+ 
+-        TableColumn<Vehicle, String> colVin = new TableColumn<>("VIN");
++        TableColumn<VehicleRow, String> colVin = new TableColumn<>("VIN");
+         colVin.setCellValueFactory(data -> {
+             if (data == null || data.getValue() == null) return new SimpleStringProperty("");
+-            return new SimpleStringProperty(data.getValue().getVin());
+-        });
+-
+-        TableColumn<Vehicle, String> colPlate = new TableColumn<>("Targa");
++            return new SimpleStringProperty(data.getValue().vehicle().getVin());
++        });
++
++        TableColumn<VehicleRow, String> colPlate = new TableColumn<>("Targa");
+         colPlate.setCellValueFactory(data -> {
+             if (data == null || data.getValue() == null) return new SimpleStringProperty("");
+-            return new SimpleStringProperty(data.getValue().getLicencePlate() != null ? data.getValue().getLicencePlate() : "N/D");
+-        });
+-
+-        TableColumn<Vehicle, String> colState = new TableColumn<>("Stato Attuale");
++            return new SimpleStringProperty(data.getValue().vehicle().getLicencePlate() != null ? data.getValue().vehicle().getLicencePlate() : "N/D");
++        });
++
++        TableColumn<VehicleRow, String> colState = new TableColumn<>("Stato Attuale");
+         colState.setCellValueFactory(data -> {
+-            if (data == null || data.getValue() == null || data.getValue().getState() == null) return new SimpleStringProperty("");
+-            return new SimpleStringProperty(data.getValue().getState().name());
++            if (data == null || data.getValue() == null || data.getValue().vehicle().getState() == null) return new SimpleStringProperty("");
++            return new SimpleStringProperty(data.getValue().vehicle().getState().name());
+         });
+ 
+         inventoryTable.getColumns().addAll(List.of(colId, colModel, colVin, colPlate, colState));
+--- before/DriveHub/src/main/java/it/unifi/drivehub/service/CatalogService.java
++++ after/DriveHub/src/main/java/it/unifi/drivehub/service/CatalogService.java
+@@ -15,6 +15,9 @@
+ import java.math.BigDecimal;
+ import java.util.List;
+ import java.util.Optional;
++import java.util.Map;
++import java.util.function.Function;
++import java.util.stream.Collectors;
+ 
+ /**
+  * Servizio per la consultazione e la gestione del catalogo da parte del Manager (Pagina 4 degli appunti).
+@@ -65,6 +68,43 @@
+         return vehicleDao.findAll();
+     }
+ 
++    /** Dati di una singola lettura: nessun accesso ai DAO durante la visualizzazione. */
++    public record VehicleRow(Vehicle vehicle, String modelName, BigDecimal base,
++                             BigDecimal recommended, BigDecimal effective, BigDecimal dailyRate) {}
++
++    public record ModelDiscountRow(ModelDiscount discount, String modelName) {}
++
++    public List<VehicleRow> getVehicleRows(VehicleState state) {
++        Map<Long, Model> models = getAllModels().stream()
++                .collect(Collectors.toMap(Model::getId, Function.identity()));
++        Map<Long, Integer> modelDiscounts = getAllModelDiscounts().stream()
++                .collect(Collectors.toMap(ModelDiscount::getModelId, ModelDiscount::getValue));
++        Map<Long, Integer> vehicleDiscounts = getAllVehicleDiscounts().stream()
++                .collect(Collectors.toMap(VehicleDiscount::getVehicleId, VehicleDiscount::getValue));
++        List<Vehicle> vehicles = state == null ? getAllVehicles() : getVehiclesByState(state);
++        return vehicles.stream().map(vehicle -> {
++            Model model = models.get(vehicle.getModelId());
++            if (model == null) throw new IllegalStateException("Modello del veicolo non trovato.");
++            int mDisc = modelDiscounts.getOrDefault(model.getId(), 0);
++            int vDisc = vehicleDiscounts.getOrDefault(vehicle.getId(), 0);
++            BigDecimal effective = priceCalculator.calculateVehiclePrice(model, vehicle, mDisc, vDisc);
++            return new VehicleRow(vehicle, model.getBrand() + " " + model.getName(),
++                    vehicle.getSelectedBasePrice(model),
++                    priceCalculator.calculateRecommendedVehiclePrice(model, vehicle, mDisc, vDisc),
++                    effective, priceCalculator.calculateDailyRentalRate(effective));
++        }).toList();
++    }
++
++    public List<ModelDiscountRow> getModelDiscountRows() {
++        Map<Long, Model> models = getAllModels().stream()
++                .collect(Collectors.toMap(Model::getId, Function.identity()));
++        return getAllModelDiscounts().stream().map(discount -> {
++            Model model = models.get(discount.getModelId());
++            if (model == null) throw new IllegalStateException("Modello dello sconto non trovato.");
++            return new ModelDiscountRow(discount, model.getBrand() + " " + model.getName());
++        }).toList();
++    }
++
+     public Optional<Vehicle> getVehicleById(Long id) {
+         return vehicleDao.findById(id);
+     }
+--- before/DriveHub/src/test/java/it/unifi/drivehub/CatalogListingIntegrationTest.java
++++ after/DriveHub/src/test/java/it/unifi/drivehub/CatalogListingIntegrationTest.java
+@@ -0,0 +1,76 @@
++package it.unifi.drivehub;
++
++import it.unifi.drivehub.domain.vehicle.*;
++import it.unifi.drivehub.service.CatalogService;
++import org.junit.jupiter.api.*;
++import java.math.BigDecimal;
++import java.time.Year;
++import static org.junit.jupiter.api.Assertions.*;
++
++@Tag("postgres")
++class CatalogListingIntegrationTest {
++    private AppContext ctx;
++    private Model model;
++    private Vehicle vehicle;
++
++    @BeforeEach void setUp() throws Exception {
++        ctx = new AppContext(TestDatabase.fromEnvironment().reset());
++        model = ctx.getCatalogService().addModel("Fiat", "Listino14", new BigDecimal("20000"), Year.now().getValue()-2);
++        ctx.getCatalogService().setModelDiscount(model.getId(), 10);
++        vehicle = ctx.getCatalogService().addVehicle(model.getId(), "T1400000000000001", null, 0,
++                null, Year.now().getValue(), VehicleState.SALE);
++    }
++    CatalogService.VehicleRow row() {
++        return ctx.getCatalogService().getVehicleRows(VehicleState.SALE).stream()
++                .filter(row -> row.vehicle().getId().equals(vehicle.getId())).findFirst().orElseThrow();
++    }
++    @Test void automaticAndManualUseTheSameFormulaAfterRefresh() {
++        assertEquals(new BigDecimal("18000.00"), row().effective());
++        ctx.getCatalogService().updateVehiclePricing(vehicle.getId(), new BigDecimal("10000"));
++        var manual=row();
++        assertEquals(PriceMode.MANUAL, manual.vehicle().getPriceMode());
++        assertEquals(new BigDecimal("10000.00"), manual.base());
++        assertEquals(new BigDecimal("18000.00"), manual.recommended());
++        assertEquals(new BigDecimal("9000.00"), manual.effective());
++        ctx.getCatalogService().setVehicleDiscount(vehicle.getId(), 20);
++        assertEquals(new BigDecimal("8000.00"), row().effective());
++        assertEquals(new BigDecimal("16000.00"), row().recommended());
++        ctx.getCatalogService().removeVehicleDiscount(vehicle.getId());
++        ctx.getCatalogService().removeModelDiscount(model.getId());
++        assertEquals(new BigDecimal("10000.00"), row().effective());
++        ctx.getCatalogService().updateVehiclePricing(vehicle.getId(), null);
++        assertEquals(PriceMode.AUTOMATIC, row().vehicle().getPriceMode());
++        assertEquals(new BigDecimal("20000.00"), row().effective());
++    }
++    @Test void nextRefreshReadsNewModelBaseAndNameWithoutChangingManualBase() throws Exception {
++        ctx.getCatalogService().updateVehiclePricing(vehicle.getId(), new BigDecimal("10000.005"));
++        var before=row();
++        try(var conn=ctx.getDatabaseManager().getConnection();var sql=conn.prepareStatement("UPDATE model SET release_price=30000,name='Listino nuovo' WHERE id=?")) {
++            sql.setLong(1,model.getId());assertEquals(1,sql.executeUpdate());
++        }
++        var after=row();
++        assertEquals("Fiat Listino nuovo",after.modelName());
++        assertEquals(new BigDecimal("9000.01"),after.effective());
++        assertEquals(new BigDecimal("27000.00"),after.recommended());
++        assertEquals("Fiat Listino14",before.modelName());
++        assertEquals(new BigDecimal("18000.00"),before.recommended());
++        assertTrue(ctx.getCatalogService().getModelDiscountRows().stream().anyMatch(r -> r.modelName().equals("Fiat Listino nuovo")));
++    }
++    @Test void stateFilteringEmptyResultsAndNewSessionRemainCorrect() {
++        assertFalse(ctx.getCatalogService().getVehicleRows(VehicleState.RENT).stream().anyMatch(r -> r.vehicle().getId().equals(vehicle.getId())));
++        var fresh=new AppContext(ctx.getDatabaseManager()).getCatalogService().getVehicleRows(null).stream()
++                .filter(r->r.vehicle().getId().equals(vehicle.getId())).findFirst().orElseThrow();
++        assertEquals("Fiat Listino14",fresh.modelName());
++        assertEquals(new BigDecimal("18000.00"),fresh.effective());
++        assertTrue(ctx.getCatalogService().getVehicleRows(VehicleState.WAITING).stream().noneMatch(r->r.vehicle().getId().equals(vehicle.getId())));
++    }
++    @Test void usedVehicleAndDailyRateKeepDepreciationAndMaximumDiscount() {
++        Vehicle used=ctx.getCatalogService().addVehicle(model.getId(),"T1400000000000002","AB123CD",20000,
++                new BigDecimal("10000"),Year.now().getValue()-1,VehicleState.RENT);
++        ctx.getCatalogService().setVehicleDiscount(used.getId(),20);
++        var row=ctx.getCatalogService().getVehicleRows(VehicleState.RENT).stream().filter(r->r.vehicle().getId().equals(used.getId())).findFirst().orElseThrow();
++        assertEquals(new BigDecimal("5776.00"),row.effective());
++        assertEquals(new BigDecimal("11552.00"),row.recommended());
++        assertEquals(new BigDecimal("5.78"),row.dailyRate());
++    }
++}
+--- before/PIANO_REVISIONI_DRIVEHUB.md
++++ after/PIANO_REVISIONI_DRIVEHUB.md
+@@ -176,7 +176,7 @@
+ | R05 | Cessione: titolarità, richiesta unica, pagamento e contabilità | #2, #3, #10 | R02, R03, D07 | Completata: 09–10 chiusi e verificati |
+ | R06 | Noleggi/test drive concorrenti e transizioni valide | #5, #7, restante #12 | R02, R03, D08–D10; coordinamento eventi con R04 | Completata: ticket 08, 11 e 12 chiusi e verificati |
+ | R07 | Cancellazione account rispettosa di storico e richieste | #9 | R00; fixture aggiornate dai flussi interessati | Completata: ticket13 chiuso e verificato |
+-| R08 | Tabelle JavaFX senza query nel rendering | #16 | R03; verificare aggiornamenti dei flussi corretti | Pianificata |
++| R08 | Tabelle JavaFX senza query nel rendering | #16 | R03; verificare aggiornamenti dei flussi corretti | In corso: ticket14, prove finali e review da completare |
+ | R09 | README, diagrammi, teoria ed evidenze coerenti | #14, #15, #18; valutazione teorica | Incrementale; chiusura dopo R01–R08 e R10 | Pianificata |
+ | R10 | Rimozione dei componenti inutilizzati | #20 | R00; controllo riferimenti prima di rimuovere | Pianificata |
+ | R11 | Verifica integrata e tracciabilità completa | #13; conferma finale #1–#20 | R01–R10 | Pianificata |
+--- before/TRACKER_DRIVEHUB/revisioni/issues/14-tabelle-javafx-reattive.md
++++ after/TRACKER_DRIVEHUB/revisioni/issues/14-tabelle-javafx-reattive.md
+@@ -7,7 +7,7 @@
+ **Blocked by:** 05: Usare prezzo consigliato o base manuale lungo catalogo e noleggio
+ 
+ Status: ready-for-agent
+-State: open
++State: in-progress
+ 
+ **Piano:** R08
+ **Specifica:** AC16
+@@ -32,3 +32,5 @@
+ ## Comments
+ 
+ - 31 ottobre 2026: ticket pubblicato da `to-tickets` dopo approvazione di granularità e dipendenze. Esecuzione non ancora avviata; verificare i blocchi prima di iniziare.
++
++- 2 novembre 2026: avviato solo14; prerequisito05 e01–13 chiusi, baseline nuova390/390 con isolamento/sentinella. Fotografia1089file, lavoro precedente preservato. RED rendering856connessioni/query → GREEN0/0; RED blocco modelli su lock PostgreSQL → GREEN reattivo; RED risultato obsoleto dopo marca svuotata → GREEN con invalidazione. Test identici per coppia, GUI estesa passata; prove finali e review ancora da completare. Nessun commit, nessun successivo, Relazione_SWE esclusa.

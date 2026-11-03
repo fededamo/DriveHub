@@ -1,0 +1,42 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontSize 16
+hide empty description
+title ClientDashboardView — quattro tab e dialoghi reali
+state "Auto in Vendita" as Sale
+state "Auto a Noleggio" as Rent
+state "Vendi la tua Auto" as Offer
+state "Le Mie Operazioni\nRichieste / Noleggi / Test drive" as Operations
+state "Dialogo Test Drive\ndata e ora" as TD
+state "Dialogo Prenotazione Noleggio\ndate e preventivo" as Booking
+state "Conferma acconto 20%" as Deposit
+state "Dialogo Ricarica Saldo" as Topup
+[*] --> Sale : ingresso; gestisce scadenze e notifiche
+Sale --> Deposit : veicolo selezionato / Acquista
+Deposit --> Sale : chiusura; OK → initiatePurchase
+Sale --> TD : selezione / Prenota Test Drive
+Rent --> TD : selezione / Prenota Test Drive
+Rent --> Booking : selezione / Prenota Noleggio
+Booking --> Rent : chiusura; OK → bookRental
+TD --> Sale : chiusura [da Vendita]
+TD --> Rent : chiusura [da Noleggio]
+Offer --> Offer : marca → modello → preventivo / invia proposta
+Operations --> Operations : paga saldo approvato / annulla proprio test drive
+Sale --> Rent : tab
+Rent --> Offer : tab
+Offer --> Operations : tab
+Sale --> Topup : Ricarica Saldo (barra comune)
+Topup --> Sale : chiusura [da Vendita]
+note bottom of Operations
+  Tutte le quattro tab selezionabili direttamente in ogni ordine.
+  Aggiorna/Riprova ricarica i controlli; nessuna tab dedicata ai test drive.
+  Annullamento: ritorno al chiamante senza comando economico.
+  Con OK il comando e il suo esito avvengono dopo la chiusura del dialogo,
+  sulla stessa tab chiamante, anche in errore. Ricarica è comune a tutte le tab:
+  qui è mostrato solo il percorso dalla Vendita; non cambia la tab selezionata.
+  OK test drive → bookTestDrive; OK ricarica → topUpClientBalance.
+  Successo/errore mostrato con Alert; niente cambio automatico alla tab Operazioni.
+  Gestione Account e Disconnetti comuni: diagramma di navigazione generale.
+end note
+@enduml

@@ -1,0 +1,93 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontSize 16
+skinparam classAttributeIconSize 0
+title Dominio — identità, conto e operazioni (vista selettiva)
+interface User {
+  + openDashboard(navigator: UserDashboardNavigator): void
+}
+abstract class AbstractUser {
+  # id: Long
+  # email: String
+  # hashPassword: String
+}
+class Client
+class Salesman
+class Manager
+class BankAccount {
+  - iban: String
+  - clientId: Long
+  - balance: BigDecimal
+  + deposit(amount: BigDecimal): void
+  + withdraw(amount: BigDecimal): void
+}
+interface UserDashboardNavigator {
+  + showClientDashboard(client: Client): void
+  + showSalesmanDashboard(salesman: Salesman): void
+  + showManagerDashboard(manager: Manager): void
+}
+class Request {
+  - vehicleId: Long
+  - clientId: Long
+  - salesmanId: Long
+  - deposit: BigDecimal
+  - agreedTotal: BigDecimal
+  - expDate: LocalDate
+  - type: RequestType
+  + getRemainingAmount(): BigDecimal
+  + isExpired(): boolean
+}
+enum RequestType {
+  PURCHASE
+  SALE
+}
+class Sale {
+  - vehicleId: Long
+  - clientId: Long
+  - salesmanId: Long
+  - amount: BigDecimal
+  - type: SaleType
+}
+enum SaleType {
+  PURCHASE
+  ACQUISITION
+  PENALTY
+}
+class Rent {
+  - vehicleId: Long
+  - clientId: Long
+  - amount: BigDecimal
+  - startDate: LocalDate
+  - endDate: LocalDate
+}
+class TestDrive {
+  - vehicleId: Long
+  - clientId: Long
+  - date: LocalDateTime
+}
+AbstractUser ..|> User
+AbstractUser <|-- Client
+AbstractUser <|-- Salesman
+AbstractUser <|-- Manager
+Client --> "0..1" BankAccount : copia caricata
+User ..> UserDashboardNavigator : double dispatch
+Request --> RequestType
+Sale --> SaleType
+User -[hidden]down-> Request
+Request -[hidden]right-> Sale
+Sale -[hidden]down-> Rent
+Rent -[hidden]right-> TestDrive
+note bottom of Request
+  PURCHASE: totale/acconto persistiti; saldo = totale - acconto.
+  Approvazione: salesmanId e expDate, non un enum di stato.
+  SALE (cessione): deposit negativo = stima; agreedTotal nullo.
+  Esito finale: richiesta eliminata nella transazione.
+end note
+note bottom of Sale
+  Vincoli importi: PURCHASE >=0, ACQUISITION <=0, PENALTY >=0.
+  Penale senza veicolo/venditore. Collegamenti tramite ID.
+  Rent/TestDrive non hanno stati REQUESTED/COMPLETED.
+  Factory statiche; nessuna BaseEntity comune.
+end note
+@enduml

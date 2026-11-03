@@ -1,0 +1,15 @@
+{
+  "baselineFiles": 272,
+  "unchanged": 266,
+  "changed": [
+    "docs/testing.md",
+    "README.md",
+    "src/main/java/it/unifi/drivehub/dao/RequestDao.java",
+    "src/main/java/it/unifi/drivehub/dao/postgres/PostgresBankAccountDao.java",
+    "src/main/java/it/unifi/drivehub/dao/postgres/PostgresRequestDao.java",
+    "src/main/java/it/unifi/drivehub/service/PurchaseService.java"
+  ],
+  "headUnchanged": true,
+  "indexUnchanged": true,
+  "ticket06Unchanged": true
+}

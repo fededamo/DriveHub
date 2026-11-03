@@ -1,0 +1,13 @@
+PASS JavaFX avviato
+Stage focused=true focus=TableView@62414389[styleClass=table-view]
+Selected after click=Vehicle{id=57, modelId=21, vin='T0500000000000099', licencePlate='null', km=0, price=20000.00, state=SALE}
+Selected after down=Vehicle{id=58, modelId=21, vin='T0500000000000098', licencePlate='null', km=0, price=10000.00, state=RENT}
+Selected after up=Vehicle{id=57, modelId=21, vin='T0500000000000099', licencePlate='null', km=0, price=20000.00, state=SALE}
+PASS selezione veicolo da tastiera
+PASS modalità automatica visibile
+PASS base manuale raggiungibile con Tab
+PASS manuale salvato dalla UI
+PASS UI produce 9000 da base 10000
+PASS ritorno al consigliato da tastiera persistito
+PASS catalogo noleggio raggiunto con freccia destra
+UI CHECK SUCCESS

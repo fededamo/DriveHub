@@ -1,0 +1,1868 @@
+--- a/DriveHub/README.md
++++ b/DriveHub/README.md
+@@ -22,8 +22,9 @@
+ root, e motiva SOLID e l'ispirazione DDD con esempi e limiti. `AppContext`
+ costruisce i servizi; restano accessi globali negli overload delle viste.
+ La direzione delle dipendenze non coincide con il ritorno dei dati dal DB alla UI.
+-I diagrammi vengono riallineati separatamente nel ticket17 e non sono una prova
+-della struttura corrente.
++I [diagrammi correnti con sorgenti, render e riscontri](docs/diagrams/README.md)
++descrivono classi, package, sequenze, stati, casi d'uso e navigazione.
++L'indice distingue gli originali storici conservati dalle viste usate.
+ 
+ ---
+ 
+@@ -106,6 +107,7 @@
+ Nessun test usa implicitamente il DB applicativo: il reset è consentito solo
+ su `drivehub_test` con ruolo dedicato e privilegi controllati.
+ 
+-Le [evidenze16](docs/evidence/r09-instructions/verification.md) documentano nuove
+-prove su una copia della versione locale corrente, con DB sacrificabili e
+-sentinella distinta. I risultati delle sessioni01–15 restano storici.
++Le [evidenze17](docs/evidence/r09-diagrams/verification.md) registrano baseline
++locale, diff, render e nuove prove con DB sacrificabili e sentinella distinta.
++Le [evidenze16](docs/evidence/r09-instructions/verification.md) conservano la
++verifica d'installazione; tutti i risultati01–16 restano riferiti a quelle sessioni.
+--- a/DriveHub/docs/architecture.md
++++ b/DriveHub/docs/architecture.md
+@@ -1,6 +1,8 @@
+ # Responsabilità, dipendenze e flussi
+ 
+-Questa descrizione riguarda i sorgenti correnti, non i diagrammi storici.
++Questa descrizione riguarda i sorgenti correnti. I [diagrammi usati](diagrams/README.md)
++collegano classi, dipendenze, sequenze, stati, casi d'uso e navigazione ai sorgenti
++e ai test; gli originali precedenti sono identificati come storici e conservati.
+ Glossario e [ADR0001](adr/0001-base-manuale-e-prezzo-concordato.md) fissano i
+ termini economici. Le prove e i loro limiti sono in [testing](testing.md).
+ 
+--- /dev/null
++++ b/DriveHub/docs/diagrams/README.md
+@@ -0,0 +1,104 @@
++# Diagrammi della versione locale corrente
++
++Sono usati soltanto i sorgenti e i render elencati qui, sotto **`current/`**.
++Rappresentano `it.unifi.drivehub` della baseline locale del ticket17, inclusi
++modificati/non tracciati, non il solo HEAD. Versione, hash, diff della sessione,
++strumenti, prove effettive e limiti: [evidenze17](../evidence/r09-diagrams/verification.md).
++I diagrammi sono viste selettive: non inventano membri per completare un modello
++ideale e non sostituiscono i sorgenti o le garanzie specifiche dei test.
++
++## Classi e package
++
++| Vista / render SVG | Sorgente modificabile | Riscontro nel codice e nei test |
++|---|---|---|
++| [Package](current/package-diagram.svg) | [PlantUML](current/package-diagram.puml) | [AppContext](../../src/main/java/it/unifi/drivehub/AppContext.java), import in [viste](../../src/main/java/it/unifi/drivehub/presentation/view/), [servizi](../../src/main/java/it/unifi/drivehub/service/), [DAO](../../src/main/java/it/unifi/drivehub/dao/) e [dominio](../../src/main/java/it/unifi/drivehub/domain/). Dipendenze statiche verificate sui sorgenti; nessun LayeringTest corrente |
++| [Catalogo e prezzi](current/class-domain.svg) | [PlantUML](current/class-domain.puml) | [Vehicle](../../src/main/java/it/unifi/drivehub/domain/vehicle/Vehicle.java), [sconti](../../src/main/java/it/unifi/drivehub/domain/discount/), [DomainInvariantsTest](../../src/test/java/it/unifi/drivehub/DomainInvariantsTest.java), [PriceSelectionIntegrationTest](../../src/test/java/it/unifi/drivehub/PriceSelectionIntegrationTest.java) |
++| [Identità e operazioni](current/class-domain-workflows.svg) | [PlantUML](current/class-domain-workflows.puml) | [Utenti](../../src/main/java/it/unifi/drivehub/domain/user/), [operazioni](../../src/main/java/it/unifi/drivehub/domain/operation/), [RequestAgreementTest](../../src/test/java/it/unifi/drivehub/RequestAgreementTest.java), [SaleTypeTest](../../src/test/java/it/unifi/drivehub/SaleTypeTest.java) |
++| [Servizi e Observer](current/class-business.svg) | [PlantUML](current/class-business.puml) | [AppContext](../../src/main/java/it/unifi/drivehub/AppContext.java), [VehicleEventPublisher](../../src/main/java/it/unifi/drivehub/event/VehicleEventPublisher.java), [TestDriveCancellationObserver](../../src/main/java/it/unifi/drivehub/service/TestDriveCancellationObserver.java), [TestDriveCancellationIntegrationTest](../../src/test/java/it/unifi/drivehub/TestDriveCancellationIntegrationTest.java) |
++| [DAO e transazioni JDBC](current/class-dao.svg) | [PlantUML](current/class-dao.puml) | [DatabaseManager](../../src/main/java/it/unifi/drivehub/dao/DatabaseManager.java), [contratti/implementazioni](../../src/main/java/it/unifi/drivehub/dao/), [DatabaseIsolationIntegrationTest](../../src/test/java/it/unifi/drivehub/DatabaseIsolationIntegrationTest.java), [PurchaseConcurrencyIntegrationTest](../../src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java) |
++| [Presentazione](current/class-presentation.svg) | [PlantUML](current/class-presentation.puml) | [App](../../src/main/java/it/unifi/drivehub/App.java), [AsyncLoad](../../src/main/java/it/unifi/drivehub/presentation/view/AsyncLoad.java), [TableLifecycleUiCheck](../evidence/r08-tables/TableLifecycleUiCheck.java) |
++
++`create(...)` indica factory statiche, non Factory Method GoF; DAO, DI manuale
++e composition root non sono GoF. Observer è sincrono sulla connessione del
++chiamante prima del commit. La navigazione usa double dispatch nello stile
++Visitor; un nuovo ruolo modifica navigator e composizione. Compromessi SOLID,
++DDD e accessi globali residui restano quelli di [architecture](../architecture.md).
++Le frecce di package sono dipendenze del codice, quelle delle sequenze messaggi
++e risultati: il dominio non legge il DB. Relazioni per ID sono indicate come
++tali, senza trasformarle in riferimenti a oggetti o composizioni UML.
++
++## Sequenze e stati
++
++| Flusso / render SVG | Sorgente modificabile | Implementazione e prove pertinenti |
++|---|---|---|
++| [Acconto, approvazione e saldo](current/sequence-sale-payment.svg) | [PlantUML](current/sequence-sale-payment.puml) | [PurchaseService](../../src/main/java/it/unifi/drivehub/service/PurchaseService.java); [PurchaseAgreementIntegrationTest](../../src/test/java/it/unifi/drivehub/PurchaseAgreementIntegrationTest.java), [PurchaseConcurrencyIntegrationTest](../../src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java) |
++| [Rifiuto e scadenza acquisto](current/sequence-purchase-outcomes.svg) | [PlantUML](current/sequence-purchase-outcomes.puml) | Stesso servizio; gare/esiti/rollback in [PurchaseConcurrencyIntegrationTest](../../src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java) |
++| [Cessione del cliente](current/sequence-purchase-proposal-approval.svg) | [PlantUML](current/sequence-purchase-proposal-approval.puml) | [SaleToDealershipService](../../src/main/java/it/unifi/drivehub/service/SaleToDealershipService.java); [SaleProposalIntegrationTest](../../src/test/java/it/unifi/drivehub/SaleProposalIntegrationTest.java), [SaleOutcomeIntegrationTest](../../src/test/java/it/unifi/drivehub/SaleOutcomeIntegrationTest.java) |
++| [Noleggio e cancellazioni atomiche](current/sequence-rent-payment.svg) | [PlantUML](current/sequence-rent-payment.puml) | [RentalService](../../src/main/java/it/unifi/drivehub/service/RentalService.java); [BookingConcurrencyIntegrationTest](../../src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java), [TestDriveCancellationIntegrationTest](../../src/test/java/it/unifi/drivehub/TestDriveCancellationIntegrationTest.java) |
++| [Test drive](current/sequence-test-drive.svg) | [PlantUML](current/sequence-test-drive.puml) | [TestDriveService](../../src/main/java/it/unifi/drivehub/service/TestDriveService.java); [BookingRulesTest](../../src/test/java/it/unifi/drivehub/BookingRulesTest.java), [BookingConcurrencyIntegrationTest](../../src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java) |
++| [Caricamento e rendering tabelle](current/sequence-table-load.svg) | [PlantUML](current/sequence-table-load.puml) | [AsyncLoad](../../src/main/java/it/unifi/drivehub/presentation/view/AsyncLoad.java), [CatalogService](../../src/main/java/it/unifi/drivehub/service/CatalogService.java); [CatalogListingIntegrationTest](../../src/test/java/it/unifi/drivehub/CatalogListingIntegrationTest.java), [harness grafici14](../evidence/r08-tables/verification.md) |
++| [Stati veicolo e cambio destinazione](current/vehicle-states.svg) | [PlantUML](current/vehicle-states.puml) | [VehicleState](../../src/main/java/it/unifi/drivehub/domain/vehicle/VehicleState.java), servizi Purchase/SaleToDealership/Rental; [VehicleDestinationIntegrationTest](../../src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java) |
++
++I messaggi che riassumono un oggetto aggiornato omettono gli argomenti ripetitivi;
++`callback` indica il corpo del servizio eseguito da DatabaseManager. Ogni gruppo
++transazionale apre/disabilita autocommit e tenta commit, oppure rollback su
++eccezione, poi chiude. Non si promette recupero da ogni guasto o assenza globale
++di deadlock. Le letture modello/sconti all'avvio acquisto e nella stima cessione
++aprono anche connessioni proprie. Nessuno snapshot unico del listino.
++
++La macchina a stati descrive i percorsi dei servizi, non ogni uso pubblico di
++`Vehicle.setState`. Request non ha un enum di stato della pratica; Rent e
++TestDrive non hanno ciclo REQUESTED/COMPLETED. Vincoli effettivi in [schema.sql](../../src/main/resources/db/schema.sql).
++Il totale concordato non cambia al saldo; prezzo manuale significa base della
++stessa formula ([ADR0001](../adr/0001-base-manuale-e-prezzo-concordato.md)).
++
++## Casi d'uso e navigazione
++
++| Vista / render SVG | Sorgente modificabile | Riscontro |
++|---|---|---|
++| [Cliente e identità](current/use-cases.svg) | [PlantUML](current/use-cases.puml) | [AuthService](../../src/main/java/it/unifi/drivehub/service/AuthService.java), servizi economici; [AuthServiceIntegrationTest](../../src/test/java/it/unifi/drivehub/AuthServiceIntegrationTest.java), [IdentityDeletionIntegrationTest](../../src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java) |
++| [Staff](current/use-cases-staff.svg) | [PlantUML](current/use-cases-staff.puml) | [SalesmanDashboardView](../../src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java), [ManagerDashboardView](../../src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java); test di esito cessione, destinazione e listino sopra |
++| [Accesso, ruoli e account](current/page-navigation.svg) | [PlantUML](current/page-navigation.puml) | [App](../../src/main/java/it/unifi/drivehub/App.java), [LoginView](../../src/main/java/it/unifi/drivehub/presentation/view/LoginView.java), [AccountManagementDialog](../../src/main/java/it/unifi/drivehub/presentation/view/AccountManagementDialog.java); [AppStartupUiCheck](../evidence/r10-cleanup/AppStartupUiCheck.java) |
++| [Cliente: tab e dialoghi](current/page-navigation-customer.svg) | [PlantUML](current/page-navigation-customer.puml) | [ClientDashboardView](../../src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java); [TableLifecycleUiCheck](../evidence/r08-tables/TableLifecycleUiCheck.java), [PurchaseAgreementIntegrationTest](../../src/test/java/it/unifi/drivehub/PurchaseAgreementIntegrationTest.java) |
++| [Staff: tab e azioni](current/page-navigation-staff.svg) | [PlantUML](current/page-navigation-staff.puml) | Dashboard sopra; [TableLifecycleUiCheck](../evidence/r08-tables/TableLifecycleUiCheck.java), [SaleOutcomeUiCheck](../evidence/r05-sale-outcome/SaleOutcomeUiCheck.java) |
++
++I casi d'uso mostrano funzionalità disponibili, non una certificazione di
++autorizzazione in ogni API. I diagrammi di navigazione descrivono tab, scene,
++callback e dialoghi, non stati persistenti. Le tab dello stesso ruolo sono
++selezionabili in ogni ordine; le frecce ne mostrano soltanto alcuni percorsi.
++La sola esistenza di un test non attesta ogni messaggio o gesto del diagramma:
++nelle evidenze17 è distinto ciò che è rieseguito da ciò che è controllato staticamente.
++
++## Artefatti storici conservati
++
++**Non usare come prove correnti** i `.puml` direttamente in questa directory
++(compreso `er-diagram.puml`), `../source-diagrams/*.drawio` e i quattro `.drawio`
++direttamente in `docs/`. Sono originali precedenti, conservati byte per byte;
++non vanno confusi con `current/`. Anche mockup e screenshot in `docs/mockups/`
++e `docs/screenshots/` sono storici, inclusa la schermata PaymentDialog.
++Nessun ER, draw.io, mockup o screenshot storico è stato rigenerato per il17.
++
++I manifest `../evidence/full-stack/source-manifest.json` e
++`../evidence/jdk21-test/source-manifest.json` si riferiscono alla vecchia struttura
++`it.unifi.ing.drivehub`; i relativi XML/summary non attestano questa versione.
++Le prove01–16 attestano esclusivamente le rispettive sessioni: **394/394del16
++rimane storico**, anche se una nuova esecuzione17 ha lo stesso conteggio.
++[Inventario con hash e confronto manifest](../evidence/r09-diagrams/historical-artifacts.json)
++e [indice evidenze](../evidence/README.md) rendono esplicita questa distinzione.
++
++## Render riproducibile
++
++Con Java21 e il JAR PlantUML1.2026.2 verificato ([origine/hash](../evidence/r09-diagrams/renderer.json)),
++dalla radice DriveHub, impostare `PLANTUML_JAR` al percorso locale effettivo:
++
++```bash
++java -XX:+PerfDisableSharedMem -Djava.awt.headless=true -jar "$PLANTUML_JAR" \
++  -charset UTF-8 -failfast2 -tsvg docs/diagrams/current/*.puml
++```
++
++I diagrammi strutturali usano Smetana incluso nel JAR; Graphviz esterno non è
++necessario per questi render. Il comando `-version` può segnalare l'assenza di
++`dot` e terminare16: l'esito del render effettivo è registrato separatamente.
++Per rivedere i PNG senza duplicarli nel progetto, usare `-tpng -o` con directory
++temporanea assoluta. Verificare visivamente i render dopo modifiche: il successo
++del parser non dimostra la leggibilità o la correttezza UML.
+--- /dev/null
++++ b/DriveHub/docs/diagrams/current/class-business.puml
+@@ -0,0 +1,71 @@
++@startuml
++!pragma layout smetana
++skinparam shadowing false
++skinparam defaultFontSize 16
++skinparam classAttributeIconSize 0
++title Servizi e composizione — dipendenze selettive
++class AppContext {
++  + {static} getInstance(): AppContext
++  + AppContext(databaseManager: DatabaseManager)
++}
++class AuthService
++interface PasswordHasher {
++  + hash(rawPassword: String): String
++  + verify(rawPassword: String, storedHash: String): boolean
++}
++class Pbkdf2PasswordHasher
++class PurchaseService
++class SaleToDealershipService
++class RentalService
++class TestDriveService
++class CatalogService
++class OperationQueryService
++class PriceCalculatorService
++class DatabaseManager
++class VehicleEventPublisher {
++  + attach(observer: VehicleCommitmentObserver): void
++  + publishCommitment(event: VehicleCommitmentEvent, conn: Connection): void
++}
++interface VehicleCommitmentObserver {
++  + onVehicleCommitted(event: VehicleCommitmentEvent, conn: Connection): void
++}
++class TestDriveCancellationObserver
++class VehicleCommitmentEvent <<record>> {
++  vehicleId: Long
++}
++AppContext ..> AuthService : costruisce
++AppContext ..> PurchaseService
++AppContext ..> SaleToDealershipService
++AppContext ..> RentalService
++AppContext ..> TestDriveService
++AppContext ..> CatalogService
++AppContext ..> OperationQueryService
++AppContext ..> Pbkdf2PasswordHasher
++AppContext ..> TestDriveCancellationObserver : costruisce e registra
++AuthService --> PasswordHasher
++Pbkdf2PasswordHasher ..|> PasswordHasher
++PurchaseService --> PriceCalculatorService
++SaleToDealershipService --> PriceCalculatorService
++RentalService --> PriceCalculatorService
++CatalogService --> PriceCalculatorService
++PurchaseService --> VehicleEventPublisher
++RentalService --> VehicleEventPublisher
++VehicleEventPublisher --> "0..*" VehicleCommitmentObserver
++TestDriveCancellationObserver ..|> VehicleCommitmentObserver
++VehicleCommitmentObserver ..> VehicleCommitmentEvent
++note bottom of DatabaseManager
++  Auth/Purchase/SaleToDealership/Rental/TestDrive/Catalog
++  ricevono il gestore e i rispettivi DAO nel costruttore.
++  OperationQueryService riceve Request/TestDrive/Rent/SaleDao.
++  AppContext sceglie i PostgresDAO: DI manuale, non container.
++end note
++note bottom of VehicleEventPublisher
++  Observer GoF sincrono, stessa Connection, PRIMA del commit.
++  Cancella test drive futuri; gli errori propagano al chiamante.
++  Nessuna coda/outbox o notifica dopo commit.
++end note
++note bottom of PriceCalculatorService
++  Calcolatore concreto, senza SQL o PricingStrategy.
++  BigDecimal con fattori/potenze double: non decimale esatto ovunque.
++end note
++@enduml
+--- /dev/null
++++ b/DriveHub/docs/diagrams/current/class-dao.puml
+@@ -0,0 +1,60 @@
++@startuml
++!pragma layout smetana
++skinparam shadowing false
++skinparam defaultFontSize 16
++skinparam classAttributeIconSize 0
++title DAO e JDBC — contratti rappresentativi, non ORM / UnitOfWork
++class DatabaseManager {
++  + getConnection(): Connection
++  + executeInTransaction(...): void
++  + executeInTransactionWithResult(...): T
++}
++interface VehicleDao {
++  + findByIdForUpdate(...): Optional<Vehicle>
++  + updateStateAtomically(...): boolean
++}
++interface RequestDao {
++  + findByIdForUpdate(...): Optional<Request>
++}
++interface BankAccountDao {
++  + findByClientIdForUpdate(...): Optional<BankAccount>
++}
++interface UserDao {
++  + lockClient(...): void
++}
++class PostgresVehicleDao
++class PostgresRequestDao
++class PostgresBankAccountDao
++class PostgresUserDao
++interface "java.sql.Connection" as Connection {
++  + setAutoCommit(autoCommit: boolean): void
++  + commit(): void
++  + rollback(): void
++  + close(): void
++}
++PostgresVehicleDao ..|> VehicleDao
++PostgresRequestDao ..|> RequestDao
++PostgresBankAccountDao ..|> BankAccountDao
++PostgresUserDao ..|> UserDao
++PostgresVehicleDao --> DatabaseManager
++PostgresRequestDao --> DatabaseManager
++PostgresBankAccountDao --> DatabaseManager
++PostgresUserDao --> DatabaseManager
++DatabaseManager ..> Connection : apre e chiude
++VehicleDao ..> Connection
++RequestDao ..> Connection
++BankAccountDao ..> Connection
++UserDao ..> Connection
++note bottom of DatabaseManager
++  Callback riuscito: commit; eccezione: tenta rollback;
++  errore di rollback conservato come eccezione soppressa.
++  Il servizio passa la stessa connessione alle scritture/Observer.
++  Argomenti omessi (...) per leggibilità: firme complete nei sorgenti.
++end note
++note bottom of VehicleDao
++  Anche Brand/Model/Discount/Rent/Sale/TestDriveDao
++  hanno un corrispondente PostgresDAO: 10 contratti totali.
++  Overload senza Connection aprono connessioni proprie.
++  Il dominio non dipende dai DAO; le firme DAO usano il dominio.
++end note
++@enduml
+--- /dev/null
++++ b/DriveHub/docs/diagrams/current/class-domain-workflows.puml
+@@ -0,0 +1,93 @@
++@startuml
++!pragma layout smetana
++skinparam shadowing false
++skinparam defaultFontSize 16
++skinparam classAttributeIconSize 0
++title Dominio — identità, conto e operazioni (vista selettiva)
++interface User {
++  + openDashboard(navigator: UserDashboardNavigator): void
++}
++abstract class AbstractUser {
++  # id: Long
++  # email: String
++  # hashPassword: String
++}
++class Client
++class Salesman
++class Manager
++class BankAccount {
++  - iban: String
++  - clientId: Long
++  - balance: BigDecimal
++  + deposit(amount: BigDecimal): void
++  + withdraw(amount: BigDecimal): void
++}
++interface UserDashboardNavigator {
++  + showClientDashboard(client: Client): void
++  + showSalesmanDashboard(salesman: Salesman): void
++  + showManagerDashboard(manager: Manager): void
++}
++class Request {
++  - vehicleId: Long
++  - clientId: Long
++  - salesmanId: Long
++  - deposit: BigDecimal
++  - agreedTotal: BigDecimal
++  - expDate: LocalDate
++  - type: RequestType
++  + getRemainingAmount(): BigDecimal
++  + isExpired(): boolean
++}
++enum RequestType {
++  PURCHASE
++  SALE
++}
++class Sale {
++  - vehicleId: Long
++  - clientId: Long
++  - salesmanId: Long
++  - amount: BigDecimal
++  - type: SaleType
++}
++enum SaleType {
++  PURCHASE
++  ACQUISITION
++  PENALTY
++}
++class Rent {
++  - vehicleId: Long
++  - clientId: Long
++  - amount: BigDecimal
++  - startDate: LocalDate
++  - endDate: LocalDate
++}
++class TestDrive {
++  - vehicleId: Long
++  - clientId: Long
++  - date: LocalDateTime
++}
++AbstractUser ..|> User
++AbstractUser <|-- Client
++AbstractUser <|-- Salesman
++AbstractUser <|-- Manager
++Client --> "0..1" BankAccount : copia caricata
++User ..> UserDashboardNavigator : double dispatch
++Request --> RequestType
++Sale --> SaleType
++User -[hidden]down-> Request
++Request -[hidden]right-> Sale
++Sale -[hidden]down-> Rent
++Rent -[hidden]right-> TestDrive
++note bottom of Request
++  PURCHASE: totale/acconto persistiti; saldo = totale - acconto.
++  Approvazione: salesmanId e expDate, non un enum di stato.
++  SALE (cessione): deposit negativo = stima; agreedTotal nullo.
++  Esito finale: richiesta eliminata nella transazione.
++end note
++note bottom of Sale
++  Vincoli importi: PURCHASE >=0, ACQUISITION <=0, PENALTY >=0.
++  Penale senza veicolo/venditore. Collegamenti tramite ID.
++  Rent/TestDrive non hanno stati REQUESTED/COMPLETED.
++  Factory statiche; nessuna BaseEntity comune.
++end note
++@enduml
+--- /dev/null
++++ b/DriveHub/docs/diagrams/current/class-domain.puml
+@@ -0,0 +1,65 @@
++@startuml
++!pragma layout smetana
++skinparam shadowing false
++skinparam defaultFontSize 16
++skinparam classAttributeIconSize 0
++title Dominio — catalogo e prezzi (vista selettiva)
++class Brand {
++  - name: String
++}
++class Model {
++  - id: Long
++  - brand: String
++  - releasePrice: BigDecimal
++  - releaseYear: int
++}
++class Vehicle {
++  - id: Long
++  - modelId: Long
++  - vin: String
++  - licencePlate: String
++  - kilometers: int
++  - price: BigDecimal
++  - priceMode: PriceMode
++  - year: int
++  - state: VehicleState
++  + getSelectedBasePrice(model: Model): BigDecimal
++  + setPrice(price: BigDecimal): void
++  + useRecommendedPrice(): void
++}
++enum PriceMode {
++  AUTOMATIC
++  MANUAL
++}
++enum VehicleState {
++  SALE
++  RENT
++  SOLD
++  WAITING
++  BLOCKED
++}
++abstract class Discount {
++  # value: int
++  + getValue(): int
++}
++class ModelDiscount {
++  - modelId: Long
++}
++class VehicleDiscount {
++  - vehicleId: Long
++}
++Discount <|-- ModelDiscount
++Discount <|-- VehicleDiscount
++Vehicle --> PriceMode
++Vehicle --> VehicleState
++Vehicle ..> Model : modelId (non oggetto Model)
++Model ..> Brand : brand (nome)
++ModelDiscount ..> Model : modelId
++VehicleDiscount ..> Vehicle : vehicleId
++note bottom of Vehicle
++  create(...) è una factory statica, non Factory Method GoF.
++  price è la base manuale; AUTOMATIC sceglie la base modello.
++  Stessa formula per consigliato/effettivo; HALF_UP sui centesimi.
++  Non è il totale concordato della richiesta di acquisto.
++end note
++@enduml
+--- /dev/null
++++ b/DriveHub/docs/diagrams/current/class-presentation.puml
+@@ -0,0 +1,58 @@
++@startuml
++!pragma layout smetana
++skinparam shadowing false
++skinparam defaultFontSize 16
++skinparam classAttributeIconSize 0
++title Presentazione JavaFX — viste costruite in Java
++class App {
++  + start(primaryStage: Stage): void
++}
++class AppContext
++interface User
++interface UserDashboardNavigator
++class "navigator anonimo in App" as Navigator
++class LoginView
++class ClientDashboardView
++class SalesmanDashboardView
++class ManagerDashboardView
++class AccountManagementDialog
++class "AsyncLoad<T>" as AsyncLoad {
++  ~ load(): void
++  ~ load(source: Supplier<T>): void
++}
++class "javafx.concurrent.Task<T>" as Task
++class "CatalogService.VehicleRow" as VehicleRow <<record>>
++class "CatalogService.ModelDiscountRow" as ModelDiscountRow <<record>>
++App --> AppContext : getInstance()
++App ..> LoginView : AuthService + callback
++App ..> User : openDashboard(navigator)
++App ..> Navigator : costruisce
++Navigator ..|> UserDashboardNavigator
++Navigator ..> ClientDashboardView : Client + servizi + onLogout
++Navigator ..> SalesmanDashboardView : Salesman + servizi + onLogout
++Navigator ..> ManagerDashboardView : Manager + servizi + onLogout
++ClientDashboardView ..> AccountManagementDialog
++SalesmanDashboardView ..> AccountManagementDialog
++ManagerDashboardView ..> AccountManagementDialog
++ClientDashboardView --> AsyncLoad
++SalesmanDashboardView --> AsyncLoad
++ManagerDashboardView --> AsyncLoad
++AsyncLoad --> Task : uno corrente per controllo
++ClientDashboardView ..> VehicleRow
++SalesmanDashboardView ..> VehicleRow
++ManagerDashboardView ..> VehicleRow
++ManagerDashboardView ..> ModelDiscountRow
++note bottom of AppContext
++  Overload di comodo di LoginView, dashboard e dialogo
++  usano ancora getInstance(); nessun currentUser globale.
++end note
++note bottom of AsyncLoad
++  Worker virtuale Java21; applicazione risultato su thread FX.
++  Solo task corrente pubblica; celle su righe già preparate.
++  JDBC già avviato può terminare dopo la cancellazione.
++end note
++note bottom of AccountManagementDialog
++  AuthService + utente + callback; Dialog.showAndWait().
++  Non è un PaymentDialog; nessun FXML o controller FXML.
++end note
++@enduml
+--- /dev/null
++++ b/DriveHub/docs/diagrams/current/package-diagram.puml
+@@ -0,0 +1,44 @@
++@startuml
++!pragma layout smetana
++skinparam shadowing false
++skinparam defaultFontSize 16
++skinparam packageStyle rectangle
++title it.unifi.drivehub — dipendenze fra package, non flusso dei dati
++package "presentation.view" as ui {}
++package service {}
++package domain {}
++package dao {}
++package "dao.postgres" as pg {}
++package event {}
++package security {}
++package "javafx.*" as fx {}
++package "java.sql" as sql {}
++ui ..> service
++ui ..> domain
++ui ..> fx
++service ..> dao
++service ..> domain
++service ..> event
++service ..> security
++service ..> sql
++dao ..> domain
++dao ..> sql
++pg ..> dao
++pg ..> domain
++pg ..> sql
++event ..> sql
++note bottom of domain
++  Entità, enum e UserDashboardNavigator.
++  Nessun import JavaFX, DAO o servizi.
++  Il navigator enumera i tre ruoli.
++end note
++legend bottom
++  Package interni relativi a it.unifi.drivehub; javafx/java.sql sono esterni.
++  App/AppContext (radice): costruiscono viste, servizi e PostgresDAO,
++  scelgono hasher e collegano Observer; usano anche dominio e JavaFX.
++  Overload delle viste dipendono ancora da AppContext nella radice.
++  Composizione dettagliata: class-business e class-presentation.
++  dao include DatabaseManager; dao.postgres realizza i contratti e fa mapping.
++  DAO/servizi/eventi espongono Connection: non indipendenti da JDBC.
++endlegend
++@enduml
+--- /dev/null
++++ b/DriveHub/docs/diagrams/current/page-navigation-customer.puml
+@@ -0,0 +1,37 @@
++@startuml
++!pragma layout smetana
++skinparam shadowing false
++skinparam defaultFontSize 16
++hide empty description
++title ClientDashboardView — quattro tab e dialoghi reali
++state "Auto in Vendita" as Sale
++state "Auto a Noleggio" as Rent
++state "Vendi la tua Auto" as Offer
++state "Le Mie Operazioni\nRichieste / Noleggi / Test drive" as Operations
++state "Dialogo Test Drive\ndata e ora" as TD
++state "Dialogo Prenotazione Noleggio\ndate e preventivo" as Booking
++state "Conferma acconto 20%" as Deposit
++state "Dialogo Ricarica Saldo" as Topup
++[*] --> Sale : ingresso; gestisce scadenze e notifiche
++Sale --> Deposit : veicolo selezionato / Acquista
++Deposit --> Sale : conferma → initiatePurchase; aggiorna liste/saldo
++Sale --> TD : selezione / Prenota Test Drive
++Rent --> TD : selezione / Prenota Test Drive
++Rent --> Booking : selezione / Prenota Noleggio
++Booking --> Rent : OK → bookRental; aggiorna saldo/operazioni
++TD --> TD : OK → bookTestDrive / esito
++Offer --> Offer : marca → modello → preventivo / invia proposta
++Operations --> Operations : paga saldo approvato / annulla proprio test drive
++Sale --> Rent : tab
++Rent --> Offer : tab
++Offer --> Operations : tab
++Sale --> Topup : Ricarica Saldo (barra comune)
++Topup --> Topup : conferma → topUpClientBalance
++note bottom of Operations
++  Tutte le quattro tab selezionabili direttamente in ogni ordine.
++  Aggiorna/Riprova ricarica i controlli; nessuna tab dedicata ai test drive.
++  Dialoghi chiusi/annullati: ritorno al chiamante senza comando economico.
++  Successo/errore mostrato con Alert; niente cambio automatico alla tab Operazioni.
++  Gestione Account e Disconnetti comuni: diagramma di navigazione generale.
++end note
++@enduml
+--- /dev/null
++++ b/DriveHub/docs/diagrams/current/page-navigation-staff.puml
+@@ -0,0 +1,44 @@
++@startuml
++!pragma layout smetana
++skinparam shadowing false
++skinparam defaultFontSize 16
++hide empty description
++title Dashboard staff — tab e azioni effettivamente disponibili
++state SalesmanDashboardView {
++  state "Richieste in Sospeso" as Requests
++  state "Gestione Stato Inventario (SALE / RENT)" as Inventory
++  [*] --> Requests
++  Requests --> Inventory : tab
++  Inventory --> Requests : tab
++  Requests --> Requests : approva/rifiuta PURCHASE o SALE; rilegge richieste/inventario
++  Inventory --> Inventory : cambia SALE ↔ RENT; conferma / esito e rimborsi
++}
++state ManagerDashboardView {
++  state Marchi
++  state Modelli
++  state Veicoli
++  state Sconti
++  state "Registro economico" as Register
++  [*] --> Marchi
++  Marchi --> Modelli : tab
++  Modelli --> Veicoli : tab
++  Veicoli --> Sconti : tab
++  Sconti --> Register : tab
++  Marchi --> Marchi : aggiungi / elimina
++  Modelli --> Modelli : aggiungi / elimina
++  Veicoli --> Veicoli : aggiungi / elimina / base automatica o manuale
++  Sconti --> Sconti : salva / rimuovi per modello o veicolo
++  Register --> Register : Aggiorna / Riprova
++}
++SalesmanDashboardView -[hidden]down-> ManagerDashboardView
++note bottom of SalesmanDashboardView
++  Nessun passaggio diretto fra dashboard di ruoli diversi.
++  Gestione Account e Disconnetti in entrambe: navigazione generale.
++end note
++note bottom of ManagerDashboardView
++  Ogni tab selezionabile direttamente in ogni ordine.
++  Caricamenti AsyncLoad: dati disabilitati durante caricamento/errore,
++  riprova; successo riabilita. Non tutte le azioni usano worker.
++  Non esistono tab StockOrder, Approvazioni o Dashboard statistica.
++end note
++@enduml
+--- /dev/null
++++ b/DriveHub/docs/diagrams/current/page-navigation.puml
+@@ -0,0 +1,34 @@
++@startuml
++!pragma layout smetana
++skinparam shadowing false
++skinparam defaultFontSize 16
++hide empty description
++title Navigazione corrente — accesso, ruoli e identità
++state "LoginView" as Login
++Login : Tab Accedi → AuthService.login
++Login : Tab Registrati → registerClient
++state "Dashboard per ruolo" as Dashboard
++Dashboard : Client → ClientDashboardView
++Dashboard : Salesman → SalesmanDashboardView
++Dashboard : Manager → ManagerDashboardView
++state "AccountManagementDialog" as Account
++Account : Email / Password / Elimina Identità
++Account : + Ricarica Saldo solo cliente
++[*] --> Login : App.start
++Login --> Login : errore / riprova
++Login --> Dashboard : successo → user.openDashboard(navigator)
++Dashboard --> Login : Disconnetti / onLogout
++Dashboard --> Account : Gestione Account
++Account --> Dashboard : chiudi / aggiornamento riuscito
++Account --> Login : eliminazione riuscita / onLogout
++Account --> Account : errore / riprova
++legend bottom
++  App.showDashboardForUser crea UserDashboardNavigator anonimo.
++  Double dispatch seleziona una delle tre viste e passa utente/servizi/callback.
++  Errore nella costruzione dashboard: messaggio in LoginView.
++  Eliminazione impedita da richieste/storico; conto cliente dimostrativo
++  cancellato per CASCADE se l'identità è eliminabile.
++  Scene costruite in Java e sostituite da App; nessun Welcome, Route,
++  FXML o SessionContext. Le tab del LoginView sono selezionabili direttamente.
++endlegend
++@enduml
+--- /dev/null
++++ b/DriveHub/docs/diagrams/current/sequence-purchase-outcomes.puml
+@@ -0,0 +1,50 @@
++@startuml
++skinparam shadowing false
++skinparam defaultFontSize 16
++skinparam maxMessageSize 280
++title Acquisto — rifiuto e scadenza (alternative al saldo)
++autonumber
++actor Venditore
++boundary ClientDashboardView as ui
++control PurchaseService as service
++participant DatabaseManager as db
++participant RequestDao as request
++participant BankAccountDao as account
++participant SaleDao as sale
++participant VehicleDao as vehicle
++group rejectPurchase(requestId) — una transazione
++Venditore -> service : dalla SalesmanDashboardView
++service -> db : executeInTransaction(callback)
++service -> request : findByIdForUpdate(requestId, conn)
++note over service,request : Verifica tipo PURCHASE.
++service -> account : findByClientIdForUpdate(clientId, conn)
++service -> account : updateBalance(..., saldo + intero acconto, conn)
++service -> vehicle : updateStateAtomically(BLOCKED, SALE, conn)
++service -> request : delete(requestId, conn)
++db -> db : commit / close
++end
++group checkAndHandleExpiredRequests(clientId) — all'ingresso cliente
++ui -> service : costruzione dashboard
++service -> request : findByClientId(clientId)
++loop per ogni candidata — una transazione distinta
++service -> db : executeInTransactionWithResult(callback)
++service -> request : findByIdForUpdate(candidate.id, conn)
++alt presente, PURCHASE, del cliente, approvata e scaduta
++service -> account : findByClientIdForUpdate(clientId, conn)
++service -> account : updateBalance(..., saldo + acconto - penale, conn)
++service -> sale : save(Sale PENALTY = 20% acconto, conn)
++service -> request : delete(request.id, conn)
++service -> vehicle : updateStateAtomically(BLOCKED, SALE, conn)
++else candidata non più valida
++note over service,request : Nessuna scrittura; restituisce null.
++end
++db -> db : commit / close
++end
++service --> ui : notifiche delle richieste elaborate
++end
++note over service,db
++  Penale arrotondata HALF_UP; rimborso = acconto - penale.
++  Nessun job di scadenza periodico. Eccezione: tenta rollback, close, errore.
++  Il lock della richiesta serializza saldo/rifiuto/scadenza, non una garanzia distribuita.
++end note
++@enduml
+--- /dev/null
++++ b/DriveHub/docs/diagrams/current/sequence-purchase-proposal-approval.puml
+@@ -0,0 +1,63 @@
++@startuml
++skinparam shadowing false
++skinparam defaultFontSize 16
++skinparam maxMessageSize 280
++title Cessione del cliente — proposta ed esito del venditore
++autonumber
++actor Cliente
++actor Venditore
++control SaleToDealershipService as service
++participant DatabaseManager as db
++participant VehicleDao as vehicle
++participant RequestDao as request
++participant SaleDao as sale
++participant BankAccountDao as account
++group submitSaleProposal(...) — transazione 1
++Cliente -> service : dalla ClientDashboardView
++service -> db : executeInTransactionWithResult(callback)
++service -> vehicle : findByVinForUpdate(vin, conn)
++alt VIN noto
++service -> sale : findLatestPurchaseForVehicle(vehicleId, conn)
++service -> request : hasOpenRequestForVehicle(vehicleId, conn)
++note over service,vehicle
++  Solo SOLD, ultima PURCHASE al proponente, nessuna richiesta;
++  modello/anno coerenti; aggiorna targa/km e passa WAITING.
++end note
++service -> vehicle : update(vehicle WAITING, conn)
++else VIN nuovo
++service -> vehicle : save(Vehicle WAITING, conn)
++end
++note over service,vehicle : Stima dalla formula esistente; modello/sconti letti anche fuori conn.
++service -> request : save(Request SALE, deposit negativo = stima, conn)
++db -> db : commit / close
++end
++group approveSaleProposal / rejectSaleProposal — transazione 2
++Venditore -> service : esito dalla SalesmanDashboardView
++service -> db : executeInTransaction(callback)
++service -> request : findByIdForUpdate(requestId, conn)
++service -> vehicle : findByIdForUpdate(vehicleId, conn)
++note over service,vehicle : Richiesta SALE e veicolo WAITING, altrimenti errore.
++alt accetta (salesmanId obbligatorio)
++service -> account : findByClientIdForUpdate(clientId, conn)
++service -> account : updateBalance(..., saldo + abs(deposit), conn)
++service -> sale : save(Sale ACQUISITION negativa, conn)
++service -> vehicle : updateStateAtomically(WAITING, SALE, conn)
++service -> request : delete(requestId, conn)
++else rifiuta — nessun pagamento
++service -> request : delete(requestId, conn)
++service -> vehicle : hasAssociatedOperations(vehicleId, conn)
++alt storico presente
++service -> vehicle : updateStateAtomically(WAITING, SOLD, conn)
++else privo di storico
++service -> vehicle : delete(vehicleId, conn)
++end
++end
++db -> db : commit / close
++service --> Venditore : esito visibile dopo commit
++end
++note over service,db
++  Errori: tenta rollback di tutte le scritture, close, errore UI.
++  Vincoli unici e lock impediscono esiti duplicati riusciti sullo stesso ID.
++  Non intervengono Manager, PurchaseProposal o PaymentGateway.
++end note
++@enduml
+--- /dev/null
++++ b/DriveHub/docs/diagrams/current/sequence-rent-payment.puml
+@@ -0,0 +1,45 @@
++@startuml
++skinparam shadowing false
++skinparam defaultFontSize 16
++skinparam maxMessageSize 280
++title Noleggio — addebito integrale e Observer nella transazione
++autonumber
++actor Cliente
++boundary ClientDashboardView as ui
++control RentalService as service
++participant DatabaseManager as db
++participant VehicleDao as vehicle
++participant UserDao as user
++participant RentDao as rent
++participant BankAccountDao as account
++participant VehicleEventPublisher as publisher
++participant TestDriveCancellationObserver as observer
++participant TestDriveDao as td
++Cliente -> ui : selezione RENT; dialogo date, OK
++note over Cliente,ui : Annulla: nessuna prenotazione. Preventivo non congela il prezzo.
++ui -> service : bookRental(vehicleId, clientId, start, end)
++service -> db : executeInTransactionWithResult(callback)
++service -> vehicle : findByIdForUpdate(vehicleId, conn)
++note over service,vehicle : Stato RENT; date valide; lock veicolo prima del cliente.
++service -> user : lockClient(clientId, conn)
++service -> rent : isVehicleAvailableForRent(vehicleId, start, end, conn)
++note over service,rent
++  Giorni inclusivi, controllo sovrapposizioni; vincolo EXCLUDE nel DB.
++  Ricalcola costo con modello/sconti letti sulla stessa connessione.
++end note
++service -> account : findByClientIdForUpdate(clientId, conn)
++service -> account : updateBalance(..., saldo - costo100%, conn)
++service -> rent : save(Rent, conn)
++service -> publisher : publishCommitment(event, conn)
++publisher -> observer : onVehicleCommitted(event, conn)
++observer -> td : deleteFutureByVehicleId(vehicleId, conn)
++note over observer,td : Tutti i test drive futuri, anche fuori periodo; passato conservato.
++db -> db : commit / close
++service --> ui : Rent
++ui --> Cliente : aggiorna saldo/operazioni e mostra successo
++note over service,db
++  Eccezione, saldo insufficiente o Observer fallito:
++  tenta rollback, close, errore UI; nessun successo parziale.
++  Il veicolo resta RENT; non esiste una riga Payment.
++end note
++@enduml
+--- /dev/null
++++ b/DriveHub/docs/diagrams/current/sequence-sale-payment.puml
+@@ -0,0 +1,59 @@
++@startuml
++skinparam shadowing false
++skinparam defaultFontSize 16
++skinparam maxMessageSize 280
++title Acquisto del cliente — acconto, approvazione, saldo
++autonumber
++actor Cliente
++actor Venditore
++control PurchaseService as service
++participant DatabaseManager as db
++participant VehicleDao as vehicle
++participant RequestDao as request
++participant BankAccountDao as account
++participant SaleDao as sale
++participant VehicleEventPublisher as publisher
++group initiatePurchase(vehicleId, clientId) — transazione 1
++Cliente -> service : dalla ClientDashboardView
++service -> db : executeInTransactionWithResult(callback)
++note over service,db : Connessione aperta; autocommit=false; callback del servizio.
++service -> vehicle : updateStateAtomically(SALE, BLOCKED, conn)
++service -> vehicle : findById(vehicleId, conn)
++note over service,vehicle
++  Legge modello/sconti e calcola il prezzo effettivo.
++  Queste letture aprono anche connessioni proprie:
++  nessuno snapshot unico del listino.
++end note
++service -> account : findByClientIdForUpdate(clientId, conn)
++service -> account : updateBalance(..., saldo - acconto20%, conn)
++service -> request : save(Request PURCHASE con totale/acconto, conn)
++db -> db : commit / close
++service --> Cliente : richiesta; successo dopo commit
++end
++group approvePurchase(requestId, salesmanId) — transazione 2
++Venditore -> service : dalla SalesmanDashboardView
++service -> db : executeInTransaction(callback)
++service -> request : findByIdForUpdate(requestId, conn)
++service -> request : update(salesmanId, expDate = oggi + 1 mese, conn)
++db -> db : commit / close
++end
++group completePurchase(requestId) — transazione 3
++Cliente -> service : paga saldo da Le Mie Operazioni
++service -> db : executeInTransaction(callback)
++service -> request : findByIdForUpdate(requestId, conn)
++note over service,request : Verifica PURCHASE approvata e non scaduta.
++service -> account : findByClientIdForUpdate(clientId, conn)
++service -> account : updateBalance(..., saldo - (agreedTotal - deposit), conn)
++service -> sale : save(Sale PURCHASE positiva, conn)
++service -> request : delete(requestId, conn)
++service -> vehicle : updateStateAtomically(BLOCKED, SOLD, conn)
++service -> publisher : publishCommitment(event, conn)
++note over service,publisher : Observer sincrono cancella test drive futuri prima del commit.
++db -> db : commit / close
++service --> Cliente : esito; nessun ricalcolo del listino al saldo
++end
++note over service,db
++  Ogni gruppo ha la propria transazione. Eccezione: tenta rollback, close, errore UI.
++  Richiesta già rimossa o stato incoerente: nessun secondo addebito riuscito.
++end note
++@enduml
+--- /dev/null
++++ b/DriveHub/docs/diagrams/current/sequence-table-load.puml
+@@ -0,0 +1,43 @@
++@startuml
++skinparam shadowing false
++skinparam defaultFontSize 16
++skinparam maxMessageSize 280
++title Letture tabellari — worker, risultato corrente, rendering senza query
++autonumber
++actor Utente
++boundary "dashboard (thread FX)" as ui
++control "AsyncLoad (thread FX)" as load
++participant "Task / worker virtuale Java21" as task
++control CatalogService as catalog
++participant "ModelDao / DiscountDao / VehicleDao" as dao
++Utente -> ui : apertura / Aggiorna / modifica catalogo
++ui -> load : load() oppure load(source)
++load -> load : cancella task precedente; memorizza quello nuovo
++note over ui,load : Disabilita controllo dati; mostra Caricamento; Aggiorna accessibile.
++load -> task : Thread.ofVirtual().start(task)
++task -> catalog : source.get() → getVehicleRows(state)
++catalog -> dao : modelli, sconti modello, sconti veicolo, veicoli
++dao --> catalog : quattro letture collettive
++note over catalog,dao : Query separate, nessuno snapshot comune o cache persistente.
++catalog -> catalog : prepara VehicleRow con modello, basi, prezzi e tariffa
++alt lettura riuscita
++catalog --> task : List<VehicleRow>
++else eccezione della lettura
++catalog --> task : errore del worker
++end
++task --> load : onSucceeded / onFailed sul thread FX
++alt task corrente e riuscito
++load -> ui : apply.accept(righe); riabilita; Aggiornato
++ui -> ui : celle leggono VehicleRow; nessun DAO nel rendering
++else task corrente e fallito
++load -> load : controllo resta disabilitato; Riprova
++else task superato / controllo staccato dalla scena
++note over load,task : Nessuna pubblicazione del vecchio risultato/errore.
++end
++Utente -> load : Aggiorna / Riprova → nuovo caricamento
++note over load,task
++  scene=null cancella e azzera current; JDBC già partito può proseguire.
++  getModelDiscountRows usa due letture collettive, non quattro.
++  Non tutte le azioni/anteprime UI sono asincrone.
++end note
++@enduml
+--- /dev/null
++++ b/DriveHub/docs/diagrams/current/sequence-test-drive.puml
+@@ -0,0 +1,44 @@
++@startuml
++skinparam shadowing false
++skinparam defaultFontSize 16
++skinparam maxMessageSize 280
++title Test drive — prenotazione e cancellazione del cliente
++autonumber
++actor Cliente
++control TestDriveService as service
++participant DatabaseManager as db
++participant VehicleDao as vehicle
++participant UserDao as user
++participant TestDriveDao as td
++group bookTestDrive(vehicleId, clientId, dateTime)
++Cliente -> service : dialogo da catalogo SALE o RENT, OK
++service -> db : executeInTransactionWithResult(callback)
++service -> vehicle : findByIdForUpdate(vehicleId, conn)
++note over service,vehicle : Solo SALE/RENT, data futura; lock veicolo prima del cliente.
++service -> user : lockClient(clientId, conn)
++service -> td : countActiveByClientId(clientId, conn)
++note over service,td : Rifiuta se già 3 attivi, anche su veicoli diversi.
++service -> td : isVehicleAvailableForTestDrive(vehicleId, dateTime, conn)
++note over service,td
++  Stessa data/ora veicolo libera, nessun noleggio in quel giorno.
++  Factory TestDrive e DB controllano fascia 9:00–16:00 (16 esatto).
++  La UI propone ore intere; il dominio ammette minuti prima delle16.
++end note
++service -> td : save(TestDrive.create(...), conn)
++db -> db : commit / close
++service --> Cliente : prenotazione
++end
++group cancelTestDrive(testDriveId, clientId) — altra transazione
++Cliente -> service : Le Mie Operazioni, annulla selezionato
++service -> db : executeInTransaction(callback)
++service -> td : findById(testDriveId, conn)
++note over service,td : Filtra per clientId; non aggiunge un controllo isFuture.
++service -> td : delete(testDriveId, conn)
++db -> db : commit / close
++end
++note over service,db
++  Eccezione: tenta rollback, close, errore UI. Nessun pagamento.
++  La priorità commerciale di acquisto/noleggio usa l'Observer
++  nelle loro transazioni, non cancelTestDrive del cliente.
++end note
++@enduml
+--- /dev/null
++++ b/DriveHub/docs/diagrams/current/use-cases-staff.puml
+@@ -0,0 +1,39 @@
++@startuml
++!pragma layout smetana
++left to right direction
++skinparam shadowing false
++skinparam defaultFontSize 16
++title Casi d'uso correnti — staff
++actor Venditore
++actor Manager
++rectangle DriveHub {
++  usecase "Consultare richieste\nin sospeso" as Pending
++  usecase "Approvare / rifiutare\nacquisto del cliente" as Purchase
++  usecase "Accettare / rifiutare\ncessione del cliente" as Sale
++  usecase "Cambiare destinazione\nSALE ↔ RENT" as Destination
++  usecase "Gestire marchi\ne modelli" as Models
++  usecase "Aggiungere / eliminare\nveicoli secondo vincoli" as Vehicles
++  usecase "Scegliere base automatica\no manuale" as Price
++  usecase "Gestire sconti\nmodello / veicolo" as Discount
++  usecase "Consultare registro economico\nPURCHASE / ACQUISITION / PENALTY" as Register
++}
++Venditore -- Pending
++Venditore -- Purchase
++Venditore -- Sale
++Venditore -- Destination
++Manager -- Models
++Manager -- Vehicles
++Manager -- Price
++Manager -- Discount
++Manager -- Register
++legend bottom
++  Solo stati opposti SALE/RENT; RENT→SALE bloccato
++  da noleggio in corso. Futuri cancellati e rimborsati100%
++  nella stessa transazione; altri stati non riaperti.
++  Entrambi i ruoli hanno gestione identità e logout
++  (diagramma cliente/identità). Solo il cliente ricarica il conto.
++  Non esistono ordini StockOrder, manutenzione,
++  offerta del venditore poi approvazione del manager,
++  né gestione degli stati di noleggi/test drive da parte dello staff.
++endlegend
++@enduml
+--- /dev/null
++++ b/DriveHub/docs/diagrams/current/use-cases.puml
+@@ -0,0 +1,48 @@
++@startuml
++!pragma layout smetana
++left to right direction
++skinparam shadowing false
++skinparam defaultFontSize 16
++title Casi d'uso correnti — cliente e identità
++actor "Utente autenticato\n(cliente / venditore / manager)" as Utente
++actor "Visitatore" as Ospite
++actor Cliente
++Utente <|-- Cliente
++rectangle DriveHub {
++  usecase "Registrare un cliente\ne conto dimostrativo" as Register
++  usecase "Accedere" as Login
++  usecase "Disconnettersi" as Logout
++  usecase "Cambiare email / password\ncon password corrente" as Identity
++  usecase "Eliminare identità\nse priva di associazioni" as Delete
++  usecase "Ricaricare il conto\ndimostrativo" as Topup
++  usecase "Consultare cataloghi\nvendita / noleggio" as Catalog
++  usecase "Avviare acquisto\ncon acconto 20%" as Buy
++  usecase "Saldare acquisto approvato\nal totale concordato" as Balance
++  usecase "Proporre cessione\ncon stima" as Offer
++  usecase "Prenotare noleggio\ncon addebito 100%" as Rent
++  usecase "Prenotare / annullare\nun proprio test drive" as TD
++  usecase "Consultare le proprie\nrichieste, noleggi, test drive" as Operations
++}
++Ospite -- Register
++Ospite -- Login
++Utente -- Logout
++Utente -- Identity
++Utente -- Delete
++Cliente -- Topup
++Cliente -- Catalog
++Cliente -- Buy
++Cliente -- Balance
++Cliente -- Offer
++Cliente -- Rent
++Cliente -- TD
++Cliente -- Operations
++legend bottom
++  Addebiti sul conto dimostrativo, non gateway esterno.
++  L'approvazione spetta al venditore (diagramma staff).
++  Scadenze trattate all'ingresso nella dashboard cliente.
++  Noleggio e saldo acquisto cancellano i test drive futuri
++  tramite Observer: effetto interno, non azione di uno staff.
++  Le frecce indicano partecipazione, non autorizzazione
++  centralizzata: il ruolo è instradato dalla UI.
++endlegend
++@enduml
+--- /dev/null
++++ b/DriveHub/docs/diagrams/current/vehicle-states.puml
+@@ -0,0 +1,34 @@
++@startuml
++!pragma layout smetana
++skinparam shadowing false
++skinparam defaultFontSize 16
++hide empty description
++title VehicleState — transizioni dei servizi, non ogni assegnazione in memoria
++state SALE
++state RENT
++state BLOCKED
++state SOLD
++state WAITING
++SALE --> BLOCKED : initiatePurchase\nacconto e totale
++BLOCKED --> SOLD : completePurchase\nsaldo + PURCHASE + Observer
++BLOCKED --> SALE : rejectPurchase\nrimborso100% acconto
++BLOCKED --> SALE : scadenza all'accesso\npenale20% acconto
++SOLD --> WAITING : submitSaleProposal\nultima PURCHASE al cliente
++WAITING --> SALE : approveSaleProposal\naccredito + ACQUISITION
++WAITING --> SOLD : rejectSaleProposal\nstorico presente
++WAITING --> [*] : rifiuto senza storico\nDELETE veicolo
++SALE --> RENT : changeVehicleRentalState
++RENT --> SALE : nessun noleggio in corso\nfuturi rimborsati100%
++RENT --> RENT : bookRental\naddebito100% + Observer
++note bottom of WAITING
++  VIN nuovo in cessione: creato WAITING.
++  La UI manager propone SALE/RENT; addVehicle riceve VehicleState.
++  Non c'è uno stato iniziale universale o uno stato noleggio COMPLETED.
++end note
++note bottom of BLOCKED
++  Ogni transizione è parte della transazione del caso d'uso:
++  fallimento tenta rollback anche di saldi, richieste e cancellazioni.
++  Cambio destinazione vietato da BLOCKED/SOLD/WAITING.
++  Vehicle.setState da solo non impone questa macchina a stati.
++end note
++@enduml
+--- /dev/null
++++ b/DriveHub/docs/evidence/README.md
+@@ -0,0 +1,20 @@
++# Versioni delle evidenze
++
++L'indice corrente del ticket17 è [r09-diagrams/verification.md](r09-diagrams/verification.md):
++baseline locale completa, diff della sola sessione, render dei diagrammi e prove
++nuove effettivamente registrate. I [diagrammi usati](../diagrams/README.md)
++sono solo sotto `docs/diagrams/current/`.
++
++Tutte le altre directory di evidenza conservano i risultati **storici delle
++rispettive sessioni**, con i relativi manifest e limiti. Non sono nuove esecuzioni17.
++In particolare `394/394` di [r09-instructions](r09-instructions/verification.md)
++è il risultato del16. Gli script/harness possono essere riusati, registrando
++nuovi ambiente, input e risultati; i vecchi output non diventano correnti.
++
++`full-stack/` e `jdk21-test/` appartengono a una versione precedente con package
++`it.unifi.ing.drivehub`. I loro `source-manifest.json`, summary e report XML
++(compreso LayeringTest) non provano il codice `it.unifi.drivehub` attuale.
++Restano immutati per consultazione: [inventario e confronto17](r09-diagrams/historical-artifacts.json).
++Nessuna percentuale di copertura si ricava dal numero dei test riusciti.
++
++Questo indice non costituisce la verifica integrata del ticket18, che resta aperto.
+--- /dev/null
++++ b/DriveHub/docs/evidence/r09-diagrams/check-db.py
+@@ -0,0 +1,30 @@
++from pathlib import Path
++import hashlib, json, subprocess, sys
++
++s=Path('/tmp/drivehub-ticket17-session')
++e=Path('/home/federico/dev/Drivehub/DriveHub/docs/evidence/r09-diagrams')
++env=json.loads((s/'env.json').read_text())
++phase=sys.argv[1]
++assert phase in ('before-suite','after-suite')
++env.update(PGPASSWORD=env['DRIVEHUB_SENTINEL_DB_PASSWORD'],PGOPTIONS='-c default_transaction_read_only=on')
++cmd=['psql','-X','-A','-t','-v','ON_ERROR_STOP=1','-h','127.0.0.1','-p','55435','-U','drivehub','-d','drivehub']
++def query(sql):
++    return subprocess.check_output(cmd+['-c',sql],env=env,text=True)
++identity=query("SELECT current_database(),current_user,current_setting('server_version'),current_setting('transaction_read_only'); SELECT name FROM brand WHERE name='R00_SENTINEL';")
++assert 'R00_SENTINEL' in identity and 'drivehub|drivehub|16.' in identity and '|on' in identity
++tables=query("SELECT tablename FROM pg_tables WHERE schemaname='public' ORDER BY tablename").splitlines()
++sequences=query("SELECT sequencename FROM pg_sequences WHERE schemaname='public' ORDER BY sequencename").splitlines()
++hashes={}
++for name in tables:
++    hashes['table/'+name]=hashlib.sha256(query(f'SELECT row_to_json(r)::text FROM public."{name}" r ORDER BY row_to_json(r)::text').encode()).hexdigest()
++for name in sequences:
++    hashes['sequence/'+name]=hashlib.sha256(query(f'SELECT last_value,is_called FROM public."{name}"').encode()).hexdigest()
++if phase=='after-suite':
++    assert hashes==json.loads((e/'before-suite-application.sha256.json').read_text()),'Application copy changed during suite'
++(e/(phase+'-application.sha256.json')).write_text(json.dumps(hashes,indent=2)+'\n')
++adminenv=env.copy()
++adminenv.pop('PGPASSWORD')
++admin=['psql','-X','-A','-t','-v','ON_ERROR_STOP=1','-h',str(s),'-p','55435','-d','postgres']
++privileges=subprocess.check_output(admin+['-c',"SELECT datname,pg_get_userbyid(datdba) FROM pg_database ORDER BY datname; SELECT rolname,rolsuper,rolcreatedb,rolcreaterole,rolreplication,rolbypassrls FROM pg_roles WHERE rolname IN ('drivehub','drivehub_test'); SELECT count(*) FROM pg_auth_members m JOIN pg_roles r ON m.member=r.oid WHERE r.rolname='drivehub_test';"],env=adminenv,text=True)
++(e/(phase+'-environment.txt')).write_text(identity+'\n'+privileges+f'\nREAD ONLY application fingerprint: {len(tables)} tables, {len(sequences)} sequences\n')
++print(phase,'sentinel and application fingerprint verified READ ONLY')
+--- /dev/null
++++ b/DriveHub/docs/evidence/r09-diagrams/commands.md
+@@ -0,0 +1,117 @@
++# Comandi osservati — ticket17
++
++Sessione3novembre2026; radice `/home/federico/dev/Drivehub/DriveHub`.
++Baseline prima di qualunque modifica: `/tmp/drivehub-r17-baseline/tree`,
++progetto + tracker + piano, esclusi `.git`, `target`, `Relazione_SWE`.
++Inclusi file ignorati (per esempio log storici), modificati e non tracciati.
++Salvati SHA256, `git rev-parse HEAD`, hash indice, `git diff --binary HEAD`
++con esclusione relazione, diff indice e stato iniziale.01–16 controllati chiusi
++e senza criteri aperti, [hash dei ticket](prerequisites.json).
++
++## Ambiente isolato
++
++Java predefinito17: non usato. Verificati nuovamente i binari estratti16 ancora
++presenti sotto `/tmp/drivehub-ticket16-tools/root`, non presunti disponibili:
++Java/javac21.0.12.1, Maven3.9.16 sullo stesso JDK, PostgreSQL client/server16.15,
++Xvfb e librerie (`ldd` senza dipendenze mancanti), xkbcomp in `/tmp/x16`.
++I pacchetti d'origine sono quelli del [registro16](../r09-instructions/tool-archives.json);
++versioni17 in [environment.txt](environment.txt) e [versions.txt](versions.txt).
++Nessuna installazione o servizio di sistema. `/tmp` resta temporanea.
++
++[prepare.py](prepare.py) è il launcher16 adattato solo a directory17, porta55435
++e display91. Copia la baseline, crea credenziali casuali in `env.json`0600
++all'interno della sessione0700 e configura **solo la copia** dell'applicazione.
++Il file privato non è pubblicato. [setup-db.py](setup-db.py) crea ruoli non
++amministrativi `drivehub_test`/`drivehub`, DB separati, schema/demo e sentinella
++solo nel nuovo cluster sacrificabile, non sulla porta5432.
++
++```bash
++python3 /tmp/drivehub-ticket17-session/prepare.py
++pg_ctl -D /tmp/drivehub-ticket17-session/pgdata \
++  -l /home/federico/dev/Drivehub/DriveHub/docs/evidence/r09-diagrams/postgres.log -w start
++python3 /tmp/drivehub-ticket17-session/setup-db.py
++python3 /tmp/drivehub-ticket17-session/check-db.py before-suite
++```
++
++PostgreSQL è stato inizialmente avviato nella sandbox e non è rimasto disponibile
++fra comandi: primo mirato79test,77errori di connessione, non una regressione del
++prodotto. [Log](sandbox-failed-targeted.log), [riepilogo](sandbox-failed-targeted-summary.json).
++Riavviato **lo stesso nuovo cluster17** fuori sandbox; mirato ripetuto riuscito.
++I servizi devono sopravvivere ai singoli comandi: PostgreSQL e Xvfb avviati fuori
++sandbox; nessuna escalation rifiutata. [Comando Xvfb](xvfb-command.txt), solo
++socket locale astratto91, senza TCP/Unix filesystem. Warning EGL non impedisce
++il rendering software osservato; il solo PID non è considerato prova JavaFX.
++
++## Prove runtime nuove
++
++Dalla copia `/tmp/drivehub-ticket17-session/install/DriveHub`:
++
++```bash
++python3 /tmp/drivehub-ticket17-session/run-maven.py targeted -Ppostgres-tests \
++  -Dtest=DatabaseIsolationIntegrationTest,PurchaseAgreementIntegrationTest,SaleOutcomeIntegrationTest,CatalogListingIntegrationTest,BookingRulesTest clean test
++# Con JAVA_HOME/DISPLAY e le sei variabili DB nell'ambiente privato:
++DRIVEHUB_UI_CLASS=it.unifi.drivehub.TableLifecycleUiCheck \
++  python3 docs/evidence/r08-tables/run-ui.py
++python3 /tmp/drivehub-ticket17-session/run-maven.py full -Ppostgres-tests clean test
++python3 /tmp/drivehub-ticket17-session/check-db.py after-suite
++pg_ctl -D /tmp/drivehub-ticket17-session/pgdata -m fast -w stop
++```
++
++[run-maven.py](run-maven.py) riusa16, aggiungendo solo l'etichetta `targeted`.
++Salva input SHA256, log e riepilogo degli XML realmente prodotti; rimuove solo
++`properties` ambientali dagli XML conservati, senza alterare testcase/esiti/output.
++La compilazione è quella Maven reale, senza modificare il target21 o aggiungere test.
++Le prove grafiche e le suite sono sequenziali, mai concorrenti sul DB.
++
++AppStartupUiCheck15 è compilato con `javac --module-path` dei JAR JavaFX21.0.2,
++`--add-modules javafx.controls`, classpath `target/classes`, `target/test-classes`,
++driver PostgreSQL42.7.3 e directory UI temporanea. Avvio con `java`, stessi
++module-path/classpath, `-Dprism.order=sw`, argomenti classe
++`it.unifi.drivehub.AppStartupUiCheck` e directory UI. Comandi completi in
++[startup-check.log](startup-check.log). Nessun nuovo harness o test sul testo.
++
++Il primo avvio della suite finale si è interrotto con143, senza riepilogo:
++[log parziale](interrupted-full.log), [input](interrupted-full-inputs.sha256.json).
++Origine del SIGTERM non determinata; non è attribuito alcun successo.
++Ripetuto con [complete-full.py](complete-full.py), launcher autonomo con
++`start_new_session=True`, log/stato d'uscita persistenti: **exit0,394/394**.
++[Log launcher](full-launcher.log). Il394/394del16 rimane storico.
++
++[check-db.py](check-db.py) controlla DB/ruoli/privilegi e sentinella READ ONLY,
++impronte ordinate di13tabelle/7sequenze prima e dopo tutte le prove. Arrestati
++solo pgdata17 e il PID Xvfb91 registrato, controllati listener/socket assenti:
++[shutdown.txt](shutdown.txt). Nessun DB applicativo preesistente contattato.
++
++## Rendering e ispezione
++
++JAR scaricato da Maven Central, versione fissata1.2026.2:
++[origine e SHA256](renderer.json). Nessuna dipendenza nel POM.
++`java -jar ... -version` segnala `dot` assente ed esce16; i render strutturali
++usano **Smetana incluso** e quelli di sequenza il renderer incluso: Graphviz
++esterno non necessario. Prime due sintassi corrette prima del render finale;
++i tentativi e i comandi sono in [render.log](render.log).
++
++```bash
++java -XX:+PerfDisableSharedMem -Djava.awt.headless=true \
++  -jar /tmp/drivehub-ticket17-session/plantuml.jar \
++  -charset UTF-8 -failfast2 -tsvg docs/diagrams/current/*.puml
++java -XX:+PerfDisableSharedMem -Djava.awt.headless=true \
++  -jar /tmp/drivehub-ticket17-session/plantuml.jar \
++  -charset UTF-8 -failfast2 -tpng \
++  -o /tmp/drivehub-ticket17-session/diagram-png docs/diagrams/current/*.puml
++```
++
++Entrambi i render finali exit0. SVG conservati vicino ai sorgenti; PNG temporanei
++usati per ispezione, senza duplicare i18render nel repository.
++Una prima impaginazione troppo larga, etichette di navigazione sovrapposte e
++`maxMessageSize55` (pixel) corretti: firme DAO abbreviate, raggruppamento visivo,
++navigazione generale semplificata e messaggi a280pixel. Nuovo render e ispezione
++dei file cambiati. SVG zoomabili; nessuna verifica di impaginazione su carta/A4.
++Tentativo di contact sheet non eseguito per Pillow assente: nessuna dipendenza
++aggiunta, ispezionati direttamente i PNG singoli con il visualizzatore.
++
++Controllati riferimenti locali delle pagine modificate, hash sorgenti/render,
++assenza di pagine errore SVG, whitespace delle sole righe aggiunte, preservazione
++baseline e identità HEAD/indice. Sono controlli degli artefatti, non nuovi test
++artificiali della documentazione. Diff congelato per review indipendenti rispetto
++alla fotografia locale iniziale, mai rispetto al solo HEAD. Relazione sempre esclusa.
+--- /dev/null
++++ b/DriveHub/docs/evidence/r09-diagrams/complete-full.py
+@@ -0,0 +1,5 @@
++from pathlib import Path
++import subprocess
++s=Path("/tmp/drivehub-ticket17-session")
++r=subprocess.run(["python3",str(s/"run-maven.py"),"full","-Ppostgres-tests","clean","test"])
++(s/"full-exit.txt").write_text(str(r.returncode)+"\n")
+--- /dev/null
++++ b/DriveHub/docs/evidence/r09-diagrams/full-groups.json
+@@ -0,0 +1,162 @@
++{
++  "groups": {
++    "without_db": 47,
++    "postgres": 347
++  },
++  "suites": {
++    "it.unifi.drivehub.AuthServiceIntegrationTest": {
++      "group": "postgres",
++      "tests": 18,
++      "failures": 0,
++      "errors": 0,
++      "skipped": 0
++    },
++    "it.unifi.drivehub.BalanceConcurrencyIntegrationTest": {
++      "group": "postgres",
++      "tests": 16,
++      "failures": 0,
++      "errors": 0,
++      "skipped": 0
++    },
++    "it.unifi.drivehub.BookingConcurrencyIntegrationTest": {
++      "group": "postgres",
++      "tests": 36,
++      "failures": 0,
++      "errors": 0,
++      "skipped": 0
++    },
++    "it.unifi.drivehub.BookingRulesTest": {
++      "group": "without_db",
++      "tests": 2,
++      "failures": 0,
++      "errors": 0,
++      "skipped": 0
++    },
++    "it.unifi.drivehub.CatalogListingIntegrationTest": {
++      "group": "postgres",
++      "tests": 4,
++      "failures": 0,
++      "errors": 0,
++      "skipped": 0
++    },
++    "it.unifi.drivehub.DatabaseConnectionIntegrationTest": {
++      "group": "postgres",
++      "tests": 1,
++      "failures": 0,
++      "errors": 0,
++      "skipped": 0
++    },
++    "it.unifi.drivehub.DatabaseIsolationIntegrationTest": {
++      "group": "postgres",
++      "tests": 1,
++      "failures": 0,
++      "errors": 0,
++      "skipped": 0
++    },
++    "it.unifi.drivehub.DemoSqlValidationTest": {
++      "group": "postgres",
++      "tests": 1,
++      "failures": 0,
++      "errors": 0,
++      "skipped": 0
++    },
++    "it.unifi.drivehub.DomainInvariantsTest": {
++      "group": "without_db",
++      "tests": 15,
++      "failures": 0,
++      "errors": 0,
++      "skipped": 0
++    },
++    "it.unifi.drivehub.FullWorkflowIntegrationTest": {
++      "group": "postgres",
++      "tests": 4,
++      "failures": 0,
++      "errors": 0,
++      "skipped": 0
++    },
++    "it.unifi.drivehub.IdentityDeletionIntegrationTest": {
++      "group": "postgres",
++      "tests": 60,
++      "failures": 0,
++      "errors": 0,
++      "skipped": 0
++    },
++    "it.unifi.drivehub.PriceCalculatorServiceTest": {
++      "group": "without_db",
++      "tests": 11,
++      "failures": 0,
++      "errors": 0,
++      "skipped": 0
++    },
++    "it.unifi.drivehub.PriceSelectionIntegrationTest": {
++      "group": "postgres",
++      "tests": 10,
++      "failures": 0,
++      "errors": 0,
++      "skipped": 0
++    },
++    "it.unifi.drivehub.PurchaseAgreementIntegrationTest": {
++      "group": "postgres",
++      "tests": 12,
++      "failures": 0,
++      "errors": 0,
++      "skipped": 0
++    },
++    "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest": {
++      "group": "postgres",
++      "tests": 60,
++      "failures": 0,
++      "errors": 0,
++      "skipped": 0
++    },
++    "it.unifi.drivehub.RequestAgreementTest": {
++      "group": "without_db",
++      "tests": 7,
++      "failures": 0,
++      "errors": 0,
++      "skipped": 0
++    },
++    "it.unifi.drivehub.SaleOutcomeIntegrationTest": {
++      "group": "postgres",
++      "tests": 60,
++      "failures": 0,
++      "errors": 0,
++      "skipped": 0
++    },
++    "it.unifi.drivehub.SaleProposalIntegrationTest": {
++      "group": "postgres",
++      "tests": 23,
++      "failures": 0,
++      "errors": 0,
++      "skipped": 0
++    },
++    "it.unifi.drivehub.SaleTypeTest": {
++      "group": "without_db",
++      "tests": 5,
++      "failures": 0,
++      "errors": 0,
++      "skipped": 0
++    },
++    "it.unifi.drivehub.TestDatabaseConfigurationTest": {
++      "group": "without_db",
++      "tests": 7,
++      "failures": 0,
++      "errors": 0,
++      "skipped": 0
++    },
++    "it.unifi.drivehub.TestDriveCancellationIntegrationTest": {
++      "group": "postgres",
++      "tests": 8,
++      "failures": 0,
++      "errors": 0,
++      "skipped": 0
++    },
++    "it.unifi.drivehub.VehicleDestinationIntegrationTest": {
++      "group": "postgres",
++      "tests": 33,
++      "failures": 0,
++      "errors": 0,
++      "skipped": 0
++    }
++  }
++}
+--- /dev/null
++++ b/DriveHub/docs/evidence/r09-diagrams/full-summary.json
+@@ -0,0 +1,6 @@
++{
++  "tests": 394,
++  "failures": 0,
++  "errors": 0,
++  "skipped": 0
++}
+--- /dev/null
++++ b/DriveHub/docs/evidence/r09-diagrams/prepare.py
+@@ -0,0 +1,31 @@
++from pathlib import Path
++import json, os, secrets, shutil, subprocess
++
++session = Path('/tmp/drivehub-ticket17-session')
++tools = Path('/tmp/drivehub-ticket16-tools/root')
++repo = session/'install/DriveHub'
++evidence = Path('/home/federico/dev/Drivehub/DriveHub/docs/evidence/r09-diagrams')
++evidence.mkdir(parents=True, exist_ok=True)
++shutil.copytree(Path('/tmp/drivehub-r17-baseline/tree/DriveHub'), repo)
++env = os.environ.copy()
++env['JAVA_HOME'] = str(tools/'usr/lib/jvm/java-21-openjdk-amd64')
++env['PATH'] = env['JAVA_HOME']+'/bin:'+str(tools/'usr/lib/postgresql/16/bin')+':'+env['PATH']
++env['LD_LIBRARY_PATH'] = str(tools/'usr/lib/x86_64-linux-gnu')
++env['DISPLAY'] = ':91'
++env['DRIVEHUB_UI_DIR'] = str(session/'ui')
++for database, prefix in [('drivehub_test','DRIVEHUB_TEST'),('drivehub','DRIVEHUB_SENTINEL')]:
++    env[prefix+'_DB_URL'] = 'jdbc:postgresql://127.0.0.1:55435/'+database
++    env[prefix+'_DB_USER'] = database
++    env[prefix+'_DB_PASSWORD'] = secrets.token_hex(24)
++private = session/'env.json'
++private.write_text(json.dumps(env))
++private.chmod(0o600)
++config = repo/'src/main/resources/application.properties'
++config.write_text('db.url='+env['DRIVEHUB_SENTINEL_DB_URL']+'\ndb.user=drivehub\ndb.password='+env['DRIVEHUB_SENTINEL_DB_PASSWORD']+'\n')
++config.chmod(0o600)
++pgdata = session/'pgdata'
++with (evidence/'initdb.log').open('w') as log:
++    subprocess.run(['initdb','-D',str(pgdata),'--no-locale','-E','UTF8','--auth-local=trust','--auth-host=scram-sha-256'],env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
++with (pgdata/'postgresql.conf').open('a') as out:
++    out.write("\nlisten_addresses = '127.0.0.1'\nport = 55435\nunix_socket_directories = '/tmp/drivehub-ticket17-session'\n")
++print('Prepared current-worktree installation copy, private config0600 and new cluster127.0.0.1:55435')
+--- /dev/null
++++ b/DriveHub/docs/evidence/r09-diagrams/renderer.json
+@@ -0,0 +1,5 @@
++{
++  "url": "https://repo.maven.apache.org/maven2/net/sourceforge/plantuml/plantuml/1.2026.2/plantuml-1.2026.2.jar",
++  "sha256": "7a3eacbccd08311f14b107b1254e179adc1f81fa8bd52bbaf563a37f00ea026f",
++  "java_home": "/tmp/drivehub-ticket16-tools/root/usr/lib/jvm/java-21-openjdk-amd64"
++}
+--- /dev/null
++++ b/DriveHub/docs/evidence/r09-diagrams/run-maven.py
+@@ -0,0 +1,31 @@
++from pathlib import Path
++import hashlib, json, shutil, subprocess, sys, xml.etree.ElementTree as ET
++
++s=Path('/tmp/drivehub-ticket17-session')
++e=Path('/home/federico/dev/Drivehub/DriveHub/docs/evidence/r09-diagrams')
++repo=s/'install/DriveHub'
++env=json.loads((s/'env.json').read_text())
++label, *args=sys.argv[1:]
++assert label in ('build','without-db','targeted','full')
++inputs={str(p.relative_to(repo)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [repo/'pom.xml',*sorted((repo/'src').rglob('*'))] if p.is_file()}
++(e/(label+'-inputs.sha256.json')).write_text(json.dumps(inputs,indent=2)+'\n')
++command=['mvn','-B',*args]
++with (e/(label+'.log')).open('w') as log:
++    log.write('COMMAND: '+' '.join(command)+'\n'); log.flush()
++    result=subprocess.run(command,cwd=repo,env=env,stdout=log,stderr=subprocess.STDOUT)
++if label != 'build':
++    dest=e/(label+'-surefire')
++    dest.mkdir(exist_ok=True)
++    totals=dict.fromkeys(['tests','failures','errors','skipped'],0)
++    for p in sorted((repo/'target/surefire-reports').glob('TEST-*.xml')):
++        tree=ET.parse(p)
++        for key in totals: totals[key]+=int(tree.getroot().attrib[key])
++        # Surefire properties contain the private installation configuration in classpath only;
++        # omit environment-specific properties and retain testcases/failures intact.
++        props=tree.getroot().find('properties')
++        if props is not None: tree.getroot().remove(props)
++        tree.write(dest/p.name,encoding='utf-8',xml_declaration=True)
++    (e/(label+'-summary.json')).write_text(json.dumps(totals,indent=2)+'\n')
++    print(label,totals)
++print(label,'exit',result.returncode)
++sys.exit(result.returncode)
+--- /dev/null
++++ b/DriveHub/docs/evidence/r09-diagrams/runtime-identity.json
+@@ -0,0 +1,105 @@
++{
++  "baseline_inputs": 93,
++  "original_unchanged": true,
++  "targeted_and_final_inputs_identical": true,
++  "current_copy_matches_final_inputs": true,
++  "copy_differences_from_original": [
++    "src/main/resources/application.properties"
++  ],
++  "copy_configuration": "private 0600, only dedicated17 application/sentinel DB",
++  "original_input_hashes": {
++    "pom.xml": "a9481eebee796681948eeed90a4a2c6247796f0e0c35c786fdd40c553bcd92ff",
++    "src/main/java/it/unifi/drivehub/App.java": "edaf87db70942350669f6997f5931d6998b2b59fb425ef8cd3079fd60e420c2e",
++    "src/main/java/it/unifi/drivehub/AppContext.java": "d2e677cac1836dae46951f5af4f0c21e2b3e18176e9085148e270045c4396667",
++    "src/main/java/it/unifi/drivehub/dao/BankAccountDao.java": "13eb7a1bbf2ac7b5113257b262256e4e9b878f6f52e88811faf58b3fb50bac60",
++    "src/main/java/it/unifi/drivehub/dao/BrandDao.java": "dc4d7025ed64e844d5847fd146235b415c7f4f1eb1d060b24c1668ebe0498bbb",
++    "src/main/java/it/unifi/drivehub/dao/DatabaseManager.java": "c02b6d3e3fb46e571ff5cc11a8c3810ae29ee0364d3d599a238b8e0b7c5d7612",
++    "src/main/java/it/unifi/drivehub/dao/DiscountDao.java": "7761a927c1ba3b17d1cb0848f8bf3f8a1793e76d2201362dd6b7edd95453f3e9",
++    "src/main/java/it/unifi/drivehub/dao/ModelDao.java": "29ca21ca2359d9646f321845351ae17d9aa397e343d2d063afa95fb07130da17",
++    "src/main/java/it/unifi/drivehub/dao/RentDao.java": "aad69fd78a028ed24ee22d828f322e9850d14c2803ec27220dd93610c5a981a1",
++    "src/main/java/it/unifi/drivehub/dao/RequestDao.java": "65d4da6831d37bd15a7711a29b39bbd45d0f6131b44f35604b1c9116215d858e",
++    "src/main/java/it/unifi/drivehub/dao/SaleDao.java": "54852d5ff75f95f6ad7d356d226d81d85ec404ea2dc333bd6514f2ef47157670",
++    "src/main/java/it/unifi/drivehub/dao/TestDriveDao.java": "3a4cb8c6534f76525e85bbcd121ab0cda03256fee26b404a0d9ecffe87e95446",
++    "src/main/java/it/unifi/drivehub/dao/UserDao.java": "8c16d0ba814c4eadf4039ac2ce1222d5c8cf864ab68c534ec4c0ba67b3d2f795",
++    "src/main/java/it/unifi/drivehub/dao/VehicleDao.java": "813c44ce21c816ea638d72b00e5c6c831d216d077eebff22e22c2ceedbf2abe7",
++    "src/main/java/it/unifi/drivehub/dao/postgres/PostgresBankAccountDao.java": "e229e4be24a1f7de13c2e798fb6982c5f4b362b79dc2feda23e4e66bbc79bb25",
++    "src/main/java/it/unifi/drivehub/dao/postgres/PostgresBrandDao.java": "f30bb339f8409e7eba9a961ae1081ea9cb151fcb4df3abf5d3d46b22f1493fbd",
++    "src/main/java/it/unifi/drivehub/dao/postgres/PostgresDiscountDao.java": "85c233313837eb904b8d315b490dce090ea971030be2e1b3530e5f6bca82ecbd",
++    "src/main/java/it/unifi/drivehub/dao/postgres/PostgresModelDao.java": "7bc7bc2c6b221e02fe7b2c703cbc0782b48d9ad41e3433fe90524cac8ba54974",
++    "src/main/java/it/unifi/drivehub/dao/postgres/PostgresRentDao.java": "5703a79e00de56f3352e550ac988e275134075cee054e710d2447a8a0b625222",
++    "src/main/java/it/unifi/drivehub/dao/postgres/PostgresRequestDao.java": "fee815e72e26b6cb45b79b209c50ae3dc207ba11d729c48f2ea365e66b93fe7d",
++    "src/main/java/it/unifi/drivehub/dao/postgres/PostgresSaleDao.java": "218214b09a6fd41fb03e5a6ffd0fca348ee3ca1c1637f220192d413d4008268c",
++    "src/main/java/it/unifi/drivehub/dao/postgres/PostgresTestDriveDao.java": "930f977a4c0f0ade9c84f9bb03cbdb545174d1bc88594d49a7854a02e1e5488a",
++    "src/main/java/it/unifi/drivehub/dao/postgres/PostgresUserDao.java": "e9b4a4ea84e3102aee9563498bc8a9da6fef29732c5d8f3589e21ba00cb81286",
++    "src/main/java/it/unifi/drivehub/dao/postgres/PostgresVehicleDao.java": "e7837cfbd8d04066498b982077c33c02bdcec9e5f9269fba58a3f420f92e96a8",
++    "src/main/java/it/unifi/drivehub/domain/discount/Discount.java": "85e5a4008463b307ebe25510c7f92ad27a61f6893869bcc83fb0778ae35bdba6",
++    "src/main/java/it/unifi/drivehub/domain/discount/ModelDiscount.java": "0ec169e269ca5f751a3db4de357978e2489fb7197129750515bd696168445a50",
++    "src/main/java/it/unifi/drivehub/domain/discount/VehicleDiscount.java": "030636f51a0bdd69a0211a7953c6feb9345e608f5d6260810c62e4e02bc09598",
++    "src/main/java/it/unifi/drivehub/domain/operation/Rent.java": "30a43ef1d128373e2550d5edf2b804c57f16e6b17eee5d0c946e5cf2f181d344",
++    "src/main/java/it/unifi/drivehub/domain/operation/Request.java": "f23f4ed707fe886670bbbb8e97bcb623de64083b06104fd38c7dee70948ff26f",
++    "src/main/java/it/unifi/drivehub/domain/operation/RequestType.java": "1ac81a2f20b7882c30ea689adafa1e15bbe01edf6f88f1aefd931164793d610d",
++    "src/main/java/it/unifi/drivehub/domain/operation/Sale.java": "e4c88a77185108e89d7420acbf0ee52709f214485816e4b377a6417f11090fc0",
++    "src/main/java/it/unifi/drivehub/domain/operation/SaleType.java": "37a0305f18fa6a065098bf73c2c059730cba547cfa52884133c90d3c4403007a",
++    "src/main/java/it/unifi/drivehub/domain/operation/TestDrive.java": "9a62716e7ea4289ae092f606609dec9a41715f0fe50fd895adc4a8ee4611deeb",
++    "src/main/java/it/unifi/drivehub/domain/user/AbstractUser.java": "5f05b569e179064c42b86b353fef80b08a3b7ed234fd83a73da18fb1916454e1",
++    "src/main/java/it/unifi/drivehub/domain/user/BankAccount.java": "43d8315e92c56b8400a15c6d3eb35314fbe309286a33cc23d9ad110da65658b9",
++    "src/main/java/it/unifi/drivehub/domain/user/Client.java": "b88e038c5236d7c13b686dc3e59da4840b4dad2f5f7a742b31cad514ad645530",
++    "src/main/java/it/unifi/drivehub/domain/user/Manager.java": "ad3df4f59f15d10faa76086093bd8324501e96f2f6a63744954200ce05311ecc",
++    "src/main/java/it/unifi/drivehub/domain/user/Salesman.java": "73eb97c53d35ae76030a63b64836a53fd5a1e0d44ea3f87d41a3a94b3389beec",
++    "src/main/java/it/unifi/drivehub/domain/user/User.java": "9a492ef2f14427c1f42f73b6f9f07e38c4ef3ab20e3ac43b0e9c417e04eac801",
++    "src/main/java/it/unifi/drivehub/domain/user/UserDashboardNavigator.java": "ba079db6570c41d52d682fdb58c076592723dc29d753bffe0109c991226e874a",
++    "src/main/java/it/unifi/drivehub/domain/vehicle/Brand.java": "02076f84da99b872c5f61797b6c9176db058c54945e796afccc3bec727f2ca64",
++    "src/main/java/it/unifi/drivehub/domain/vehicle/Model.java": "f9c1faafbb27b793e60e4e6469060546e008c98d386807e141e487e3bced81d0",
++    "src/main/java/it/unifi/drivehub/domain/vehicle/PriceMode.java": "ef187d9f64748fe965fdd301b4752f592b19f8f69085f19579e871a7aaacd11a",
++    "src/main/java/it/unifi/drivehub/domain/vehicle/Vehicle.java": "aa03a09f347b0f87476c15cc99e491f87c70f10b8dad3601d88b29aa8238910e",
++    "src/main/java/it/unifi/drivehub/domain/vehicle/VehicleState.java": "e49dc62fd22abeb8c90c43cf6ac11bc5764746466b2bc44e11f60ed3d16bca94",
++    "src/main/java/it/unifi/drivehub/event/VehicleCommitmentEvent.java": "b2e02f214c3fd203c66eff0db7087be5099fc17392c71edd78a4695819983eff",
++    "src/main/java/it/unifi/drivehub/event/VehicleCommitmentObserver.java": "565197e5d72a4d9997142e53886599f30daa874682f90902d450af36b27ea9a7",
++    "src/main/java/it/unifi/drivehub/event/VehicleEventPublisher.java": "724a6ae08558963fbd9a3167948c4e739312d153fc96dfaa797cbadeb68552be",
++    "src/main/java/it/unifi/drivehub/presentation/view/AccountManagementDialog.java": "20c5aa25545dd17bc75b6bc50bdef4e2d9ee6caca43f9d01689f514988c89860",
++    "src/main/java/it/unifi/drivehub/presentation/view/AsyncLoad.java": "4fd2af28fc7244174667fd282716f44737df94e9863ef413ed2f9ea0023d5a90",
++    "src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java": "1f5abadeab838af657f6cbc5bca746236cc1d390392f6aa4390c9257c059c154",
++    "src/main/java/it/unifi/drivehub/presentation/view/LoginView.java": "239f7741174f27120343a416fbb14724c5094897187eb684d3463e73ff091d0c",
++    "src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java": "2836d046331b4483a2c1ef58069ba16972beb0d98643659b8715a366247b0d90",
++    "src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java": "b550225855f7ff80a7afc35ca39c4db56133c88b1527ec9aa6800aee2d256c4e",
++    "src/main/java/it/unifi/drivehub/presentation/view/UiUtils.java": "34ef4466368b94e69f8ee0723e80de0e1dbaee852da281537fa1aabdba6fd71b",
++    "src/main/java/it/unifi/drivehub/security/PasswordHasher.java": "3b3da16d9b1fdb041a5046d6697bb954bfeb7ef4bb47044d3c0bfcf7bbf8ee61",
++    "src/main/java/it/unifi/drivehub/security/Pbkdf2PasswordHasher.java": "eb532cfb4bd2cb78d4e75fa51c30cfd84d6f1e88a326168480dac9905981c2c9",
++    "src/main/java/it/unifi/drivehub/service/AuthService.java": "ee97db9cb5296bc4b69233b3c6ff83cd37c2238b4e504ac5918fe4ba05d356ea",
++    "src/main/java/it/unifi/drivehub/service/CatalogService.java": "d43633c5d2d19852cc90354fe44bd60b837520ed0259796262c3936ba6d3ea8b",
++    "src/main/java/it/unifi/drivehub/service/OperationQueryService.java": "a4afb8e43dd31a13ee433afc8f72b3c160b15c48601f7bb51cf97efdf5b79467",
++    "src/main/java/it/unifi/drivehub/service/PriceCalculatorService.java": "d155f4a7eeb9c6128eaa885cd62f975e20db8539f75baafadd223e567846598d",
++    "src/main/java/it/unifi/drivehub/service/PurchaseService.java": "afa43d3f2aeac2060b0c52322a73f360b1c86a503c8301f5373c4afd6b558c28",
++    "src/main/java/it/unifi/drivehub/service/RentalService.java": "42263a9b0f92adca140e77d51c9d1003823f4a8b0aee82ea08e8cb24389a7eeb",
++    "src/main/java/it/unifi/drivehub/service/SaleToDealershipService.java": "f47c3deb6944dd0b4cd333c829db22fc6f8cb9b076d099549869427ad5ee455a",
++    "src/main/java/it/unifi/drivehub/service/TestDriveCancellationObserver.java": "29f9f98fb4a76bd00f09e9ed1627ab83923c08b870b4e0d1c8d922cdb4540946",
++    "src/main/java/it/unifi/drivehub/service/TestDriveService.java": "c43062b2a64b2b586990e0f4e72edd27cc2d81d1214399ac126907dff4af2131",
++    "src/main/resources/application.properties": "ba6100cb4526cb03fee17c64c9124d4d525c3328447cde39fb885ba4c6ead097",
++    "src/main/resources/css/style.css": "472f8a41fe3f0f93eedd86f8e840a87aa7a43327974606627da86e2c2ecea0ca",
++    "src/main/resources/db/demo.sql": "40ae945b290a44db1cc9e14b74443a68dea264ad7722b02a1dba39aff940e0fb",
++    "src/main/resources/db/schema.sql": "111cbb2baaa36eff25beacf874ff9b4ceb0f3831caa4a189450696ce904da517",
++    "src/test/java/it/unifi/drivehub/AuthServiceIntegrationTest.java": "ccdd26cf6bce9ddae2d86aacf62abd006fa89837a9fc6eaf9130d71201b0361e",
++    "src/test/java/it/unifi/drivehub/BalanceConcurrencyIntegrationTest.java": "565cd4aa0990bf1750b71512d52febfcdfe20bd4033b960864bb1b255b530ae1",
++    "src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java": "3ebb64c939e8662fc67dc63ea2642c91164bfec84a41ff7affe7357b3b997467",
++    "src/test/java/it/unifi/drivehub/BookingRulesTest.java": "d619213ae9e3979f9ae30d95ccca8e43bd225318355fc12706fe7a1e36d1119e",
++    "src/test/java/it/unifi/drivehub/CatalogListingIntegrationTest.java": "ce77d34b78cd8dbb1d54af8f5264a8c0c10a8252a8d7846cdaf33c4480950b56",
++    "src/test/java/it/unifi/drivehub/DatabaseConnectionIntegrationTest.java": "70a0ff10df4ee74a4a8736fe8d5cb76413b1b88074b6ce644528f54b1124760e",
++    "src/test/java/it/unifi/drivehub/DatabaseIsolationIntegrationTest.java": "73e8f9f28dc3fff288189c1733b966345a282ecc9ee734e0f0b6cefbab83a0f6",
++    "src/test/java/it/unifi/drivehub/DemoSqlValidationTest.java": "d90e34ff13150e5fe035f5223a98c2c240f5a1ab940c6f6f409ebca80c2198da",
++    "src/test/java/it/unifi/drivehub/DomainInvariantsTest.java": "05b33f269fa1af288fda238eb88b68799c2b0c37f996419be5addf37993b8e6f",
++    "src/test/java/it/unifi/drivehub/FullWorkflowIntegrationTest.java": "ff2795b2294b83a304b626bec274786a05aa8e3768ed65e7746e40b8ed0cc747",
++    "src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java": "57fbdec1a8fa7d5e2dcc1a77a5aec8f862c745a98757e534b1e1a50960a86e05",
++    "src/test/java/it/unifi/drivehub/PriceCalculatorServiceTest.java": "1b8195b0390699c1b84094c8f71683cde7e40f9529e4b656659de724ea53326a",
++    "src/test/java/it/unifi/drivehub/PriceSelectionIntegrationTest.java": "dbb0ab510aedfc86b94c7d279b25ef542614b217be2bbbfdb98ba22e5814c011",
++    "src/test/java/it/unifi/drivehub/PurchaseAgreementIntegrationTest.java": "bd6254bfaaa250e65c82f88bd0d747c06bcc2867f7b81de790efef6d94433a15",
++    "src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java": "da3a53bd8c49ebe1b8298447950cfd46f056d57ca2247bc503c32143dcc1db42",
++    "src/test/java/it/unifi/drivehub/RequestAgreementTest.java": "e3d5a263a1e84b3e6a572d844f7d1f182790a8837f2ca7b17d13e14baee86033",
++    "src/test/java/it/unifi/drivehub/SaleOutcomeIntegrationTest.java": "2cd7f4642e3078550de6c2130bac4aefcda9d926bf695a31f7e8468a698c0931",
++    "src/test/java/it/unifi/drivehub/SaleProposalIntegrationTest.java": "1ff07208b51a4dafb6bac03e3da228b6cee89bb3f8eee0f27ee217f00ace683c",
++    "src/test/java/it/unifi/drivehub/SaleTypeTest.java": "11ae6083f713448406a8fb560c48eba4f14bc23b6c431cec1ecd9dd4ac790e01",
++    "src/test/java/it/unifi/drivehub/TestDatabase.java": "6f02ba5062da92f5c1645652f4bd09d4465add57d7ea6ad1ec43780aefa53037",
++    "src/test/java/it/unifi/drivehub/TestDatabaseConfigurationTest.java": "aa26fc53885906fa2ca2d065400024daca54ac3db45e46a9296a04ed04d1ac94",
++    "src/test/java/it/unifi/drivehub/TestDriveCancellationIntegrationTest.java": "b9aac2d2a77c1c647a3c2959f91994f279307e3256ec273763b74cf78868f039",
++    "src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java": "8991a80f778ec6de8417bc58e616d205932d7b9343fba3bc6696283cdc85a54c"
++  }
++}
+--- /dev/null
++++ b/DriveHub/docs/evidence/r09-diagrams/setup-db.py
+@@ -0,0 +1,23 @@
++from pathlib import Path
++import json, subprocess
++
++s = Path('/tmp/drivehub-ticket17-session')
++e = Path('/home/federico/dev/Drivehub/DriveHub/docs/evidence/r09-diagrams')
++env = json.loads((s/'env.json').read_text())
++repo = s/'install/DriveHub'
++psql = ['psql','-X','-v','ON_ERROR_STOP=1','-h',str(s),'-p','55435']
++with (e/'database-setup.log').open('w') as log:
++    for db, prefix in [('drivehub_test','DRIVEHUB_TEST'),('drivehub','DRIVEHUB_SENTINEL')]:
++        password=env[prefix+'_DB_PASSWORD']
++        sql=f"CREATE ROLE {db} LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS PASSWORD '{password}';\nCREATE DATABASE {db} OWNER {db};\nREVOKE CONNECT ON DATABASE {db} FROM PUBLIC;\nGRANT CONNECT ON DATABASE {db} TO {db};\n"
++        subprocess.run(psql+['-d','postgres'],input=sql,text=True,env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
++    appenv=env|{'PGPASSWORD':env['DRIVEHUB_SENTINEL_DB_PASSWORD']}
++    app=['psql','-X','-v','ON_ERROR_STOP=1','--single-transaction','-h','127.0.0.1','-p','55435','-U','drivehub','-d','drivehub']
++    subprocess.run(app+['-f','src/main/resources/db/schema.sql'],cwd=repo,env=appenv,stdout=log,stderr=subprocess.STDOUT,check=True)
++    subprocess.run(app+['-c',"SELECT count(*) AS clients_before_optional_demo FROM client; SELECT extname FROM pg_extension WHERE extname='btree_gist';"],cwd=repo,env=appenv,stdout=log,stderr=subprocess.STDOUT,check=True)
++    subprocess.run(app+['-f','src/main/resources/db/demo.sql'],cwd=repo,env=appenv,stdout=log,stderr=subprocess.STDOUT,check=True)
++    subprocess.run(app+['-c',"INSERT INTO brand(name) VALUES ('R00_SENTINEL'); SELECT current_database(), current_user, (SELECT count(*) FROM client) AS clients, (SELECT count(*) FROM sale) AS operations;"],env=appenv,stdout=log,stderr=subprocess.STDOUT,check=True)
++with (e/'versions.txt').open('w') as log:
++    for command in [['java','-version'],['javac','-version'],['mvn','-version'],['postgres','--version'],['psql','--version']]:
++        subprocess.run(command,env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
++print('Dedicated nonadmin roles/databases created; empty schema then optional demo and sentinel loaded')
+--- /dev/null
++++ b/DriveHub/docs/evidence/r09-diagrams/targeted-summary.json
+@@ -0,0 +1,6 @@
++{
++  "tests": 79,
++  "failures": 0,
++  "errors": 0,
++  "skipped": 0
++}
+--- /dev/null
++++ b/DriveHub/docs/evidence/r09-diagrams/verification.md
+@@ -0,0 +1,95 @@
++# Ticket17 — diagrammi ed evidenze della versione locale corrente
++
++Sessione3novembre2026, soltanto17/AC14. Letti AGENTS, piano, glossario, ADR0001,
++testing, installation, architecture ed evidenze16; [01–16 chiusi](prerequisites.json),
++senza criteri aperti. Relazione_SWE esclusa da letture, copia, ricerche,
++generazioni e verifiche. Nessun commit/staging, refactor o anticipo del18.
++
++## Versione e perimetro verificato
++
++HEAD iniziale `c2a81122ee6be44760ded4160fde229bd33e837c` **non è la versione
++completa verificata**. [Baseline](baseline.json):1507file iniziali, compresi
++modificati/non tracciati e ignorati; progetto, tracker e piano esterni, esclusi
++`.git`, `target` e relazione. Copia byte per byte in
++`/tmp/drivehub-r17-baseline/tree`, diff iniziale daHEAD in
++[baseline-head.patch](baseline-head.patch), [stato](baseline-status.txt) e
++[diff indice](baseline-index.patch). Nessun file preesistente rimosso.
++
++L'installazione runtime è una copia di questa fotografia, non un checkoutHEAD.
++Solo `application.properties` sostituito nella copia con credenziali private del
++DB sacrificabile; sorgenti Java, test, POM, schema/demo e harness del repository
++restano invariati. [Identità degli input](runtime-identity.json) e
++[manifest della suite finale](full-inputs.sha256.json) delimitano esattamente la
++versione eseguita. Il diff17 è confrontato con la baseline locale:
++[patch di review](review.patch), [file della review](review-files.sha256.json).
++I documenti di chiusura e la conservazione finale sono registrati separatamente.
++
++## Diagrammi correnti e storico
++
++[Indice dei diagrammi usati](../../diagrams/README.md): **18sorgenti PlantUML e
++18SVG**, cinque viste classi, un package, sei sequenze, due casi d'uso, tre
++navigazioni e una macchina a stati del veicolo. Non sostituiscono il codice con
++un progetto ideale: utenti per sottotipi, DAO con Connection, servizi concreti,
++totale/acconto persistiti, tipi/segni operazioni, lock, Observer prima del commit,
++scadenza all'ingresso, rimborsi e Task correnti. Precisazioni teoriche16 mantenute:
++factory statiche ≠ Factory Method GoF; DAO/DI/composition root distinti; nessuna
++pretesa di SOLID/DDD puri, snapshot unico listino o garanzia globale di concorrenza.
++
++Ogni vista è collegata a sorgenti/test reali; i package sono dipendenze del
++codice, le sequenze scambi/risultati, la navigazione scene/tab/dialoghi.
++Nessun riferimento corrente a classi inesistenti usato come componente.
++I nomi della vecchia versione compaiono solo nelle esclusioni esplicative.
++
++[Inventario storico](historical-artifacts.json): **37artefatti visivi conservati
++identici**, inclusi17puml originali,8draw.io,3mockup e9screenshot. Identificati
++come storici nell'indice, senza spostarli o rigenerarli. ER escluso dalla selezione
++usata17. Due vecchi `source-manifest.json`:150voci ciascuno,149percorsi mancanti
++e hash POM diverso; appartengono a `it.unifi.ing.drivehub`, non al codice corrente.
++[Indice evidenze](../README.md): risultati01–16 restano delle rispettive sessioni,
++in particolare **394/394del16 è storico**.
++
++## Ambiente e risultati osservati17
++
++[Comandi, tentativi e limiti](commands.md), [ambiente](environment.txt),
++[versioni](versions.txt). Ricontrollati strumenti16 presenti: Java/javac21.0.12.1,
++Maven3.9.16 sullo stesso JDK, PostgreSQL16.15, Xvfb. Nuovo cluster solo
++**127.0.0.1:55435**, ruoli/DB non amministrativi distinti e sentinella; display
++isolato91. Nessuna configurazione privata pubblicata o DB preesistente usato.
++
++| Verifica nuova | Esito effettivo |
++|---|---|
++| Compilazione Java21 e mirati su DB reale | **79/79**, zero failure/errori/salti; [log](targeted.log), [XML](targeted-surefire/), [summary](targeted-summary.json) |
++| TableLifecycleUiCheck14 riusato | **UI CHECK SUCCESS**: tre dashboard, tab/tastiera, prezzi, caricamento su lock PostgreSQL, errore/riprova e risultato/errore obsoleto, celle senza query; [log](table-lifecycle.log) |
++| AppStartupUiCheck15 riusato | **APP STARTUP SUCCESS**: App.start, LoginView con due tab, tema e Tab; [log](startup-check.log) |
++| Suite completa finale `mvn -Ppostgres-tests clean test` | **394/394**,47senzaDB/347PostgreSQL, zero failure/errori/salti; [log nuovo](full.log), [XML](full-surefire/), [summary](full-summary.json), [gruppi](full-groups.json) |
++| PlantUML1.2026.2, SVG e PNG dei soli18diagrammi correnti | Render finali **exit0**; [comandi](render.log), [hash/dimensioni e ispezione](render-inventory.json) |
++| Sentinella dopo mirati, GUI e suite | **READ ONLY**,13tabelle/7sequenze identiche [prima](before-suite-application.sha256.json)/[dopo](after-suite-application.sha256.json); [privilegi/esito](after-suite-environment.txt) |
++| Arresto servizi creati17 | PostgreSQL/Xvfb arrestati, listener55435/socket91 assenti; [esito](shutdown.txt) |
++
++Questo394/394è una **nuova esecuzione17**, distinta da quella16; nessuna percentuale
++di copertura dedotta. Primo mirato fallito per server perso fra sandbox, poi79/79;
++primo avvio finale interrotto143 senza riepilogo, poi nuova suite completa exit0.
++Conservati log/summary falliti o incompleti senza presentarli come successi.
++
++Ispezionati18PNG dei diagrammi a risoluzione naturale/zoom e8schermate UI:
++[accesso](startup-login.png), [manager](manager-prices.png), [caricamento](loading.png),
++[riprova](retry.png), [cliente vendita](client-sale.png), [noleggio](client-rent.png),
++[listino aggiornato](client-refreshed.png), [inventario venditore](salesman-inventory.png).
++Corrette le prime impaginazioni e rigenerati solo i render correnti. Le firme
++abbreviate rimandano ai sorgenti; i render SVG rimangono zoomabili.
++
++## Review, conservazione e limiti
++
++Review indipendenti Standards/Spec sul solo diff della sessione in corso;
++ticket ancora in-progress fino alla loro conclusione e al controllo finale.
++
++Nessun nuovo test della documentazione o modifica a codice/POM/test/DB/UI.
++Nessuna rigenerazione degli artefatti storici o grafi Graphify: nessun grafo
++esistente, letture mirate sufficienti. Le verifiche dei link non leggono la relazione.
++
++Limiti: Linux/WSL/Xvfb e rendering software, non altri OS/display, screen reader
++o stampa/A4. Non tutti i gesti/dialoghi di navigazione riesercitati nella GUI:
++parte della corrispondenza deriva dall'ispezione dei sorgenti; test di servizio
++non equivalgono a test UI. Nessuna nuova prova di installer, migrazione completa,
++prestazioni universali o assenza globale di deadlock. Temporanei non garantiti
++nelle sessioni future. Verifica integrata e tracciabilità complessiva18 restano aperte.
+--- /dev/null
++++ b/DriveHub/docs/evidence/r09-diagrams/version.json
+@@ -0,0 +1,10 @@
++{
++  "recorded_utc": "2026-11-03T12:32:30.815173+00:00",
++  "commit_base": "c2a81122ee6be44760ded4160fde229bd33e837c",
++  "baseline_sha256": "ee78a986afcee68ae54dda2cb516127c1c6d321a3b1bdf0ffe88e0e425bbe945",
++  "baseline_head_patch_sha256": "d8d75327ec938599a57fc4d8eec31a37a2b2659e23026528177d42771bc7885a",
++  "baseline_kind": "full local worktree including modified, untracked and ignored files; not HEAD alone",
++  "baseline_files": 1507,
++  "index_sha256": "9ca6e45e5d65814d7529fc916acbcb829b31ce29eb2fb285919d1e4ca37b4f5f",
++  "session_scope": "ticket17 only; no source/test/POM/schema/demo changes; no staging/commit"
++}
+--- a/DriveHub/docs/testing.md
++++ b/DriveHub/docs/testing.md
+@@ -143,6 +143,12 @@
+ i limiti osservati in quelle sessioni. I rinvii a lavori allora successivi sono
+ storici:01–15 risultano chiusi. I conteggi precedenti non sostituiscono una nuova
+ esecuzione. Nessun nuovo test è necessario per certificare la sola documentazione.
++
++Il [ticket17](evidence/r09-diagrams/verification.md) collega i [diagrammi correnti](diagrams/README.md)
++a sorgenti e test reali e registra separatamente render, ispezione e nuove prove.
++Il394/394 del16 resta storico. [Indice delle evidenze](evidence/README.md):
++i vecchi manifest full-stack/jdk21-test e i risultati01–16 non attestano una nuova
++esecuzione17. Questa attività non chiude la verifica integrata18.
+ 
+ ## Saldi concorrenti — ticket 04
+ 
+--- a/PIANO_REVISIONI_DRIVEHUB.md
++++ b/PIANO_REVISIONI_DRIVEHUB.md
+@@ -2,7 +2,15 @@
+ 
+ Registro operativo avviato il 31 ottobre 2026. Punto di ingresso per riprendere il lavoro: avanzamento, decisioni, attività, verifiche e prossimo passo.
+ 
+-## Stato attuale — ticket 16 completato
++## Stato attuale — ticket17 in verifica
++
++- Solo17/AC14:01–16 verificati chiusi; baseline completa1507file, inclusi ignorati/modificati/non tracciati. HEAD da solo non identifica la versione. Relazione esclusa, nessun commit/staging o lavoro18.
++- Creati18diagrammi correnti con sorgenti PlantUML/renderSVG e rimandi a codice/test; originali37artefatti visivi e vecchi manifest identificati come storici e conservati. Precisazioni teoriche16 mantenute; nessun codice/POM/test/schema/demo modificato.
++- Java21/PG16 temporanei16 presenti e ricontrollati, PlantUML1.2026.2 predisposto. Nuovo cluster127.0.0.1:55435 e display91, DB/ruoli dedicati e sentinella. Mirati nuovi79/79, GUI UI CHECK SUCCESS e App.start APP STARTUP SUCCESS; suite finale nuova394/394 (47senzaDB/347PostgreSQL), zero failure/errori/salti.394/394del16 storico. Primo mirato fallito per server perso e primo avvio finale interrotto143 conservati separatamente.
++- Render finali SVG/PNG exit0; ispezione e correzioni di leggibilità; sentinella READ ONLY e hash13tabelle/7sequenze invariati. PostgreSQL/Xvfb arrestati. [Evidenze17](DriveHub/docs/evidence/r09-diagrams/verification.md).
++- Review indipendenti Standards/Spec e controllo di conservazione finale da concludere; ticket ancora in-progress.18/R11 non avviato.
++
++## Stato al termine del ticket16 — storico
+ 
+ - Solo16 completato,01–15 verificati chiusi;6/6criteri, **AC15/#15 e AC18/#18 chiusi**. Rilievi integralmente chiusi **17/20** (#1,#2,#3,#4,#5,#6,#7,#8,#9,#10,#11,#15,#16,#17,#18,#19,#20). R09 resta parziale per i diagrammi17; AC13 trasversale, nessun successivo avviato.
+ - Consolidati README, [installazione](DriveHub/docs/installation.md), [architettura](DriveHub/docs/architecture.md) e testing. Configurazione/inizializzazione/demo facoltativa, reset distruttivo distinto dall'avvio; factory statiche/GoF/DAO/DI, SOLID/DDD, responsabilità/dipendenze/flussi e compromessi sostenuti dai sorgenti. Nessun refactor o modifica a codice/POM/test/schema/demo/diagrammi.
+--- a/TRACKER_DRIVEHUB/revisioni/issues/17-diagrammi-ed-evidenze-correnti.md
++++ b/TRACKER_DRIVEHUB/revisioni/issues/17-diagrammi-ed-evidenze-correnti.md
+@@ -7,7 +7,7 @@
+ **Blocked by:** 02: Conservare il veicolo invariato dopo una modifica non valida; 03: Cambiare email senza compromettere l'accesso; 06: Concludere l'acquisto al totale concordato all'acconto; 10: Accettare o rifiutare una cessione senza doppi pagamenti; 12: Cambiare destinazione senza riaprire auto assegnate o perdere rimborsi; 13: Cancellare identità senza perdere richieste o attribuzioni storiche; 14: Consultare le tabelle senza query nel rendering; 15: Rimuovere FXML e stato di sessione soltanto se inutilizzati
+ 
+ Status: ready-for-agent
+-State: open
++State: in-progress
+ 
+ **Piano:** R09
+ **Specifica:** AC14
+@@ -32,3 +32,5 @@
+ ## Comments
+ 
+ - 31 ottobre 2026: ticket pubblicato da `to-tickets` dopo approvazione di granularità e dipendenze. Esecuzione non ancora avviata; verificare i blocchi prima di iniziare.
++
++- 3 novembre 2026: avviato solo17; letti AGENTS, piano, glossario, ADR0001, testing, installation, architecture ed evidenze16. Verificati01–16 chiusi senza criteri aperti. Baseline completa1507file (anche ignorati, modificati e non tracciati), HEAD/indice e diff iniziale salvati; relazione esclusa. Originali diagrammi/manifest conservati, nuova selezione corrente separata. Java21/PG16 temporanei ricontrollati; nuovo cluster sacrificabile127.0.0.1:55435 con DB dedicati e sentinella.394/394del16 storico; render, prove e review17 ancora da completare. Nessun commit/staging o lavoro18.

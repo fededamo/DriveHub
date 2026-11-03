@@ -1,0 +1,34 @@
+{
+  "rental": {
+    "same_test_source": true,
+    "sha256": "9c80110d2bebaadb1813bbc05f34a8042b4c1b411466b1170733e741e8ef1532"
+  },
+  "client": {
+    "same_test_source": true,
+    "sha256": "c937710bf1569b7b535bb56c294fd6350081fc5bfb7b1193f95c7f13fec9698d"
+  },
+  "mixed": {
+    "same_test_source": true,
+    "sha256": "c033eb01c355c59f917f5b0759df3a7a9d1f6e0c01ca80123d86045f18c3b11e"
+  },
+  "constraint": {
+    "same_test_source": true,
+    "sha256": "09ba40b8918d5206318212cb6b3be45337cf5dbf6c77c67d38fce8f40dd04a26"
+  },
+  "price": {
+    "same_test_source": true,
+    "sha256": "5427ddd619e8fce34de6fb113d2c9bf1ae1325899cc5f31506a90078d12e6fa6"
+  },
+  "hours": {
+    "same_test_source": true,
+    "sha256": "d619213ae9e3979f9ae30d95ccca8e43bd225318355fc12706fe7a1e36d1119e"
+  },
+  "messages": {
+    "same_test_source": true,
+    "sha256": "301dc5e9b5e0121183e59c2d19ec9c105d3ef97213bca5ebf259ccf4f6b68afb"
+  },
+  "lock-order": {
+    "same_test_source": true,
+    "sha256": "3ebb64c939e8662fc67dc63ea2642c91164bfec84a41ff7affe7357b3b997467"
+  }
+}

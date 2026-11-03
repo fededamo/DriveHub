@@ -1,0 +1,2 @@
+/tmp/drivehub-ticket16-tools/root/usr/bin/Xvfb :92 -screen 0 1440x1000x24 -nolisten tcp -nolisten unix -ac
+Display dedicato; solo socket locale astratto.

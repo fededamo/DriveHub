@@ -19,6 +19,9 @@ public interface UserDao {
 
     Optional<Client> findClientById(Long id);
 
+    /** Serializza le prenotazioni del cliente nella transazione, dopo il veicolo e prima del conto. */
+    void lockClient(Long id, Connection conn);
+
     Optional<Salesman> findSalesmanById(Long id);
 
     Optional<Manager> findManagerById(Long id);
@@ -29,8 +32,11 @@ public interface UserDao {
 
     void updatePassword(Long id, String role, String newHashPassword, Connection conn);
 
+    /** Blocca l'identità prima del conto e della verifica dei vincoli di cancellazione. */
+    void lockUser(Long id, String role, Connection conn);
+
     void deleteUser(Long id, String role, Connection conn);
 
-    boolean hasAssociatedOperations(Long userId, String role);
+    boolean hasAssociatedOperations(Long userId, String role, Connection conn);
 }
 

@@ -1,0 +1,60 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontSize 16
+skinparam classAttributeIconSize 0
+title DAO e JDBC — contratti rappresentativi, non ORM / UnitOfWork
+class DatabaseManager {
+  + getConnection(): Connection
+  + executeInTransaction(...): void
+  + executeInTransactionWithResult(...): T
+}
+interface VehicleDao {
+  + findByIdForUpdate(...): Optional<Vehicle>
+  + updateStateAtomically(...): boolean
+}
+interface RequestDao {
+  + findByIdForUpdate(...): Optional<Request>
+}
+interface BankAccountDao {
+  + findByClientIdForUpdate(...): Optional<BankAccount>
+}
+interface UserDao {
+  + lockClient(...): void
+}
+class PostgresVehicleDao
+class PostgresRequestDao
+class PostgresBankAccountDao
+class PostgresUserDao
+interface "java.sql.Connection" as Connection {
+  + setAutoCommit(autoCommit: boolean): void
+  + commit(): void
+  + rollback(): void
+  + close(): void
+}
+PostgresVehicleDao ..|> VehicleDao
+PostgresRequestDao ..|> RequestDao
+PostgresBankAccountDao ..|> BankAccountDao
+PostgresUserDao ..|> UserDao
+PostgresVehicleDao --> DatabaseManager
+PostgresRequestDao --> DatabaseManager
+PostgresBankAccountDao --> DatabaseManager
+PostgresUserDao --> DatabaseManager
+DatabaseManager ..> Connection : apre e chiude
+VehicleDao ..> Connection
+RequestDao ..> Connection
+BankAccountDao ..> Connection
+UserDao ..> Connection
+note bottom of DatabaseManager
+  Callback riuscito: commit; eccezione: tenta rollback;
+  errore di rollback conservato come eccezione soppressa.
+  Il servizio passa la stessa connessione alle scritture/Observer.
+  Argomenti omessi (...) per leggibilità: firme complete nei sorgenti.
+end note
+note bottom of VehicleDao
+  Anche Brand/Model/Discount/Rent/Sale/TestDriveDao
+  hanno un corrispondente PostgresDAO: 10 contratti totali.
+  Overload senza Connection aprono connessioni proprie.
+  Il dominio non dipende dai DAO; le firme DAO usano il dominio.
+end note
+@enduml

@@ -1,0 +1,7 @@
+b1f4ada3ad218e7d370ec2537016fcc031b702a97adfa696619e94ff33a7079f  docs/testing.md
+a055f0bda08937875edec64874689234fd2eaaa3b8c83dae37b51b39b9185e47  README.md
+8ce472179dac041b2097d0bf95d52550a7c50665049b5a935dfc130173a5330d  src/main/java/it/unifi/drivehub/dao/RequestDao.java
+e229e4be24a1f7de13c2e798fb6982c5f4b362b79dc2feda23e4e66bbc79bb25  src/main/java/it/unifi/drivehub/dao/postgres/PostgresBankAccountDao.java
+0ce2ae4bf388c5c879d95f1b1d473c0523c5b328fdd5d9ffe9de91d51974e1bb  src/main/java/it/unifi/drivehub/dao/postgres/PostgresRequestDao.java
+de769ac3dac08b89aa385cf5b28af2dd044fcd1b94c53a833890b85cc21cbc5d  src/main/java/it/unifi/drivehub/service/PurchaseService.java
+da3a53bd8c49ebe1b8298447950cfd46f056d57ca2247bc503c32143dcc1db42  src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java

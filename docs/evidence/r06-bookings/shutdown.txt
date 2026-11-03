@@ -1,0 +1,4 @@
+LD_LIBRARY_PATH=/tmp/drivehub-ticket07-tools/root/usr/lib/x86_64-linux-gnu /tmp/drivehub-ticket07-tools/root/usr/lib/postgresql/16/bin/pg_ctl -D /tmp/drivehub-ticket07-pgdata -m fast -w stop
+waiting for server to shut down.... done
+server stopped
+Postmaster.pid assente dopo arresto. Xvfb non avviato in questa sessione.

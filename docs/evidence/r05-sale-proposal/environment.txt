@@ -1,0 +1,33 @@
+Apache Maven 3.9.16 (2bdd9fddda4b155ebf8000e807eb73fd829a51d5)
+Maven home: /mnt/c/ProgramData/chocolatey/lib/maven/apache-maven-3.9.16
+Java version: 21.0.12.1, vendor: Ubuntu, runtime: /tmp/drivehub-ticket07-tools/root/usr/lib/jvm/java-21-openjdk-amd64
+Default locale: en, platform encoding: UTF-8
+OS name: "linux", version: "6.18.54.1-microsoft-standard-wsl2", arch: "amd64", family: "unix"
+
+BEGIN
+ current_database | current_user  | inet_server_addr | inet_server_port |            current_setting            
+------------------+---------------+------------------+------------------+---------------------------------------
+ drivehub_test    | drivehub_test | 127.0.0.1        |            55432 | 16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)
+(1 row)
+
+ rolsuper | rolcreatedb | rolcreaterole | rolreplication | rolbypassrls 
+----------+-------------+---------------+----------------+--------------
+ f        | f           | f             | f              | f
+(1 row)
+
+ROLLBACK
+BEGIN
+ current_database | current_user | inet_server_addr | inet_server_port |            current_setting            
+------------------+--------------+------------------+------------------+---------------------------------------
+ drivehub         | drivehub     | 127.0.0.1        |            55432 | 16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)
+(1 row)
+
+ count 
+-------
+     1
+(1 row)
+
+ROLLBACK
+
+Private config: /tmp/drivehub-ticket07-env.json, mode 0600. No passwords copied.
+Cluster: /tmp/drivehub-ticket07-pgdata.

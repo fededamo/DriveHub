@@ -1,0 +1,180 @@
+COMMAND: mvn -B -Ppostgres-tests clean test
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------< it.unifi.drivehub:DriveHub >---------------------
+[INFO] Building DriveHub 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] 6 problems were encountered while building the effective model for org.openjfx:javafx-controls:jar:21.0.2 during dependency collection step for project (use -X to see details)
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ DriveHub ---
+[INFO] Deleting /tmp/drivehub-ticket17-session/install/DriveHub/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ DriveHub ---
+[INFO] Copying 4 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ DriveHub ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 65 source files with javac [debug target 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ DriveHub ---
+[INFO] skip non existing resourceDirectory /tmp/drivehub-ticket17-session/install/DriveHub/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ DriveHub ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 23 source files with javac [debug target 21] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ DriveHub ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running it.unifi.drivehub.VehicleDestinationIntegrationTest
+Ticket12 waiters 1 pid:blockers 26746:{26742}
+Ticket12 waiters 2 pid:blockers 26746:{26742}, 26748:{26746}
+Ticket12 waiters 1 pid:blockers 26873:{26869}
+Ticket12 waiters 2 pid:blockers 26873:{26869}, 26875:{26873}
+Ticket12 waiters 1 pid:blockers 26894:{26890}
+Ticket12 waiters 2 pid:blockers 26894:{26890}, 26896:{26894}
+Ticket12 waiters 1 pid:blockers 26917:{26913}
+Ticket12 waiters 2 pid:blockers 26917:{26913}, 26919:{26917}
+Ticket12 waiters 1 pid:blockers 26936:{26932}
+Ticket12 waiters 2 pid:blockers 26936:{26932}, 26938:{26936}
+Ticket12 waiters 1 pid:blockers 26955:{26951}
+Ticket12 waiters 2 pid:blockers 26955:{26951}, 26957:{26955}
+[INFO] Tests run: 33, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.526 s -- in it.unifi.drivehub.VehicleDestinationIntegrationTest
+[INFO] Running it.unifi.drivehub.TestDriveCancellationIntegrationTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.848 s -- in it.unifi.drivehub.TestDriveCancellationIntegrationTest
+[INFO] Running it.unifi.drivehub.TestDatabaseConfigurationTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.020 s -- in it.unifi.drivehub.TestDatabaseConfigurationTest
+[INFO] Running it.unifi.drivehub.SaleTypeTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s -- in it.unifi.drivehub.SaleTypeTest
+[INFO] Running it.unifi.drivehub.SaleProposalIntegrationTest
+[INFO] Tests run: 23, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.434 s -- in it.unifi.drivehub.SaleProposalIntegrationTest
+[INFO] Running it.unifi.drivehub.SaleOutcomeIntegrationTest
+Ticket10 waiters 1 pid:blockers 28036:{28032}
+Ticket10 waiters 1 pid:blockers 28061:{28057}
+Ticket10 waiters 1 pid:blockers 28080:{28076}
+Ticket10 waiters 1 pid:blockers 28099:{28095}
+Ticket10 waiters 1 pid:blockers 28126:{28118}
+Ticket10 waiters 1 pid:blockers 28187:{28183}
+Ticket10 waiters 1 pid:blockers 28315:{28311}
+Ticket10 waiters 2 pid:blockers 28315:{28311}, 28317:{28315}
+Ticket10 waiters 1 pid:blockers 28346:{28342}
+Ticket10 waiters 2 pid:blockers 28346:{28342}, 28348:{28346}
+Ticket10 waiters 1 pid:blockers 28377:{28373}
+Ticket10 waiters 2 pid:blockers 28377:{28373}, 28379:{28377}
+Ticket10 waiters 1 pid:blockers 28410:{28406}
+Ticket10 waiters 2 pid:blockers 28410:{28406}, 28412:{28410}
+Ticket10 waiters 1 pid:blockers 28449:{28445}
+Ticket10 waiters 2 pid:blockers 28449:{28445}, 28451:{28449}
+Ticket10 waiters 1 pid:blockers 28488:{28484}
+Ticket10 waiters 2 pid:blockers 28488:{28484}, 28490:{28488}
+Ticket10 waiters 1 pid:blockers 28527:{28523}
+Ticket10 waiters 2 pid:blockers 28527:{28523}, 28529:{28527}
+Ticket10 waiters 1 pid:blockers 28566:{28562}
+Ticket10 waiters 2 pid:blockers 28566:{28562}, 28568:{28566}
+[INFO] Tests run: 60, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 13.36 s -- in it.unifi.drivehub.SaleOutcomeIntegrationTest
+[INFO] Running it.unifi.drivehub.RequestAgreementTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 s -- in it.unifi.drivehub.RequestAgreementTest
+[INFO] Running it.unifi.drivehub.PurchaseConcurrencyIntegrationTest
+[INFO] Tests run: 60, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 13.86 s -- in it.unifi.drivehub.PurchaseConcurrencyIntegrationTest
+[INFO] Running it.unifi.drivehub.PurchaseAgreementIntegrationTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.863 s -- in it.unifi.drivehub.PurchaseAgreementIntegrationTest
+[INFO] Running it.unifi.drivehub.PriceSelectionIntegrationTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.051 s -- in it.unifi.drivehub.PriceSelectionIntegrationTest
+[INFO] Running it.unifi.drivehub.PriceCalculatorServiceTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s -- in it.unifi.drivehub.PriceCalculatorServiceTest
+[INFO] Running it.unifi.drivehub.IdentityDeletionIntegrationTest
+Ticket13 waiters 1 pid:blockers 30707:{30702}
+Ticket13 waiters 2 pid:blockers 30707:{30702}, 30709:{30707}
+Ticket13 waiters 1 pid:blockers 30737:{30732}
+Ticket13 waiters 2 pid:blockers 30737:{30732}, 30739:{30737}
+Ticket13 waiters 1 pid:blockers 30760:{30755}
+Ticket13 waiters 1 pid:blockers 30887:{30883}
+Ticket13 waiters 2 pid:blockers 30887:{30883}, 30890:{30887}
+Ticket13 waiters 1 pid:blockers 30918:{30914}
+Ticket13 waiters 2 pid:blockers 30918:{30914}, 30921:{30918}
+Ticket13 waiters 1 pid:blockers 30973:{30969}
+Ticket13 waiters 2 pid:blockers 30973:{30969}, 30979:{30973}
+Ticket13 waiters 1 pid:blockers 31069:{31064}
+Ticket13 waiters 2 pid:blockers 31069:{31064}, 31071:{31069}
+Ticket13 waiters 1 pid:blockers 31100:{31095}
+Ticket13 waiters 2 pid:blockers 31100:{31095}, 31102:{31100}
+Ticket13 waiters 1 pid:blockers 31187:{31182}
+Ticket13 waiters 2 pid:blockers 31187:{31182}, 31189:{31187}
+Ticket13 waiters 1 pid:blockers 31210:{31205}
+Ticket13 waiters 2 pid:blockers 31210:{31205}, 31212:{31210}
+Ticket13 waiters 1 pid:blockers 31296:{31292}
+Ticket13 waiters 2 pid:blockers 31296:{31292}, 31299:{31296}
+Ticket13 waiters 1 pid:blockers 31316:{31311}
+Ticket13 waiters 2 pid:blockers 31316:{31311}, 31318:{31316}
+Ticket13 waiters 1 pid:blockers 31332:{31328}
+Ticket13 waiters 2 pid:blockers 31332:{31328}, 31335:{31332}
+Ticket13 waiters 1 pid:blockers 31352:{31347}
+Ticket13 waiters 2 pid:blockers 31352:{31347}, 31354:{31352}
+Ticket13 waiters 1 pid:blockers 31371:{31366}
+Ticket13 waiters 2 pid:blockers 31371:{31366}, 31373:{31371}
+Ticket13 waiters 1 pid:blockers 31397:{31392}
+Ticket13 waiters 2 pid:blockers 31397:{31392}, 31399:{31397}
+Ticket13 waiters 1 pid:blockers 31712:{31707}
+Ticket13 waiters 2 pid:blockers 31712:{31707}, 31714:{31712}
+[INFO] Tests run: 60, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 15.41 s -- in it.unifi.drivehub.IdentityDeletionIntegrationTest
+[INFO] Running it.unifi.drivehub.FullWorkflowIntegrationTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.477 s -- in it.unifi.drivehub.FullWorkflowIntegrationTest
+[INFO] Running it.unifi.drivehub.DomainInvariantsTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.035 s -- in it.unifi.drivehub.DomainInvariantsTest
+[INFO] Running it.unifi.drivehub.DemoSqlValidationTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.352 s -- in it.unifi.drivehub.DemoSqlValidationTest
+[INFO] Running it.unifi.drivehub.DatabaseIsolationIntegrationTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.320 s -- in it.unifi.drivehub.DatabaseIsolationIntegrationTest
+[INFO] Running it.unifi.drivehub.DatabaseConnectionIntegrationTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.114 s -- in it.unifi.drivehub.DatabaseConnectionIntegrationTest
+[INFO] Running it.unifi.drivehub.CatalogListingIntegrationTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.270 s -- in it.unifi.drivehub.CatalogListingIntegrationTest
+[INFO] Running it.unifi.drivehub.BookingRulesTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s -- in it.unifi.drivehub.BookingRulesTest
+[INFO] Running it.unifi.drivehub.BookingConcurrencyIntegrationTest
+Ticket11 waiters 1 pid:blockers 32015:{32011}
+Ticket11 waiters 2 pid:blockers 32015:{32011}, 32017:{32015}
+Ticket11 waiters 1 pid:blockers 32032:{32028}
+Ticket11 waiters 2 pid:blockers 32032:{32028}, 32034:{32032}
+Ticket11 waiters 1 pid:blockers 32049:{32045}
+Ticket11 waiters 2 pid:blockers 32049:{32045}, 32051:{32049}
+Ticket11 waiters 1 pid:blockers 32062:{32058}
+Ticket11 waiters 1 pid:blockers 32095:{32091}
+Ticket11 waiters 2 pid:blockers 32095:{32091}, 32097:{32095}
+Ticket11 waiters 1 pid:blockers 32113:{32109}
+Ticket11 waiters 2 pid:blockers 32113:{32109}, 32118:{32113}
+Ticket11 waiters 1 pid:blockers 32159:{32155}
+Ticket11 waiters 1 pid:blockers 32172:{32168}
+Ticket11 waiters 1 pid:blockers 32185:{32181}
+Ticket11 waiters 2 pid:blockers 32185:{32181}, 32187:{32185}
+Ticket11 waiters 1 pid:blockers 32199:{32195}
+Ticket11 waiters 1 pid:blockers 32211:{32207}
+Ticket11 waiters 1 pid:blockers 32223:{32219}
+Ticket11 waiters 2 pid:blockers 32223:{32219}, 32225:{32223}
+Ticket11 waiters 1 pid:blockers 32277:{32273}
+Ticket11 waiters 2 pid:blockers 32277:{32273}, 32279:{32277}
+Ticket11 waiters 1 pid:blockers 32361:{32357}
+Ticket11 waiters 2 pid:blockers 32361:{32357}, 32363:{32361}
+Ticket11 operation 3 completed before gate release
+Ticket11 waiters 1 pid:blockers 32381:{32377}
+Ticket11 waiters 2 pid:blockers 32381:{32377}, 32383:{32381}
+[INFO] Tests run: 36, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.215 s -- in it.unifi.drivehub.BookingConcurrencyIntegrationTest
+[INFO] Running it.unifi.drivehub.BalanceConcurrencyIntegrationTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.822 s -- in it.unifi.drivehub.BalanceConcurrencyIntegrationTest
+[INFO] Running it.unifi.drivehub.AuthServiceIntegrationTest
+[INFO] Tests run: 18, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.765 s -- in it.unifi.drivehub.AuthServiceIntegrationTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 394, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  01:26 min
+[INFO] Finished at: 2026-11-03T13:27:59+01:00
+[INFO] ------------------------------------------------------------------------

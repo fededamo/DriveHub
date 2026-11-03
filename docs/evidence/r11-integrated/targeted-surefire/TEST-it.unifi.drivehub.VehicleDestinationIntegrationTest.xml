@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="8.521" tests="33" errors="0" skipped="0" failures="0">
+  <testcase name="skippedCancellationCannotCommitRefundsOrSale" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.916" />
+  <testcase name="futureRentalPreviewExcludesTodayAndHistory" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.248" />
+  <testcase name="destinationCommittedFirstRejectsConcurrentRentalWithoutChargingIt" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.371">
+    <system-out>Ticket12 waiters 1 pid:blockers 48582:{48578}
+Ticket12 waiters 2 pid:blockers 48582:{48578}, 48584:{48582}
+</system-out>
+  </testcase>
+  <testcase name="futureRentalsAreFullyRefundedForEveryClientWhileHistoryAndOtherVehiclesRemain" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.399" />
+  <testcase name="onlyOppositeSaleAndRentStatesCanBeSelected(VehicleState, VehicleState)[1]" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.212" />
+  <testcase name="onlyOppositeSaleAndRentStatesCanBeSelected(VehicleState, VehicleState)[2]" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.202" />
+  <testcase name="onlyOppositeSaleAndRentStatesCanBeSelected(VehicleState, VehicleState)[3]" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.181" />
+  <testcase name="onlyOppositeSaleAndRentStatesCanBeSelected(VehicleState, VehicleState)[4]" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.183" />
+  <testcase name="onlyOppositeSaleAndRentStatesCanBeSelected(VehicleState, VehicleState)[5]" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.187" />
+  <testcase name="onlyOppositeSaleAndRentStatesCanBeSelected(VehicleState, VehicleState)[6]" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.183" />
+  <testcase name="onlyOppositeSaleAndRentStatesCanBeSelected(VehicleState, VehicleState)[7]" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.18" />
+  <testcase name="onlyOppositeSaleAndRentStatesCanBeSelected(VehicleState, VehicleState)[8]" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.184" />
+  <testcase name="concurrentDestinationCommandsCannotRefundTwice(VehicleState)[1]" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.309">
+    <system-out>Ticket12 waiters 1 pid:blockers 48709:{48705}
+Ticket12 waiters 2 pid:blockers 48709:{48705}, 48711:{48709}
+</system-out>
+  </testcase>
+  <testcase name="concurrentDestinationCommandsCannotRefundTwice(VehicleState)[2]" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.315">
+    <system-out>Ticket12 waiters 1 pid:blockers 48730:{48726}
+Ticket12 waiters 2 pid:blockers 48730:{48726}, 48732:{48730}
+</system-out>
+  </testcase>
+  <testcase name="destinationRollbackReleasesVehicleForConcurrentRental" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.326">
+    <system-out>Ticket12 waiters 1 pid:blockers 48753:{48749}
+Ticket12 waiters 2 pid:blockers 48753:{48749}, 48755:{48753}
+</system-out>
+  </testcase>
+  <testcase name="rentalCommittedFirstIsRereadUnderVehicleLock(int)[1]" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.278">
+    <system-out>Ticket12 waiters 1 pid:blockers 48772:{48768}
+Ticket12 waiters 2 pid:blockers 48772:{48768}, 48774:{48772}
+</system-out>
+  </testcase>
+  <testcase name="rentalCommittedFirstIsRereadUnderVehicleLock(int)[2]" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.296">
+    <system-out>Ticket12 waiters 1 pid:blockers 48791:{48787}
+Ticket12 waiters 2 pid:blockers 48791:{48787}, 48793:{48791}
+</system-out>
+  </testcase>
+  <testcase name="bothDirectionsWorkWithoutRentals(VehicleState)[1]" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.187" />
+  <testcase name="bothDirectionsWorkWithoutRentals(VehicleState)[2]" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.187" />
+  <testcase name="rentalIncludingTodayPreventsSaleAndAllRefunds(int, int)[1]" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.239" />
+  <testcase name="rentalIncludingTodayPreventsSaleAndAllRefunds(int, int)[2]" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.218" />
+  <testcase name="rentalIncludingTodayPreventsSaleAndAllRefunds(int, int)[3]" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.224" />
+  <testcase name="rentalIncludingTodayPreventsSaleAndAllRefunds(int, int)[4]" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.24" />
+  <testcase name="nonDestinationTargetsAreRejected(VehicleState)[1]" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.125" />
+  <testcase name="nonDestinationTargetsAreRejected(VehicleState)[2]" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.118" />
+  <testcase name="nonDestinationTargetsAreRejected(VehicleState)[3]" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.114" />
+  <testcase name="nonDestinationTargetsAreRejected(VehicleState)[4]" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.11" />
+  <testcase name="unknownVehicleCannotChangeDestination" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.109" />
+  <testcase name="refundOrStateFailureRollsBackActualCancellationsAndCredits(String, String)[1]" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.275" />
+  <testcase name="refundOrStateFailureRollsBackActualCancellationsAndCredits(String, String)[2]" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.315" />
+  <testcase name="refundOrStateFailureRollsBackActualCancellationsAndCredits(String, String)[3]" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.299" />
+  <testcase name="refundOrStateFailureRollsBackActualCancellationsAndCredits(String, String)[4]" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.297" />
+  <testcase name="missingSecondAccountRollsBackAnAlreadyWrittenFirstRefund" classname="it.unifi.drivehub.VehicleDestinationIntegrationTest" time="0.295" />
+</testsuite>

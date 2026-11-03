@@ -1,0 +1,49 @@
+COMMAND: /tmp/drivehub-ticket16-tools/root/usr/lib/jvm/java-21-openjdk-amd64/bin/javac --module-path /home/federico/.m2/repository/org/openjfx/javafx-base/21.0.2/javafx-base-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-graphics/21.0.2/javafx-graphics-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-controls/21.0.2/javafx-controls-21.0.2-linux.jar --add-modules javafx.controls -cp /tmp/drivehub-ticket18-session/install/DriveHub/target/classes:/tmp/drivehub-ticket18-session/install/DriveHub/target/test-classes:/home/federico/.m2/repository/org/postgresql/postgresql/42.7.3/postgresql-42.7.3.jar:/tmp/drivehub-ticket18-session/ui/SaleOutcomeUiCheck -d /tmp/drivehub-ticket18-session/ui/SaleOutcomeUiCheck /tmp/drivehub-ticket18-session/ui/SaleOutcomeUiCheck/sources/AgreementUiCheck.java /tmp/drivehub-ticket18-session/ui/SaleOutcomeUiCheck/sources/AppStartupUiCheck.java /tmp/drivehub-ticket18-session/ui/SaleOutcomeUiCheck/sources/DestinationUiCheck.java /tmp/drivehub-ticket18-session/ui/SaleOutcomeUiCheck/sources/IdentityUiCheck.java /tmp/drivehub-ticket18-session/ui/SaleOutcomeUiCheck/sources/PriceUiCheck.java /tmp/drivehub-ticket18-session/ui/SaleOutcomeUiCheck/sources/ReactiveTablesUiCheck.java /tmp/drivehub-ticket18-session/ui/SaleOutcomeUiCheck/sources/SaleOutcomeUiCheck.java /tmp/drivehub-ticket18-session/ui/SaleOutcomeUiCheck/sources/SlowModelsUiCheck.java /tmp/drivehub-ticket18-session/ui/SaleOutcomeUiCheck/sources/TableLifecycleUiCheck.java
+COMMAND: /tmp/drivehub-ticket16-tools/root/usr/lib/jvm/java-21-openjdk-amd64/bin/java --module-path /home/federico/.m2/repository/org/openjfx/javafx-base/21.0.2/javafx-base-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-graphics/21.0.2/javafx-graphics-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-controls/21.0.2/javafx-controls-21.0.2-linux.jar --add-modules javafx.controls -Dprism.order=sw -cp /tmp/drivehub-ticket18-session/install/DriveHub/target/classes:/tmp/drivehub-ticket18-session/install/DriveHub/target/test-classes:/home/federico/.m2/repository/org/postgresql/postgresql/42.7.3/postgresql-42.7.3.jar:/tmp/drivehub-ticket18-session/ui/SaleOutcomeUiCheck it.unifi.drivehub.SaleOutcomeUiCheck seed /tmp/drivehub-ticket18-session/ui/SaleOutcomeUiCheck
+SEED SUCCESS: tre cessioni 16000, storico effettivo, tipi espliciti anche a zero
+COMMAND: /tmp/drivehub-ticket16-tools/root/usr/lib/jvm/java-21-openjdk-amd64/bin/java --module-path /home/federico/.m2/repository/org/openjfx/javafx-base/21.0.2/javafx-base-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-graphics/21.0.2/javafx-graphics-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-controls/21.0.2/javafx-controls-21.0.2-linux.jar --add-modules javafx.controls -Dprism.order=sw -cp /tmp/drivehub-ticket18-session/install/DriveHub/target/classes:/tmp/drivehub-ticket18-session/install/DriveHub/target/test-classes:/home/federico/.m2/repository/org/postgresql/postgresql/42.7.3/postgresql-42.7.3.jar:/tmp/drivehub-ticket18-session/ui/SaleOutcomeUiCheck it.unifi.drivehub.SaleOutcomeUiCheck check /tmp/drivehub-ticket18-session/ui/SaleOutcomeUiCheck
+PASS JavaFX avviato nella seconda JVM
+PASS selezione righe con tastiera e focus visibile
+PASS tabella richieste raggiunta con focus tastiera
+PASS importi selezionati leggibili con testo scuro
+PASS cessione selezionata con frecce T1000000000000091
+PASS messaggio di accredito positivo
+PASS conto cliente +16000
+PASS selezione righe con tastiera e focus visibile
+PASS tabella richieste raggiunta con focus tastiera
+PASS importi selezionati leggibili con testo scuro
+PASS cessione selezionata con frecce T1000000000000091
+PASS sessione obsoleta segnala errore senza secondo pagamento
+PASS nessun doppio accredito UI
+PASS selezione righe con tastiera e focus visibile
+PASS tabella richieste raggiunta con focus tastiera
+PASS importi selezionati leggibili con testo scuro
+PASS cessione selezionata con frecce T1000000000000092
+PASS messaggio rifiuto senza accredito
+PASS VIN nuovo rimosso dal catalogo UI
+PASS selezione righe con tastiera e focus visibile
+PASS tabella richieste raggiunta con focus tastiera
+PASS importi selezionati leggibili con testo scuro
+PASS cessione selezionata con frecce T1000000000000093
+PASS messaggio rifiuto con storico
+PASS VIN storico ripristinato SOLD
+PASS vendita e acquisizione conservate
+PASS cliente vede il saldo accreditato
+PASS registro raggiunto con frecce
+PASS registro riletto con tutte le cinque operazioni
+PASS tipo esplicito ACQUISITION -16000.00
+PASS importo del registro -16000.00
+PASS tipo esplicito PURCHASE 20000.00
+PASS importo del registro 20000.00
+PASS tipo esplicito PENALTY 800.00
+PASS importo del registro 800.00
+PASS tipo esplicito PURCHASE 0.00
+PASS importo del registro 0.00
+PASS tipo esplicito ACQUISITION 0.00
+PASS importo del registro 0.00
+PASS acquisizione -16000
+PASS selezione righe con tastiera e focus visibile
+PASS tabella richieste raggiunta con focus tastiera
+PASS importi selezionati leggibili con testo scuro
+PASS registro navigabile fino all'ultima operazione
+UI CHECK SUCCESS

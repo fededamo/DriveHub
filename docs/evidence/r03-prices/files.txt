@@ -1,0 +1,16 @@
+GLOSSARY.md
+README.md
+docs/testing.md
+src/main/java/it/unifi/drivehub/dao/VehicleDao.java
+src/main/java/it/unifi/drivehub/dao/postgres/PostgresVehicleDao.java
+src/main/java/it/unifi/drivehub/domain/vehicle/PriceMode.java
+src/main/java/it/unifi/drivehub/domain/vehicle/Vehicle.java
+src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java
+src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java
+src/main/java/it/unifi/drivehub/service/CatalogService.java
+src/main/java/it/unifi/drivehub/service/PriceCalculatorService.java
+src/main/java/it/unifi/drivehub/service/SaleToDealershipService.java
+src/main/resources/db/demo.sql
+src/main/resources/db/schema.sql
+src/test/java/it/unifi/drivehub/PriceCalculatorServiceTest.java
+src/test/java/it/unifi/drivehub/PriceSelectionIntegrationTest.java

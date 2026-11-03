@@ -1,0 +1,24 @@
+$ rg -n -i --hidden -g !.git/** -g !target/** -g !Relazione_SWE/** -g !docs/evidence/** fxml|currentUser|getCurrentUser|setCurrentUser|\blogout\b|SessionContext|session\.clear .
+exit=0
+./docs/testing.md:628:FXML e nessun chiamante di `AppContext.getCurrentUser`, `setCurrentUser` o
+./docs/testing.md:629:`logout`. Le viste continuano a ricevere l'utente e la callback di disconnessione.
+./docs/source-diagrams/page-navigation-source.drawio:98:        <mxCell id="Ku0o8qk710Uc4jAowcEN-27" connectable="0" parent="Ku0o8qk710Uc4jAowcEN-23" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;" value="Logout" vertex="1">
+./docs/source-diagrams/page-navigation-source.drawio:141:        <mxCell id="Ku0o8qk710Uc4jAowcEN-24" connectable="0" parent="Ku0o8qk710Uc4jAowcEN-21" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;" value="Logout" vertex="1">
+./docs/source-diagrams/page-navigation-source.drawio:173:        <mxCell id="Ku0o8qk710Uc4jAowcEN-25" connectable="0" parent="Ku0o8qk710Uc4jAowcEN-22" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;" value="Logout" vertex="1">
+./docs/Page Navigation Diagram.drawio:104:        <mxCell id="Ku0o8qk710Uc4jAowcEN-27" connectable="0" parent="Ku0o8qk710Uc4jAowcEN-23" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;" value="Logout" vertex="1">
+./docs/Page Navigation Diagram.drawio:115:        <mxCell id="Ku0o8qk710Uc4jAowcEN-24" connectable="0" parent="Ku0o8qk710Uc4jAowcEN-21" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;" value="Logout" vertex="1">
+./docs/Page Navigation Diagram.drawio:147:        <mxCell id="Ku0o8qk710Uc4jAowcEN-25" connectable="0" parent="Ku0o8qk710Uc4jAowcEN-22" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;" value="Logout" vertex="1">
+./docs/diagrams/page-navigation-customer.puml:32:  Aggiorna rilegge i dati; logout torna a P-00.
+./docs/diagrams/page-navigation-staff.puml:39:  Nessun passaggio fra ruoli senza logout e nuovo login.
+./docs/diagrams/sequence-rent-payment.puml:23:note over ui,dialog : Il controller carica PaymentDialog.fxml e chiama Stage.showAndWait().
+./docs/diagrams/class-presentation.puml:11: - session: SessionContext
+./docs/diagrams/class-presentation.puml:14:class SessionContext {
+./docs/diagrams/class-presentation.puml:36: + logout(): void
+./docs/diagrams/class-presentation.puml:39:ApplicationContext --> SessionContext : session
+./docs/diagrams/class-presentation.puml:52:  Il controller cliente carica il FXML.
+./docs/diagrams/page-navigation.puml:30:Customer --> Welcome : logout / session.clear()
+./docs/diagrams/page-navigation.puml:31:Salesman --> Welcome : logout / session.clear()
+./docs/diagrams/page-navigation.puml:32:Manager --> Welcome : logout / session.clear()
+./docs/diagrams/use-cases.puml:21:  usecase "UC-AUTH-03\nTerminare la sessione" as Logout
+./docs/diagrams/use-cases.puml:44:User -- Logout
+./docs/diagrams/use-cases.puml:65:  Login, logout e pagamento: livello function.

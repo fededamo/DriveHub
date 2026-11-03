@@ -1,0 +1,6 @@
+BEGIN
+drivehub_test|drivehub_test|127.0.0.1|55433
+drivehub_test|f|f|f|f|f
+1
+0
+ROLLBACK

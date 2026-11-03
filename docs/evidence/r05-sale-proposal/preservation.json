@@ -1,0 +1,26 @@
+{
+  "baseline_files": 401,
+  "unchanged": 387,
+  "intentionally_changed": 14,
+  "deleted": 0,
+  "changed_files": [
+    "DriveHub/docs/testing.md",
+    "DriveHub/src/main/java/it/unifi/drivehub/dao/RequestDao.java",
+    "DriveHub/src/main/java/it/unifi/drivehub/dao/SaleDao.java",
+    "DriveHub/src/main/java/it/unifi/drivehub/dao/VehicleDao.java",
+    "DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresRequestDao.java",
+    "DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresSaleDao.java",
+    "DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresVehicleDao.java",
+    "DriveHub/src/main/java/it/unifi/drivehub/domain/operation/Sale.java",
+    "DriveHub/src/main/java/it/unifi/drivehub/service/SaleToDealershipService.java",
+    "DriveHub/src/main/resources/db/demo.sql",
+    "DriveHub/src/main/resources/db/schema.sql",
+    "DriveHub/src/test/java/it/unifi/drivehub/PriceSelectionIntegrationTest.java",
+    "PIANO_REVISIONI_DRIVEHUB.md",
+    "TRACKER_DRIVEHUB/revisioni/issues/09-proposta-cessione-e-titolarita.md"
+  ],
+  "head_unchanged": true,
+  "index_unchanged": true,
+  "tickets_01_08_and_historical_evidence_unchanged": true,
+  "demo_history_unchanged_except_explicit_type": true
+}

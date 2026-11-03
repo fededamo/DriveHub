@@ -1,0 +1,11 @@
+{
+  "DriveHub/src/main/java/it/unifi/drivehub/service/RentalService.java": "42263a9b0f92adca140e77d51c9d1003823f4a8b0aee82ea08e8cb24389a7eeb",
+  "DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresRentDao.java": "5703a79e00de56f3352e550ac988e275134075cee054e710d2447a8a0b625222",
+  "DriveHub/src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java": "8991a80f778ec6de8417bc58e616d205932d7b9343fba3bc6696283cdc85a54c",
+  "DriveHub/docs/testing.md": "abaee151ed3f48bf3bed9c73e42d12194184ab69ebe813f21fb9f4d2501a3774",
+  "DriveHub/docs/evidence/r06-destination/DestinationUiCheck.java": "9fc5222cd958aceaaadf58a049c4eccdcfa0cbb808eb421e3d659c580311ddad",
+  "DriveHub/docs/evidence/r06-destination/run-ui.py": "989d9871c41b3fab5c01f9035fe406ec8d2315d18a8e95abf1e895109dbac013",
+  "DriveHub/docs/evidence/r06-destination/verification.md": "59ce87da2aafc1aad9495d0ed64ad4cc34aaf1884e5b6450df2d1b0e1b1cf28e",
+  "PIANO_REVISIONI_DRIVEHUB.md": "12b29074af83815bdc739b620859edc8b63ff649328878286c71c2bbc665d04e",
+  "TRACKER_DRIVEHUB/revisioni/issues/12-destinazione-veicolo-e-rimborsi.md": "69309ffb712d8f520574fe1926608b659a095215bc6d5479650f411304551b8f"
+}

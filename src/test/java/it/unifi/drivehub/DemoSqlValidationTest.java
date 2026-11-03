@@ -1,55 +1,49 @@
 package it.unifi.drivehub;
 
 import it.unifi.drivehub.dao.DatabaseManager;
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
-import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("Validazione esecuzione demo.sql su schema.sql")
+@Tag("postgres")
 class DemoSqlValidationTest {
-
     @Test
-    @DisplayName("Verifica che demo.sql si esegua perfettamente senza errori SQL")
-    void testExecuteDemoSql() {
-        assertDoesNotThrow(() -> {
-            DatabaseManager db = new DatabaseManager();
-            String script;
-            try (InputStream in = getClass().getClassLoader().getResourceAsStream("db/demo.sql")) {
-                if (in == null) throw new IllegalStateException("db/demo.sql non trovato");
-                script = new String(in.readAllBytes(), StandardCharsets.UTF_8);
-            }
+    void schemaAndDemoCanBeReloadedWithoutChangingRowsOrSequences() throws Exception {
+        TestDatabase fixture = TestDatabase.fromEnvironment();
+        DatabaseManager db = fixture.reset();
+        List<String> expected = snapshot(db);
+        assertFalse(expected.isEmpty());
 
-            try (Connection conn = db.getConnection()) {
-                conn.setAutoCommit(false);
-                try (Statement stmt = conn.createStatement()) {
-                    // Separa per istruzioni terminanti con ';'
-                    String[] statements = script.split(";\\s*(\\r?\\n)+");
-                    for (String sql : statements) {
-                        String clean = sql.trim();
-                        // Salta commenti vuoti
-                        clean = clean.replaceAll("(?m)^--.*$", "").trim();
-                        if (!clean.isEmpty()) {
-                            try {
-                                stmt.execute(clean);
-                            } catch (Exception ex) {
-                                System.err.println("ERRORE NELLA QUERY:\n" + clean);
-                                throw ex;
-                            }
-                        }
-                    }
-                    conn.commit();
-                    System.out.println("SUCCESSO: Tutte le query di demo.sql sono state eseguite correttamente!");
-                } catch (Exception ex) {
-                    conn.rollback();
-                    throw ex;
+        fixture.reloadDemo();
+        assertEquals(expected, snapshot(db), "Secondo caricamento demo");
+        fixture.reloadDemo();
+        assertEquals(expected, snapshot(db), "Terzo caricamento demo");
+        fixture.reset();
+        assertEquals(expected, snapshot(db), "Secondo caricamento schema e demo");
+    }
+
+    private static List<String> snapshot(DatabaseManager db) throws Exception {
+        List<String> rows = new ArrayList<>();
+        try (Connection conn = db.getConnection(); var statement = conn.createStatement()) {
+            for (String table : List.of("brand", "model", "model_discount", "vehicle", "vehicle_discount",
+                    "client", "bank_account", "salesman", "manager", "request", "test_drive", "rent", "sale")) {
+                try (var result = statement.executeQuery("SELECT row_to_json(t)::text FROM public.\""
+                        + table + "\" t ORDER BY row_to_json(t)::text")) {
+                    while (result.next()) rows.add(table + ":" + result.getString(1));
                 }
             }
-        });
+            try (var result = statement.executeQuery("""
+                    SELECT sequencename, last_value FROM pg_sequences
+                    WHERE schemaname = 'public' ORDER BY sequencename
+                    """)) {
+                while (result.next()) rows.add(result.getString(1) + ":" + result.getString(2));
+            }
+        }
+        return rows;
     }
 }

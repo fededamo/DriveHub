@@ -1,0 +1,14 @@
+{
+  "DriveHub/pom.xml": {
+    "before-lines": 128,
+    "after-lines": 122,
+    "removed-lines": 7,
+    "added-lines": 1
+  },
+  "DriveHub/src/main/java/it/unifi/drivehub/AppContext.java": {
+    "before-lines": 170,
+    "after-lines": 156,
+    "removed-lines": 14,
+    "added-lines": 0
+  }
+}

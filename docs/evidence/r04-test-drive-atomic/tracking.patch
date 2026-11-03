@@ -1,0 +1,213 @@
+--- a/PIANO_REVISIONI_DRIVEHUB.md
++++ b/PIANO_REVISIONI_DRIVEHUB.md
+@@ -4,29 +4,29 @@
+ 
+ ## Stato attuale
+ 
+-- **Ticket 06 chiuso il 2 novembre 2026, 6/6 criteri verificati**: totale concordato
+-  persistito all'acconto, saldo/vendita dagli importi salvati; GUI cliente/venditore
+-  e tastiera verificate in due JVM. Review indipendenti **Standards 0 / Spec 0**,
+-  confermate sul codice corrente dopo le modifiche del 07.
+-- **Ticket 07 chiuso**, autorizzato e verificato separatamente: rilettura/lock e
+-  saldo/rifiuto/scadenza una sola volta. Il suo codice e tutte le modifiche locali
+-  sono preservati; nessun codice cambiato nella chiusura del 06.
+-- Suite corrente del 07 **163/163**, zero failure/errori/saltati, comprende i 7 test
+-  di dominio e 12 PostgreSQL del 06, isolamento/sentinella e conti. XML e hash
+-  ricontrollati, senza nuove esecuzioni nella ripresa documentale del 06.
+-  Evidenze 06 conservate: RED/GREEN, mirati 57/57, suite 103/103 e GUI/tastiera.
+-- R04 resta parziale: **06 e 07 chiusi; 08 non avviato**. Rilievi #11 e #6 chiusi:
+-  **7/20** (#1, #4, #6, #8, #11, #17, #19). #12 e #13 restano parziali/non conclusi.
+-- [Ticket 06](TRACKER_DRIVEHUB/revisioni/issues/06-totale-concordato-acquisto.md),
+-  [evidenze e chiusura](DriveHub/docs/evidence/r04-agreement/verification.md),
+-  [ticket 07](TRACKER_DRIVEHUB/revisioni/issues/07-richieste-acquisto-una-volta.md),
+-  [evidenze 07](DriveHub/docs/evidence/r04-purchase-once/verification.md).
+-- Java 21/PostgreSQL dedicato verificati nelle prove registrate; cluster arrestato.
+-  Nessun accesso al DB applicativo preesistente. Nessun commit/staging; HEAD invariato.
+-  Relazione_SWE sempre esclusa. Schema ricreabile senza migrazione storica; GUI su
+-  fixture ridotta, prestazioni e screen reader non certificati, /tmp temporaneo.
+-- Prossimo passo: ticket 08 soltanto su una successiva richiesta. Nessun altro
+-  ticket avviato in questa ripresa.
++- **Ticket 01–08 chiusi e verificati**. Il solo ticket 08 è stato lavorato nella
++  sessione corrente, dopo controllo dei precedenti e acquisizione della baseline.
++- **R04 completata per 06–08**: accordo immutabile, elaborazione una volta e
++  cancellazione atomica dei test drive in acquisto/noleggio. Observer applica la
++  priorità commerciale nella transazione del chiamante, senza errori nascosti.
++- Suite finale 08 **171/171**, zero failure/errori/saltati: 40 senza DB e 131
++  PostgreSQL, inclusi conti 04, prezzi 05, accordo 06, concorrenza richieste 07,
++  fixture e isolamento/sentinella. Mirati 117/117, nuovi 8/8; RED 2 failure/GREEN 2/2.
++- Review indipendenti sul diff dedicato: **Standards 0 violazioni/0 smell
++  azionabili, Spec 0 rilievi**. Nessun codice/test cambiato dopo suite/review.
++- R06/AC12 restano parziali per prenotazioni e altre transizioni; AC13 trasversale.
++  Rilievi integralmente chiusi invariati a **7/20** (#1, #4, #6, #8, #11, #17, #19).
++- [Ticket 08](TRACKER_DRIVEHUB/revisioni/issues/08-cancellazioni-test-drive-atomiche.md),
++  [prove 08](DriveHub/docs/evidence/r04-test-drive-atomic/verification.md),
++  [prove 06](DriveHub/docs/evidence/r04-agreement/verification.md),
++  [prove 07](DriveHub/docs/evidence/r04-purchase-once/verification.md).
++- Java 21/PG 16 dell'ambiente temporaneo07 verificati e riusati; vecchi file R00
++  assenti. Solo cluster sacrificabile 127.0.0.1:55432 e copia applicativa sentinella;
++  cluster arrestato. Nessun DB applicativo preesistente contattato.
++- Tutto il lavoro locale e le evidenze 01–07 preservati. Nessun commit/staging,
++  HEAD/indice invariati; Relazione_SWE sempre esclusa. Nessuna vista modificata
++  nel 08; nessuna nuova prova JavaFX/tastiera. /tmp temporanea.
++- Prossimo passo: nessun ticket successivo avviato; nuova richiesta per proseguire.
+ 
+ ## Perimetro e fonti
+ 
+@@ -79,9 +79,9 @@
+ | R01 | Invarianti preservati e cambio email sicuro | #8, #19 | R00 per eseguire le prove | Completata: ticket 02 (#19) e 03 (#8) verificati e chiusi |
+ | R02 | Movimenti del conto corretti sotto concorrenza | #4 | R00 | Completata: ticket 04 verificato e chiuso |
+ | R03 | Prezzo consigliato/manuale coerente lungo il flusso | #17 | R00, D04–D05 | Completata: ticket 05 verificato e chiuso |
+-| R04 | Acquisto: totale concordato e conclusione una sola volta | #6, #11, parte #12 | R02, R03, D06 | In corso: 06 e 07 chiusi e verificati; 08 non avviato |
++| R04 | Acquisto: totale concordato e conclusione una sola volta | #6, #11, parte #12 | R02, R03, D06 | Completata: 06–08 chiusi e verificati |
+ | R05 | Cessione: titolarità, richiesta unica, pagamento e contabilità | #2, #3, #10 | R02, R03, D07 | Pianificata |
+-| R06 | Noleggi/test drive concorrenti e transizioni valide | #5, #7, restante #12 | R02, R03, D08–D10; coordinamento eventi con R04 | Pianificata |
++| R06 | Noleggi/test drive concorrenti e transizioni valide | #5, #7, restante #12 | R02, R03, D08–D10; coordinamento eventi con R04 | Parziale: 08 chiuso; 11/12 pianificati |
+ | R07 | Cancellazione account rispettosa di storico e richieste | #9 | R00; fixture aggiornate dai flussi interessati | Pianificata |
+ | R08 | Tabelle JavaFX senza query nel rendering | #16 | R03; verificare aggiornamenti dei flussi corretti | Pianificata |
+ | R09 | README, diagrammi, teoria ed evidenze coerenti | #14, #15, #18; valutazione teorica | Incrementale; chiusura dopo R01–R08 e R10 | Pianificata |
+@@ -440,7 +440,7 @@
+   rilettura di accordo, richiesta, veicolo, conto e registro da nuovi AppContext.
+ - Mirati finali `python3 /tmp/drivehub-ticket07-maven.py final-targeted -Ppostgres-tests
+   -Dtest=PurchaseConcurrencyIntegrationTest,PurchaseAgreementIntegrationTest,BalanceConcurrencyIntegrationTest test`
+-  → **88/88** (60 ticket07 + 12 accordo06 + 16 conti04).
++  → **88/88** (60 ticket07 + 12 accordo 06 + 16 conti 04).
+   Suite `python3 /tmp/drivehub-ticket07-maven.py full -Ppostgres-tests clean test`
+   → **163/163**, 0 failure/errori/saltati, 40 senza DB e 123 PostgreSQL; 63 sorgenti
+   principali + 14 test ricompilati con target 21 e lint, fixture/isolamento/sentinella passati.
+@@ -488,3 +488,53 @@
+   agli altri ticket, Relazione_SWE sempre esclusa. Limiti schema/GUI già documentati.
+ - Prossimo passo: 08 su nuova richiesta; nessun altro lavoro avviato.
+   [Evidenze](DriveHub/docs/evidence/r04-agreement/verification.md).
++
++### Ticket 08 — cancellazione atomica dei test drive, 2 novembre 2026
++
++- Prerequisito 04 e precedenti 01–07 controllati chiusi. Baseline dedicata prima
++  degli interventi, senza includere Relazione_SWE. Lavoro preesistente preservato;
++  confronto della sessione distinto da HEAD. Nessun commit/staging.
++- Difetto riprodotto tramite completePurchase/bookRental: 2 failure attese,
++  errore di cancellazione nascosto dopo il commit. Stessa regressione GREEN 2/2.
++- Observer conserva la priorità commerciale sui test drive, sincrono nella
++  transazione del chiamante; nessuna seconda transazione o errore nascosto.
++  Evento di conferma vendita/noleggio senza finta transizione RENT → RENT.
++- PostgreSQL reale dedicato, ambiente temporaneo del 07 presente e verificato;
++  vecchi file R00 assenti. Avvio sandbox rifiutato sui socket, poi escalation
++  autorizzata su 127.0.0.1:55432, nessun DB applicativo preesistente contattato.
++- Primi 8 casi passati: rollback integrale dopo tutte le cancellazioni e scritture
++  economiche, successo, storico/altri veicoli, nessun futuro, confine temporale
++  −1/0/+1 microsecondo. Suite completa e review Standards/Spec da completare.
++- Nessuna vista modificata. Formula/accordo/protocolli 04–07 preservati; conflitti
++  di prenotazione 11 e altre transizioni restano esclusi. Ticket 08 in-progress.
++  Prossimo passo: completare questo stesso ticket; non passare al successivo.
++
++### Chiusura ticket 08 — 2 novembre 2026
++
++- **5/5 criteri soddisfatti, State: closed**. I progressi sopra restano storici.
++  Notifica commerciale sincrona sulla connessione del chiamante, Observer mantiene
++  la politica sui test drive; cancellazione obbligatoria prima del commit.
++  Tutti i futuri cancellati anche fuori periodo noleggio, storico conservato.
++- Nuovi 8/8: errore PostgreSQL AFTER DELETE dopo addebito/operazione/cancellazioni
++  annulla conto, vendita/noleggio, richiesta/accordo, stato e test drive; servizio
++  fallisce, nuove sessioni rileggono dati integri. Successo, altro veicolo, nessun
++  futuro e confine transazionale −1/0/+1 microsecondo coperti nei due servizi.
++- Launcher `/tmp/drivehub-ticket08-maven.py`: `red -Ppostgres-tests
++  -Dtest=TestDriveCancellationIntegrationTest test` → 2 failure attese; stessi
++  argomenti `green` → 2/2; `cases` → 8/8. `targeted -Ppostgres-tests
++  -Dtest=TestDriveCancellationIntegrationTest,PurchaseConcurrencyIntegrationTest,PurchaseAgreementIntegrationTest,BalanceConcurrencyIntegrationTest,PriceCalculatorServiceTest,PriceSelectionIntegrationTest test`
++  → **117/117**; `full -Ppostgres-tests clean test` → **171/171**, zero
++  failure/errori/salti. Java 21, PG 16 reale dedicato, 40 senza DB / 131 PostgreSQL;
++  conti 04/prezzi 05/accordo 06/concorrenza 07, fixture e isolamento/sentinella passati.
++- Review indipendenti Standards **0 violazioni/0 smell azionabili**, Spec **0**,
++  sul solo diff 08 fissato (13 file). Nessun codice/test modificato dopo suite/review.
++  [Evidenze, patch, hash, log/XML e conservazione](DriveHub/docs/evidence/r04-test-drive-atomic/verification.md).
++  Baseline 352 file, 340 intatti, 10 aggiornamenti intenzionali inclusi piano/ticket,
++  2 vecchie interfacce sostituite; tutte le evidenze e i ticket 01–07 intatti.
++- Solo 127.0.0.1:55432, nessun DB applicativo preesistente; cluster arrestato.
++  Nessun commit/staging; HEAD/indice invariati. Nessuna vista modificata quindi
++  nessuna prova JavaFX/tastiera nuova. Warning JavaFX preesistente, /tmp temporanea.
++- **R04 completata per 06–08**; R06/AC12 parziali per altri comportamenti, AC13
++  trasversale. Non chiuso un rilievo intero aggiuntivo: totale resta **7/20**.
++  Nessun conflitto prenotazioni 11, altra transizione o prestazione anticipati.
++  Prossimo passo: nessun altro ticket avviato; proseguire solo su nuova richiesta.
+--- a/TRACKER_DRIVEHUB/revisioni/issues/08-cancellazioni-test-drive-atomiche.md
++++ b/TRACKER_DRIVEHUB/revisioni/issues/08-cancellazioni-test-drive-atomiche.md
+@@ -7,7 +7,7 @@
+ **Blocked by:** 04: Eseguire addebiti e rimborsi senza perdere aggiornamenti
+ 
+ Status: ready-for-agent
+-State: open
++State: closed
+ 
+ **Piano:** R04, R06
+ **Specifica:** AC12, AC13
+@@ -15,11 +15,11 @@
+ 
+ ## Acceptance criteria
+ 
+-- [ ] Vendita e conferma noleggio cancellano tutti i test drive futuri del veicolo nella stessa transazione dell'operazione economica, conservando quelli già avvenuti.
+-- [ ] Observer mantiene una responsabilità motivata; il percorso obbligatorio non apre una seconda transazione dopo il commit e non nasconde errori necessari al rollback.
+-- [ ] Aggiornati interfaccia degli eventi, osservatori, composizione dei servizi e tutti i chiamanti coinvolti senza infrastrutture distribuite.
+-- [ ] Un errore di cancellazione dimostrato attraverso il confine del servizio annulla su PostgreSQL anche addebito, vendita/noleggio, richiesta e stato coinvolti.
+-- [ ] Percorso riuscito e conservazione dello storico verificati per acquisto e noleggio; la conferma noleggio annulla tutti i futuri, anche fuori dal periodo prenotato.
++- [x] Vendita e conferma noleggio cancellano tutti i test drive futuri del veicolo nella stessa transazione dell'operazione economica, conservando quelli già avvenuti.
++- [x] Observer mantiene una responsabilità motivata; il percorso obbligatorio non apre una seconda transazione dopo il commit e non nasconde errori necessari al rollback.
++- [x] Aggiornati interfaccia degli eventi, osservatori, composizione dei servizi e tutti i chiamanti coinvolti senza infrastrutture distribuite.
++- [x] Un errore di cancellazione dimostrato attraverso il confine del servizio annulla su PostgreSQL anche addebito, vendita/noleggio, richiesta e stato coinvolti.
++- [x] Percorso riuscito e conservazione dello storico verificati per acquisto e noleggio; la conferma noleggio annulla tutti i futuri, anche fuori dal periodo prenotato.
+ 
+ ## Note per l'implementazione
+ 
+@@ -32,3 +32,54 @@
+ ## Comments
+ 
+ - 31 ottobre 2026: ticket pubblicato da `to-tickets` dopo approvazione di granularità e dipendenze. Esecuzione non ancora avviata; verificare i blocchi prima di iniziare.
++
++- 2 novembre 2026: avviato soltanto il ticket 08, dopo verifica `State: closed`
++  di 01–07, incluso prerequisito 04. Baseline locale prima delle modifiche in
++  `/tmp/drivehub-ticket08-baseline`; nessun commit/staging, relazione esclusa.
++  Consultate evidenze 04/06/07 e `docs/testing.md`. File R00 assenti, ambiente
++  temporaneo 07 presente e verificato prima del riuso. Prima partenza sandbox
++  rifiutata sui socket; avvio del solo cluster dedicato con escalation autorizzata.
++- RED servizi pubblici: entrambi i casi acquisto/noleggio restituiscono successo
++  nonostante l'errore PostgreSQL di cancellazione (2 failure attese). Stessa
++  regressione GREEN 2/2 dopo notifica sincrona sulla connessione del chiamante.
++  Prima estensione 8/8: storico, tutti i futuri, altri veicoli, nessun futuro,
++  confine −1/0/+1 microsecondo. Suite e review finali in corso; ticket ancora aperto.
++
++### Chiusura — 2 novembre 2026
++
++- **5/5 criteri soddisfatti e verificati**. Acquisto e conferma noleggio pubblicano
++  `VehicleCommitmentEvent` prima del commit, con la connessione economica corrente.
++  Observer mantiene la politica di cancellazione di tutti i test drive futuri,
++  conservando lo storico; nessuna seconda transazione o eccezione nascosta.
++- Mappati acquisto/noleggio/test drive, eventi/publisher/osservatori, tutti i DAO
++  coinvolti, AppContext, letture, fixture, chiamanti cliente/venditore e messaggi.
++  Nessuna vista modificata: prove JavaFX/tastiera non necessarie in questa sessione.
++  Fixture aggiuntive soltanto nel DB dedicato; schema/demo precedenti invariati.
++- `python3 /tmp/drivehub-ticket08-maven.py red -Ppostgres-tests
++  -Dtest=TestDriveCancellationIntegrationTest test` → 2 failure attese: il servizio
++  nasconde l'errore. Stessi argomenti `green` → 2/2; ampliamento `cases` → 8/8.
++  Trigger PostgreSQL AFTER DELETE osserva addebito, operazione e tutte le
++  cancellazioni già eseguiti, poi fallisce: il servizio propaga l'errore e nuove
++  letture confermano rollback di conto, vendita/noleggio, richiesta/accordo,
++  stato e due test drive. Nessuna scrittura/cancellazione parziale.
++- Successo e confini: ieri conservato, futuri +1/+6/+20 cancellati per più clienti,
++  anche fuori noleggio +5…+7; altro veicolo intatto; nessun futuro ammesso.
++  Confine transazionale PostgreSQL −1/0/+1 microsecondo coerente nei due servizi:
++  uguale e precedente conservati. Nessun cambiamento al clock/schema.
++- `python3 /tmp/drivehub-ticket08-maven.py targeted -Ppostgres-tests
++  -Dtest=TestDriveCancellationIntegrationTest,PurchaseConcurrencyIntegrationTest,PurchaseAgreementIntegrationTest,BalanceConcurrencyIntegrationTest,PriceCalculatorServiceTest,PriceSelectionIntegrationTest test`
++  → **117/117**. `python3 /tmp/drivehub-ticket08-maven.py full -Ppostgres-tests
++  clean test` → **171/171**, zero failure/errori/saltati, 40 senza DB e 131 PostgreSQL.
++  Inclusi conti04, formula/base/centesimi05, accordo06, lock/rilettura/unicità07,
++  fixture, isolamento e sentinella. Java21/PG16 verificati, cluster arrestato.
++- Review indipendenti Standards **0 violazioni/0 smell azionabili**, Spec **0 rilievi**,
++  sul diff della sola sessione (13 file, SHA256
++  `52afb2fc12e7df429001b9c6a7cb78250ff672861b7324d47805513055a95f6c`).
++  Baseline, RED/GREEN, XML/log, hash finali, patch e conservazione collegati nelle
++  [evidenze](../../../DriveHub/docs/evidence/r04-test-drive-atomic/verification.md).
++  Tutto il lavoro 01–07 e le sue prove storiche preservati; HEAD/indice invariati.
++- Limiti: nessuna verifica UI perché nessuna vista cambiata; warning JavaFX
++  preesistente, /tmp temporanea. Conflitti prenotazioni 11, altre transizioni e
++  prestazioni esclusi. AC12/AC13 restano parziali fuori08, 7/20 rilievi chiusi.
++  Nessun commit/staging, Relazione_SWE sempre esclusa. R04 completata per06–08.
++  Prossimo passo: nessun altro ticket avviato; prosecuzione solo su nuova richiesta.

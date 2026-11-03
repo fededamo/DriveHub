@@ -1,0 +1,473 @@
+{
+  "artifacts": {
+    "docs/Package diagram.drawio": {
+      "sha256": "24c2c613490c25788d3594e639204180edf3fa5d10001cdb84bcb8aceaec0d65",
+      "status": "historical; unchanged"
+    },
+    "docs/Page Navigation Diagram.drawio": {
+      "sha256": "7155e0b22cd6f9d5f267d494fca902143124ef7f234340588c3d39203d6f6655",
+      "status": "historical; unchanged"
+    },
+    "docs/SWE ER.drawio": {
+      "sha256": "bbc2e6d2604e86067a94be86d570972f3d1d0c3cd4f54a75da0485e3c7cd7fde",
+      "status": "historical; unchanged"
+    },
+    "docs/Users SWE.drawio": {
+      "sha256": "b4dae894c8cdaf335f05ad7d3e793c1d5ffdd84a2cea8d02348ebc07e917d5dc",
+      "status": "historical; unchanged"
+    },
+    "docs/diagrams/class-business-policies.puml": {
+      "sha256": "4a47e0441c33ff0d5d39c7d5ccf00292dc5f8303e67b9c936062f8b7ae1f8142",
+      "status": "historical; unchanged"
+    },
+    "docs/diagrams/class-business.puml": {
+      "sha256": "268b3082d826e65af064a207dfa73020424a7c024928ebd431ce2b48c92ce93a",
+      "status": "historical; unchanged"
+    },
+    "docs/diagrams/class-dao.puml": {
+      "sha256": "0212cf604a67e4b1f9447cc489c25897af7560739fa1e417c71286606b295a4b",
+      "status": "historical; unchanged"
+    },
+    "docs/diagrams/class-domain-commercial.puml": {
+      "sha256": "e3c2b43501a59b421e88d9ac278728b269e4cb7f0a826af8a71daaa9ebc4e1a5",
+      "status": "historical; unchanged"
+    },
+    "docs/diagrams/class-domain-workflows.puml": {
+      "sha256": "b805475eb0b056a316205be32a421ba95cc8aea7f389e8a817bc78e5eacddafb",
+      "status": "historical; unchanged"
+    },
+    "docs/diagrams/class-domain.puml": {
+      "sha256": "407b052ead9fa00f069b7465b58a5f20b9337fced2ce4f98af228adc84f3f043",
+      "status": "historical; unchanged"
+    },
+    "docs/diagrams/class-presentation.puml": {
+      "sha256": "c3be505c00ca3e328ac8e4abe7cd5a5fb3be278f9232611a35341570669a2483",
+      "status": "historical; unchanged"
+    },
+    "docs/diagrams/er-diagram.puml": {
+      "sha256": "3b594cfe37246e302d060163ba260d36a36e640e898b5a6b3feae39ae7e20e71",
+      "status": "historical; unchanged"
+    },
+    "docs/diagrams/package-diagram.puml": {
+      "sha256": "79b4218d9e858775c45c60258ae0036991bdc1607628063f9e64033b37e6b9db",
+      "status": "historical; unchanged"
+    },
+    "docs/diagrams/page-navigation-customer.puml": {
+      "sha256": "9af49185b5f838affb82bcade98ef8fa3fbe24bc246b385f4e9b59ff996364ef",
+      "status": "historical; unchanged"
+    },
+    "docs/diagrams/page-navigation-staff.puml": {
+      "sha256": "4ddc6772de9f85cfdda3a583a3844e57d7ac838182efd5748ebb1ae46a98ec56",
+      "status": "historical; unchanged"
+    },
+    "docs/diagrams/page-navigation.puml": {
+      "sha256": "443433f02d69b9302f3c926f0ba259ab0376897185027ab4c66163013a104b00",
+      "status": "historical; unchanged"
+    },
+    "docs/diagrams/sequence-purchase-proposal-approval.puml": {
+      "sha256": "920ba624b65c5ed0ceedc32db0ffff364628c0c09509cde385e70e826ef4c247",
+      "status": "historical; unchanged"
+    },
+    "docs/diagrams/sequence-rent-payment.puml": {
+      "sha256": "503d99c2f608ab84ab3378f404a97d2a1ad41532d11124ec5fd293d9d4257a96",
+      "status": "historical; unchanged"
+    },
+    "docs/diagrams/sequence-sale-payment.puml": {
+      "sha256": "a0aa67a18c21add826fa09dbca877357ac2d8657b1a6157803dec262f53f824b",
+      "status": "historical; unchanged"
+    },
+    "docs/diagrams/sequence-test-drive.puml": {
+      "sha256": "85d8e5e0fcaf885da5b35aaf551a3ab55a2407ef88971301afa95833dd11f287",
+      "status": "historical; unchanged"
+    },
+    "docs/diagrams/use-cases.puml": {
+      "sha256": "f630546747e501f5ab0b878b237b8279c5bd4d8bd0d8394a599976caf4e4ad9d",
+      "status": "historical; unchanged"
+    },
+    "docs/mockups/customer-workspace.png": {
+      "sha256": "89768496517d4d5c0589b297eafe2d336bc410b6acdf9654b7bf30350912c44f",
+      "status": "historical; unchanged"
+    },
+    "docs/mockups/employee-workspace.png": {
+      "sha256": "0d88fcccb8a40802510eef0b3383da59a1be0fc8cbc2f6143f3d3f5e063aca2a",
+      "status": "historical; unchanged"
+    },
+    "docs/mockups/registration.png": {
+      "sha256": "243fba82959e13149ce1ae0e7222ffd3c1a6331ae26d197ebf2de8472cd41759",
+      "status": "historical; unchanged"
+    },
+    "docs/screenshots/customer-workspace.png": {
+      "sha256": "c272cb21f65dc236229ea490b8df5779059ac0cc46dc1a751d2ac0b1bae6b330",
+      "status": "historical; unchanged"
+    },
+    "docs/screenshots/manager-workspace.png": {
+      "sha256": "f8b4c524e6050d296e52aef333220d8f22e7b9023d4d09afbfd696c2cedb5217",
+      "status": "historical; unchanged"
+    },
+    "docs/screenshots/payment-dialog.png": {
+      "sha256": "e77d708bfa4c28164bd53e6dff568100a0ca43d048ef82f612c5cc8ccc1a29bf",
+      "status": "historical; unchanged"
+    },
+    "docs/screenshots/postgres-customer-catalog.png": {
+      "sha256": "a7a23a934562233be1594488543e58ce61c018e95c8c3b3ced63bae76b385764",
+      "status": "historical; unchanged"
+    },
+    "docs/screenshots/postgres-manager-workspace.png": {
+      "sha256": "fdf5ac2300574180c644800daf599c97ffb8d97bd658bcbb8ae09b02f8ae1875",
+      "status": "historical; unchanged"
+    },
+    "docs/screenshots/postgres-rental-confirmed.png": {
+      "sha256": "a0520b22a2434ddd7350d56f239306a80167235adc4ced98580827a929b1a590",
+      "status": "historical; unchanged"
+    },
+    "docs/screenshots/postgres-salesman-workspace.png": {
+      "sha256": "984a248eecd5ae71b9f9294cf274422a886fa7bf0abc490ec733fb38f3c5458a",
+      "status": "historical; unchanged"
+    },
+    "docs/screenshots/registration.png": {
+      "sha256": "d5c9457a64a192fcd7247d7c5c54ff7fa2b93e4fc9b14232065cdf83b34fe030",
+      "status": "historical; unchanged"
+    },
+    "docs/screenshots/salesman-workspace.png": {
+      "sha256": "128fe96ace432a67b57ed83edaca2179856448f089ee1f48495b83f907bb4c13",
+      "status": "historical; unchanged"
+    },
+    "docs/source-diagrams/er-source.drawio": {
+      "sha256": "09ada3b12e1fd3407702ef839a3735ad5a19f8d0256cb953a54ebb7221aebf64",
+      "status": "historical; unchanged"
+    },
+    "docs/source-diagrams/package-source.drawio": {
+      "sha256": "9bca71b568fbd8538d85ded90aa81bee05762c2a9c17fc800f94a094db5485aa",
+      "status": "historical; unchanged"
+    },
+    "docs/source-diagrams/page-navigation-source.drawio": {
+      "sha256": "4d7f9525b3fbdabc1d3f5170a2f17a9e1c186b8c849b4f89b9c2908414d155ee",
+      "status": "historical; unchanged"
+    },
+    "docs/source-diagrams/use-cases-source.drawio": {
+      "sha256": "2d92a6d5e52f8ddbf8e25e35adf38318f5ceb721d9722a4a3fd7312c18956dde",
+      "status": "historical; unchanged"
+    }
+  },
+  "obsolete_manifests": {
+    "docs/evidence/full-stack/source-manifest.json": {
+      "sha256": "64cd7c318984abf2c961040962f456ad7e694081b68dcae680f3588fa0b7a88f",
+      "entries": 150,
+      "missing": [
+        "compose.yaml",
+        "compose.test.yaml",
+        "src/main/java/it/unifi/ing/drivehub/DriveHubApplication.java",
+        "src/main/java/it/unifi/ing/drivehub/business/core/PaymentGateway.java",
+        "src/main/java/it/unifi/ing/drivehub/business/core/PaymentGatewayResult.java",
+        "src/main/java/it/unifi/ing/drivehub/business/core/TransactionRunner.java",
+        "src/main/java/it/unifi/ing/drivehub/business/exceptions/AuthenticationException.java",
+        "src/main/java/it/unifi/ing/drivehub/business/exceptions/ConflictException.java",
+        "src/main/java/it/unifi/ing/drivehub/business/exceptions/EntityNotFoundException.java",
+        "src/main/java/it/unifi/ing/drivehub/business/security/PasswordHasher.java",
+        "src/main/java/it/unifi/ing/drivehub/business/security/Pbkdf2PasswordHasher.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/AuthService.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/CatalogModels.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/CatalogService.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/CheckoutService.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/DashboardActivity.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/DashboardService.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/DashboardSnapshot.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/InventoryActivityFeed.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/InventoryService.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/PaymentService.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/PricingService.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/PurchaseProposalService.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/RegistrationRequest.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/RentalService.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/SalesService.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/TestDriveService.java",
+        "src/main/java/it/unifi/ing/drivehub/business/strategies/PricingStrategy.java",
+        "src/main/java/it/unifi/ing/drivehub/business/strategies/StandardPricingStrategy.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/interfaces/BrandDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/interfaces/DaoFactory.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/interfaces/DataAccessException.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/interfaces/DiscountDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/interfaces/PaymentDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/interfaces/PurchaseProposalDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/interfaces/RentalDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/interfaces/SaleOrderDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/interfaces/StockOrderDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/interfaces/TestDriveDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/interfaces/UnitOfWork.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/interfaces/UserDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/interfaces/VehicleDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/interfaces/VehicleModelDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/AbstractPostgresDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/DatabaseBootstrap.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/DatabaseConfig.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/DatabaseException.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/DriverManagerDataSource.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/JdbcEntityLoader.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/JdbcSupport.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/JdbcTransactionManager.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/PostgresBrandDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/PostgresDaoFactory.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/PostgresDiscountDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/PostgresPaymentDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/PostgresPurchaseProposalDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/PostgresRentalDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/PostgresSaleOrderDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/PostgresStockOrderDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/PostgresTestDriveDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/PostgresUnitOfWork.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/PostgresUserDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/PostgresVehicleDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/PostgresVehicleModelDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/SqlScriptRunner.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/BaseEntity.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/DomainRuleViolationException.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/observer/InventoryEvent.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/observer/InventoryEventType.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/observer/InventoryObserver.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/observer/InventorySubject.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/rentals/Rental.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/rentals/RentalStatus.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/rentals/TestDrive.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/rentals/TestDriveStatus.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/sales/Discount.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/sales/Payment.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/sales/PaymentMethod.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/sales/PaymentPurpose.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/sales/PaymentReferenceType.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/sales/PaymentStatus.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/sales/PurchaseProposal.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/sales/PurchaseProposalStatus.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/sales/SaleOrder.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/sales/SaleOrderStatus.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/users/Role.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/users/User.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/vehicles/Brand.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/vehicles/StockOrder.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/vehicles/StockOrderStatus.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/vehicles/Vehicle.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/vehicles/VehicleModel.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/vehicles/VehiclePurpose.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/vehicles/VehicleStatus.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/controller/AbstractController.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/controller/CustomerWorkspaceController.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/controller/LoginController.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/controller/ManagerWorkspaceController.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/controller/PaymentDialogController.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/controller/RegistrationController.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/controller/SalesmanWorkspaceController.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/controller/WelcomeController.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/core/ApplicationContext.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/core/ContextAware.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/core/ServiceUiGateway.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/core/SessionContext.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/core/UiGateway.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/core/UiModelMapper.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/core/UiModels.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/navigation/NavigationManager.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/navigation/Route.java",
+        "src/main/resources/db/migration/V001__create_drivehub_schema.sql",
+        "src/main/resources/db/migration/V002__create_drivehub_indexes.sql",
+        "src/main/resources/db/migration/V003__decision_audit_and_price_integrity.sql",
+        "src/main/resources/db/migration/V004__domain_integrity.sql",
+        "src/main/resources/db/migration/V005__postgres_active_uniqueness.sql",
+        "src/main/resources/db/seed/demo-data.sql",
+        "src/main/resources/it/unifi/ing/drivehub/presentation/css/style.css",
+        "src/main/resources/it/unifi/ing/drivehub/presentation/view/CustomerWorkspace.fxml",
+        "src/main/resources/it/unifi/ing/drivehub/presentation/view/Login.fxml",
+        "src/main/resources/it/unifi/ing/drivehub/presentation/view/ManagerWorkspace.fxml",
+        "src/main/resources/it/unifi/ing/drivehub/presentation/view/PaymentDialog.fxml",
+        "src/main/resources/it/unifi/ing/drivehub/presentation/view/Register.fxml",
+        "src/main/resources/it/unifi/ing/drivehub/presentation/view/SalesmanWorkspace.fxml",
+        "src/main/resources/it/unifi/ing/drivehub/presentation/view/Welcome.fxml",
+        "src/test/java/it/unifi/ing/drivehub/architecture/LayeringTest.java",
+        "src/test/java/it/unifi/ing/drivehub/business/PricingAndSecurityTest.java",
+        "src/test/java/it/unifi/ing/drivehub/business/services/AuthServiceTest.java",
+        "src/test/java/it/unifi/ing/drivehub/business/services/PaymentServiceTest.java",
+        "src/test/java/it/unifi/ing/drivehub/business/services/PurchaseProposalServiceTest.java",
+        "src/test/java/it/unifi/ing/drivehub/business/services/RentalServiceTest.java",
+        "src/test/java/it/unifi/ing/drivehub/business/services/TransactionAndObserverTest.java",
+        "src/test/java/it/unifi/ing/drivehub/dao/postgres/DatabaseBootstrapIntegrationTest.java",
+        "src/test/java/it/unifi/ing/drivehub/dao/postgres/Postgres16ConstraintsTest.java",
+        "src/test/java/it/unifi/ing/drivehub/dao/postgres/Postgres16DaoIntegrationTest.java",
+        "src/test/java/it/unifi/ing/drivehub/dao/postgres/PostgresConcurrencyTest.java",
+        "src/test/java/it/unifi/ing/drivehub/dao/postgres/PostgresDaoIntegrationSupport.java",
+        "src/test/java/it/unifi/ing/drivehub/dao/postgres/PostgresDaoIntegrationTest.java",
+        "src/test/java/it/unifi/ing/drivehub/dao/postgres/PostgresTestDatabase.java",
+        "src/test/java/it/unifi/ing/drivehub/domain/RentalWorkflowTest.java",
+        "src/test/java/it/unifi/ing/drivehub/domain/SalesWorkflowTest.java",
+        "src/test/java/it/unifi/ing/drivehub/domain/UserAndVehicleTest.java",
+        "src/test/java/it/unifi/ing/drivehub/functional/CheckoutFunctionalTest.java",
+        "src/test/java/it/unifi/ing/drivehub/functional/FunctionalTestSupport.java",
+        "src/test/java/it/unifi/ing/drivehub/functional/UserGoalsFunctionalTest.java",
+        "src/test/java/it/unifi/ing/drivehub/presentation/FxmlContractTest.java",
+        "src/test/java/it/unifi/ing/drivehub/presentation/JavaFxSmokeTest.java",
+        "src/test/java/it/unifi/ing/drivehub/presentation/SessionContextTest.java",
+        "src/test/java/it/unifi/ing/drivehub/support/TestFixtures.java"
+      ],
+      "different_hash": [
+        "pom.xml"
+      ],
+      "status": "historical; unchanged"
+    },
+    "docs/evidence/jdk21-test/source-manifest.json": {
+      "sha256": "ecac7159a4a02c316018a64a0894cdb790bd337f66cd3614da09983c1bf8ec20",
+      "entries": 150,
+      "missing": [
+        "compose.yaml",
+        "compose.test.yaml",
+        "src/main/java/it/unifi/ing/drivehub/DriveHubApplication.java",
+        "src/main/java/it/unifi/ing/drivehub/business/core/PaymentGateway.java",
+        "src/main/java/it/unifi/ing/drivehub/business/core/PaymentGatewayResult.java",
+        "src/main/java/it/unifi/ing/drivehub/business/core/TransactionRunner.java",
+        "src/main/java/it/unifi/ing/drivehub/business/exceptions/AuthenticationException.java",
+        "src/main/java/it/unifi/ing/drivehub/business/exceptions/ConflictException.java",
+        "src/main/java/it/unifi/ing/drivehub/business/exceptions/EntityNotFoundException.java",
+        "src/main/java/it/unifi/ing/drivehub/business/security/PasswordHasher.java",
+        "src/main/java/it/unifi/ing/drivehub/business/security/Pbkdf2PasswordHasher.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/AuthService.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/CatalogModels.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/CatalogService.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/CheckoutService.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/DashboardActivity.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/DashboardService.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/DashboardSnapshot.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/InventoryActivityFeed.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/InventoryService.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/PaymentService.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/PricingService.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/PurchaseProposalService.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/RegistrationRequest.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/RentalService.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/SalesService.java",
+        "src/main/java/it/unifi/ing/drivehub/business/services/TestDriveService.java",
+        "src/main/java/it/unifi/ing/drivehub/business/strategies/PricingStrategy.java",
+        "src/main/java/it/unifi/ing/drivehub/business/strategies/StandardPricingStrategy.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/interfaces/BrandDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/interfaces/DaoFactory.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/interfaces/DataAccessException.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/interfaces/DiscountDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/interfaces/PaymentDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/interfaces/PurchaseProposalDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/interfaces/RentalDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/interfaces/SaleOrderDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/interfaces/StockOrderDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/interfaces/TestDriveDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/interfaces/UnitOfWork.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/interfaces/UserDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/interfaces/VehicleDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/interfaces/VehicleModelDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/AbstractPostgresDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/DatabaseBootstrap.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/DatabaseConfig.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/DatabaseException.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/DriverManagerDataSource.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/JdbcEntityLoader.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/JdbcSupport.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/JdbcTransactionManager.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/PostgresBrandDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/PostgresDaoFactory.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/PostgresDiscountDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/PostgresPaymentDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/PostgresPurchaseProposalDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/PostgresRentalDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/PostgresSaleOrderDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/PostgresStockOrderDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/PostgresTestDriveDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/PostgresUnitOfWork.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/PostgresUserDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/PostgresVehicleDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/PostgresVehicleModelDao.java",
+        "src/main/java/it/unifi/ing/drivehub/dao/postgres/SqlScriptRunner.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/BaseEntity.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/DomainRuleViolationException.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/observer/InventoryEvent.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/observer/InventoryEventType.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/observer/InventoryObserver.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/observer/InventorySubject.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/rentals/Rental.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/rentals/RentalStatus.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/rentals/TestDrive.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/rentals/TestDriveStatus.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/sales/Discount.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/sales/Payment.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/sales/PaymentMethod.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/sales/PaymentPurpose.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/sales/PaymentReferenceType.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/sales/PaymentStatus.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/sales/PurchaseProposal.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/sales/PurchaseProposalStatus.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/sales/SaleOrder.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/sales/SaleOrderStatus.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/users/Role.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/users/User.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/vehicles/Brand.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/vehicles/StockOrder.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/vehicles/StockOrderStatus.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/vehicles/Vehicle.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/vehicles/VehicleModel.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/vehicles/VehiclePurpose.java",
+        "src/main/java/it/unifi/ing/drivehub/domain/vehicles/VehicleStatus.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/controller/AbstractController.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/controller/CustomerWorkspaceController.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/controller/LoginController.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/controller/ManagerWorkspaceController.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/controller/PaymentDialogController.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/controller/RegistrationController.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/controller/SalesmanWorkspaceController.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/controller/WelcomeController.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/core/ApplicationContext.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/core/ContextAware.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/core/ServiceUiGateway.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/core/SessionContext.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/core/UiGateway.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/core/UiModelMapper.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/core/UiModels.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/navigation/NavigationManager.java",
+        "src/main/java/it/unifi/ing/drivehub/presentation/navigation/Route.java",
+        "src/main/resources/db/migration/V001__create_drivehub_schema.sql",
+        "src/main/resources/db/migration/V002__create_drivehub_indexes.sql",
+        "src/main/resources/db/migration/V003__decision_audit_and_price_integrity.sql",
+        "src/main/resources/db/migration/V004__domain_integrity.sql",
+        "src/main/resources/db/migration/V005__postgres_active_uniqueness.sql",
+        "src/main/resources/db/seed/demo-data.sql",
+        "src/main/resources/it/unifi/ing/drivehub/presentation/css/style.css",
+        "src/main/resources/it/unifi/ing/drivehub/presentation/view/CustomerWorkspace.fxml",
+        "src/main/resources/it/unifi/ing/drivehub/presentation/view/Login.fxml",
+        "src/main/resources/it/unifi/ing/drivehub/presentation/view/ManagerWorkspace.fxml",
+        "src/main/resources/it/unifi/ing/drivehub/presentation/view/PaymentDialog.fxml",
+        "src/main/resources/it/unifi/ing/drivehub/presentation/view/Register.fxml",
+        "src/main/resources/it/unifi/ing/drivehub/presentation/view/SalesmanWorkspace.fxml",
+        "src/main/resources/it/unifi/ing/drivehub/presentation/view/Welcome.fxml",
+        "src/test/java/it/unifi/ing/drivehub/architecture/LayeringTest.java",
+        "src/test/java/it/unifi/ing/drivehub/business/PricingAndSecurityTest.java",
+        "src/test/java/it/unifi/ing/drivehub/business/services/AuthServiceTest.java",
+        "src/test/java/it/unifi/ing/drivehub/business/services/PaymentServiceTest.java",
+        "src/test/java/it/unifi/ing/drivehub/business/services/PurchaseProposalServiceTest.java",
+        "src/test/java/it/unifi/ing/drivehub/business/services/RentalServiceTest.java",
+        "src/test/java/it/unifi/ing/drivehub/business/services/TransactionAndObserverTest.java",
+        "src/test/java/it/unifi/ing/drivehub/dao/postgres/DatabaseBootstrapIntegrationTest.java",
+        "src/test/java/it/unifi/ing/drivehub/dao/postgres/Postgres16ConstraintsTest.java",
+        "src/test/java/it/unifi/ing/drivehub/dao/postgres/Postgres16DaoIntegrationTest.java",
+        "src/test/java/it/unifi/ing/drivehub/dao/postgres/PostgresConcurrencyTest.java",
+        "src/test/java/it/unifi/ing/drivehub/dao/postgres/PostgresDaoIntegrationSupport.java",
+        "src/test/java/it/unifi/ing/drivehub/dao/postgres/PostgresDaoIntegrationTest.java",
+        "src/test/java/it/unifi/ing/drivehub/dao/postgres/PostgresTestDatabase.java",
+        "src/test/java/it/unifi/ing/drivehub/domain/RentalWorkflowTest.java",
+        "src/test/java/it/unifi/ing/drivehub/domain/SalesWorkflowTest.java",
+        "src/test/java/it/unifi/ing/drivehub/domain/UserAndVehicleTest.java",
+        "src/test/java/it/unifi/ing/drivehub/functional/CheckoutFunctionalTest.java",
+        "src/test/java/it/unifi/ing/drivehub/functional/FunctionalTestSupport.java",
+        "src/test/java/it/unifi/ing/drivehub/functional/UserGoalsFunctionalTest.java",
+        "src/test/java/it/unifi/ing/drivehub/presentation/FxmlContractTest.java",
+        "src/test/java/it/unifi/ing/drivehub/presentation/JavaFxSmokeTest.java",
+        "src/test/java/it/unifi/ing/drivehub/presentation/SessionContextTest.java",
+        "src/test/java/it/unifi/ing/drivehub/support/TestFixtures.java"
+      ],
+      "different_hash": [
+        "pom.xml"
+      ],
+      "status": "historical; unchanged"
+    }
+  },
+  "other_evidence": "All pre-session evidence belongs to its originating session, including r09-instructions (ticket16)."
+}

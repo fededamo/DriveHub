@@ -1,0 +1,18 @@
+{
+  "GLOSSARY.md": "ae83c1ebc3aea07f3ed83868634f3be100397fcd5f8baa32b82061638fbe1d70",
+  "README.md": "1becfb6f957a2fb9b199dfede8d91f94460420d69b72499803dc55a74025a8b8",
+  "docs/testing.md": "c4c7082f262c6776c22fd21d07a0cb028060cf5250de2e3bcc18103b523dd442",
+  "src/main/java/it/unifi/drivehub/dao/VehicleDao.java": "4291d1b2b85340d6f89e913bac25ed1bf9abb516807d2839996918eda95b89c5",
+  "src/main/java/it/unifi/drivehub/dao/postgres/PostgresVehicleDao.java": "bb6af699690702033756d1e3a146e321ff47896d7d47fd25a2e2afe03d46d95e",
+  "src/main/java/it/unifi/drivehub/domain/vehicle/PriceMode.java": "ef187d9f64748fe965fdd301b4752f592b19f8f69085f19579e871a7aaacd11a",
+  "src/main/java/it/unifi/drivehub/domain/vehicle/Vehicle.java": "aa03a09f347b0f87476c15cc99e491f87c70f10b8dad3601d88b29aa8238910e",
+  "src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java": "99e65c5a32e5f6118fb0c062108fb8bdab20692e079aed5b478b9983e2eba80f",
+  "src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java": "faccf1dd51d883d0745d027f8bc564f951fbe23c59e54d7202c030fe70b3cc8b",
+  "src/main/java/it/unifi/drivehub/service/CatalogService.java": "f01ba9eb2164da66edd753df10d67200868189a8dd0596e6a45b7ddc2f723d27",
+  "src/main/java/it/unifi/drivehub/service/PriceCalculatorService.java": "d155f4a7eeb9c6128eaa885cd62f975e20db8539f75baafadd223e567846598d",
+  "src/main/java/it/unifi/drivehub/service/SaleToDealershipService.java": "172b84c493973ff31834c847736090c26e9e55d4269cc921079f6dc1d49e92a1",
+  "src/main/resources/db/demo.sql": "08ce2f2c060cb4eb1d55d39d24fcb9b3ec45c42c6145b0e99024c3184236490e",
+  "src/main/resources/db/schema.sql": "ed3a98634c070a3137a2ac225caa5161a6fa253da4a5b4bf9e9917b1682f083d",
+  "src/test/java/it/unifi/drivehub/PriceCalculatorServiceTest.java": "1b8195b0390699c1b84094c8f71683cde7e40f9529e4b656659de724ea53326a",
+  "src/test/java/it/unifi/drivehub/PriceSelectionIntegrationTest.java": "1cc47281a4542086ef0cafc96fb84c98ae6131c48dbb97f246350f1f02c517cd"
+}

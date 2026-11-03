@@ -1,0 +1,9 @@
+PASS JavaFX avviato
+OBSERVED model loader PID=45266 blocker=45264
+PASS lettura modelli realmente in attesa PostgreSQL
+PASS selezione modello torna mentre PostgreSQL è bloccato
+PASS finestra reattiva durante caricamento lento
+OBSERVED loader=45269 blocker=45268
+java.lang.AssertionError: risultato superato non ripopola modelli senza marca
+	at it.unifi.drivehub.PriceUiCheck.check(PriceUiCheck.java:33)
+	at it.unifi.drivehub.SlowModelsUiCheck.main(SlowModelsUiCheck.java:68)

@@ -1,0 +1,424 @@
+{
+  "baseline": {
+    "tests": 259,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "without_db": 45,
+    "postgres": 214,
+    "classes": [
+      {
+        "class": "it.unifi.drivehub.AuthServiceIntegrationTest",
+        "postgres": true,
+        "tests": 18,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.BalanceConcurrencyIntegrationTest",
+        "postgres": true,
+        "tests": 16,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.DatabaseConnectionIntegrationTest",
+        "postgres": true,
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.DatabaseIsolationIntegrationTest",
+        "postgres": true,
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.DemoSqlValidationTest",
+        "postgres": true,
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.DomainInvariantsTest",
+        "postgres": false,
+        "tests": 15,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.FullWorkflowIntegrationTest",
+        "postgres": true,
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.PriceCalculatorServiceTest",
+        "postgres": false,
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.PriceSelectionIntegrationTest",
+        "postgres": true,
+        "tests": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.PurchaseAgreementIntegrationTest",
+        "postgres": true,
+        "tests": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+        "postgres": true,
+        "tests": 60,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.RequestAgreementTest",
+        "postgres": false,
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+        "postgres": true,
+        "tests": 60,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.SaleProposalIntegrationTest",
+        "postgres": true,
+        "tests": 23,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.SaleTypeTest",
+        "postgres": false,
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.TestDatabaseConfigurationTest",
+        "postgres": false,
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.TestDriveCancellationIntegrationTest",
+        "postgres": true,
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    ]
+  },
+  "final-targeted": {
+    "tests": 245,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "without_db": 18,
+    "postgres": 227,
+    "classes": [
+      {
+        "class": "it.unifi.drivehub.BalanceConcurrencyIntegrationTest",
+        "postgres": true,
+        "tests": 16,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+        "postgres": true,
+        "tests": 36,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.BookingRulesTest",
+        "postgres": false,
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.DatabaseIsolationIntegrationTest",
+        "postgres": true,
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.DemoSqlValidationTest",
+        "postgres": true,
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.PriceCalculatorServiceTest",
+        "postgres": false,
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.PriceSelectionIntegrationTest",
+        "postgres": true,
+        "tests": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.PurchaseAgreementIntegrationTest",
+        "postgres": true,
+        "tests": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+        "postgres": true,
+        "tests": 60,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+        "postgres": true,
+        "tests": 60,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.SaleProposalIntegrationTest",
+        "postgres": true,
+        "tests": 23,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.SaleTypeTest",
+        "postgres": false,
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.TestDriveCancellationIntegrationTest",
+        "postgres": true,
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    ]
+  },
+  "final-full": {
+    "tests": 297,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "without_db": 47,
+    "postgres": 250,
+    "classes": [
+      {
+        "class": "it.unifi.drivehub.AuthServiceIntegrationTest",
+        "postgres": true,
+        "tests": 18,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.BalanceConcurrencyIntegrationTest",
+        "postgres": true,
+        "tests": 16,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+        "postgres": true,
+        "tests": 36,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.BookingRulesTest",
+        "postgres": false,
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.DatabaseConnectionIntegrationTest",
+        "postgres": true,
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.DatabaseIsolationIntegrationTest",
+        "postgres": true,
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.DemoSqlValidationTest",
+        "postgres": true,
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.DomainInvariantsTest",
+        "postgres": false,
+        "tests": 15,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.FullWorkflowIntegrationTest",
+        "postgres": true,
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.PriceCalculatorServiceTest",
+        "postgres": false,
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.PriceSelectionIntegrationTest",
+        "postgres": true,
+        "tests": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.PurchaseAgreementIntegrationTest",
+        "postgres": true,
+        "tests": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+        "postgres": true,
+        "tests": 60,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.RequestAgreementTest",
+        "postgres": false,
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+        "postgres": true,
+        "tests": 60,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.SaleProposalIntegrationTest",
+        "postgres": true,
+        "tests": 23,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.SaleTypeTest",
+        "postgres": false,
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.TestDatabaseConfigurationTest",
+        "postgres": false,
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "it.unifi.drivehub.TestDriveCancellationIntegrationTest",
+        "postgres": true,
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    ]
+  }
+}

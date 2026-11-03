@@ -1,37 +1,33 @@
 package it.unifi.drivehub.event;
 
+import java.sql.Connection;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Soggetto osservabile (Subject nel pattern Observer GoF).
  * Notifica gli osservatori registrati quando si verificano eventi sui veicoli.
- * Thread-safe tramite CopyOnWriteArrayList e resiliente alle eccezioni degli handler.
+ * Notifica sincrona nella transazione del chiamante: ogni errore deve impedirne il commit.
  */
 public class VehicleEventPublisher {
 
-    private final List<VehicleStateObserver> observers = new CopyOnWriteArrayList<>();
+    private final List<VehicleCommitmentObserver> observers = new CopyOnWriteArrayList<>();
 
-    public void attach(VehicleStateObserver observer) {
+    public void attach(VehicleCommitmentObserver observer) {
         if (observer != null && !observers.contains(observer)) {
             observers.add(observer);
         }
     }
 
-    public void detach(VehicleStateObserver observer) {
+    public void detach(VehicleCommitmentObserver observer) {
         if (observer != null) {
             observers.remove(observer);
         }
     }
 
-    public void publishStateChange(VehicleStateChangeEvent event) {
-        for (VehicleStateObserver observer : observers) {
-            try {
-                observer.onVehicleStateChanged(event);
-            } catch (Exception e) {
-                System.err.println("Avviso: Errore durante la notifica dell'osservatore: " + e.getMessage());
-            }
+    public void publishCommitment(VehicleCommitmentEvent event, Connection conn) {
+        for (VehicleCommitmentObserver observer : observers) {
+            observer.onVehicleCommitted(event, conn);
         }
     }
 }
-

@@ -1,0 +1,7 @@
+BEGIN
+ current_database | current_user |     name     
+------------------+--------------+--------------
+ drivehub         | drivehub     | R00_SENTINEL
+(1 row)
+
+COMMIT

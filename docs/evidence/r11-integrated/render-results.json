@@ -1,0 +1,118 @@
+{
+  "renderer": {
+    "url": "https://repo.maven.apache.org/maven2/net/sourceforge/plantuml/plantuml/1.2026.2/plantuml-1.2026.2.jar",
+    "sha256": "7a3eacbccd08311f14b107b1254e179adc1f81fa8bd52bbaf563a37f00ea026f",
+    "java_home": "/tmp/drivehub-ticket16-tools/root/usr/lib/jvm/java-21-openjdk-amd64"
+  },
+  "exit": 0,
+  "results": [
+    {
+      "path": "docs/diagrams/current/class-business.svg",
+      "new_sha256": "f2e99b9d40e878e9833cc3e41754955e8023c29c0f0e5320a97c320796c5c2ee",
+      "delivered_sha256": "f2e99b9d40e878e9833cc3e41754955e8023c29c0f0e5320a97c320796c5c2ee",
+      "identical": true
+    },
+    {
+      "path": "docs/diagrams/current/class-dao.svg",
+      "new_sha256": "872d61125ac182a891122dff369ac0e48592352753a762a999c915aaf2f4008b",
+      "delivered_sha256": "872d61125ac182a891122dff369ac0e48592352753a762a999c915aaf2f4008b",
+      "identical": true
+    },
+    {
+      "path": "docs/diagrams/current/class-domain-workflows.svg",
+      "new_sha256": "3ff40aadc302e47310d34ec4f1a9f42d430cdde45580260ab8d1acaf1c8a7cc0",
+      "delivered_sha256": "3ff40aadc302e47310d34ec4f1a9f42d430cdde45580260ab8d1acaf1c8a7cc0",
+      "identical": true
+    },
+    {
+      "path": "docs/diagrams/current/class-domain.svg",
+      "new_sha256": "3b8995bdbdcbac65ab2ae66dd9e3e8e914fdf107b7a52a73911ffda88653911c",
+      "delivered_sha256": "3b8995bdbdcbac65ab2ae66dd9e3e8e914fdf107b7a52a73911ffda88653911c",
+      "identical": true
+    },
+    {
+      "path": "docs/diagrams/current/class-presentation.svg",
+      "new_sha256": "9d58f5dc615b427747a00937a178a118a6c4ac6d9727514e585910dbb69b6233",
+      "delivered_sha256": "9d58f5dc615b427747a00937a178a118a6c4ac6d9727514e585910dbb69b6233",
+      "identical": true
+    },
+    {
+      "path": "docs/diagrams/current/package-diagram.svg",
+      "new_sha256": "1d79396f85bfe9c064c6d9d7deb0f5bc0c2aecae4cd67429aa97af8e16bab802",
+      "delivered_sha256": "1d79396f85bfe9c064c6d9d7deb0f5bc0c2aecae4cd67429aa97af8e16bab802",
+      "identical": true
+    },
+    {
+      "path": "docs/diagrams/current/page-navigation-customer.svg",
+      "new_sha256": "9d14fb79ac263823a76ad7cb7c372dc16b279e50950b1b0e8fafd414e5bbd770",
+      "delivered_sha256": "9d14fb79ac263823a76ad7cb7c372dc16b279e50950b1b0e8fafd414e5bbd770",
+      "identical": true
+    },
+    {
+      "path": "docs/diagrams/current/page-navigation-staff.svg",
+      "new_sha256": "77684db9cfb875e526d69b3de9177098d1ede1f5136c73eb935f5452d1e2dff3",
+      "delivered_sha256": "77684db9cfb875e526d69b3de9177098d1ede1f5136c73eb935f5452d1e2dff3",
+      "identical": true
+    },
+    {
+      "path": "docs/diagrams/current/page-navigation.svg",
+      "new_sha256": "9273101d57d4fd197ed8233246b2b3fe42f67e019500437bc04ca5ef0444ad7c",
+      "delivered_sha256": "9273101d57d4fd197ed8233246b2b3fe42f67e019500437bc04ca5ef0444ad7c",
+      "identical": true
+    },
+    {
+      "path": "docs/diagrams/current/sequence-purchase-outcomes.svg",
+      "new_sha256": "9976a44d3364fa0a4b35af0dc8224c0226e110ab64394fe10d96219a53133fe2",
+      "delivered_sha256": "9976a44d3364fa0a4b35af0dc8224c0226e110ab64394fe10d96219a53133fe2",
+      "identical": true
+    },
+    {
+      "path": "docs/diagrams/current/sequence-purchase-proposal-approval.svg",
+      "new_sha256": "e9a12108e1e3b22b7f919bf9b73204cb079d69a519728b8ac533233b763ebcf9",
+      "delivered_sha256": "e9a12108e1e3b22b7f919bf9b73204cb079d69a519728b8ac533233b763ebcf9",
+      "identical": true
+    },
+    {
+      "path": "docs/diagrams/current/sequence-rent-payment.svg",
+      "new_sha256": "69bf166ef7cda180447e45dd2d8bfe77e7d14118356c21c62223ca04065ef0d8",
+      "delivered_sha256": "69bf166ef7cda180447e45dd2d8bfe77e7d14118356c21c62223ca04065ef0d8",
+      "identical": true
+    },
+    {
+      "path": "docs/diagrams/current/sequence-sale-payment.svg",
+      "new_sha256": "635448863bdf13ec7cde179cc575178b0905bed6b5a080ba13aecedb29e579d4",
+      "delivered_sha256": "635448863bdf13ec7cde179cc575178b0905bed6b5a080ba13aecedb29e579d4",
+      "identical": true
+    },
+    {
+      "path": "docs/diagrams/current/sequence-table-load.svg",
+      "new_sha256": "a57442bb970f858df8799ec053a86a3ba041592218e993f47bebc74adbdde872",
+      "delivered_sha256": "a57442bb970f858df8799ec053a86a3ba041592218e993f47bebc74adbdde872",
+      "identical": true
+    },
+    {
+      "path": "docs/diagrams/current/sequence-test-drive.svg",
+      "new_sha256": "5ef207e0be70f6e6bf5e3471e280f8bbdae8d9171ab7c64db5c4a895572cdd90",
+      "delivered_sha256": "5ef207e0be70f6e6bf5e3471e280f8bbdae8d9171ab7c64db5c4a895572cdd90",
+      "identical": true
+    },
+    {
+      "path": "docs/diagrams/current/use-cases-staff.svg",
+      "new_sha256": "b643aa6836327fc1a17145b7dac1702274f4f44bff3dfa392537f6f96d455779",
+      "delivered_sha256": "b643aa6836327fc1a17145b7dac1702274f4f44bff3dfa392537f6f96d455779",
+      "identical": true
+    },
+    {
+      "path": "docs/diagrams/current/use-cases.svg",
+      "new_sha256": "1fbb4dd25732e0c14deb04d7c7da78bbacf5f527a66d2428a5240141977ae8ba",
+      "delivered_sha256": "1fbb4dd25732e0c14deb04d7c7da78bbacf5f527a66d2428a5240141977ae8ba",
+      "identical": true
+    },
+    {
+      "path": "docs/diagrams/current/vehicle-states.svg",
+      "new_sha256": "298c70f7f28f47dac2c5e1c6c16a270c012ced6c77cbc2a5d28627f26bc88381",
+      "delivered_sha256": "298c70f7f28f47dac2c5e1c6c16a270c012ced6c77cbc2a5d28627f26bc88381",
+      "identical": true
+    }
+  ]
+}

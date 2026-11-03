@@ -1,0 +1,154 @@
+CREATE ROLE
+CREATE DATABASE
+REVOKE
+GRANT
+CREATE ROLE
+CREATE DATABASE
+REVOKE
+GRANT
+psql:src/main/resources/db/schema.sql:7: NOTICE:  table "sale" does not exist, skipping
+DROP TABLE
+psql:src/main/resources/db/schema.sql:8: NOTICE:  table "rent" does not exist, skipping
+DROP TABLE
+psql:src/main/resources/db/schema.sql:9: NOTICE:  table "test_drive" does not exist, skipping
+DROP TABLE
+psql:src/main/resources/db/schema.sql:10: NOTICE:  table "request" does not exist, skipping
+DROP TABLE
+psql:src/main/resources/db/schema.sql:11: NOTICE:  table "bank_account" does not exist, skipping
+DROP TABLE
+psql:src/main/resources/db/schema.sql:12: NOTICE:  table "manager" does not exist, skipping
+DROP TABLE
+psql:src/main/resources/db/schema.sql:13: NOTICE:  table "salesman" does not exist, skipping
+DROP TABLE
+psql:src/main/resources/db/schema.sql:14: NOTICE:  table "client" does not exist, skipping
+DROP TABLE
+psql:src/main/resources/db/schema.sql:15: NOTICE:  view "user" does not exist, skipping
+DROP VIEW
+psql:src/main/resources/db/schema.sql:16: NOTICE:  sequence "user_id_seq" does not exist, skipping
+DROP SEQUENCE
+psql:src/main/resources/db/schema.sql:17: NOTICE:  function check_user_email_disjoint() does not exist, skipping
+DROP FUNCTION
+psql:src/main/resources/db/schema.sql:18: NOTICE:  function check_vehicle_year_after_model_release() does not exist, skipping
+DROP FUNCTION
+psql:src/main/resources/db/schema.sql:19: NOTICE:  function check_model_release_year_update() does not exist, skipping
+DROP FUNCTION
+psql:src/main/resources/db/schema.sql:20: NOTICE:  table "vehicle_discount" does not exist, skipping
+DROP TABLE
+psql:src/main/resources/db/schema.sql:21: NOTICE:  table "vehicle" does not exist, skipping
+DROP TABLE
+psql:src/main/resources/db/schema.sql:22: NOTICE:  table "model_discount" does not exist, skipping
+DROP TABLE
+psql:src/main/resources/db/schema.sql:23: NOTICE:  table "model" does not exist, skipping
+DROP TABLE
+psql:src/main/resources/db/schema.sql:24: NOTICE:  table "brand" does not exist, skipping
+DROP TABLE
+psql:src/main/resources/db/schema.sql:26: NOTICE:  type "vehicle_state" does not exist, skipping
+DROP TYPE
+psql:src/main/resources/db/schema.sql:27: NOTICE:  type "request_type" does not exist, skipping
+DROP TYPE
+CREATE EXTENSION
+CREATE TYPE
+CREATE TYPE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE FUNCTION
+CREATE TRIGGER
+CREATE FUNCTION
+CREATE TRIGGER
+CREATE SEQUENCE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE FUNCTION
+CREATE TRIGGER
+CREATE TRIGGER
+CREATE TRIGGER
+CREATE VIEW
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+ clients_before_optional_demo 
+------------------------------
+                            0
+(1 row)
+
+  extname   
+------------
+ btree_gist
+(1 row)
+
+DELETE 0
+DELETE 0
+DELETE 0
+DELETE 0
+DELETE 0
+DELETE 0
+DELETE 0
+DELETE 0
+DELETE 0
+DELETE 0
+DELETE 0
+DELETE 0
+DELETE 0
+INSERT 0 5
+INSERT 0 20
+INSERT 0 2
+INSERT 0 56
+UPDATE 56
+INSERT 0 5
+INSERT 0 15
+INSERT 0 15
+INSERT 0 4
+INSERT 0 1
+INSERT 0 14
+INSERT 0 10
+INSERT 0 10
+INSERT 0 40
+psql:src/main/resources/db/demo.sql:302: NOTICE:  relation "user_id_seq" already exists, skipping
+CREATE SEQUENCE
+ setval 
+--------
+     20
+(1 row)
+
+ setval 
+--------
+     56
+(1 row)
+
+ setval 
+--------
+     20
+(1 row)
+
+ setval 
+--------
+     14
+(1 row)
+
+ setval 
+--------
+     10
+(1 row)
+
+ setval 
+--------
+     10
+(1 row)
+
+ setval 
+--------
+     40
+(1 row)
+
+INSERT 0 1
+ current_database | current_user | clients | operations 
+------------------+--------------+---------+------------
+ drivehub         | drivehub     |      15 |         40
+(1 row)
+

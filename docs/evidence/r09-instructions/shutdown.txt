@@ -1,0 +1,9 @@
+waiting for server to shut down.... done
+server stopped
+pg_ctl: no server running
+SIGTERM sent only to dedicated Xvfb PID 4218
+pg_ctl status=3; PostgreSQL stopped
+
+Post-shutdown check outside sandbox:
+State Recv-Q Send-Q Local Address:Port Peer Address:Port
+No X92 socket; Xvfb PID4218 absent (ps exit1).

@@ -1,0 +1,317 @@
+--- /dev/null
++++ b/DriveHub/docs/evidence/r10-cleanup/AppStartupUiCheck.java
+@@ -0,0 +1,36 @@
++package it.unifi.drivehub;
++
++import it.unifi.drivehub.presentation.view.LoginView;
++import javafx.application.Platform;
++import javafx.scene.control.Button;
++import javafx.scene.control.TabPane;
++import javafx.scene.robot.Robot;
++import javafx.stage.Stage;
++import java.util.concurrent.CountDownLatch;
++import java.util.concurrent.TimeUnit;
++
++/** Avvio reale di App.start e schermata pubblica, riusando il Robot delle prove05. */
++public class AppStartupUiCheck extends PriceUiCheck {
++    public static void main(String[] args) throws Exception {
++        Thread.setDefaultUncaughtExceptionHandler((t,e) -> { e.printStackTrace(); System.exit(2); });
++        try {
++            out = args[0] + "/";
++            CountDownLatch ready = new CountDownLatch(1);
++            Platform.startup(ready::countDown);
++            check(ready.await(10, TimeUnit.SECONDS), "JavaFX avviato su Xvfb");
++            fx(() -> { stage = new Stage(); robot = new Robot(); new App().start(stage); return null; });
++            ReactiveTablesUiCheck.frames();
++            check(fx(() -> stage.isShowing() && stage.getScene().getRoot() instanceof LoginView), "App.start mostra LoginView");
++            check(fx(() -> "DriveHub - Piattaforma Concessionario Auto".equals(stage.getTitle())), "titolo applicativo");
++            check(fx(() -> !stage.getScene().getStylesheets().isEmpty()), "tema caricato");
++            reach(n -> n instanceof Button b && "Accedi al Sistema".equals(b.getText()));
++            check(fx(() -> ((TabPane)stage.getScene().getRoot().lookup(".tab-pane")).getTabs().size() == 2), "accesso e registrazione disponibili");
++            screenshot("startup-login");
++            System.out.println("APP STARTUP SUCCESS");
++        } catch (Throwable error) {
++            error.printStackTrace(); System.exit(1);
++        } finally {
++            Platform.exit();
++        }
++    }
++}
+--- /dev/null
++++ b/DriveHub/docs/evidence/r10-cleanup/verification.md
+@@ -0,0 +1,143 @@
++# Ticket 15 — pulizia minima
++
++Sessione del 2 novembre 2026, soltanto15. Letti AGENTS, piano, glossario,
++ADR0001, testing ed [evidenze14](../r08-tables/verification.md).
++[Prerequisiti01–14](prerequisites.json) chiusi, senza criteri aperti.
++`Relazione_SWE` esclusa da letture, ricerche, snapshot, diff e verifiche.
++Nessun commit/staging; nessun ticket successivo avviato.
++
++## Baseline e perimetro
++
++Fotografia iniziale **1276 file**, progetto, tracker e piano esterni, in
++`/tmp/drivehub-ticket15-session/before`; esclusi `.git`, `target` e la relazione.
++[Manifest](baseline-sha256.json), [HEAD](initial-head.txt), [indice](initial-index.sha256).
++Il diff da HEAD comprenderebbe01–14: le review usano soltanto questa fotografia.
++
++Nuova baseline `mvn -Ppostgres-tests clean test`: **394/394**,47 senzaDB e
++347 PostgreSQL, zero failure/errori/salti, isolamento/sentinella compresi.
++[Log](baseline.log), [XML](baseline-surefire/), [input](baseline-files.sha256.json).
++Il394/394 del14 rimane storico: non è stato usato come prova corrente.
++
++## Riferimenti e riduzione
++
++[Ricerca iniziale](active-fxml-session-before.txt),
++[tutti i file con riferimenti, comprese prove storiche](all-reference-files-before.txt),
++[chiamanti AppContext e callback](context-callers-before.txt),
++[risorse e moduli](resources-modules-before.txt).
++Ricerca case-insensitive anche nei file nascosti, esclusi `.git`, `target` e
++la relazione. Le prove storiche sono incluse nell'inventario dei riferimenti,
++ma separate dai sorgenti e dalla documentazione corrente.
++
++| Elemento | Riscontro e intervento |
++|---|---|
++| `javafx-fxml` | Solo dipendenza e commento POM; nessuna risorsa `.fxml`, import, loader, reflection o dichiarazione di modulo. Rimossa la dipendenza e corretto il suo commento |
++| `AppContext.currentUser` | Solo dichiarazione e corpo dei tre metodi, nessun uso esterno; rimosso |
++| `getCurrentUser`, `setCurrentUser`, `AppContext.logout` | Nessun chiamante in sorgenti, test o harness; rimossi |
++| Import `domain.user.User` in AppContext | Serviva soltanto ai membri rimossi; eliminato |
++| Login e disconnessione reali | `LoginView` passa l'utente a `App.showDashboardForUser`; `User.openDashboard` sceglie la vista. Le tre dashboard conservano il proprio utente e chiamano `onLogout`, che in App è `showLoginView`. Nessuna modifica |
++| Test, fixture e persistente | Nessun chiamante da aggiornare; `src/test`, DAO, schema e demo invariati. Nessun test che rispecchi le rimozioni |
++
++[Ricerca finale corrente](active-fxml-session-after.txt) e
++[sorgenti/POM](runtime-fxml-session-after.txt): nessun riferimento runtime agli
++elementi rimossi. Le callback di disconnessione restano usate.
++I diagrammi `class-presentation`, `sequence-rent-payment` e `page-navigation`
++descrivono già prima dell'intervento componenti FXML/SessionContext assenti:
++incoerenza preesistente, non prodotta da15, rimane al lavoro documentale16–17.
++README e istruzioni non descrivono i membri rimossi. Prove storiche intatte.
++
++[Riduzione misurata](reduction.json): **una dipendenza, un campo, tre metodi,
++un import; 20 righe nette in meno** fra i due file di produzione.
++POM128→122righe, AppContext170→156; nessuna nuova dipendenza o comportamento.
++Nessun grafo Graphify presente; nessuna generazione necessaria per questa pulizia.
++
++## Ambiente ricontrollato
++
++I file temporanei13/14 erano ancora presenti: verificati binari, versioni,
++configurazione privata0600 e destinazioni prima del riuso.
++Java Linux **21.0.12.1**, javac21, Maven **3.9.16** sullo stesso Java,
++PostgreSQL **16.15**: [versioni](versions.txt).
++Nessun abbassamento del requisito21, nessuna installazione di sistema.
++
++Solo cluster sacrificabile `/tmp/drivehub-ticket13-pgdata`,
++**127.0.0.1:55433**, ruolo e DB `drivehub_test`, senza privilegi amministrativi,
++appartenenze o altri DB posseduti. Copia applicativa `drivehub` separata con
++sentinella. [Controlli iniziali in sola lettura](environment.txt).
++Sei variabili private in `/tmp/drivehub-ticket15-session/env.json`,0600,
++mai copiate nelle prove. Nessun DB applicativo preesistente contattato.
++
++Xvfb isolato **:93**,1440×1000, rendering software, listener TCP e Unix
++filesystem disabilitati, solo socket locale astratto:
++[comando](xvfb-command.txt), [log](xvfb.log).
++Avvio e prove fuori sandbox per mantenere processi e socket fra comandi.
++Nessun tentativo fallito presentato come prova riuscita.
++Se `/tmp` scompare, ricreare l'ambiente secondo [testing](../../testing.md).
++
++## Comandi ed esiti
++
++Launcher privato `python3 /tmp/drivehub-ticket15-session/maven.py <etichetta>
++<argomenti>`: Java21, sei variabili private, `mvn -B -o`, log/XML e hash input.
++
++| Etichetta / comando Maven | Esito |
++|---|---|
++| baseline `-Ppostgres-tests clean test` |394/394,47 senzaDB/347 PostgreSQL, zero failure/errori/salti |
++| compile `-DskipTests compile` |65 sorgenti compilati, target21, BUILD SUCCESS; nessun test dichiarato eseguito da questo comando |
++| final-full `-Ppostgres-tests clean test` |394/394,47 senzaDB/347 PostgreSQL, zero failure/errori/salti |
++
++[Compilazione](compile.log), [input](compile-files.sha256.json),
++[suite finale](final-full.log), [XML](final-full-surefire/),
++[input finali](final-full-files.sha256.json), [riepilogo](summary.json).
++Include tutte le regressioni01–14, fixture, isolamento e sentinella.
++Classpath Surefire di baseline con FXML, finale senza FXML.
++I warning Maven del modello OpenJFX sono già presenti nella baseline.
++Nessun TDD artificiale per le cancellazioni; verifiche di compilazione e avvio
++al confine reale, suite esistente integralmente rieseguita.
++
++## Avvio e GUI
++
++Il [controllo di avvio](AppStartupUiCheck.java) riusa Robot05 e i frame14,
++invoca il vero `new App().start(stage)` sul thread JavaFX. Finestra LoginView
++visibile, titolo e tema, due schede, pulsante raggiungibile con Tab:
++**APP STARTUP SUCCESS**. Non esegue login o query DB.
++[Log](startup-ui.log), [schermata ispezionata](startup-startup-login.png),
++[input](startup-files.sha256.json), [hash harness](startup-harness.sha256.json).
++
++Compilazione e comando di avvio equivalenti, dalla radice del progetto,
++con `JAVA_HOME`21, `DISPLAY` isolato, `JFX` contenente soltanto i jar Linux
++javafx-base/graphics/controls21.0.2, `JDBC` il driver PostgreSQL42.7.3,
++`UI_DIR` directory temporanea e `PRIVATE_CONFIG` directory privata contenente
++`application.properties` per la sola copia sacrificabile:
++
++```bash
++CP="$PRIVATE_CONFIG:target/classes:target/test-classes:$JDBC:$UI_DIR"
++"$JAVA_HOME/bin/javac" --module-path "$JFX" --add-modules javafx.controls \
++  -cp "$CP" -d "$UI_DIR" docs/evidence/r03-prices/PriceUiCheck.java \
++  docs/evidence/r08-tables/ReactiveTablesUiCheck.java \
++  docs/evidence/r10-cleanup/AppStartupUiCheck.java
++"$JAVA_HOME/bin/java" --module-path "$JFX" --add-modules javafx.controls \
++  -Dprism.order=sw -cp "$CP" it.unifi.drivehub.AppStartupUiCheck "$UI_DIR"
++DRIVEHUB_UI_CLASS=it.unifi.drivehub.TableLifecycleUiCheck \
++  python3 docs/evidence/r08-tables/run-ui.py
++```
++
++Il launcher14 è stato riusato senza modificarlo con output separato e
++variabili DB dedicate; harness e suite mai contemporanei.
++Ciclo completo **UI CHECK SUCCESS**: caricamento bloccato/PID, prezzi aggiornati,
++errore SQL/riprova, vecchio risultato/errore ignorati, tre ruoli, celle e
++scorrimento senza nuove query/connessioni, tastiera:
++[log](lifecycle-ui.log), [input](lifecycle-files.sha256.json).
++Le sette nuove schermate sono conservate con prefisso `lifecycle-`.
++Nessun cambiamento grafico o certificazione screen reader/altro OS/display;
++nessun nuovo benchmark. Il controllo di avvio invoca App.start, non verifica
++il packaging o il goal Maven javafx:run.
++
++Input `src` e POM identici fra compilazione, avvio, ciclo grafico e suite finale;
++nessun codice/test/harness cambiato dopo queste prove.
++[Sentinella finale READ ONLY](sentinel-final.txt),
++[arresto PostgreSQL e Xvfb](shutdown.txt), [log PostgreSQL](postgres.log).
++
++## Review e chiusura
++
++Prove runtime completate; review indipendenti Standards/Spec ancora in corso.
++Il ticket resta in-progress fino alla conclusione delle review e dei controlli
++di conservazione. Gli aggiornamenti documentali di chiusura non costituiscono
++nuove prove runtime.
+--- a/DriveHub/docs/testing.md
++++ b/DriveHub/docs/testing.md
+@@ -621,3 +621,26 @@
+ Xvfb94 sul solo socket astratto, senza TCP. Il Java predefinito è17 e non va
+ usato per queste prove. Se /tmp manca ricreare gli strumenti come sopra.
+ [Evidenze e limiti della sessione14](evidence/r08-tables/verification.md).
++
++## Pulizia minima — ticket 15
++
++Le ricerche del ticket15 precedono le rimozioni: nessuna risorsa o caricamento
++FXML e nessun chiamante di `AppContext.getCurrentUser`, `setCurrentUser` o
++`logout`. Le viste continuano a ricevere l'utente e la callback di disconnessione.
++Nessun test aggiunto per verificare la forma del codice rimosso.
++
++```bash
++mvn -DskipTests compile
++# Con Java21, variabili DB dedicate e display Xvfb isolato già attivo:
++DRIVEHUB_UI_CLASS=it.unifi.drivehub.TableLifecycleUiCheck python3 docs/evidence/r08-tables/run-ui.py
++mvn -Ppostgres-tests clean test
++```
++
++Il controllo aggiuntivo [AppStartupUiCheck](evidence/r10-cleanup/AppStartupUiCheck.java)
++invoca il vero `App.start`: finestra di accesso visibile, tema, schede e pulsante
++raggiungibile con Tab. Riusa i controlli Robot05 e i frame14; non esegue login o
++scritture DB. Il classpath della prova antepone un `application.properties`
++privato indirizzato alla sola copia sacrificabile. Non modificare la
++configurazione applicativa del repository. Comandi di compilazione/avvio,
++versione, log, schermata e nuova baseline sono nelle [evidenze15](evidence/r10-cleanup/verification.md).
++Il394/394 del14 rimane storico; `/tmp` e i servizi vanno sempre ricontrollati.
+--- a/DriveHub/pom.xml
++++ b/DriveHub/pom.xml
+@@ -21,18 +21,12 @@
+     </properties>
+ 
+     <dependencies>
+-        <!-- JavaFX Controls & FXML -->
++        <!-- JavaFX Controls -->
+         <dependency>
+             <groupId>org.openjfx</groupId>
+             <artifactId>javafx-controls</artifactId>
+             <version>${javafx.version}</version>
+         </dependency>
+-        <dependency>
+-            <groupId>org.openjfx</groupId>
+-            <artifactId>javafx-fxml</artifactId>
+-            <version>${javafx.version}</version>
+-        </dependency>
+-
+         <!-- PostgreSQL JDBC Driver -->
+         <dependency>
+             <groupId>org.postgresql</groupId>
+--- a/DriveHub/src/main/java/it/unifi/drivehub/AppContext.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/AppContext.java
+@@ -21,7 +21,6 @@
+ import it.unifi.drivehub.dao.postgres.PostgresTestDriveDao;
+ import it.unifi.drivehub.dao.postgres.PostgresUserDao;
+ import it.unifi.drivehub.dao.postgres.PostgresVehicleDao;
+-import it.unifi.drivehub.domain.user.User;
+ import it.unifi.drivehub.event.VehicleEventPublisher;
+ import it.unifi.drivehub.security.PasswordHasher;
+ import it.unifi.drivehub.security.Pbkdf2PasswordHasher;
+@@ -67,8 +66,6 @@
+     private final TestDriveService testDriveService;
+     private final CatalogService catalogService;
+     private final OperationQueryService operationQueryService;
+-
+-    private User currentUser;
+ 
+     private AppContext() {
+         this(new DatabaseManager());
+@@ -155,16 +152,5 @@
+         return priceCalculatorService;
+     }
+ 
+-    public User getCurrentUser() {
+-        return currentUser;
+-    }
+-
+-    public void setCurrentUser(User currentUser) {
+-        this.currentUser = currentUser;
+-    }
+-
+-    public void logout() {
+-        this.currentUser = null;
+-    }
+ }
+ 
+--- a/PIANO_REVISIONI_DRIVEHUB.md
++++ b/PIANO_REVISIONI_DRIVEHUB.md
+@@ -2,7 +2,14 @@
+ 
+ Registro operativo avviato il 31 ottobre 2026. Punto di ingresso per riprendere il lavoro: avanzamento, decisioni, attività, verifiche e prossimo passo.
+ 
+-## Stato attuale — ticket 14 completato
++## Stato attuale — ticket 15 in verifica
++
++- Solo15: prerequisiti01–14 chiusi e fotografia iniziale1276file. Nuova baseline `mvn -Ppostgres-tests clean test` **394/394**,47 senzaDB/347 PostgreSQL, zero failure/errori/salti, isolamento/sentinella compresi; il394/394 del14 resta storico.
++- Ricerca riferimenti completa nel perimetro autorizzato: nessuna risorsa/loader FXML, nessun chiamante dei membri di sessione AppContext. Rimossi soltanto `javafx-fxml`, `currentUser`, tre metodi e l'import User. Login/logout reali, chiamanti, DAO/schema/demo e test invariati; nessun test che rispecchi rimozioni.
++- Java21/PG16 ricontrollati nei file temporanei ancora presenti; ruolo/DB dedicati e copia sentinella su127.0.0.1:55433. Compilazione e avvio App.start su Xvfb93 riusciti, tema e tastiera verificati; harness grafico14 riusato con successo. Suite completa finale e review indipendenti ancora da completare.
++- [Ticket15](TRACKER_DRIVEHUB/revisioni/issues/15-pulizia-componenti-inutilizzati.md), [evidenze15](DriveHub/docs/evidence/r10-cleanup/verification.md). R10 in corso; nessun ticket successivo, commit/staging o accesso a Relazione_SWE.
++
++## Stato al termine del ticket 14 — storico
+ 
+ - Solo14 implementato dopo verifica del prerequisito05 e della chiusura01–13. Nuova baseline **390/390** prima delle modifiche; il390/390 del13 resta storico. Fotografia iniziale1089file, lavoro precedente preservato.
+ - Modelli, sconti e prezzi preparati per caricamento dai servizi esistenti; celle senza query, quattro letture collettive per listino e due per sconti modello. Nessuna cache persistente, dipendenza nuova o modifica a DAO/schema/formule/accordi.
+@@ -190,7 +197,7 @@
+ | R07 | Cancellazione account rispettosa di storico e richieste | #9 | R00; fixture aggiornate dai flussi interessati | Completata: ticket13 chiuso e verificato |
+ | R08 | Tabelle JavaFX senza query nel rendering | #16 | R03; verificare aggiornamenti dei flussi corretti | Completata: ticket14 verificato e chiuso |
+ | R09 | README, diagrammi, teoria ed evidenze coerenti | #14, #15, #18; valutazione teorica | Incrementale; chiusura dopo R01–R08 e R10 | Pianificata |
+-| R10 | Rimozione dei componenti inutilizzati | #20 | R00; controllo riferimenti prima di rimuovere | Pianificata |
++| R10 | Rimozione dei componenti inutilizzati | #20 | R00; controllo riferimenti prima di rimuovere | In verifica: solo ticket15 |
+ | R11 | Verifica integrata e tracciabilità completa | #13; conferma finale #1–#20 | R01–R10 | Pianificata |
+ 
+ Sequenza suggerita: R00 → R01 → R02 → R03 → R04 → R05 → R06 → R07 → R08 → R10 → chiusura R09 → R11. La tabella indica i blocchi effettivi; la sequenza limita interferenze su servizi e schema condivisi.
+--- a/TRACKER_DRIVEHUB/revisioni/issues/15-pulizia-componenti-inutilizzati.md
++++ b/TRACKER_DRIVEHUB/revisioni/issues/15-pulizia-componenti-inutilizzati.md
+@@ -7,7 +7,7 @@
+ **Blocked by:** 01: Rendere build e test ripetibili senza toccare i dati applicativi
+ 
+ Status: ready-for-agent
+-State: open
++State: in-progress
+ 
+ **Piano:** R10
+ **Specifica:** AC20
+@@ -30,4 +30,6 @@
+ 
+ ## Comments
+ 
++- 2 novembre 2026: avviato solo15 dopo lettura AGENTS/piano/glossario/ADR0001, testing ed evidenze14 e verifica01–14 chiusi. Fotografia iniziale1276file, HEAD/indice conservati. Java21/PG16 e configurazione dedicata ricontrollati; nuova baseline `mvn -Ppostgres-tests clean test`394/394, zero failure/errori/salti, isolamento/sentinella compresi. Il394/394 del14 resta storico. Nessuna risorsa/loader FXML né chiamante dei membri di sessione AppContext; compilazione, App.start su Xvfb93 e harness grafico14 riusciti. Suite finale/review ancora in corso. Relazione_SWE esclusa; nessun commit/staging.
++
+ - 31 ottobre 2026: ticket pubblicato da `to-tickets` dopo approvazione di granularità e dipendenze. Esecuzione non ancora avviata; verificare i blocchi prima di iniziare.

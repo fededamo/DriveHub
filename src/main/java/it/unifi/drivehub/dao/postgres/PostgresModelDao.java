@@ -68,9 +68,17 @@ public final class PostgresModelDao implements ModelDao {
 
     @Override
     public Optional<Model> findById(Long id) {
+        try (Connection conn = db.getConnection()) {
+            return findById(id, conn);
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore di connessione durante la ricerca modello id: " + id, e);
+        }
+    }
+
+    @Override
+    public Optional<Model> findById(Long id, Connection conn) {
         String sql = "SELECT id, brand, name, release_price, release_year FROM model WHERE id = ?";
-        try (Connection conn = db.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {

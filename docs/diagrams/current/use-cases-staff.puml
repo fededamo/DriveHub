@@ -1,0 +1,39 @@
+@startuml
+!pragma layout smetana
+left to right direction
+skinparam shadowing false
+skinparam defaultFontSize 16
+title Casi d'uso correnti — staff
+actor Venditore
+actor Manager
+rectangle DriveHub {
+  usecase "Consultare richieste\nin sospeso" as Pending
+  usecase "Approvare / rifiutare\nacquisto del cliente" as Purchase
+  usecase "Accettare / rifiutare\ncessione del cliente" as Sale
+  usecase "Cambiare destinazione\nSALE ↔ RENT" as Destination
+  usecase "Gestire marchi\ne modelli" as Models
+  usecase "Aggiungere / eliminare\nveicoli secondo vincoli" as Vehicles
+  usecase "Scegliere base automatica\no manuale" as Price
+  usecase "Gestire sconti\nmodello / veicolo" as Discount
+  usecase "Consultare registro economico\nPURCHASE / ACQUISITION / PENALTY" as Register
+}
+Venditore -- Pending
+Venditore -- Purchase
+Venditore -- Sale
+Venditore -- Destination
+Manager -- Models
+Manager -- Vehicles
+Manager -- Price
+Manager -- Discount
+Manager -- Register
+legend bottom
+  Solo stati opposti SALE/RENT; RENT→SALE bloccato
+  da noleggio in corso. Futuri cancellati e rimborsati100%
+  nella stessa transazione; altri stati non riaperti.
+  Entrambi i ruoli hanno gestione identità e logout
+  (diagramma cliente/identità). Solo il cliente ricarica il conto.
+  Non esistono ordini StockOrder, manutenzione,
+  offerta del venditore poi approvazione del manager,
+  né gestione degli stati di noleggi/test drive da parte dello staff.
+endlegend
+@enduml

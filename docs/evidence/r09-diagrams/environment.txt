@@ -1,0 +1,45 @@
+COMMAND: java -version
+openjdk version "21.0.12.1" 2026-08-18
+OpenJDK Runtime Environment (build 21.0.12.1+1-1-26.04.4-Ubuntu)
+OpenJDK 64-Bit Server VM (build 21.0.12.1+1-1-26.04.4-Ubuntu, mixed mode, sharing)
+COMMAND: javac -version
+javac 21.0.12.1
+COMMAND: mvn -version
+Apache Maven 3.9.16 (2bdd9fddda4b155ebf8000e807eb73fd829a51d5)
+Maven home: /mnt/c/ProgramData/chocolatey/lib/maven/apache-maven-3.9.16
+Java version: 21.0.12.1, vendor: Ubuntu, runtime: /tmp/drivehub-ticket16-tools/root/usr/lib/jvm/java-21-openjdk-amd64
+Default locale: en, platform encoding: UTF-8
+OS name: "linux", version: "6.18.54.1-microsoft-standard-wsl2", arch: "amd64", family: "unix"
+COMMAND: postgres --version
+postgres (PostgreSQL) 16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)
+COMMAND: psql --version
+psql (PostgreSQL) 16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)
+COMMAND: ldd /tmp/drivehub-ticket16-tools/root/usr/bin/Xvfb
+	linux-vdso.so.1 (0x00007a880294f000)
+	libselinux.so.1 => /usr/lib/x86_64-linux-gnu/libselinux.so.1 (0x00007a88026c2000)
+	libnettle.so.8 => /usr/lib/x86_64-linux-gnu/libnettle.so.8 (0x00007a880266b000)
+	libunwind.so.8 => /tmp/drivehub-ticket16-tools/root/usr/lib/x86_64-linux-gnu/libunwind.so.8 (0x00007a880264f000)
+	libGL.so.1 => /usr/lib/x86_64-linux-gnu/libGL.so.1 (0x00007a88025ca000)
+	libpixman-1.so.0 => /usr/lib/x86_64-linux-gnu/libpixman-1.so.0 (0x00007a8802513000)
+	libXfont2.so.2 => /tmp/drivehub-ticket16-tools/root/usr/lib/x86_64-linux-gnu/libXfont2.so.2 (0x00007a88024e1000)
+	libXau.so.6 => /usr/lib/x86_64-linux-gnu/libXau.so.6 (0x00007a88024db000)
+	libsystemd.so.0 => /usr/lib/x86_64-linux-gnu/libsystemd.so.0 (0x00007a88023c7000)
+	libXdmcp.so.6 => /usr/lib/x86_64-linux-gnu/libXdmcp.so.6 (0x00007a88023bf000)
+	libaudit.so.1 => /usr/lib/x86_64-linux-gnu/libaudit.so.1 (0x00007a8802387000)
+	libm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x00007a8802261000)
+	libc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x00007a8802000000)
+	libpcre2-8.so.0 => /usr/lib/x86_64-linux-gnu/libpcre2-8.so.0 (0x00007a8801f54000)
+	/lib64/ld-linux-x86-64.so.2 (0x00007a8802951000)
+	liblzma.so.5 => /usr/lib/x86_64-linux-gnu/liblzma.so.5 (0x00007a880222a000)
+	libGLdispatch.so.0 => /usr/lib/x86_64-linux-gnu/libGLdispatch.so.0 (0x00007a8801e9b000)
+	libGLX.so.0 => /usr/lib/x86_64-linux-gnu/libGLX.so.0 (0x00007a8801e68000)
+	libz.so.1 => /usr/lib/x86_64-linux-gnu/libz.so.1 (0x00007a8801e4a000)
+	libbz2.so.1.0 => /usr/lib/x86_64-linux-gnu/libbz2.so.1.0 (0x00007a8801e35000)
+	libfontenc.so.1 => /tmp/drivehub-ticket16-tools/root/usr/lib/x86_64-linux-gnu/libfontenc.so.1 (0x00007a8801e2a000)
+	libfreetype.so.6 => /usr/lib/x86_64-linux-gnu/libfreetype.so.6 (0x00007a8801d55000)
+	libcap-ng.so.0 => /usr/lib/x86_64-linux-gnu/libcap-ng.so.0 (0x00007a8801d4d000)
+	libX11.so.6 => /usr/lib/x86_64-linux-gnu/libX11.so.6 (0x00007a8801c0b000)
+	libpng16.so.16 => /usr/lib/x86_64-linux-gnu/libpng16.so.16 (0x00007a8801bd1000)
+	libbrotlidec.so.1 => /usr/lib/x86_64-linux-gnu/libbrotlidec.so.1 (0x00007a8801bc2000)
+	libxcb.so.1 => /usr/lib/x86_64-linux-gnu/libxcb.so.1 (0x00007a8801b97000)
+	libbrotlicommon.so.1 => /usr/lib/x86_64-linux-gnu/libbrotlicommon.so.1 (0x00007a8801b74000)

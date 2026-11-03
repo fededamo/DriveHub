@@ -1,0 +1,10 @@
+{
+  "git_diff_check": true,
+  "session_text_whitespace": true,
+  "local_links_checked": 63,
+  "no_private_credentials_in_evidence": true,
+  "runtime_hashes_unchanged": true,
+  "ui_hashes_unchanged": true,
+  "only_ticket13_scope": true,
+  "relazione_excluded": true
+}

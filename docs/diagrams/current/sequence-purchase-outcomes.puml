@@ -1,0 +1,50 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontSize 16
+skinparam maxMessageSize 280
+title Acquisto — rifiuto e scadenza (alternative al saldo)
+autonumber
+actor Venditore
+boundary ClientDashboardView as ui
+control PurchaseService as service
+participant DatabaseManager as db
+participant RequestDao as request
+participant BankAccountDao as account
+participant SaleDao as sale
+participant VehicleDao as vehicle
+group rejectPurchase(requestId) — una transazione
+Venditore -> service : dalla SalesmanDashboardView
+service -> db : executeInTransaction(callback)
+service -> request : findByIdForUpdate(requestId, conn)
+note over service,request : Verifica tipo PURCHASE.
+service -> account : findByClientIdForUpdate(clientId, conn)
+service -> account : updateBalance(..., saldo + intero acconto, conn)
+service -> vehicle : updateStateAtomically(BLOCKED, SALE, conn)
+service -> request : delete(requestId, conn)
+db -> db : commit / close
+end
+group checkAndHandleExpiredRequests(clientId) — all'ingresso cliente
+ui -> service : costruzione dashboard
+service -> request : findByClientId(clientId)
+loop per ogni candidata — una transazione distinta
+service -> db : executeInTransactionWithResult(callback)
+service -> request : findByIdForUpdate(candidate.id, conn)
+alt presente, PURCHASE, del cliente, approvata e scaduta
+service -> account : findByClientIdForUpdate(clientId, conn)
+service -> account : updateBalance(..., saldo + acconto - penale, conn)
+service -> sale : save(Sale PENALTY = 20% acconto, conn)
+service -> request : delete(request.id, conn)
+service -> vehicle : updateStateAtomically(BLOCKED, SALE, conn)
+else candidata non più valida
+note over service,request : Nessuna scrittura; restituisce null.
+end
+db -> db : commit / close
+end
+service --> ui : notifiche delle richieste elaborate
+end
+note over service,db
+  Penale arrotondata HALF_UP; rimborso = acconto - penale.
+  Nessun job di scadenza periodico. Eccezione: tenta rollback, close, errore.
+  Il lock della richiesta serializza saldo/rifiuto/scadenza, non una garanzia distribuita.
+end note
+@enduml

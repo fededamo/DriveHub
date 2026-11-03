@@ -1,0 +1,19 @@
+{
+  "initial_files": 1422,
+  "present": 1422,
+  "identical": 1418,
+  "intentional_changes": [
+    "DriveHub/README.md",
+    "DriveHub/docs/testing.md",
+    "TRACKER_DRIVEHUB/revisioni/issues/16-istruzioni-e-rigore-teorico.md",
+    "PIANO_REVISIONI_DRIVEHUB.md"
+  ],
+  "deleted": [],
+  "HEAD_unchanged": true,
+  "index_unchanged": true,
+  "baseline_integrity": true,
+  "runtime_inputs_build_without_db_full_identical": true,
+  "private_passwords_absent_from_evidence": true,
+  "new_files": 85,
+  "new_paths_outside_scope": []
+}

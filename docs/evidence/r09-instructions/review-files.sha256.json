@@ -1,0 +1,17 @@
+{
+  "DriveHub/README.md": "1492ec2819d5f9f956bf9c8c36f3b5354d6bd908d09fa0ed89be13830b9a5e00",
+  "DriveHub/docs/architecture.md": "520ff758c1762fbfaaa7a1558afbee24351bd0f66a890cb4a554c2bf23aa4792",
+  "DriveHub/docs/evidence/r09-instructions/InstallationDbCheck.java": "02aaae38d537e90fbe05a6669fba6ddacc6eba7df9b100fa2a0bfe645fb92f88",
+  "DriveHub/docs/evidence/r09-instructions/check-db.py": "e200693f0e20e359261e1966aefde5cfad61459e470d1fa66bcc84c48c3aeb6b",
+  "DriveHub/docs/evidence/r09-instructions/check-startup.py": "b172cecd7aea32d25f8f2dcd0797efe6af888b4f1f801a8e9154654be6c3749e",
+  "DriveHub/docs/evidence/r09-instructions/commands.md": "31e7c3348819cb1c8921c774e85ac331b279207e45e1691cf7589269d858a702",
+  "DriveHub/docs/evidence/r09-instructions/prepare.py": "395f25854e23e890177d1008232ac88fdd1832c0cfb4bd37809d9b54e960ce69",
+  "DriveHub/docs/evidence/r09-instructions/run-maven.py": "694e49e986493f3037baafb80cdca1492662f8adc24379d15ce0537383bb6426",
+  "DriveHub/docs/evidence/r09-instructions/setup-db.py": "8abbe4df326251303792a22dc81eb7f9c5512366cf8d4c39a0df85a54cde88d8",
+  "DriveHub/docs/evidence/r09-instructions/snapshot.py": "221f9373245bbf3209979b5bdab598520fe4d563fb528f23fc4529b608abee30",
+  "DriveHub/docs/evidence/r09-instructions/verification.md": "334f5c8c48c02c0152f80ec696844637d34135412c042434ef107d30490cc6fc",
+  "DriveHub/docs/installation.md": "a67eb9742a1ff111987e3b6a6de26d78332d48982e86d2f00d9505ef0842a023",
+  "DriveHub/docs/testing.md": "0ffd6821880b6d66f0f2395f1cf3a2c1397fe8dd8c8c7f4a592563b3b74127fe",
+  "PIANO_REVISIONI_DRIVEHUB.md": "475c79bf62e03f4d13a1f222b2ef606199ab47de36ee988d64e8a826183d4dbf",
+  "TRACKER_DRIVEHUB/revisioni/issues/16-istruzioni-e-rigore-teorico.md": "8a22f8b48e342963daafc413c266ab4b45523fcd93a676169e0828829eddd4ae"
+}

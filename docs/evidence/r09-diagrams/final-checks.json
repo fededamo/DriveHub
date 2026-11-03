@@ -1,0 +1,29 @@
+{
+  "baseline_files": 1507,
+  "unchanged": 1502,
+  "intentionally_changed": [
+    "DriveHub/README.md",
+    "DriveHub/docs/architecture.md",
+    "DriveHub/docs/testing.md",
+    "PIANO_REVISIONI_DRIVEHUB.md",
+    "TRACKER_DRIVEHUB/revisioni/issues/17-diagrammi-ed-evidenze-correnti.md"
+  ],
+  "deleted": [],
+  "HEAD_unchanged": true,
+  "index_unchanged": true,
+  "runtime_inputs_unchanged": 93,
+  "historical_visual_artifacts_unchanged": 37,
+  "current_render_pairs_checked": 18,
+  "XML_tests_checked": {
+    "targeted": 79,
+    "full": 394
+  },
+  "local_links_checked": 303,
+  "broken_links": 0,
+  "added_line_whitespace_errors": 0,
+  "private_password_matches": 0,
+  "unexpected_postreview_changes": [],
+  "sentinel_application_fingerprints_unchanged": true,
+  "ticket17_closed": true,
+  "ticket18_unchanged_open": true
+}

@@ -1,0 +1,2 @@
+$ rg --files --hidden -g !.git/** -g !target/** -g !Relazione_SWE/** -g *.fxml -g module-info.java
+exit=1

@@ -1,0 +1,1292 @@
+--- /dev/null
++++ b/DriveHub/docs/evidence/r05-sale-proposal/spec-review.md
+@@ -0,0 +1,28 @@
++# Spec — revisione indipendente
++
++Revisore `/root/review_spec`, contesto nuovo, sola lettura.
++Patch SHA256 `59bb122564c1a085fc68bb6f0e1b15b612b375638786eee1e6b86cfff50adb4a`.
++Baseline locale 401 file; nessun confronto da HEAD.
++
++**0 rilievi: 0 requisiti mancanti/parziali, 0 scope creep, 0 comportamenti errati.**
++
++Stato SOLD, ultima vendita effettiva al proponente e assenza di richieste aperte
++sono controllati sulla connessione transazionale, dopo lock/rilettura del VIN.
++Lo storico distingue vendite, acquisizioni e penali.
++
++I cambiamenti a dominio, mapping, schema, fixture e messaggi sostengono la
++proposta. Accettazione/rifiuto, contabilità del ticket 10 e prenotazioni del
++ticket 11 restano esclusi.
++
++Unicità DB, rollback e gestione delle gare risultano coerenti con AC02 e AC03
++limitatamente alle proposte. I test comprendono VIN noto/nuovo, compratore
++successivo, duplicati, scritture interrotte e concorrenza con connessioni
++distinte e attese osservabili.
++
++Consultati ticket 09, D07/R05, AC02/AC03/AC13, AGENTS, glossario, ADR 0001,
++patch e codice connesso pertinente.
++
++Limiti: revisione statica; suite, SQL e JavaFX non rieseguiti. Nessun file
++modificato; Relazione_SWE sempre esclusa. Resta il limite documentato per
++installazioni esistenti: adeguamento dello schema e classificazione fattuale
++dello storico.
+--- /dev/null
++++ b/DriveHub/docs/evidence/r05-sale-proposal/standards-review.md
+@@ -0,0 +1,21 @@
++# Standards — revisione indipendente
++
++Revisore `/root/review_standards`, contesto nuovo, sola lettura.
++Patch SHA256 `59bb122564c1a085fc68bb6f0e1b15b612b375638786eee1e6b86cfff50adb4a`.
++Baseline locale 401 file; cambiamenti preesistenti 01–08 esclusi.
++
++**0 violazioni documentate, 0 smell azionabili.**
++
++Confrontati gli hunks con AGENTS.md, convenzioni del tracker, regole di dominio,
++glossario, ADR0001 e istruzioni globali. La modifica conserva l'architettura
++servizi/DAO, riusa le factory esistenti, mantiene base/modalità e importi,
++aggiorna persistenza e fixture, aggiunge prove sui confini pubblici. Piano e
++ticket dichiarano correttamente la review ancora pendente nella patch fissata.
++
++La ripetizione delle query JDBC e i controlli nel servizio rispettano le
++responsabilità esistenti; non giustificano estrazioni o spostamenti secondo la
++baseline degli smell.
++
++Non eseguiti test, SQL o modifiche; Relazione_SWE sempre esclusa. Gli esiti
++195/195 e 142/142 sono stati prodotti dalla sessione principale e non rieseguiti
++dal revisore.
+--- /dev/null
++++ b/DriveHub/docs/evidence/r05-sale-proposal/verification.md
+@@ -0,0 +1,123 @@
++# Ticket 09 — proposta di cessione e titolarità
++
++Verifica del 2 novembre 2026: **6/6 criteri soddisfatti e verificati,
++ticket 09 chiuso**. Revisione indipendente Standards/Spec completata senza rilievi. Implementato soltanto 09.
++Prerequisito 01 e precedenti 01–08 tutti chiusi: [controllo](prerequisites.json).
++Nessun commit/staging; Relazione_SWE sempre esclusa.
++
++## Versione e baseline
++
++HEAD `c2a81122ee6be44760ded4160fde229bd33e837c`. Prima delle modifiche acquisiti
++401 file locali in `/tmp/drivehub-ticket09-baseline`, inclusi piano e tracker
++esterni, istruzioni e lavoro preesistente 01–08. Esclusi `.git`, `target` e
++Relazione_SWE. Nessun confronto da HEAD usato per attribuire il lavoro di oggi.
++
++[Manifest baseline](baseline-sha256.json), [versione RED iniziale](red-files.sha256.json),
++[regressione RED/GREEN iniziale](regression-source.java.txt),
++[hash sorgenti/schema/fixture/POM verificati nella suite finale](tested-files.sha256.json).
++[Patch fissata per le revisioni](review.patch), [18 file revisionati](review-files.txt),
++[conservazione della baseline](preservation.json), [controlli finali](integrity-checks.json).
++La patch di revisione ha SHA256
++`59bb122564c1a085fc68bb6f0e1b15b612b375638786eee1e6b86cfff50adb4a`.
++387 file preesistenti identici, 14 aggiornati intenzionalmente, nessuna eliminazione;
++aggiunti enum e due classi di test, oltre alle nuove evidenze. Tutti i ticket e le
++evidenze 01–08 intatti; HEAD e indice invariati. La patch passa
++`git apply --check --reverse -p1` dalla directory esterna.
++
++I GREEN intermedi nei log certificano solo la rispettiva fase TDD; la suite finale
++ricompila e verifica l'intera versione indicata dal manifest finale.
++
++## Chiamanti e responsabilità
++
++| Percorso | Cambiamento / verifica |
++|---|---|
++| `SaleToDealershipService.submitSaleProposal` | Lock/rilettura del VIN noto; SOLD, ultima vendita al proponente, nessuna richiesta aperta; modello/anno coerenti; aggiornamento e richiesta nella stessa transazione; base/modalità conservate |
++| Dominio `Sale` / `SaleType` | Tipo obbligatorio PURCHASE/ACQUISITION/PENALTY nelle factory e nella ricostruzione; importi e segni invariati |
++| `SaleDao` / JDBC / storico | Tutti i SELECT/INSERT/mapper conservano il tipo; ultima vendita effettiva filtra PURCHASE, data DESC e ID DESC a parità di data; query sulla connessione del chiamante |
++| `VehicleDao` / JDBC | Lettura VIN con FOR UPDATE solo in transazione attiva; aggiornamento richiede una riga per non lasciare richieste dopo scritture saltate |
++| `RequestDao` / JDBC / schema | Controllo su tutte le richieste aperte, comprese PURCHASE approvate; UNIQUE request(vehicle) anche contro scritture dirette o concorrenti |
++| VIN nuovo | Inserimento con base modello e stima preesistente; unicità VIN impedisce sovrascritture; qualsiasi errore annulla inserimento e richiesta |
++| Schema/demo | `sale.type` obbligatorio con tre valori; tutte le 40 righe della demo conservano ID, soggetti, veicolo, data e importo; aggiunto solo il tipo già documentato (32 vendite, 8 penali) |
++| Fixture 05 | Il veicolo sintetico SOLD mantiene base manuale 10000 e stima 14400; aggiunta la vendita effettiva al cliente 1, per 7200, coerente con il prezzo commerciale della fixture |
++| AppContext / catalogo / acquisto / noleggio / richieste | Composizione e firme dei servizi invariati; tutte le factory dello storico impostano ora il tipo. Catalogo, conti 04, formula/base/centesimi 05, accordo 06, elaborazioni 07 e Observer/rollback 08 verificati nelle suite |
++| Viste cliente/venditore/manager e messaggi | Chiamanti esaminati; nessuna vista modificata. Il messaggio di dominio viene esposto dal servizio dopo rollback, così il catch esistente mostra il motivo del rifiuto; errori SQL mantengono il wrapper transazionale |
++
++## Ambiente, comandi ed esiti
++
++[Ambiente verificato](environment.txt): OpenJDK Linux 21.0.12.1, Maven 3.9.16,
++PostgreSQL 16.15. Verificati prima del riuso binari, cluster arrestato, launcher,
++sei variabili private e modalità 0600 del file del ticket 07. R00 assente;
++nessuna reinstallazione. Primo avvio sandbox negato sui socket, poi avvio e
++prove con escalation sul solo cluster sacrificabile `127.0.0.1:55432`.
++Identità/privilegi ricontrollati in sola lettura: DB/ruolo `drivehub_test`, copia
++applicativa distinta `drivehub`, sentinella presente. Nessun DB applicativo
++preesistente contattato. Credenziali fuori repository e mai stampate.
++Cluster arrestato dopo suite/controlli con `pg_ctl -D /tmp/drivehub-ticket07-pgdata -m fast -w stop` (`server stopped`).
++
++Dalla directory esterna: `python3 /tmp/drivehub-ticket09-maven.py <etichetta> <argomenti>`.
++Il launcher temporaneo deriva dall'08 e usa JDK 21, `mvn -B -o`, variabili del 07;
++i comandi Maven equivalenti sono in [testing.md](../../testing.md).
++
++| Etichetta / selezione | Esito | Evidenza |
++|---|---|---|
++| `red -Ppostgres-tests -Dtest=SaleProposalIntegrationTest test` | 1 failure attesa: il VIN della concessionaria viene accettato | [log](red.log), [XML](red.xml) |
++| `green`, stessi argomenti e stessa regressione | 1/1 dopo controllo stato | [log](green.log), [XML](green.xml) |
++| `ownership-red -Ppostgres-tests -Dtest=SaleProposalIntegrationTest#soldVinWithoutAnEffectiveSaleIsRejected test` | 1 failure attesa: SOLD senza vendita accettato | [log](ownership-red.log), [XML](ownership-red.xml) |
++| `ownership-green -Ppostgres-tests -Dtest=SaleProposalIntegrationTest test` | 2/2 dopo verifica ultima vendita | [log](ownership-green.log), [XML](ownership-green.xml) |
++| `duplicates-red -Ppostgres-tests -Dtest=SaleProposalIntegrationTest#databaseRejectsAnotherOpenRequestOfAnyType+competingProposalsKeepOnlyTheFirstCompleteVehicleAndRequest test` | 2 failure su 3: duplicato SQL accettato e gara VIN noto con due successi; VIN nuovo già protetto | [log](duplicates-red.log), [XML](duplicates-red.xml), [sorgente](duplicates-regression-source.java.txt) |
++| `duplicates-green -Ppostgres-tests -Dtest=SaleProposalIntegrationTest test` | 5/5 dopo lock e UNIQUE | [log](duplicates-green.log), [XML](duplicates-green.xml) |
++| `writes-red -Ppostgres-tests -Dtest=SaleProposalIntegrationTest#skippedVehicleUpdateCannotLeaveAnOpenRequest+aKnownVinCannotUseAnotherModelOrYearForItsEstimate test` | 2 failure su 3: UPDATE saltata e modello incongruente accettati; anno già rifiutato dalla stima | [log](writes-red.log), [XML](writes-red.xml), [sorgente](writes-regression-source.java.txt) |
++| `cases -Ppostgres-tests -Dtest=SaleProposalIntegrationTest,SaleTypeTest,PriceSelectionIntegrationTest test` | 31/31 dopo controllo righe/identità e ampliamento | [log](cases.log) |
++| `message-red -Ppostgres-tests -Dtest=SaleProposalIntegrationTest#rejectionMessageIsAvailableToTheExistingView test` | 1 failure attesa: la vista riceve solo il wrapper generico | [log](message-red.log), [XML](message-red.xml) |
++| `targeted -Ppostgres-tests -Dtest=SaleProposalIntegrationTest,SaleTypeTest,TestDriveCancellationIntegrationTest,PurchaseConcurrencyIntegrationTest,PurchaseAgreementIntegrationTest,BalanceConcurrencyIntegrationTest,PriceCalculatorServiceTest,PriceSelectionIntegrationTest,DemoSqlValidationTest test` | **142/142**, zero failure/errori/saltati | [log](targeted.log) |
++| `full -Ppostgres-tests clean test` | **195/195**, zero failure/errori/saltati | [log](full.log), [16 XML](surefire/), [riepilogo](summary.json) |
++
++Suite finale: 41 test senza DB e 154 PostgreSQL, inclusi isolamento/sentinella e
++fixture ripetibili. Ricompilazione target 21 con `-Xlint:all`; rimane il warning
++preesistente del modello dipendenze JavaFX. La baseline storica 171/171 del 08
++è preservata e non usata come verifica delle modifiche di oggi.
++
++## Criteri e prove
++
++| Criterio | Prova ripetibile |
++|---|---|
++| Stato, titolarità attuale e richieste nella transazione | `soldVinWithoutAnEffectiveSaleIsRejected`, `aPastSaleDoesNotAllowADealershipVehicle` (SALE/RENT/BLOCKED/WAITING), `everyOpenRequestBlocksTheProposal` (SALE, PURCHASE senza e con approvazione); lock/query richiedono transazione attiva |
++| Concessionaria/altri clienti senza mutazioni | `dealershipVinIsRejectedWithoutAnyMutation`, rifiuto vecchio proprietario; snapshot completi PostgreSQL di veicoli, richieste, storico e conti prima/dopo |
++| Ultima vendita effettiva | `onlyTheLatestEffectiveBuyerCanProposeAndHistoryIsPreserved`: data prima di ID, ID a pari data, nuovo compratore 2, acquisizione successiva al cliente 1 e penale ignorate. `anAcquisitionAloneDoesNotEstablishOwnershipButAZeroPriceSaleDoes`: acquisizione sola insufficiente, vendita a zero valida |
++| Unicità SQL, duplicati e concorrenza | `databaseRejectsAnotherOpenRequestOfAnyType` verifica SQLSTATE 23505 anche per PURCHASE approvata contro SALE; `competingProposalsKeepOnlyTheFirstCompleteVehicleAndRequest` sui VIN noto/nuovo con due sessioni distinte, normalizzazione maiuscole/spazi, dati diversi dei concorrenti e doppio invio sequenziale |
++| VIN nuovo e stima, fixture e messaggi | `newVinKeepsTheExistingEstimateAndRejectsSequentialDuplicates`, `aKnownVinCannotUseAnotherModelOrYearForItsEstimate`, `invalidNewProposalLeavesNoVehicleOrRequest`, `rejectionMessageIsAvailableToTheExistingView`, test tipi/factory e prezzi 05 |
++| Rollback reale e scritture interessate | `requestFailureRollsBackNewAndKnownVehicles`: trigger AFTER INSERT verifica WAITING/targa/km già scritti, poi errore; nessuna scrittura residua. `skippedVehicleUpdateCannotLeaveAnOpenRequest`: trigger RETURN NULL non lascia richiesta. Riletture da nuovi AppContext; nessun mock |
++
++Il gate SQL esterno blocca l'INSERT richiesta. Prima del rilascio, pg_stat_activity
++con pg_blocking_pids conferma uno e poi due backend distinti in attesa: il secondo
++attende il veicolo noto o l'INSERT del VIN nuovo. Il gate viene rilasciato solo dopo
++questa osservazione. Nessuno sleep; timeout di 10 secondi su query/worker e cleanup
++con rollback e cancellazione delle query ancora bloccate. I dati del concorrente
++perdente non sovrascrivono targa/chilometri o identità del vincitore.
++
++## Standards
++
++[Revisione indipendente](standards-review.md): **0 violazioni documentate,
++0 smell azionabili**.
++
++## Spec
++
++[Revisione indipendente](spec-review.md): **0 rilievi** (requisiti, perimetro,
++correttezza). Due contesti nuovi e stessa patch fissata; nessuna suite/SQL
++rieseguita dai revisori. Nessuna modifica a codice/test dopo la suite finale o
++le revisioni. I documenti di chiusura aggiornati dopo le review non costituiscono
++nuove prove runtime. [Patch finale della sessione](session.patch).
++
++## Limiti e prossimo passo
++
++Nessuna vista modificata: nessun nuovo controllo JavaFX/tastiera richiesto o eseguito.
++Nessuna nuova procedura esterna di proprietà, nessuna modifica alla formula, agli
++importi/segni o all'accettazione/rifiuto della cessione (ticket 10). Prenotazioni 11,
++altre transizioni, prestazioni e screen reader esclusi. Schema ricreabile secondo
++D02; installazioni esistenti richiedono adeguamento dello schema e classificazione
++fattuale dello storico, senza dedurre i tipi dai segni attuali. `/tmp` temporanea.
++**Ticket 09 chiuso, R05 parziale per il ticket 10.** AC02/#2 chiuso: totale
++rilievi integralmente chiusi **8/20** (#1, #2, #4, #6, #8, #11, #17, #19).
++AC03 per le approvazioni e AC10 restano al ticket 10; AC13 trasversale.
++Nessun ticket successivo avviato. Prossimo passo: ticket 10 soltanto in una nuova
++richiesta; ricontrollare prima l'ambiente temporaneo. Nessun blocco residuo del 09.
+--- a/DriveHub/docs/testing.md
++++ b/DriveHub/docs/testing.md
+@@ -320,3 +320,51 @@
+ verificati dalle suite precedenti incluse. Nessuna vista modificata; conflitti
+ concorrenti di prenotazione al ticket 11, altre transizioni ai rispettivi ticket.
+ [Comandi, esiti, versione e review](evidence/r04-test-drive-atomic/verification.md).
++
++
++## Proposta di cessione e titolarità — ticket 09
++
++```bash
++mvn -Dtest=SaleTypeTest test
++mvn -Ppostgres-tests -Dtest=SaleProposalIntegrationTest,PriceSelectionIntegrationTest test
++mvn -Ppostgres-tests clean test
++```
++
++`submitSaleProposal` rilegge il VIN noto con `SELECT ... FOR UPDATE` nella
++transazione della proposta. Richiede stato `SOLD`, ultima vendita effettiva al
++proponente e assenza di qualsiasi richiesta aperta, anche un acquisto approvato.
++Modello e anno devono corrispondere al VIN registrato; targa e chilometri possono
++essere aggiornati, mentre base/modalità commerciale e storico sono conservati.
++I rifiuti di dominio vengono propagati dopo il rollback con il messaggio leggibile
++dalla vista esistente; gli errori SQL mantengono la gestione transazionale.
++
++`SaleType` distingue `PURCHASE` (vendita al cliente), `ACQUISITION` e `PENALTY`.
++Tutte le factory e il mapping JDBC conservano il tipo; l'ultima vendita usa solo
++`PURCHASE`, ordinata per data e poi ID decrescente a parità di data. Il controllo
++non deduce la proprietà dal segno o dall'importo: anche una vendita a zero conta.
++Importi, segni e accettazione/rifiuto della cessione restano invariati (ticket 10).
++
++Schema ricreabile secondo D02: `sale.type` è obbligatorio e vincolato ai tre valori;
++`UNIQUE request(vehicle)` protegge tutte le richieste aperte, perché le richieste
++concluse vengono rimosse. Per il VIN nuovo resta il vincolo univoco del veicolo:
++il concorrente perdente fallisce senza sovrascrivere i dati del vincitore e senza
++veicoli parziali. Non servono lock di processo o procedure esterne di proprietà.
++Prima di usare questo codice su un'installazione esistente occorre adeguare lo
++schema, classificare le operazioni storiche dai fatti effettivi e risolvere le
++richieste duplicate. Non inferire i tipi dai segni attuali; non eseguire reset sui
++dati applicativi. La demo conserva tutte le 40 operazioni con importi, date e
++attribuzioni precedenti, aggiungendo solo il tipo già descritto dalle fixture.
++
++`SaleProposalIntegrationTest` usa servizi pubblici/AppContext e PostgreSQL dedicato.
++Le gare aprono connessioni distinte e fermano la prima proposta sull'INSERT della
++richiesta tramite un lock SQL esterno. `pg_stat_activity` e `pg_blocking_pids`
++attestano prima uno e poi due backend distinti in attesa; il secondo attende il
++veicolo noto o l'unicità del VIN nuovo. Nessuno sleep arbitrario. Query, gate e
++worker hanno limiti di 10 secondi e cleanup con rilascio/cancellazione dei lock.
++Trigger temporanei provano rollback dopo scrittura del veicolo e aggiornamenti
++saltati; la rilettura passa da nuovi AppContext. SQL prepara fixture e guasti,
++senza mock come prova della persistenza. Nessuna vista modificata.
++
++[Evidenze, versione verificata, comandi e limiti](evidence/r05-sale-proposal/verification.md).
++L'ambiente `/tmp/drivehub-ticket07-*` è temporaneo: verificare file privati,
++Java 21, binari, porta e configurazione prima del riuso; la suite 08 resta storica.
+--- a/DriveHub/src/main/java/it/unifi/drivehub/dao/RequestDao.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/dao/RequestDao.java
+@@ -28,6 +28,9 @@
+ 
+     Optional<Request> findActivePurchaseRequestForVehicle(Long vehicleId);
+ 
++    /** Tutte le righe di request sono aperte, anche gli acquisti già approvati. */
++    boolean hasOpenRequestForVehicle(Long vehicleId, Connection conn);
++
+     Request save(Request request, Connection conn);
+ 
+     void update(Request request, Connection conn);
+--- a/DriveHub/src/main/java/it/unifi/drivehub/dao/SaleDao.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/dao/SaleDao.java
+@@ -17,6 +17,9 @@
+ 
+     Optional<Sale> findById(Long id);
+ 
++    /** Ultima vendita effettiva al cliente, ordinata per data e ID a parità di data. */
++    Optional<Sale> findLatestPurchaseForVehicle(Long vehicleId, Connection conn);
++
+     Sale save(Sale sale, Connection conn);
+ 
+     boolean hasSaleOperationsForVehicle(Long vehicleId);
+--- a/DriveHub/src/main/java/it/unifi/drivehub/dao/VehicleDao.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/dao/VehicleDao.java
+@@ -29,6 +29,9 @@
+         return findByVin(vin);
+     }
+ 
++    /** Rilegge il VIN noto con lock fino al commit/rollback nella transazione attiva. */
++    Optional<Vehicle> findByVinForUpdate(String vin, Connection conn);
++
+     Vehicle save(Vehicle vehicle, Connection conn);
+ 
+     void update(Vehicle vehicle, Connection conn);
+--- a/DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresRequestDao.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresRequestDao.java
+@@ -127,6 +127,20 @@
+             throw new RuntimeException("Errore durante la ricerca della richiesta d'acquisto per il veicolo: " + vehicleId, e);
+         }
+         return Optional.empty();
++    }
++
++    @Override
++    public boolean hasOpenRequestForVehicle(Long vehicleId, Connection conn) {
++        try (PreparedStatement ps = conn.prepareStatement("SELECT EXISTS (SELECT 1 FROM request WHERE vehicle = ?)")) {
++            if (conn.getAutoCommit()) throw new IllegalArgumentException("La verifica delle richieste richiede una transazione attiva.");
++            ps.setLong(1, vehicleId);
++            try (ResultSet rs = ps.executeQuery()) {
++                rs.next();
++                return rs.getBoolean(1);
++            }
++        } catch (SQLException e) {
++            throw new RuntimeException("Errore durante la verifica delle richieste aperte del veicolo.", e);
++        }
+     }
+ 
+     @Override
+--- a/DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresSaleDao.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresSaleDao.java
+@@ -3,6 +3,7 @@
+ import it.unifi.drivehub.dao.DatabaseManager;
+ import it.unifi.drivehub.dao.SaleDao;
+ import it.unifi.drivehub.domain.operation.Sale;
++import it.unifi.drivehub.domain.operation.SaleType;
+ 
+ import java.sql.Connection;
+ import java.sql.PreparedStatement;
+@@ -25,7 +26,7 @@
+     @Override
+     public List<Sale> findAll() {
+         List<Sale> list = new ArrayList<>();
+-        String sql = "SELECT id, vehicle, salesman, client, amount, date FROM sale ORDER BY date DESC";
++        String sql = "SELECT id, vehicle, salesman, client, amount, date, type FROM sale ORDER BY date DESC";
+         try (Connection conn = db.getConnection();
+              PreparedStatement ps = conn.prepareStatement(sql);
+              ResultSet rs = ps.executeQuery()) {
+@@ -41,7 +42,7 @@
+     @Override
+     public List<Sale> findByClientId(Long clientId) {
+         List<Sale> list = new ArrayList<>();
+-        String sql = "SELECT id, vehicle, salesman, client, amount, date FROM sale WHERE client = ? ORDER BY date DESC";
++        String sql = "SELECT id, vehicle, salesman, client, amount, date, type FROM sale WHERE client = ? ORDER BY date DESC";
+         try (Connection conn = db.getConnection();
+              PreparedStatement ps = conn.prepareStatement(sql)) {
+             ps.setLong(1, clientId);
+@@ -58,7 +59,7 @@
+ 
+     @Override
+     public Optional<Sale> findById(Long id) {
+-        String sql = "SELECT id, vehicle, salesman, client, amount, date FROM sale WHERE id = ?";
++        String sql = "SELECT id, vehicle, salesman, client, amount, date, type FROM sale WHERE id = ?";
+         try (Connection conn = db.getConnection();
+              PreparedStatement ps = conn.prepareStatement(sql)) {
+             ps.setLong(1, id);
+@@ -74,8 +75,23 @@
+     }
+ 
+     @Override
++    public Optional<Sale> findLatestPurchaseForVehicle(Long vehicleId, Connection conn) {
++        String sql = "SELECT id, vehicle, salesman, client, amount, date, type FROM sale " +
++                "WHERE vehicle = ? AND type = 'PURCHASE' ORDER BY date DESC, id DESC LIMIT 1";
++        try (PreparedStatement ps = conn.prepareStatement(sql)) {
++            if (conn.getAutoCommit()) throw new IllegalArgumentException("La verifica della titolarità richiede una transazione attiva.");
++            ps.setLong(1, vehicleId);
++            try (ResultSet rs = ps.executeQuery()) {
++                return rs.next() ? Optional.of(mapRow(rs)) : Optional.empty();
++            }
++        } catch (SQLException e) {
++            throw new RuntimeException("Errore durante la verifica dell'ultima vendita del veicolo.", e);
++        }
++    }
++
++    @Override
+     public Sale save(Sale sale, Connection conn) {
+-        String sql = "INSERT INTO sale (vehicle, salesman, client, amount, date) VALUES (?, ?, ?, ?, ?) RETURNING id";
++        String sql = "INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES (?, ?, ?, ?, ?, ?) RETURNING id";
+         try (PreparedStatement ps = conn.prepareStatement(sql)) {
+             if (sale.getVehicleId() != null) {
+                 ps.setLong(1, sale.getVehicleId());
+@@ -90,11 +106,12 @@
+             ps.setLong(3, sale.getClientId());
+             ps.setBigDecimal(4, sale.getAmount());
+             ps.setTimestamp(5, Timestamp.valueOf(sale.getDate()));
++            ps.setString(6, sale.getType().name());
+ 
+             try (ResultSet rs = ps.executeQuery()) {
+                 if (rs.next()) {
+                     long id = rs.getLong(1);
+-                    return Sale.create(id, sale.getVehicleId(), sale.getSalesmanId(), sale.getClientId(), sale.getAmount(), sale.getDate());
++                    return Sale.create(id, sale.getVehicleId(), sale.getSalesmanId(), sale.getClientId(), sale.getAmount(), sale.getDate(), sale.getType());
+                 }
+                 throw new SQLException("Inserimento transazione sale non ha restituito l'ID generato.");
+             }
+@@ -129,7 +146,8 @@
+                 salesman,
+                 rs.getLong("client"),
+                 rs.getBigDecimal("amount"),
+-                rs.getTimestamp("date").toLocalDateTime()
++                rs.getTimestamp("date").toLocalDateTime(),
++                SaleType.valueOf(rs.getString("type"))
+         );
+     }
+ }
+--- a/DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresVehicleDao.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresVehicleDao.java
+@@ -93,8 +93,16 @@
+ 
+     @Override
+     public Optional<Vehicle> findByVin(String vin, Connection conn) {
+-        String sql = "SELECT id, model, vin, licence_plate, kilometers, price, price_mode, year, state::text as state_str FROM vehicle WHERE UPPER(vin) = UPPER(?)";
+-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
++        return findByVin(vin, conn, false);
++    }
++    @Override
++    public Optional<Vehicle> findByVinForUpdate(String vin, Connection conn) {
++        return findByVin(vin, conn, true);
++    }
++    private Optional<Vehicle> findByVin(String vin, Connection conn, boolean forUpdate) {
++        String sql = "SELECT id, model, vin, licence_plate, kilometers, price, price_mode, year, state::text as state_str FROM vehicle WHERE UPPER(vin) = UPPER(?)" + (forUpdate ? " FOR UPDATE" : "");
++        try (PreparedStatement ps = conn.prepareStatement(sql)) {
++            if (forUpdate && conn.getAutoCommit()) throw new IllegalArgumentException("Il lock del veicolo richiede una transazione attiva.");
+             ps.setString(1, vin.trim());
+             try (ResultSet rs = ps.executeQuery()) {
+                 if (rs.next()) {
+@@ -154,7 +162,7 @@
+             ps.setString(5, vehicle.getState().name());
+             ps.setString(6, vehicle.getPriceMode().name());
+             ps.setLong(7, vehicle.getId());
+-            ps.executeUpdate();
++            if (ps.executeUpdate() != 1) throw new SQLException("Veicolo da aggiornare non trovato: " + vehicle.getId());
+         } catch (SQLException e) {
+             throw new RuntimeException("Errore durante l'aggiornamento del veicolo id: " + vehicle.getId(), e);
+         }
+--- a/DriveHub/src/main/java/it/unifi/drivehub/domain/operation/Sale.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/domain/operation/Sale.java
+@@ -20,17 +20,22 @@
+     private final Long clientId;
+     private final BigDecimal amount;
+     private final LocalDateTime date;
++    private final SaleType type;
+ 
+-    private Sale(Long id, Long vehicleId, Long salesmanId, Long clientId, BigDecimal amount, LocalDateTime date) {
++    private Sale(Long id, Long vehicleId, Long salesmanId, Long clientId, BigDecimal amount, LocalDateTime date, SaleType type) {
+         this.id = id;
+         this.vehicleId = vehicleId;
+         this.salesmanId = salesmanId;
+         this.clientId = clientId;
+         this.amount = amount;
+         this.date = date;
++        this.type = type;
+     }
+ 
+-    public static Sale create(Long id, Long vehicleId, Long salesmanId, Long clientId, BigDecimal amount, LocalDateTime date) {
++    public static Sale create(Long id, Long vehicleId, Long salesmanId, Long clientId, BigDecimal amount, LocalDateTime date, SaleType type) {
++        if (type == null) {
++            throw new IllegalArgumentException("Il tipo di operazione non può essere nullo.");
++        }
+         if (clientId == null) {
+             throw new IllegalArgumentException("L'ID del cliente non può essere nullo.");
+         }
+@@ -43,22 +48,26 @@
+         if (date.isAfter(LocalDateTime.now().plusMinutes(2))) {
+             throw new IllegalArgumentException("La data di vendita o acquisto di un veicolo non può essere nel futuro.");
+         }
+-        return new Sale(id, vehicleId, salesmanId, clientId, amount, date);
++        return new Sale(id, vehicleId, salesmanId, clientId, amount, date, type);
+     }
+ 
+     public static Sale createPurchaseRecord(Long vehicleId, Long salesmanId, Long clientId, BigDecimal vehiclePrice) {
+         // Acquisto veicolo da parte del cliente
+-        return create(null, vehicleId, salesmanId, clientId, vehiclePrice, LocalDateTime.now());
++        return create(null, vehicleId, salesmanId, clientId, vehiclePrice, LocalDateTime.now(), SaleType.PURCHASE);
+     }
+ 
+     public static Sale createAcquisitionRecord(Long vehicleId, Long salesmanId, Long clientId, BigDecimal pricePaidToClient) {
+         // Concessionaria acquista auto dal cliente (saldo positivo per il cliente)
+-        return create(null, vehicleId, salesmanId, clientId, pricePaidToClient, LocalDateTime.now());
++        return create(null, vehicleId, salesmanId, clientId, pricePaidToClient, LocalDateTime.now(), SaleType.ACQUISITION);
+     }
+ 
+     public static Sale createPenaltyRecord(Long clientId, BigDecimal penaltyAmount) {
+         // Penale: nessun veicolo né venditore associato
+-        return create(null, null, null, clientId, penaltyAmount, LocalDateTime.now());
++        return create(null, null, null, clientId, penaltyAmount, LocalDateTime.now(), SaleType.PENALTY);
++    }
++
++    public SaleType getType() {
++        return type;
+     }
+ 
+     public Long getId() {
+--- /dev/null
++++ b/DriveHub/src/main/java/it/unifi/drivehub/domain/operation/SaleType.java
+@@ -0,0 +1,6 @@
++package it.unifi.drivehub.domain.operation;
++
++/** Distingue la vendita al cliente dalle altre operazioni, indipendentemente dall'importo. */
++public enum SaleType {
++    PURCHASE, ACQUISITION, PENALTY
++}
+--- a/DriveHub/src/main/java/it/unifi/drivehub/service/SaleToDealershipService.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/service/SaleToDealershipService.java
+@@ -64,39 +64,52 @@
+ 
+     /**
+      * Passo 1: Il cliente conferma la proposta di vendita alla concessionaria.
+-     * Gestisce la concorrenza e il vincolo di unicità sul VIN:
+-     * - Se il VIN è già nel database (veicolo precedentemente venduto dal concessionario), aggiorna la tupla esistente
+-     * - Altrimenti inserisce una nuova tupla
+-     * - Crea la richiesta con stato WAITING e deposit negativo
++     * Il VIN noto richiede stato SOLD, ultima vendita al proponente e nessuna richiesta aperta.
++     * Lock/rilettura e scritture condividono la transazione; VIN e richiesta sono univoci anche nel DB.
+      */
+     public Request submitSaleProposal(Long clientId, Long modelId, String vin, String licencePlate, int km, int year) {
+-        BigDecimal estimatedPrice = calculateEstimate(modelId, licencePlate, km, year);
+-
+-        return db.executeInTransactionWithResult(conn -> {
+-            Optional<Vehicle> existingOpt = vehicleDao.findByVin(vin, conn);
+-            Vehicle vehicle;
+-
+-            if (existingOpt.isPresent()) {
+-                // Aggiornamento della tupla esistente per non violare l'unicità del VIN
+-                vehicle = existingOpt.get();
+-                vehicle.setLicencePlate(licencePlate);
+-                vehicle.setKilometers(km);
+-                vehicle.setState(VehicleState.WAITING);
+-                vehicleDao.update(vehicle, conn);
+-            } else {
+-                // Nuovo inserimento
+-                BigDecimal modelBase = modelDao.findById(modelId)
+-                        .orElseThrow(() -> new IllegalArgumentException("Modello non trovato: " + modelId)).getReleasePrice();
+-                Vehicle newVehicle = Vehicle.create(null, modelId, vin, licencePlate, km, modelBase, year, VehicleState.WAITING);
+-                vehicle = vehicleDao.save(newVehicle, conn);
++        try {
++            return db.executeInTransactionWithResult(conn -> {
++                Optional<Vehicle> existingOpt = vehicleDao.findByVinForUpdate(vin, conn);
++                Vehicle vehicle;
++                if (existingOpt.isPresent()) {
++                    vehicle = existingOpt.get();
++                    if (vehicle.getState() != VehicleState.SOLD) {
++                        throw new IllegalStateException("Puoi proporre solo un veicolo venduto a te e senza richieste aperte.");
++                    }
++                    Sale latestSale = saleDao.findLatestPurchaseForVehicle(vehicle.getId(), conn)
++                            .orElseThrow(() -> new IllegalStateException("Nessuna vendita al cliente registrata per questo VIN."));
++                    if (!latestSale.getClientId().equals(clientId)) {
++                        throw new IllegalStateException("L'ultima vendita di questo veicolo è a un altro cliente.");
++                    }
++                    if (requestDao.hasOpenRequestForVehicle(vehicle.getId(), conn)) {
++                        throw new IllegalStateException("Esiste già una richiesta aperta per questo veicolo.");
++                    }
++                    if (!vehicle.getModelId().equals(modelId) || vehicle.getYear() != year) {
++                        throw new IllegalArgumentException("Modello e anno devono corrispondere al veicolo già registrato per questo VIN.");
++                    }
++                    vehicle.setLicencePlate(licencePlate);
++                    vehicle.setKilometers(km);
++                    vehicle.setState(VehicleState.WAITING);
++                    vehicleDao.update(vehicle, conn);
++                } else {
++                    BigDecimal modelBase = modelDao.findById(modelId)
++                            .orElseThrow(() -> new IllegalArgumentException("Modello non trovato: " + modelId)).getReleasePrice();
++                    Vehicle newVehicle = Vehicle.create(null, modelId, vin, licencePlate, km, modelBase, year, VehicleState.WAITING);
++                    vehicle = vehicleDao.save(newVehicle, conn);
++                }
++                BigDecimal estimatedPrice = calculateEstimate(modelId, licencePlate, km, year);
++                Request request = Request.createNewSaleRequest(vehicle.getId(), clientId, estimatedPrice);
++                return requestDao.save(request, conn);
++            });
++        } catch (RuntimeException failure) {
++            if (failure.getCause() instanceof RuntimeException reason
++                    && (reason instanceof IllegalArgumentException || reason instanceof IllegalStateException)) {
++                throw reason;
+             }
+-
+-            // Generazione tupla in Request con deposit negativo
+-            Request request = Request.createNewSaleRequest(vehicle.getId(), clientId, estimatedPrice);
+-            return requestDao.save(request, conn);
+-        });
++            throw failure;
++        }
+     }
+-
+     /**
+      * Passo 2: Il venditore approva la proposta di vendita.
+      * - Crea una tupla in Sale con amount = deposit (positivo per il cliente)
+--- a/DriveHub/src/main/resources/db/demo.sql
++++ b/DriveHub/src/main/resources/db/demo.sql
+@@ -252,49 +252,49 @@
+ -- -----------------------------------------------------------------------------
+ -- 11. Operazioni di Compravendita (40 operazioni totali in "sale")
+ -- -----------------------------------------------------------------------------
+-INSERT INTO "sale" ("id", "vehicle", "salesman", "client", "amount", "date") VALUES
+-    (1,  1,  16, 1,  34500.00, TIMESTAMP '2025-02-10 10:00:00'),
+-    (2,  2,  17, 2,  38900.00, TIMESTAMP '2025-03-15 11:30:00'),
+-    (3,  3,  18, 3,  42000.00, TIMESTAMP '2025-04-20 14:00:00'),
+-    (4,  4,  19, 4,  33500.00, TIMESTAMP '2025-05-12 16:15:00'),
+-    (5,  5,  16, 5,  14800.00, TIMESTAMP '2025-06-08 09:45:00'),
+-    (6,  6,  17, 6,  26900.00, TIMESTAMP '2025-07-22 15:20:00'),
+-    (7,  7,  18, 7,  39500.00, TIMESTAMP '2025-08-30 11:00:00'),
+-    (8,  8,  19, 8,  48500.00, TIMESTAMP '2025-09-14 17:30:00'),
+-    (9,  9,  16, 9,  33000.00, TIMESTAMP '2025-10-05 10:10:00'),
+-    (10, 10, 17, 10, 28900.00, TIMESTAMP '2025-11-18 12:00:00'),
+-    (11, 11, 18, 11, 41000.00, TIMESTAMP '2025-12-02 16:40:00'),
+-    (12, 12, 19, 12, 36500.00, TIMESTAMP '2026-01-15 14:00:00'),
+-    (13, 13, 16, 13, 49800.00, TIMESTAMP '2026-02-20 10:30:00'),
+-    (14, 14, 17, 14, 14200.00, TIMESTAMP '2026-03-05 15:50:00'),
+-    (15, 15, 18, 15, 12900.00, TIMESTAMP '2026-03-25 11:15:00'),
+-    (16, 16, 19, 1,  18500.00, TIMESTAMP '2026-04-10 09:20:00'),
+-    (17, 17, 16, 2,  17900.00, TIMESTAMP '2026-04-28 16:00:00'),
+-    (18, 18, 17, 3,  31500.00, TIMESTAMP '2026-05-15 14:45:00'),
+-    (19, 19, 18, 4,  46900.00, TIMESTAMP '2026-05-30 10:00:00'),
+-    (20, 20, 19, 5,  38500.00, TIMESTAMP '2026-06-12 11:30:00'),
+-    (21, 21, 16, 6,  54500.00, TIMESTAMP '2026-06-25 17:00:00'),
+-    (22, 22, 17, 7,  31000.00, TIMESTAMP '2026-07-04 12:15:00'),
+-    (23, 23, 18, 8,  37000.00, TIMESTAMP '2026-07-19 15:40:00'),
+-    (24, 24, 19, 9,  39500.00, TIMESTAMP '2026-08-02 10:50:00'),
+-    (25, 25, 16, 10, 13800.00, TIMESTAMP '2026-08-16 16:30:00'),
+-    (26, 26, 17, 11, 29800.00, TIMESTAMP '2026-08-28 14:10:00'),
+-    (27, 1,  18, 12, 33900.00, TIMESTAMP '2026-09-02 09:30:00'),
+-    (28, 2,  19, 13, 37500.00, TIMESTAMP '2026-09-10 11:20:00'),
+-    (29, 6,  16, 14, 26000.00, TIMESTAMP '2026-09-15 15:00:00'),
+-    (30, 7,  17, 15, 38800.00, TIMESTAMP '2026-09-20 16:45:00'),
+-    (31, 10, 18, 1,  27500.00, TIMESTAMP '2026-09-25 10:00:00'),
+-    (32, 14, 19, 2,  12500.00, TIMESTAMP '2026-09-28 12:30:00'),
++INSERT INTO "sale" ("id", "vehicle", "salesman", "client", "amount", "date", "type") VALUES
++    (1,  1,  16, 1,  34500.00, TIMESTAMP '2025-02-10 10:00:00', 'PURCHASE'),
++    (2,  2,  17, 2,  38900.00, TIMESTAMP '2025-03-15 11:30:00', 'PURCHASE'),
++    (3,  3,  18, 3,  42000.00, TIMESTAMP '2025-04-20 14:00:00', 'PURCHASE'),
++    (4,  4,  19, 4,  33500.00, TIMESTAMP '2025-05-12 16:15:00', 'PURCHASE'),
++    (5,  5,  16, 5,  14800.00, TIMESTAMP '2025-06-08 09:45:00', 'PURCHASE'),
++    (6,  6,  17, 6,  26900.00, TIMESTAMP '2025-07-22 15:20:00', 'PURCHASE'),
++    (7,  7,  18, 7,  39500.00, TIMESTAMP '2025-08-30 11:00:00', 'PURCHASE'),
++    (8,  8,  19, 8,  48500.00, TIMESTAMP '2025-09-14 17:30:00', 'PURCHASE'),
++    (9,  9,  16, 9,  33000.00, TIMESTAMP '2025-10-05 10:10:00', 'PURCHASE'),
++    (10, 10, 17, 10, 28900.00, TIMESTAMP '2025-11-18 12:00:00', 'PURCHASE'),
++    (11, 11, 18, 11, 41000.00, TIMESTAMP '2025-12-02 16:40:00', 'PURCHASE'),
++    (12, 12, 19, 12, 36500.00, TIMESTAMP '2026-01-15 14:00:00', 'PURCHASE'),
++    (13, 13, 16, 13, 49800.00, TIMESTAMP '2026-02-20 10:30:00', 'PURCHASE'),
++    (14, 14, 17, 14, 14200.00, TIMESTAMP '2026-03-05 15:50:00', 'PURCHASE'),
++    (15, 15, 18, 15, 12900.00, TIMESTAMP '2026-03-25 11:15:00', 'PURCHASE'),
++    (16, 16, 19, 1,  18500.00, TIMESTAMP '2026-04-10 09:20:00', 'PURCHASE'),
++    (17, 17, 16, 2,  17900.00, TIMESTAMP '2026-04-28 16:00:00', 'PURCHASE'),
++    (18, 18, 17, 3,  31500.00, TIMESTAMP '2026-05-15 14:45:00', 'PURCHASE'),
++    (19, 19, 18, 4,  46900.00, TIMESTAMP '2026-05-30 10:00:00', 'PURCHASE'),
++    (20, 20, 19, 5,  38500.00, TIMESTAMP '2026-06-12 11:30:00', 'PURCHASE'),
++    (21, 21, 16, 6,  54500.00, TIMESTAMP '2026-06-25 17:00:00', 'PURCHASE'),
++    (22, 22, 17, 7,  31000.00, TIMESTAMP '2026-07-04 12:15:00', 'PURCHASE'),
++    (23, 23, 18, 8,  37000.00, TIMESTAMP '2026-07-19 15:40:00', 'PURCHASE'),
++    (24, 24, 19, 9,  39500.00, TIMESTAMP '2026-08-02 10:50:00', 'PURCHASE'),
++    (25, 25, 16, 10, 13800.00, TIMESTAMP '2026-08-16 16:30:00', 'PURCHASE'),
++    (26, 26, 17, 11, 29800.00, TIMESTAMP '2026-08-28 14:10:00', 'PURCHASE'),
++    (27, 1,  18, 12, 33900.00, TIMESTAMP '2026-09-02 09:30:00', 'PURCHASE'),
++    (28, 2,  19, 13, 37500.00, TIMESTAMP '2026-09-10 11:20:00', 'PURCHASE'),
++    (29, 6,  16, 14, 26000.00, TIMESTAMP '2026-09-15 15:00:00', 'PURCHASE'),
++    (30, 7,  17, 15, 38800.00, TIMESTAMP '2026-09-20 16:45:00', 'PURCHASE'),
++    (31, 10, 18, 1,  27500.00, TIMESTAMP '2026-09-25 10:00:00', 'PURCHASE'),
++    (32, 14, 19, 2,  12500.00, TIMESTAMP '2026-09-28 12:30:00', 'PURCHASE'),
+ 
+     -- 8 penali per mancato pagamento / recesso (20% della caparra trattenuto come penale all'azienda, vehicle e salesman NULL)
+-    (33, NULL, NULL, 3,  680.00, TIMESTAMP '2026-05-20 12:00:00'),
+-    (34, NULL, NULL, 5,  820.00, TIMESTAMP '2026-06-18 12:00:00'),
+-    (35, NULL, NULL, 7,  710.00, TIMESTAMP '2026-07-10 12:00:00'),
+-    (36, NULL, NULL, 9,  900.00, TIMESTAMP '2026-08-05 12:00:00'),
+-    (37, NULL, NULL, 11, 550.00, TIMESTAMP '2026-08-22 12:00:00'),
+-    (38, NULL, NULL, 12, 480.00, TIMESTAMP '2026-09-05 12:00:00'),
+-    (39, NULL, NULL, 14, 760.00, TIMESTAMP '2026-09-18 12:00:00'),
+-    (40, NULL, NULL, 15, 840.00, TIMESTAMP '2026-09-26 12:00:00');
++    (33, NULL, NULL, 3,  680.00, TIMESTAMP '2026-05-20 12:00:00', 'PENALTY'),
++    (34, NULL, NULL, 5,  820.00, TIMESTAMP '2026-06-18 12:00:00', 'PENALTY'),
++    (35, NULL, NULL, 7,  710.00, TIMESTAMP '2026-07-10 12:00:00', 'PENALTY'),
++    (36, NULL, NULL, 9,  900.00, TIMESTAMP '2026-08-05 12:00:00', 'PENALTY'),
++    (37, NULL, NULL, 11, 550.00, TIMESTAMP '2026-08-22 12:00:00', 'PENALTY'),
++    (38, NULL, NULL, 12, 480.00, TIMESTAMP '2026-09-05 12:00:00', 'PENALTY'),
++    (39, NULL, NULL, 14, 760.00, TIMESTAMP '2026-09-18 12:00:00', 'PENALTY'),
++    (40, NULL, NULL, 15, 840.00, TIMESTAMP '2026-09-26 12:00:00', 'PENALTY');
+ 
+ -- -----------------------------------------------------------------------------
+ -- 12. Riallineamento sequenze ID per PostgreSQL
+--- a/DriveHub/src/main/resources/db/schema.sql
++++ b/DriveHub/src/main/resources/db/schema.sql
+@@ -242,6 +242,7 @@
+     "exp_date" DATE,
+     "type" request_type NOT NULL,
+     CONSTRAINT "pk_request" PRIMARY KEY ("id"),
++    CONSTRAINT "uq_request_vehicle" UNIQUE ("vehicle"),
+     CONSTRAINT "ck_request_agreement" CHECK (
+         ("type" = 'PURCHASE' AND "agreed_total" IS NOT NULL AND "agreed_total" >= 0
+             AND "deposit" >= 0 AND "deposit" <= "agreed_total")
+@@ -294,6 +295,7 @@
+     "client" BIGINT NOT NULL,
+     "amount" DECIMAL(10, 2) NOT NULL,
+     "date" TIMESTAMP NOT NULL,
++    "type" VARCHAR(16) NOT NULL CHECK ("type" IN ('PURCHASE', 'ACQUISITION', 'PENALTY')),
+     CONSTRAINT "pk_sale" PRIMARY KEY ("id"),
+     CONSTRAINT "fk_sale_vehicle" FOREIGN KEY ("vehicle") REFERENCES "vehicle" ("id") ON DELETE SET NULL,
+     CONSTRAINT "fk_sale_salesman" FOREIGN KEY ("salesman") REFERENCES "salesman" ("id") ON DELETE SET NULL,
+--- a/DriveHub/src/test/java/it/unifi/drivehub/PriceSelectionIntegrationTest.java
++++ b/DriveHub/src/test/java/it/unifi/drivehub/PriceSelectionIntegrationTest.java
+@@ -34,6 +34,11 @@
+     void existingCessionKeepsManagerBaseSeparateFromEstimate() {
+         Vehicle vehicle = ctx.getCatalogService().addVehicle(model.getId(), "T0500000000000002", "AB123CD", 0,
+                 new BigDecimal("10000"), year, VehicleState.SOLD);
++        // La fixture SOLD rappresenta una vendita effettiva al proponente, conservata nello storico.
++        ctx.getDatabaseManager().executeInTransaction(conn ->
++                new it.unifi.drivehub.dao.postgres.PostgresSaleDao(ctx.getDatabaseManager()).save(
++                        it.unifi.drivehub.domain.operation.Sale.createPurchaseRecord(
++                                vehicle.getId(), 16L, 1L, new BigDecimal("7200.00")), conn));
+         var request = ctx.getSaleToDealershipService().submitSaleProposal(1L, model.getId(), vehicle.getVin(), "AB123CD", 0, year);
+         assertEquals(new BigDecimal("14400.00"), request.getDeposit().abs());
+         Vehicle reloaded = ctx.getCatalogService().getVehicleById(vehicle.getId()).orElseThrow();
+--- /dev/null
++++ b/DriveHub/src/test/java/it/unifi/drivehub/SaleProposalIntegrationTest.java
+@@ -0,0 +1,370 @@
++package it.unifi.drivehub;
++
++import it.unifi.drivehub.dao.DatabaseManager;
++import it.unifi.drivehub.domain.operation.Request;
++import it.unifi.drivehub.domain.operation.SaleType;
++import it.unifi.drivehub.domain.vehicle.PriceMode;
++import it.unifi.drivehub.domain.vehicle.VehicleState;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Tag;
++import org.junit.jupiter.api.Test;
++
++import java.sql.Connection;
++import java.sql.SQLException;
++import java.math.BigDecimal;
++import java.time.Year;
++import java.util.Arrays;
++import java.util.List;
++import java.util.concurrent.Callable;
++import java.util.concurrent.Executors;
++import java.util.concurrent.TimeUnit;
++import org.junit.jupiter.params.ParameterizedTest;
++import org.junit.jupiter.params.provider.ValueSource;
++import org.junit.jupiter.params.provider.CsvSource;
++
++import static org.junit.jupiter.api.Assertions.*;
++
++@Tag("postgres")
++class SaleProposalIntegrationTest {
++    private static final String VIN = "T0900000000000001";
++    private DatabaseManager db;
++    private AppContext ctx;
++    private final int year = Year.now().getValue();
++
++    @BeforeEach
++    void setUp() throws Exception {
++        db = TestDatabase.fromEnvironment().reset();
++        ctx = new AppContext(db);
++        sql("""
++                DELETE FROM sale; DELETE FROM rent; DELETE FROM test_drive; DELETE FROM request;
++                INSERT INTO model (id, brand, name, release_price, release_year)
++                VALUES (1001, 'Fiat', 'Ticket09', 20000, EXTRACT(YEAR FROM CURRENT_DATE));
++                INSERT INTO vehicle (id, model, vin, licence_plate, kilometers, price, price_mode, year, state)
++                VALUES (1001, 1001, 'T0900000000000001', 'AB123CD', 100, 10000, 'MANUAL',
++                        EXTRACT(YEAR FROM CURRENT_DATE), 'SALE');
++                """);
++    }
++
++    @Test
++    void dealershipVinIsRejectedWithoutAnyMutation() throws Exception {
++        String before = snapshot();
++        assertThrows(RuntimeException.class, () -> propose(1L, VIN, "ZZ123ZZ", 250));
++        assertEquals(before, snapshot());
++    }
++
++    @Test
++    void soldVinWithoutAnEffectiveSaleIsRejected() throws Exception {
++        sql("UPDATE vehicle SET state = 'SOLD' WHERE id = 1001");
++        String before = snapshot();
++        assertThrows(RuntimeException.class, () -> propose(1L, VIN, "ZZ123ZZ", 250));
++        assertEquals(before, snapshot());
++    }
++
++    @Test
++    void rejectionMessageIsAvailableToTheExistingView() {
++        RuntimeException failure = assertThrows(RuntimeException.class, () -> propose(1L, VIN, "ZZ123ZZ", 250));
++        assertTrue(failure.getMessage().contains("veicolo venduto a te"));
++    }
++
++    @ParameterizedTest
++    @ValueSource(strings = {"SALE", "RENT", "BLOCKED", "WAITING"})
++    void aPastSaleDoesNotAllowADealershipVehicle(String state) throws Exception {
++        soldToClientOne();
++        sql("UPDATE vehicle SET state = '" + state + "' WHERE id = 1001");
++        String before = snapshot();
++        assertThrows(RuntimeException.class, () -> propose(1L, VIN, "ZZ123ZZ", 250));
++        assertEquals(before, snapshot());
++    }
++
++    @Test
++    void onlyTheLatestEffectiveBuyerCanProposeAndHistoryIsPreserved() throws Exception {
++        sql("""
++                UPDATE vehicle SET state = 'SOLD' WHERE id = 1001;
++                INSERT INTO sale (id, vehicle, salesman, client, amount, date, type) VALUES
++                (1003, 1001, 16, 1, 20000, CURRENT_DATE - INTERVAL '2 days', 'PURCHASE'),
++                (1001, 1001, 16, 1, 21000, CURRENT_DATE - INTERVAL '1 day', 'PURCHASE'),
++                (1002, 1001, 16, 2, 22000, CURRENT_DATE - INTERVAL '1 day', 'PURCHASE'),
++                (1004, 1001, 16, 1, 15000, CURRENT_DATE, 'ACQUISITION'),
++                (1005, NULL, NULL, 1, 800, CURRENT_DATE, 'PENALTY');
++                """);
++        String before = snapshot();
++        assertThrows(RuntimeException.class, () -> propose(1L, VIN, "YY123YY", 999));
++        assertEquals(before, snapshot());
++        var history = ctx.getOperationQueryService().getAllSales();
++        assertEquals(SaleType.ACQUISITION, history.stream().filter(s -> s.getId() == 1004).findFirst().orElseThrow().getType());
++        assertEquals(SaleType.PENALTY, history.stream().filter(s -> s.getId() == 1005).findFirst().orElseThrow().getType());
++        var request = propose(2L, " " + VIN.toLowerCase() + " ", "ZZ123ZZ", 250);
++        assertEquals(1001L, request.getVehicleId());
++        var reloaded = new AppContext(db).getCatalogService().getVehicleById(1001L).orElseThrow();
++        assertEquals(PriceMode.MANUAL, reloaded.getPriceMode());
++        assertEquals(new BigDecimal("10000.00"), reloaded.getPrice());
++        assertEquals(VehicleState.WAITING, reloaded.getState());
++        assertEquals(history, ctx.getOperationQueryService().getAllSales());
++        assertEquals(1, ctx.getOperationQueryService().getClientRequests(2L).size());
++    }
++
++    @ParameterizedTest
++    @CsvSource({"SALE,false", "PURCHASE,false", "PURCHASE,true"})
++    void everyOpenRequestBlocksTheProposal(String type, boolean approved) throws Exception {
++        soldToClientOne();
++        sql("""
++                INSERT INTO request (vehicle, client, deposit, agreed_total, type, salesman, exp_date)
++                VALUES (1001, 2, %s, %s, '%s', %s, %s)
++                """.formatted(type.equals("SALE") ? "-16000" : "4000",
++                type.equals("SALE") ? "NULL" : "20000", type, approved ? "16" : "NULL",
++                approved ? "CURRENT_DATE + 7" : "NULL"));
++        String before = snapshot();
++        RuntimeException failure = assertThrows(RuntimeException.class, () -> propose(1L, VIN, "ZZ123ZZ", 250));
++        assertTrue(failure.getMessage().contains("richiesta aperta"));
++        assertEquals(before, snapshot());
++    }
++
++    @Test
++    void newVinKeepsTheExistingEstimateAndRejectsSequentialDuplicates() throws Exception {
++        var service = ctx.getSaleToDealershipService();
++        BigDecimal estimate = service.calculateEstimate(1001L, "ZZ123ZZ", 250, year);
++        var request = propose(1L, "T0900000000000002", "ZZ123ZZ", 250);
++        assertEquals(estimate.negate(), request.getDeposit());
++        assertNull(request.getAgreedTotal());
++        var vehicle = new AppContext(db).getCatalogService().getVehicleById(request.getVehicleId()).orElseThrow();
++        assertEquals(PriceMode.AUTOMATIC, vehicle.getPriceMode());
++        assertEquals(new BigDecimal("20000.00"), vehicle.getPrice());
++        assertEquals(VehicleState.WAITING, vehicle.getState());
++        String before = snapshot();
++        assertThrows(RuntimeException.class, () -> propose(1L, "T0900000000000002", "YY123YY", 999));
++        assertEquals(before, snapshot());
++    }
++
++    @ParameterizedTest
++    @ValueSource(booleans = {false, true})
++    void requestFailureRollsBackNewAndKnownVehicles(boolean known) throws Exception {
++        if (known) soldToClientOne();
++        String before = snapshot();
++        sql("""
++                CREATE FUNCTION ticket09_fail_request() RETURNS trigger LANGUAGE plpgsql AS $$
++                BEGIN
++                  IF NOT EXISTS (SELECT 1 FROM vehicle WHERE id = NEW.vehicle AND state = 'WAITING'
++                                 AND licence_plate = 'ZZ123ZZ' AND kilometers = 250) THEN
++                    RAISE EXCEPTION 'ticket09_not_written';
++                  END IF;
++                  RAISE EXCEPTION 'ticket09_request_failed_after_vehicle_write';
++                END $$;
++                CREATE TRIGGER ticket09_fail_request AFTER INSERT ON request
++                FOR EACH ROW EXECUTE FUNCTION ticket09_fail_request();
++                """);
++        try {
++            RuntimeException failure = assertThrows(RuntimeException.class,
++                    () -> propose(1L, known ? VIN : "T0900000000000002", "ZZ123ZZ", 250));
++            assertTrue(causes(failure).contains("ticket09_request_failed_after_vehicle_write"));
++            assertEquals(before, snapshot());
++        } finally {
++            sql("DROP TRIGGER ticket09_fail_request ON request; DROP FUNCTION ticket09_fail_request()");
++        }
++    }
++
++    @Test
++    void skippedVehicleUpdateCannotLeaveAnOpenRequest() throws Exception {
++        soldToClientOne();
++        String before = snapshot();
++        sql("""
++                CREATE FUNCTION ticket09_skip_update() RETURNS trigger LANGUAGE plpgsql AS $$
++                BEGIN RETURN NULL; END $$;
++                CREATE TRIGGER ticket09_skip_update BEFORE UPDATE ON vehicle
++                FOR EACH ROW EXECUTE FUNCTION ticket09_skip_update();
++                """);
++        try {
++            assertThrows(RuntimeException.class, () -> propose(1L, VIN, "ZZ123ZZ", 250));
++            assertEquals(before, snapshot());
++        } finally {
++            sql("DROP TRIGGER ticket09_skip_update ON vehicle; DROP FUNCTION ticket09_skip_update()");
++        }
++    }
++
++    @ParameterizedTest
++    @ValueSource(booleans = {false, true})
++    void aKnownVinCannotUseAnotherModelOrYearForItsEstimate(boolean differentModel) throws Exception {
++        soldToClientOne();
++        String before = snapshot();
++        long anotherModel = ctx.getCatalogService().getAllModels().stream()
++                .filter(m -> m.getId() != 1001).findFirst().orElseThrow().getId();
++        assertThrows(RuntimeException.class, () -> ctx.getSaleToDealershipService().submitSaleProposal(
++                1L, differentModel ? anotherModel : 1001L, VIN, "ZZ123ZZ", 250, differentModel ? year : year - 1));
++        assertEquals(before, snapshot());
++    }
++
++    @Test
++    void invalidNewProposalLeavesNoVehicleOrRequest() throws Exception {
++        String before = snapshot();
++        assertThrows(RuntimeException.class, () -> propose(999999L, "T0900000000000002", "ZZ123ZZ", 250));
++        assertEquals(before, snapshot());
++        assertThrows(RuntimeException.class, () -> propose(1L, "T0900000000000002", null, 250));
++        assertEquals(before, snapshot());
++    }
++
++    @Test
++    void anAcquisitionAloneDoesNotEstablishOwnershipButAZeroPriceSaleDoes() throws Exception {
++        soldToClientOne();
++        sql("UPDATE sale SET type = 'ACQUISITION'");
++        String before = snapshot();
++        assertThrows(RuntimeException.class, () -> propose(1L, VIN, "ZZ123ZZ", 250));
++        assertEquals(before, snapshot());
++        sql("UPDATE sale SET type = 'PURCHASE', amount = 0");
++        assertNotNull(propose(1L, VIN, "ZZ123ZZ", 250).getId());
++    }
++
++    @Test
++    void ownershipQueriesAndVehicleLockRequireATransaction() throws Exception {
++        try (Connection conn = db.getConnection()) {
++            assertTrue(conn.getAutoCommit());
++            assertThrows(IllegalArgumentException.class, () ->
++                    new it.unifi.drivehub.dao.postgres.PostgresVehicleDao(db).findByVinForUpdate(VIN, conn));
++            assertThrows(IllegalArgumentException.class, () ->
++                    new it.unifi.drivehub.dao.postgres.PostgresSaleDao(db).findLatestPurchaseForVehicle(1001L, conn));
++            assertThrows(IllegalArgumentException.class, () ->
++                    new it.unifi.drivehub.dao.postgres.PostgresRequestDao(db).hasOpenRequestForVehicle(1001L, conn));
++        }
++    }
++
++    private static String causes(Throwable failure) {
++        StringBuilder messages = new StringBuilder();
++        for (Throwable cause = failure; cause != null; cause = cause.getCause()) messages.append(cause.getMessage());
++        return messages.toString();
++    }
++
++    @Test
++    void databaseRejectsAnotherOpenRequestOfAnyType() throws Exception {
++        Request request = propose(1L, "T0900000000000002", "ZZ123ZZ", 250);
++        String before = snapshot();
++        SQLException failure = assertThrows(SQLException.class, () -> sql("""
++                INSERT INTO request (vehicle, client, deposit, agreed_total, type, salesman, exp_date)
++                VALUES (%d, 2, 4000, 20000, 'PURCHASE', 16, CURRENT_DATE + 7)
++                """.formatted(request.getVehicleId())));
++        assertEquals("23505", failure.getSQLState());
++        assertEquals(before, snapshot());
++    }
++
++    @ParameterizedTest
++    @ValueSource(booleans = {false, true})
++    void competingProposalsKeepOnlyTheFirstCompleteVehicleAndRequest(boolean known) throws Exception {
++        if (known) soldToClientOne();
++        String vin = known ? VIN : "T0900000000000002";
++        var outcomes = race(() -> propose(1L, vin, "ZZ123ZZ", 250),
++                () -> propose(known ? 1L : 2L, " " + vin.toLowerCase() + " ", "YY123YY", 999));
++        assertNull(outcomes.get(0));
++        assertNotNull(outcomes.get(1));
++        var requests = new AppContext(db).getOperationQueryService().getClientRequests(1L);
++        assertEquals(1, requests.size());
++        assertTrue(ctx.getOperationQueryService().getClientRequests(2L).isEmpty());
++        var vehicles = ctx.getCatalogService().getAllVehicles().stream().filter(v -> v.getVin().equals(vin)).toList();
++        assertEquals(1, vehicles.size());
++        var vehicle = vehicles.getFirst();
++        assertEquals("ZZ123ZZ", vehicle.getLicencePlate());
++        assertEquals(250, vehicle.getKilometers());
++        assertEquals(requests.getFirst().getVehicleId(), vehicle.getId());
++        assertEquals(VehicleState.WAITING, vehicle.getState());
++        assertEquals(known ? 1 : 0, ctx.getOperationQueryService().getAllSales().size());
++        String before = snapshot();
++        assertThrows(RuntimeException.class, () -> propose(1L, vin, "XX123XX", 800));
++        assertEquals(before, snapshot());
++    }
++
++    private void soldToClientOne() throws Exception {
++        sql("""
++                UPDATE vehicle SET state = 'SOLD' WHERE id = 1001;
++                INSERT INTO sale (vehicle, salesman, client, amount, date, type)
++                VALUES (1001, 16, 1, 20000, CURRENT_TIMESTAMP - INTERVAL '1 day', 'PURCHASE');
++                """);
++    }
++
++    // Il gate ferma l'INSERT richiesta; il concorrente attende il veicolo o il VIN univoco.
++    private List<RuntimeException> race(Runnable first, Runnable second) throws Exception {
++        var workers = Executors.newFixedThreadPool(2);
++        try (Connection gate = db.getConnection(); Connection observer = db.getConnection()) {
++            gate.setAutoCommit(false);
++            try (var statement = gate.createStatement()) {
++                statement.setQueryTimeout(10);
++                statement.execute("LOCK TABLE request IN SHARE MODE");
++            }
++            try {
++                var a = workers.submit(outcome(first));
++                awaitWaiters(observer, 1);
++                var b = workers.submit(outcome(second));
++                awaitWaiters(observer, 2);
++                gate.rollback();
++                return Arrays.asList(a.get(10, TimeUnit.SECONDS), b.get(10, TimeUnit.SECONDS));
++            } finally {
++                gate.rollback();
++                try (var statement = observer.createStatement()) {
++                    statement.setQueryTimeout(10);
++                    statement.executeQuery("""
++                            SELECT pg_cancel_backend(pid) FROM pg_stat_activity
++                            WHERE datname = current_database() AND usename = current_user
++                              AND pid <> pg_backend_pid() AND state = 'active' AND wait_event_type = 'Lock'
++                            """).close();
++                }
++            }
++        } finally {
++            workers.shutdownNow();
++            assertTrue(workers.awaitTermination(10, TimeUnit.SECONDS), "Worker JDBC non terminati");
++        }
++    }
++
++    private static Callable<RuntimeException> outcome(Runnable action) {
++        return () -> {
++            try {
++                action.run();
++                return null;
++            } catch (RuntimeException failure) {
++                return failure;
++            }
++        };
++    }
++
++    private static void awaitWaiters(Connection observer, int expected) throws Exception {
++        long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(10);
++        do {
++            try (var statement = observer.createStatement()) {
++                statement.setQueryTimeout(10);
++                try (var rows = statement.executeQuery("""
++                        SELECT count(DISTINCT pid) FROM pg_stat_activity
++                        WHERE datname = current_database() AND usename = current_user
++                          AND pid <> pg_backend_pid() AND state = 'active' AND wait_event_type = 'Lock'
++                          AND cardinality(pg_blocking_pids(pid)) > 0
++                          AND (query ILIKE 'INSERT INTO request%' OR query ILIKE 'INSERT INTO vehicle%'
++                               OR query ILIKE 'UPDATE vehicle%' OR query ILIKE 'SELECT%FROM vehicle%')
++                        """)) {
++                    assertTrue(rows.next());
++                    if (rows.getInt(1) == expected) return;
++                }
++            }
++        } while (System.nanoTime() < deadline);
++        fail("Attesi " + expected + " backend PostgreSQL distinti bloccati");
++    }
++
++    private Request propose(Long client, String vin, String plate, int km) {
++        return new AppContext(db).getSaleToDealershipService()
++                .submitSaleProposal(client, 1001L, vin, plate, km, year);
++    }
++
++    private String snapshot() throws Exception {
++        try (Connection conn = db.getConnection(); var statement = conn.createStatement()) {
++            statement.setQueryTimeout(10);
++            try (var rows = statement.executeQuery("""
++                    SELECT (SELECT jsonb_agg(to_jsonb(v) ORDER BY id) FROM vehicle v)::text ||
++                           COALESCE((SELECT jsonb_agg(to_jsonb(r) ORDER BY id) FROM request r)::text, '[]') ||
++                           COALESCE((SELECT jsonb_agg(to_jsonb(s) ORDER BY id) FROM sale s)::text, '[]') ||
++                           (SELECT jsonb_agg(to_jsonb(b) ORDER BY client) FROM bank_account b)::text
++                    """)) {
++                assertTrue(rows.next());
++                return rows.getString(1);
++            }
++        }
++    }
++
++    private void sql(String query) throws Exception {
++        try (Connection conn = db.getConnection(); var statement = conn.createStatement()) {
++            statement.setQueryTimeout(10);
++            statement.execute(query);
++        }
++    }
++}
+--- /dev/null
++++ b/DriveHub/src/test/java/it/unifi/drivehub/SaleTypeTest.java
+@@ -0,0 +1,29 @@
++package it.unifi.drivehub;
++
++import it.unifi.drivehub.domain.operation.Sale;
++import it.unifi.drivehub.domain.operation.SaleType;
++import org.junit.jupiter.api.Test;
++
++import java.math.BigDecimal;
++import java.time.LocalDateTime;
++
++import static org.junit.jupiter.api.Assertions.*;
++
++class SaleTypeTest {
++    @Test
++    void factoriesDistinguishOperationsWithoutChangingTheirAmounts() {
++        BigDecimal amount = new BigDecimal("123.45");
++        var purchase = Sale.createPurchaseRecord(1L, 16L, 1L, amount);
++        var acquisition = Sale.createAcquisitionRecord(1L, 16L, 1L, amount);
++        var penalty = Sale.createPenaltyRecord(1L, amount);
++        assertEquals(SaleType.PURCHASE, purchase.getType());
++        assertEquals(SaleType.ACQUISITION, acquisition.getType());
++        assertEquals(SaleType.PENALTY, penalty.getType());
++        assertEquals(amount, purchase.getAmount());
++        assertEquals(amount, acquisition.getAmount());
++        assertEquals(amount, penalty.getAmount());
++        assertNull(penalty.getVehicleId());
++        assertThrows(IllegalArgumentException.class,
++                () -> Sale.create(1L, 1L, 16L, 1L, amount, LocalDateTime.now(), null));
++    }
++}
+--- a/PIANO_REVISIONI_DRIVEHUB.md
++++ b/PIANO_REVISIONI_DRIVEHUB.md
+@@ -3,6 +3,32 @@
+ Registro operativo avviato il 31 ottobre 2026. Punto di ingresso per riprendere il lavoro: avanzamento, decisioni, attività, verifiche e prossimo passo.
+ 
+ ## Stato attuale
++
++- **Ticket 01–09 chiusi e verificati**. Soltanto il ticket 09 lavorato nella
++  sessione corrente, dopo controllo dei precedenti e acquisizione della baseline.
++- Proposta di cessione: VIN noto solo SOLD, ultima vendita effettiva al proponente
++  e nessuna richiesta aperta, con lock/rilettura e scritture nella transazione.
++  Tipo storico esplicito e unicità DB; VIN nuovo con stima esistente preservato.
++- Mirati **142/142**, suite completa attuale **195/195**, zero failure/errori/salti:
++  41 senza DB e 154 PostgreSQL, inclusi conti 04, formula/base/centesimi 05,
++  accordo 06, elaborazioni 07, Observer/cancellazioni 08, fixture e sentinella.
++  Nuovi **24/24**. La suite 171/171 del 08 rimane storica.
++- Review indipendenti sulla sola sessione: **Standards 0 violazioni/0 smell
++  azionabili, Spec 0 rilievi**. Nessun codice/test cambiato dopo suite/review.
++- [Ticket 09](TRACKER_DRIVEHUB/revisioni/issues/09-proposta-cessione-e-titolarita.md),
++  [prove, comandi e versione](DriveHub/docs/evidence/r05-sale-proposal/verification.md).
++- **AC02/#2 chiuso; totale 8/20** (#1, #2, #4, #6, #8, #11, #17, #19).
++  R05 parziale per 10; AC03 approvazioni/AC10 ancora aperti, AC13 trasversale.
++- Ambiente temporaneo 07 ricontrollato: Java21/PG16, solo 127.0.0.1:55432 e copia
++  applicativa sentinella; cluster arrestato. Nessun DB applicativo preesistente.
++  Nessuna vista modificata, nessuna nuova verifica JavaFX/tastiera.
++- Baseline locale 401 file, 387 identici e 14 aggiornamenti intenzionali, nessuna
++  eliminazione; lavoro e prove 01–08 preservati. HEAD/indice invariati, nessun
++  commit/staging; Relazione_SWE sempre esclusa. Schema da adeguare prima dell'uso
++  su installazioni esistenti, storico da classificare dai fatti; `/tmp` temporanea.
++- Prossimo passo: ticket 10 solo su nuova richiesta. Nessun successivo avviato.
++
++## Stato al termine del ticket 08 — storico
+ 
+ - **Ticket 01–08 chiusi e verificati**. Il solo ticket 08 è stato lavorato nella
+   sessione corrente, dopo controllo dei precedenti e acquisizione della baseline.
+@@ -80,7 +106,7 @@
+ | R02 | Movimenti del conto corretti sotto concorrenza | #4 | R00 | Completata: ticket 04 verificato e chiuso |
+ | R03 | Prezzo consigliato/manuale coerente lungo il flusso | #17 | R00, D04–D05 | Completata: ticket 05 verificato e chiuso |
+ | R04 | Acquisto: totale concordato e conclusione una sola volta | #6, #11, parte #12 | R02, R03, D06 | Completata: 06–08 chiusi e verificati |
+-| R05 | Cessione: titolarità, richiesta unica, pagamento e contabilità | #2, #3, #10 | R02, R03, D07 | Pianificata |
++| R05 | Cessione: titolarità, richiesta unica, pagamento e contabilità | #2, #3, #10 | R02, R03, D07 | Parziale: 09 chiuso e verificato; 10 pianificato |
+ | R06 | Noleggi/test drive concorrenti e transizioni valide | #5, #7, restante #12 | R02, R03, D08–D10; coordinamento eventi con R04 | Parziale: 08 chiuso; 11/12 pianificati |
+ | R07 | Cancellazione account rispettosa di storico e richieste | #9 | R00; fixture aggiornate dai flussi interessati | Pianificata |
+ | R08 | Tabelle JavaFX senza query nel rendering | #16 | R03; verificare aggiornamenti dei flussi corretti | Pianificata |
+@@ -538,3 +564,58 @@
+   trasversale. Non chiuso un rilievo intero aggiuntivo: totale resta **7/20**.
+   Nessun conflitto prenotazioni 11, altra transizione o prestazione anticipati.
+   Prossimo passo: nessun altro ticket avviato; proseguire solo su nuova richiesta.
++
++
++### Ticket 09 — proposta di cessione e titolarità, 2 novembre 2026
++
++- Solo ticket 09; 01–08 controllati chiusi. Baseline 401 file e istruzioni lette
++  prima delle modifiche; lavoro locale e prove storiche preservati. Nessun commit,
++  staging o accesso a Relazione_SWE.
++- VIN noto: lock/rilettura nella transazione, stato SOLD, ultima vendita effettiva
++  al proponente, nessuna richiesta aperta, identità modello/anno coerente. Tipo
++  storico esplicito, tutte le factory/mapping aggiornate senza cambiare importi
++  o segni. Base/modalità e storico conservati; demo con le stesse 40 operazioni.
++- Vincoli DB VIN e UNIQUE request(vehicle), gare VIN noto e nuovo osservate su
++  due connessioni distinte, nessuno sleep o mock. Trigger PostgreSQL verificano
++  rollback dopo scrittura effettiva del veicolo e UPDATE saltata. Vincoli/controlli
++  impediscono richieste parziali e sovrascritture del concorrente perdente.
++- TDD dai servizi pubblici: RED concessionaria, assenza vendita, duplicati/gara,
++  scrittura saltata/modello incongruente e messaggio generico; stessi confini
++  GREEN, poi 31/31 casi e 142/142 mirati. Comando finale tramite launcher 09:
++  `-Ppostgres-tests clean test` → **195/195**, zero failure/errori/saltati; 41
++  senza DB, 154 PostgreSQL, inclusi conti 04, prezzi 05, accordo 06,
++  elaborazioni 07, Observer/cancellazioni 08, fixture e isolamento/sentinella.
++- Ripreso ambiente temporaneo 07 soltanto dopo verifica file/configurazione:
++  JDK 21, Maven 3.9.16, PG16, ruolo dedicato e copia applicativa sentinella su
++  127.0.0.1:55432. Primo avvio sandbox negato, escalation riuscita. Nessun DB
++  applicativo preesistente contattato; cluster arrestato. `/tmp` temporanea.
++- [Comandi esatti, log/XML, hash, baseline e limiti](DriveHub/docs/evidence/r05-sale-proposal/verification.md).
++  171/171 del 08 rimane storico. Nessuna vista modificata; messaggi dal servizio
++  al catch esistente; nessun nuovo controllo JavaFX/tastiera.
++- **6/6 criteri runtime verificati, revisione indipendente Standards/Spec ancora
++  in corso, ticket in-progress.** Nessuna accettazione/rifiuto, doppio accredito
++  o segno contabile del 10, prenotazione 11, altra transizione o prestazione
++  anticipati. Prossimo passo: completare questo stesso ticket, nessun successivo.
++
++
++### Chiusura ticket 09 — 2 novembre 2026
++
++- **6/6 criteri soddisfatti, State: closed**. La nota di avanzamento precedente
++  resta storica. Review indipendenti Standards **0 violazioni/0 smell azionabili**,
++  Spec **0 rilievi**, sul diff congelato rispetto alla baseline locale di 401
++  file; lavoro 01–08 escluso. Nessun codice/test cambiato dopo suite e review.
++- Finale **195/195**, mirati **142/142**, nuovi **24/24**, zero errori/failure/salti.
++  Formula/base/centesimi05, totale06, conti04, elaborazioni07 e Observer08
++  preservati; vincoli, concorrenza, rollback, fixture e sentinella verificati su
++  PostgreSQL reale dedicato. Cluster arrestato dopo i controlli in sola lettura.
++- [Prove, comandi, patch, hash, report indipendenti e limiti](DriveHub/docs/evidence/r05-sale-proposal/verification.md).
++  387 file preesistenti intatti, 14 aggiornamenti intenzionali, nessuna
++  eliminazione; ticket/evidenze01–08 e dati storici demo preservati. Nessun commit
++  o staging, HEAD/indice invariati, Relazione_SWE esclusa da tutte le operazioni.
++- Chiuso **AC02/#2**, totale **8/20**. R05 parziale per 10; AC03 per le
++  approvazioni/AC10 restano aperti, AC13 trasversale. Nessuna vista modificata,
++  nessuna prova JavaFX/tastiera nuova, nessun segno contabile o accettazione/rifiuto
++  anticipato. Schema ricreabile D02; installazioni esistenti richiedono adeguamento
++  e classificazione fattuale dello storico. `/tmp` temporanea da ricontrollare.
++- Nessun blocco residuo del 09. Prossimo passo: ticket 10 soltanto in una nuova
++  richiesta; nessun successivo avviato.
+--- a/TRACKER_DRIVEHUB/revisioni/issues/09-proposta-cessione-e-titolarita.md
++++ b/TRACKER_DRIVEHUB/revisioni/issues/09-proposta-cessione-e-titolarita.md
+@@ -7,7 +7,7 @@
+ **Blocked by:** 01: Rendere build e test ripetibili senza toccare i dati applicativi
+ 
+ Status: ready-for-agent
+-State: open
++State: closed
+ 
+ **Piano:** R05
+ **Specifica:** AC02, AC03, AC13
+@@ -15,12 +15,12 @@
+ 
+ ## Acceptance criteria
+ 
+-- [ ] VIN esistente accettato solo se il veicolo risulta venduto, l'ultima vendita effettiva è al proponente e non ci sono altre richieste aperte; controlli nella transazione.
+-- [ ] VIN appartenente alla concessionaria o a un altro cliente rifiutato senza cambiare dati, stato o richieste.
+-- [ ] Una vendita più vecchia al proponente non basta quando esiste un compratore successivo; la verifica usa lo storico effettivo.
+-- [ ] Unicità della richiesta aperta per veicolo protetta anche nel DB; due proposte concorrenti lasciano al massimo una richiesta e nessuna scrittura parziale.
+-- [ ] VIN nuovo ancora proponibile con la stima esistente; aggiornati validazioni, mapping, fixture e messaggi interessati.
+-- [ ] Prove normali, alternative e concorrenti ripetibili su dati isolati.
++- [x] VIN esistente accettato solo se il veicolo risulta venduto, l'ultima vendita effettiva è al proponente e non ci sono altre richieste aperte; controlli nella transazione.
++- [x] VIN appartenente alla concessionaria o a un altro cliente rifiutato senza cambiare dati, stato o richieste.
++- [x] Una vendita più vecchia al proponente non basta quando esiste un compratore successivo; la verifica usa lo storico effettivo.
++- [x] Unicità della richiesta aperta per veicolo protetta anche nel DB; due proposte concorrenti lasciano al massimo una richiesta e nessuna scrittura parziale.
++- [x] VIN nuovo ancora proponibile con la stima esistente; aggiornati validazioni, mapping, fixture e messaggi interessati.
++- [x] Prove normali, alternative e concorrenti ripetibili su dati isolati.
+ 
+ ## Note per l'implementazione
+ 
+@@ -33,3 +33,67 @@
+ ## Comments
+ 
+ - 31 ottobre 2026: ticket pubblicato da `to-tickets` dopo approvazione di granularità e dipendenze. Esecuzione non ancora avviata; verificare i blocchi prima di iniziare.
++
++
++### Esecuzione — 2 novembre 2026
++
++- Prerequisito 01 e precedenti 01–08 controllati tutti chiusi. Letti istruzioni,
++  piano, glossario, ADR e documentazione/evidenze d'ambiente prima delle modifiche.
++  Baseline di 401 file acquisita in `/tmp/drivehub-ticket09-baseline`, compreso
++  tutto il lavoro locale precedente. Nessun commit/staging, relazione esclusa.
++- Implementato solo 09: VIN noto con lock/rilettura, SOLD, ultima vendita
++  effettiva al proponente e nessuna richiesta aperta di qualsiasi tipo. Modello
++  e anno coerenti con il VIN; base/modalità preservate. Richiesta e veicolo nella
++  stessa transazione, aggiornamento obbligatorio di una riga.
++- Tipo esplicito dello storico PURCHASE/ACQUISITION/PENALTY, persistito da tutte
++  le factory/mapping. Vendita effettiva per data e poi ID, senza deduzione da
++  importi/segni. Nessuna anticipazione del ticket 10. Tutte le 40 operazioni demo
++  conservate; fixture SOLD del 05 completata con la vendita al proponente.
++- UNIQUE request(vehicle) anche nel DB; VIN nuovo conserva stima/base modello.
++  Gare su VIN noto e stesso VIN nuovo: una richiesta, un veicolo completo,
++  nessuna sovrascrittura del perdente. Connessioni distinte, lock osservati con
++  pg_stat_activity/pg_blocking_pids, nessuno sleep, timeout e cleanup.
++- TDD: rifiuto VIN concessionaria RED 1 failure → stessa regressione GREEN 1/1;
++  SOLD senza vendita RED 1 → GREEN 2/2; unicità/gare RED 2 failure su 3 → GREEN
++  5/5; scrittura saltata/modello errato RED 2 su 3 → casi 31/31; messaggio
++  generico RED 1 → nuove prove incluse nei mirati 142/142 e suite finale 195/195.
++- Comandi: `python3 /tmp/drivehub-ticket09-maven.py <etichetta> <argomenti Maven>`;
++  selezioni esatte, log/XML e versioni in
++  [verification.md](../../../DriveHub/docs/evidence/r05-sale-proposal/verification.md).
++  Finale `-Ppostgres-tests clean test`: **195/195**, zero failure/errori/saltati,
++  41 senza DB e 154 PostgreSQL; isolamento/sentinella e fixture ripetibili inclusi.
++  Nuovi 24/24. Conti 04, formula/base/centesimi 05, accordo 06, unicità
++  elaborazioni 07 e cancellazione atomica/Observer 08 passati nella nuova suite.
++- Ambiente temporaneo 07 verificato prima del riuso: Java 21, Maven 3.9.16, PG16,
++  sei variabili e file privato 0600, solo cluster 127.0.0.1:55432 e copia
++  applicativa sentinella. Avvio sandbox negato, escalation riuscita; nessun DB
++  applicativo preesistente contattato. Cluster ora arrestato. 171/171 del 08
++  resta una baseline storica. `/tmp` temporanea.
++- Nessuna vista modificata: messaggi leggibili dal servizio al catch esistente;
++  nessuna nuova verifica JavaFX/tastiera. Nessuna migrazione storica, procedura
++  esterna di proprietà, accettazione/rifiuto o segno contabile del 10,
++  prenotazione 11, altra transizione o prestazione anticipati.
++- **6/6 criteri runtime verificati; ticket in-progress finché mancano le due
++  revisioni finali indipendenti Standards/Spec sul diff della sola sessione.**
++  Prossimo passo: completare questo stesso ticket, senza passare al successivo.
++
++
++### Chiusura verificata — 2 novembre 2026
++
++- **State: closed, 6/6 criteri soddisfatti.** La nota in-progress sopra è storica.
++  Revisioni indipendenti sul diff fissato della sola sessione: Standards
++  **0 violazioni/0 smell azionabili**, Spec **0 rilievi**; contesti nuovi,
++  confronti rispetto alla baseline locale, non rispetto a HEAD.
++- Suite finale **195/195** e mirati **142/142** realmente eseguiti. Nessun codice
++  o test cambiato dopo suite/review; hash della versione, patch, log/XML,
++  report delle due revisioni e limiti nel rapporto collegato sopra.
++- 387 dei 401 file iniziali identici; 14 aggiornamenti intenzionali, nessuna
++  eliminazione. Tutti i ticket 01–08 e le evidenze storiche intatti, storico demo
++  identico salvo tipo esplicito; HEAD/indice invariati. Nessun commit/staging.
++- Chiuso AC02/#2; R05 resta parziale per 10, AC03 limitatamente alle proposte
++  verificato, approvazioni e contabilità escluse. Totale rilievi chiusi **8/20**;
++  AC13 trasversale. Nessuna vista modificata o prova JavaFX/tastiera nuova.
++- Cluster dedicato arrestato; ambiente temporaneo da ricontrollare prima del
++  riuso. Schema da adeguare e storico da classificare dai fatti su installazioni
++  esistenti, senza inferire tipi dai segni. Nessun blocco residuo del ticket 09.
++- Prossimo passo: ticket 10 solo su nuova richiesta; nessun successivo avviato.

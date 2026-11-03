@@ -1,0 +1,72 @@
+[
+  {
+    "file": "libfontenc1_1%3a1.1.8-1build2_amd64.deb",
+    "package": "Package: libfontenc1\nVersion: 1:1.1.8-1build2",
+    "sha256": "1fab0e125d793da45d91b346c334c496776d69709a7ea78c3b34d5db6db69eab"
+  },
+  {
+    "file": "libicu74.deb",
+    "package": "Package: libicu74\nVersion: 74.2-1ubuntu3.1",
+    "sha256": "c9a70989678660eed9a1e904c74fa043da8bec8e2036856fc16e31ced79b04f8"
+  },
+  {
+    "file": "libllvm17.deb",
+    "package": "Package: libllvm17t64\nVersion: 1:17.0.6-9ubuntu1",
+    "sha256": "1863b5459ca4a6691f5e039e76157f074ee08b48176267642ee4dfea065f5db4"
+  },
+  {
+    "file": "libpq5_18.6-0ubuntu0.26.04.1_amd64.deb",
+    "package": "Package: libpq5\nVersion: 18.6-0ubuntu0.26.04.1",
+    "sha256": "7e9199f54290b04a28e9f136207624ca30b0988d613159977fd84e8b4467e0a4"
+  },
+  {
+    "file": "libunwind8_1.8.3-0ubuntu1_amd64.deb",
+    "package": "Package: libunwind8\nVersion: 1.8.3-0ubuntu1",
+    "sha256": "7a9978fadf0940f45500ced0fba219cb5954f322a31068b7b32ad04f3ddc5c3f"
+  },
+  {
+    "file": "libxfont2_1%3a2.0.6-2ubuntu0.2_amd64.deb",
+    "package": "Package: libxfont2\nVersion: 1:2.0.6-2ubuntu0.2",
+    "sha256": "eeca46a661876466a8f96469054427f0b18a10a758c4c69d2c5f20b290f6f056"
+  },
+  {
+    "file": "libxml2.deb",
+    "package": "Package: libxml2\nVersion: 2.9.14+dfsg-1.3ubuntu3.10",
+    "sha256": "c5a065f85c1e6f605741e365e40cad71c3ceb0e85e2791400bd35b8896e12ad1"
+  },
+  {
+    "file": "openjdk-21-jdk-headless_21.0.12.1+1-1~26.04.4_amd64.deb",
+    "package": "Package: openjdk-21-jdk-headless\nVersion: 21.0.12.1+1-1~26.04.4",
+    "sha256": "a8c8d09f0c4d5e48a5d97a275f658dcfc72061d9d5b33d93db9c2ee45f74d0e7"
+  },
+  {
+    "file": "openjdk-21-jre-headless_21.0.12.1+1-1~26.04.4_amd64.deb",
+    "package": "Package: openjdk-21-jre-headless\nVersion: 21.0.12.1+1-1~26.04.4",
+    "sha256": "174105c57728ea7652d2a49b5af2f529277dbef51c02417b931e792e54fb2b29"
+  },
+  {
+    "file": "postgresql-16.deb",
+    "package": "Package: postgresql-16\nVersion: 16.15-0ubuntu0.24.04.1",
+    "sha256": "d60ae76fb862cd4cca7bfdcdcdcc271c5e1d75f6b7915305ce2d962735a4b666"
+  },
+  {
+    "file": "postgresql-client-16.deb",
+    "package": "Package: postgresql-client-16\nVersion: 16.15-0ubuntu0.24.04.1",
+    "sha256": "4796f72e1a7270ad8c17b1ecb025cd453f692b42c10aaf89f6b476da61761eac"
+  },
+  {
+    "file": "x11-xkb-utils_7.7+9build1_amd64.deb",
+    "package": "Package: x11-xkb-utils\nVersion: 7.7+9build1",
+    "sha256": "f17d61317a9f0db99db7a2c7b81d462a35008c85089fb573d2175ed504f6157b"
+  },
+  {
+    "file": "xserver-common_2%3a21.1.22-1ubuntu1.3_all.deb",
+    "package": "Package: xserver-common\nVersion: 2:21.1.22-1ubuntu1.3",
+    "sha256": "d4ea6392708347a8e89c3cb0421820ae0fbf45d47e78c49876e119db3225aa07"
+  },
+  {
+    "file": "xvfb_2%3a21.1.22-1ubuntu1.3_amd64.deb",
+    "package": "Package: xvfb\nVersion: 2:21.1.22-1ubuntu1.3",
+    "sha256": "e46d389ef552dfd557df22a49a1071fef2ab499951633e9857ebb763d7ae7d24"
+  }
+]

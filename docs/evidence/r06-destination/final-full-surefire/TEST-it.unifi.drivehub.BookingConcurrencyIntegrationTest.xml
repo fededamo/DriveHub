@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="6.464" tests="36" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="21"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/home/federico/dev/Drivehub/DriveHub/target/test-classes:/home/federico/dev/Drivehub/DriveHub/target/classes:/home/federico/.m2/repository/org/openjfx/javafx-controls/21.0.2/javafx-controls-21.0.2.jar:/home/federico/.m2/repository/org/openjfx/javafx-controls/21.0.2/javafx-controls-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-graphics/21.0.2/javafx-graphics-21.0.2.jar:/home/federico/.m2/repository/org/openjfx/javafx-graphics/21.0.2/javafx-graphics-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-base/21.0.2/javafx-base-21.0.2.jar:/home/federico/.m2/repository/org/openjfx/javafx-base/21.0.2/javafx-base-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-fxml/21.0.2/javafx-fxml-21.0.2.jar:/home/federico/.m2/repository/org/openjfx/javafx-fxml/21.0.2/javafx-fxml-21.0.2-linux.jar:/home/federico/.m2/repository/org/postgresql/postgresql/42.7.3/postgresql-42.7.3.jar:/home/federico/.m2/repository/org/checkerframework/checker-qual/3.42.0/checker-qual-3.42.0.jar:/home/federico/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.10.2/junit-jupiter-api-5.10.2.jar:/home/federico/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/home/federico/.m2/repository/org/junit/platform/junit-platform-commons/1.10.2/junit-platform-commons-1.10.2.jar:/home/federico/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/federico/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.10.2/junit-jupiter-engine-5.10.2.jar:/home/federico/.m2/repository/org/junit/platform/junit-platform-engine/1.10.2/junit-platform-engine-1.10.2.jar:/home/federico/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.10.2/junit-jupiter-params-5.10.2.jar:/home/federico/.m2/repository/org/junit/platform/junit-platform-launcher/1.10.2/junit-platform-launcher-1.10.2.jar:"/>
+    <property name="java.vm.vendor" value="Ubuntu"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://ubuntu.com/"/>
+    <property name="user.timezone" value="Europe/Rome"/>
+    <property name="os.name" value="Linux"/>
+    <property name="java.vm.specification.version" value="21"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.boot.library.path" value="/tmp/drivehub-ticket07-tools/root/usr/lib/jvm/java-21-openjdk-amd64/lib"/>
+    <property name="sun.java.command" value="/home/federico/dev/Drivehub/DriveHub/target/surefire/surefirebooter-20261102192702084_3.jar /home/federico/dev/Drivehub/DriveHub/target/surefire 2026-11-02T19-27-01_371-jvmRun1 surefire-20261102192702084_1tmp surefire_0-20261102192702084_2tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/home/federico/dev/Drivehub/DriveHub/target/test-classes:/home/federico/dev/Drivehub/DriveHub/target/classes:/home/federico/.m2/repository/org/openjfx/javafx-controls/21.0.2/javafx-controls-21.0.2.jar:/home/federico/.m2/repository/org/openjfx/javafx-controls/21.0.2/javafx-controls-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-graphics/21.0.2/javafx-graphics-21.0.2.jar:/home/federico/.m2/repository/org/openjfx/javafx-graphics/21.0.2/javafx-graphics-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-base/21.0.2/javafx-base-21.0.2.jar:/home/federico/.m2/repository/org/openjfx/javafx-base/21.0.2/javafx-base-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-fxml/21.0.2/javafx-fxml-21.0.2.jar:/home/federico/.m2/repository/org/openjfx/javafx-fxml/21.0.2/javafx-fxml-21.0.2-linux.jar:/home/federico/.m2/repository/org/postgresql/postgresql/42.7.3/postgresql-42.7.3.jar:/home/federico/.m2/repository/org/checkerframework/checker-qual/3.42.0/checker-qual-3.42.0.jar:/home/federico/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.10.2/junit-jupiter-api-5.10.2.jar:/home/federico/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/home/federico/.m2/repository/org/junit/platform/junit-platform-commons/1.10.2/junit-platform-commons-1.10.2.jar:/home/federico/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/federico/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.10.2/junit-jupiter-engine-5.10.2.jar:/home/federico/.m2/repository/org/junit/platform/junit-platform-engine/1.10.2/junit-platform-engine-1.10.2.jar:/home/federico/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.10.2/junit-jupiter-params-5.10.2.jar:/home/federico/.m2/repository/org/junit/platform/junit-platform-launcher/1.10.2/junit-platform-launcher-1.10.2.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/home/federico"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2026-08-18"/>
+    <property name="java.home" value="/tmp/drivehub-ticket07-tools/root/usr/lib/jvm/java-21-openjdk-amd64"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/home/federico/dev/Drivehub/DriveHub"/>
+    <property name="java.vm.compressedOopsMode" value="32-bit"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="surefire.real.class.path" value="/home/federico/dev/Drivehub/DriveHub/target/surefire/surefirebooter-20261102192702084_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="21.0.12.1+1-1-26.04.4-Ubuntu"/>
+    <property name="user.name" value="federico"/>
+    <property name="stdout.encoding" value="UTF-8"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="6.18.54.1-microsoft-standard-WSL2"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="localRepository" value="/home/federico/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://bugs.launchpad.net/ubuntu/+source/openjdk-21"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="java.version" value="21.0.12.1"/>
+    <property name="user.dir" value="/home/federico/dev/Drivehub/DriveHub"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib"/>
+    <property name="stderr.encoding" value="UTF-8"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.vendor" value="Ubuntu"/>
+    <property name="java.vm.version" value="21.0.12.1+1-1-26.04.4-Ubuntu"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="65.0"/>
+  </properties>
+  <testcase name="databasePreservesTestDriveHoursAndVehicleTimestampUniqueness(String, String)[1]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.139"/>
+  <testcase name="databasePreservesTestDriveHoursAndVehicleTimestampUniqueness(String, String)[2]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.137"/>
+  <testcase name="databasePreservesTestDriveHoursAndVehicleTimestampUniqueness(String, String)[3]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.159"/>
+  <testcase name="pastDatesAndReversedRentalPeriodAreRejectedWithoutWrites" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.139"/>
+  <testcase name="testDriveCommittedFirstIsCancelledAtomicallyByRental(boolean)[1]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.223">
+    <system-out><![CDATA[Ticket11 waiters 1 pid:blockers 125807:{125803}
+Ticket11 waiters 2 pid:blockers 125807:{125803}, 125809:{125807}
+]]></system-out>
+  </testcase>
+  <testcase name="testDriveCommittedFirstIsCancelledAtomicallyByRental(boolean)[2]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.21">
+    <system-out><![CDATA[Ticket11 waiters 1 pid:blockers 125824:{125820}
+Ticket11 waiters 2 pid:blockers 125824:{125820}, 125826:{125824}
+]]></system-out>
+  </testcase>
+  <testcase name="sameClientCannotExceedThreeTestDrivesAcrossDifferentVehicles" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.195">
+    <system-out><![CDATA[Ticket11 waiters 1 pid:blockers 125841:{125837}
+Ticket11 waiters 2 pid:blockers 125841:{125837}, 125843:{125841}
+]]></system-out>
+  </testcase>
+  <testcase name="rentalUsesThePriceRereadAfterTheVehicleLock" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.161">
+    <system-out><![CDATA[Ticket11 waiters 1 pid:blockers 125854:{125850}
+]]></system-out>
+  </testcase>
+  <testcase name="failureAfterBookingInsertRollsBackActualWrites(boolean)[1]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.171"/>
+  <testcase name="failureAfterBookingInsertRollsBackActualWrites(boolean)[2]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.18"/>
+  <testcase name="concurrentRentalsOnAdjacentDaysCanBothBeConfirmed" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.208">
+    <system-out><![CDATA[Ticket11 waiters 1 pid:blockers 125887:{125883}
+Ticket11 waiters 2 pid:blockers 125887:{125883}, 125889:{125887}
+]]></system-out>
+  </testcase>
+  <testcase name="clientLockIsCompatibleWithPurchaseForeignKeysAndTheAccountProtocol" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.239">
+    <system-out><![CDATA[Ticket11 waiters 1 pid:blockers 125905:{125901}
+Ticket11 waiters 2 pid:blockers 125905:{125901}, 125910:{125905}
+]]></system-out>
+  </testcase>
+  <testcase name="rejectedBookingsExposeTheBusinessReasonAfterRollback(boolean)[1]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.173"/>
+  <testcase name="rejectedBookingsExposeTheBusinessReasonAfterRollback(boolean)[2]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.143"/>
+  <testcase name="insufficientBalanceDoesNotCreateRentalOrCancelTestDrives" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.178"/>
+  <testcase name="bookingRereadsVehicleStateAfterWaitingForTheLock(boolean)[1]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.174">
+    <system-out><![CDATA[Ticket11 waiters 1 pid:blockers 125951:{125947}
+]]></system-out>
+  </testcase>
+  <testcase name="bookingRereadsVehicleStateAfterWaitingForTheLock(boolean)[2]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.18">
+    <system-out><![CDATA[Ticket11 waiters 1 pid:blockers 125964:{125960}
+]]></system-out>
+  </testcase>
+  <testcase name="rentalWinsAgainstATestDriveStartedBeforeItsCommit" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.201">
+    <system-out><![CDATA[Ticket11 waiters 1 pid:blockers 125977:{125973}
+Ticket11 waiters 2 pid:blockers 125977:{125973}, 125979:{125977}
+]]></system-out>
+  </testcase>
+  <testcase name="databaseSerializesOverlapsEvenWhenWritersBypassServices(boolean)[1]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.182">
+    <system-out><![CDATA[Ticket11 waiters 1 pid:blockers 125991:{125987}
+]]></system-out>
+  </testcase>
+  <testcase name="databaseSerializesOverlapsEvenWhenWritersBypassServices(boolean)[2]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.166">
+    <system-out><![CDATA[Ticket11 waiters 1 pid:blockers 126003:{125999}
+]]></system-out>
+  </testcase>
+  <testcase name="overlappingRentalsFromDifferentClientsCannotBothBeConfirmed" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.204">
+    <system-out><![CDATA[Ticket11 waiters 1 pid:blockers 126015:{126011}
+Ticket11 waiters 2 pid:blockers 126015:{126011}, 126017:{126015}
+]]></system-out>
+  </testcase>
+  <testcase name="testDriveDoesNotRequireABankAccount" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.166"/>
+  <testcase name="testDriveCannotUseAnyDayOfARental(int)[1]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.19"/>
+  <testcase name="testDriveCannotUseAnyDayOfARental(int)[2]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.181"/>
+  <testcase name="testDriveCannotUseAnyDayOfARental(int)[3]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.18"/>
+  <testcase name="twoClientsCannotBookTheSameTestDriveSlot" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.18">
+    <system-out><![CDATA[Ticket11 waiters 1 pid:blockers 126070:{126066}
+Ticket11 waiters 2 pid:blockers 126070:{126066}, 126072:{126070}
+]]></system-out>
+  </testcase>
+  <testcase name="rentalPeriodsAreInclusiveAndAdjacentDaysRemainBookable(int, int, boolean)[1]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.193"/>
+  <testcase name="rentalPeriodsAreInclusiveAndAdjacentDaysRemainBookable(int, int, boolean)[2]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.159"/>
+  <testcase name="rentalPeriodsAreInclusiveAndAdjacentDaysRemainBookable(int, int, boolean)[3]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.149"/>
+  <testcase name="rentalPeriodsAreInclusiveAndAdjacentDaysRemainBookable(int, int, boolean)[4]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.149"/>
+  <testcase name="rentalPeriodsAreInclusiveAndAdjacentDaysRemainBookable(int, int, boolean)[5]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.155"/>
+  <testcase name="rentalPeriodsAreInclusiveAndAdjacentDaysRemainBookable(int, int, boolean)[6]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.165"/>
+  <testcase name="rentalPeriodsAreInclusiveAndAdjacentDaysRemainBookable(int, int, boolean)[7]" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.151"/>
+  <testcase name="purchaseCompletionAndRentalCannotDeadlockWithATestDriveOnTheBlockedVehicle" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.28">
+    <system-out><![CDATA[Ticket11 waiters 1 pid:blockers 126155:{126151}
+Ticket11 waiters 2 pid:blockers 126155:{126151}, 126157:{126155}
+Ticket11 operation 3 completed before gate release
+]]></system-out>
+  </testcase>
+  <testcase name="concurrentRentalsForSameClientOnDifferentVehiclesCannotOverdraw" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.196">
+    <system-out><![CDATA[Ticket11 waiters 1 pid:blockers 126175:{126171}
+Ticket11 waiters 2 pid:blockers 126175:{126171}, 126177:{126175}
+]]></system-out>
+  </testcase>
+  <testcase name="databaseRejectsInclusiveRentalOverlapWithoutServices" classname="it.unifi.drivehub.BookingConcurrencyIntegrationTest" time="0.156"/>
+</testsuite>

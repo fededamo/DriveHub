@@ -1,0 +1,4 @@
+waiting for server to shut down.... done
+server stopped
+pg_ctl: no server running
+Xvfb PID 20517 stopped; TCP55435 and abstract X91 absent. Only ticket17 services stopped.

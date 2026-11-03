@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="it.unifi.drivehub.AuthServiceIntegrationTest" time="6.268" tests="18" errors="0" skipped="0" failures="0">
+  <testcase name="wrongPasswordPreservesStoredIdentityAndLogin(String)[1]" classname="it.unifi.drivehub.AuthServiceIntegrationTest" time="0.303" />
+  <testcase name="wrongPasswordPreservesStoredIdentityAndLogin(String)[2]" classname="it.unifi.drivehub.AuthServiceIntegrationTest" time="0.279" />
+  <testcase name="wrongPasswordPreservesStoredIdentityAndLogin(String)[3]" classname="it.unifi.drivehub.AuthServiceIntegrationTest" time="0.283" />
+  <testcase name="validEmailIsNormalizedPersistedAndUsedForLogin(String)[1]" classname="it.unifi.drivehub.AuthServiceIntegrationTest" time="0.327" />
+  <testcase name="validEmailIsNormalizedPersistedAndUsedForLogin(String)[2]" classname="it.unifi.drivehub.AuthServiceIntegrationTest" time="0.306" />
+  <testcase name="validEmailIsNormalizedPersistedAndUsedForLogin(String)[3]" classname="it.unifi.drivehub.AuthServiceIntegrationTest" time="0.315" />
+  <testcase name="rejectedEmailPreservesStoredIdentityAndLogin(String)[1]" classname="it.unifi.drivehub.AuthServiceIntegrationTest" time="0.302" />
+  <testcase name="rejectedEmailPreservesStoredIdentityAndLogin(String)[2]" classname="it.unifi.drivehub.AuthServiceIntegrationTest" time="0.281" />
+  <testcase name="rejectedEmailPreservesStoredIdentityAndLogin(String)[3]" classname="it.unifi.drivehub.AuthServiceIntegrationTest" time="0.285" />
+  <testcase name="malformedEmailPreservesStoredIdentityAndLogin(String)[1]" classname="it.unifi.drivehub.AuthServiceIntegrationTest" time="0.306" />
+  <testcase name="malformedEmailPreservesStoredIdentityAndLogin(String)[2]" classname="it.unifi.drivehub.AuthServiceIntegrationTest" time="0.294" />
+  <testcase name="malformedEmailPreservesStoredIdentityAndLogin(String)[3]" classname="it.unifi.drivehub.AuthServiceIntegrationTest" time="0.29" />
+  <testcase name="malformedEmailPreservesStoredIdentityAndLogin(String)[4]" classname="it.unifi.drivehub.AuthServiceIntegrationTest" time="0.305" />
+  <testcase name="duplicateEmailPreservesBothIdentitiesAndLogins(String, String)[1]" classname="it.unifi.drivehub.AuthServiceIntegrationTest" time="0.473" />
+  <testcase name="duplicateEmailPreservesBothIdentitiesAndLogins(String, String)[2]" classname="it.unifi.drivehub.AuthServiceIntegrationTest" time="0.465" />
+  <testcase name="duplicateEmailPreservesBothIdentitiesAndLogins(String, String)[3]" classname="it.unifi.drivehub.AuthServiceIntegrationTest" time="0.503" />
+  <testcase name="duplicateEmailPreservesBothIdentitiesAndLogins(String, String)[4]" classname="it.unifi.drivehub.AuthServiceIntegrationTest" time="0.449" />
+  <testcase name="duplicateEmailPreservesBothIdentitiesAndLogins(String, String)[5]" classname="it.unifi.drivehub.AuthServiceIntegrationTest" time="0.482" />
+</testsuite>

@@ -1,0 +1,71 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontSize 16
+skinparam classAttributeIconSize 0
+title Servizi e composizione — dipendenze selettive
+class AppContext {
+  + {static} getInstance(): AppContext
+  + AppContext(databaseManager: DatabaseManager)
+}
+class AuthService
+interface PasswordHasher {
+  + hash(rawPassword: String): String
+  + verify(rawPassword: String, storedHash: String): boolean
+}
+class Pbkdf2PasswordHasher
+class PurchaseService
+class SaleToDealershipService
+class RentalService
+class TestDriveService
+class CatalogService
+class OperationQueryService
+class PriceCalculatorService
+class DatabaseManager
+class VehicleEventPublisher {
+  + attach(observer: VehicleCommitmentObserver): void
+  + publishCommitment(event: VehicleCommitmentEvent, conn: Connection): void
+}
+interface VehicleCommitmentObserver {
+  + onVehicleCommitted(event: VehicleCommitmentEvent, conn: Connection): void
+}
+class TestDriveCancellationObserver
+class VehicleCommitmentEvent <<record>> {
+  vehicleId: Long
+}
+AppContext ..> AuthService : costruisce
+AppContext ..> PurchaseService
+AppContext ..> SaleToDealershipService
+AppContext ..> RentalService
+AppContext ..> TestDriveService
+AppContext ..> CatalogService
+AppContext ..> OperationQueryService
+AppContext ..> Pbkdf2PasswordHasher
+AppContext ..> TestDriveCancellationObserver : costruisce e registra
+AuthService --> PasswordHasher
+Pbkdf2PasswordHasher ..|> PasswordHasher
+PurchaseService --> PriceCalculatorService
+SaleToDealershipService --> PriceCalculatorService
+RentalService --> PriceCalculatorService
+CatalogService --> PriceCalculatorService
+PurchaseService --> VehicleEventPublisher
+RentalService --> VehicleEventPublisher
+VehicleEventPublisher --> "0..*" VehicleCommitmentObserver
+TestDriveCancellationObserver ..|> VehicleCommitmentObserver
+VehicleCommitmentObserver ..> VehicleCommitmentEvent
+note bottom of DatabaseManager
+  Auth/Purchase/SaleToDealership/Rental/TestDrive/Catalog
+  ricevono il gestore e i rispettivi DAO nel costruttore.
+  OperationQueryService riceve Request/TestDrive/Rent/SaleDao.
+  AppContext sceglie i PostgresDAO: DI manuale, non container.
+end note
+note bottom of VehicleEventPublisher
+  Observer GoF sincrono, stessa Connection, PRIMA del commit.
+  Cancella test drive futuri; gli errori propagano al chiamante.
+  Nessuna coda/outbox o notifica dopo commit.
+end note
+note bottom of PriceCalculatorService
+  Calcolatore concreto, senza SQL o PricingStrategy.
+  BigDecimal con fattori/potenze double: non decimale esatto ovunque.
+end note
+@enduml

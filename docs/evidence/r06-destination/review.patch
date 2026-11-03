@@ -1,0 +1,908 @@
+--- a/DriveHub/src/main/java/it/unifi/drivehub/service/RentalService.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/service/RentalService.java
+@@ -138,29 +138,44 @@
+             throw new IllegalArgumentException("La transizione ammessa è solo tra RENT e SALE.");
+         }
+ 
+-        return db.executeInTransactionWithResult(conn -> {
+-            Vehicle vehicle = vehicleDao.findByIdForUpdate(vehicleId, conn)
+-                    .orElseThrow(() -> new IllegalStateException("Veicolo non trovato: " + vehicleId));
+-            VehicleState oldState = vehicle.getState();
++        try {
++            return db.executeInTransactionWithResult(conn -> {
++                Vehicle vehicle = vehicleDao.findByIdForUpdate(vehicleId, conn)
++                        .orElseThrow(() -> new IllegalStateException("Veicolo non trovato: " + vehicleId));
++                VehicleState oldState = vehicle.getState();
++                if ((oldState != VehicleState.SALE && oldState != VehicleState.RENT) || oldState == targetState) {
++                    throw new IllegalStateException("La transizione è ammessa solo tra vendita e noleggio; stato attuale: " + oldState + ".");
++                }
+ 
+-            int refundedCount = 0;
+-            if (oldState == VehicleState.RENT && targetState == VehicleState.SALE) {
+-                // Elimina prenotazioni future e rimborsa i clienti
+-                List<Rent> cancelledRents = rentDao.deleteFutureByVehicleId(vehicleId, conn);
+-                cancelledRents.sort(Comparator.comparing(Rent::getClientId));
+-                for (Rent cancelled : cancelledRents) {
+-                    BankAccount account = bankAccountDao.findByClientIdForUpdate(cancelled.getClientId(), conn)
+-                            .orElseThrow(() -> new IllegalStateException("Conto cliente non trovato."));
+-                    account.deposit(cancelled.getAmount());
+-                    bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
+-                    refundedCount++;
++                int refundedCount = 0;
++                if (oldState == VehicleState.RENT && targetState == VehicleState.SALE) {
++                    LocalDate today = LocalDate.now();
++                    if (!rentDao.isVehicleAvailableForRent(vehicleId, today, today, conn)) {
++                        throw new IllegalStateException("Impossibile destinare alla vendita un veicolo con un noleggio in corso.");
++                    }
++                    // Elimina prenotazioni future e rimborsa i clienti
++                    List<Rent> cancelledRents = rentDao.deleteFutureByVehicleId(vehicleId, conn);
++                    cancelledRents.sort(Comparator.comparing(Rent::getClientId));
++                    for (Rent cancelled : cancelledRents) {
++                        BankAccount account = bankAccountDao.findByClientIdForUpdate(cancelled.getClientId(), conn)
++                                .orElseThrow(() -> new IllegalStateException("Conto cliente non trovato."));
++                        account.deposit(cancelled.getAmount());
++                        bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
++                        refundedCount++;
++                    }
+                 }
++
++                vehicle.setState(targetState);
++                vehicleDao.update(vehicle, conn);
++                return refundedCount;
++            });
++        } catch (RuntimeException failure) {
++            if (failure.getCause() instanceof RuntimeException reason
++                    && (reason instanceof IllegalArgumentException || reason instanceof IllegalStateException)) {
++                throw reason;
+             }
+-
+-            vehicle.setState(targetState);
+-            vehicleDao.update(vehicle, conn);
+-            return refundedCount;
+-        });
++            throw failure;
++        }
+     }
+ 
+     public List<Rent> getFutureRentsForVehicle(Long vehicleId) {
+--- a/DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresRentDao.java
++++ b/DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresRentDao.java
+@@ -76,7 +76,7 @@
+     @Override
+     public List<Rent> findFutureByVehicleId(Long vehicleId) {
+         List<Rent> list = new ArrayList<>();
+-        String sql = "SELECT id, vehicle, client, amount, start, \"end\" FROM rent WHERE vehicle = ? AND start >= CURRENT_DATE ORDER BY start ASC";
++        String sql = "SELECT id, vehicle, client, amount, start, \"end\" FROM rent WHERE vehicle = ? AND start > CURRENT_DATE ORDER BY start ASC";
+         try (Connection conn = db.getConnection();
+              PreparedStatement ps = conn.prepareStatement(sql)) {
+             ps.setLong(1, vehicleId);
+@@ -150,7 +150,7 @@
+     public List<Rent> deleteFutureByVehicleId(Long vehicleId, Connection conn) {
+         // Seleziona prima i noleggi futuri per poter rimborsare i clienti
+         List<Rent> futureRents = new ArrayList<>();
+-        String selectSql = "SELECT id, vehicle, client, amount, start, \"end\" FROM rent WHERE vehicle = ? AND start >= CURRENT_DATE";
++        String selectSql = "SELECT id, vehicle, client, amount, start, \"end\" FROM rent WHERE vehicle = ? AND start > CURRENT_DATE";
+         try (PreparedStatement ps = conn.prepareStatement(selectSql)) {
+             ps.setLong(1, vehicleId);
+             try (ResultSet rs = ps.executeQuery()) {
+@@ -162,10 +162,12 @@
+             throw new RuntimeException("Errore durante la selezione dei noleggi futuri da annullare.", e);
+         }
+ 
+-        String deleteSql = "DELETE FROM rent WHERE vehicle = ? AND start >= CURRENT_DATE";
++        String deleteSql = "DELETE FROM rent WHERE vehicle = ? AND start > CURRENT_DATE";
+         try (PreparedStatement ps = conn.prepareStatement(deleteSql)) {
+             ps.setLong(1, vehicleId);
+-            ps.executeUpdate();
++            if (ps.executeUpdate() != futureRents.size()) {
++                throw new SQLException("Cancellazione incompleta dei noleggi futuri.");
++            }
+         } catch (SQLException e) {
+             throw new RuntimeException("Errore durante la cancellazione dei noleggi futuri per il veicolo: " + vehicleId, e);
+         }
+--- /dev/null
++++ b/DriveHub/src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java
+@@ -0,0 +1,406 @@
++package it.unifi.drivehub;
++
++import it.unifi.drivehub.dao.DatabaseManager;
++import it.unifi.drivehub.domain.vehicle.VehicleState;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.AfterEach;
++import org.junit.jupiter.api.Tag;
++import org.junit.jupiter.api.Test;
++import org.junit.jupiter.params.ParameterizedTest;
++import org.junit.jupiter.params.provider.CsvSource;
++import org.junit.jupiter.params.provider.EnumSource;
++import org.junit.jupiter.params.provider.NullSource;
++import org.junit.jupiter.params.provider.ValueSource;
++
++import java.math.BigDecimal;
++import java.time.LocalDate;
++import java.sql.Connection;
++import java.util.ArrayList;
++import java.util.List;
++import java.util.concurrent.Executors;
++import java.util.concurrent.Future;
++import java.util.concurrent.TimeUnit;
++
++import static org.junit.jupiter.api.Assertions.*;
++
++@Tag("postgres")
++class VehicleDestinationIntegrationTest {
++    private DatabaseManager db;
++
++    @BeforeEach
++    void setUp() throws Exception {
++        db = TestDatabase.fromEnvironment().reset();
++        sql("""
++                DELETE FROM sale; DELETE FROM rent; DELETE FROM test_drive; DELETE FROM request;
++                UPDATE bank_account SET balance = 1000 WHERE client IN (1, 2);
++                INSERT INTO model (id, brand, name, release_price, release_year)
++                  VALUES (1201, 'Fiat', 'Ticket12', 20000, EXTRACT(YEAR FROM CURRENT_DATE));
++                INSERT INTO vehicle (id, model, vin, kilometers, price, year, state) VALUES
++                  (1201, 1201, 'T1200000000000001', 0, 20000, EXTRACT(YEAR FROM CURRENT_DATE), 'RENT'),
++                  (1202, 1201, 'T1200000000000002', 0, 20000, EXTRACT(YEAR FROM CURRENT_DATE), 'RENT');
++                """);
++    }
++
++    @ParameterizedTest
++    @CsvSource({"SOLD,SALE", "SOLD,RENT", "BLOCKED,SALE", "BLOCKED,RENT",
++            "WAITING,SALE", "WAITING,RENT", "SALE,SALE", "RENT,RENT"})
++    void onlyOppositeSaleAndRentStatesCanBeSelected(VehicleState from, VehicleState to) throws Exception {
++        sql("UPDATE vehicle SET state = '" + from + "' WHERE id = 1201");
++        var failure = assertThrows(IllegalStateException.class,
++                () -> new AppContext(db).getRentalService().changeVehicleRentalState(1201L, to));
++        assertTrue(failure.getMessage().contains("transizione"), failure.getMessage());
++        assertEquals(from, state());
++        balance(1L, "1000.00");
++    }
++
++    @ParameterizedTest
++    @CsvSource({"-1,1", "-1,0", "0,1", "0,0"})
++    void rentalIncludingTodayPreventsSaleAndAllRefunds(int from, int to) throws Exception {
++        rent(1, "100.25", from, to);
++        rent(2, "200.75", 3, 4);
++        var failure = assertThrows(IllegalStateException.class,
++                () -> new AppContext(db).getRentalService().changeVehicleRentalState(1201L, VehicleState.SALE));
++        assertTrue(failure.getMessage().contains("noleggio in corso"), failure.getMessage());
++        assertEquals(VehicleState.RENT, state());
++        balance(1L, "1000.00");
++        balance(2L, "1000.00");
++        assertEquals(1, new AppContext(db).getOperationQueryService().getClientRents(1L).size());
++        assertEquals(1, new AppContext(db).getOperationQueryService().getClientRents(2L).size());
++    }
++
++    private void rent(long client, String amount, int from, int to) throws Exception {
++        sql("INSERT INTO rent (vehicle, client, amount, start, \"end\") VALUES (1201, "
++                + client + ", " + amount + ", CURRENT_DATE + " + from + ", CURRENT_DATE + " + to + ")");
++    }
++
++    @Test
++    void futureRentalPreviewExcludesTodayAndHistory() throws Exception {
++        rent(1, "10", -2, -1);
++        rent(1, "20", 0, 0);
++        rent(2, "30", 1, 1);
++        var future = new AppContext(db).getRentalService().getFutureRentsForVehicle(1201L);
++        assertEquals(1, future.size());
++        assertEquals(new BigDecimal("30.00"), future.getFirst().getAmount());
++    }
++
++    @Test
++    void skippedCancellationCannotCommitRefundsOrSale() throws Exception {
++        rent(1, "100.25", 1, 1);
++        rent(2, "200.75", 2, 2);
++        sql("""
++                CREATE FUNCTION ticket12_failure() RETURNS trigger LANGUAGE plpgsql AS $$
++                BEGIN IF OLD.client=2 THEN RETURN NULL; END IF; RETURN OLD; END $$;
++                CREATE TRIGGER ticket12_failure BEFORE DELETE ON rent
++                  FOR EACH ROW EXECUTE FUNCTION ticket12_failure();
++                """);
++        assertThrows(RuntimeException.class,
++                () -> new AppContext(db).getRentalService().changeVehicleRentalState(1201L, VehicleState.SALE));
++        assertRefundsRolledBack();
++    }
++
++    @ParameterizedTest
++    @EnumSource(value = VehicleState.class, names = {"SOLD", "BLOCKED", "WAITING"})
++    @NullSource
++    void nonDestinationTargetsAreRejected(VehicleState target) {
++        assertThrows(IllegalArgumentException.class,
++                () -> new AppContext(db).getRentalService().changeVehicleRentalState(1201L, target));
++        assertEquals(VehicleState.RENT, state());
++    }
++
++    @Test
++    void unknownVehicleCannotChangeDestination() {
++        assertThrows(IllegalStateException.class,
++                () -> new AppContext(db).getRentalService().changeVehicleRentalState(Long.MAX_VALUE, VehicleState.SALE));
++    }
++
++    @ParameterizedTest
++    @ValueSource(strings = {"SALE", "RENT"})
++    void bothDirectionsWorkWithoutRentals(VehicleState from) throws Exception {
++        sql("UPDATE vehicle SET state='" + from + "' WHERE id=1201");
++        var target = from == VehicleState.SALE ? VehicleState.RENT : VehicleState.SALE;
++        assertEquals(0, new AppContext(db).getRentalService().changeVehicleRentalState(1201L, target));
++        assertEquals(target, state());
++        balance(1L, "1000.00");
++    }
++
++    @Test
++    void futureRentalsAreFullyRefundedForEveryClientWhileHistoryAndOtherVehiclesRemain() throws Exception {
++        rent(1, "100.25", 1, 1);
++        rent(2, "200.75", 2, 2);
++        rent(1, "50", 3, 3);
++        rent(1, "70", -3, -1);
++        sql("""
++                INSERT INTO rent(vehicle,client,amount,start,"end")
++                  VALUES(1202,2,60,CURRENT_DATE+1,CURRENT_DATE+1);
++                INSERT INTO test_drive(vehicle,client,date) VALUES
++                  (1201,1,CURRENT_DATE+10+TIME '10:00'),(1202,2,CURRENT_DATE+10+TIME '10:00');
++                """);
++        assertEquals(3, new AppContext(db).getRentalService().changeVehicleRentalState(1201L, VehicleState.SALE));
++        assertEquals(VehicleState.SALE, state());
++        balance(1L, "1150.25");
++        balance(2L, "1200.75");
++        var reread = new AppContext(db);
++        assertEquals(new BigDecimal("70.00"), reread.getOperationQueryService().getClientRents(1L).getFirst().getAmount());
++        assertEquals(1, reread.getOperationQueryService().getClientRents(1L).size());
++        assertEquals(1202L, reread.getOperationQueryService().getClientRents(2L).getFirst().getVehicleId());
++        assertEquals(1, reread.getOperationQueryService().getClientRents(2L).size());
++        assertEquals(1, reread.getTestDriveService().getClientTestDrives(1L).size());
++        assertEquals(1, reread.getTestDriveService().getClientTestDrives(2L).size());
++        assertTrue(reread.getOperationQueryService().getAllSales().isEmpty());
++    }
++
++    @Test
++    void missingSecondAccountRollsBackAnAlreadyWrittenFirstRefund() throws Exception {
++        rent(1, "100.25", 1, 1);
++        rent(2, "200.75", 2, 2);
++        sql("""
++                DELETE FROM bank_account WHERE client=2;
++                CREATE SEQUENCE ticket12_writes;
++                CREATE FUNCTION ticket12_failure() RETURNS trigger LANGUAGE plpgsql AS $$
++                BEGIN
++                  IF NEW.client=1 AND NEW.balance=1100.25 AND NOT EXISTS(SELECT 1 FROM rent WHERE vehicle=1201) THEN
++                    PERFORM nextval('ticket12_writes');
++                  END IF;
++                  RETURN NEW;
++                END $$;
++                CREATE TRIGGER ticket12_failure AFTER UPDATE ON bank_account
++                  FOR EACH ROW EXECUTE FUNCTION ticket12_failure();
++                """);
++        var failure = assertThrows(IllegalStateException.class,
++                () -> new AppContext(db).getRentalService().changeVehicleRentalState(1201L, VehicleState.SALE));
++        assertTrue(failure.getMessage().contains("Conto cliente non trovato"));
++        try (var conn = db.getConnection(); var statement = conn.createStatement()) {
++            statement.setQueryTimeout(10);
++            try (var result = statement.executeQuery("SELECT last_value, is_called FROM ticket12_writes")) {
++                assertTrue(result.next());
++                assertTrue(result.getBoolean(2), "Primo rimborso e cancellazioni realmente scritti prima del conto mancante");
++                assertEquals(1, result.getLong(1));
++            }
++        }
++        assertEquals(VehicleState.RENT, state());
++        balance(1L, "1000.00");
++        assertThrows(IllegalStateException.class, () -> new AppContext(db).getAuthService().getClientBankAccount(2L));
++        assertEquals(1, new AppContext(db).getOperationQueryService().getClientRents(1L).size());
++        assertEquals(1, new AppContext(db).getOperationQueryService().getClientRents(2L).size());
++    }
++
++    @ParameterizedTest
++    @CsvSource({"bank_account,BEFORE", "bank_account,AFTER", "vehicle,BEFORE", "vehicle,AFTER"})
++    void refundOrStateFailureRollsBackActualCancellationsAndCredits(String table, String timing) throws Exception {
++        rent(1, "100.25", 1, 1);
++        rent(2, "200.75", 2, 2);
++        String condition = table.equals("bank_account") ? "NEW.client=2" : "NEW.id=1201";
++        String secondBalance = table.equals("bank_account") && timing.equals("BEFORE") ? "1000" : "1200.75";
++        String failureAction = timing.equals("BEFORE") ? "RETURN NULL;" : "RAISE EXCEPTION 'ticket12_after_writes';";
++        sql("""
++                CREATE FUNCTION ticket12_failure() RETURNS trigger LANGUAGE plpgsql AS $$
++                BEGIN
++                  IF %s THEN
++                    IF EXISTS(SELECT 1 FROM rent WHERE vehicle=1201)
++                       OR (SELECT balance FROM bank_account WHERE client=1)<>1100.25
++                       OR (SELECT balance FROM bank_account WHERE client=2)<>%s THEN
++                      RAISE EXCEPTION 'ticket12_missing_writes';
++                    END IF;
++                    %s
++                  END IF;
++                  RETURN NEW;
++                END $$;
++                CREATE TRIGGER ticket12_failure %s UPDATE ON %s
++                  FOR EACH ROW EXECUTE FUNCTION ticket12_failure();
++                """.formatted(condition, secondBalance, failureAction, timing, table));
++        var failure = assertThrows(RuntimeException.class,
++                () -> new AppContext(db).getRentalService().changeVehicleRentalState(1201L, VehicleState.SALE));
++        assertFalse(rootMessage(failure).contains("ticket12_missing_writes"), rootMessage(failure));
++        if (timing.equals("AFTER")) assertTrue(rootMessage(failure).contains("ticket12_after_writes"), rootMessage(failure));
++        assertRefundsRolledBack();
++    }
++
++    @Test
++    void destinationCommittedFirstRejectsConcurrentRentalWithoutChargingIt() throws Exception {
++        rent(1, "100.25", 1, 1);
++        rent(2, "200.75", 2, 2);
++        var failures = race(
++                () -> assertEquals(2, new AppContext(db).getRentalService().changeVehicleRentalState(1201L, VehicleState.SALE)),
++                () -> new AppContext(db).getRentalService().bookRental(1201L, 1L,
++                        LocalDate.now().plusDays(3), LocalDate.now().plusDays(3)));
++        assertNull(failures.getFirst());
++        assertNotNull(failures.getLast());
++        assertTrue(rootMessage(failures.getLast()).contains("non è abilitato"));
++        assertEquals(VehicleState.SALE, state());
++        balance(1L, "1100.25"); balance(2L, "1200.75");
++        assertTrue(new AppContext(db).getOperationQueryService().getClientRents(1L).isEmpty());
++        assertTrue(new AppContext(db).getOperationQueryService().getClientRents(2L).isEmpty());
++    }
++
++    @ParameterizedTest
++    @ValueSource(ints = {0, 2})
++    void rentalCommittedFirstIsRereadUnderVehicleLock(int day) throws Exception {
++        sql("INSERT INTO test_drive(vehicle,client,date) VALUES (1201,2,CURRENT_DATE+10+TIME '10:00')");
++        var date = LocalDate.now().plusDays(day);
++        var failures = race(
++                () -> new AppContext(db).getRentalService().bookRental(1201L, 1L, date, date),
++                () -> assertEquals(1, new AppContext(db).getRentalService().changeVehicleRentalState(1201L, VehicleState.SALE)));
++        assertNull(failures.getFirst());
++        if (day == 0) {
++            assertNotNull(failures.getLast());
++            assertTrue(rootMessage(failures.getLast()).contains("noleggio in corso"));
++            assertEquals(VehicleState.RENT, state());
++            balance(1L, "980.00");
++            assertEquals(1, new AppContext(db).getOperationQueryService().getClientRents(1L).size());
++        } else {
++            assertNull(failures.getLast());
++            assertEquals(VehicleState.SALE, state());
++            balance(1L, "1000.00");
++            assertTrue(new AppContext(db).getOperationQueryService().getClientRents(1L).isEmpty());
++        }
++        assertTrue(new AppContext(db).getTestDriveService().getClientTestDrives(2L).isEmpty(), "Observer 08 conserva la priorità commerciale");
++        assertTrue(new AppContext(db).getOperationQueryService().getAllSales().isEmpty());
++    }
++
++    @Test
++    void destinationRollbackReleasesVehicleForConcurrentRental() throws Exception {
++        rent(1, "100.25", 1, 1);
++        rent(2, "200.75", 2, 2);
++        sql("""
++                CREATE FUNCTION ticket12_failure() RETURNS trigger LANGUAGE plpgsql AS $$
++                BEGIN
++                  IF NEW.id=1201 AND NEW.state='SALE' THEN
++                    IF EXISTS(SELECT 1 FROM rent WHERE vehicle=1201)
++                       OR (SELECT balance FROM bank_account WHERE client=1)<>1100.25
++                       OR (SELECT balance FROM bank_account WHERE client=2)<>1200.75 THEN
++                      RAISE EXCEPTION 'ticket12_missing_writes';
++                    END IF;
++                    RAISE EXCEPTION 'ticket12_after_writes';
++                  END IF;
++                  RETURN NEW;
++                END $$;
++                CREATE TRIGGER ticket12_failure AFTER UPDATE ON vehicle
++                  FOR EACH ROW EXECUTE FUNCTION ticket12_failure();
++                """);
++        var date = LocalDate.now().plusDays(3);
++        var failures = race(
++                () -> new AppContext(db).getRentalService().changeVehicleRentalState(1201L, VehicleState.SALE),
++                () -> new AppContext(db).getRentalService().bookRental(1201L, 1L, date, date));
++        assertNotNull(failures.getFirst());
++        assertTrue(rootMessage(failures.getFirst()).contains("ticket12_after_writes"));
++        assertNull(failures.getLast());
++        assertEquals(VehicleState.RENT, state());
++        balance(1L, "980.00"); balance(2L, "1000.00");
++        assertEquals(2, new AppContext(db).getOperationQueryService().getClientRents(1L).size());
++        assertEquals(1, new AppContext(db).getOperationQueryService().getClientRents(2L).size());
++    }
++
++    @ParameterizedTest
++    @ValueSource(strings = {"SALE", "RENT"})
++    void concurrentDestinationCommandsCannotRefundTwice(VehicleState secondTarget) throws Exception {
++        rent(1, "100.25", 1, 1);
++        rent(2, "200.75", 2, 2);
++        var failures = race(
++                () -> assertEquals(2, new AppContext(db).getRentalService().changeVehicleRentalState(1201L, VehicleState.SALE)),
++                () -> assertEquals(0, new AppContext(db).getRentalService().changeVehicleRentalState(1201L, secondTarget)));
++        assertNull(failures.getFirst());
++        if (secondTarget==VehicleState.SALE) assertNotNull(failures.getLast());
++        else assertNull(failures.getLast());
++        assertEquals(secondTarget, state());
++        balance(1L, "1100.25"); balance(2L, "1200.75");
++        assertTrue(new AppContext(db).getOperationQueryService().getClientRents(1L).isEmpty());
++        assertTrue(new AppContext(db).getOperationQueryService().getClientRents(2L).isEmpty());
++    }
++
++    private List<RuntimeException> race(Runnable... operations) throws Exception {
++        var workers = Executors.newFixedThreadPool(operations.length);
++        try (Connection gate = db.getConnection(); Connection observer = db.getConnection()) {
++            gate.setAutoCommit(false);
++            try (var statement = gate.createStatement()) {
++                statement.setQueryTimeout(10);
++                statement.executeQuery("SELECT client FROM bank_account WHERE client=1 FOR UPDATE").close();
++            }
++            try {
++                var attempts = new ArrayList<Future<RuntimeException>>();
++                for (Runnable operation : operations) {
++                    attempts.add(workers.submit(() -> {
++                        try { operation.run(); return null; }
++                        catch (RuntimeException failure) { return failure; }
++                    }));
++                    awaitWaiters(observer, attempts.size());
++                }
++                gate.rollback();
++                var failures = new ArrayList<RuntimeException>();
++                for (var attempt : attempts) failures.add(attempt.get(10, TimeUnit.SECONDS));
++                return failures;
++            } finally {
++                gate.rollback();
++                try (var statement = observer.createStatement()) {
++                    statement.setQueryTimeout(10);
++                    statement.executeQuery("""
++                            SELECT pg_cancel_backend(pid) FROM pg_stat_activity
++                            WHERE datname=current_database() AND usename=current_user
++                              AND pid<>pg_backend_pid() AND state='active' AND wait_event_type='Lock'
++                            """).close();
++                }
++            }
++        } finally {
++            workers.shutdownNow();
++            assertTrue(workers.awaitTermination(10, TimeUnit.SECONDS), "Worker JDBC non terminati");
++        }
++    }
++
++    private static void awaitWaiters(Connection observer, int expected) throws Exception {
++        long deadline = System.nanoTime()+TimeUnit.SECONDS.toNanos(10);
++        try (var statement = observer.createStatement()) {
++            statement.setQueryTimeout(10);
++            do {
++                try (var result = statement.executeQuery("""
++                        SELECT count(DISTINCT pid),string_agg(pid||':'||pg_blocking_pids(pid)::text,', ')
++                        FROM pg_stat_activity
++                        WHERE datname=current_database() AND usename=current_user
++                          AND pid<>pg_backend_pid() AND state='active' AND wait_event_type='Lock'
++                          AND cardinality(pg_blocking_pids(pid))>0
++                        """)) {
++                    assertTrue(result.next());
++                    if (result.getInt(1)==expected) {
++                        System.out.println("Ticket12 waiters "+expected+" pid:blockers "+result.getString(2));
++                        return;
++                    }
++                }
++            } while (System.nanoTime()<deadline);
++        }
++        fail("Attese PostgreSQL distinte mancanti: "+expected);
++    }
++
++    private static String rootMessage(Throwable failure) {
++        while (failure.getCause() != null) failure = failure.getCause();
++        return failure.getMessage();
++    }
++
++    private void assertRefundsRolledBack() {
++        assertEquals(VehicleState.RENT, state());
++        balance(1L, "1000.00");
++        balance(2L, "1000.00");
++        assertEquals(1, new AppContext(db).getOperationQueryService().getClientRents(1L).size());
++        assertEquals(1, new AppContext(db).getOperationQueryService().getClientRents(2L).size());
++        assertTrue(new AppContext(db).getOperationQueryService().getAllSales().isEmpty());
++    }
++
++    @AfterEach
++    void removeFailureInjection() throws Exception {
++        sql("DROP FUNCTION IF EXISTS ticket12_failure() CASCADE; DROP SEQUENCE IF EXISTS ticket12_writes");
++    }
++
++    private VehicleState state() {
++        return new AppContext(db).getCatalogService().getAllVehicles().stream()
++                .filter(v -> v.getId().equals(1201L)).findFirst().orElseThrow().getState();
++    }
++
++    private void balance(long client, String expected) {
++        assertEquals(new BigDecimal(expected),
++                new AppContext(db).getAuthService().getClientBankAccount(client).getBalance());
++    }
++
++    private void sql(String query) throws Exception {
++        try (var conn = db.getConnection(); var statement = conn.createStatement()) {
++            statement.setQueryTimeout(10);
++            statement.execute(query);
++        }
++    }
++}
+--- a/DriveHub/docs/testing.md
++++ b/DriveHub/docs/testing.md
+@@ -471,3 +471,45 @@
+ 
+ Riferimenti PostgreSQL 16: [btree_gist trusted](https://www.postgresql.org/docs/16/btree-gist.html)
+ e [compatibilità dei lock di riga](https://www.postgresql.org/docs/16/explicit-locking.html#LOCKING-ROWS).
++
++## Destinazione del veicolo e rimborsi — ticket 12
++
++```bash
++mvn -Ppostgres-tests -Dtest=VehicleDestinationIntegrationTest test
++mvn -Ppostgres-tests -Dtest=VehicleDestinationIntegrationTest,BookingConcurrencyIntegrationTest,BalanceConcurrencyIntegrationTest,TestDriveCancellationIntegrationTest test
++mvn -Ppostgres-tests clean test
++python3 docs/evidence/r06-destination/run-ui.py
++```
++
++Il comando venditore accetta solo SALE → RENT e RENT → SALE. Rilegge lo stato
++dopo il lock veicolo del ticket 11, rifiutando SOLD/BLOCKED/WAITING e richieste
++sullo stesso stato. Prima di destinare alla vendita verifica sulla stessa
++connessione l'assenza di noleggi che comprendano oggi, con entrambi gli estremi
++inclusivi: anche un noleggio iniziato ieri e terminato oggi impedisce il cambio.
++
++L'anteprima della vista è indicativa: elenca i noleggi con inizio strettamente
++successivo a oggi. Il comando rilegge e cancella i futuri nella transazione,
++verifica il numero di cancellazioni effettive, rimborsa gli importi memorizzati
++integralmente e aggiorna il veicolo prima dell'unico commit. I conti vengono
++bloccati per ID cliente crescente con il protocollo 04. Conto mancante, rimborso
++fallito, cancellazione o aggiornamento saltato annullano tutte le scritture.
++Nessuna nuova penale; storico e altri veicoli restano invariati.
++
++`VehicleDestinationIntegrationTest` usa servizi pubblici e nuovi AppContext sul
++PostgreSQL dedicato. Le gare nei due ordini osservano PID distinti e
++`pg_blocking_pids` prima di rilasciare il gate SQL, senza sleep; query, attese,
++worker e cleanup hanno timeout. Una prenotazione futura confermata prima viene
++rimborsata; una iniziata oggi impedisce SALE. Il rollback del cambio lascia
++procedere la prenotazione concorrente. I trigger di errore osservano cancellazioni,
++accrediti e stato realmente scritti prima del rollback; una sequenza diagnostica
++attesta il primo accredito prima del successivo conto mancante. Nessun mock
++certifica la persistenza. Lock 11 e Observer 08 sono conservati.
++
++Il launcher JavaFX richiede JAVA_HOME 21, variabili DB di questa pagina e DISPLAY
++su Xvfb isolato; seed e controllo girano in JVM distinte. Riusa Robot 05/06/10
++per frecce, Tab, Spazio e Invio: conferma/rimborso multi-cliente, noleggio iniziato
++ieri, vista obsoleta BLOCKED, SALE → RENT e conto mancante con rollback.
++Le pause Robot preesistenti servono al rendering; le gare PostgreSQL non usano sleep.
++Le [evidenze della sessione](evidence/r06-destination/verification.md) distinguono
++baseline corrente, RED/GREEN, suite finale, GUI e review. Il 297/297 del ticket 11
++resta storico; l'ambiente `/tmp` va ricontrollato prima di ogni riuso.
+--- /dev/null
++++ b/DriveHub/docs/evidence/r06-destination/DestinationUiCheck.java
+@@ -0,0 +1,145 @@
++package it.unifi.drivehub;
++
++import it.unifi.drivehub.dao.DatabaseManager;
++import it.unifi.drivehub.domain.user.Salesman;
++import it.unifi.drivehub.domain.vehicle.Vehicle;
++import it.unifi.drivehub.domain.vehicle.VehicleState;
++import javafx.application.Platform;
++import javafx.scene.control.*;
++import javafx.scene.input.KeyCode;
++import javafx.scene.robot.Robot;
++import javafx.stage.Stage;
++import javafx.stage.Window;
++
++import java.math.BigDecimal;
++import java.util.concurrent.CountDownLatch;
++import java.util.concurrent.TimeUnit;
++
++/** Riusa i controlli pubblici e Robot 05/06/10, sul solo PostgreSQL dedicato. */
++public class DestinationUiCheck extends SaleOutcomeUiCheck {
++    static void seed() throws Exception {
++        ctx = new AppContext(TestDatabase.fromEnvironment().reset());
++        try (var conn = ctx.getDatabaseManager().getConnection(); var sql = conn.createStatement()) {
++            sql.execute("""
++                    DELETE FROM sale; DELETE FROM rent; DELETE FROM test_drive; DELETE FROM request;
++                    DELETE FROM vehicle_discount; DELETE FROM vehicle;
++                    UPDATE bank_account SET balance=1000 WHERE client IN (1,2);
++                    INSERT INTO model(id,brand,name,release_price,release_year)
++                      VALUES(1201,'Fiat','UI Destination12',100,EXTRACT(YEAR FROM CURRENT_DATE));
++                    INSERT INTO vehicle(id,model,vin,kilometers,price,year,state)
++                      SELECT 1200+n,1201,'T120000000000000'||n,0,100,EXTRACT(YEAR FROM CURRENT_DATE),
++                        (CASE WHEN n IN (4,5) THEN 'SALE' WHEN n=6 THEN 'SOLD'
++                              WHEN n=7 THEN 'WAITING' ELSE 'RENT' END)::vehicle_state
++                      FROM generate_series(1,7) n;
++                    INSERT INTO rent(vehicle,client,amount,start,"end") VALUES
++                      (1201,1,100.25,CURRENT_DATE+2,CURRENT_DATE+2),
++                      (1201,2,200.75,CURRENT_DATE+3,CURRENT_DATE+3),
++                      (1202,1,50,CURRENT_DATE-1,CURRENT_DATE),
++                      (1202,2,60,CURRENT_DATE+3,CURRENT_DATE+3),
++                      (1203,1,100.25,CURRENT_DATE+2,CURRENT_DATE+2),
++                      (1203,2,200.75,CURRENT_DATE+3,CURRENT_DATE+3);
++                    """);
++        }
++        System.out.println("SEED SUCCESS: futuro multi-cliente, noleggio iniziato ieri, stato obsoleto e rollback");
++    }
++
++    @SuppressWarnings("unchecked")
++    static TableView<Vehicle> inventory() {
++        return (TableView<Vehicle>) stage.getScene().getRoot().lookupAll(".table-view").stream()
++                .filter(n -> ((TableView<?>) n).getColumns().stream().anyMatch(c -> c.getText().equals("VIN")))
++                .findFirst().orElseThrow();
++    }
++
++    static void openInventory(Salesman user) throws Exception {
++        show(fx(() -> seller(user)));
++        TabPane tabs = fx(() -> (TabPane) ((it.unifi.drivehub.presentation.view.SalesmanDashboardView)
++                stage.getScene().getRoot()).getCenter());
++        fx(() -> { tabs.requestFocus(); return null; });
++        key(KeyCode.RIGHT);
++        check(fx(() -> tabs.getSelectionModel().getSelectedIndex()) == 1, "inventario raggiunto con freccia");
++    }
++
++    static void selectVehicle(long id) throws Exception {
++        var table = fx(DestinationUiCheck::inventory);
++        focusTable(table);
++        int index = fx(() -> {
++            for (int i=0; i<table.getItems().size(); i++) if (table.getItems().get(i).getId()==id) return i;
++            throw new AssertionError("Veicolo assente " + id);
++        });
++        for (int i=0; i<index; i++) key(KeyCode.DOWN);
++        check(fx(() -> table.getSelectionModel().getSelectedItem().getId())==id, "selezione con frecce " + id);
++        press("Modifica Stato (Da RENT a SALE o viceversa)");
++    }
++
++    static void confirm() throws Exception {
++        fx(() -> {
++            Window.getWindows().stream().filter(w -> w != stage && w.isShowing()).forEach(w ->
++                    ((DialogPane) w.getScene().getRoot()).lookupButton(ButtonType.OK).requestFocus());
++            return null;
++        });
++        key(KeyCode.ENTER);
++    }
++
++    static void balance(long id, String amount) {
++        check(ctx.getAuthService().getClientBankAccount(id).getBalance().equals(new BigDecimal(amount)),
++                "saldo cliente " + id + " = " + amount);
++    }
++
++    public static void main(String[] args) throws Exception {
++        if (args[0].equals("seed")) { seed(); return; }
++        out = args[1] + "/";
++        TestDatabase.fromEnvironment();
++        ctx = new AppContext(new DatabaseManager(System.getenv("DRIVEHUB_TEST_DB_URL"),
++                System.getenv("DRIVEHUB_TEST_DB_USER"), System.getenv("DRIVEHUB_TEST_DB_PASSWORD")));
++        Thread.setDefaultUncaughtExceptionHandler((thread,error) -> { error.printStackTrace(); System.exit(2); });
++        var ready = new CountDownLatch(1);
++        Platform.startup(ready::countDown);
++        check(ready.await(10, TimeUnit.SECONDS), "JavaFX avviato nella seconda JVM");
++        Platform.setImplicitExit(false);
++        try {
++            fx(() -> { stage = new Stage(); robot = new Robot(); return null; });
++            var user = (Salesman) ctx.getAuthService().login("paolo.costa@drivehub.it", "password");
++            openInventory(user);
++            check(fx(() -> inventory().getItems().size())==5, "SOLD e WAITING esclusi dall'inventario");
++            selectVehicle(1201);
++            check(dialog().contains("2 prenotazioni future"), "conferma con conteggio futuro e rimborso 100%");
++            screenshot("future-confirmation"); confirm();
++            check(dialog().contains("Rimborsati con successo 2"), "successo soltanto dopo commit");
++            screenshot("refunded"); closeAlert();
++            balance(1,"1100.25"); balance(2,"1200.75");
++            check(ctx.getCatalogService().getVehicleById(1201L).orElseThrow().getState()==VehicleState.SALE,
++                    "destinazione SALE persistita");
++
++            openInventory(user); selectVehicle(1202); confirm();
++            check(dialog().contains("noleggio in corso"), "rifiuto leggibile per noleggio iniziato ieri");
++            screenshot("ongoing-rejected"); closeAlert();
++            balance(1,"1100.25"); balance(2,"1200.75");
++
++            openInventory(user);
++            ctx.getPurchaseService().initiatePurchase(1204L,1L);
++            selectVehicle(1204); confirm();
++            check(dialog().contains("stato attuale: BLOCKED"), "vista obsoleta non aggira la riserva");
++            screenshot("stale-rejected"); closeAlert();
++
++            openInventory(user); selectVehicle(1205); confirm();
++            check(dialog().contains("Stato modificato in RENT"), "SALE verso RENT consentito"); closeAlert();
++
++            try (var conn = ctx.getDatabaseManager().getConnection(); var sql = conn.createStatement()) {
++                sql.execute("DELETE FROM bank_account WHERE client=2");
++            }
++            openInventory(user); selectVehicle(1203); confirm();
++            check(dialog().contains("Conto cliente non trovato"), "conto mancante segnala errore");
++            screenshot("refund-rollback"); closeAlert();
++            balance(1,"1080.25");
++            check(ctx.getCatalogService().getVehicleById(1203L).orElseThrow().getState()==VehicleState.RENT,
++                    "rollback conserva destinazione");
++            check(ctx.getOperationQueryService().getClientRents(1L).stream().anyMatch(r -> r.getVehicleId()==1203L)
++                    && ctx.getOperationQueryService().getClientRents(2L).stream().anyMatch(r -> r.getVehicleId()==1203L),
++                    "rollback conserva entrambi i noleggi");
++            check(ctx.getOperationQueryService().getAllSales().isEmpty(), "nessuna nuova penale");
++            System.out.println("UI CHECK SUCCESS");
++        } finally {
++            fx(() -> { stage.close(); return null; }); Platform.exit();
++        }
++    }
++}
+--- /dev/null
++++ b/DriveHub/docs/evidence/r06-destination/run-ui.py
+@@ -0,0 +1,26 @@
++from pathlib import Path
++import os
++import subprocess
++
++repo = Path(__file__).resolve().parents[3]
++out = Path(os.environ.get("DRIVEHUB_UI_DIR", "/tmp/drivehub-ticket12-session/ui"))
++out.mkdir(parents=True, exist_ok=True)
++env = os.environ.copy()
++assert env.get("DISPLAY"), "Impostare DISPLAY su un display di test isolato"
++java = Path(env["JAVA_HOME"]) / "bin"
++modules = ":".join(str(next((Path.home() / ".m2/repository/org/openjfx" / name / "21.0.2").glob("*-linux.jar")))
++                   for name in ["javafx-base", "javafx-graphics", "javafx-controls"])
++classpath = ":".join([str(repo / "target/classes"), str(repo / "target/test-classes"),
++                      str(Path.home() / ".m2/repository/org/postgresql/postgresql/42.7.3/postgresql-42.7.3.jar"), str(out)])
++sources = [repo / "docs/evidence" / folder / name for folder, name in [
++    ("r03-prices", "PriceUiCheck.java"), ("r04-agreement", "AgreementUiCheck.java"),
++    ("r05-sale-outcome", "SaleOutcomeUiCheck.java"), ("r06-destination", "DestinationUiCheck.java")]]
++with (out / "ui.log").open("w") as log:
++    subprocess.run([str(java / "javac"), "--module-path", modules, "--add-modules", "javafx.controls",
++                    "-cp", classpath, "-d", str(out), *map(str, sources)], env=env, stdout=log, stderr=subprocess.STDOUT, check=True)
++    for phase in ["seed", "check"]:
++        subprocess.run([str(java / "java"), "--module-path", modules, "--add-modules", "javafx.controls",
++                        "-Dprism.order=sw", "-cp", classpath, "it.unifi.drivehub.DestinationUiCheck", phase, str(out)],
++                       env=env, stdout=log, stderr=subprocess.STDOUT, timeout=180, check=True)
++assert "UI CHECK SUCCESS" in (out / "ui.log").read_text()
++print("UI CHECK SUCCESS; log e schermate:", out)
+--- /dev/null
++++ b/DriveHub/docs/evidence/r06-destination/verification.md
+@@ -0,0 +1,130 @@
++# Ticket 12 — destinazione veicolo e rimborsi
++
++Sessione del 2 novembre 2026, solo ticket 12. Prerequisito 11 e ticket 01–11
++controllati tutti `State: closed`: [prerequisiti](prerequisites.json).
++Nessun commit/staging; `Relazione_SWE` esclusa.
++
++## Versione e baseline
++
++Prima delle modifiche: fotografia di **617 file** in
++`/tmp/drivehub-ticket12-session/before`, inclusi lavoro locale del progetto,
++evidenze precedenti, piano esterno e ticket 12. Esclusi `.git`, `target` e
++`Relazione_SWE`. [Manifest](baseline-sha256.json), [HEAD iniziale](initial-head.txt),
++[hash indice iniziale](initial-index.sha256).
++Il confronto della sessione usa questa fotografia: un diff da HEAD includerebbe
++impropriamente il lavoro dei ticket 01–11.
++
++Nuova baseline **297/297**, zero failure/errori/salti:
++[log](baseline.log), [XML](baseline-surefire/), [versione compilata](baseline-files.sha256.json).
++Il risultato 297/297 registrato dal ticket 11 è storico e distinto da questa prova.
++
++## Chiamanti e responsabilità
++
++| Confine | Intervento e verifica |
++|---|---|
++| `RentalService.changeVehicleRentalState` | Unico comando di cambio destinazione: target SALE/RENT, stato di partenza opposto riletto sotto FOR UPDATE; SOLD/BLOCKED/WAITING e richieste identiche rifiutati; motivi di dominio leggibili dopo rollback |
++| Disponibilità noleggio | Riusa `RentDao.isVehicleAvailableForRent` per oggi/oggi sulla connessione del comando: start ≤ oggi ≤ end; blocca anche ieri→oggi e prima di cancellare qualsiasi futuro |
++| `PostgresRentDao.findFutureByVehicleId` / `deleteFutureByVehicleId` | Inizio > CURRENT_DATE per anteprima e cancellazioni; confronto numero selezionato/eliminato impedisce successo dopo DELETE saltate |
++| Conti 04 | Elenco ordinato per ID cliente, lock e rilettura di ogni conto, rimborso dell'importo persistito senza penali; conto mancante e scritture fallite annullano l'intera transazione, anche dopo un primo accredito |
++| Veicolo / booking 11 | Stesso lock fino a commit/rollback; aggiornamento veicolo richiede una riga già dal lavoro precedente. Nessun lock di processo o ordine inverso dei conti |
++| `SalesmanDashboardView.handleToggleState` | Unico chiamante applicativo del comando e dell'anteprima; conferma indicativa, successo solo al ritorno, eccezioni mostrate. Viste e firme invariate; i nuovi motivi del servizio arrivano nel dialogo esistente |
++| `getFutureRentsForVehicle` | Unico chiamante applicativo è la conferma della vista; nuovo test pubblico verifica che oggi e storico non siano descritti come futuri rimborsabili |
++| Altri chiamanti DAO | `bookRental` e `bookTestDrive` riusano disponibilità inclusiva invariata; `OperationQueryService` legge storico/clienti. `deleteFutureByVehicleId` dei noleggi è chiamato solo dal cambio destinazione, distinto dal metodo omonimo dei test drive |
++| Test preesistenti | `BalanceConcurrencyIntegrationTest` chiama il comando in rimborsi concorrenti, conto mancante, rimborsi ripetuti allo stesso conto e rollback; invariato e rieseguito |
++| Observer 08 / AppContext / schema / demo | Invariati. La gara booking-prima verifica cancellazione dei test drive futuri; nessun falso evento per il solo cambio destinazione. Nessuna nuova penale o modifica alla formula |
++
++## Ambiente ricontrollato
++
++[Identità, privilegi e sentinella](environment.txt), [Java/Maven](versions.txt),
++[avvio PostgreSQL](postgres-startup.log), [Xvfb](xvfb.log).
++File privato 0600 con sei variabili verificato senza stamparle; URL dedicati,
++Java21 Linux e PG_VERSION 16 controllati prima del riuso. Cluster inizialmente fermo.
++OpenJDK 21.0.12.1, Maven 3.9.16, PostgreSQL 16.15, dipendenze Maven offline.
++
++Riusato solo `/tmp/drivehub-ticket07-pgdata`: avvio sandbox fallito per socket;
++un avvio senza override è fallito per directory socket di sistema mancante.
++Avvio definitivo autorizzato con host 127.0.0.1, porta **55432** e socket in /tmp.
++Solo `drivehub_test`/ruolo non amministrativo per scritture, più copia applicativa
++sacrificabile `drivehub` per la sentinella. Nessun DB applicativo preesistente
++contattato, nessuna installazione di sistema. Credenziali mai copiate nelle prove.
++
++Xvfb del ticket 10 ricontrollato: primo binario non trovava `/usr/bin/xkbcomp`;
++riusato il binario temporaneo `/tmp/t10/Xvfb` con percorso corretto già predisposto.
++Display **:98**, 1440×1000, senza TCP, rendering software. Warning EGL su /dev/dri
++non impediscono le prove JavaFX. Ambiente temporaneo da ricontrollare al riuso.
++
++## TDD e verifiche
++
++Launcher locale: `python3 /tmp/drivehub-ticket12-session/maven.py <etichetta> <argomenti>`;
++usa Java21, variabili private e `mvn -B -o`. Comandi senza launcher in [testing.md](../../testing.md).
++Ogni esecuzione conserva log, XML Surefire e hash di tutti i sorgenti, schema,
++fixture e POM effettivamente compilati.
++
++| Etichetta / argomenti Maven | Esito |
++|---|---|
++| `baseline -Ppostgres-tests clean test` | 297/297, zero failure/errori/salti |
++| `states-red -Ppostgres-tests -Dtest=VehicleDestinationIntegrationTest test` | 8 failure attese: stati non riapribili e transizioni identiche accettati |
++| `states-green`, stessi argomenti | 8/8 |
++| `dates-red -Ppostgres-tests -Dtest=VehicleDestinationIntegrationTest#rentalIncludingTodayPreventsSaleAndAllRefunds test` | 4 failure attese: noleggi di oggi ignorati |
++| `dates-green -Ppostgres-tests -Dtest=VehicleDestinationIntegrationTest test` | 12/12 |
++| `future-red -Ppostgres-tests -Dtest=VehicleDestinationIntegrationTest#futureRentalPreviewExcludesTodayAndHistory test` | 1 failure attesa: oggi incluso fra i futuri |
++| `future-green -Ppostgres-tests -Dtest=VehicleDestinationIntegrationTest test` | 13/13 |
++| `cancellation-red -Ppostgres-tests -Dtest=VehicleDestinationIntegrationTest#skippedCancellationCannotCommitRefundsOrSale test` | 1 failure attesa: DELETE saltata lasciava un noleggio e permetteva SALE |
++| `cancellation-green -Ppostgres-tests -Dtest=VehicleDestinationIntegrationTest test` | 14/14 |
++| `refund-cases -Ppostgres-tests -Dtest=VehicleDestinationIntegrationTest test` | 26/27, un errore del nuovo test: il getter di un conto mancante lancia, anziché restituire null; corretta solo l'aspettativa del test |
++| `race-cases -Ppostgres-tests -Dtest=VehicleDestinationIntegrationTest test` | **33/33**, zero failure/errori/salti |
++| `targeted`, selezione estesa sotto | **278/278**, zero failure/errori/salti |
++| `final-full -Ppostgres-tests clean test` | **330/330**, zero failure/errori/salti; 47 senza DB e 283 PostgreSQL |
++| `calendar-red`, prova esplorativa poi rimossa | Aspettativa non valida: il driver JDBC allinea il fuso della sessione al default JVM; cambiare quel default spostava anche il giorno DB, senza simulare due clock divergenti. Non è una riproduzione del prodotto né una coppia RED/GREEN |
++
++Le quattro coppie [RED/GREEN hanno il sorgente del test identico](regression-identity.json)
++in ciascuna fase. Il GREEN include anche i casi precedenti; gli ampliamenti
++successivi hanno hash distinti. La versione finale del test coincide con quella
++dei mirati 278/278. Le gare già protette dal lock 11 non sono presentate come
++nuovi difetti riprodotti in RED.
++
++Selezione esatta di `targeted`:
++
++```bash
++mvn -Ppostgres-tests -Dtest=VehicleDestinationIntegrationTest,BookingRulesTest,BookingConcurrencyIntegrationTest,TestDriveCancellationIntegrationTest,BalanceConcurrencyIntegrationTest,PriceCalculatorServiceTest,PriceSelectionIntegrationTest,PurchaseAgreementIntegrationTest,PurchaseConcurrencyIntegrationTest,SaleProposalIntegrationTest,SaleOutcomeIntegrationTest,SaleTypeTest,DemoSqlValidationTest,DatabaseIsolationIntegrationTest test
++```
++
++I 33 casi nuovi verificano i due versi ammessi, tutti gli stati non riapribili,
++target invalidi/null, veicolo assente, date inclusive, futuro da domani, storico e
++altro veicolo. Rimborsi 100,25 + 50 al cliente 1 e 200,75 al cliente 2, senza penali.
++Trigger PostgreSQL verificano cancellazioni e primo accredito prima di fallire
++sul secondo conto o sull'ultimo aggiornamento. Un trigger AFTER sul veicolo vede
++entrambi gli accrediti, tutte le cancellazioni e l'aggiornamento effettivo prima
++dell'errore. La sequenza diagnostica nel caso conto mancante conferma che il primo
++accredito era stato realmente scritto. Nuovi AppContext verificano il rollback.
++
++Le gare usano connessioni distinte e un gate SQL sul conto 1, con PID distinti e
++`pg_blocking_pids` osservati prima del rilascio. Cambio-prima → booking rifiutato;
++booking-prima futuro → rimborso; booking-prima oggi → cambio rifiutato;
++cambio fallito dopo scritture → booking confermato. Due cambi concorrenti non
++rimborsano due volte. Nessuno sleep nelle gare; query, attese, future e cleanup
++hanno timeout. Nessun mock certifica persistenza o concorrenza.
++
++## GUI e tastiera
++
++[Harness](DestinationUiCheck.java), [launcher](run-ui.py), [log](ui.log):
++**UI CHECK SUCCESS**, seed/check in JVM distinte sul solo DB dedicato.
++Riutilizzati Robot 05/06/10 e costruttori pubblici delle viste. Frecce per schede
++e righe, Tab per il pulsante, Spazio per attivarlo, Invio per confermare.
++Le pause degli helper Robot preesistenti attendono il rendering, mai le gare DB.
++
++Cinque schermate ispezionate: [conferma](future-confirmation.png),
++[rimborso](refunded.png), [noleggio in corso](ongoing-rejected.png),
++[vista obsoleta BLOCKED](stale-rejected.png), [conto mancante](refund-rollback.png).
++Confermati saldi 1100,25/1200,75 dopo rimborso, passaggio inverso SALE→RENT e
++rollback della destinazione e di entrambi i noleggi quando manca il conto 2.
++Nessuna nuova penale. Nessuna certificazione screen reader o benchmark prestazioni.
++
++## Chiusura
++
++Suite completa finale **330/330**, inclusi fixture, isolamento/sentinella e
++regressioni 04–11: [log](final-full.log), [XML](final-full-surefire/),
++[hash degli input runtime](final-full-files.sha256.json), [riepilogo](summary.json).
++Nessun codice/test modificato dopo la suite.
++Review indipendenti Standards/Spec ancora da registrare.
++Ticket aperto finché tutte le prove non sono verificate. Nessun ticket successivo.
+--- a/PIANO_REVISIONI_DRIVEHUB.md
++++ b/PIANO_REVISIONI_DRIVEHUB.md
+@@ -2,7 +2,18 @@
+ 
+ Registro operativo avviato il 31 ottobre 2026. Punto di ingresso per riprendere il lavoro: avanzamento, decisioni, attività, verifiche e prossimo passo.
+ 
+-## Stato attuale — ticket 11 completato
++## Stato attuale — ticket 12 in verifica
++
++- Solo ticket 12 implementato dopo verifica dei prerequisiti 01–11 chiusi e nuova baseline **297/297**.
++- SALE↔RENT soltanto fra stati opposti; SOLD/BLOCKED/WAITING e noleggi in corso con date inclusive protetti. Futuri da domani cancellati e rimborsati integralmente nella transazione; DELETE incompleta, conto mancante o rimborso fallito annullano tutto.
++- Gare nei due ordini con connessioni distinte, PID/blocker osservati senza sleep e rollback dopo scritture effettive. Protocollo conti04, lock11 e Observer08 conservati; nessuna nuova penale.
++- Mirati **278/278**, suite finale **330/330**, zero failure/errori/salti: 47 senza DB, 283 PostgreSQL. Nuovi 33 casi; quattro coppie RED/GREEN identiche per sorgente del test.
++- JavaFX/Robot/tastiera **UI CHECK SUCCESS**, cinque schermate ispezionate. Ambiente Java21/PG16/Xvfb temporaneo ricontrollato; solo cluster sacrificabile e copia sentinella.
++- Review indipendenti Standards/Spec sul solo diff della sessione in attesa. Ticket 12 ancora aperto; R06/AC07 da chiudere solo dopo esito verificato.
++- [Ticket 12](TRACKER_DRIVEHUB/revisioni/issues/12-destinazione-veicolo-e-rimborsi.md), [versione, comandi e prove](DriveHub/docs/evidence/r06-destination/verification.md).
++- Lavoro precedente preservato; nessun commit/staging o ticket successivo. Relazione_SWE sempre esclusa.
++
++## Stato al termine del ticket 11 — storico
+ 
+ - **Ticket 01–11 chiusi e verificati**. Implementato soltanto 11, dopo verifica 01–10 e baseline locale **259/259** prima degli interventi.
+ - Prenotazioni: lock veicolo → cliente NO KEY UPDATE → conto, disponibilità/limite/prezzo e inserimenti sulla stessa connessione. EXCLUDE PostgreSQL protegge periodi inclusivi, unicità TD e orari conservati; massimo tre anche su veicoli diversi.
+--- a/TRACKER_DRIVEHUB/revisioni/issues/12-destinazione-veicolo-e-rimborsi.md
++++ b/TRACKER_DRIVEHUB/revisioni/issues/12-destinazione-veicolo-e-rimborsi.md
+@@ -7,7 +7,7 @@
+ **Blocked by:** 11: Prenotare noleggi e test drive senza disponibilità impossibili
+ 
+ Status: ready-for-agent
+-State: open
++State: in-progress
+ 
+ **Piano:** R06
+ **Specifica:** AC07, AC13
+@@ -33,3 +33,5 @@
+ ## Comments
+ 
+ - 31 ottobre 2026: ticket pubblicato da `to-tickets` dopo approvazione di granularità e dipendenze. Esecuzione non ancora avviata; verificare i blocchi prima di iniziare.
++
++- 2 novembre 2026: implementato soltanto il ticket 12, prerequisiti 01–11 controllati chiusi. Nuova baseline 297/297 prima delle modifiche; quattro coppie RED/GREEN con sorgente del test identico. Mirati 278/278 e suite completa finale 330/330 (47 senza DB, 283 PostgreSQL), zero failure/errori/salti, inclusi isolamento e sentinella. JavaFX/Robot/tastiera UI CHECK SUCCESS, cinque schermate ispezionate. Lock 11, conti 04 e Observer 08 conservati; nessuna nuova penale. Review indipendenti Standards/Spec in attesa prima della chiusura. [Evidenze](../../../DriveHub/docs/evidence/r06-destination/verification.md). Nessun commit, nessun ticket successivo, Relazione_SWE esclusa.

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="23.987" tests="60" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="21"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/home/federico/dev/Drivehub/DriveHub/target/test-classes:/home/federico/dev/Drivehub/DriveHub/target/classes:/home/federico/.m2/repository/org/openjfx/javafx-controls/21.0.2/javafx-controls-21.0.2.jar:/home/federico/.m2/repository/org/openjfx/javafx-controls/21.0.2/javafx-controls-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-graphics/21.0.2/javafx-graphics-21.0.2.jar:/home/federico/.m2/repository/org/openjfx/javafx-graphics/21.0.2/javafx-graphics-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-base/21.0.2/javafx-base-21.0.2.jar:/home/federico/.m2/repository/org/openjfx/javafx-base/21.0.2/javafx-base-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-fxml/21.0.2/javafx-fxml-21.0.2.jar:/home/federico/.m2/repository/org/openjfx/javafx-fxml/21.0.2/javafx-fxml-21.0.2-linux.jar:/home/federico/.m2/repository/org/postgresql/postgresql/42.7.3/postgresql-42.7.3.jar:/home/federico/.m2/repository/org/checkerframework/checker-qual/3.42.0/checker-qual-3.42.0.jar:/home/federico/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.10.2/junit-jupiter-api-5.10.2.jar:/home/federico/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/home/federico/.m2/repository/org/junit/platform/junit-platform-commons/1.10.2/junit-platform-commons-1.10.2.jar:/home/federico/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/federico/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.10.2/junit-jupiter-engine-5.10.2.jar:/home/federico/.m2/repository/org/junit/platform/junit-platform-engine/1.10.2/junit-platform-engine-1.10.2.jar:/home/federico/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.10.2/junit-jupiter-params-5.10.2.jar:/home/federico/.m2/repository/org/junit/platform/junit-platform-launcher/1.10.2/junit-platform-launcher-1.10.2.jar:"/>
+    <property name="java.vm.vendor" value="Ubuntu"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://ubuntu.com/"/>
+    <property name="user.timezone" value="Europe/Rome"/>
+    <property name="os.name" value="Linux"/>
+    <property name="java.vm.specification.version" value="21"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.boot.library.path" value="/tmp/drivehub-ticket13-tools/root/usr/lib/jvm/java-21-openjdk-amd64/lib"/>
+    <property name="sun.java.command" value="/home/federico/dev/Drivehub/DriveHub/target/surefire/surefirebooter-20261102231821330_3.jar /home/federico/dev/Drivehub/DriveHub/target/surefire 2026-11-02T23-18-20_227-jvmRun1 surefire-20261102231821330_1tmp surefire_0-20261102231821330_2tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/home/federico/dev/Drivehub/DriveHub/target/test-classes:/home/federico/dev/Drivehub/DriveHub/target/classes:/home/federico/.m2/repository/org/openjfx/javafx-controls/21.0.2/javafx-controls-21.0.2.jar:/home/federico/.m2/repository/org/openjfx/javafx-controls/21.0.2/javafx-controls-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-graphics/21.0.2/javafx-graphics-21.0.2.jar:/home/federico/.m2/repository/org/openjfx/javafx-graphics/21.0.2/javafx-graphics-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-base/21.0.2/javafx-base-21.0.2.jar:/home/federico/.m2/repository/org/openjfx/javafx-base/21.0.2/javafx-base-21.0.2-linux.jar:/home/federico/.m2/repository/org/openjfx/javafx-fxml/21.0.2/javafx-fxml-21.0.2.jar:/home/federico/.m2/repository/org/openjfx/javafx-fxml/21.0.2/javafx-fxml-21.0.2-linux.jar:/home/federico/.m2/repository/org/postgresql/postgresql/42.7.3/postgresql-42.7.3.jar:/home/federico/.m2/repository/org/checkerframework/checker-qual/3.42.0/checker-qual-3.42.0.jar:/home/federico/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.10.2/junit-jupiter-api-5.10.2.jar:/home/federico/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/home/federico/.m2/repository/org/junit/platform/junit-platform-commons/1.10.2/junit-platform-commons-1.10.2.jar:/home/federico/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/federico/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.10.2/junit-jupiter-engine-5.10.2.jar:/home/federico/.m2/repository/org/junit/platform/junit-platform-engine/1.10.2/junit-platform-engine-1.10.2.jar:/home/federico/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.10.2/junit-jupiter-params-5.10.2.jar:/home/federico/.m2/repository/org/junit/platform/junit-platform-launcher/1.10.2/junit-platform-launcher-1.10.2.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/home/federico"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2026-08-18"/>
+    <property name="java.home" value="/tmp/drivehub-ticket13-tools/root/usr/lib/jvm/java-21-openjdk-amd64"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/home/federico/dev/Drivehub/DriveHub"/>
+    <property name="java.vm.compressedOopsMode" value="32-bit"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="surefire.real.class.path" value="/home/federico/dev/Drivehub/DriveHub/target/surefire/surefirebooter-20261102231821330_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="21.0.12.1+1-1-26.04.4-Ubuntu"/>
+    <property name="user.name" value="federico"/>
+    <property name="stdout.encoding" value="UTF-8"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="6.18.54.1-microsoft-standard-WSL2"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="localRepository" value="/home/federico/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://bugs.launchpad.net/ubuntu/+source/openjdk-21"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="java.version" value="21.0.12.1"/>
+    <property name="user.dir" value="/home/federico/dev/Drivehub/DriveHub"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/tmp/drivehub-ticket13-tools/root/usr/lib/x86_64-linux-gnu:/usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib"/>
+    <property name="stderr.encoding" value="UTF-8"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.vendor" value="Ubuntu"/>
+    <property name="java.vm.version" value="21.0.12.1+1-1-26.04.4-Ubuntu"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="65.0"/>
+  </properties>
+  <testcase name="purchaseApprovalCannotReferToADeletedSalesman(boolean)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.792">
+    <system-out><![CDATA[Ticket13 waiters 1 pid:blockers 55134:{55129}
+Ticket13 waiters 2 pid:blockers 55134:{55129}, 55136:{55134}
+]]></system-out>
+  </testcase>
+  <testcase name="purchaseApprovalCannotReferToADeletedSalesman(boolean)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.501">
+    <system-out><![CDATA[Ticket13 waiters 1 pid:blockers 55164:{55159}
+Ticket13 waiters 2 pid:blockers 55164:{55159}, 55166:{55164}
+]]></system-out>
+  </testcase>
+  <testcase name="saleCommittedWhileDeletionWaitsPreservesAttributionAndExplainsRefusal" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.476">
+    <system-out><![CDATA[Ticket13 waiters 1 pid:blockers 55187:{55182}
+]]></system-out>
+  </testcase>
+  <testcase name="identitiesWithoutOperationsRemainDeletableIncludingDemonstrationBalance(long, String, String)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.361"/>
+  <testcase name="identitiesWithoutOperationsRemainDeletableIncludingDemonstrationBalance(long, String, String)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.331"/>
+  <testcase name="identitiesWithoutOperationsRemainDeletableIncludingDemonstrationBalance(long, String, String)[3]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.312"/>
+  <testcase name="identitiesWithoutOperationsRemainDeletableIncludingDemonstrationBalance(long, String, String)[4]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.312"/>
+  <testcase name="identitiesWithoutOperationsRemainDeletableIncludingDemonstrationBalance(long, String, String)[5]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.342"/>
+  <testcase name="identitiesWithoutOperationsRemainDeletableIncludingDemonstrationBalance(long, String, String)[6]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.333"/>
+  <testcase name="acquisitionInsertedBeforeDeletionEitherRetainsAttributionOrRollsBack(boolean)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.412">
+    <system-out><![CDATA[Ticket13 waiters 1 pid:blockers 55319:{55315}
+Ticket13 waiters 2 pid:blockers 55319:{55315}, 55322:{55319}
+]]></system-out>
+  </testcase>
+  <testcase name="acquisitionInsertedBeforeDeletionEitherRetainsAttributionOrRollsBack(boolean)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.434">
+    <system-out><![CDATA[Ticket13 waiters 1 pid:blockers 55350:{55346}
+Ticket13 waiters 2 pid:blockers 55350:{55346}, 55353:{55350}
+]]></system-out>
+  </testcase>
+  <testcase name="wrongPasswordCannotDeleteAnyRole(long, String)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.331"/>
+  <testcase name="wrongPasswordCannotDeleteAnyRole(long, String)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.271"/>
+  <testcase name="wrongPasswordCannotDeleteAnyRole(long, String)[3]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.255"/>
+  <testcase name="purchaseAlreadyWaitingOnBalanceCannotDeadlockWithIdentityDeletion" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.314">
+    <system-out><![CDATA[Ticket13 waiters 1 pid:blockers 55405:{55401}
+Ticket13 waiters 2 pid:blockers 55405:{55401}, 55411:{55405}
+]]></system-out>
+  </testcase>
+  <testcase name="clientWithOnlyARequestCannotDeleteIdentity(String, String)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.423"/>
+  <testcase name="clientWithOnlyARequestCannotDeleteIdentity(String, String)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.428"/>
+  <testcase name="clientWithOnlyARequestCannotDeleteIdentity(String, String)[3]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.424"/>
+  <testcase name="clientWithOnlyARequestCannotDeleteIdentity(String, String)[4]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.403"/>
+  <testcase name="acquisitionAfterActualSalesmanDeletionRollsBackItsCredit(boolean)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.369">
+    <system-out><![CDATA[Ticket13 waiters 1 pid:blockers 55504:{55499}
+Ticket13 waiters 2 pid:blockers 55504:{55499}, 55506:{55504}
+]]></system-out>
+  </testcase>
+  <testcase name="acquisitionAfterActualSalesmanDeletionRollsBackItsCredit(boolean)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.463">
+    <system-out><![CDATA[Ticket13 waiters 1 pid:blockers 55537:{55530}
+Ticket13 waiters 2 pid:blockers 55537:{55530}, 55539:{55537}
+]]></system-out>
+  </testcase>
+  <testcase name="databaseCannotEraseSalesmanAttributionEvenWithoutServices(String, int)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.215"/>
+  <testcase name="databaseCannotEraseSalesmanAttributionEvenWithoutServices(String, int)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.177"/>
+  <testcase name="databaseCannotEraseSalesmanAttributionEvenWithoutServices(String, int)[3]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.161"/>
+  <testcase name="errorAfterActualIdentityAndAccountDeletionRollsBackBoth" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.407"/>
+  <testcase name="clientDeletionRollbackAllowsWaitingBooking(boolean)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.31">
+    <system-out><![CDATA[Ticket13 waiters 1 pid:blockers 55620:{55615}
+Ticket13 waiters 2 pid:blockers 55620:{55615}, 55622:{55620}
+]]></system-out>
+  </testcase>
+  <testcase name="clientDeletionRollbackAllowsWaitingBooking(boolean)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.319">
+    <system-out><![CDATA[Ticket13 waiters 1 pid:blockers 55643:{55638}
+Ticket13 waiters 2 pid:blockers 55643:{55638}, 55645:{55643}
+]]></system-out>
+  </testcase>
+  <testcase name="mismatchedRoleCannotReportADeletion(long, String)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.259"/>
+  <testcase name="mismatchedRoleCannotReportADeletion(long, String)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.267"/>
+  <testcase name="mismatchedRoleCannotReportADeletion(long, String)[3]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.257"/>
+  <testcase name="unrecognizedRoleCannotChangeAnyData(String)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.251"/>
+  <testcase name="unrecognizedRoleCannotChangeAnyData(String)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.245"/>
+  <testcase name="unrecognizedRoleCannotChangeAnyData(String)[3]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.243"/>
+  <testcase name="clientBookingAndDeletionAreCoherentInBothOrders(boolean, boolean)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.288">
+    <system-out><![CDATA[Ticket13 waiters 1 pid:blockers 55729:{55725}
+Ticket13 waiters 2 pid:blockers 55729:{55725}, 55732:{55729}
+]]></system-out>
+  </testcase>
+  <testcase name="clientBookingAndDeletionAreCoherentInBothOrders(boolean, boolean)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.286">
+    <system-out><![CDATA[Ticket13 waiters 1 pid:blockers 55749:{55744}
+Ticket13 waiters 2 pid:blockers 55749:{55744}, 55751:{55749}
+]]></system-out>
+  </testcase>
+  <testcase name="clientBookingAndDeletionAreCoherentInBothOrders(boolean, boolean)[3]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.33">
+    <system-out><![CDATA[Ticket13 waiters 1 pid:blockers 55765:{55761}
+Ticket13 waiters 2 pid:blockers 55765:{55761}, 55768:{55765}
+]]></system-out>
+  </testcase>
+  <testcase name="clientBookingAndDeletionAreCoherentInBothOrders(boolean, boolean)[4]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.309">
+    <system-out><![CDATA[Ticket13 waiters 1 pid:blockers 55785:{55780}
+Ticket13 waiters 2 pid:blockers 55785:{55780}, 55787:{55785}
+]]></system-out>
+  </testcase>
+  <testcase name="newVehicleProposalAfterClientDeletionCommitsOnlyIfDeletionRollsBack(boolean)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.365">
+    <system-out><![CDATA[Ticket13 waiters 1 pid:blockers 55804:{55799}
+Ticket13 waiters 2 pid:blockers 55804:{55799}, 55806:{55804}
+]]></system-out>
+  </testcase>
+  <testcase name="newVehicleProposalAfterClientDeletionCommitsOnlyIfDeletionRollsBack(boolean)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.409">
+    <system-out><![CDATA[Ticket13 waiters 1 pid:blockers 55831:{55826}
+Ticket13 waiters 2 pid:blockers 55831:{55826}, 55833:{55831}
+]]></system-out>
+  </testcase>
+  <testcase name="clientOperationsAndHistoryRemainBinding(String, String, int)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.339"/>
+  <testcase name="clientOperationsAndHistoryRemainBinding(String, String, int)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.421"/>
+  <testcase name="clientOperationsAndHistoryRemainBinding(String, String, int)[3]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.332"/>
+  <testcase name="clientOperationsAndHistoryRemainBinding(String, String, int)[4]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.306"/>
+  <testcase name="clientOperationsAndHistoryRemainBinding(String, String, int)[5]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.271"/>
+  <testcase name="clientOperationsAndHistoryRemainBinding(String, String, int)[6]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.261"/>
+  <testcase name="clientOperationsAndHistoryRemainBinding(String, String, int)[7]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.249"/>
+  <testcase name="clientOperationsAndHistoryRemainBinding(String, String, int)[8]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.241"/>
+  <testcase name="clientWithoutADemonstrationAccountIsStillDeletable" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.236"/>
+  <testcase name="salesmanWithOnlyAnAssignedRequestCannotDelete(String, String)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.29"/>
+  <testcase name="salesmanWithOnlyAnAssignedRequestCannotDelete(String, String)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.307"/>
+  <testcase name="salesmanWithOnlyAnAssignedRequestCannotDelete(String, String)[3]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.353"/>
+  <testcase name="salesmanWithOnlyAnAssignedRequestCannotDelete(String, String)[4]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.441"/>
+  <testcase name="skippedDeletionCannotReportSuccess" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.369"/>
+  <testcase name="salesmanWithOnlyCompletedSalesRetainsIdentityAndAttribution(String, String, int)[1]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.456"/>
+  <testcase name="salesmanWithOnlyCompletedSalesRetainsIdentityAndAttribution(String, String, int)[2]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.649"/>
+  <testcase name="salesmanWithOnlyCompletedSalesRetainsIdentityAndAttribution(String, String, int)[3]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.774"/>
+  <testcase name="salesmanWithOnlyCompletedSalesRetainsIdentityAndAttribution(String, String, int)[4]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="1.211"/>
+  <testcase name="salesmanWithOnlyCompletedSalesRetainsIdentityAndAttribution(String, String, int)[5]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="1.169"/>
+  <testcase name="salesmanWithOnlyCompletedSalesRetainsIdentityAndAttribution(String, String, int)[6]" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="1.053"/>
+  <testcase name="deletionAlreadyWaitingOnBalancePreventsPurchaseWithoutPartialVehicleChange" classname="it.unifi.drivehub.IdentityDeletionIntegrationTest" time="0.771">
+    <system-out><![CDATA[Ticket13 waiters 1 pid:blockers 56176:{56171}
+Ticket13 waiters 2 pid:blockers 56176:{56171}, 56178:{56176}
+]]></system-out>
+  </testcase>
+</testsuite>

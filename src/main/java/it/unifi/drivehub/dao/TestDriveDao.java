@@ -38,6 +38,7 @@ public interface TestDriveDao {
 
     void delete(Long id, Connection conn);
 
+    /** Cancella date > CURRENT_TIMESTAMP (inizio transazione), usando la connessione del chiamante. */
     int deleteFutureByVehicleId(Long vehicleId, Connection conn);
 }
 

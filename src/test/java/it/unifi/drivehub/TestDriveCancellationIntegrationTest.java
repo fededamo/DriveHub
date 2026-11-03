@@ -1,0 +1,183 @@
+package it.unifi.drivehub;
+
+import it.unifi.drivehub.domain.operation.Request;
+import it.unifi.drivehub.domain.vehicle.Vehicle;
+import it.unifi.drivehub.domain.vehicle.VehicleState;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Year;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@Tag("postgres")
+class TestDriveCancellationIntegrationTest {
+    private AppContext ctx;
+    private Vehicle vehicle;
+    private Request request;
+
+    @BeforeEach
+    void setUp() throws Exception {
+        ctx = new AppContext(TestDatabase.fromEnvironment().reset());
+        sql("DELETE FROM sale; DELETE FROM rent; DELETE FROM test_drive; DELETE FROM request;"
+                + "UPDATE bank_account SET balance = 30000 WHERE client = 1");
+    }
+
+    @AfterEach
+    void cleanUp() throws Exception {
+        if (ctx != null) sql("DROP FUNCTION IF EXISTS fail_ticket08() CASCADE;"
+                + "DROP FUNCTION IF EXISTS boundary_ticket08() CASCADE");
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    void cancellationFailureRollsBackTheCommercialOperation(boolean rental) throws Exception {
+        prepareOperation(rental);
+        sql("INSERT INTO test_drive (id, vehicle, client, date) VALUES "
+                + "(1001, " + vehicle.getId() + ", 2, CURRENT_DATE + 1 + TIME '10:00'),"
+                + "(1002, " + vehicle.getId() + ", 3, CURRENT_DATE + 20 + TIME '10:00')");
+        sql("CREATE FUNCTION fail_ticket08() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN "
+                + "IF (SELECT balance FROM bank_account WHERE client = 1) >= "
+                + (rental ? "30000" : "26000")
+                + " THEN RAISE EXCEPTION 'ticket08_debit_not_observed'; END IF; "
+                + (rental
+                ? "IF NOT EXISTS (SELECT 1 FROM rent WHERE vehicle = " + vehicle.getId() + ") "
+                : "IF NOT EXISTS (SELECT 1 FROM sale WHERE vehicle = " + vehicle.getId() + ") "
+                    + "OR EXISTS (SELECT 1 FROM request WHERE vehicle = " + vehicle.getId() + ") "
+                    + "OR (SELECT state FROM vehicle WHERE id = " + vehicle.getId() + ") <> 'SOLD' ")
+                + "THEN RAISE EXCEPTION 'ticket08_operation_not_observed'; END IF; "
+                + "IF EXISTS (SELECT 1 FROM test_drive WHERE vehicle = " + vehicle.getId() + ") "
+                + "THEN RAISE EXCEPTION 'ticket08_deletions_not_observed'; END IF; "
+                + "RAISE EXCEPTION 'ticket08_cancellation_failed'; END $$; "
+                + "CREATE TRIGGER fail_ticket08 AFTER DELETE ON test_drive "
+                + "FOR EACH STATEMENT EXECUTE FUNCTION fail_ticket08()");
+        RuntimeException failure = assertThrows(RuntimeException.class, () -> confirm(rental));
+        assertTrue(rootMessage(failure).contains("ticket08_cancellation_failed"), rootMessage(failure));
+        ctx = new AppContext(ctx.getDatabaseManager());
+        assertEquals(new BigDecimal(rental ? "30000.00" : "26000.00"),
+                ctx.getAuthService().getClientBankAccount(1L).getBalance());
+        assertTrue(ctx.getOperationQueryService().getAllSales().isEmpty());
+        assertTrue(ctx.getOperationQueryService().getClientRents(1L).isEmpty());
+        assertEquals(rental ? VehicleState.RENT : VehicleState.BLOCKED,
+                ctx.getCatalogService().getVehicleById(vehicle.getId()).orElseThrow().getState());
+        assertEquals(List.of(1001L), testDriveIds(2L));
+        assertEquals(List.of(1002L), testDriveIds(3L));
+        if (rental) {
+            assertTrue(ctx.getOperationQueryService().getClientRequests(1L).isEmpty());
+        } else {
+            var saved = ctx.getOperationQueryService().getClientRequests(1L).getFirst();
+            assertEquals(request.getId(), saved.getId());
+            assertEquals(request.getAgreedTotal(), saved.getAgreedTotal());
+            assertEquals(request.getDeposit(), saved.getDeposit());
+            assertEquals(16L, saved.getSalesmanId());
+            assertEquals(request.getExpDate(), saved.getExpDate());
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    void confirmationCancelsEveryFutureAndPreservesHistoryAndOtherVehicles(boolean rental) throws Exception {
+        prepareOperation(rental);
+        var other = ctx.getCatalogService().addVehicle(vehicle.getModelId(), "T0800000000000002", null, 0,
+                null, Year.now().getValue(), VehicleState.SALE);
+        sql("INSERT INTO test_drive (id, vehicle, client, date) VALUES "
+                + "(1000, " + vehicle.getId() + ", 2, CURRENT_DATE - 1 + TIME '10:00'),"
+                + "(1001, " + vehicle.getId() + ", 2, CURRENT_DATE + 1 + TIME '10:00'),"
+                + "(1002, " + vehicle.getId() + ", 3, CURRENT_DATE + 6 + TIME '10:00'),"
+                + "(1003, " + vehicle.getId() + ", 3, CURRENT_DATE + 20 + TIME '10:00'),"
+                + "(1004, " + other.getId() + ", 2, CURRENT_DATE + 1 + TIME '10:00')");
+        confirm(rental);
+        ctx = new AppContext(ctx.getDatabaseManager());
+        assertEquals(List.of(1000L, 1004L), testDriveIds(2L));
+        assertTrue(testDriveIds(3L).isEmpty());
+        assertEquals(rental ? VehicleState.RENT : VehicleState.SOLD,
+                ctx.getCatalogService().getVehicleById(vehicle.getId()).orElseThrow().getState());
+        assertTrue(ctx.getOperationQueryService().getClientRequests(1L).isEmpty());
+        if (rental) {
+            var rents = ctx.getOperationQueryService().getClientRents(1L);
+            assertEquals(1, rents.size());
+            assertEquals(new BigDecimal("57.05"), rents.getFirst().getAmount());
+            assertEquals(LocalDate.now().plusDays(5), rents.getFirst().getStartDate());
+            assertEquals(LocalDate.now().plusDays(7), rents.getFirst().getEndDate());
+            assertEquals(new BigDecimal("29942.95"), ctx.getAuthService().getClientBankAccount(1L).getBalance());
+            assertTrue(ctx.getOperationQueryService().getAllSales().isEmpty());
+        } else {
+            var sales = ctx.getOperationQueryService().getClientSales(1L);
+            assertEquals(1, sales.size());
+            assertEquals(new BigDecimal("20000.00"), sales.getFirst().getAmount());
+            assertEquals(new BigDecimal("10000.00"), ctx.getAuthService().getClientBankAccount(1L).getBalance());
+            assertTrue(ctx.getOperationQueryService().getClientRents(1L).isEmpty());
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    void onlyDatesStrictlyAfterTheOperationTransactionStartAreCancelled(boolean rental) throws Exception {
+        prepareOperation(rental);
+        // Mantiene il confine nell'orario 09–16 anche nelle esecuzioni notturne, senza cambiare il clock.
+        sql("CREATE FUNCTION boundary_ticket08() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN "
+                + "PERFORM set_config('TimeZone', 'UTC' || "
+                + "(EXTRACT(HOUR FROM CURRENT_TIMESTAMP AT TIME ZONE 'UTC')::int - 12)::text, true); "
+                + "INSERT INTO test_drive (id, vehicle, client, date) VALUES "
+                + "(1000, " + vehicle.getId() + ", 2, LOCALTIMESTAMP - INTERVAL '1 microsecond'),"
+                + "(1001, " + vehicle.getId() + ", 2, LOCALTIMESTAMP),"
+                + "(1002, " + vehicle.getId() + ", 2, LOCALTIMESTAMP + INTERVAL '1 microsecond'); "
+                + "RETURN NEW; END $$; "
+                + "CREATE TRIGGER boundary_ticket08 AFTER UPDATE ON bank_account "
+                + "FOR EACH ROW EXECUTE FUNCTION boundary_ticket08()");
+        confirm(rental);
+        ctx = new AppContext(ctx.getDatabaseManager());
+        assertEquals(List.of(1000L, 1001L), testDriveIds(2L));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    void confirmationAlsoSucceedsWithoutFutureTestDrives(boolean rental) {
+        prepareOperation(rental);
+        assertDoesNotThrow(() -> confirm(rental));
+        ctx = new AppContext(ctx.getDatabaseManager());
+        assertTrue(ctx.getTestDriveService().getClientTestDrives(2L).isEmpty());
+        assertEquals(1, rental ? ctx.getOperationQueryService().getClientRents(1L).size()
+                : ctx.getOperationQueryService().getClientSales(1L).size());
+    }
+
+    private void prepareOperation(boolean rental) {
+        var model = ctx.getCatalogService().addModel("Fiat", "Cancellation08", new BigDecimal("20000"),
+                Year.now().getValue());
+        vehicle = ctx.getCatalogService().addVehicle(model.getId(), "T0800000000000001", null, 0,
+                null, Year.now().getValue(), rental ? VehicleState.RENT : VehicleState.SALE);
+        if (!rental) {
+            request = ctx.getPurchaseService().initiatePurchase(vehicle.getId(), 1L);
+            ctx.getPurchaseService().approvePurchase(request.getId(), 16L);
+            request = ctx.getOperationQueryService().getClientRequests(1L).getFirst();
+        }
+    }
+
+    private void confirm(boolean rental) {
+        if (rental) ctx.getRentalService().bookRental(vehicle.getId(), 1L,
+                LocalDate.now().plusDays(5), LocalDate.now().plusDays(7));
+        else ctx.getPurchaseService().completePurchase(request.getId());
+    }
+
+    private List<Long> testDriveIds(Long clientId) {
+        return ctx.getTestDriveService().getClientTestDrives(clientId).stream()
+                .map(td -> td.getId()).sorted().toList();
+    }
+
+    private void sql(String statement) throws Exception {
+        try (var conn = ctx.getDatabaseManager().getConnection(); var sql = conn.createStatement()) {
+            sql.execute(statement);
+        }
+    }
+
+    private static String rootMessage(Throwable failure) {
+        while (failure.getCause() != null) failure = failure.getCause();
+        return failure.getMessage();
+    }
+}

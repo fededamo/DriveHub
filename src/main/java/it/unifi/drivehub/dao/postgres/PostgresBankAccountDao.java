@@ -22,16 +22,24 @@ public final class PostgresBankAccountDao implements BankAccountDao {
     @Override
     public Optional<BankAccount> findByClientId(Long clientId) {
         try (Connection conn = db.getConnection()) {
-            return findByClientId(clientId, conn);
+            return findByClientId(clientId, conn, false);
         } catch (SQLException e) {
             throw new RuntimeException("Errore di connessione durante la ricerca del conto bancario per cliente: " + clientId, e);
         }
     }
 
     @Override
-    public Optional<BankAccount> findByClientId(Long clientId, Connection conn) {
-        String sql = "SELECT iban, client, balance FROM bank_account WHERE client = ?";
+    public Optional<BankAccount> findByClientIdForUpdate(Long clientId, Connection conn) {
+        return findByClientId(clientId, conn, true);
+    }
+
+    private Optional<BankAccount> findByClientId(Long clientId, Connection conn, boolean forUpdate) {
+        String sql = "SELECT iban, client, balance FROM bank_account WHERE client = ?"
+                + (forUpdate ? " FOR UPDATE" : "");
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            if (forUpdate && conn.getAutoCommit()) {
+                throw new IllegalArgumentException("Il lock del conto richiede una transazione attiva.");
+            }
             ps.setLong(1, clientId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -88,7 +96,7 @@ public final class PostgresBankAccountDao implements BankAccountDao {
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setBigDecimal(1, newBalance);
             ps.setString(2, iban);
-            ps.executeUpdate();
+            if (ps.executeUpdate() != 1) throw new SQLException("Aggiornamento saldo non eseguito.");
         } catch (SQLException e) {
             throw new RuntimeException("Errore durante l'aggiornamento del saldo del conto: " + iban, e);
         }

@@ -1,0 +1,13 @@
+{
+  "baseline-sha256.json": "33184ae711e4078bab3525d069ac246b98e4bf6c0d933e913e5da90a7a36ced9",
+  "session.patch": "fef5a32ce5f850e0854b2903324d528162a99feaafe53ec0530726774e94e08e",
+  "session-files.sha256.json": "ad90f8a5de24d7351fd6befa86a548193aafbcd56cb4bdc185e6e8a3bc29c301",
+  "review.patch": "d8c1281839f3221e1e4b1c3d341c15120caf7555974b2fb806eaea301d34450b",
+  "review-files.sha256.json": "7486371df9dcc5190c670919dd34983ffc615165b8e776e1c026c16736357364",
+  "final-checks.json": "4607abf3e4f0481f22c088010d1c227feb713dc9509675dd7665e42f5762d9ed",
+  "preservation.json": "b5f4547bf64e6093b01e29fdc01d6d809d28efa1c1ed426f4b844f5df65c4cb5",
+  "standards-review.md": "c307a4b320ed1220330525968a90038c864a3ce53e499322324660b79a16ea3b",
+  "spec-review.md": "e24563a54d321b0d5d6c3253fdd111f86b5b362287ea2edac2a23fc90b24df9d",
+  "standards-closing-review.md": "320dad71380628fbd40d617f5fa36bc32ce733da752f832319aa848a34de5f5e",
+  "spec-closing-review.md": "57f989618ed743a0808cc6a86289d485182e96470b9bed7aef83b179af6609af"
+}

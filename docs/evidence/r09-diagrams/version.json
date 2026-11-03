@@ -1,0 +1,10 @@
+{
+  "recorded_utc": "2026-11-03T12:32:30.815173+00:00",
+  "commit_base": "c2a81122ee6be44760ded4160fde229bd33e837c",
+  "baseline_sha256": "ee78a986afcee68ae54dda2cb516127c1c6d321a3b1bdf0ffe88e0e425bbe945",
+  "baseline_head_patch_sha256": "d8d75327ec938599a57fc4d8eec31a37a2b2659e23026528177d42771bc7885a",
+  "baseline_kind": "full local worktree including modified, untracked and ignored files; not HEAD alone",
+  "baseline_files": 1507,
+  "index_sha256": "9ca6e45e5d65814d7529fc916acbcb829b31ce29eb2fb285919d1e4ca37b4f5f",
+  "session_scope": "ticket17 only; no source/test/POM/schema/demo changes; no staging/commit"
+}

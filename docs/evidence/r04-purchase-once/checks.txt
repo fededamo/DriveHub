@@ -1,0 +1,11 @@
+Whitespace del solo diff ticket07: PASS (7 file)
+Hash della versione testata/revisionata: PASS (7/7)
+HEAD e indice invariati, nessuno staging: PASS
+266/272 file preesistenti identici; soli 6 aggiornamenti previsti: PASS
+Ticket06 invariato e aperto: PASS
+Ticket07 chiuso, 6/6 criteri: PASS
+XML suite finale: 163 test, 0 failure/errori/saltati: PASS
+Link locali documenti finali: PASS (59)
+Password private assenti dalle evidenze: PASS
+PostgreSQL temporaneo arrestato: PASS
+Whitespace ticket/piano e rapporti finali: PASS

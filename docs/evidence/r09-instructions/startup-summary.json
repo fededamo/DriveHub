@@ -1,0 +1,11 @@
+{
+  "installation_db_and_three_demo_logins": "passed",
+  "App.start_JavaFX_Robot": "passed",
+  "screenshot_inspected": true,
+  "maven_javafx_run_observed_twice": true,
+  "java_pids": [
+    5664,
+    6146
+  ],
+  "goal_terminated_by_harness_after_window_observation": true
+}

@@ -1,0 +1,45 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontSize 16
+skinparam maxMessageSize 280
+title Noleggio — addebito integrale e Observer nella transazione
+autonumber
+actor Cliente
+boundary ClientDashboardView as ui
+control RentalService as service
+participant DatabaseManager as db
+participant VehicleDao as vehicle
+participant UserDao as user
+participant RentDao as rent
+participant BankAccountDao as account
+participant VehicleEventPublisher as publisher
+participant TestDriveCancellationObserver as observer
+participant TestDriveDao as td
+Cliente -> ui : selezione RENT; dialogo date, OK
+note over Cliente,ui : Annulla: nessuna prenotazione. Preventivo non congela il prezzo.
+ui -> service : bookRental(vehicleId, clientId, start, end)
+service -> db : executeInTransactionWithResult(callback)
+service -> vehicle : findByIdForUpdate(vehicleId, conn)
+note over service,vehicle : Stato RENT; date valide; lock veicolo prima del cliente.
+service -> user : lockClient(clientId, conn)
+service -> rent : isVehicleAvailableForRent(vehicleId, start, end, conn)
+note over service,rent
+  Giorni inclusivi, controllo sovrapposizioni; vincolo EXCLUDE nel DB.
+  Ricalcola costo con modello/sconti letti sulla stessa connessione.
+end note
+service -> account : findByClientIdForUpdate(clientId, conn)
+service -> account : updateBalance(..., saldo - costo100%, conn)
+service -> rent : save(Rent, conn)
+service -> publisher : publishCommitment(event, conn)
+publisher -> observer : onVehicleCommitted(event, conn)
+observer -> td : deleteFutureByVehicleId(vehicleId, conn)
+note over observer,td : Tutti i test drive futuri, anche fuori periodo; passato conservato.
+db -> db : commit / close
+service --> ui : Rent
+ui --> Cliente : aggiorna saldo/operazioni e mostra successo
+note over service,db
+  Eccezione, saldo insufficiente o Observer fallito:
+  tenta rollback, close, errore UI; nessun successo parziale.
+  Il veicolo resta RENT; non esiste una riga Payment.
+end note
+@enduml

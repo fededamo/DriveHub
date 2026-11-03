@@ -1,0 +1,22 @@
+{
+  "table/bank_account": "9e372ce3cefccd99c93d34175e11166733940279d287b26642818cef5f106879",
+  "table/brand": "d6665dd02a7b2a83b8826fe92b0ee20fba173ee8551e624e664777042190d6df",
+  "table/client": "252132bc6ba0540c354cb957af817053c52331b2e9a9f05be0a7841fa04a0278",
+  "table/manager": "444ecda21e3c564aba2f6f5220bbecc95cc39bf3efcf377d4170b0e263819302",
+  "table/model": "81b1b269394cb84861607a20fc38c12c27cdfe0c2e7f738a3dec3400bae95573",
+  "table/model_discount": "c447a7984bbbf17b30d1b326ffd40b0a6f64342dca8c5b27f5498bf64e3b1377",
+  "table/rent": "faa9089143bc2b58930605cab79f1e882dcff9ea30b93e3c4a0f94de85d56ee5",
+  "table/request": "b132714aa3dc94abccfa368784d58f609aef78f2ded4dd5811a517ed76b20ba9",
+  "table/sale": "837c141e4f20c5dba75157ccd0e40a9509d47d032e6f9277c2e9076261e91c91",
+  "table/salesman": "4d394608234e4bff1e1795ed00bcbd2cb22033d45ed60843afe2636e21ec24f2",
+  "table/test_drive": "f7a707fd0c496b674b42c11637b8dba2a65e0bbafee7c299a1d17cea3e4fcb0a",
+  "table/vehicle": "5a402596b080dc2179851e1d1d142043265a6e0800d91554e21a8e843fb26f7f",
+  "table/vehicle_discount": "d9948e87c020e1dc0408972e00ecdee200b36e48c23f5197d27daba13cdc93a1",
+  "sequence/model_id_seq": "7ab221ae7badb09eaccf840d5d53961efe8ae644f2b4c40e217e644b0e4bc95f",
+  "sequence/rent_id_seq": "0025a4ef173b9288070329f37adb8ea6d570b9abeeb8f4f37240470c2ce9c35a",
+  "sequence/request_id_seq": "1be94af61f4227ce9076bdb8605f2851cb624c831974f50721ad7b480ff8aa79",
+  "sequence/sale_id_seq": "87811fa1ef614d5b8f1a07065d6155e7b818b91ce22be24174c7dea199941468",
+  "sequence/test_drive_id_seq": "0025a4ef173b9288070329f37adb8ea6d570b9abeeb8f4f37240470c2ce9c35a",
+  "sequence/user_id_seq": "7ab221ae7badb09eaccf840d5d53961efe8ae644f2b4c40e217e644b0e4bc95f",
+  "sequence/vehicle_id_seq": "3b531f10eed55f0dfaec94212a488ca5e2ac85247d2dc605f8b20ad764b8b0e3"
+}

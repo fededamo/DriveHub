@@ -7,10 +7,13 @@ import it.unifi.drivehub.domain.operation.Sale;
 import it.unifi.drivehub.domain.user.Manager;
 import it.unifi.drivehub.domain.vehicle.Brand;
 import it.unifi.drivehub.domain.vehicle.Model;
+import it.unifi.drivehub.domain.vehicle.PriceMode;
 import it.unifi.drivehub.domain.vehicle.Vehicle;
 import it.unifi.drivehub.domain.vehicle.VehicleState;
 import it.unifi.drivehub.service.AuthService;
 import it.unifi.drivehub.service.CatalogService;
+import it.unifi.drivehub.service.CatalogService.VehicleRow;
+import it.unifi.drivehub.service.CatalogService.ModelDiscountRow;
 import it.unifi.drivehub.service.OperationQueryService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Insets;
@@ -37,9 +40,15 @@ public final class ManagerDashboardView extends BorderPane {
     private final Runnable onLogout;
 
     private TableView<Brand> brandTable;
+    private AsyncLoad<List<Brand>> brandLoad;
+    private AsyncLoad<List<Model>> modelLoad;
+    private AsyncLoad<List<VehicleRow>> vehicleLoad;
+    private AsyncLoad<List<ModelDiscountRow>> modelDiscountLoad;
+    private AsyncLoad<List<VehicleDiscount>> vehicleDiscountLoad;
+    private AsyncLoad<List<Sale>> saleLoad;
     private TableView<Model> modelTable;
-    private TableView<Vehicle> vehicleTable;
-    private TableView<ModelDiscount> modelDiscTable;
+    private TableView<VehicleRow> vehicleTable;
+    private TableView<ModelDiscountRow> modelDiscTable;
     private TableView<VehicleDiscount> vehicleDiscTable;
     private TableView<Sale> saleTable;
 
@@ -87,7 +96,7 @@ public final class ManagerDashboardView extends BorderPane {
         Tab tabModels = new Tab("Modelli", buildModelsTab());
         Tab tabVehicles = new Tab("Veicoli", buildVehiclesTab());
         Tab tabDiscounts = new Tab("Sconti", buildDiscountsTab());
-        Tab tabSales = new Tab("Registro Vendite & Penali", buildSalesTab());
+        Tab tabSales = new Tab("Registro economico", buildSalesTab());
 
         tabPane.getTabs().addAll(tabBrands, tabModels, tabVehicles, tabDiscounts, tabSales);
 
@@ -137,7 +146,8 @@ public final class ManagerDashboardView extends BorderPane {
         });
 
         addBox.getChildren().addAll(nameField, btnAdd, btnDelete);
-        box.getChildren().addAll(brandTable, addBox);
+        brandLoad = new AsyncLoad<>("marchi", brandTable, catalogService::getAllBrands, rows -> brandTable.getItems().setAll(rows));
+        box.getChildren().addAll(brandLoad, brandTable, addBox);
         VBox.setVgrow(brandTable, Priority.ALWAYS);
 
         loadBrands();
@@ -145,7 +155,7 @@ public final class ManagerDashboardView extends BorderPane {
     }
 
     private void loadBrands() {
-        brandTable.getItems().setAll(catalogService.getAllBrands());
+        brandLoad.load();
     }
 
     // --- TAB MODELLI ---
@@ -160,7 +170,7 @@ public final class ManagerDashboardView extends BorderPane {
         colBrand.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null ? d.getValue().getBrand() : ""));
         TableColumn<Model, String> colName = new TableColumn<>("Modello");
         colName.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null ? d.getValue().getName() : ""));
-        TableColumn<Model, String> colPrice = new TableColumn<>("Prezzo Listino");
+        TableColumn<Model, String> colPrice = new TableColumn<>("Base del modello");
         colPrice.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null ? UiUtils.formatCurrency(d.getValue().getReleasePrice()) : ""));
         TableColumn<Model, String> colYear = new TableColumn<>("Anno Rilascio");
         colYear.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null ? String.valueOf(d.getValue().getReleaseYear()) : ""));
@@ -170,11 +180,11 @@ public final class ManagerDashboardView extends BorderPane {
 
         HBox addBox = new HBox(10);
         ComboBox<Brand> brandCombo = new ComboBox<>();
-        brandCombo.getItems().setAll(catalogService.getAllBrands());
+        javafx.beans.binding.Bindings.bindContent(brandCombo.getItems(), brandTable.getItems());
         TextField nameField = new TextField();
         nameField.setPromptText("Nome modello");
         TextField priceField = new TextField();
-        priceField.setPromptText("Prezzo (es. 25000)");
+        priceField.setPromptText("Base del modello (es. 25000)");
         TextField yearField = new TextField(String.valueOf(LocalDate.now().getYear()));
         yearField.setPromptText("Anno");
 
@@ -209,7 +219,8 @@ public final class ManagerDashboardView extends BorderPane {
         });
 
         addBox.getChildren().addAll(brandCombo, nameField, priceField, yearField, btnAdd, btnDelete);
-        box.getChildren().addAll(modelTable, addBox);
+        modelLoad = new AsyncLoad<>("modelli", modelTable, catalogService::getAllModels, rows -> modelTable.getItems().setAll(rows));
+        box.getChildren().addAll(modelLoad, modelTable, addBox);
         VBox.setVgrow(modelTable, Priority.ALWAYS);
 
         loadModels();
@@ -217,7 +228,7 @@ public final class ManagerDashboardView extends BorderPane {
     }
 
     private void loadModels() {
-        modelTable.getItems().setAll(catalogService.getAllModels());
+        modelLoad.load();
     }
 
     // --- TAB VEICOLI ---
@@ -226,31 +237,40 @@ public final class ManagerDashboardView extends BorderPane {
         box.setPadding(new Insets(20));
 
         vehicleTable = new TableView<>();
-        TableColumn<Vehicle, String> colId = new TableColumn<>("ID");
-        colId.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null ? "#" + d.getValue().getId() : ""));
-        TableColumn<Vehicle, String> colMod = new TableColumn<>("Modello");
+        TableColumn<VehicleRow, String> colId = new TableColumn<>("ID");
+        colId.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null ? "#" + d.getValue().vehicle().getId() : ""));
+        TableColumn<VehicleRow, String> colMod = new TableColumn<>("Modello");
         colMod.setCellValueFactory(d -> {
             if (d == null || d.getValue() == null) return new SimpleStringProperty("");
             return new SimpleStringProperty(
-                    catalogService.getModelById(d.getValue().getModelId())
-                            .map(m -> m.getBrand() + " " + m.getName()).orElse("N/D")
+                    d.getValue().modelName()
             );
         });
-        TableColumn<Vehicle, String> colVin = new TableColumn<>("VIN");
-        colVin.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null ? d.getValue().getVin() : ""));
-        TableColumn<Vehicle, String> colPlate = new TableColumn<>("Targa");
-        colPlate.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null && d.getValue().getLicencePlate() != null ? d.getValue().getLicencePlate() : "N/D"));
-        TableColumn<Vehicle, String> colKm = new TableColumn<>("Km");
-        colKm.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null ? String.valueOf(d.getValue().getKilometers()) : ""));
-        TableColumn<Vehicle, String> colState = new TableColumn<>("Stato");
-        colState.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null && d.getValue().getState() != null ? d.getValue().getState().name() : ""));
+        TableColumn<VehicleRow, String> colVin = new TableColumn<>("VIN");
+        colVin.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null ? d.getValue().vehicle().getVin() : ""));
+        TableColumn<VehicleRow, String> colPlate = new TableColumn<>("Targa");
+        colPlate.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null && d.getValue().vehicle().getLicencePlate() != null ? d.getValue().vehicle().getLicencePlate() : "N/D"));
+        TableColumn<VehicleRow, String> colKm = new TableColumn<>("Km");
+        colKm.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null ? String.valueOf(d.getValue().vehicle().getKilometers()) : ""));
+        TableColumn<VehicleRow, String> colState = new TableColumn<>("Stato");
+        colState.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null && d.getValue().vehicle().getState() != null ? d.getValue().vehicle().getState().name() : ""));
 
-        vehicleTable.getColumns().addAll(List.of(colId, colMod, colVin, colPlate, colKm, colState));
+        TableColumn<VehicleRow, String> colMode = new TableColumn<>("Modalità prezzo");
+        colMode.setCellValueFactory(d -> new SimpleStringProperty(
+                d.getValue().vehicle().getPriceMode() == PriceMode.MANUAL ? "Manuale" : "Automatica"));
+        TableColumn<VehicleRow, String> colBase = new TableColumn<>("Base applicata");
+        colBase.setCellValueFactory(d -> new SimpleStringProperty(UiUtils.formatCurrency(d.getValue().base())));
+        TableColumn<VehicleRow, String> colRecommended = new TableColumn<>("Prezzo consigliato");
+        colRecommended.setCellValueFactory(d -> new SimpleStringProperty(UiUtils.formatCurrency(d.getValue().recommended())));
+        TableColumn<VehicleRow, String> colEffective = new TableColumn<>("Prezzo effettivo");
+        colEffective.setCellValueFactory(d -> new SimpleStringProperty(UiUtils.formatCurrency(d.getValue().effective())));
+        vehicleTable.getColumns().addAll(List.of(colId, colMod, colVin, colPlate, colKm, colState,
+                colMode, colBase, colRecommended, colEffective));
         vehicleTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
 
-        HBox addBox = new HBox(8);
+        FlowPane addBox = new FlowPane(8, 8);
         ComboBox<Model> modelCombo = new ComboBox<>();
-        modelCombo.getItems().setAll(catalogService.getAllModels());
+        javafx.beans.binding.Bindings.bindContent(modelCombo.getItems(), modelTable.getItems());
         TextField vinField = new TextField();
         vinField.setPromptText("VIN (17 car.)");
         TextField plateField = new TextField();
@@ -258,7 +278,39 @@ public final class ManagerDashboardView extends BorderPane {
         TextField kmField = new TextField("0");
         kmField.setPromptText("Km");
         TextField priceField = new TextField();
-        priceField.setPromptText("Prezzo");
+        priceField.setPromptText("Base manuale (€)");
+        priceField.setAccessibleText("Base manuale in euro, prima di sconti e svalutazioni");
+        Label baseLabel = new Label("Base manuale (€):");
+        baseLabel.setLabelFor(priceField);
+        CheckBox recommended = new CheckBox("Automatico: usa la base del modello");
+        recommended.setSelected(true);
+        priceField.disableProperty().bind(recommended.selectedProperty());
+        Label priceHelp = new Label("La formula applica sconti e svalutazioni alla base scelta. Il consigliato usa sempre la base del modello.");
+        priceHelp.setWrapText(true);
+        vehicleTable.getSelectionModel().selectedItemProperty().addListener((obs, old, vehicle) -> {
+            if (vehicle != null) {
+                recommended.setSelected(vehicle.vehicle().getPriceMode() == PriceMode.AUTOMATIC);
+                priceField.setText(vehicle.vehicle().getPrice().toPlainString());
+            }
+        });
+        Button btnApplyPrice = new Button("Applica base alla selezione");
+        btnApplyPrice.setOnAction(e -> {
+            VehicleRow selected = vehicleTable.getSelectionModel().getSelectedItem();
+            Vehicle vehicle = selected == null ? null : selected.vehicle();
+            if (vehicle == null) {
+                UiUtils.showError("Selezione mancante", "Seleziona un veicolo dalla tabella.");
+                return;
+            }
+            try {
+                BigDecimal base = recommended.isSelected() ? null : new BigDecimal(priceField.getText().trim().replace(",", "."));
+                catalogService.updateVehiclePricing(vehicle.getId(), base);
+                loadVehicles();
+                UiUtils.showInfo("Base aggiornata", "Modalità salvata. Il prezzo effettivo include sconti e svalutazioni.");
+            } catch (Exception ex) {
+                UiUtils.showError("Errore prezzo", ex.getMessage());
+            }
+        });
+        FlowPane pricingBox = new FlowPane(8, 8, recommended, baseLabel, priceField, btnApplyPrice);
         TextField yearField = new TextField(String.valueOf(LocalDate.now().getYear()));
         ComboBox<VehicleState> stateCombo = new ComboBox<>();
         stateCombo.getItems().addAll(VehicleState.SALE, VehicleState.RENT);
@@ -268,7 +320,7 @@ public final class ManagerDashboardView extends BorderPane {
         btnAdd.setOnAction(e -> {
             try {
                 if (modelCombo.getValue() == null) throw new IllegalArgumentException("Seleziona il modello.");
-                BigDecimal price = new BigDecimal(priceField.getText().trim().replace(",", "."));
+                BigDecimal price = recommended.isSelected() ? null : new BigDecimal(priceField.getText().trim().replace(",", "."));
                 int km = Integer.parseInt(kmField.getText().trim());
                 int year = Integer.parseInt(yearField.getText().trim());
                 catalogService.addVehicle(
@@ -284,7 +336,8 @@ public final class ManagerDashboardView extends BorderPane {
         Button btnDelete = new Button("Elimina Selezionato");
         btnDelete.getStyleClass().add("button-danger");
         btnDelete.setOnAction(e -> {
-            Vehicle v = vehicleTable.getSelectionModel().getSelectedItem();
+            VehicleRow selected = vehicleTable.getSelectionModel().getSelectedItem();
+            Vehicle v = selected == null ? null : selected.vehicle();
             if (v != null) {
                 try {
                     catalogService.deleteVehicle(v.getId());
@@ -296,8 +349,9 @@ public final class ManagerDashboardView extends BorderPane {
             }
         });
 
-        addBox.getChildren().addAll(modelCombo, vinField, plateField, kmField, priceField, yearField, stateCombo, btnAdd, btnDelete);
-        box.getChildren().addAll(vehicleTable, addBox);
+        addBox.getChildren().addAll(modelCombo, vinField, plateField, kmField, yearField, stateCombo, btnAdd, btnDelete);
+        vehicleLoad = new AsyncLoad<>("veicoli", vehicleTable, () -> catalogService.getVehicleRows(null), rows -> vehicleTable.getItems().setAll(rows));
+        box.getChildren().addAll(vehicleLoad, vehicleTable, priceHelp, pricingBox, addBox);
         VBox.setVgrow(vehicleTable, Priority.ALWAYS);
 
         loadVehicles();
@@ -305,7 +359,7 @@ public final class ManagerDashboardView extends BorderPane {
     }
 
     private void loadVehicles() {
-        vehicleTable.getItems().setAll(catalogService.getAllVehicles());
+        vehicleLoad.load();
     }
 
     // --- TAB SCONTI ---
@@ -318,22 +372,21 @@ public final class ManagerDashboardView extends BorderPane {
         Label mTitle = new Label("Sconti su Modelli (0 - 50%)");
         mTitle.getStyleClass().add("card-title");
         modelDiscTable = new TableView<>();
-        TableColumn<ModelDiscount, String> mColMod = new TableColumn<>("Modello");
+        TableColumn<ModelDiscountRow, String> mColMod = new TableColumn<>("Modello");
         mColMod.setCellValueFactory(d -> {
             if (d == null || d.getValue() == null) return new SimpleStringProperty("");
             return new SimpleStringProperty(
-                    catalogService.getModelById(d.getValue().getModelId())
-                            .map(m -> m.getBrand() + " " + m.getName()).orElse("#" + d.getValue().getModelId())
+                    d.getValue().modelName()
             );
         });
-        TableColumn<ModelDiscount, String> mColVal = new TableColumn<>("Sconto %");
-        mColVal.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null ? d.getValue().getValue() + "%" : ""));
+        TableColumn<ModelDiscountRow, String> mColVal = new TableColumn<>("Sconto %");
+        mColVal.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null ? d.getValue().discount().getValue() + "%" : ""));
         modelDiscTable.getColumns().addAll(List.of(mColMod, mColVal));
         modelDiscTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
 
         HBox mControls = new HBox(8);
         ComboBox<Model> mCombo = new ComboBox<>();
-        mCombo.getItems().setAll(catalogService.getAllModels());
+        javafx.beans.binding.Bindings.bindContent(mCombo.getItems(), modelTable.getItems());
         TextField mValField = new TextField();
         mValField.setPromptText("% (0-50)");
         Button btnSetM = new Button("Salva");
@@ -351,14 +404,16 @@ public final class ManagerDashboardView extends BorderPane {
         Button btnDelM = new Button("Rimuovi");
         btnDelM.getStyleClass().add("button-danger");
         btnDelM.setOnAction(e -> {
-            ModelDiscount md = modelDiscTable.getSelectionModel().getSelectedItem();
+            ModelDiscountRow selected = modelDiscTable.getSelectionModel().getSelectedItem();
+            ModelDiscount md = selected == null ? null : selected.discount();
             if (md != null) {
                 catalogService.removeModelDiscount(md.getModelId());
                 loadDiscounts();
             }
         });
         mControls.getChildren().addAll(mCombo, mValField, btnSetM, btnDelM);
-        modelBox.getChildren().addAll(mTitle, modelDiscTable, mControls);
+        modelDiscountLoad = new AsyncLoad<>("sconti modello", modelDiscTable, catalogService::getModelDiscountRows, rows -> modelDiscTable.getItems().setAll(rows));
+        modelBox.getChildren().addAll(modelDiscountLoad, mTitle, modelDiscTable, mControls);
         HBox.setHgrow(modelBox, Priority.ALWAYS);
 
         // Sconti Veicolo
@@ -400,7 +455,8 @@ public final class ManagerDashboardView extends BorderPane {
             }
         });
         vControls.getChildren().addAll(vIdField, vValField, btnSetV, btnDelV);
-        vehBox.getChildren().addAll(vTitle, vehicleDiscTable, vControls);
+        vehicleDiscountLoad = new AsyncLoad<>("sconti veicolo", vehicleDiscTable, catalogService::getAllVehicleDiscounts, rows -> vehicleDiscTable.getItems().setAll(rows));
+        vehBox.getChildren().addAll(vTitle, vehicleDiscountLoad, vehicleDiscTable, vControls);
         HBox.setHgrow(vehBox, Priority.ALWAYS);
 
         box.getChildren().addAll(modelBox, vehBox);
@@ -409,8 +465,9 @@ public final class ManagerDashboardView extends BorderPane {
     }
 
     private void loadDiscounts() {
-        modelDiscTable.getItems().setAll(catalogService.getAllModelDiscounts());
-        vehicleDiscTable.getItems().setAll(catalogService.getAllVehicleDiscounts());
+        modelDiscountLoad.load();
+        vehicleDiscountLoad.load();
+        loadVehicles();
     }
 
     // --- TAB REGISTRO VENDITE ---
@@ -418,10 +475,11 @@ public final class ManagerDashboardView extends BorderPane {
         VBox box = new VBox(15);
         box.setPadding(new Insets(20));
 
-        Label title = new Label("Registro Contabile Operazioni (Vendite, Acquisti, Penali)");
+        Label title = new Label("Registro della concessionaria: entrate positive, uscite negative");
         title.getStyleClass().add("card-title");
 
         saleTable = new TableView<>();
+        saleTable.getStyleClass().add("agreement-requests");
         TableColumn<Sale, String> colId = new TableColumn<>("ID");
         colId.setCellValueFactory(d -> new SimpleStringProperty(d != null && d.getValue() != null ? "#" + d.getValue().getId() : ""));
 
@@ -429,13 +487,11 @@ public final class ManagerDashboardView extends BorderPane {
         colType.setCellValueFactory(d -> {
             if (d == null || d.getValue() == null) return new SimpleStringProperty("");
             Sale s = d.getValue();
-            if (s.getSalesmanId() == null && s.getVehicleId() == null) {
-                return new SimpleStringProperty("PENALE SCADENZA (Quota trattenuta)");
-            } else if (s.getAmount() != null && s.getAmount().compareTo(BigDecimal.ZERO) < 0) {
-                return new SimpleStringProperty("ACQUISTO DA CLIENTE");
-            } else {
-                return new SimpleStringProperty("VENDITA A CLIENTE");
-            }
+            return new SimpleStringProperty(switch (s.getType()) {
+                case PURCHASE -> "VENDITA A CLIENTE";
+                case ACQUISITION -> "ACQUISIZIONE DA CLIENTE";
+                case PENALTY -> "PENALE SCADENZA (Quota trattenuta)";
+            });
         });
 
         TableColumn<Sale, String> colDate = new TableColumn<>("Data Transazione");
@@ -458,7 +514,7 @@ public final class ManagerDashboardView extends BorderPane {
                 d != null && d.getValue() != null && d.getValue().getVehicleId() != null ? "#" + d.getValue().getVehicleId() : "N/D"
         ));
 
-        TableColumn<Sale, String> colAmount = new TableColumn<>("Importo");
+        TableColumn<Sale, String> colAmount = new TableColumn<>("Importo concessionaria");
         colAmount.setCellValueFactory(d -> new SimpleStringProperty(
                 d != null && d.getValue() != null && d.getValue().getAmount() != null ? UiUtils.formatCurrency(d.getValue().getAmount()) : ""
         ));
@@ -466,7 +522,8 @@ public final class ManagerDashboardView extends BorderPane {
         saleTable.getColumns().addAll(List.of(colId, colType, colDate, colClient, colSalesman, colVehicle, colAmount));
         saleTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
 
-        box.getChildren().addAll(title, saleTable);
+        saleLoad = new AsyncLoad<>("registro economico", saleTable, operationQueryService::getAllSales, rows -> saleTable.getItems().setAll(rows));
+        box.getChildren().addAll(title, saleLoad, saleTable);
         VBox.setVgrow(saleTable, Priority.ALWAYS);
 
         loadSales();
@@ -474,6 +531,6 @@ public final class ManagerDashboardView extends BorderPane {
     }
 
     private void loadSales() {
-        saleTable.getItems().setAll(operationQueryService.getAllSales());
+        saleLoad.load();
     }
 }

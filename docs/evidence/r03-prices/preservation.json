@@ -1,0 +1,11 @@
+{
+  "preexisting_local_files": 62,
+  "unchanged": 57,
+  "intentionally_updated": [
+    "src/main/java/it/unifi/drivehub/service/SaleToDealershipService.java",
+    "GLOSSARY.md",
+    "docs/testing.md",
+    "README.md",
+    "src/main/java/it/unifi/drivehub/domain/vehicle/Vehicle.java"
+  ]
+}

@@ -3,6 +3,7 @@ package it.unifi.drivehub.dao.postgres;
 import it.unifi.drivehub.dao.DatabaseManager;
 import it.unifi.drivehub.dao.SaleDao;
 import it.unifi.drivehub.domain.operation.Sale;
+import it.unifi.drivehub.domain.operation.SaleType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,7 +26,7 @@ public final class PostgresSaleDao implements SaleDao {
     @Override
     public List<Sale> findAll() {
         List<Sale> list = new ArrayList<>();
-        String sql = "SELECT id, vehicle, salesman, client, amount, date FROM sale ORDER BY date DESC";
+        String sql = "SELECT id, vehicle, salesman, client, amount, date, type FROM sale ORDER BY date DESC";
         try (Connection conn = db.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -41,7 +42,7 @@ public final class PostgresSaleDao implements SaleDao {
     @Override
     public List<Sale> findByClientId(Long clientId) {
         List<Sale> list = new ArrayList<>();
-        String sql = "SELECT id, vehicle, salesman, client, amount, date FROM sale WHERE client = ? ORDER BY date DESC";
+        String sql = "SELECT id, vehicle, salesman, client, amount, date, type FROM sale WHERE client = ? ORDER BY date DESC";
         try (Connection conn = db.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, clientId);
@@ -58,7 +59,7 @@ public final class PostgresSaleDao implements SaleDao {
 
     @Override
     public Optional<Sale> findById(Long id) {
-        String sql = "SELECT id, vehicle, salesman, client, amount, date FROM sale WHERE id = ?";
+        String sql = "SELECT id, vehicle, salesman, client, amount, date, type FROM sale WHERE id = ?";
         try (Connection conn = db.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, id);
@@ -74,8 +75,23 @@ public final class PostgresSaleDao implements SaleDao {
     }
 
     @Override
+    public Optional<Sale> findLatestPurchaseForVehicle(Long vehicleId, Connection conn) {
+        String sql = "SELECT id, vehicle, salesman, client, amount, date, type FROM sale " +
+                "WHERE vehicle = ? AND type = 'PURCHASE' ORDER BY date DESC, id DESC LIMIT 1";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            if (conn.getAutoCommit()) throw new IllegalArgumentException("La verifica della titolarità richiede una transazione attiva.");
+            ps.setLong(1, vehicleId);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() ? Optional.of(mapRow(rs)) : Optional.empty();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore durante la verifica dell'ultima vendita del veicolo.", e);
+        }
+    }
+
+    @Override
     public Sale save(Sale sale, Connection conn) {
-        String sql = "INSERT INTO sale (vehicle, salesman, client, amount, date) VALUES (?, ?, ?, ?, ?) RETURNING id";
+        String sql = "INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES (?, ?, ?, ?, ?, ?) RETURNING id";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             if (sale.getVehicleId() != null) {
                 ps.setLong(1, sale.getVehicleId());
@@ -90,34 +106,18 @@ public final class PostgresSaleDao implements SaleDao {
             ps.setLong(3, sale.getClientId());
             ps.setBigDecimal(4, sale.getAmount());
             ps.setTimestamp(5, Timestamp.valueOf(sale.getDate()));
+            ps.setString(6, sale.getType().name());
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     long id = rs.getLong(1);
-                    return Sale.create(id, sale.getVehicleId(), sale.getSalesmanId(), sale.getClientId(), sale.getAmount(), sale.getDate());
+                    return Sale.create(id, sale.getVehicleId(), sale.getSalesmanId(), sale.getClientId(), sale.getAmount(), sale.getDate(), sale.getType());
                 }
                 throw new SQLException("Inserimento transazione sale non ha restituito l'ID generato.");
             }
         } catch (SQLException e) {
             throw new RuntimeException("Errore durante il salvataggio della transazione sale.", e);
         }
-    }
-
-    @Override
-    public boolean hasSaleOperationsForVehicle(Long vehicleId) {
-        String sql = "SELECT EXISTS(SELECT 1 FROM sale WHERE vehicle = ?) AS has_sales";
-        try (Connection conn = db.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, vehicleId);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getBoolean("has_sales");
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Errore durante la verifica delle vendite per il veicolo id: " + vehicleId, e);
-        }
-        return false;
     }
 
     private static Sale mapRow(ResultSet rs) throws SQLException {
@@ -129,7 +129,8 @@ public final class PostgresSaleDao implements SaleDao {
                 salesman,
                 rs.getLong("client"),
                 rs.getBigDecimal("amount"),
-                rs.getTimestamp("date").toLocalDateTime()
+                rs.getTimestamp("date").toLocalDateTime(),
+                SaleType.valueOf(rs.getString("type"))
         );
     }
 }

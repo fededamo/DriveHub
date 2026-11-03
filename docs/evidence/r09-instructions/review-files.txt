@@ -1,0 +1,15 @@
+DriveHub/README.md
+DriveHub/docs/architecture.md
+DriveHub/docs/evidence/r09-instructions/InstallationDbCheck.java
+DriveHub/docs/evidence/r09-instructions/check-db.py
+DriveHub/docs/evidence/r09-instructions/check-startup.py
+DriveHub/docs/evidence/r09-instructions/commands.md
+DriveHub/docs/evidence/r09-instructions/prepare.py
+DriveHub/docs/evidence/r09-instructions/run-maven.py
+DriveHub/docs/evidence/r09-instructions/setup-db.py
+DriveHub/docs/evidence/r09-instructions/snapshot.py
+DriveHub/docs/evidence/r09-instructions/verification.md
+DriveHub/docs/installation.md
+DriveHub/docs/testing.md
+PIANO_REVISIONI_DRIVEHUB.md
+TRACKER_DRIVEHUB/revisioni/issues/16-istruzioni-e-rigore-teorico.md

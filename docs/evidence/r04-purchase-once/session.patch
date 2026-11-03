@@ -1,0 +1,650 @@
+--- a/docs/testing.md
++++ b/docs/testing.md
+@@ -242,3 +242,45 @@
+ alle due tabelle mantiene leggibili i valori selezionati. Prestazioni e caricamento
+ delle tabelle restano al ticket 14; nessuna certificazione screen reader.
+ [Evidenze, comandi, limiti e review](evidence/r04-agreement/verification.md).
++
++## Richieste di acquisto elaborate una sola volta — ticket 07
++
++```bash
++mvn -Ppostgres-tests -Dtest=PurchaseConcurrencyIntegrationTest test
++mvn -Ppostgres-tests -Dtest=PurchaseConcurrencyIntegrationTest,PurchaseAgreementIntegrationTest,BalanceConcurrencyIntegrationTest test
++mvn -Ppostgres-tests clean test
++```
++
++`RequestDao.findByIdForUpdate` richiede una transazione attiva e rilegge la richiesta
++con `SELECT ... FOR UPDATE` sulla connessione del chiamante. Saldo, rifiuto,
++scadenza e approvazione mantengono il lock fino al commit/rollback. Il tipo viene
++ricontrollato; il saldo richiede venditore, scadenza presente e non superata.
++La scadenza usa l'elenco iniziale soltanto per gli ID: rilegge anche cliente,
++tipo, approvazione e data sotto lock, saltando richieste già consumate o non più
++scadute. La notifica viene restituita dopo il commit e usa il rimborso effettivo.
++
++I movimenti conservano il protocollo del conto del ticket 04. Gli aggiornamenti
++di saldo, aggiornamento/eliminazione richiesta e transizione atomica del veicolo
++da `BLOCKED` devono interessare una riga; gli inserimenti devono restituire l'ID.
++Un esito mancante provoca rollback, anche se PostgreSQL non solleva un errore.
++Il totale concordato del ticket 06 rimane la fonte degli importi al saldo.
++
++`PurchaseConcurrencyIntegrationTest` usa servizi pubblici, nuovi AppContext,
++connessioni PostgreSQL distinte e gate SQL. `pg_stat_activity` e
++`pg_blocking_pids` verificano le sessioni effettivamente in attesa prima del
++rilascio; nessuno sleep o DAO simulato. Copre saldo/saldo, saldo/rifiuto nei due
++ordini, saldo/scadenza, rifiuti e scadenze concorrenti/ripetuti e approvazioni
++da sessioni obsolete. Il gate sulla richiesta verifica anche una scadenza letta
++prima di una proroga concorrente, nei due ordini. Attese, query e worker hanno
++limiti di 10 secondi; il cleanup rilascia i gate e cancella le query bloccate.
++
++Acconto 4.000 €: penale 800 € e rimborso 3.200 € una sola volta. Sono verificati
++anche approvazione incompleta, tipo diverso, stato veicolo incoerente e conto
++mancante. Trigger PostgreSQL temporanei iniettano errori e scritture saltate
++(`RETURN NULL`) su conto, vendita, richiesta e veicolo: nuove letture dei servizi
++confermano saldo, accordo, prenotazione e registro dopo rollback.
++
++[Evidenze della sessione e diff rispetto alla baseline dedicata](evidence/r04-purchase-once/verification.md).
++Ticket 06 ancora aperto in verifica finale; il suo lavoro locale è preservato.
++Le cancellazioni obbligatorie dei test drive e le transizioni degli altri flussi
++restano ai ticket successivi. Nessuna UI o regola economica nuova.
+--- a/README.md
++++ b/README.md
+@@ -75,7 +75,7 @@
+ * Addebito $100\%$ immediato sul conto all'atto della conferma.
+ 
+ ### 2.3 Gestione Concorrenza su Database
+-* **Acquisto**: aggiornamento atomico con clausola `WHERE id = ? AND state = 'SALE'::vehicle_state` per evitare sovrapposizioni o race condition tra clienti.
++* **Acquisto**: prenotazione atomica da `SALE` a `BLOCKED`. Saldo, rifiuto e scadenza rileggono e bloccano la richiesta nella stessa transazione dei movimenti del conto e della transizione da `BLOCKED`: una richiesta genera un solo esito economico. Anche l'approvazione usa il lock della richiesta. [Protocollo e prove PostgreSQL](docs/testing.md#richieste-di-acquisto-elaborate-una-sola-volta--ticket-07).
+ * **Noleggio e Test Drive**: verifica di disponibilità e inserimento nella stessa transazione con lock.
+ 
+ ---
+--- a/src/main/java/it/unifi/drivehub/dao/RequestDao.java
++++ b/src/main/java/it/unifi/drivehub/dao/RequestDao.java
+@@ -23,6 +23,9 @@
+         return findById(id);
+     }
+ 
++    /** Rilegge e blocca la richiesta fino al commit/rollback della transazione attiva. */
++    Optional<Request> findByIdForUpdate(Long id, Connection conn);
++
+     Optional<Request> findActivePurchaseRequestForVehicle(Long vehicleId);
+ 
+     Request save(Request request, Connection conn);
+--- a/src/main/java/it/unifi/drivehub/dao/postgres/PostgresBankAccountDao.java
++++ b/src/main/java/it/unifi/drivehub/dao/postgres/PostgresBankAccountDao.java
+@@ -96,7 +96,7 @@
+         try (PreparedStatement ps = conn.prepareStatement(sql)) {
+             ps.setBigDecimal(1, newBalance);
+             ps.setString(2, iban);
+-            ps.executeUpdate();
++            if (ps.executeUpdate() != 1) throw new SQLException("Aggiornamento saldo non eseguito.");
+         } catch (SQLException e) {
+             throw new RuntimeException("Errore durante l'aggiornamento del saldo del conto: " + iban, e);
+         }
+--- a/src/main/java/it/unifi/drivehub/dao/postgres/PostgresRequestDao.java
++++ b/src/main/java/it/unifi/drivehub/dao/postgres/PostgresRequestDao.java
+@@ -84,8 +84,21 @@
+ 
+     @Override
+     public Optional<Request> findById(Long id, Connection conn) {
+-        String sql = "SELECT id, vehicle, client, salesman, deposit, agreed_total, exp_date, type::text as type_str FROM request WHERE id = ?";
+-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
++        return findById(id, conn, false);
++    }
++
++    @Override
++    public Optional<Request> findByIdForUpdate(Long id, Connection conn) {
++        return findById(id, conn, true);
++    }
++
++    private Optional<Request> findById(Long id, Connection conn, boolean forUpdate) {
++        String sql = "SELECT id, vehicle, client, salesman, deposit, agreed_total, exp_date, type::text as type_str FROM request WHERE id = ?"
++                + (forUpdate ? " FOR UPDATE" : "");
++        try (PreparedStatement ps = conn.prepareStatement(sql)) {
++            if (forUpdate && conn.getAutoCommit()) {
++                throw new IllegalArgumentException("Il lock della richiesta richiede una transazione attiva.");
++            }
+             ps.setLong(1, id);
+             try (ResultSet rs = ps.executeQuery()) {
+                 if (rs.next()) {
+@@ -167,7 +180,7 @@
+             }
+             ps.setString(4, request.getType().name());
+             ps.setLong(5, request.getId());
+-            ps.executeUpdate();
++            if (ps.executeUpdate() != 1) throw new SQLException("Aggiornamento richiesta non eseguito.");
+         } catch (SQLException e) {
+             throw new RuntimeException("Errore durante l'aggiornamento della richiesta id: " + request.getId(), e);
+         }
+@@ -178,7 +191,7 @@
+         String sql = "DELETE FROM request WHERE id = ?";
+         try (PreparedStatement ps = conn.prepareStatement(sql)) {
+             ps.setLong(1, id);
+-            ps.executeUpdate();
++            if (ps.executeUpdate() != 1) throw new SQLException("Eliminazione richiesta non eseguita.");
+         } catch (SQLException e) {
+             throw new RuntimeException("Errore durante l'eliminazione della richiesta id: " + id, e);
+         }
+--- a/src/main/java/it/unifi/drivehub/service/PurchaseService.java
++++ b/src/main/java/it/unifi/drivehub/service/PurchaseService.java
+@@ -100,7 +100,7 @@
+      */
+     public void rejectPurchase(Long requestId) {
+         db.executeInTransaction(conn -> {
+-            Request request = requestDao.findById(requestId, conn)
++            Request request = requestDao.findByIdForUpdate(requestId, conn)
+                     .orElseThrow(() -> new IllegalStateException("Richiesta non trovata: " + requestId));
+             if (request.getType() != RequestType.PURCHASE) {
+                 throw new IllegalArgumentException("La richiesta non è di acquisto.");
+@@ -113,10 +113,9 @@
+             bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
+ 
+             // Stato veicolo torna SALE
+-            Vehicle vehicle = vehicleDao.findById(request.getVehicleId(), conn)
+-                    .orElseThrow(() -> new IllegalStateException("Veicolo non trovato."));
+-            vehicle.setState(VehicleState.SALE);
+-            vehicleDao.update(vehicle, conn);
++            if (!vehicleDao.updateStateAtomically(request.getVehicleId(), VehicleState.BLOCKED, VehicleState.SALE, conn)) {
++                throw new IllegalStateException("Il veicolo della richiesta non è riservato per l'acquisto.");
++            }
+ 
+             // Eliminazione richiesta
+             requestDao.delete(requestId, conn);
+@@ -129,7 +128,7 @@
+      */
+     public void approvePurchase(Long requestId, Long salesmanId) {
+         db.executeInTransaction(conn -> {
+-            Request request = requestDao.findById(requestId, conn)
++            Request request = requestDao.findByIdForUpdate(requestId, conn)
+                     .orElseThrow(() -> new IllegalStateException("Richiesta non trovata: " + requestId));
+             if (request.getType() != RequestType.PURCHASE) {
+                 throw new IllegalArgumentException("La richiesta non è di acquisto.");
+@@ -147,17 +146,18 @@
+      */
+     public void completePurchase(Long requestId) {
+         VehicleStateChangeEvent event = db.executeInTransactionWithResult(conn -> {
+-            Request request = requestDao.findById(requestId, conn)
++            Request request = requestDao.findByIdForUpdate(requestId, conn)
+                     .orElseThrow(() -> new IllegalStateException("Richiesta non trovata: " + requestId));
+-            if (request.getSalesmanId() == null) {
++            if (request.getType() != RequestType.PURCHASE) {
++                throw new IllegalArgumentException("La richiesta non è di acquisto.");
++            }
++            if (request.getSalesmanId() == null || request.getExpDate() == null) {
+                 throw new IllegalStateException("La richiesta deve essere prima approvata da un venditore.");
+             }
+             if (request.isExpired()) {
+                 throw new IllegalStateException("La richiesta è scaduta e non può più essere saldata.");
+             }
+ 
+-            Vehicle vehicle = vehicleDao.findById(request.getVehicleId(), conn)
+-                    .orElseThrow(() -> new IllegalStateException("Veicolo non trovato."));
+             BigDecimal fullPrice = request.getAgreedTotal();
+             BigDecimal remainingAmount = request.getRemainingAmount();
+ 
+@@ -168,17 +168,18 @@
+             bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
+ 
+             // Generazione riga in Sale (importo totale veicolo)
+-            Sale saleRecord = Sale.createPurchaseRecord(vehicle.getId(), request.getSalesmanId(), request.getClientId(), fullPrice);
++            Sale saleRecord = Sale.createPurchaseRecord(request.getVehicleId(), request.getSalesmanId(), request.getClientId(), fullPrice);
+             saleDao.save(saleRecord, conn);
+ 
+             // Cancellazione riga Request
+             requestDao.delete(requestId, conn);
+ 
+             // Stato veicolo impostato su SOLD
+-            vehicle.setState(VehicleState.SOLD);
+-            vehicleDao.update(vehicle, conn);
+-
+-            return new VehicleStateChangeEvent(vehicle.getId(), VehicleState.BLOCKED, VehicleState.SOLD);
++            if (!vehicleDao.updateStateAtomically(request.getVehicleId(), VehicleState.BLOCKED, VehicleState.SOLD, conn)) {
++                throw new IllegalStateException("Il veicolo della richiesta non è riservato per l'acquisto.");
++            }
++
++            return new VehicleStateChangeEvent(request.getVehicleId(), VehicleState.BLOCKED, VehicleState.SOLD);
+         });
+ 
+         // Notifica Observer (cancellazione automatica test drive futuri)
+@@ -200,42 +201,39 @@
+         List<String> notifications = new ArrayList<>();
+         List<Request> clientRequests = requestDao.findByClientId(clientId);
+ 
+-        for (Request req : clientRequests) {
+-            if (req.getType() == RequestType.PURCHASE && req.isExpired()) {
+-                db.executeInTransaction(conn -> {
+-                    BigDecimal deposit = req.getDeposit();
+-                    // Penale: 20% della caparra trattenuta dall'azienda
+-                    BigDecimal penalty = deposit.multiply(BigDecimal.valueOf(0.20)).setScale(2, RoundingMode.HALF_UP);
+-                    // Rimborsato: 80% della caparra restituito al cliente
+-                    BigDecimal refunded = deposit.subtract(penalty);
+-
+-                    BankAccount account = bankAccountDao.findByClientIdForUpdate(clientId, conn)
+-                            .orElseThrow(() -> new IllegalStateException("Conto cliente non trovato."));
+-                    account.deposit(refunded);
+-                    bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
+-
+-                    // Registrazione penale in Sale (salesman = null, vehicle = null)
+-                    Sale penaltyRecord = Sale.createPenaltyRecord(clientId, penalty);
+-                    saleDao.save(penaltyRecord, conn);
+-
+-                    // Eliminazione tupla Request
+-                    requestDao.delete(req.getId(), conn);
+-
+-                    // Ripristino stato veicolo a SALE
+-                    Vehicle vehicle = vehicleDao.findById(req.getVehicleId(), conn).orElse(null);
+-                    if (vehicle != null && vehicle.getState() == VehicleState.BLOCKED) {
+-                        vehicle.setState(VehicleState.SALE);
+-                        vehicleDao.update(vehicle, conn);
+-                    }
+-                });
+-
+-                notifications.add("La richiesta di acquisto per il veicolo #" + req.getVehicleId() +
+-                        " è scaduta in data " + req.getExpDate() +
+-                        ". Come da regolamento, è stata applicata una penale del 20% sull'acconto. Ti sono stati rimborsati € " +
+-                        req.getDeposit().multiply(BigDecimal.valueOf(0.80)).setScale(2, RoundingMode.HALF_UP) + ".");
+-            }
++        for (Request candidate : clientRequests) {
++            String notification = db.executeInTransactionWithResult(conn -> {
++                Request request = requestDao.findByIdForUpdate(candidate.getId(), conn).orElse(null);
++                if (request == null || request.getType() != RequestType.PURCHASE
++                        || !request.getClientId().equals(clientId) || request.getSalesmanId() == null
++                        || !request.isExpired()) {
++                    return null;
++                }
++
++                BigDecimal deposit = request.getDeposit();
++                BigDecimal penalty = deposit.multiply(BigDecimal.valueOf(0.20)).setScale(2, RoundingMode.HALF_UP);
++                BigDecimal refunded = deposit.subtract(penalty);
++
++                BankAccount account = bankAccountDao.findByClientIdForUpdate(clientId, conn)
++                        .orElseThrow(() -> new IllegalStateException("Conto cliente non trovato."));
++                account.deposit(refunded);
++                bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
++
++                Sale penaltyRecord = Sale.createPenaltyRecord(clientId, penalty);
++                saleDao.save(penaltyRecord, conn);
++                requestDao.delete(request.getId(), conn);
++
++                if (!vehicleDao.updateStateAtomically(request.getVehicleId(), VehicleState.BLOCKED, VehicleState.SALE, conn)) {
++                    throw new IllegalStateException("Il veicolo della richiesta non è riservato per l'acquisto.");
++                }
++
++                return "La richiesta di acquisto per il veicolo #" + request.getVehicleId()
++                        + " è scaduta in data " + request.getExpDate()
++                        + ". Come da regolamento, è stata applicata una penale del 20% sull'acconto. Ti sono stati rimborsati € "
++                        + refunded + ".";
++            });
++            if (notification != null) notifications.add(notification);
+         }
+         return notifications;
+     }
+ }
+-
+--- a/src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java
++++ b/src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java
+@@ -0,0 +1,365 @@
++package it.unifi.drivehub;
++
++import it.unifi.drivehub.dao.DatabaseManager;
++import it.unifi.drivehub.dao.postgres.PostgresRequestDao;
++import it.unifi.drivehub.domain.operation.Request;
++import it.unifi.drivehub.domain.vehicle.VehicleState;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.AfterEach;
++import org.junit.jupiter.api.Tag;
++import org.junit.jupiter.api.Test;
++import org.junit.jupiter.params.ParameterizedTest;
++import org.junit.jupiter.params.provider.CsvSource;
++import org.junit.jupiter.params.provider.ValueSource;
++import org.junit.jupiter.params.provider.MethodSource;
++import org.junit.jupiter.params.provider.Arguments;
++
++import java.math.BigDecimal;
++import java.sql.Connection;
++import java.util.Arrays;
++import java.util.List;
++import java.util.concurrent.Callable;
++import java.util.concurrent.Executors;
++import java.util.concurrent.TimeUnit;
++import java.util.concurrent.atomic.AtomicInteger;
++import java.util.stream.Stream;
++
++import static org.junit.jupiter.api.Assertions.*;
++
++@Tag("postgres")
++class PurchaseConcurrencyIntegrationTest {
++    private DatabaseManager db;
++    private AppContext ctx;
++
++    @BeforeEach
++    void setUp() throws Exception {
++        db = TestDatabase.fromEnvironment().reset();
++        ctx = new AppContext(db);
++        sql("""
++                DELETE FROM sale; DELETE FROM rent; DELETE FROM test_drive; DELETE FROM request;
++                UPDATE bank_account SET balance = 50000 WHERE client = 1;
++                INSERT INTO model (id, brand, name, release_price, release_year)
++                  VALUES (1001, 'Fiat', 'Ticket07', 20000, EXTRACT(YEAR FROM CURRENT_DATE));
++                INSERT INTO vehicle (id, model, vin, kilometers, price, year, state)
++                  VALUES (1001, 1001, 'T0700000000000001', 0, 20000, EXTRACT(YEAR FROM CURRENT_DATE), 'SALE');
++                """);
++        var request = ctx.getPurchaseService().initiatePurchase(1001L, 1L);
++        sql("UPDATE request SET id = 1001 WHERE id = " + request.getId());
++        ctx.getPurchaseService().approvePurchase(1001L, 16L);
++    }
++
++    @Test
++    void concurrentCompletionsChargeAndSellOnlyOnce() throws Exception {
++        var failures = race(
++                () -> new AppContext(db).getPurchaseService().completePurchase(1001L),
++                () -> new AppContext(db).getPurchaseService().completePurchase(1001L));
++
++        assertNull(failures.get(0));
++        assertNotNull(failures.get(1), "La seconda sessione deve rileggere una richiesta già consumata");
++        balance("30000.00");
++        assertEquals(VehicleState.SOLD, ctx.getCatalogService().getVehicleById(1001L).orElseThrow().getState());
++        assertTrue(ctx.getOperationQueryService().getClientRequests(1L).isEmpty());
++        var sales = ctx.getOperationQueryService().getClientSales(1L);
++        assertEquals(1, sales.size());
++        assertEquals(new BigDecimal("20000.00"), sales.getFirst().getAmount());
++    }
++
++    @ParameterizedTest
++    @CsvSource({"completion,rejection,30000.00,SOLD,20000.00", "rejection,completion,50000.00,SALE,0",
++            "rejection,rejection,50000.00,SALE,0", "expiration,rejection,49200.00,SALE,800.00",
++            "rejection,expiration,50000.00,SALE,0", "expiration,expiration,49200.00,SALE,800.00",
++            "completion,approval,30000.00,SOLD,20000.00", "rejection,approval,50000.00,SALE,0"})
++    void competingPhasesConsumeTheRequestOnce(String first, String second, String expectedBalance,
++                                             VehicleState state, BigDecimal amount) throws Exception {
++        if (first.equals("expiration") || second.equals("expiration")) {
++            sql("UPDATE request SET exp_date = CURRENT_DATE - 1 WHERE id = 1001");
++        }
++        var notices = new AtomicInteger();
++        var failures = race(operation(first, notices), operation(second, notices));
++        assertNull(failures.get(0));
++        if (second.equals("expiration")) assertNull(failures.get(1));
++        else assertNotNull(failures.get(1));
++        assertConsumed(expectedBalance, state, amount);
++        assertEquals(first.equals("expiration") ? 1 : 0, notices.get());
++        assertTrue(ctx.getPurchaseService().checkAndHandleExpiredRequests(1L).isEmpty());
++        assertConsumed(expectedBalance, state, amount);
++    }
++
++    @ParameterizedTest
++    @ValueSource(booleans = {false, true})
++    void completionAndExpirationRecheckTheLockedDeadline(boolean expired) throws Exception {
++        sql("UPDATE request SET exp_date = CURRENT_DATE " + (expired ? "- 1" : "") + " WHERE id = 1001");
++        var notices = new AtomicInteger();
++        var failures = race("SELECT id FROM request WHERE id = 1001 FOR UPDATE", false,
++                operation("expiration", notices), operation("completion", notices));
++        assertNull(failures.get(0));
++        if (expired) assertNotNull(failures.get(1));
++        else assertNull(failures.get(1));
++        assertEquals(expired ? 1 : 0, notices.get());
++        assertConsumed(expired ? "49200.00" : "30000.00", expired ? VehicleState.SALE : VehicleState.SOLD,
++                new BigDecimal(expired ? "800.00" : "20000.00"));
++    }
++
++    @ParameterizedTest
++    @ValueSource(booleans = {false, true})
++    void staleExpirationCandidateCannotRefundACompletedOrExtendedRequest(boolean expirationFirst) throws Exception {
++        sql("UPDATE request SET exp_date = CURRENT_DATE - 1 WHERE id = 1001");
++        var notices = new AtomicInteger();
++        var failures = race("UPDATE request SET exp_date = CURRENT_DATE WHERE id = 1001", true,
++                operation(expirationFirst ? "expiration" : "completion", notices),
++                operation(expirationFirst ? "completion" : "expiration", notices));
++        assertNull(failures.get(0));
++        assertNull(failures.get(1));
++        assertEquals(0, notices.get());
++        assertConsumed("30000.00", VehicleState.SOLD, new BigDecimal("20000.00"));
++    }
++
++    @ParameterizedTest
++    @CsvSource({"NULL,NULL", "NULL,CURRENT_DATE - 1", "16,NULL"})
++    void incompleteApprovalCannotEnableCompletionOrExpiration(String salesman, String deadline) throws Exception {
++        sql("UPDATE request SET salesman = " + salesman + ", exp_date = " + deadline + " WHERE id = 1001");
++        Request before = request();
++        var failure = assertThrows(RuntimeException.class, () -> ctx.getPurchaseService().completePurchase(1001L));
++        assertTrue(rootMessage(failure).contains("approvata"));
++        assertTrue(ctx.getPurchaseService().checkAndHandleExpiredRequests(1L).isEmpty());
++        assertPending(before, VehicleState.BLOCKED);
++    }
++
++    @ParameterizedTest
++    @ValueSource(strings = {"completion", "rejection", "approval"})
++    void purchaseCommandsRejectSaleRequests(String phase) throws Exception {
++        sql("UPDATE request SET type = 'SALE', agreed_total = NULL, deposit = -4000, exp_date = CURRENT_DATE - 1 WHERE id = 1001");
++        var failure = assertThrows(RuntimeException.class, operation(phase, new AtomicInteger())::run);
++        assertTrue(rootMessage(failure).contains("non è di acquisto"));
++        assertTrue(ctx.getPurchaseService().checkAndHandleExpiredRequests(1L).isEmpty());
++        balance("46000.00");
++        assertEquals(new BigDecimal("-4000.00"), request().getDeposit());
++        assertTrue(ctx.getOperationQueryService().getAllSales().isEmpty());
++        assertEquals(VehicleState.BLOCKED, ctx.getCatalogService().getVehicleById(1001L).orElseThrow().getState());
++    }
++
++    @ParameterizedTest
++    @ValueSource(strings = {"completion", "rejection", "expiration"})
++    void missingAccountPreventsEveryWrite(String phase) throws Exception {
++        if (phase.equals("expiration")) sql("UPDATE request SET exp_date = CURRENT_DATE - 1 WHERE id = 1001");
++        Request before = request();
++        sql("DELETE FROM bank_account WHERE client = 1");
++        var failure = assertThrows(RuntimeException.class, operation(phase, new AtomicInteger())::run);
++        assertTrue(rootMessage(failure).contains("Conto cliente non trovato"));
++        ctx = new AppContext(db);
++        assertEquals(before.getDeposit(), request().getDeposit());
++        assertEquals(before.getAgreedTotal(), request().getAgreedTotal());
++        assertEquals(before.getSalesmanId(), request().getSalesmanId());
++        assertEquals(before.getExpDate(), request().getExpDate());
++        assertTrue(ctx.getOperationQueryService().getAllSales().isEmpty());
++        assertEquals(VehicleState.BLOCKED, ctx.getCatalogService().getVehicleById(1001L).orElseThrow().getState());
++    }
++
++    @ParameterizedTest
++    @CsvSource({"completion,SALE", "completion,SOLD", "completion,WAITING", "completion,RENT",
++            "rejection,SALE", "rejection,SOLD", "rejection,WAITING", "rejection,RENT",
++            "expiration,SALE", "expiration,SOLD", "expiration,WAITING", "expiration,RENT"})
++    void inconsistentVehicleStateRollsBackTheWholePhase(String phase, VehicleState state) throws Exception {
++        if (phase.equals("expiration")) sql("UPDATE request SET exp_date = CURRENT_DATE - 1 WHERE id = 1001");
++        sql("UPDATE vehicle SET state = '" + state + "' WHERE id = 1001");
++        Request before = request();
++        var failure = assertThrows(RuntimeException.class, operation(phase, new AtomicInteger())::run);
++        assertTrue(rootMessage(failure).contains("non è riservato"));
++        assertPending(before, state);
++    }
++
++    @Test
++    void expirationUsesTheRefundActuallyWrittenInTheNotification() throws Exception {
++        sql("UPDATE request SET deposit = 0.03, agreed_total = 0.15, exp_date = CURRENT_DATE - 1 WHERE id = 1001");
++        var notices = ctx.getPurchaseService().checkAndHandleExpiredRequests(1L);
++        assertEquals(1, notices.size());
++        assertTrue(notices.getFirst().contains("€ 0.02."));
++        assertConsumed("46000.02", VehicleState.SALE, new BigDecimal("0.01"));
++        assertTrue(ctx.getPurchaseService().checkAndHandleExpiredRequests(1L).isEmpty());
++        assertConsumed("46000.02", VehicleState.SALE, new BigDecimal("0.01"));
++    }
++
++    @Test
++    void requestLockRequiresAnActiveTransaction() throws Exception {
++        try (var conn = db.getConnection()) {
++            assertTrue(conn.getAutoCommit());
++            assertThrows(IllegalArgumentException.class,
++                    () -> new PostgresRequestDao(db).findByIdForUpdate(1001L, conn));
++        }
++        assertPending(request(), VehicleState.BLOCKED);
++    }
++
++    @ParameterizedTest
++    @MethodSource("writeFailures")
++    void failedOrSkippedWritesRollBackTheWholePhase(String phase, String table, String event,
++                                                   String observedBalance, boolean skip) throws Exception {
++        if (phase.equals("expiration")) sql("UPDATE request SET exp_date = CURRENT_DATE - 1 WHERE id = 1001");
++        if (phase.equals("approval")) sql("UPDATE request SET salesman = NULL, exp_date = NULL WHERE id = 1001");
++        Request before = request();
++        sql("CREATE FUNCTION fail_ticket07() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN "
++                + "IF (SELECT balance FROM bank_account WHERE client = 1) <> " + observedBalance
++                + " THEN RAISE EXCEPTION 'ticket07_missing_movement'; END IF; "
++                + (skip ? "RETURN NULL; " : "RAISE EXCEPTION 'ticket07_after_movement'; ")
++                + "END $$; CREATE TRIGGER fail_ticket07 BEFORE " + event + " ON " + table
++                + " FOR EACH ROW EXECUTE FUNCTION fail_ticket07()");
++        var failure = assertThrows(RuntimeException.class, operation(phase, new AtomicInteger())::run);
++        if (!skip) assertTrue(rootMessage(failure).contains("ticket07_after_movement"), rootMessage(failure));
++        assertPending(before, VehicleState.BLOCKED);
++    }
++
++    static Stream<Arguments> writeFailures() {
++        return Stream.of(
++                new String[]{"completion", "bank_account", "UPDATE", "46000"},
++                new String[]{"completion", "sale", "INSERT", "30000"},
++                new String[]{"completion", "request", "DELETE", "30000"},
++                new String[]{"completion", "vehicle", "UPDATE", "30000"},
++                new String[]{"rejection", "bank_account", "UPDATE", "46000"},
++                new String[]{"rejection", "request", "DELETE", "50000"},
++                new String[]{"rejection", "vehicle", "UPDATE", "50000"},
++                new String[]{"expiration", "bank_account", "UPDATE", "46000"},
++                new String[]{"expiration", "sale", "INSERT", "49200"},
++                new String[]{"expiration", "request", "DELETE", "49200"},
++                new String[]{"expiration", "vehicle", "UPDATE", "49200"},
++                new String[]{"approval", "request", "UPDATE", "46000"})
++                .flatMap(row -> Stream.of(false, true).map(skip -> Arguments.of(row[0], row[1], row[2], row[3], skip)));
++    }
++
++    @AfterEach
++    void removeFailureInjection() throws Exception {
++        if (db != null) sql("DROP FUNCTION IF EXISTS fail_ticket07() CASCADE");
++    }
++
++    private Request request() {
++        return ctx.getOperationQueryService().getClientRequests(1L).stream()
++                .filter(r -> r.getId().equals(1001L)).findFirst().orElseThrow();
++    }
++
++    private void assertPending(Request before, VehicleState state) {
++        ctx = new AppContext(db);
++        balance("46000.00");
++        Request reloaded = request();
++        assertEquals(before.getDeposit(), reloaded.getDeposit());
++        assertEquals(before.getAgreedTotal(), reloaded.getAgreedTotal());
++        assertEquals(before.getSalesmanId(), reloaded.getSalesmanId());
++        assertEquals(before.getExpDate(), reloaded.getExpDate());
++        assertEquals(state, ctx.getCatalogService().getVehicleById(1001L).orElseThrow().getState());
++        assertTrue(ctx.getOperationQueryService().getAllSales().isEmpty());
++    }
++
++    private static String rootMessage(Throwable failure) {
++        while (failure.getCause() != null) failure = failure.getCause();
++        return failure.getMessage();
++    }
++
++    private Runnable operation(String phase, AtomicInteger notices) {
++        return () -> {
++            var service = new AppContext(db).getPurchaseService();
++            switch (phase) {
++                case "completion" -> service.completePurchase(1001L);
++                case "rejection" -> service.rejectPurchase(1001L);
++                case "approval" -> service.approvePurchase(1001L, 16L);
++                case "expiration" -> notices.addAndGet(service.checkAndHandleExpiredRequests(1L).size());
++                default -> throw new IllegalArgumentException(phase);
++            }
++        };
++    }
++
++    private void assertConsumed(String expectedBalance, VehicleState state, BigDecimal amount) {
++        ctx = new AppContext(db);
++        balance(expectedBalance);
++        assertEquals(state, ctx.getCatalogService().getVehicleById(1001L).orElseThrow().getState());
++        assertTrue(ctx.getOperationQueryService().getClientRequests(1L).isEmpty());
++        var sales = ctx.getOperationQueryService().getClientSales(1L);
++        assertEquals(amount.signum() == 0 ? 0 : 1, sales.size());
++        if (amount.signum() != 0) {
++            assertEquals(0, amount.compareTo(sales.getFirst().getAmount()));
++            if (state == VehicleState.SALE) {
++                assertNull(sales.getFirst().getVehicleId());
++                assertNull(sales.getFirst().getSalesmanId());
++            } else {
++                assertEquals(1001L, sales.getFirst().getVehicleId());
++                assertEquals(16L, sales.getFirst().getSalesmanId());
++            }
++        }
++    }
++
++    // Il conto ferma la prima fase; la seconda attende il conto (RED) o la richiesta (GREEN).
++    private List<RuntimeException> race(Runnable first, Runnable second) throws Exception {
++        return race("SELECT client FROM bank_account WHERE client = 1 FOR UPDATE", false, first, second);
++    }
++
++    private List<RuntimeException> race(String gateQuery, boolean commitGate, Runnable first, Runnable second) throws Exception {
++        var workers = Executors.newFixedThreadPool(2);
++        try (Connection gate = db.getConnection(); Connection observer = db.getConnection()) {
++            gate.setAutoCommit(false);
++            try (var statement = gate.createStatement()) {
++                statement.setQueryTimeout(10);
++                statement.execute(gateQuery);
++            }
++            var a = workers.submit(outcome(first));
++            try {
++                awaitWaiters(observer, 1);
++                var b = workers.submit(outcome(second));
++                awaitWaiters(observer, 2);
++                if (commitGate) gate.commit();
++                else gate.rollback();
++                return Arrays.asList(a.get(10, TimeUnit.SECONDS), b.get(10, TimeUnit.SECONDS));
++            } finally {
++                gate.rollback();
++                try (var statement = observer.createStatement()) {
++                    statement.setQueryTimeout(10);
++                    statement.executeQuery("""
++                            SELECT pg_cancel_backend(pid) FROM pg_stat_activity
++                            WHERE datname = current_database() AND usename = current_user
++                              AND pid <> pg_backend_pid() AND state = 'active' AND wait_event_type = 'Lock'
++                            """).close();
++                }
++            }
++        } finally {
++            workers.shutdownNow();
++            assertTrue(workers.awaitTermination(10, TimeUnit.SECONDS), "Worker JDBC non terminati");
++        }
++    }
++
++    private static Callable<RuntimeException> outcome(Runnable operation) {
++        return () -> {
++            try {
++                operation.run();
++                return null;
++            } catch (RuntimeException e) {
++                return e;
++            }
++        };
++    }
++
++    private static void awaitWaiters(Connection observer, int expected) throws Exception {
++        long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(10);
++        try (var statement = observer.createStatement()) {
++            statement.setQueryTimeout(10);
++            do {
++                try (var result = statement.executeQuery("""
++                        SELECT count(DISTINCT pid) FROM pg_stat_activity
++                        WHERE datname = current_database() AND usename = current_user
++                          AND pid <> pg_backend_pid() AND state = 'active' AND wait_event_type = 'Lock'
++                          AND (query ILIKE '%request%' OR query ILIKE '%bank_account%')
++                          AND cardinality(pg_blocking_pids(pid)) > 0
++                        """)) {
++                    assertTrue(result.next());
++                    if (result.getInt(1) == expected) return;
++                }
++            } while (System.nanoTime() < deadline);
++        }
++        fail("Attese PostgreSQL distinte mancanti: " + expected);
++    }
++
++    private void balance(String expected) {
++        assertEquals(new BigDecimal(expected), ctx.getAuthService().getClientBankAccount(1L).getBalance());
++    }
++
++    private void sql(String query) throws Exception {
++        try (var conn = db.getConnection(); var statement = conn.createStatement()) {
++            statement.setQueryTimeout(10);
++            statement.execute(query);
++        }
++    }
++}

@@ -1,0 +1,92 @@
+ M README.md
+ M pom.xml
+ M src/main/java/it/unifi/drivehub/AppContext.java
+ M src/main/java/it/unifi/drivehub/dao/BankAccountDao.java
+ M src/main/java/it/unifi/drivehub/dao/DiscountDao.java
+ M src/main/java/it/unifi/drivehub/dao/ModelDao.java
+ M src/main/java/it/unifi/drivehub/dao/RequestDao.java
+ M src/main/java/it/unifi/drivehub/dao/SaleDao.java
+ M src/main/java/it/unifi/drivehub/dao/TestDriveDao.java
+ M src/main/java/it/unifi/drivehub/dao/UserDao.java
+ M src/main/java/it/unifi/drivehub/dao/VehicleDao.java
+ M src/main/java/it/unifi/drivehub/dao/postgres/PostgresBankAccountDao.java
+ M src/main/java/it/unifi/drivehub/dao/postgres/PostgresDiscountDao.java
+ M src/main/java/it/unifi/drivehub/dao/postgres/PostgresModelDao.java
+ M src/main/java/it/unifi/drivehub/dao/postgres/PostgresRentDao.java
+ M src/main/java/it/unifi/drivehub/dao/postgres/PostgresRequestDao.java
+ M src/main/java/it/unifi/drivehub/dao/postgres/PostgresSaleDao.java
+ M src/main/java/it/unifi/drivehub/dao/postgres/PostgresUserDao.java
+ M src/main/java/it/unifi/drivehub/dao/postgres/PostgresVehicleDao.java
+ M src/main/java/it/unifi/drivehub/domain/operation/Request.java
+ M src/main/java/it/unifi/drivehub/domain/operation/Sale.java
+ M src/main/java/it/unifi/drivehub/domain/operation/TestDrive.java
+ M src/main/java/it/unifi/drivehub/domain/vehicle/Vehicle.java
+ M src/main/java/it/unifi/drivehub/event/VehicleEventPublisher.java
+ D src/main/java/it/unifi/drivehub/event/VehicleStateChangeEvent.java
+ D src/main/java/it/unifi/drivehub/event/VehicleStateObserver.java
+ M src/main/java/it/unifi/drivehub/presentation/view/AccountManagementDialog.java
+ M src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java
+ M src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java
+ M src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java
+ M src/main/java/it/unifi/drivehub/service/AuthService.java
+ M src/main/java/it/unifi/drivehub/service/CatalogService.java
+ M src/main/java/it/unifi/drivehub/service/PriceCalculatorService.java
+ M src/main/java/it/unifi/drivehub/service/PurchaseService.java
+ M src/main/java/it/unifi/drivehub/service/RentalService.java
+ M src/main/java/it/unifi/drivehub/service/SaleToDealershipService.java
+ M src/main/java/it/unifi/drivehub/service/TestDriveCancellationObserver.java
+ M src/main/java/it/unifi/drivehub/service/TestDriveService.java
+ M src/main/resources/css/style.css
+ M src/main/resources/db/demo.sql
+ M src/main/resources/db/schema.sql
+ M src/test/java/it/unifi/drivehub/DatabaseConnectionIntegrationTest.java
+ M src/test/java/it/unifi/drivehub/DemoSqlValidationTest.java
+ M src/test/java/it/unifi/drivehub/DomainInvariantsTest.java
+ M src/test/java/it/unifi/drivehub/FullWorkflowIntegrationTest.java
+ M src/test/java/it/unifi/drivehub/PriceCalculatorServiceTest.java
+?? AGENTS.md
+?? GLOSSARY.md
+?? docs/adr/
+?? docs/agents/
+?? docs/architecture.md
+?? docs/evidence/r00/
+?? docs/evidence/r01-email/
+?? docs/evidence/r01-vehicle/
+?? docs/evidence/r02-balances/
+?? docs/evidence/r03-prices/
+?? docs/evidence/r04-agreement/
+?? docs/evidence/r04-purchase-once/
+?? docs/evidence/r04-test-drive-atomic/
+?? docs/evidence/r05-sale-outcome/
+?? docs/evidence/r05-sale-proposal/
+?? docs/evidence/r06-bookings/
+?? docs/evidence/r06-destination/
+?? docs/evidence/r07-identity/
+?? docs/evidence/r08-tables/
+?? docs/evidence/r09-instructions/
+?? docs/evidence/r10-cleanup/
+?? docs/installation.md
+?? docs/testing.md
+?? src/main/java/it/unifi/drivehub/domain/operation/SaleType.java
+?? src/main/java/it/unifi/drivehub/domain/vehicle/PriceMode.java
+?? src/main/java/it/unifi/drivehub/event/VehicleCommitmentEvent.java
+?? src/main/java/it/unifi/drivehub/event/VehicleCommitmentObserver.java
+?? src/main/java/it/unifi/drivehub/presentation/view/AsyncLoad.java
+?? src/test/java/it/unifi/drivehub/AuthServiceIntegrationTest.java
+?? src/test/java/it/unifi/drivehub/BalanceConcurrencyIntegrationTest.java
+?? src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java
+?? src/test/java/it/unifi/drivehub/BookingRulesTest.java
+?? src/test/java/it/unifi/drivehub/CatalogListingIntegrationTest.java
+?? src/test/java/it/unifi/drivehub/DatabaseIsolationIntegrationTest.java
+?? src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java
+?? src/test/java/it/unifi/drivehub/PriceSelectionIntegrationTest.java
+?? src/test/java/it/unifi/drivehub/PurchaseAgreementIntegrationTest.java
+?? src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java
+?? src/test/java/it/unifi/drivehub/RequestAgreementTest.java
+?? src/test/java/it/unifi/drivehub/SaleOutcomeIntegrationTest.java
+?? src/test/java/it/unifi/drivehub/SaleProposalIntegrationTest.java
+?? src/test/java/it/unifi/drivehub/SaleTypeTest.java
+?? src/test/java/it/unifi/drivehub/TestDatabase.java
+?? src/test/java/it/unifi/drivehub/TestDatabaseConfigurationTest.java
+?? src/test/java/it/unifi/drivehub/TestDriveCancellationIntegrationTest.java
+?? src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java

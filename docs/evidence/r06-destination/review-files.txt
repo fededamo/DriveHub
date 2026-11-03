@@ -1,0 +1,9 @@
+DriveHub/src/main/java/it/unifi/drivehub/service/RentalService.java
+DriveHub/src/main/java/it/unifi/drivehub/dao/postgres/PostgresRentDao.java
+DriveHub/src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java
+DriveHub/docs/testing.md
+DriveHub/docs/evidence/r06-destination/DestinationUiCheck.java
+DriveHub/docs/evidence/r06-destination/run-ui.py
+DriveHub/docs/evidence/r06-destination/verification.md
+PIANO_REVISIONI_DRIVEHUB.md
+TRACKER_DRIVEHUB/revisioni/issues/12-destinazione-veicolo-e-rimborsi.md

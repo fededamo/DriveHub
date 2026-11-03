@@ -1,0 +1,9 @@
+{
+  "missing": [],
+  "changed_from_initial": [
+    "TRACKER_DRIVEHUB/revisioni/issues/18-verifica-integrata-e-chiusura.md",
+    "PIANO_REVISIONI_DRIVEHUB.md"
+  ],
+  "phase1_sentinel_after_check": "not executed: /tmp lost on interruption",
+  "new_environment": "phase2"
+}

@@ -1,0 +1,22 @@
+{
+  "baseline_files": 352,
+  "unchanged": 340,
+  "modified": [
+    "DriveHub/README.md",
+    "DriveHub/docs/testing.md",
+    "DriveHub/src/main/java/it/unifi/drivehub/AppContext.java",
+    "DriveHub/src/main/java/it/unifi/drivehub/event/VehicleEventPublisher.java",
+    "DriveHub/src/main/java/it/unifi/drivehub/dao/TestDriveDao.java",
+    "DriveHub/src/main/java/it/unifi/drivehub/service/RentalService.java",
+    "DriveHub/src/main/java/it/unifi/drivehub/service/TestDriveCancellationObserver.java",
+    "DriveHub/src/main/java/it/unifi/drivehub/service/PurchaseService.java",
+    "PIANO_REVISIONI_DRIVEHUB.md",
+    "TRACKER_DRIVEHUB/revisioni/issues/08-cancellazioni-test-drive-atomiche.md"
+  ],
+  "deleted": [
+    "DriveHub/src/main/java/it/unifi/drivehub/event/VehicleStateObserver.java",
+    "DriveHub/src/main/java/it/unifi/drivehub/event/VehicleStateChangeEvent.java"
+  ],
+  "previous_tickets_01_07_unchanged": true,
+  "historical_evidence_unchanged": true
+}

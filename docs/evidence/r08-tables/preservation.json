@@ -1,0 +1,22 @@
+{
+  "initial": 1089,
+  "present": 1089,
+  "identical": 1082,
+  "intentional_changes": [
+    "DriveHub/docs/testing.md",
+    "DriveHub/src/main/java/it/unifi/drivehub/service/CatalogService.java",
+    "DriveHub/src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java",
+    "DriveHub/src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java",
+    "DriveHub/src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java",
+    "TRACKER_DRIVEHUB/revisioni/issues/14-tabelle-javafx-reattive.md",
+    "PIANO_REVISIONI_DRIVEHUB.md"
+  ],
+  "deleted": [],
+  "head_index_unchanged": true,
+  "runtime_gui_inputs_unchanged": true,
+  "baseline_snapshot_unchanged": true,
+  "session_whitespace_ok": true,
+  "local_links_ok": true,
+  "private_credentials_absent": true,
+  "relation_excluded": true
+}

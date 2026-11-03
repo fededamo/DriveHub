@@ -1,0 +1,65 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultFontSize 16
+skinparam classAttributeIconSize 0
+title Dominio — catalogo e prezzi (vista selettiva)
+class Brand {
+  - name: String
+}
+class Model {
+  - id: Long
+  - brand: String
+  - releasePrice: BigDecimal
+  - releaseYear: int
+}
+class Vehicle {
+  - id: Long
+  - modelId: Long
+  - vin: String
+  - licencePlate: String
+  - kilometers: int
+  - price: BigDecimal
+  - priceMode: PriceMode
+  - year: int
+  - state: VehicleState
+  + getSelectedBasePrice(model: Model): BigDecimal
+  + setPrice(price: BigDecimal): void
+  + useRecommendedPrice(): void
+}
+enum PriceMode {
+  AUTOMATIC
+  MANUAL
+}
+enum VehicleState {
+  SALE
+  RENT
+  SOLD
+  WAITING
+  BLOCKED
+}
+abstract class Discount {
+  # value: int
+  + getValue(): int
+}
+class ModelDiscount {
+  - modelId: Long
+}
+class VehicleDiscount {
+  - vehicleId: Long
+}
+Discount <|-- ModelDiscount
+Discount <|-- VehicleDiscount
+Vehicle --> PriceMode
+Vehicle --> VehicleState
+Vehicle ..> Model : modelId (non oggetto Model)
+Model ..> Brand : brand (nome)
+ModelDiscount ..> Model : modelId
+VehicleDiscount ..> Vehicle : vehicleId
+note bottom of Vehicle
+  create(...) è una factory statica, non Factory Method GoF.
+  price è la base manuale; AUTOMATIC sceglie la base modello.
+  Stessa formula per consigliato/effettivo; HALF_UP sui centesimi.
+  Non è il totale concordato della richiesta di acquisto.
+end note
+@enduml

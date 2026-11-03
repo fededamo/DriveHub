@@ -1,0 +1,17 @@
+{
+  "head_unchanged": true,
+  "index_unchanged": true,
+  "runtime_version_matches_final_full": true,
+  "reviewed_version_unchanged": true,
+  "review_patch_sha256": "8344e02efb3cf795d9e287d049a886b51e15dad2e690233416e2587698d2c03e",
+  "session_patch_sha256": "95adbbbb6ef9dbea55008d3fc7c4d0271f64888f5c7364af499589bf3401ea7d",
+  "session_patch_files": 19,
+  "reverse_apply_checks_passed": true,
+  "whitespace_check_passed": true,
+  "local_document_links_checked": true,
+  "ticket_criteria_checked": 6,
+  "historical_01_10_preserved": true,
+  "postgres_stopped": true,
+  "xvfb_started_this_session": false,
+  "commits_created": 0
+}

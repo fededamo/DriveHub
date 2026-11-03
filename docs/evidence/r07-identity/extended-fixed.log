@@ -1,0 +1,66 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------< it.unifi.drivehub:DriveHub >---------------------
+[INFO] Building DriveHub 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] 6 problems were encountered while building the effective model for org.openjfx:javafx-controls:jar:21.0.2 during dependency collection step for project (use -X to see details)
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ DriveHub ---
+[INFO] Copying 4 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ DriveHub ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 64 source files with javac [debug target 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ DriveHub ---
+[INFO] skip non existing resourceDirectory /home/federico/dev/Drivehub/DriveHub/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ DriveHub ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 22 source files with javac [debug target 21] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ DriveHub ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running it.unifi.drivehub.IdentityDeletionIntegrationTest
+Ticket13 waiters 1 pid:blockers 13104:{13099}
+Ticket13 waiters 1 pid:blockers 13231:{13227}
+Ticket13 waiters 2 pid:blockers 13231:{13227}, 13234:{13231}
+Ticket13 waiters 1 pid:blockers 13262:{13258}
+Ticket13 waiters 2 pid:blockers 13262:{13258}, 13265:{13262}
+Ticket13 waiters 1 pid:blockers 13317:{13313}
+Ticket13 waiters 2 pid:blockers 13317:{13313}, 13323:{13317}
+Ticket13 waiters 1 pid:blockers 13413:{13408}
+Ticket13 waiters 2 pid:blockers 13413:{13408}, 13415:{13413}
+Ticket13 waiters 1 pid:blockers 13444:{13439}
+Ticket13 waiters 2 pid:blockers 13444:{13439}, 13446:{13444}
+Ticket13 waiters 1 pid:blockers 13527:{13522}
+Ticket13 waiters 2 pid:blockers 13527:{13522}, 13529:{13527}
+Ticket13 waiters 1 pid:blockers 13550:{13545}
+Ticket13 waiters 2 pid:blockers 13550:{13545}, 13552:{13550}
+Ticket13 waiters 1 pid:blockers 13637:{13633}
+Ticket13 waiters 2 pid:blockers 13637:{13633}, 13640:{13637}
+Ticket13 waiters 1 pid:blockers 13657:{13652}
+Ticket13 waiters 2 pid:blockers 13657:{13652}, 13659:{13657}
+Ticket13 waiters 1 pid:blockers 13673:{13669}
+Ticket13 waiters 2 pid:blockers 13673:{13669}, 13676:{13673}
+Ticket13 waiters 1 pid:blockers 13693:{13688}
+Ticket13 waiters 2 pid:blockers 13693:{13688}, 13695:{13693}
+Ticket13 waiters 1 pid:blockers 13992:{13987}
+Ticket13 waiters 2 pid:blockers 13992:{13987}, 13994:{13992}
+[INFO] Tests run: 56, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 16.68 s -- in it.unifi.drivehub.IdentityDeletionIntegrationTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 56, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  28.491 s
+[INFO] Finished at: 2026-11-02T22:32:48+01:00
+[INFO] ------------------------------------------------------------------------

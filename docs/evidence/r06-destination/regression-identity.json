@@ -1,0 +1,18 @@
+{
+  "states": {
+    "test_sha256": "e6d89e812ed2952dbe2645bbdf22fd1379ddf10ef1f2592c5a98e424cc1e1903",
+    "identical_test_source": true
+  },
+  "dates": {
+    "test_sha256": "e60627816aec5d778427dd9770f636dc9358540abf3405978947ef916a44d8a6",
+    "identical_test_source": true
+  },
+  "future": {
+    "test_sha256": "766508991f0cd01b7690021e91fdebccdfe1ad7d152fc8d7e7c580a6d515700a",
+    "identical_test_source": true
+  },
+  "cancellation": {
+    "test_sha256": "4251e404248943076e179cdcebea85d6ac01f48d4839b27e4946da5ece1d1fe6",
+    "identical_test_source": true
+  }
+}

@@ -1,6 +1,7 @@
 package it.unifi.drivehub.domain.vehicle;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Year;
 import java.util.Objects;
 
@@ -21,6 +22,7 @@ public final class Vehicle {
     private String licencePlate;
     private int kilometers;
     private BigDecimal price;
+    private PriceMode priceMode = PriceMode.AUTOMATIC;
     private final int year;
     private VehicleState state;
 
@@ -36,6 +38,15 @@ public final class Vehicle {
     }
 
     public static Vehicle create(Long id, Long modelId, String vin, String licencePlate, int kilometers, BigDecimal price, int year, VehicleState state) {
+        return create(id, modelId, vin, licencePlate, kilometers, price, year, state, PriceMode.AUTOMATIC);
+    }
+
+    public static Vehicle create(Long id, Long modelId, String vin, String licencePlate, int kilometers,
+                                 BigDecimal price, int year, VehicleState state, PriceMode priceMode) {
+        if (priceMode == null) {
+            throw new IllegalArgumentException("La modalità del prezzo non può essere nulla.");
+        }
+
         if (modelId == null) {
             throw new IllegalArgumentException("L'ID del modello non può essere nullo.");
         }
@@ -59,7 +70,10 @@ public final class Vehicle {
         if (state == null) {
             throw new IllegalArgumentException("Lo stato del veicolo non può essere nullo.");
         }
-        return new Vehicle(id, modelId, vin.trim().toUpperCase(), cleanPlate, kilometers, price, year, state);
+        Vehicle vehicle = new Vehicle(id, modelId, vin.trim().toUpperCase(), cleanPlate, kilometers, price, year, state);
+        vehicle.priceMode = priceMode;
+        if (priceMode == PriceMode.MANUAL) vehicle.setPrice(price);
+        return vehicle;
     }
 
     public Long getId() {
@@ -79,10 +93,11 @@ public final class Vehicle {
     }
 
     public void setLicencePlate(String licencePlate) {
-        this.licencePlate = (licencePlate != null && !licencePlate.trim().isEmpty()) ? licencePlate.trim().toUpperCase() : null;
-        if (this.licencePlate == null && this.kilometers != 0) {
+        String cleanPlate = (licencePlate != null && !licencePlate.trim().isEmpty()) ? licencePlate.trim().toUpperCase() : null;
+        if (cleanPlate == null && this.kilometers != 0) {
             throw new IllegalArgumentException("Se la targa viene rimossa, i chilometri devono essere impostati a 0.");
         }
+        this.licencePlate = cleanPlate;
     }
 
     public int getKilometers() {
@@ -99,15 +114,30 @@ public final class Vehicle {
         this.kilometers = kilometers;
     }
 
+    /** Base memorizzata, usata dalla formula solo in modalità MANUAL; non è un prezzo finale. */
     public BigDecimal getPrice() {
         return price;
     }
 
+    public BigDecimal getSelectedBasePrice(Model model) {
+        return priceMode == PriceMode.MANUAL ? price : model.getReleasePrice();
+    }
+
+    public PriceMode getPriceMode() {
+        return priceMode;
+    }
+
+    public void useRecommendedPrice() {
+        priceMode = PriceMode.AUTOMATIC;
+    }
+
+    /** Seleziona una base manuale, anche quando coincide con la base del modello. */
     public void setPrice(BigDecimal price) {
         if (price == null || price.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("Il prezzo non può essere negativo.");
+            throw new IllegalArgumentException("La base manuale deve essere presente e non negativa.");
         }
-        this.price = price;
+        this.price = price.setScale(2, RoundingMode.HALF_UP);
+        this.priceMode = PriceMode.MANUAL;
     }
 
     public int getYear() {

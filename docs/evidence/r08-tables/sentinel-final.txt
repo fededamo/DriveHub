@@ -1,0 +1,5 @@
+BEGIN
+drivehub|drivehub|127.0.0.1|55433
+drivehub|f|f|f|f|f
+sentinel_count=1
+ROLLBACK

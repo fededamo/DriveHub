@@ -34,7 +34,7 @@ public final class TestDrive {
             throw new IllegalArgumentException("La data e l'ora del test drive non possono essere nulle.");
         }
         int hour = date.getHour();
-        if (hour < 9 || hour > 16 || (hour == 16 && (date.getMinute() > 0 || date.getSecond() > 0))) {
+        if (hour < 9 || hour > 16 || (hour == 16 && (date.getMinute() > 0 || date.getSecond() > 0 || date.getNano() > 0))) {
             throw new IllegalArgumentException("L'ora di inizio di un TestDrive deve essere compresa nella fascia oraria 9:00 - 16:00.");
         }
         return new TestDrive(id, vehicleId, clientId, date);

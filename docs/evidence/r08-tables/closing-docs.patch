@@ -1,0 +1,128 @@
+--- review/PIANO_REVISIONI_DRIVEHUB.md
++++ final/PIANO_REVISIONI_DRIVEHUB.md
+@@ -2,7 +2,19 @@
+ 
+ Registro operativo avviato il 31 ottobre 2026. Punto di ingresso per riprendere il lavoro: avanzamento, decisioni, attività, verifiche e prossimo passo.
+ 
+-## Stato attuale — ticket 13 completato
++## Stato attuale — ticket 14 completato
++
++- Solo14 implementato dopo verifica del prerequisito05 e della chiusura01–13. Nuova baseline **390/390** prima delle modifiche; il390/390 del13 resta storico. Fotografia iniziale1089file, lavoro precedente preservato.
++- Modelli, sconti e prezzi preparati per caricamento dai servizi esistenti; celle senza query, quattro letture collettive per listino e due per sconti modello. Nessuna cache persistente, dipendenza nuova o modifica a DAO/schema/formule/accordi.
++- `Task` JavaFX su worker virtuali21, pubblicazione del solo caricamento corrente sul thread grafico; caricamento/errore con riprova da tastiera, vecchi risultati/errori ignorati. Aggiornamenti dopo base/modalità/sconti e cambio modello verificati anche nella vista già aperta.
++- Tre coppie TDD con sorgente identico RED/GREEN: rendering856query/connessioni→0, modelli su lock PostgreSQL bloccano FX→reattivo, vecchia lettura dopo marca svuotata→ignorata. Mirati **25/25** e **148/148**; finale `mvn -Ppostgres-tests clean test` **394/394**,47 senzaDB/347 PostgreSQL, zero failure/errori/salti, isolamento/sentinella e regressioni01–13 compresi.
++- JavaFX/Robot/tastiera finale e modelli lenti/obsoleti **UI CHECK SUCCESS**, sette schermate ispezionate. Caricamenti sincronizzati tramite proprietà/latch e PID/blocker PostgreSQL osservati; errore SQL reale/riprova e vecchio risultato/errore dopo vera query con chiusura osservata. Errori ambiente/fixture/harness registrati separatamente dai RED.
++- Review indipendenti Standards **0 violazioni/0 smell azionabili**, Spec **0 rilievi**, sul diff della sola sessione. Nessun codice/test/harness modificato dopo le prove finali o la review. [Ticket14](TRACKER_DRIVEHUB/revisioni/issues/14-tabelle-javafx-reattive.md), [evidenze](DriveHub/docs/evidence/r08-tables/verification.md).
++- Java21/PG16 ricontrollati nell'ambiente13 ancora presente; solo127.0.0.1:55433 e copia sentinella. Xvfb94 astratto senza TCP. Sentinella finale riletta in sola lettura, cluster/display arrestati.1089file iniziali presenti,1082 identici,7 modifiche intenzionali,zero eliminazioni;01–13 e successivi intatti. HEAD/indice invariati; nessun commit/staging, Relazione_SWE esclusa.
++- **Ticket14 chiuso,5/5 criteri; R08 e AC16/#16 completati. Rilievi chiusi14/20** (#1,#2,#3,#4,#5,#6,#7,#8,#9,#10,#11,#16,#17,#19); AC13 resta trasversale. Nessun successivo avviato.
++- Limiti: cancellare un Task non interrompe immediatamente JDBC già avviato; risultato scartato e risorse chiuse dal worker. Titolo consigliato manager abbreviato a1280px, testo completo e ridimensionamento conservati. Nessuna certificazione screen reader, altri OS/display o benchmark quantitativo; /tmp temporanea. Nessun residuo14, proseguire solo su nuova richiesta.
++
++## Stato al termine del ticket 13 — storico
+ 
+ - Soltanto13 implementato, prerequisito01 e ticket01–12 verificati chiusi; fotografia iniziale846 file e nuova baseline **330/330** prima delle modifiche.
+ - Mappatura ruoli UI/DAO riusata; richieste e storico impediscono la cancellazione, FK venditore RESTRICT conserva attribuzioni. Identità prive di vincoli cancellabili; conto dimostrativo distinto ed eliminato per CASCADE secondo le regole esistenti.
+@@ -176,7 +188,7 @@
+ | R05 | Cessione: titolarità, richiesta unica, pagamento e contabilità | #2, #3, #10 | R02, R03, D07 | Completata: 09–10 chiusi e verificati |
+ | R06 | Noleggi/test drive concorrenti e transizioni valide | #5, #7, restante #12 | R02, R03, D08–D10; coordinamento eventi con R04 | Completata: ticket 08, 11 e 12 chiusi e verificati |
+ | R07 | Cancellazione account rispettosa di storico e richieste | #9 | R00; fixture aggiornate dai flussi interessati | Completata: ticket13 chiuso e verificato |
+-| R08 | Tabelle JavaFX senza query nel rendering | #16 | R03; verificare aggiornamenti dei flussi corretti | In corso: ticket14, prove finali e review da completare |
++| R08 | Tabelle JavaFX senza query nel rendering | #16 | R03; verificare aggiornamenti dei flussi corretti | Completata: ticket14 verificato e chiuso |
+ | R09 | README, diagrammi, teoria ed evidenze coerenti | #14, #15, #18; valutazione teorica | Incrementale; chiusura dopo R01–R08 e R10 | Pianificata |
+ | R10 | Rimozione dei componenti inutilizzati | #20 | R00; controllo riferimenti prima di rimuovere | Pianificata |
+ | R11 | Verifica integrata e tracciabilità completa | #13; conferma finale #1–#20 | R01–R10 | Pianificata |
+@@ -304,7 +316,7 @@
+ | Cessione | Nuovo VIN, titolarità VIN esistente, accettazione/rifiuto | R02, R05 | Ticket 09–10 chiusi; 60 casi esito PostgreSQL, gare/rollback e GUI/tastiera; suite finale 259/259. [Evidenze](DriveHub/docs/evidence/r05-sale-outcome/verification.md) |
+ | Noleggio | Disponibilità, priorità, cambio destinazione/rimborsi | R02, R06 | Ticket 11–12 chiusi: concorrenza, date inclusive, prezzo sotto lock, stati ammessi, noleggio in corso e rimborsi atomici multi-cliente. Mirati 278/278, suite 330/330, GUI/tastiera e review indipendenti senza rilievi |
+ | Test drive | Limite tre, disponibilità, cancellazione/storico | R06 | Ticket08 e11: limite cliente concorrente anche su veicoli diversi, gare miste nei due ordini, cancellazione atomica, storico e orari verificati. Regressioni rieseguite nella suite corrente 330/330; 297/297 del ticket 11 storico |
+-| UI | Caricamento, prezzi, errori/riprova | R03, R08 | Rendering senza SQL, reattività, etichette, tastiera |
++| UI | Caricamento, prezzi, errori/riprova | R03, R08 | Ticket14 chiuso: celle/scorrimento senza SQL, caricamento fuori FX, lock reale/PID e proprietà osservabili, errore SQL/riprova e obsoleti, prezzi aggiornati, etichette e Robot/tastiera; nuovi4 test PostgreSQL, mirati148/148, finale394/394, [evidenze](DriveHub/docs/evidence/r08-tables/verification.md) |
+ | Consegna | Installazione, UML, teoria, prove della versione | R09–R11 | Installazione pulita, diagrammi correnti, evidenze datate |
+ 
+ ## Evidenze e limiti della baseline
+@@ -793,3 +805,6 @@
+ già azzerate non ricostruite. /tmp temporanea, nessuna certificazione screen
+ reader o benchmark prestazioni. Prossimo passo: nessun residuo del13;
+ proseguire solo su nuova richiesta.
++
++### 2 novembre 2026 — ticket 14 completato
++Solo14, prerequisito05 e01–13 verificati chiusi, AGENTS/piano/glossario/ADR0001 e testing/evidenze13 letti prima degli interventi. Nuova baseline390/390 e fotografia1089file. Preparazione collettiva di modelli/sconti/prezzi fuori FX, righe senza query nei renderer di cliente/manager/venditore; prezzo e tariffa dal calcolatore esistente, nessuna cache o riscrittura. Task correnti e callback JavaFX, stato/progresso/riprova; modifica prezzi/sconti aggiorna veicoli. Tre coppie RED/GREEN identiche e caricamenti osservati, GUI finale/Robot/tastiera riuscite, sette schermate ispezionate. Mirati25/25 e148/148, finale394/394 (47 senzaDB/347 PostgreSQL), zero failure/errori/salti, isolamento/sentinella e precedenti compresi. Review indipendenti Standards0/Spec0 sul diff congelato14file, nessun codice/test/harness successivo; [prove](DriveHub/docs/evidence/r08-tables/verification.md). Ambiente13 ricontrollato, Java21/PG16, solo127.0.0.1:55433 e copia sentinella; Xvfb94 astratto senzaTCP. Sentinella finale in sola lettura e servizi arrestati.1089file presenti,1082 identici,7 modifiche intenzionali,zero eliminazioni; HEAD/indice invariati, nessun commit/staging,01–13 e successivi preservati, Relazione_SWE esclusa. **5/5 criteri, ticket14/R08/AC16/#16 chiusi,14/20 rilievi**; AC13 trasversale. /tmp temporanea, cancellazione JDBC non immediata, titolo consigliato abbreviato a1280px e nessuna certificazione screen reader/benchmark; nessun ticket successivo avviato.
+--- review/TRACKER_DRIVEHUB/revisioni/issues/14-tabelle-javafx-reattive.md
++++ final/TRACKER_DRIVEHUB/revisioni/issues/14-tabelle-javafx-reattive.md
+@@ -7,7 +7,7 @@
+ **Blocked by:** 05: Usare prezzo consigliato o base manuale lungo catalogo e noleggio
+ 
+ Status: ready-for-agent
+-State: in-progress
++State: closed
+ 
+ **Piano:** R08
+ **Specifica:** AC16
+@@ -15,11 +15,11 @@
+ 
+ ## Acceptance criteria
+ 
+-- [ ] Modelli, sconti e prezzi preparati per aggiornamento fuori dal thread grafico, usando strumenti JavaFX e servizi già presenti.
+-- [ ] Celle dedicate alla visualizzazione; scorrimento e rendering non aprono connessioni né eseguono nuove query.
+-- [ ] Dati mostrati coerenti con modalità consigliata/manuale del ticket 05 e aggiornati dopo modifiche.
+-- [ ] Caricamenti falliti o superati da richieste successive non bloccano la finestra o ripristinano dati vecchi; UI aggiornata sul thread corretto.
+-- [ ] Verificati caricamento lento, errore/riprova, aggiornamento tabella, etichette e uso da tastiera delle parti modificate; limiti grafici registrati se presenti.
++- [x] Modelli, sconti e prezzi preparati per aggiornamento fuori dal thread grafico, usando strumenti JavaFX e servizi già presenti.
++- [x] Celle dedicate alla visualizzazione; scorrimento e rendering non aprono connessioni né eseguono nuove query.
++- [x] Dati mostrati coerenti con modalità consigliata/manuale del ticket 05 e aggiornati dopo modifiche.
++- [x] Caricamenti falliti o superati da richieste successive non bloccano la finestra o ripristinano dati vecchi; UI aggiornata sul thread corretto.
++- [x] Verificati caricamento lento, errore/riprova, aggiornamento tabella, etichette e uso da tastiera delle parti modificate; limiti grafici registrati se presenti.
+ 
+ ## Note per l'implementazione
+ 
+@@ -34,3 +34,5 @@
+ - 31 ottobre 2026: ticket pubblicato da `to-tickets` dopo approvazione di granularità e dipendenze. Esecuzione non ancora avviata; verificare i blocchi prima di iniziare.
+ 
+ - 2 novembre 2026: avviato solo14; prerequisito05 e01–13 chiusi, baseline nuova390/390 con isolamento/sentinella. Fotografia1089file, lavoro precedente preservato. RED rendering856connessioni/query → GREEN0/0; RED blocco modelli su lock PostgreSQL → GREEN reattivo; RED risultato obsoleto dopo marca svuotata → GREEN con invalidazione. Test identici per coppia, GUI estesa passata; prove finali e review ancora da completare. Nessun commit, nessun successivo, Relazione_SWE esclusa.
++
++- 2 novembre 2026 — chiusura: **5/5 criteri verificati**, solo14. Tre coppie RED/GREEN con sorgente identico; nuova baseline390/390, mirati25/25 e148/148, finale `mvn -Ppostgres-tests clean test` **394/394** (47 senza DB/347 PostgreSQL), zero failure/errori/salti, isolamento/sentinella compresi. GUI finale e modelli lenti/obsoleti **UI CHECK SUCCESS**; zero connessioni/query durante celle/scorrimento sulle tre dashboard, quattro letture collettive per listino. Tastiera, caricamento bloccato osservabile, errore SQL/riprova e risultato/errore obsoleto, aggiornamenti delle basi/sconti/modalità e vista già aperta verificati. Sette schermate ispezionate; limiti del titolo abbreviato, screen reader, altri OS e cancellazione JDBC registrati. Review indipendenti Standards **0 violazioni/0 smell azionabili**, Spec **0 rilievi**, sul solo diff congelato di sessione. Sentinella finale in sola lettura, cluster dedicato e Xvfb arrestati; nessun DB applicativo preesistente. Baseline1089file:1082 identici,7 modifiche intenzionali,zero eliminazioni; HEAD/indice invariati. [Prove, comandi, hash, review e limiti](../../../DriveHub/docs/evidence/r08-tables/verification.md). R08/AC16/#16 completati,14/20 rilievi chiusi; nessun successivo, nessun commit/staging, Relazione_SWE esclusa.
+--- review/DriveHub/docs/evidence/r08-tables/verification.md
++++ final/DriveHub/docs/evidence/r08-tables/verification.md
+@@ -138,6 +138,40 @@
+ 
+ ## Verifica finale
+ 
+-Suite completa, verifica di conservazione, sentinella finale e review indipendenti
+-Standards/Spec sul solo diff della sessione ancora da completare. Ticket14 resta
+-in-progress finché tutte queste verifiche sono registrate.
++`python3 /tmp/drivehub-ticket14-session/maven.py final-full -Ppostgres-tests clean test`
++→ **394/394**,47 senzaDB/347 PostgreSQL, zero failure/errori/salti:
++[log](final-full.log), [XML](final-full-surefire/), [input](final-full-files.sha256.json).
++Include tutte le regressioni01–13, fixture e isolamento/sentinella. Nuovi4/4,
++mirati25/25 e148/148; nessun sorgente runtime modificato dopo i mirati.
++
++GUI finale **UI CHECK SUCCESS**:
++[log ciclo](final-lifecycle-evidence.log), [input ciclo](final-lifecycle-evidence-files.sha256.json),
++[log modelli](final-models.log), [input modelli](final-models-files.sha256.json).
++Sette schermate finali ispezionate:
++[manager](manager-prices.png), [caricamento](loading.png), [riprova](retry.png),
++[vendita](client-sale.png), [noleggio](client-rent.png),
++[cliente aggiornato](client-refreshed.png), [inventario](salesman-inventory.png).
++[Identità/privilegi dedicati](environment.txt), [versioni](versions.txt),
++[sentinella finale in sola lettura](sentinel-final.txt), [arresto](shutdown.txt).
++Nessun DB applicativo preesistente contattato; PostgreSQL e Xvfb arrestati.
++
++Review indipendenti [Standards](standards-review.md) **0 violazioni/0 smell
++azionabili**, [Spec](spec-review.md) **0 rilievi**, sul diff congelato della sola
++sessione: [patch](review.patch), [elenco](review-files.txt),
++[hash](review-files.sha256.json),14file, SHA256
++`b7cf51719edf2beffd4c2b4e0130e989e31f1a5a928518c313992e8ddd827c5f`.
++Nessun codice/test/harness cambiato dopo prove finali e review. Il delta di
++chiusura documentale è separato dalle prove runtime:
++[patch](closing-docs.patch). Il [diff finale](session.patch) include la chiusura;
++[hash finali](session-files.sha256.json), [riepilogo](summary.json),
++[regressioni identiche](regression-identity.json), [prerequisiti](prerequisites.json).
++
++[Conservazione](preservation.json):1089file iniziali presenti,1082 identici,
++7 aggiornamenti intenzionali,zero eliminazioni. Ticket/evidenze01–13 e successivi
++intatti; HEAD/indice invariati. Controllati whitespace del diff della sessione,
++link locali, input runtime/GUI, integrità della fotografia e assenza delle
++credenziali private nelle prove. Le modifiche documentali non sono nuove prove.
++
++**5/5 criteri verificati, ticket14 chiuso, R08 e AC16/#16 completati,14/20
++rilievi chiusi.** AC13 resta trasversale. Nessun ticket successivo,
++nessun commit/staging; `Relazione_SWE` sempre esclusa.
