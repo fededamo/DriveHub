@@ -36,8 +36,10 @@ try {
         if ($LASTEXITCODE -ne 0) { throw 'Creazione del contenitore fallita. Controlla Docker e la porta 55432.' }
         $created = $true
     } else {
-        $label = docker inspect --format '{{ index .Config.Labels "it.unifi.drivehub.quickstart" }}' $container
-        if ($LASTEXITCODE -ne 0 -or $label -ne '1') { throw "Il contenitore $container esiste ma non appartiene a questo avvio. Non verra modificato." }
+        $labelsJson = docker inspect --format '{{json .Config.Labels}}' $container
+        if ($LASTEXITCODE -ne 0) { throw 'Impossibile verificare il contenitore Docker.' }
+        $labels = $labelsJson | ConvertFrom-Json
+        if ($labels.'it.unifi.drivehub.quickstart' -ne '1') { throw "Il contenitore $container esiste ma non appartiene a questo avvio. Non verra modificato." }
         docker start $container | Out-Null
         if ($LASTEXITCODE -ne 0) { throw 'Impossibile avviare il database. Controlla Docker e la porta 55432.' }
     }
