@@ -1,5 +1,9 @@
 # Diagrammi della versione locale corrente
 
+I cinque diagrammi che descrivono il registro sono aggiornati al contratto del
+[ticket 02](../evidence/sale-semantics-02/verification.md): `SALE`, `PURCHASE` e
+`PENALTY`, con importi non negativi. Le versioni delle evidenze precedenti restano storiche.
+
 Sono usati soltanto i sorgenti e i render elencati qui, sotto **`current/`**.
 Rappresentano `it.unifi.drivehub` della baseline locale del ticket17, inclusi
 modificati/non tracciati, non il solo HEAD. Versione, hash, diff della sessione,

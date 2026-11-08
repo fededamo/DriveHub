@@ -15,7 +15,7 @@ rectangle DriveHub {
   usecase "Aggiungere / eliminare\nveicoli secondo vincoli" as Vehicles
   usecase "Scegliere base automatica\no manuale" as Price
   usecase "Gestire sconti\nmodello / veicolo" as Discount
-  usecase "Consultare registro economico\nPURCHASE / ACQUISITION / PENALTY" as Register
+  usecase "Consultare registro economico\nSALE / PURCHASE / PENALTY" as Register
 }
 Venditore -- Pending
 Venditore -- Purchase

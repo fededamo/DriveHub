@@ -1,0 +1,9 @@
+{
+  "baseline": "a260598",
+  "command": "mvn -o -B -Ppostgres-tests clean test",
+  "suites": 22,
+  "tests": 419,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0
+}

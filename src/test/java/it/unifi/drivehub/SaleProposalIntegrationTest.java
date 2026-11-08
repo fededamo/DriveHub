@@ -81,17 +81,17 @@ class SaleProposalIntegrationTest {
         sql("""
                 UPDATE vehicle SET state = 'SOLD' WHERE id = 1001;
                 INSERT INTO sale (id, vehicle, salesman, client, amount, date, type) VALUES
-                (1003, 1001, 16, 1, 20000, CURRENT_DATE - INTERVAL '2 days', 'PURCHASE'),
-                (1001, 1001, 16, 1, 21000, CURRENT_DATE - INTERVAL '1 day', 'PURCHASE'),
-                (1002, 1001, 16, 2, 22000, CURRENT_DATE - INTERVAL '1 day', 'PURCHASE'),
-                (1004, 1001, 16, 1, -15000, CURRENT_DATE, 'ACQUISITION'),
+                (1003, 1001, 16, 1, 20000, CURRENT_DATE - INTERVAL '2 days', 'SALE'),
+                (1001, 1001, 16, 1, 21000, CURRENT_DATE - INTERVAL '1 day', 'SALE'),
+                (1002, 1001, 16, 2, 22000, CURRENT_DATE - INTERVAL '1 day', 'SALE'),
+                (1004, 1001, 16, 1, 15000, CURRENT_DATE, 'PURCHASE'),
                 (1005, NULL, NULL, 1, 800, CURRENT_DATE, 'PENALTY');
                 """);
         String before = snapshot();
         assertThrows(RuntimeException.class, () -> propose(1L, VIN, "YY123YY", 999));
         assertEquals(before, snapshot());
         var history = ctx.getOperationQueryService().getAllSales();
-        assertEquals(SaleType.ACQUISITION, history.stream().filter(s -> s.getId() == 1004).findFirst().orElseThrow().getType());
+        assertEquals(SaleType.PURCHASE, history.stream().filter(s -> s.getId() == 1004).findFirst().orElseThrow().getType());
         assertEquals(SaleType.PENALTY, history.stream().filter(s -> s.getId() == 1005).findFirst().orElseThrow().getType());
         var request = propose(2L, " " + VIN.toLowerCase() + " ", "ZZ123ZZ", 250);
         assertEquals(1001L, request.getVehicleId());
@@ -206,13 +206,13 @@ class SaleProposalIntegrationTest {
     }
 
     @Test
-    void anAcquisitionAloneDoesNotEstablishOwnershipButAZeroPriceSaleDoes() throws Exception {
+    void aDealershipPurchaseAloneDoesNotEstablishOwnershipButAZeroPriceSaleDoes() throws Exception {
         soldToClientOne();
-        sql("UPDATE sale SET type = 'ACQUISITION', amount = -20000");
+        sql("UPDATE sale SET type = 'PURCHASE', amount = 20000");
         String before = snapshot();
         assertThrows(RuntimeException.class, () -> propose(1L, VIN, "ZZ123ZZ", 250));
         assertEquals(before, snapshot());
-        sql("UPDATE sale SET type = 'PURCHASE', amount = 0");
+        sql("UPDATE sale SET type = 'SALE', amount = 0");
         assertNotNull(propose(1L, VIN, "ZZ123ZZ", 250).getId());
     }
 
@@ -223,7 +223,7 @@ class SaleProposalIntegrationTest {
             assertThrows(IllegalArgumentException.class, () ->
                     new it.unifi.drivehub.dao.postgres.PostgresVehicleDao(db).findByVinForUpdate(VIN, conn));
             assertThrows(IllegalArgumentException.class, () ->
-                    new it.unifi.drivehub.dao.postgres.PostgresSaleDao(db).findLatestPurchaseForVehicle(1001L, conn));
+                    new it.unifi.drivehub.dao.postgres.PostgresSaleDao(db).findLatestSaleForVehicle(1001L, conn));
             assertThrows(IllegalArgumentException.class, () ->
                     new it.unifi.drivehub.dao.postgres.PostgresRequestDao(db).hasOpenRequestForVehicle(1001L, conn));
         }
@@ -276,7 +276,7 @@ class SaleProposalIntegrationTest {
         sql("""
                 UPDATE vehicle SET state = 'SOLD' WHERE id = 1001;
                 INSERT INTO sale (vehicle, salesman, client, amount, date, type)
-                VALUES (1001, 16, 1, 20000, CURRENT_TIMESTAMP - INTERVAL '1 day', 'PURCHASE');
+                VALUES (1001, 16, 1, 20000, CURRENT_TIMESTAMP - INTERVAL '1 day', 'SALE');
                 """);
     }
 

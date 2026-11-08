@@ -17,10 +17,10 @@ Cliente -> service : dalla ClientDashboardView
 service -> db : executeInTransactionWithResult(callback)
 service -> vehicle : findByVinForUpdate(vin, conn)
 alt VIN noto
-service -> sale : findLatestPurchaseForVehicle(vehicleId, conn)
+service -> sale : findLatestSaleForVehicle(vehicleId, conn)
 service -> request : hasOpenRequestForVehicle(vehicleId, conn)
 note over service,vehicle
-  Solo SOLD, ultima PURCHASE al proponente, nessuna richiesta;
+  Solo SOLD, ultima SALE al proponente, nessuna richiesta;
   modello/anno coerenti; aggiorna targa/km e passa WAITING.
 end note
 service -> vehicle : update(vehicle WAITING, conn)
@@ -40,7 +40,7 @@ note over service,vehicle : Richiesta PURCHASE e veicolo WAITING, altrimenti err
 alt accetta (salesmanId obbligatorio)
 service -> account : findByClientIdForUpdate(clientId, conn)
 service -> account : updateBalance(..., saldo + deposit, conn)
-service -> sale : save(Sale ACQUISITION negativa, conn)
+service -> sale : save(Sale PURCHASE non negativa, conn)
 service -> vehicle : updateStateAtomically(WAITING, SALE, conn)
 service -> request : delete(requestId, conn)
 else rifiuta — nessun pagamento

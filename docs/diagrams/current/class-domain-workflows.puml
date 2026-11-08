@@ -50,8 +50,8 @@ class Sale {
   - type: SaleType
 }
 enum SaleType {
+  SALE
   PURCHASE
-  ACQUISITION
   PENALTY
 }
 class Rent {
@@ -85,7 +85,7 @@ note bottom of Request
   Esito finale: richiesta eliminata nella transazione.
 end note
 note bottom of Sale
-  Vincoli importi: PURCHASE >=0, ACQUISITION <=0, PENALTY >=0.
+  Importi >=0: SALE/PENALTY entrate, PURCHASE uscita.
   Penale senza veicolo/venditore. Collegamenti tramite ID.
   Rent/TestDrive non hanno stati REQUESTED/COMPLETED.
   Factory statiche; nessuna BaseEntity comune.

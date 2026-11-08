@@ -75,9 +75,9 @@ public final class PostgresSaleDao implements SaleDao {
     }
 
     @Override
-    public Optional<Sale> findLatestPurchaseForVehicle(Long vehicleId, Connection conn) {
+    public Optional<Sale> findLatestSaleForVehicle(Long vehicleId, Connection conn) {
         String sql = "SELECT id, vehicle, salesman, client, amount, date, type FROM sale " +
-                "WHERE vehicle = ? AND type = 'PURCHASE' ORDER BY date DESC, id DESC LIMIT 1";
+                "WHERE vehicle = ? AND type = 'SALE' ORDER BY date DESC, id DESC LIMIT 1";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             if (conn.getAutoCommit()) throw new IllegalArgumentException("La verifica della titolarità richiede una transazione attiva.");
             ps.setLong(1, vehicleId);

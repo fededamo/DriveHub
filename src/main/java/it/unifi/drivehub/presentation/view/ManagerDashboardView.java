@@ -475,7 +475,7 @@ public final class ManagerDashboardView extends BorderPane {
         VBox box = new VBox(15);
         box.setPadding(new Insets(20));
 
-        Label title = new Label("Registro della concessionaria: entrate positive, uscite negative");
+        Label title = new Label("Registro della concessionaria: vendite e penali in entrata, acquisti in uscita");
         title.getStyleClass().add("card-title");
 
         saleTable = new TableView<>();
@@ -488,9 +488,9 @@ public final class ManagerDashboardView extends BorderPane {
             if (d == null || d.getValue() == null) return new SimpleStringProperty("");
             Sale s = d.getValue();
             return new SimpleStringProperty(switch (s.getType()) {
-                case PURCHASE -> "VENDITA A CLIENTE";
-                case ACQUISITION -> "ACQUISIZIONE DA CLIENTE";
-                case PENALTY -> "PENALE SCADENZA (Quota trattenuta)";
+                case SALE -> "VENDITA (Entrata)";
+                case PURCHASE -> "ACQUISTO (Uscita)";
+                case PENALTY -> "PENALE (Entrata)";
             });
         });
 

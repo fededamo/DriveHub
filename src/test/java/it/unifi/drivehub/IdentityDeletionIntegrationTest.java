@@ -42,8 +42,8 @@ class IdentityDeletionIntegrationTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"Venditore,PURCHASE,20000", "SALESMAN,PURCHASE,20000",
-            "Venditore,ACQUISITION,-16000", "SALESMAN,ACQUISITION,-16000",
+    @CsvSource({"Venditore,SALE,20000", "SALESMAN,SALE,20000",
+            "Venditore,PURCHASE,16000", "SALESMAN,PURCHASE,16000",
             "Venditore,PENALTY,400", "SALESMAN,PENALTY,400"})
     void salesmanWithOnlyCompletedSalesRetainsIdentityAndAttribution(String role, String type, int amount) throws Exception {
         sql("INSERT INTO sale(vehicle, salesman, client, amount, date, type) VALUES "
@@ -75,7 +75,7 @@ class IdentityDeletionIntegrationTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"PURCHASE,20000", "ACQUISITION,-16000", "PENALTY,400"})
+    @CsvSource({"SALE,20000", "PURCHASE,16000", "PENALTY,400"})
     void databaseCannotEraseSalesmanAttributionEvenWithoutServices(String type, int amount) throws Exception {
         sql("INSERT INTO sale(vehicle, salesman, client, amount, date, type) VALUES "
                 + "(1301,16,1," + amount + ",CURRENT_TIMESTAMP,'" + type + "')");
@@ -90,7 +90,7 @@ class IdentityDeletionIntegrationTest {
     @Test
     void saleCommittedWhileDeletionWaitsPreservesAttributionAndExplainsRefusal() throws Exception {
         var failures = race("SELECT id FROM salesman WHERE id = 16 FOR NO KEY UPDATE",
-                "INSERT INTO sale(vehicle,salesman,client,amount,date,type) VALUES (1301,16,1,20000,CURRENT_TIMESTAMP,'PURCHASE')",
+                "INSERT INTO sale(vehicle,salesman,client,amount,date,type) VALUES (1301,16,1,20000,CURRENT_TIMESTAMP,'SALE')",
                 () -> ctx.getAuthService().deleteAccount(16L, "Venditore", "password"));
 
         assertInstanceOf(IllegalStateException.class, failures.getFirst());
@@ -187,13 +187,13 @@ class IdentityDeletionIntegrationTest {
 
     @ParameterizedTest
     @CsvSource({"Cliente,TD,-1", "CLIENT,TD,1", "Cliente,RENT,-2", "CLIENT,RENT,0", "Cliente,RENT,2",
-            "Cliente,PURCHASE,0", "CLIENT,ACQUISITION,0", "Cliente,PENALTY,0"})
+            "Cliente,SALE,0", "CLIENT,PURCHASE,0", "Cliente,PENALTY,0"})
     void clientOperationsAndHistoryRemainBinding(String role, String operation, int day) throws Exception {
         switch (operation) {
             case "TD" -> sql("INSERT INTO test_drive(vehicle,client,date) VALUES (1302,1,CURRENT_DATE + " + day + " + TIME '10:00')");
             case "RENT" -> sql("INSERT INTO rent(vehicle,client,amount,start,\"end\") VALUES (1302,1,20,CURRENT_DATE + " + day + ",CURRENT_DATE + " + day + ")");
             default -> sql("INSERT INTO sale(vehicle,salesman,client,amount,date,type) VALUES (1301,16,1,"
-                    + (operation.equals("ACQUISITION") ? -16000 : 400) + ",CURRENT_TIMESTAMP,'" + operation + "')");
+                    + (operation.equals("PURCHASE") ? 16000 : 400) + ",CURRENT_TIMESTAMP,'" + operation + "')");
         }
         var before = snapshot();
         assertThrows(IllegalStateException.class, () -> ctx.getAuthService().deleteAccount(1L, role, "password"));

@@ -1,5 +1,10 @@
 # Versioni delle evidenze
 
+Il contratto corrente di richieste e registro è verificato in
+[ticket 02: registro della concessionaria](sale-semantics-02/verification.md).
+La verifica del solo ticket 01 resta in [request-semantics-01](request-semantics-01/verification.md);
+gli altri risultati sotto descrivono le rispettive versioni storiche.
+
 La [fotografia ZIP dei registri esterni](revision-records.zip) conserva piano,
 tracker e audit delle revisioni, con manifest SHA256. Gli originali di lavoro
 restano nella directory genitore di `DriveHub/`; l'archivio consente di recuperarli

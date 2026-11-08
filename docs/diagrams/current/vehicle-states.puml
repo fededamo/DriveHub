@@ -10,11 +10,11 @@ state BLOCKED
 state SOLD
 state WAITING
 SALE --> BLOCKED : initiatePurchase\nacconto e totale
-BLOCKED --> SOLD : completePurchase\nsaldo + PURCHASE + Observer
+BLOCKED --> SOLD : completePurchase\nsaldo + SALE + Observer
 BLOCKED --> SALE : rejectPurchase\nrimborso100% acconto
 BLOCKED --> SALE : scadenza all'accesso\npenale20% acconto
-SOLD --> WAITING : submitSaleProposal\nultima PURCHASE al cliente
-WAITING --> SALE : approveSaleProposal\naccredito + ACQUISITION
+SOLD --> WAITING : submitSaleProposal\nultima SALE al cliente
+WAITING --> SALE : approveSaleProposal\naccredito + PURCHASE
 WAITING --> SOLD : rejectSaleProposal\nstorico presente
 WAITING --> [*] : rifiuto senza storico\nDELETE veicolo
 SALE --> RENT : changeVehicleRentalState

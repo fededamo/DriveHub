@@ -44,7 +44,7 @@ service -> request : findByIdForUpdate(requestId, conn)
 note over service,request : Verifica SALE approvata e non scaduta.
 service -> account : findByClientIdForUpdate(clientId, conn)
 service -> account : updateBalance(..., saldo - (agreedTotal - deposit), conn)
-service -> sale : save(Sale PURCHASE positiva, conn)
+service -> sale : save(Sale SALE non negativa, conn)
 service -> request : delete(requestId, conn)
 service -> vehicle : updateStateAtomically(BLOCKED, SOLD, conn)
 service -> publisher : publishCommitment(event, conn)

@@ -299,11 +299,8 @@ CREATE TABLE "sale" (
     "client" BIGINT NOT NULL,
     "amount" DECIMAL(10, 2) NOT NULL,
     "date" TIMESTAMP NOT NULL,
-    "type" VARCHAR(16) NOT NULL CHECK ("type" IN ('PURCHASE', 'ACQUISITION', 'PENALTY')),
-    CONSTRAINT "ck_sale_amount_type" CHECK (
-        ("type" = 'ACQUISITION' AND "amount" <= 0)
-        OR ("type" IN ('PURCHASE', 'PENALTY') AND "amount" >= 0)
-    ),
+    "type" VARCHAR(16) NOT NULL CHECK ("type" IN ('SALE', 'PURCHASE', 'PENALTY')),
+    CONSTRAINT "ck_sale_amount_type" CHECK ("amount" >= 0),
     CONSTRAINT "pk_sale" PRIMARY KEY ("id"),
     CONSTRAINT "fk_sale_vehicle" FOREIGN KEY ("vehicle") REFERENCES "vehicle" ("id") ON DELETE SET NULL,
     CONSTRAINT "fk_sale_salesman" FOREIGN KEY ("salesman") REFERENCES "salesman" ("id") ON DELETE RESTRICT,

@@ -37,7 +37,7 @@ class PriceSelectionIntegrationTest {
         // La fixture SOLD rappresenta una vendita effettiva al proponente, conservata nello storico.
         ctx.getDatabaseManager().executeInTransaction(conn ->
                 new it.unifi.drivehub.dao.postgres.PostgresSaleDao(ctx.getDatabaseManager()).save(
-                        it.unifi.drivehub.domain.operation.Sale.createPurchaseRecord(
+                        it.unifi.drivehub.domain.operation.Sale.createSaleRecord(
                                 vehicle.getId(), 16L, 1L, new BigDecimal("7200.00")), conn));
         var request = ctx.getSaleToDealershipService().submitSaleProposal(1L, model.getId(), vehicle.getVin(), "AB123CD", 0, year);
         assertEquals(new BigDecimal("14400.00"), request.getDeposit());
@@ -158,7 +158,8 @@ class PriceSelectionIntegrationTest {
         assertEquals(new BigDecimal("14400.00"), ctx.getCatalogService().getRecommendedVehiclePrice(reload(vehicle)));
         var acquisition = ctx.getOperationQueryService().getAllSales().stream()
                 .filter(s -> s.getVehicleId().equals(vehicle.getId())).findFirst().orElseThrow();
-        assertEquals(new BigDecimal("-14400.00"), acquisition.getAmount());
+        assertEquals(new BigDecimal("14400.00"), acquisition.getAmount());
+        assertEquals(it.unifi.drivehub.domain.operation.SaleType.PURCHASE, acquisition.getType());
     }
 
     private Vehicle reload(Vehicle vehicle) {

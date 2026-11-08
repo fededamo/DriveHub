@@ -168,7 +168,7 @@ public final class PurchaseService {
             bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
 
             // Generazione riga in Sale (importo totale veicolo)
-            Sale saleRecord = Sale.createPurchaseRecord(request.getVehicleId(), request.getSalesmanId(), request.getClientId(), fullPrice);
+            Sale saleRecord = Sale.createSaleRecord(request.getVehicleId(), request.getSalesmanId(), request.getClientId(), fullPrice);
             saleDao.save(saleRecord, conn);
 
             // Cancellazione riga Request

@@ -78,7 +78,7 @@ public final class SaleToDealershipService {
                     if (vehicle.getState() != VehicleState.SOLD) {
                         throw new IllegalStateException("Puoi proporre solo un veicolo venduto a te e senza richieste aperte.");
                     }
-                    Sale latestSale = saleDao.findLatestPurchaseForVehicle(vehicle.getId(), conn)
+                    Sale latestSale = saleDao.findLatestSaleForVehicle(vehicle.getId(), conn)
                             .orElseThrow(() -> new IllegalStateException("Nessuna vendita al cliente registrata per questo VIN."));
                     if (!latestSale.getClientId().equals(clientId)) {
                         throw new IllegalStateException("L'ultima vendita di questo veicolo è a un altro cliente.");
@@ -113,7 +113,7 @@ public final class SaleToDealershipService {
     }
     /**
      * Passo 2: Il venditore approva la proposta di vendita.
-     * - Registra un'acquisizione negativa per la concessionaria
+     * - Registra un acquisto della concessionaria con importo non negativo
      * - Lo stato del veicolo diventa SALE
      * - Elimina la tupla da Request
      * - Accredita il pagamento sul conto corrente del cliente
@@ -132,7 +132,7 @@ public final class SaleToDealershipService {
             bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
 
             // Registrazione compravendita in Sale
-            Sale saleRecord = Sale.createAcquisitionRecord(request.getVehicleId(), salesmanId, request.getClientId(), payout);
+            Sale saleRecord = Sale.createPurchaseRecord(request.getVehicleId(), salesmanId, request.getClientId(), payout);
             saleDao.save(saleRecord, conn);
 
             // Stato veicolo diventa SALE
@@ -148,7 +148,7 @@ public final class SaleToDealershipService {
     /**
      * Il venditore rifiuta la proposta di vendita del cliente.
      * Elimina il veicolo soltanto se privo di storico; altrimenti ripristina SOLD.
-     * La presenza di operazioni non equivale alla titolarità, che richiede l'ultima PURCHASE.
+     * La presenza di operazioni non equivale alla titolarità, che richiede l'ultima SALE.
      */
     public void rejectSaleProposal(Long requestId) {
         db.executeInTransaction(conn -> {

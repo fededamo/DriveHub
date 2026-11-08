@@ -39,7 +39,7 @@ un nuovo contesto con il gestore del solo DB dedicato.
 
 | Meccanismo | Esempio nel codice | Classificazione e limite |
 |---|---|---|
-| Factory statiche | `Vehicle.create`, `Client.createWithoutAccount`, `Request.createNewPurchaseRequest`, `Sale.createAcquisitionRecord` | Metodi statici nominati, con costruttori non pubblici e controlli propri dell'entità. **Non Factory Method GoF**: manca un metodo di creazione ridefinito dai sottotipi di un Creator |
+| Factory statiche | `Vehicle.create`, `Client.createWithoutAccount`, `Request.createNewPurchaseRequest`, `Sale.createPurchaseRecord` | Metodi statici nominati, con costruttori non pubblici e controlli propri dell'entità. **Non Factory Method GoF**: manca un metodo di creazione ridefinito dai sottotipi di un Creator |
 | Observer | `VehicleEventPublisher.attach/publishCommitment` e `TestDriveCancellationObserver.onVehicleCommitted` | Observer GoF, notifica sincrona sulla connessione del chiamante prima del commit; non coda di eventi, outbox o consegna asincrona |
 | Navigazione polimorfica | `Client.openDashboard` chiama `UserDashboardNavigator.showClientDashboard(this)`, implementato in App anche per Salesman/Manager | Double dispatch nello stile Visitor; il contratto enumera i tre tipi. Un nuovo ruolo richiede di aggiornare il navigator e la composizione, non soltanto una nuova classe |
 | Singleton | `AppContext.getInstance` | Accesso globale al contesto dell'applicazione, distinto dalla DI dei costruttori; non è stato conservato uno stato globale dell'utente corrente |
@@ -89,10 +89,10 @@ acconto e `agreed_total`, non negativi e con acconto non superiore al totale;
 `createNewPurchaseRequest` riceve una stima non negativa in `deposit` e conserva
 `agreed_total` nullo. I nuovi input negativi sono rifiutati, senza cambiarne il
 segno. I nomi dei servizi e i testi cliente descrivono ancora l'azione del cliente.
-Il registro `Sale` mantiene il contratto precedente fino al ticket 02:
-`PURCHASE` per la vendita al cliente, `ACQUISITION` negativa per la cessione,
-`PENALTY` per la penale. La stima positiva della richiesta viene accreditata
-direttamente al cliente; solo la factory del registro rappresenta l'uscita negativa.
+Il registro `Sale` usa `SALE` per la vendita al cliente, `PURCHASE` per
+l'acquisto dal cliente e `PENALTY` per la penale. Tutti gli importi sono non
+negativi, anche a zero il tipo resta esplicito. La stima della richiesta viene
+accreditata una sola volta al cliente e registrata come acquisto dello stesso importo.
 
 È un modello di dominio con ispirazione DDD e servizi applicativi, in un solo
 contesto documentato. Non sono dimostrati bounded context indipendenti,
@@ -113,8 +113,8 @@ non si promette il recupero da ogni guasto del server o della rete.
 | Caso d'uso | Passaggi attuali e prova pertinente |
 |---|---|
 | Avvio acquisto | `PurchaseService.initiatePurchase`: UPDATE condizionale SALE → BLOCKED, calcolo del prezzo sulla modalità esplicita, lock conto, addebito20%, salvataggio totale/acconto. [PurchaseAgreementIntegrationTest](../src/test/java/it/unifi/drivehub/PurchaseAgreementIntegrationTest.java) |
-| Saldo, rifiuto, scadenza | Rilettura della richiesta con FOR UPDATE; saldo solo dopo approvazione e prima della scadenza, per totale meno acconto persistiti; vendita PURCHASE, richiesta rimossa, BLOCKED → SOLD, Observer prima del commit. Rifiuto rimborsa l'acconto; scadenza all'accesso trattiene20% dell'acconto e rimborsa80%, una richiesta per transazione. [PurchaseConcurrencyIntegrationTest](../src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java) |
-| Cessione del cliente | `submitSaleProposal`: VIN noto solo SOLD, ultima PURCHASE al proponente, nessuna richiesta, modello/anno coerenti. Approvazione/rifiuto bloccano richiesta e veicolo WAITING; accettazione accredita il cliente e registra ACQUISITION negativa, rifiuto conserva il VIN con storico o elimina quello nuovo senza storico. [SaleProposalIntegrationTest](../src/test/java/it/unifi/drivehub/SaleProposalIntegrationTest.java), [SaleOutcomeIntegrationTest](../src/test/java/it/unifi/drivehub/SaleOutcomeIntegrationTest.java) |
+| Saldo, rifiuto, scadenza | Rilettura della richiesta con FOR UPDATE; saldo solo dopo approvazione e prima della scadenza, per totale meno acconto persistiti; vendita SALE, richiesta rimossa, BLOCKED → SOLD, Observer prima del commit. Rifiuto rimborsa l'acconto; scadenza all'accesso trattiene20% dell'acconto e rimborsa80%, una richiesta per transazione. [PurchaseConcurrencyIntegrationTest](../src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java) |
+| Cessione del cliente | `submitSaleProposal`: VIN noto solo SOLD, ultima SALE al proponente, nessuna richiesta, modello/anno coerenti. Approvazione/rifiuto bloccano richiesta e veicolo WAITING; accettazione accredita il cliente e registra PURCHASE con importo non negativo, rifiuto conserva il VIN con storico o elimina quello nuovo senza storico. [SaleProposalIntegrationTest](../src/test/java/it/unifi/drivehub/SaleProposalIntegrationTest.java), [SaleOutcomeIntegrationTest](../src/test/java/it/unifi/drivehub/SaleOutcomeIntegrationTest.java) |
 | Noleggio e test drive | Lock veicolo, cliente NO KEY UPDATE, conto se serve; disponibilità riletta, addebito noleggio integrale. EXCLUDE sui giorni inclusivi e vincoli test drive aiutano a proteggere accessi concorrenti. La conferma noleggio cancella tutti i test drive futuri, anche fuori periodo, nella propria transazione. [BookingConcurrencyIntegrationTest](../src/test/java/it/unifi/drivehub/BookingConcurrencyIntegrationTest.java), [TestDriveCancellationIntegrationTest](../src/test/java/it/unifi/drivehub/TestDriveCancellationIntegrationTest.java) |
 | Cambio destinazione | Solo SALE ↔ RENT sotto lock veicolo; un noleggio che comprende oggi blocca RENT → SALE. Futuri da domani cancellati e rimborsati100% con lock conti per ID cliente crescente, prima dell'aggiornamento finale. [VehicleDestinationIntegrationTest](../src/test/java/it/unifi/drivehub/VehicleDestinationIntegrationTest.java) |
 | Cancellazione identità | Password, lock identità NO KEY UPDATE e conto cliente; richieste/storico e FK RESTRICT impediscono la cancellazione. Identità senza associazioni cancellabile, con conto dimostrativo eliminato per CASCADE anche se positivo. Attribuzioni storiche preservate. [IdentityDeletionIntegrationTest](../src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java) |

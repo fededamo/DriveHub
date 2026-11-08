@@ -70,6 +70,7 @@ class PurchaseAgreementIntegrationTest {
         ctx.getPurchaseService().completePurchase(request.getId());
         var sale = ctx.getOperationQueryService().getClientSales(1L).stream()
                 .filter(s -> s.getVehicleId().equals(vehicle.getId())).findFirst().orElseThrow();
+        assertEquals(it.unifi.drivehub.domain.operation.SaleType.SALE, sale.getType());
         assertEquals(new BigDecimal("20000.00"), sale.getAmount());
         assertEquals(new BigDecimal("10000.00"), ctx.getAuthService().getClientBankAccount(1L).getBalance());
         assertEquals(VehicleState.SOLD, ctx.getCatalogService().getVehicleById(vehicle.getId()).orElseThrow().getState());

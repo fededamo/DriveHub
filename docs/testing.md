@@ -3,7 +3,8 @@
 Per il contratto delle richieste del ticket 01, comandi, risultati e limiti della
 nuova esecuzione sono in [richieste della concessionaria](evidence/request-semantics-01/verification.md).
 Le richieste usano `SALE` per l'acquisto del cliente e `PURCHASE` con stima non
-negativa per la cessione; il registro resta `PURCHASE`/`ACQUISITION`/`PENALTY`.
+negativa per la cessione. Il ticket 02 allinea il registro a `SALE`/`PURCHASE`/`PENALTY`
+con importi non negativi; [prove correnti del registro](evidence/sale-semantics-02/verification.md).
 Le evidenze delle revisioni precedenti conservano i significati allora in uso.
 
 Richiesti **JDK 21**, Maven 3.9+ e, per le prove di persistenza, PostgreSQL 16.
@@ -363,11 +364,11 @@ essere aggiornati, mentre base/modalità commerciale e storico sono conservati.
 I rifiuti di dominio vengono propagati dopo il rollback con il messaggio leggibile
 dalla vista esistente; gli errori SQL mantengono la gestione transazionale.
 
-`SaleType` distingue `PURCHASE` (vendita al cliente), `ACQUISITION` e `PENALTY`.
+`SaleType` distingue `SALE` (vendita al cliente), `PURCHASE` (acquisto dal cliente) e `PENALTY`.
 Tutte le factory e il mapping JDBC conservano il tipo; l'ultima vendita usa solo
-`PURCHASE`, ordinata per data e poi ID decrescente a parità di data. Il controllo
+`SALE`, ordinata per data e poi ID decrescente a parità di data. Il controllo
 non deduce la proprietà dal segno o dall'importo: anche una vendita a zero conta.
-Importi, segni e accettazione/rifiuto della cessione restano invariati (ticket 10).
+Il ticket 02 mantiene pagamenti e flussi, aggiornando i tipi e rifiutando gli importi negativi.
 
 Schema ricreabile secondo D02: `sale.type` è obbligatorio e vincolato ai tre valori;
 `UNIQUE request(vehicle)` protegge tutte le richieste aperte, perché le richieste
@@ -405,11 +406,11 @@ mvn -Ppostgres-tests clean test
 Approvazione e rifiuto rileggono e bloccano richiesta e veicolo nella stessa
 transazione: tipo PURCHASE, stato WAITING, poi conto del cliente con il protocollo 04.
 Lo storico completo (vendite, acquisizioni, noleggi e test drive) è controllato
-sulla connessione del chiamante; l'ultima PURCHASE resta un controllo distinto
+sulla connessione del chiamante; l'ultima SALE resta un controllo distinto
 di titolarità del ticket 09. Gli esiti verificano tutte le scritture.
 
-Il cliente riceve +16000; il registro della concessionaria conserva -16000 con
-tipo ACQUISITION. PURCHASE e PENALTY restano entrate positive. Il tipo esplicito
+Il cliente riceve +16000; il registro della concessionaria conserva 16000 con
+tipo PURCHASE (uscita). SALE e PENALTY indicano entrate, con importi non negativi. Il tipo esplicito
 si conserva anche a zero e con attribuzioni storiche nulle; il registro manager
 non lo deduce da importi o soggetti mancanti. La regola esistente del conto
 continua a rifiutare pagamenti di zero, senza consumare la proposta.
@@ -421,8 +422,8 @@ prima del rilascio, senza sleep; query, worker e cleanup hanno timeout.
 Trigger AFTER verificano tutte le scritture effettive prima di provocare il
 rollback finale, anche dopo l'eliminazione fisica di un VIN nuovo.
 
-Schema ricreabile secondo D02: `ck_sale_amount_type` richiede ACQUISITION <= 0,
-PURCHASE/PENALTY >= 0. Prima dell'uso su installazioni esistenti occorre adeguare
+Schema ricreabile secondo D02: `ck_sale_amount_type` richiede importi >= 0
+per SALE, PURCHASE e PENALTY. Prima dell'uso su installazioni esistenti occorre adeguare
 schema e importi delle acquisizioni già classificate dai fatti; non inferire il
 tipo dai vecchi segni e non resettare dati applicativi. La demo non contiene
 acquisizioni: i suoi importi, soggetti e attribuzioni restano invariati.

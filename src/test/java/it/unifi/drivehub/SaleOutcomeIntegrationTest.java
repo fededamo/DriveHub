@@ -65,8 +65,8 @@ class SaleOutcomeIntegrationTest {
         var sales = reloaded.getOperationQueryService().getAllSales();
         assertEquals(1, sales.size());
         var acquisition = sales.getFirst();
-        assertEquals(new BigDecimal("-16000.00"), acquisition.getAmount());
-        assertEquals(it.unifi.drivehub.domain.operation.SaleType.ACQUISITION, acquisition.getType());
+        assertEquals(new BigDecimal("16000.00"), acquisition.getAmount());
+        assertEquals(it.unifi.drivehub.domain.operation.SaleType.PURCHASE, acquisition.getType());
         assertEquals(proposal.getVehicleId(), acquisition.getVehicleId());
         assertEquals(16L, acquisition.getSalesmanId());
         assertEquals(1L, acquisition.getClientId());
@@ -80,7 +80,7 @@ class SaleOutcomeIntegrationTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"NONE", "PURCHASE", "ACQUISITION", "RENT", "TEST_DRIVE", "ALL"})
+    @ValueSource(strings = {"NONE", "SALE", "PURCHASE", "RENT", "TEST_DRIVE", "ALL"})
     void rejectionPreservesEveryKindOfHistoryAndRemovesOnlyANewVehicle(String kind) throws Exception {
         addHistory(kind);
         String history = snapshot("sale", "rent", "test_drive");
@@ -156,7 +156,8 @@ class SaleOutcomeIntegrationTest {
         if (phase.equals("approval")) {
             var sale = ctx.getOperationQueryService().getAllSales().getFirst();
             assertEquals(2L, sale.getClientId());
-            assertEquals(new BigDecimal("-123.45"), sale.getAmount());
+            assertEquals(new BigDecimal("123.45"), sale.getAmount());
+            assertEquals(it.unifi.drivehub.domain.operation.SaleType.PURCHASE, sale.getType());
         } else {
             assertTrue(ctx.getOperationQueryService().getAllSales().isEmpty());
         }
@@ -184,7 +185,7 @@ class SaleOutcomeIntegrationTest {
                 CREATE FUNCTION ticket10_history() RETURNS trigger LANGUAGE plpgsql AS $$
                 BEGIN
                   INSERT INTO sale (vehicle,salesman,client,amount,date,type)
-                  VALUES (OLD.vehicle,16,OLD.client,-500,CURRENT_TIMESTAMP,'ACQUISITION');
+                  VALUES (OLD.vehicle,16,OLD.client,500,CURRENT_TIMESTAMP,'PURCHASE');
                   RETURN OLD;
                 END $$;
                 CREATE TRIGGER ticket10_history AFTER DELETE ON request
@@ -206,8 +207,8 @@ class SaleOutcomeIntegrationTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"PURCHASE,-0.01", "ACQUISITION,0.01", "PENALTY,-0.01"})
-    void databaseRejectsAnAmountWhoseSignContradictsTheExplicitType(String type, BigDecimal amount) throws Exception {
+    @CsvSource({"SALE,-0.01", "PURCHASE,-0.01", "PENALTY,-0.01"})
+    void databaseRejectsNegativeAmountsForEveryType(String type, BigDecimal amount) throws Exception {
         String before = snapshot();
         var failure = assertThrows(java.sql.SQLException.class, () -> sql(
                 "INSERT INTO sale (vehicle,salesman,client,amount,date,type) VALUES (" + proposal.getVehicleId()
@@ -227,7 +228,7 @@ class SaleOutcomeIntegrationTest {
                 + " THEN RAISE EXCEPTION 'ticket10_movement_not_observed'; END IF; "
                 + (phase.equals("approval") && (table.equals("vehicle") || table.equals("request"))
                     ? "IF NOT EXISTS (SELECT 1 FROM sale WHERE vehicle=" + proposal.getVehicleId()
-                        + " AND amount=-16000 AND type='ACQUISITION') THEN RAISE EXCEPTION 'ticket10_acquisition_not_observed'; END IF; " : "")
+                        + " AND amount=16000 AND type='PURCHASE') THEN RAISE EXCEPTION 'ticket10_acquisition_not_observed'; END IF; " : "")
                 + (phase.equals("rejection") && table.equals("vehicle")
                     ? "IF EXISTS (SELECT 1 FROM request WHERE id=" + proposal.getId()
                         + ") THEN RAISE EXCEPTION 'ticket10_deletion_not_observed'; END IF; " : "")
@@ -270,7 +271,7 @@ class SaleOutcomeIntegrationTest {
                 + "IF (SELECT balance FROM bank_account WHERE client=1) <> " + (approved ? 17000 : 1000)
                 + " THEN RAISE EXCEPTION 'ticket10_wrong_balance'; END IF; "
                 + (approved ? "IF NOT EXISTS (SELECT 1 FROM sale WHERE vehicle=" + proposal.getVehicleId()
-                        + " AND amount=-16000 AND type='ACQUISITION') THEN RAISE EXCEPTION 'ticket10_missing_acquisition'; END IF; " : "")
+                        + " AND amount=16000 AND type='PURCHASE') THEN RAISE EXCEPTION 'ticket10_missing_acquisition'; END IF; " : "")
                 + (approved || history ? "IF NOT EXISTS (SELECT 1 FROM vehicle WHERE id=" + proposal.getVehicleId()
                         + " AND state='" + (approved ? "SALE" : "SOLD") + "') THEN RAISE EXCEPTION 'ticket10_wrong_state'; END IF; "
                         : "IF EXISTS (SELECT 1 FROM vehicle WHERE id=" + proposal.getVehicleId()
@@ -342,9 +343,35 @@ class SaleOutcomeIntegrationTest {
         else assertTrue(vehicle.isEmpty());
         var sales = ctx.getOperationQueryService().getAllSales();
         assertEquals((history ? 2 : 0) + (approved ? 1 : 0), sales.size());
-        assertEquals(approved ? 1 : 0, sales.stream().filter(s -> s.getAmount().equals(new BigDecimal("-16000.00"))).count());
+        assertEquals(approved ? 1 : 0, sales.stream().filter(s -> s.getType() == it.unifi.drivehub.domain.operation.SaleType.PURCHASE
+                && s.getAmount().equals(new BigDecimal("16000.00"))).count());
         assertEquals(history ? 1 : 0, ctx.getOperationQueryService().getClientRents(2L).size());
         assertEquals(history ? 1 : 0, ctx.getOperationQueryService().getClientTestDrives(2L).size());
+    }
+
+    @ParameterizedTest
+    @CsvSource({"SALE,0", "PURCHASE,0", "PENALTY,0", "SALE,123.45", "PURCHASE,123.45", "PENALTY,123.45"})
+    void nonNegativeRegisterAmountsKeepTheirExplicitTypeAfterReload(
+            it.unifi.drivehub.domain.operation.SaleType type, BigDecimal amount) {
+        var dao = new it.unifi.drivehub.dao.postgres.PostgresSaleDao(db);
+        var record = it.unifi.drivehub.domain.operation.Sale.create(null,
+                type == it.unifi.drivehub.domain.operation.SaleType.PENALTY ? null : proposal.getVehicleId(),
+                type == it.unifi.drivehub.domain.operation.SaleType.PENALTY ? null : 16L,
+                1L, amount, java.time.LocalDateTime.now(), type);
+        var saved = db.executeInTransactionWithResult(conn -> dao.save(record, conn));
+        var reloaded = dao.findById(saved.getId()).orElseThrow();
+        assertEquals(type, reloaded.getType());
+        assertEquals(0, amount.compareTo(reloaded.getAmount()));
+        assertEquals(java.util.List.of(reloaded), new AppContext(db).getOperationQueryService().getClientSales(1L));
+    }
+
+    @Test
+    void databaseRejectsTheRemovedAcquisitionType() throws Exception {
+        String before = snapshot();
+        var failure = assertThrows(java.sql.SQLException.class, () -> sql(
+                "INSERT INTO sale (client,amount,date,type) VALUES (1,0,CURRENT_DATE,'ACQUISITION')"));
+        assertEquals("23514", failure.getSQLState());
+        assertEquals(before, snapshot());
     }
 
     private void monitorVehicleWrites() throws Exception {
@@ -429,13 +456,13 @@ class SaleOutcomeIntegrationTest {
 
     private void addHistory(String kind) throws Exception {
         long id = proposal.getVehicleId();
+        if (kind.equals("SALE") || kind.equals("ALL")) {
+            sql("INSERT INTO sale (vehicle,salesman,client,amount,date,type) VALUES (" + id
+                    + ",16,1,20000,CURRENT_DATE - INTERVAL '3 days','SALE')");
+        }
         if (kind.equals("PURCHASE") || kind.equals("ALL")) {
             sql("INSERT INTO sale (vehicle,salesman,client,amount,date,type) VALUES (" + id
-                    + ",16,1,20000,CURRENT_DATE - INTERVAL '3 days','PURCHASE')");
-        }
-        if (kind.equals("ACQUISITION") || kind.equals("ALL")) {
-            sql("INSERT INTO sale (vehicle,salesman,client,amount,date,type) VALUES (" + id
-                    + ",16,2,-15000,CURRENT_DATE - INTERVAL '2 days','ACQUISITION')");
+                    + ",16,2,15000,CURRENT_DATE - INTERVAL '2 days','PURCHASE')");
         }
         if (kind.equals("RENT") || kind.equals("ALL")) {
             sql("INSERT INTO rent (vehicle,client,amount,start,\"end\") VALUES (" + id + ",2,100,CURRENT_DATE-5,CURRENT_DATE-4)");

@@ -7,9 +7,10 @@ import java.util.Objects;
 /**
  * Entità Sale (registro contabile di acquisti, vendite e penali).
  * Regole di dominio:
- * - PURCHASE: entrata positiva per la concessionaria (acquisto del cliente)
- * - ACQUISITION: uscita negativa per la concessionaria; il cliente riceve un accredito positivo
- * - PENALTY: entrata positiva trattenuta dalla concessionaria (senza veicolo né venditore)
+ * - SALE: vendita della concessionaria al cliente
+ * - PURCHASE: acquisto della concessionaria dal cliente
+ * - PENALTY: penale incassata (senza veicolo né venditore)
+ * - Tutti gli importi sono non negativi; il tipo indica il verso economico.
  * - La data non può essere nel futuro.
  */
 public final class Sale {
@@ -42,8 +43,8 @@ public final class Sale {
         if (amount == null) {
             throw new IllegalArgumentException("L'importo non può essere nullo.");
         }
-        if (type == SaleType.ACQUISITION ? amount.signum() > 0 : amount.signum() < 0) {
-            throw new IllegalArgumentException("Il segno dell'importo non è coerente con il tipo di operazione della concessionaria.");
+        if (amount.signum() < 0) {
+            throw new IllegalArgumentException("L'importo non può essere negativo.");
         }
         if (date == null) {
             throw new IllegalArgumentException("La data della transazione non può essere nulla.");
@@ -54,15 +55,13 @@ public final class Sale {
         return new Sale(id, vehicleId, salesmanId, clientId, amount, date, type);
     }
 
-    public static Sale createPurchaseRecord(Long vehicleId, Long salesmanId, Long clientId, BigDecimal vehiclePrice) {
-        // Acquisto veicolo da parte del cliente
-        return create(null, vehicleId, salesmanId, clientId, vehiclePrice, LocalDateTime.now(), SaleType.PURCHASE);
+    public static Sale createSaleRecord(Long vehicleId, Long salesmanId, Long clientId, BigDecimal vehiclePrice) {
+        return create(null, vehicleId, salesmanId, clientId, vehiclePrice, LocalDateTime.now(), SaleType.SALE);
     }
 
-    public static Sale createAcquisitionRecord(Long vehicleId, Long salesmanId, Long clientId, BigDecimal pricePaidToClient) {
+    public static Sale createPurchaseRecord(Long vehicleId, Long salesmanId, Long clientId, BigDecimal pricePaidToClient) {
         if (pricePaidToClient == null) throw new IllegalArgumentException("Il pagamento al cliente non può essere nullo.");
-        // Il registro usa il punto di vista della concessionaria, distinto dal conto cliente.
-        return create(null, vehicleId, salesmanId, clientId, pricePaidToClient.negate(), LocalDateTime.now(), SaleType.ACQUISITION);
+        return create(null, vehicleId, salesmanId, clientId, pricePaidToClient, LocalDateTime.now(), SaleType.PURCHASE);
     }
 
     public static Sale createPenaltyRecord(Long clientId, BigDecimal penaltyAmount) {

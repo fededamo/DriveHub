@@ -16,6 +16,10 @@ class DemoSqlValidationTest {
     void schemaAndDemoCanBeReloadedWithoutChangingRowsOrSequences() throws Exception {
         TestDatabase fixture = TestDatabase.fromEnvironment();
         DatabaseManager db = fixture.reset();
+        var sales = new AppContext(db).getOperationQueryService().getAllSales();
+        assertEquals(32, sales.stream().filter(s -> s.getType() == it.unifi.drivehub.domain.operation.SaleType.SALE).count());
+        assertEquals(8, sales.stream().filter(s -> s.getType() == it.unifi.drivehub.domain.operation.SaleType.PENALTY).count());
+        assertTrue(sales.stream().allMatch(s -> s.getAmount().signum() >= 0));
         List<String> expected = snapshot(db);
         assertFalse(expected.isEmpty());
 

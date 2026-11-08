@@ -1,0 +1,28 @@
+SEED SUCCESS: sei operazioni, tre tipi anche a zero
+PASS JavaFX avviato nella seconda JVM
+PASS registro raggiunto con frecce
+PASS titolo descrive il verso economico attraverso il tipo
+PASS sei operazioni rilette dopo riavvio
+PASS tipo esplicito SALE
+PASS importo non negativo 20000.00
+PASS importo formattato 20000.00
+PASS tipo esplicito PURCHASE
+PASS importo non negativo 16000.00
+PASS importo formattato 16000.00
+PASS tipo esplicito PENALTY
+PASS importo non negativo 800.00
+PASS importo formattato 800.00
+PASS tipo esplicito SALE
+PASS importo non negativo 0.00
+PASS importo formattato 0.00
+PASS tipo esplicito PURCHASE
+PASS importo non negativo 0.00
+PASS importo formattato 0.00
+PASS tipo esplicito PENALTY
+PASS importo non negativo 0.00
+PASS importo formattato 0.00
+PASS selezione righe con tastiera e focus visibile
+PASS tabella richieste raggiunta con focus tastiera
+PASS importi selezionati leggibili con testo scuro
+PASS registro navigabile fino all'ultima riga
+UI CHECK SUCCESS

@@ -273,6 +273,8 @@ class PurchaseConcurrencyIntegrationTest {
         assertEquals(amount.signum() == 0 ? 0 : 1, sales.size());
         if (amount.signum() != 0) {
             assertEquals(0, amount.compareTo(sales.getFirst().getAmount()));
+            assertEquals(state == VehicleState.SALE ? it.unifi.drivehub.domain.operation.SaleType.PENALTY
+                    : it.unifi.drivehub.domain.operation.SaleType.SALE, sales.getFirst().getType());
             if (state == VehicleState.SALE) {
                 assertNull(sales.getFirst().getVehicleId());
                 assertNull(sales.getFirst().getSalesmanId());
