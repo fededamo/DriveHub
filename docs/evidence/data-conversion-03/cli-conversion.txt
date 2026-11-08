@@ -1,0 +1,55 @@
+ current_database | current_user
+------------------+---------------
+ drivehub_test    | drivehub_test
+(1 row)
+
+            server_version
+---------------------------------------
+ 16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)
+(1 row)
+
+ client | balance
+--------+----------
+      1 | 26000.00
+      2 |  1000.00
+(2 rows)
+
+BEGIN
+SET
+SET
+psql:src/main/resources/db/convert-operation-semantics.sql:195: NOTICE:  Conversione 841d4bc -> contratto finale completata; nessun movimento bancario
+DO
+COMMIT
+BEGIN
+SET
+SET
+psql:src/main/resources/db/convert-operation-semantics.sql:195: NOTICE:  Contratto finale già presente: nessuna modifica
+DO
+COMMIT
+ client | balance
+--------+----------
+      1 | 26000.00
+      2 |  1000.00
+(2 rows)
+
+ id  |   type   | deposit  | agreed_total
+-----+----------+----------+--------------
+ 101 | SALE     |  4000.00 |     20000.00
+ 102 | SALE     |  4000.00 |     20000.00
+ 103 | SALE     |  4000.00 |     20000.00
+ 104 | SALE     |     0.00 |         0.00
+ 105 | PURCHASE | 16000.00 |
+ 106 | PURCHASE |     0.00 |
+(6 rows)
+
+ id  |   type   |  amount
+-----+----------+----------
+ 201 | SALE     | 20000.00
+ 202 | PURCHASE | 16000.00
+ 203 | PENALTY  |   800.00
+ 204 | SALE     |     0.00
+ 205 | PURCHASE |     0.00
+ 206 | PENALTY  |     0.00
+ 207 | SALE     | 19000.00
+ 208 | PURCHASE | 10000.00
+(8 rows)

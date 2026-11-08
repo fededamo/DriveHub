@@ -1,0 +1,15 @@
+{
+  "source_commit": "841d4bce1dc8b5217f6f2e2a39fc42b09b5da044",
+  "source_ref": "a260598^",
+  "initial_head": "f4a7f0e",
+  "source_schema_git_blob": "2d37366f0805b21020a7f14152d8043b15e21aca",
+  "fixture_schema": "src/test/resources/db/pre-semantics-841d4bc-schema.sql",
+  "sha256": "111cbb2baaa36eff25beacf874ff9b4ceb0f3831caa4a189450696ce904da517",
+  "origin_evidence": [
+    "src/main/java/it/unifi/drivehub/domain/operation/Request.java:50-71 (PURCHASE con accordo; factory SALE con stima non positiva)",
+    "src/main/java/it/unifi/drivehub/domain/operation/Sale.java:45-46 (ACQUISITION non positiva, altri tipi non negativi)",
+    "src/main/java/it/unifi/drivehub/service/SaleToDealershipService.java:121-135 (accredito dal valore assoluto della stima)",
+    "src/main/java/it/unifi/drivehub/dao/postgres/PostgresSaleDao.java:78-80 (ultimo compratore dal vecchio PURCHASE)",
+    "src/main/resources/db/schema.sql:234-315 (colonne e vincoli originari)"
+  ]
+}

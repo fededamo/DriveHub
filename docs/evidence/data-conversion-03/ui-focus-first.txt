@@ -1,0 +1,31 @@
+SEED SUCCESS: fotografia 841d4bc convertita due volte; listino modificato
+PASS JavaFX avviato nella seconda JVM
+PASS tre richieste non approvate convertite
+PASS tipo convertito 102
+PASS stima positiva o zero 102
+PASS saldo 16000
+PASS tipo convertito 105
+PASS stima positiva o zero 105
+PASS cessione senza totale
+PASS cessione senza acconto
+PASS tipo convertito 106
+PASS stima positiva o zero 106
+PASS cessione senza totale
+PASS cessione senza acconto
+PASS selezione righe con tastiera e focus visibile
+PASS tabella richieste raggiunta con focus tastiera
+PASS importi selezionati leggibili con testo scuro
+PASS richiesta selezionata con frecce 105
+PASS cessione convertita accettata da tastiera
+PASS saldo conto 42000.00
+PASS cessione elaborata una volta
+PASS scadenza convertita: rimborso 3200
+PASS saldo conto 45200.00
+PASS operazioni cliente raggiunte con frecce
+PASS cliente vede solo i propri acquisti
+PASS selezione righe con tastiera e focus visibile
+java.lang.AssertionError: tabella richieste raggiunta con focus tastiera
+	at it.unifi.drivehub.PriceUiCheck.check(PriceUiCheck.java:33)
+	at it.unifi.drivehub.AgreementUiCheck.focusTable(AgreementUiCheck.java:88)
+	at it.unifi.drivehub.ConvertedDataUiCheck.select(ConvertedDataUiCheck.java:144)
+	at it.unifi.drivehub.ConvertedDataUiCheck.main(ConvertedDataUiCheck.java:88)

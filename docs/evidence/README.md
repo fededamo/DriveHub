@@ -1,7 +1,9 @@
 # Versioni delle evidenze
 
-Il contratto corrente di richieste e registro è verificato in
-[ticket 02: registro della concessionaria](sale-semantics-02/verification.md).
+La conversione dal contratto precedente a entrambi i ticket e il risultato
+integrato sono verificati nel [ticket 03](data-conversion-03/verification.md).
+Le prove del [ticket 02: registro della concessionaria](sale-semantics-02/verification.md)
+restano conservate per quella versione.
 La verifica del solo ticket 01 resta in [request-semantics-01](request-semantics-01/verification.md);
 gli altri risultati sotto descrivono le rispettive versioni storiche.
 

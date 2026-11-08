@@ -1,0 +1,66 @@
+DROP TABLE
+DROP TABLE
+DROP TABLE
+DROP TABLE
+DROP TABLE
+psql:src/test/resources/db/pre-semantics-841d4bc-schema.sql:12: NOTICE:  drop cascades to view "user"
+DROP TABLE
+DROP TABLE
+DROP TABLE
+psql:src/test/resources/db/pre-semantics-841d4bc-schema.sql:15: NOTICE:  view "user" does not exist, skipping
+DROP VIEW
+DROP SEQUENCE
+DROP FUNCTION
+psql:src/test/resources/db/pre-semantics-841d4bc-schema.sql:18: NOTICE:  drop cascades to trigger trg_vehicle_year_model on table vehicle
+DROP FUNCTION
+psql:src/test/resources/db/pre-semantics-841d4bc-schema.sql:19: NOTICE:  drop cascades to trigger trg_model_release_year_update on table model
+DROP FUNCTION
+DROP TABLE
+DROP TABLE
+DROP TABLE
+DROP TABLE
+DROP TABLE
+DROP TYPE
+DROP TYPE
+psql:src/test/resources/db/pre-semantics-841d4bc-schema.sql:29: NOTICE:  extension "btree_gist" already exists, skipping
+CREATE EXTENSION
+CREATE TYPE
+CREATE TYPE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE FUNCTION
+CREATE TRIGGER
+CREATE FUNCTION
+CREATE TRIGGER
+CREATE SEQUENCE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE FUNCTION
+CREATE TRIGGER
+CREATE TRIGGER
+CREATE TRIGGER
+CREATE VIEW
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+INSERT 0 1
+INSERT 0 1
+INSERT 0 2
+INSERT 0 1
+INSERT 0 1
+INSERT 0 2
+INSERT 0 8
+INSERT 0 6
+INSERT 0 8
+INSERT 0 1
+INSERT 0 1
+ setval | setval | setval | setval | setval | setval | setval
+--------+--------+--------+--------+--------+--------+--------
+     77 |     31 |     81 |    151 |    251 |    351 |    451
+(1 row)

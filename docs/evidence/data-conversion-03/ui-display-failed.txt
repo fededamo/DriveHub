@@ -1,0 +1,11 @@
+SEED SUCCESS: fotografia 841d4bc convertita due volte; listino modificato
+java.lang.UnsupportedOperationException: Unable to open DISPLAY
+	at javafx.graphics@21.0.2/com.sun.glass.ui.gtk.GtkApplication.lambda$new$5(GtkApplication.java:164)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:319)
+	at javafx.graphics@21.0.2/com.sun.glass.ui.gtk.GtkApplication.<init>(GtkApplication.java:162)
+	at javafx.graphics@21.0.2/com.sun.glass.ui.gtk.GtkPlatformFactory.createApplication(GtkPlatformFactory.java:40)
+	at javafx.graphics@21.0.2/com.sun.glass.ui.Application.run(Application.java:146)
+	at javafx.graphics@21.0.2/com.sun.javafx.tk.quantum.QuantumToolkit.startup(QuantumToolkit.java:290)
+	at javafx.graphics@21.0.2/com.sun.javafx.application.PlatformImpl.startup(PlatformImpl.java:292)
+	at javafx.graphics@21.0.2/javafx.application.Platform.startup(Platform.java:113)
+	at it.unifi.drivehub.ConvertedDataUiCheck.main(ConvertedDataUiCheck.java:39)

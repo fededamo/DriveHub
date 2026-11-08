@@ -1,5 +1,22 @@
 # Build e test isolati
 
+Il ticket 03 verifica la [conversione dedicata](data-conversion.md) dal contratto
+`841d4bc` al contratto finale dei ticket 01+02+03. La fotografia sorgente è sotto
+`src/test/resources/db/`; passa dallo stesso loader con protezioni di isolamento,
+mai dalla configurazione applicativa. [Risultati correnti](evidence/data-conversion-03/verification.md).
+
+```bash
+mvn -Ppostgres-tests -Dtest=OperationSemanticsConversionIntegrationTest test
+# Dopo la compilazione e con DISPLAY isolato e variabili DB dedicate:
+python3 docs/evidence/data-conversion-03/run-ui.py
+```
+
+Il test controlla dati e sequenze, rollback dopo modifiche effettive, seconda
+esecuzione, origini non riconosciute e flussi pubblici sui dati convertiti.
+Il controllo JavaFX prepara il vecchio contratto nel solo DB dedicato, lo
+converte e usa una seconda JVM per cessione, scadenza, saldo e registro.
+Non eseguire harness e suite contemporaneamente sullo stesso database.
+
 Per il contratto delle richieste del ticket 01, comandi, risultati e limiti della
 nuova esecuzione sono in [richieste della concessionaria](evidence/request-semantics-01/verification.md).
 Le richieste usano `SALE` per l'acquisto del cliente e `PURCHASE` con stima non

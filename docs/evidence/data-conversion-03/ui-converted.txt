@@ -1,0 +1,68 @@
+SEED SUCCESS: fotografia 841d4bc convertita due volte; listino modificato
+PASS JavaFX avviato nella seconda JVM
+PASS tre richieste non approvate convertite
+PASS tipo convertito 102
+PASS stima positiva o zero 102
+PASS saldo 16000
+PASS tipo convertito 105
+PASS stima positiva o zero 105
+PASS cessione senza totale
+PASS cessione senza acconto
+PASS tipo convertito 106
+PASS stima positiva o zero 106
+PASS cessione senza totale
+PASS cessione senza acconto
+PASS richiesta selezionata con frecce 105
+PASS cessione convertita accettata da tastiera
+PASS saldo conto 42000.00
+PASS cessione elaborata una volta
+PASS scadenza convertita: rimborso 3200
+PASS saldo conto 45200.00
+PASS operazioni cliente raggiunte con frecce
+PASS cliente vede solo i propri acquisti
+PASS richiesta selezionata con frecce 101
+PASS dialogo: totale concordato
+PASS dialogo: acconto versato
+PASS dialogo: saldo da pagare
+PASS accordo convertito completato da tastiera
+PASS saldo conto 29200.00
+PASS registro raggiunto con frecce
+PASS otto operazioni convertite e tre nuovi esiti
+PASS registro: 254 VENDITA (Entrata)
+PASS importo non negativo 254
+PASS importo leggibile 254
+PASS registro: 253 PENALE (Entrata)
+PASS importo non negativo 253
+PASS importo leggibile 253
+PASS registro: 252 ACQUISTO (Uscita)
+PASS importo non negativo 252
+PASS importo leggibile 252
+PASS registro: 208 ACQUISTO (Uscita)
+PASS importo non negativo 208
+PASS importo leggibile 208
+PASS registro: 206 PENALE (Entrata)
+PASS importo non negativo 206
+PASS importo leggibile 206
+PASS registro: 205 ACQUISTO (Uscita)
+PASS importo non negativo 205
+PASS importo leggibile 205
+PASS registro: 204 VENDITA (Entrata)
+PASS importo non negativo 204
+PASS importo leggibile 204
+PASS registro: 203 PENALE (Entrata)
+PASS importo non negativo 203
+PASS importo leggibile 203
+PASS registro: 202 ACQUISTO (Uscita)
+PASS importo non negativo 202
+PASS importo leggibile 202
+PASS registro: 201 VENDITA (Entrata)
+PASS importo non negativo 201
+PASS importo leggibile 201
+PASS registro: 207 VENDITA (Entrata)
+PASS importo non negativo 207
+PASS importo leggibile 207
+PASS selezione righe con tastiera e focus visibile
+PASS tabella richieste raggiunta con focus tastiera
+PASS importi selezionati leggibili con testo scuro
+PASS registro navigabile fino all'ultima riga
+UI CHECK SUCCESS

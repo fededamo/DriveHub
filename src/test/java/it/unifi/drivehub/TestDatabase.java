@@ -55,7 +55,11 @@ final class TestDatabase {
     }
 
     DatabaseManager reset() throws IOException, SQLException {
-        executeScripts("/db/schema.sql", "/db/demo.sql");
+        return reset("/db/schema.sql", "/db/demo.sql");
+    }
+
+    DatabaseManager reset(String... resources) throws IOException, SQLException {
+        executeScripts(resources);
         return database;
     }
 

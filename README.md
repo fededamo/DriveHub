@@ -37,9 +37,10 @@ Le richieste usano il punto di vista della concessionaria: `SALE` per il cliente
 che compra (acconto e totale concordato), `PURCHASE` per la cessione del cliente
 (stima non negativa, senza totale concordato). Il registro `Sale` usa `SALE` per la vendita al cliente, `PURCHASE` per
 l'acquisto dal cliente e `PENALTY` per la penale, con importi non negativi.
-Questa versione è verificabile su database nuovi dedicati; per aggiornare dati
-esistenti occorre anche il ticket 03. Non eseguire schema/demo
-su un'installazione popolata per applicare questa modifica.
+Per aggiornare i dati della versione `841d4bc` (`a260598^`) usare la
+[conversione dedicata del ticket 03](docs/data-conversion.md), con applicazione
+ferma e tutti e tre i ticket installati. Inizializzazione e demo servono a
+database nuovi o sacrificabili; non usarle per aggiornare un'installazione popolata.
 
 ```bash
 mvn -DskipTests clean package

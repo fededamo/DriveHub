@@ -1,0 +1,56 @@
+SEED SUCCESS: fotografia 841d4bc convertita due volte; listino modificato
+PASS JavaFX avviato nella seconda JVM
+PASS tre richieste non approvate convertite
+PASS tipo convertito 102
+PASS stima positiva o zero 102
+PASS saldo 16000
+PASS tipo convertito 105
+PASS stima positiva o zero 105
+PASS cessione senza totale
+PASS cessione senza acconto
+PASS tipo convertito 106
+PASS stima positiva o zero 106
+PASS cessione senza totale
+PASS cessione senza acconto
+PASS selezione righe con tastiera e focus visibile
+PASS tabella richieste raggiunta con focus tastiera
+PASS importi selezionati leggibili con testo scuro
+PASS richiesta selezionata con frecce 105
+PASS cessione convertita accettata da tastiera
+PASS saldo conto 42000.00
+PASS cessione elaborata una volta
+java.lang.IllegalArgumentException: Key not associated with a running event loop: javafx.scene.control.HeavyweightDialog$1@69f1fbd0
+	at javafx.graphics@21.0.2/com.sun.javafx.tk.quantum.QuantumToolkit.exitNestedEventLoop(QuantumToolkit.java:666)
+	at javafx.graphics@21.0.2/javafx.stage.Stage.doVisibleChanged(Stage.java:1205)
+	at javafx.graphics@21.0.2/javafx.stage.Stage$1.doVisibleChanged(Stage.java:190)
+	at javafx.graphics@21.0.2/com.sun.javafx.stage.StageHelper.visibleChangedImpl(StageHelper.java:63)
+	at javafx.graphics@21.0.2/com.sun.javafx.stage.WindowHelper.visibleChanged(WindowHelper.java:77)
+	at javafx.graphics@21.0.2/javafx.stage.Window$12.invalidated(Window.java:1212)
+	at javafx.base@21.0.2/javafx.beans.property.BooleanPropertyBase.markInvalid(BooleanPropertyBase.java:110)
+	at javafx.base@21.0.2/javafx.beans.property.BooleanPropertyBase.set(BooleanPropertyBase.java:145)
+	at javafx.graphics@21.0.2/javafx.stage.Window.setShowing(Window.java:1239)
+	at javafx.graphics@21.0.2/javafx.stage.Window.hide(Window.java:1264)
+	at javafx.graphics@21.0.2/com.sun.javafx.stage.WindowPeerListener.closed(WindowPeerListener.java:112)
+	at javafx.graphics@21.0.2/com.sun.javafx.tk.quantum.GlassWindowEventHandler.run(GlassWindowEventHandler.java:144)
+	at javafx.graphics@21.0.2/com.sun.javafx.tk.quantum.GlassWindowEventHandler.run(GlassWindowEventHandler.java:40)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+	at javafx.graphics@21.0.2/com.sun.javafx.tk.quantum.GlassWindowEventHandler.lambda$handleWindowEvent$4(GlassWindowEventHandler.java:178)
+	at javafx.graphics@21.0.2/com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424)
+	at javafx.graphics@21.0.2/com.sun.javafx.tk.quantum.GlassWindowEventHandler.handleWindowEvent(GlassWindowEventHandler.java:176)
+	at javafx.graphics@21.0.2/com.sun.glass.ui.Window.handleWindowEvent(Window.java:1259)
+	at javafx.graphics@21.0.2/com.sun.glass.ui.Window.notifyDestroy(Window.java:1173)
+	at javafx.graphics@21.0.2/com.sun.glass.ui.gtk.GtkWindow._close(Native Method)
+	at javafx.graphics@21.0.2/com.sun.glass.ui.Window.close(Window.java:311)
+	at javafx.graphics@21.0.2/com.sun.glass.ui.Application.terminate(Application.java:397)
+	at javafx.graphics@21.0.2/com.sun.javafx.tk.quantum.QuantumToolkit.lambda$exit$14(QuantumToolkit.java:846)
+	at javafx.graphics@21.0.2/com.sun.javafx.tk.quantum.QuantumToolkit.runWithRenderLock(QuantumToolkit.java:442)
+	at javafx.graphics@21.0.2/com.sun.javafx.tk.quantum.QuantumToolkit.exit(QuantumToolkit.java:842)
+	at javafx.graphics@21.0.2/com.sun.javafx.application.PlatformImpl.lambda$tkExit$16(PlatformImpl.java:623)
+	at javafx.graphics@21.0.2/com.sun.javafx.application.PlatformImpl.lambda$runAndWait$12(PlatformImpl.java:483)
+	at javafx.graphics@21.0.2/com.sun.javafx.application.PlatformImpl.lambda$runLater$10(PlatformImpl.java:456)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+	at javafx.graphics@21.0.2/com.sun.javafx.application.PlatformImpl.lambda$runLater$11(PlatformImpl.java:455)
+	at javafx.graphics@21.0.2/com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at javafx.graphics@21.0.2/com.sun.glass.ui.gtk.GtkApplication._runLoop(Native Method)
+	at javafx.graphics@21.0.2/com.sun.glass.ui.gtk.GtkApplication.lambda$runLoop$10(GtkApplication.java:263)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
