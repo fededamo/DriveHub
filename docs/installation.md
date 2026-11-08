@@ -6,6 +6,13 @@ corrente, inclusi i file non tracciati necessari; un clone del solo HEAD non
 contiene le revisioni locali. Escludere `.git`, `target` e `Relazione_SWE`.
 I percorsi dei comandi seguenti sono relativi alla radice `DriveHub/`.
 
+Il ticket 01 modifica il contratto persistito delle richieste: `SALE` per il
+cliente che compra, `PURCHASE` con stima positiva per il cliente che cede il
+veicolo. Il registro mantiene ancora il contratto precedente. Questa versione
+intermedia richiede un database nuovo o sacrificabile: non avviarla su dati
+precedenti. L'aggiornamento di un'installazione popolata richiede anche i ticket
+02 e 03; schema e demo non convertono i dati esistenti.
+
 ## Prerequisiti
 
 - **JDK 21**, con `java` e `javac`; **Maven 3.9+**. In WSL usare un JDK Linux.

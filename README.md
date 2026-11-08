@@ -33,6 +33,14 @@ Il prezzo di un veicolo parte dalla base del modello o da una base manuale scelt
 
 ## Build e test
 
+Le richieste usano il punto di vista della concessionaria: `SALE` per il cliente
+che compra (acconto e totale concordato), `PURCHASE` per la cessione del cliente
+(stima non negativa, senza totale concordato). Il registro `Sale` conserva ancora
+`PURCHASE` per la vendita al cliente e `ACQUISITION` negativa per l'acquisizione.
+Questo contratto intermedio è verificabile su database nuovi dedicati; per
+aggiornare dati esistenti occorrono anche i ticket 02 e 03. Non eseguire schema/demo
+su un'installazione popolata per applicare questa modifica.
+
 ```bash
 mvn -DskipTests clean package
 mvn test

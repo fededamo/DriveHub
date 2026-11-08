@@ -89,7 +89,7 @@ public final class PurchaseService {
             bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
 
             // 4. Creazione tupla in Request con salesman = null e exp_date = null
-            Request newRequest = Request.createNewPurchaseRequest(vehicleId, clientId, deposit, currentPrice);
+            Request newRequest = Request.createNewSaleRequest(vehicleId, clientId, deposit, currentPrice);
             return requestDao.save(newRequest, conn);
         });
     }
@@ -102,7 +102,7 @@ public final class PurchaseService {
         db.executeInTransaction(conn -> {
             Request request = requestDao.findByIdForUpdate(requestId, conn)
                     .orElseThrow(() -> new IllegalStateException("Richiesta non trovata: " + requestId));
-            if (request.getType() != RequestType.PURCHASE) {
+            if (request.getType() != RequestType.SALE) {
                 throw new IllegalArgumentException("La richiesta non è di acquisto.");
             }
 
@@ -130,7 +130,7 @@ public final class PurchaseService {
         db.executeInTransaction(conn -> {
             Request request = requestDao.findByIdForUpdate(requestId, conn)
                     .orElseThrow(() -> new IllegalStateException("Richiesta non trovata: " + requestId));
-            if (request.getType() != RequestType.PURCHASE) {
+            if (request.getType() != RequestType.SALE) {
                 throw new IllegalArgumentException("La richiesta non è di acquisto.");
             }
 
@@ -148,7 +148,7 @@ public final class PurchaseService {
         db.executeInTransaction(conn -> {
             Request request = requestDao.findByIdForUpdate(requestId, conn)
                     .orElseThrow(() -> new IllegalStateException("Richiesta non trovata: " + requestId));
-            if (request.getType() != RequestType.PURCHASE) {
+            if (request.getType() != RequestType.SALE) {
                 throw new IllegalArgumentException("La richiesta non è di acquisto.");
             }
             if (request.getSalesmanId() == null || request.getExpDate() == null) {
@@ -199,7 +199,7 @@ public final class PurchaseService {
         for (Request candidate : clientRequests) {
             String notification = db.executeInTransactionWithResult(conn -> {
                 Request request = requestDao.findByIdForUpdate(candidate.getId(), conn).orElse(null);
-                if (request == null || request.getType() != RequestType.PURCHASE
+                if (request == null || request.getType() != RequestType.SALE
                         || !request.getClientId().equals(clientId) || request.getSalesmanId() == null
                         || !request.isExpired()) {
                     return null;

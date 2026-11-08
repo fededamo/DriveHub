@@ -127,13 +127,13 @@ class PurchaseConcurrencyIntegrationTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"completion", "rejection", "approval"})
-    void purchaseCommandsRejectSaleRequests(String phase) throws Exception {
-        sql("UPDATE request SET type = 'SALE', agreed_total = NULL, deposit = -4000, exp_date = CURRENT_DATE - 1 WHERE id = 1001");
+    void customerPurchaseCommandsRejectDealershipPurchaseRequests(String phase) throws Exception {
+        sql("UPDATE request SET type = 'PURCHASE', agreed_total = NULL, deposit = 4000, exp_date = CURRENT_DATE - 1 WHERE id = 1001");
         var failure = assertThrows(RuntimeException.class, operation(phase, new AtomicInteger())::run);
         assertTrue(rootMessage(failure).contains("non è di acquisto"));
         assertTrue(ctx.getPurchaseService().checkAndHandleExpiredRequests(1L).isEmpty());
         balance("46000.00");
-        assertEquals(new BigDecimal("-4000.00"), request().getDeposit());
+        assertEquals(new BigDecimal("4000.00"), request().getDeposit());
         assertTrue(ctx.getOperationQueryService().getAllSales().isEmpty());
         assertEquals(VehicleState.BLOCKED, ctx.getCatalogService().getVehicleById(1001L).orElseThrow().getState());
     }

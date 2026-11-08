@@ -114,7 +114,7 @@ public final class PostgresRequestDao implements RequestDao {
     @Override
     public Optional<Request> findActivePurchaseRequestForVehicle(Long vehicleId) {
         String sql = "SELECT id, vehicle, client, salesman, deposit, agreed_total, exp_date, type::text as type_str " +
-                "FROM request WHERE vehicle = ? AND type = 'PURCHASE'::request_type";
+                "FROM request WHERE vehicle = ? AND type = 'SALE'::request_type";
         try (Connection conn = db.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, vehicleId);

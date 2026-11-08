@@ -1,5 +1,11 @@
 # Build e test isolati
 
+Per il contratto delle richieste del ticket 01, comandi, risultati e limiti della
+nuova esecuzione sono in [richieste della concessionaria](evidence/request-semantics-01/verification.md).
+Le richieste usano `SALE` per l'acquisto del cliente e `PURCHASE` con stima non
+negativa per la cessione; il registro resta `PURCHASE`/`ACQUISITION`/`PENALTY`.
+Le evidenze delle revisioni precedenti conservano i significati allora in uso.
+
 Richiesti **JDK 21**, Maven 3.9+ e, per le prove di persistenza, PostgreSQL 16.
 `java -version` e `mvn -version` devono entrambi indicare Java 21; impostare
 `JAVA_HOME` al JDK 21 Linux quando si lavora in WSL. Il JDK Windows non sostituisce
@@ -238,8 +244,8 @@ Il completamento usa soltanto gli importi persistiti: nessuna lettura di basi,
 sconti o anno per determinare il saldo o l'importo della vendita.
 
 Lo schema ricreabile aggiunge `request.agreed_total DECIMAL(10,2)`, obbligatorio e
-non negativo per PURCHASE, con acconto compreso fra zero e totale; per SALE resta
-NULL. La stima di cessione mantiene il contratto precedente in `deposit`.
+non negativo per SALE, con acconto compreso fra zero e totale; per PURCHASE resta
+NULL. La stima di cessione è non negativa in `deposit`, senza normalizzazione del segno.
 La demo dichiara i totali dei suoi accordi storici, senza ricavarli dal listino
 corrente. D02 non richiede una migrazione storica: prima di usare il nuovo codice
 su installazioni esistenti occorre adeguare lo schema e fornire i totali realmente
@@ -397,7 +403,7 @@ mvn -Ppostgres-tests clean test
 ```
 
 Approvazione e rifiuto rileggono e bloccano richiesta e veicolo nella stessa
-transazione: tipo SALE, stato WAITING, poi conto del cliente con il protocollo 04.
+transazione: tipo PURCHASE, stato WAITING, poi conto del cliente con il protocollo 04.
 Lo storico completo (vendite, acquisizioni, noleggi e test drive) è controllato
 sulla connessione del chiamante; l'ultima PURCHASE resta un controllo distinto
 di titolarità del ticket 09. Gli esiti verificano tutte le scritture.

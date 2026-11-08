@@ -1,0 +1,41 @@
+SEED SUCCESS: accordi 20000/4000/16000; listino modificato; fine prima JVM
+PASS JavaFX avviato nella seconda JVM
+PASS due accordi e una cessione riletti dopo riavvio JVM
+PASS totale riletto 20000
+PASS acconto riletto 4000
+PASS saldo riletto 16000
+PASS totale riletto 20000
+PASS acconto riletto 4000
+PASS saldo riletto 16000
+PASS cessione senza totale acquisto
+PASS cessione senza saldo acquisto
+PASS stima cessione conservata
+PASS selezione righe con tastiera e focus visibile
+PASS tabella richieste raggiunta con focus tastiera
+PASS importi selezionati leggibili con testo scuro
+PASS approvazione mostra saldo concordato
+PASS approvazione da tastiera persistita
+PASS operazioni raggiunte con frecce
+PASS entrambi gli accordi cliente presenti
+PASS totale riletto 20000
+PASS acconto riletto 4000
+PASS saldo riletto 16000
+PASS totale riletto 20000
+PASS acconto riletto 4000
+PASS saldo riletto 16000
+PASS selezione righe con tastiera e focus visibile
+PASS tabella richieste raggiunta con focus tastiera
+PASS importi selezionati leggibili con testo scuro
+PASS richiesta approvata selezionata da tastiera
+PASS dialogo: totale concordato
+PASS dialogo: acconto versato
+PASS dialogo: saldo da pagare
+PASS UI registra vendita 20000
+PASS UI addebita soltanto saldo 16000
+PASS ritorno al catalogo con frecce
+PASS selezione righe con tastiera e focus visibile
+PASS preventivo avvio distinto da accordo persistito
+PASS dialogo: totale concordato
+PASS dialogo: acconto versato
+PASS dialogo: saldo da pagare
+UI CHECK SUCCESS

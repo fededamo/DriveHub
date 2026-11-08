@@ -9,7 +9,8 @@ import java.util.Objects;
  * Entità Richiesta (acquisto o vendita veicolo).
  * Invarianti:
  * - Tipo obbligatorio (PURCHASE o SALE)
- * - Per PURCHASE totale concordato e acconto sono immutabili, non negativi e in centesimi
+ * - SALE: totale concordato e acconto immutabili, non negativi e in centesimi
+ * - PURCHASE: stima non negativa in deposit, senza totale concordato
  * - La data di scadenza (se valorizzata) non può essere nel passato rispetto alla creazione
  */
 public final class Request {
@@ -44,11 +45,14 @@ public final class Request {
         if (deposit == null) {
             throw new IllegalArgumentException("L'acconto/stima non può essere nullo.");
         }
+        if (deposit.signum() < 0) {
+            throw new IllegalArgumentException("L'acconto/stima non può essere negativo.");
+        }
         if (type == null) {
             throw new IllegalArgumentException("Il tipo di richiesta non può essere nullo.");
         }
-        if (type == RequestType.PURCHASE) {
-            if (agreedTotal == null || agreedTotal.signum() < 0 || deposit.signum() < 0
+        if (type == RequestType.SALE) {
+            if (agreedTotal == null || agreedTotal.signum() < 0
                     || deposit.compareTo(agreedTotal) > 0) {
                 throw new IllegalArgumentException("Totale concordato e acconto non validi per l'acquisto.");
             }
@@ -61,14 +65,12 @@ public final class Request {
         return new Request(id, vehicleId, clientId, salesmanId, deposit, agreedTotal, expDate, type);
     }
 
-    public static Request createNewPurchaseRequest(Long vehicleId, Long clientId, BigDecimal deposit, BigDecimal agreedTotal) {
-        return create(null, vehicleId, clientId, null, deposit, agreedTotal, null, RequestType.PURCHASE);
+    public static Request createNewSaleRequest(Long vehicleId, Long clientId, BigDecimal deposit, BigDecimal agreedTotal) {
+        return create(null, vehicleId, clientId, null, deposit, agreedTotal, null, RequestType.SALE);
     }
 
-    public static Request createNewSaleRequest(Long vehicleId, Long clientId, BigDecimal estimatedValue) {
-        // Valore negativo per indicare la proposta di vendita da parte del cliente
-        BigDecimal signedDeposit = estimatedValue.compareTo(BigDecimal.ZERO) > 0 ? estimatedValue.negate() : estimatedValue;
-        return create(null, vehicleId, clientId, null, signedDeposit, null, null, RequestType.SALE);
+    public static Request createNewPurchaseRequest(Long vehicleId, Long clientId, BigDecimal estimatedValue) {
+        return create(null, vehicleId, clientId, null, estimatedValue, null, null, RequestType.PURCHASE);
     }
 
     public Long getId() {
@@ -100,7 +102,7 @@ public final class Request {
     }
 
     public BigDecimal getRemainingAmount() {
-        if (type != RequestType.PURCHASE) {
+        if (type != RequestType.SALE) {
             throw new IllegalStateException("Il saldo da pagare riguarda solo gli acquisti del cliente.");
         }
         return agreedTotal.subtract(deposit);

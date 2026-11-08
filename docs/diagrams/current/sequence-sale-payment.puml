@@ -26,7 +26,7 @@ note over service,vehicle
 end note
 service -> account : findByClientIdForUpdate(clientId, conn)
 service -> account : updateBalance(..., saldo - acconto20%, conn)
-service -> request : save(Request PURCHASE con totale/acconto, conn)
+service -> request : save(Request SALE con totale/acconto, conn)
 db -> db : commit / close
 service --> Cliente : richiesta; successo dopo commit
 end
@@ -41,7 +41,7 @@ group completePurchase(requestId) — transazione 3
 Cliente -> service : paga saldo da Le Mie Operazioni
 service -> db : executeInTransaction(callback)
 service -> request : findByIdForUpdate(requestId, conn)
-note over service,request : Verifica PURCHASE approvata e non scaduta.
+note over service,request : Verifica SALE approvata e non scaduta.
 service -> account : findByClientIdForUpdate(clientId, conn)
 service -> account : updateBalance(..., saldo - (agreedTotal - deposit), conn)
 service -> sale : save(Sale PURCHASE positiva, conn)

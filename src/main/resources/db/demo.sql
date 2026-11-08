@@ -201,21 +201,21 @@ INSERT INTO "manager" ("id", "name", "surname", "email", "hash_password") VALUES
 -- -----------------------------------------------------------------------------
 INSERT INTO "request" ("id", "vehicle", "client", "salesman", "deposit", "agreed_total", "exp_date", "type") VALUES
     -- 10 Richieste d'acquisto su veicoli BLOCKED (alcune approvate con exp_date, altre in attesa di approvazione)
-    (1,  47, 1,  16,   3600.00, 18000.00, DATE '2026-10-25', 'PURCHASE'),
-    (2,  48, 2,  17,   4400.00, 22000.00, DATE '2026-10-28', 'PURCHASE'),
-    (3,  49, 3,  18,   4150.00, 20750.00, DATE '2026-10-22', 'PURCHASE'),
-    (4,  50, 4,  19,   3580.00, 17900.00, DATE '2026-10-30', 'PURCHASE'),
-    (5,  51, 5,  16,   5100.00, 25500.00, DATE '2026-10-18', 'PURCHASE'),
-    (6,  52, 6,  17,   4290.00, 21450.00, DATE '2026-10-20', 'PURCHASE'),
-    (7,  53, 7,  NULL, 3750.00, 18750.00, NULL,               'PURCHASE'),
-    (8,  54, 8,  NULL, 1500.00, 7500.00, NULL,               'PURCHASE'),
-    (9,  55, 9,  NULL, 3250.00, 16250.00, NULL,               'PURCHASE'),
-    (10, 56, 10, NULL, 4800.00, 24000.00, NULL,               'PURCHASE'),
+    (1,  47, 1,  16,   3600.00, 18000.00, DATE '2026-10-25', 'SALE'),
+    (2,  48, 2,  17,   4400.00, 22000.00, DATE '2026-10-28', 'SALE'),
+    (3,  49, 3,  18,   4150.00, 20750.00, DATE '2026-10-22', 'SALE'),
+    (4,  50, 4,  19,   3580.00, 17900.00, DATE '2026-10-30', 'SALE'),
+    (5,  51, 5,  16,   5100.00, 25500.00, DATE '2026-10-18', 'SALE'),
+    (6,  52, 6,  17,   4290.00, 21450.00, DATE '2026-10-20', 'SALE'),
+    (7,  53, 7,  NULL, 3750.00, 18750.00, NULL,               'SALE'),
+    (8,  54, 8,  NULL, 1500.00, 7500.00, NULL,               'SALE'),
+    (9,  55, 9,  NULL, 3250.00, 16250.00, NULL,               'SALE'),
+    (10, 56, 10, NULL, 4800.00, 24000.00, NULL,               'SALE'),
     -- 4 Proposte di vendita inserite dai clienti sui veicoli in stato WAITING (43, 44, 45, 46)
-    (11, 43, 11, NULL, -13500.00, NULL, NULL,             'SALE'),
-    (12, 44, 12, NULL, -16800.00, NULL, NULL,             'SALE'),
-    (13, 45, 13, NULL, -23000.00, NULL, NULL,             'SALE'),
-    (14, 46, 14, NULL, -25500.00, NULL, NULL,             'SALE');
+    (11, 43, 11, NULL, 13500.00, NULL, NULL,             'PURCHASE'),
+    (12, 44, 12, NULL, 16800.00, NULL, NULL,             'PURCHASE'),
+    (13, 45, 13, NULL, 23000.00, NULL, NULL,             'PURCHASE'),
+    (14, 46, 14, NULL, 25500.00, NULL, NULL,             'PURCHASE');
 
 -- -----------------------------------------------------------------------------
 -- 9. Test Drive (10 prenotazioni in attesa)

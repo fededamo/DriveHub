@@ -28,7 +28,7 @@ else VIN nuovo
 service -> vehicle : save(Vehicle WAITING, conn)
 end
 note over service,vehicle : Stima dalla formula esistente; modello/sconti letti anche fuori conn.
-service -> request : save(Request SALE, deposit negativo = stima, conn)
+service -> request : save(Request PURCHASE, deposit non negativo = stima, conn)
 db -> db : commit / close
 end
 group approveSaleProposal / rejectSaleProposal — transazione 2
@@ -36,10 +36,10 @@ Venditore -> service : esito dalla SalesmanDashboardView
 service -> db : executeInTransaction(callback)
 service -> request : findByIdForUpdate(requestId, conn)
 service -> vehicle : findByIdForUpdate(vehicleId, conn)
-note over service,vehicle : Richiesta SALE e veicolo WAITING, altrimenti errore.
+note over service,vehicle : Richiesta PURCHASE e veicolo WAITING, altrimenti errore.
 alt accetta (salesmanId obbligatorio)
 service -> account : findByClientIdForUpdate(clientId, conn)
-service -> account : updateBalance(..., saldo + abs(deposit), conn)
+service -> account : updateBalance(..., saldo + deposit, conn)
 service -> sale : save(Sale ACQUISITION negativa, conn)
 service -> vehicle : updateStateAtomically(WAITING, SALE, conn)
 service -> request : delete(requestId, conn)

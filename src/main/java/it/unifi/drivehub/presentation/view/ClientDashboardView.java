@@ -529,7 +529,7 @@ public final class ClientDashboardView extends BorderPane {
     private void refreshMyOperations() {
         requestsTable.getItems().setAll(
                 operationQueryService.getClientRequests(client.getId())
-                        .stream().filter(r -> r.getType() == RequestType.PURCHASE).toList()
+                        .stream().filter(r -> r.getType() == RequestType.SALE).toList()
         );
         myRentsTable.getItems().setAll(operationQueryService.getClientRents(client.getId()));
         myTestDrivesTable.getItems().setAll(operationQueryService.getClientTestDrives(client.getId()));

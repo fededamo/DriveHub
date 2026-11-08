@@ -79,9 +79,9 @@ Request -[hidden]right-> Sale
 Sale -[hidden]down-> Rent
 Rent -[hidden]right-> TestDrive
 note bottom of Request
-  PURCHASE: totale/acconto persistiti; saldo = totale - acconto.
+  SALE: totale/acconto non negativi persistiti; saldo = totale - acconto.
   Approvazione: salesmanId e expDate, non un enum di stato.
-  SALE (cessione): deposit negativo = stima; agreedTotal nullo.
+  PURCHASE (cessione): deposit non negativo = stima; agreedTotal nullo.
   Esito finale: richiesta eliminata nella transazione.
 end note
 note bottom of Sale

@@ -40,7 +40,7 @@ class PriceSelectionIntegrationTest {
                         it.unifi.drivehub.domain.operation.Sale.createPurchaseRecord(
                                 vehicle.getId(), 16L, 1L, new BigDecimal("7200.00")), conn));
         var request = ctx.getSaleToDealershipService().submitSaleProposal(1L, model.getId(), vehicle.getVin(), "AB123CD", 0, year);
-        assertEquals(new BigDecimal("14400.00"), request.getDeposit().abs());
+        assertEquals(new BigDecimal("14400.00"), request.getDeposit());
         Vehicle reloaded = ctx.getCatalogService().getVehicleById(vehicle.getId()).orElseThrow();
         assertEquals(0, new BigDecimal("10000").compareTo(reloaded.getPrice()));
         assertEquals(PriceMode.MANUAL, reloaded.getPriceMode());
@@ -147,7 +147,7 @@ class PriceSelectionIntegrationTest {
     void newCessionUsesRecommendedBaseAndKeepsEstimateInRequest() {
         var request = ctx.getSaleToDealershipService().submitSaleProposal(1L, model.getId(),
                 "T0500000000000007", "AB123CD", 0, year);
-        assertEquals(new BigDecimal("14400.00"), request.getDeposit().abs());
+        assertEquals(new BigDecimal("14400.00"), request.getDeposit());
         Vehicle vehicle = ctx.getCatalogService().getVehicleById(request.getVehicleId()).orElseThrow();
         assertEquals(PriceMode.AUTOMATIC, vehicle.getPriceMode());
         assertEquals(new BigDecimal("20000.00"), vehicle.getPrice());

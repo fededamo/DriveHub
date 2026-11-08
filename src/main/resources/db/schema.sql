@@ -246,9 +246,9 @@ CREATE TABLE "request" (
     CONSTRAINT "pk_request" PRIMARY KEY ("id"),
     CONSTRAINT "uq_request_vehicle" UNIQUE ("vehicle"),
     CONSTRAINT "ck_request_agreement" CHECK (
-        ("type" = 'PURCHASE' AND "agreed_total" IS NOT NULL AND "agreed_total" >= 0
+        ("type" = 'SALE' AND "agreed_total" IS NOT NULL AND "agreed_total" >= 0
             AND "deposit" >= 0 AND "deposit" <= "agreed_total")
-        OR ("type" = 'SALE' AND "agreed_total" IS NULL)
+        OR ("type" = 'PURCHASE' AND "agreed_total" IS NULL AND "deposit" >= 0)
     ),
     CONSTRAINT "fk_request_vehicle" FOREIGN KEY ("vehicle") REFERENCES "vehicle" ("id") ON DELETE RESTRICT,
     CONSTRAINT "fk_request_client" FOREIGN KEY ("client") REFERENCES "client" ("id") ON DELETE RESTRICT,

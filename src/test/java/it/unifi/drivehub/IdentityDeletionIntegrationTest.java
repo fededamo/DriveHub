@@ -61,7 +61,7 @@ class IdentityDeletionIntegrationTest {
     @ParameterizedTest
     @CsvSource({"Cliente,PURCHASE", "CLIENT,PURCHASE", "Cliente,SALE", "CLIENT,SALE"})
     void clientWithOnlyARequestCannotDeleteIdentity(String role, String type) throws Exception {
-        if (type.equals("PURCHASE")) ctx.getPurchaseService().initiatePurchase(1301L, 1L);
+        if (type.equals("SALE")) ctx.getPurchaseService().initiatePurchase(1301L, 1L);
         else ctx.getSaleToDealershipService().submitSaleProposal(1L, 1301L,
                 "T1300000000000003", null, 0, java.time.LocalDate.now().getYear());
         var before = snapshot();
@@ -203,7 +203,7 @@ class IdentityDeletionIntegrationTest {
     @ParameterizedTest
     @CsvSource({"Venditore,PURCHASE", "SALESMAN,PURCHASE", "Venditore,SALE", "SALESMAN,SALE"})
     void salesmanWithOnlyAnAssignedRequestCannotDelete(String role, String type) throws Exception {
-        var request = type.equals("PURCHASE") ? ctx.getPurchaseService().initiatePurchase(1301L, 1L)
+        var request = type.equals("SALE") ? ctx.getPurchaseService().initiatePurchase(1301L, 1L)
                 : ctx.getSaleToDealershipService().submitSaleProposal(1L, 1301L, "T1300000000000003", null, 0, java.time.LocalDate.now().getYear());
         sql("UPDATE request SET salesman = 16 WHERE id = " + request.getId());
         var before = snapshot();

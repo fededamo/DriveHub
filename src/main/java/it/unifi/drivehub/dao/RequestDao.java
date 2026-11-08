@@ -26,6 +26,7 @@ public interface RequestDao {
     /** Rilegge e blocca la richiesta fino al commit/rollback della transazione attiva. */
     Optional<Request> findByIdForUpdate(Long id, Connection conn);
 
+    /** Acquisto del cliente: richiesta SALE della concessionaria. */
     Optional<Request> findActivePurchaseRequestForVehicle(Long vehicleId);
 
     /** Tutte le righe di request sono aperte, anche gli acquisti già approvati. */

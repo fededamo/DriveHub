@@ -83,6 +83,17 @@ totale/acconto dell'accordo e ne ricava il saldo. I controlli che richiedono
 più record o concorrenza appartengono ai servizi e ai vincoli PostgreSQL:
 l'unicità del VIN, per esempio, non è dimostrabile dalla factory in memoria.
 
+`RequestType` usa il punto di vista della concessionaria: `SALE` quando vende al
+cliente, `PURCHASE` quando acquista dal cliente. `createNewSaleRequest` riceve
+acconto e `agreed_total`, non negativi e con acconto non superiore al totale;
+`createNewPurchaseRequest` riceve una stima non negativa in `deposit` e conserva
+`agreed_total` nullo. I nuovi input negativi sono rifiutati, senza cambiarne il
+segno. I nomi dei servizi e i testi cliente descrivono ancora l'azione del cliente.
+Il registro `Sale` mantiene il contratto precedente fino al ticket 02:
+`PURCHASE` per la vendita al cliente, `ACQUISITION` negativa per la cessione,
+`PENALTY` per la penale. La stima positiva della richiesta viene accreditata
+direttamente al cliente; solo la factory del registro rappresenta l'uscita negativa.
+
 È un modello di dominio con ispirazione DDD e servizi applicativi, in un solo
 contesto documentato. Non sono dimostrati bounded context indipendenti,
 aggregate root che racchiudano tutte le scritture, repository DDD, value object

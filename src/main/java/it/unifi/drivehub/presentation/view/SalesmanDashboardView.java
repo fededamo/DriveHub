@@ -139,7 +139,7 @@ public final class SalesmanDashboardView extends BorderPane {
         }
 
         try {
-            if (req.getType() == RequestType.PURCHASE) {
+            if (req.getType() == RequestType.SALE) {
                 purchaseService.approvePurchase(req.getId(), salesman.getId());
                 UiUtils.showInfo("Richiesta Approvata", "Il cliente ha 1 mese di tempo per pagare il saldo concordato: "
                         + UiUtils.formatCurrency(req.getRemainingAmount()));
@@ -162,7 +162,7 @@ public final class SalesmanDashboardView extends BorderPane {
         }
 
         try {
-            if (req.getType() == RequestType.PURCHASE) {
+            if (req.getType() == RequestType.SALE) {
                 purchaseService.rejectPurchase(req.getId());
                 UiUtils.showInfo("Richiesta Rifiutata", "Richiesta d'acquisto rifiutata: caparra rimborsata integralmente al cliente e veicolo tornato SALE.");
             } else {
@@ -254,7 +254,7 @@ public final class SalesmanDashboardView extends BorderPane {
         colType.setCellValueFactory(data -> {
             if (data == null || data.getValue() == null) return new SimpleStringProperty("");
             return new SimpleStringProperty(
-                    data.getValue().getType() == RequestType.PURCHASE ? "ACQUISTO CLIENTE" : "VENDITA DA CLIENTE"
+                    data.getValue().getType() == RequestType.SALE ? "VENDITA AL CLIENTE" : "ACQUISTO DAL CLIENTE"
             );
         });
 
@@ -271,22 +271,22 @@ public final class SalesmanDashboardView extends BorderPane {
         });
 
         TableColumn<Request, String> colTotal = new TableColumn<>("Totale concordato");
-        colTotal.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getType() == RequestType.PURCHASE
+        colTotal.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getType() == RequestType.SALE
                 ? UiUtils.formatCurrency(data.getValue().getAgreedTotal()) : "—"));
 
         TableColumn<Request, String> colDeposit = new TableColumn<>("Acconto versato");
-        colDeposit.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getType() == RequestType.PURCHASE
+        colDeposit.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getType() == RequestType.SALE
                 ? UiUtils.formatCurrency(data.getValue().getDeposit()) : "—"));
 
         TableColumn<Request, String> colRemaining = new TableColumn<>("Saldo da pagare");
-        colRemaining.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getType() == RequestType.PURCHASE
+        colRemaining.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getType() == RequestType.SALE
                 ? UiUtils.formatCurrency(data.getValue().getRemainingAmount()) : "—"));
 
         TableColumn<Request, String> colAmount = new TableColumn<>("Stima cessione");
         colAmount.setCellValueFactory(data -> {
             if (data == null || data.getValue() == null || data.getValue().getDeposit() == null) return new SimpleStringProperty("");
-            return new SimpleStringProperty(data.getValue().getType() == RequestType.SALE
-                    ? UiUtils.formatCurrency(data.getValue().getDeposit().abs()) : "—");
+            return new SimpleStringProperty(data.getValue().getType() == RequestType.PURCHASE
+                    ? UiUtils.formatCurrency(data.getValue().getDeposit()) : "—");
         });
 
         pendingTable.getColumns().addAll(List.of(colId, colType, colClient, colVeh, colTotal, colDeposit, colRemaining, colAmount));

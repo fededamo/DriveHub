@@ -1,6 +1,8 @@
 package it.unifi.drivehub;
 
 import it.unifi.drivehub.domain.operation.Request;
+import it.unifi.drivehub.domain.operation.RequestType;
+import it.unifi.drivehub.dao.postgres.PostgresRequestDao;
 import it.unifi.drivehub.domain.vehicle.Vehicle;
 import it.unifi.drivehub.domain.vehicle.VehicleState;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,6 +41,7 @@ class PurchaseAgreementIntegrationTest {
         vehicle = catalog.addVehicle(model.getId(), "T0600000000000001", null, 0,
                 manual ? new BigDecimal("20000") : null, year, VehicleState.SALE);
         Request request = ctx.getPurchaseService().initiatePurchase(vehicle.getId(), 1L);
+        assertEquals(RequestType.SALE, request.getType());
         assertEquals(new BigDecimal("4000.00"), request.getDeposit());
         assertEquals(new BigDecimal("20000.00"), request.getAgreedTotal());
         assertEquals(new BigDecimal("16000.00"), request.getRemainingAmount());
@@ -60,6 +63,7 @@ class PurchaseAgreementIntegrationTest {
         assertNotEquals(new BigDecimal("20000.00"), ctx.getCatalogService().getEffectiveVehiclePrice(
                 ctx.getCatalogService().getVehicleById(vehicle.getId()).orElseThrow()));
         Request reloaded = request(request.getId());
+        assertEquals(RequestType.SALE, reloaded.getType());
         assertEquals(new BigDecimal("20000.00"), reloaded.getAgreedTotal());
         assertEquals(new BigDecimal("4000.00"), reloaded.getDeposit());
         assertEquals(new BigDecimal("16000.00"), reloaded.getRemainingAmount());
@@ -102,7 +106,7 @@ class PurchaseAgreementIntegrationTest {
         sql("UPDATE vehicle SET state = 'BLOCKED' WHERE id = " + vehicle.getId());
         sql("UPDATE bank_account SET balance = 26000 WHERE client = 1");
         sql("INSERT INTO request (id, vehicle, client, salesman, deposit, agreed_total, exp_date, type) VALUES (1001, "
-                + vehicle.getId() + ", 1, 16, 4000, 20000, CURRENT_DATE + 30, 'PURCHASE')");
+                + vehicle.getId() + ", 1, 16, 4000, 20000, CURRENT_DATE + 30, 'SALE')");
         ctx = new AppContext(ctx.getDatabaseManager());
         assertEquals(new BigDecimal("19000.00"), ctx.getCatalogService().getEffectiveVehiclePrice(vehicle));
         assertEquals(new BigDecimal("16000.00"), request(1001L).getRemainingAmount());
@@ -189,6 +193,34 @@ class PurchaseAgreementIntegrationTest {
         var model = ctx.getCatalogService().addModel("Fiat", "Agreement06", new BigDecimal("20000"), year);
         vehicle = ctx.getCatalogService().addVehicle(model.getId(), "T0600000000000002", null, 0,
                 manual ? new BigDecimal("20000") : null, year, VehicleState.SALE);
+    }
+
+    @ParameterizedTest
+    @CsvSource({"SALE,4000,20000,true", "SALE,0,0,true", "SALE,4000,NULL,false",
+            "SALE,-1,20000,false", "SALE,0,-1,false", "SALE,20001,20000,false",
+            "PURCHASE,16000,NULL,true", "PURCHASE,0,NULL,true",
+            "PURCHASE,-16000,NULL,false", "PURCHASE,16000,20000,false"})
+    void databaseEnforcesDealershipRequestAmounts(String type, String deposit, String total, boolean valid) throws Exception {
+        createVehicle(false, Year.now().getValue());
+        String insert = "INSERT INTO request (vehicle, client, deposit, agreed_total, type) VALUES ("
+                + vehicle.getId() + ", 1, " + deposit + ", " + total + ", '" + type + "')";
+        if (valid) {
+            sql(insert);
+            Request reloaded = ctx.getOperationQueryService().getClientRequests(1L).getFirst();
+            assertEquals(RequestType.valueOf(type), reloaded.getType());
+            assertEquals(new BigDecimal(deposit).setScale(2), reloaded.getDeposit());
+            if (total.equals("NULL")) assertNull(reloaded.getAgreedTotal());
+            else assertEquals(new BigDecimal(total).setScale(2), reloaded.getAgreedTotal());
+            var customerPurchase = new PostgresRequestDao(ctx.getDatabaseManager())
+                    .findActivePurchaseRequestForVehicle(vehicle.getId());
+            assertEquals(type.equals("SALE"), customerPurchase.isPresent());
+        } else {
+            var failure = assertThrows(java.sql.SQLException.class, () -> sql(insert));
+            assertEquals("23514", failure.getSQLState());
+            assertTrue(ctx.getOperationQueryService().getClientRequests(1L).isEmpty());
+        }
+        balance("30000.00");
+        assertTrue(ctx.getOperationQueryService().getAllSales().isEmpty());
     }
 
     private Request approvedPurchase() {

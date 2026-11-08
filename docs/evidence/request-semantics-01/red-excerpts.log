@@ -1,0 +1,26 @@
+
+domain-red-jdk21.log
+[ERROR] COMPILATION ERROR :
+[ERROR] /home/federico/dev/Drivehub/DriveHub/src/test/java/it/unifi/drivehub/RequestAgreementTest.java:[17,34] method createNewSaleRequest in class it.unifi.drivehub.domain.operation.Request cannot be applied to given types;
+[ERROR] /home/federico/dev/Drivehub/DriveHub/src/test/java/it/unifi/drivehub/RequestAgreementTest.java:[31,30] method createNewSaleRequest in class it.unifi.drivehub.domain.operation.Request cannot be applied to given types;
+[ERROR] /home/federico/dev/Drivehub/DriveHub/src/test/java/it/unifi/drivehub/RequestAgreementTest.java:[36,62] method createNewSaleRequest in class it.unifi.drivehub.domain.operation.Request cannot be applied to given types;
+[ERROR] /home/federico/dev/Drivehub/DriveHub/src/test/java/it/unifi/drivehub/RequestAgreementTest.java:[38,62] method createNewSaleRequest in class it.unifi.drivehub.domain.operation.Request cannot be applied to given types;
+[ERROR] /home/federico/dev/Drivehub/DriveHub/src/test/java/it/unifi/drivehub/RequestAgreementTest.java:[44,34] method createNewPurchaseRequest in class it.unifi.drivehub.domain.operation.Request cannot be applied to given types;
+[ERROR] /home/federico/dev/Drivehub/DriveHub/src/test/java/it/unifi/drivehub/RequestAgreementTest.java:[56,30] method createNewPurchaseRequest in class it.unifi.drivehub.domain.operation.Request cannot be applied to given types;
+[ERROR] /home/federico/dev/Drivehub/DriveHub/src/test/java/it/unifi/drivehub/RequestAgreementTest.java:[63,31] method createNewSaleRequest in class it.unifi.drivehub.domain.operation.Request cannot be applied to given types;
+[ERROR] /home/federico/dev/Drivehub/DriveHub/src/test/java/it/unifi/drivehub/RequestAgreementTest.java:[66,35] method createNewPurchaseRequest in class it.unifi.drivehub.domain.operation.Request cannot be applied to given types;
+[INFO] BUILD FAILURE
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.13.0:testCompile (default-testCompile) on project DriveHub: Compilation failure: Compilation failure:
+[ERROR] /home/federico/dev/Drivehub/DriveHub/src/test/java/it/unifi/drivehub/RequestAgreementTest.java:[17,34] method createNewSaleRequest in class it.unifi.drivehub.domain.operation.Request cannot be applied to given types;
+
+flows-red.log
+[ERROR]   PurchaseAgreementIntegrationTest.databaseEnforcesDealershipRequestAmounts:208->sql:253 » PSQL ERROR: new row for relation "request" violates check constraint "ck_request_agreement"
+[ERROR]   PurchaseAgreementIntegrationTest.databaseEnforcesDealershipRequestAmounts:208->sql:253 » PSQL ERROR: new row for relation "request" violates check constraint "ck_request_agreement"
+[ERROR]   PurchaseAgreementIntegrationTest.databaseEnforcesDealershipRequestAmounts:208->sql:253 » PSQL ERROR: new row for relation "request" violates check constraint "ck_request_agreement"
+[ERROR]   PurchaseAgreementIntegrationTest.databaseEnforcesDealershipRequestAmounts:208->sql:253 » PSQL ERROR: new row for relation "request" violates check constraint "ck_request_agreement"
+[ERROR] Tests run: 105, Failures: 6, Errors: 78, Skipped: 0
+
+ui-red/ui.log
+Exception in thread "JavaFX Application Thread" java.lang.IllegalStateException: Il saldo da pagare riguarda solo gli acquisti del cliente.
+Exception in thread "main" java.util.concurrent.ExecutionException: java.lang.IllegalStateException: Il saldo da pagare riguarda solo gli acquisti del cliente.
+Caused by: java.lang.IllegalStateException: Il saldo da pagare riguarda solo gli acquisti del cliente.

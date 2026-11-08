@@ -100,7 +100,7 @@ public final class SaleToDealershipService {
                     vehicle = vehicleDao.save(newVehicle, conn);
                 }
                 BigDecimal estimatedPrice = calculateEstimate(modelId, licencePlate, km, year);
-                Request request = Request.createNewSaleRequest(vehicle.getId(), clientId, estimatedPrice);
+                Request request = Request.createNewPurchaseRequest(vehicle.getId(), clientId, estimatedPrice);
                 return requestDao.save(request, conn);
             });
         } catch (RuntimeException failure) {
@@ -120,11 +120,10 @@ public final class SaleToDealershipService {
      */
     public void approveSaleProposal(Long requestId, Long salesmanId) {
         db.executeInTransaction(conn -> {
-            Request request = lockWaitingSaleRequest(requestId, conn);
+            Request request = lockWaitingPurchaseRequest(requestId, conn);
             if (salesmanId == null) throw new IllegalArgumentException("Il venditore che accetta la cessione è obbligatorio.");
 
-            // Importo da accreditare al cliente (valore assoluto di deposit)
-            BigDecimal payout = request.getDeposit().abs();
+            BigDecimal payout = request.getDeposit();
 
             // Accredito sul conto del cliente
             BankAccount account = bankAccountDao.findByClientIdForUpdate(request.getClientId(), conn)
@@ -153,7 +152,7 @@ public final class SaleToDealershipService {
      */
     public void rejectSaleProposal(Long requestId) {
         db.executeInTransaction(conn -> {
-            Request request = lockWaitingSaleRequest(requestId, conn);
+            Request request = lockWaitingPurchaseRequest(requestId, conn);
 
             Long vehicleId = request.getVehicleId();
             requestDao.delete(requestId, conn);
@@ -168,10 +167,10 @@ public final class SaleToDealershipService {
         });
     }
 
-    private Request lockWaitingSaleRequest(Long requestId, Connection conn) {
+    private Request lockWaitingPurchaseRequest(Long requestId, Connection conn) {
         Request request = requestDao.findByIdForUpdate(requestId, conn)
                 .orElseThrow(() -> new IllegalStateException("Richiesta non trovata: " + requestId));
-        if (request.getType() != RequestType.SALE) {
+        if (request.getType() != RequestType.PURCHASE) {
             throw new IllegalArgumentException("La richiesta selezionata non è una cessione.");
         }
         Vehicle vehicle = vehicleDao.findByIdForUpdate(request.getVehicleId(), conn)

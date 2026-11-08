@@ -129,7 +129,7 @@ class BalanceConcurrencyIntegrationTest {
                 sql("""
                         UPDATE vehicle SET state = 'BLOCKED' WHERE id = 1001;
                         INSERT INTO request (id, vehicle, client, deposit, agreed_total, type)
-                          VALUES (1001, 1001, 1, 100, 500, 'PURCHASE');
+                          VALUES (1001, 1001, 1, 100, 500, 'SALE');
                         """);
                 if (flow.equals("rejection")) yield () -> ctx.getPurchaseService().rejectPurchase(1001L);
                 ctx.getPurchaseService().approvePurchase(1001L, 16L);
@@ -141,7 +141,7 @@ class BalanceConcurrencyIntegrationTest {
                 sql("""
                         UPDATE vehicle SET state = 'WAITING' WHERE id = 1001;
                         INSERT INTO request (id, vehicle, client, deposit, type)
-                          VALUES (1001, 1001, 1, -100, 'SALE');
+                          VALUES (1001, 1001, 1, 100, 'PURCHASE');
                         """);
                 yield () -> ctx.getSaleToDealershipService().approveSaleProposal(1001L, 16L);
             }

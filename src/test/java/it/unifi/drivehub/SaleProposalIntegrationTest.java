@@ -104,14 +104,14 @@ class SaleProposalIntegrationTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"SALE,false", "PURCHASE,false", "PURCHASE,true"})
+    @CsvSource({"PURCHASE,false", "SALE,false", "SALE,true"})
     void everyOpenRequestBlocksTheProposal(String type, boolean approved) throws Exception {
         soldToClientOne();
         sql("""
                 INSERT INTO request (vehicle, client, deposit, agreed_total, type, salesman, exp_date)
                 VALUES (1001, 2, %s, %s, '%s', %s, %s)
-                """.formatted(type.equals("SALE") ? "-16000" : "4000",
-                type.equals("SALE") ? "NULL" : "20000", type, approved ? "16" : "NULL",
+                """.formatted(type.equals("PURCHASE") ? "16000" : "4000",
+                type.equals("PURCHASE") ? "NULL" : "20000", type, approved ? "16" : "NULL",
                 approved ? "CURRENT_DATE + 7" : "NULL"));
         String before = snapshot();
         RuntimeException failure = assertThrows(RuntimeException.class, () -> propose(1L, VIN, "ZZ123ZZ", 250));
@@ -124,7 +124,11 @@ class SaleProposalIntegrationTest {
         var service = ctx.getSaleToDealershipService();
         BigDecimal estimate = service.calculateEstimate(1001L, "ZZ123ZZ", 250, year);
         var request = propose(1L, "T0900000000000002", "ZZ123ZZ", 250);
-        assertEquals(estimate.negate(), request.getDeposit());
+        assertEquals(it.unifi.drivehub.domain.operation.RequestType.PURCHASE, request.getType());
+        assertEquals(estimate, request.getDeposit());
+        var reloadedRequest = new AppContext(db).getOperationQueryService().getClientRequests(1L).getFirst();
+        assertEquals(it.unifi.drivehub.domain.operation.RequestType.PURCHASE, reloadedRequest.getType());
+        assertEquals(estimate, reloadedRequest.getDeposit());
         assertNull(request.getAgreedTotal());
         var vehicle = new AppContext(db).getCatalogService().getVehicleById(request.getVehicleId()).orElseThrow();
         assertEquals(PriceMode.AUTOMATIC, vehicle.getPriceMode());
@@ -237,7 +241,7 @@ class SaleProposalIntegrationTest {
         String before = snapshot();
         SQLException failure = assertThrows(SQLException.class, () -> sql("""
                 INSERT INTO request (vehicle, client, deposit, agreed_total, type, salesman, exp_date)
-                VALUES (%d, 2, 4000, 20000, 'PURCHASE', 16, CURRENT_DATE + 7)
+                VALUES (%d, 2, 4000, 20000, 'SALE', 16, CURRENT_DATE + 7)
                 """.formatted(request.getVehicleId())));
         assertEquals("23505", failure.getSQLState());
         assertEquals(before, snapshot());

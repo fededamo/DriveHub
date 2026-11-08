@@ -16,7 +16,7 @@ group rejectPurchase(requestId) — una transazione
 Venditore -> service : dalla SalesmanDashboardView
 service -> db : executeInTransaction(callback)
 service -> request : findByIdForUpdate(requestId, conn)
-note over service,request : Verifica tipo PURCHASE.
+note over service,request : Verifica tipo SALE.
 service -> account : findByClientIdForUpdate(clientId, conn)
 service -> account : updateBalance(..., saldo + intero acconto, conn)
 service -> vehicle : updateStateAtomically(BLOCKED, SALE, conn)
@@ -29,7 +29,7 @@ service -> request : findByClientId(clientId)
 loop per ogni candidata — una transazione distinta
 service -> db : executeInTransactionWithResult(callback)
 service -> request : findByIdForUpdate(candidate.id, conn)
-alt presente, PURCHASE, del cliente, approvata e scaduta
+alt presente, SALE, del cliente, approvata e scaduta
 service -> account : findByClientIdForUpdate(clientId, conn)
 service -> account : updateBalance(..., saldo + acconto - penale, conn)
 service -> sale : save(Sale PENALTY = 20% acconto, conn)

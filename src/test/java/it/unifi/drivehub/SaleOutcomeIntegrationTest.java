@@ -55,6 +55,10 @@ class SaleOutcomeIntegrationTest {
 
     @Test
     void approvalPaysTheClientAndRecordsOneDealershipExpense() throws Exception {
+        var request = new AppContext(db).getOperationQueryService().getClientRequests(1L).getFirst();
+        assertEquals(it.unifi.drivehub.domain.operation.RequestType.PURCHASE, request.getType());
+        assertEquals(new BigDecimal("16000.00"), request.getDeposit());
+        assertNull(request.getAgreedTotal());
         operation("approval").run();
         var reloaded = new AppContext(db);
         assertEquals(new BigDecimal("17000.00"), reloaded.getAuthService().getClientBankAccount(1L).getBalance());
@@ -140,7 +144,7 @@ class SaleOutcomeIntegrationTest {
     @ParameterizedTest
     @ValueSource(strings = {"approval", "rejection"})
     void anObsoleteSessionUsesTheRequestRereadAfterTheLock(String phase) throws Exception {
-        var failures = race("UPDATE request SET client = 2, deposit = -123.45 WHERE id = " + proposal.getId(), true,
+        var failures = race("UPDATE request SET client = 2, deposit = 123.45 WHERE id = " + proposal.getId(), true,
                 operation(phase), null);
         assertNull(failures.getFirst());
         var ctx = new AppContext(db);
@@ -162,7 +166,7 @@ class SaleOutcomeIntegrationTest {
     @CsvSource({"approval,type", "rejection,type", "approval,state", "rejection,state"})
     void typeAndStateAreCheckedAfterWaitingForTheirLocks(String phase, String field) throws Exception {
         String change = field.equals("type")
-                ? "UPDATE request SET type = 'PURCHASE', deposit = 4000, agreed_total = 20000 WHERE id = " + proposal.getId()
+                ? "UPDATE request SET type = 'SALE', deposit = 4000, agreed_total = 20000 WHERE id = " + proposal.getId()
                 : "UPDATE vehicle SET state = 'SOLD' WHERE id = " + proposal.getVehicleId();
         var failures = race(change, true, operation(phase), null);
         assertNotNull(failures.getFirst());
@@ -290,7 +294,7 @@ class SaleOutcomeIntegrationTest {
             case "vehicle" -> sql("ALTER TABLE request DROP CONSTRAINT fk_request_vehicle; DELETE FROM vehicle WHERE id=" + proposal.getVehicleId());
             case "request" -> sql("DELETE FROM request WHERE id=" + proposal.getId());
             case "overflow" -> sql("UPDATE bank_account SET balance=99999999.99 WHERE client=1");
-            case "type" -> sql("UPDATE request SET type='PURCHASE', deposit=4000, agreed_total=20000 WHERE id=" + proposal.getId());
+            case "type" -> sql("UPDATE request SET type='SALE', deposit=4000, agreed_total=20000 WHERE id=" + proposal.getId());
             case "salesman" -> { }
             default -> throw new IllegalArgumentException(missing);
         }
