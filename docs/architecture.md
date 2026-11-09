@@ -102,6 +102,21 @@ stato mutabile; la transazione del servizio può attraversare più entità/tabel
 Il contratto di navigazione in User introduce anche una responsabilità legata
 alla presentazione, pur senza importare JavaFX nel dominio.
 
+## Tipi enumerati persistenti
+
+I quattro domini enumerati Java usano anche tipi nativi PostgreSQL distinti:
+
+| Attributo | Tipo PostgreSQL | Valori |
+|---|---|---|
+| `Vehicle.state` | `vehicle_state` | `SALE`, `RENT`, `BLOCKED`, `WAITING`, `SOLD` |
+| `Request.type` | `request_type` | `PURCHASE`, `SALE` |
+| `Vehicle.price_mode` | `price_mode` | `AUTOMATIC`, `MANUAL` |
+| `Sale.type` | `sale_type` | `SALE`, `PURCHASE`, `PENALTY` |
+
+I DAO convertono esplicitamente i parametri JDBC ai rispettivi tipi SQL.
+L'enum limita i valori ammessi; restano separati i vincoli su importi, accordi
+e associazioni. La motivazione della scelta è nell'[ADR0002](adr/0002-enumerazioni-native-postgresql.md).
+
 ## Flussi economici e transazionali
 
 `DatabaseManager.executeInTransaction*` apre una connessione, disabilita

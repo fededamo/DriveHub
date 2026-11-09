@@ -370,7 +370,7 @@ class SaleOutcomeIntegrationTest {
         String before = snapshot();
         var failure = assertThrows(java.sql.SQLException.class, () -> sql(
                 "INSERT INTO sale (client,amount,date,type) VALUES (1,0,CURRENT_DATE,'ACQUISITION')"));
-        assertEquals("23514", failure.getSQLState());
+        assertEquals("22P02", failure.getSQLState());
         assertEquals(before, snapshot());
     }
 

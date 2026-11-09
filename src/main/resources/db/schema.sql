@@ -25,6 +25,8 @@ DROP TABLE IF EXISTS "brand" CASCADE;
 
 DROP TYPE IF EXISTS vehicle_state CASCADE;
 DROP TYPE IF EXISTS request_type CASCADE;
+DROP TYPE IF EXISTS price_mode CASCADE;
+DROP TYPE IF EXISTS sale_type CASCADE;
 
 CREATE EXTENSION IF NOT EXISTS btree_gist;
 
@@ -33,6 +35,8 @@ CREATE EXTENSION IF NOT EXISTS btree_gist;
 -- -----------------------------------------------------------------------------
 CREATE TYPE vehicle_state AS ENUM ('SALE', 'RENT', 'BLOCKED', 'WAITING', 'SOLD');
 CREATE TYPE request_type AS ENUM ('PURCHASE', 'SALE');
+CREATE TYPE price_mode AS ENUM ('AUTOMATIC', 'MANUAL');
+CREATE TYPE sale_type AS ENUM ('SALE', 'PURCHASE', 'PENALTY');
 
 -- -----------------------------------------------------------------------------
 -- 1. Brand (Marca)
@@ -79,7 +83,7 @@ CREATE TABLE "vehicle" (
     "licence_plate" VARCHAR(10),
     "kilometers" INT NOT NULL,
     "price" DECIMAL(10, 2) NOT NULL, -- base commerciale, mai risultato della formula
-    "price_mode" VARCHAR(9) NOT NULL DEFAULT 'AUTOMATIC',
+    "price_mode" price_mode NOT NULL DEFAULT 'AUTOMATIC',
     "year" SMALLINT NOT NULL,
     "state" vehicle_state NOT NULL,
     CONSTRAINT "pk_vehicle" PRIMARY KEY ("id"),
@@ -87,7 +91,6 @@ CREATE TABLE "vehicle" (
     CONSTRAINT "uq_vehicle_licence_plate" UNIQUE ("licence_plate"),
     CONSTRAINT "fk_vehicle_model" FOREIGN KEY ("model") REFERENCES "model" ("id") ON DELETE RESTRICT,
     CONSTRAINT "chk_vehicle_price" CHECK ("price" >= 0),
-    CONSTRAINT "chk_vehicle_price_mode" CHECK ("price_mode" IN ('AUTOMATIC', 'MANUAL')),
     CONSTRAINT "chk_vehicle_kilometers" CHECK ("kilometers" >= 0),
     CONSTRAINT "chk_vehicle_year" CHECK ("year" >= 1900),
     CONSTRAINT "chk_vehicle_plate_km" CHECK ("licence_plate" IS NOT NULL OR "kilometers" = 0)
@@ -299,7 +302,7 @@ CREATE TABLE "sale" (
     "client" BIGINT NOT NULL,
     "amount" DECIMAL(10, 2) NOT NULL,
     "date" TIMESTAMP NOT NULL,
-    "type" VARCHAR(16) NOT NULL CHECK ("type" IN ('SALE', 'PURCHASE', 'PENALTY')),
+    "type" sale_type NOT NULL,
     CONSTRAINT "ck_sale_amount_type" CHECK ("amount" >= 0),
     CONSTRAINT "pk_sale" PRIMARY KEY ("id"),
     CONSTRAINT "fk_sale_vehicle" FOREIGN KEY ("vehicle") REFERENCES "vehicle" ("id") ON DELETE SET NULL,

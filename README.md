@@ -124,6 +124,8 @@ Le richieste usano il punto di vista della concessionaria: `SALE` per il cliente
 che compra (acconto e totale concordato), `PURCHASE` per la cessione del cliente
 (stima non negativa, senza totale concordato). Il registro `Sale` usa `SALE` per la vendita al cliente, `PURCHASE` per
 l'acquisto dal cliente e `PENALTY` per la penale, con importi non negativi.
+I quattro enum Java sono rappresentati da enum nativi PostgreSQL: `vehicle_state`,
+`request_type`, `price_mode` e `sale_type` ([ADR0002](docs/adr/0002-enumerazioni-native-postgresql.md)).
 L'installazione locale è stata consolidata e aggiornata al contratto finale.
 Lo script di conversione è stato rimosso dopo l'uso, anche dai test, su richiesta.
 [Stato dell'aggiornamento e backup](docs/data-conversion.md). Inizializzazione e

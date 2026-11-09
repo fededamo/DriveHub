@@ -1,6 +1,11 @@
 # Versioni delle evidenze
 
-La verifica corrente dopo consolidamento del database e rimozione dello script
+La verifica corrente dopo l'uniformazione dei quattro enum PostgreSQL è in
+[postgres-enums-2026-11-09](postgres-enums-2026-11-09/verification.md): contratto
+SQL, DAO, suite completa, prova su copia e aggiornamento locale. Le prove di
+consolidamento seguenti descrivono lo stato precedente a questa modifica.
+
+La verifica precedente dopo consolidamento del database e rimozione dello script
 è in [db-consolidation-2026-11-09](db-consolidation-2026-11-09/verification.md).
 Le prove di conversione e il relativo harness sotto `data-conversion-03/`
 richiedono il checkout storico `d31a1ce`: script e fixture sono stati ritirati

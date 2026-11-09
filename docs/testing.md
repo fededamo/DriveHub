@@ -1,9 +1,16 @@
 # Build e test isolati
 
+La verifica corrente dei quattro enum PostgreSQL è in
+[postgres-enums-2026-11-09](evidence/postgres-enums-2026-11-09/verification.md).
+`PostgresEnumIntegrationTest` verifica tipi nativi, etichette e rifiuto dei valori
+estranei nei quattro attributi. Le prove di prezzi e registro verificano anche
+salvataggio e rilettura tramite DAO; `DemoSqlValidationTest` ricrea schema e demo
+più volte, includendo la pulizia dei nuovi tipi.
+
 La conversione del ticket 03 è stata applicata all'installazione locale e lo
 script, con i relativi test dedicati, è stato ritirato su richiesta. Le prove
 precedenti restano storiche e riproducibili dal commit `d31a1ce`.
-[Risultati della verifica corrente](evidence/db-consolidation-2026-11-09/verification.md).
+[Risultati della verifica precedente](evidence/db-consolidation-2026-11-09/verification.md).
 La suite corrente verifica il contratto finale su PostgreSQL dedicato.
 
 ```bash

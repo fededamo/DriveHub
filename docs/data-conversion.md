@@ -1,5 +1,27 @@
 # Stato dell'aggiornamento locale
 
+## Enum nativi PostgreSQL
+
+L'installazione locale è stata aggiornata secondo
+[ADR0002](adr/0002-enumerazioni-native-postgresql.md). I quattro attributi usano
+ora `vehicle_state`, `request_type`, `price_mode` e `sale_type` anche nel database.
+Le due colonne precedentemente testuali sono state convertite in una transazione,
+conservando tutte le righe e le sette sequenze, compresi prezzi, importi e saldi.
+
+Il backup precedente alla conversione e quello successivo sono conservati
+privatamente in
+`/home/federico/dev/Drivehub/.drivehub-backups/2026-11-09-enums/`.
+Entrambi sono stati ripristinati e verificati su database temporanei. Sulla copia
+è stato provato anche il rollback dopo gli effettivi cambi di tipo.
+Lo script di conversione era temporaneo ed è stato rimosso dopo l'uso, come richiesto.
+
+Schema, query JDBC, test e istruzioni descrivono il contratto corrente; il launcher
+non converte altre installazioni. Per tornare al codice precedente su `main`
+occorre ripristinare anche il backup precedente: Git non annulla il cambio di tipo.
+[Comandi, risultati e limiti](evidence/postgres-enums-2026-11-09/verification.md).
+
+## Consolidamento precedente
+
 Il 9 novembre 2026 l'installazione locale è stata consolidata nel solo
 contenitore **`drivehub-db`**, con database PostgreSQL `drivehub` sulla porta
 locale **55432**. `run.bat` e `run.ps1` usano questo contenitore e conservano

@@ -1,0 +1,1 @@
+DAO PostgreSQL: 56 veicoli, 13 richieste, 41 operazioni letti con enum validi.

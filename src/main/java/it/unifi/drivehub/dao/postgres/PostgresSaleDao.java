@@ -91,7 +91,7 @@ public final class PostgresSaleDao implements SaleDao {
 
     @Override
     public Sale save(Sale sale, Connection conn) {
-        String sql = "INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES (?, ?, ?, ?, ?, ?) RETURNING id";
+        String sql = "INSERT INTO sale (vehicle, salesman, client, amount, date, type) VALUES (?, ?, ?, ?, ?, ?::sale_type) RETURNING id";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             if (sale.getVehicleId() != null) {
                 ps.setLong(1, sale.getVehicleId());

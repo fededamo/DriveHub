@@ -128,7 +128,7 @@ public final class PostgresVehicleDao implements VehicleDao {
     @Override
     public Vehicle save(Vehicle vehicle, Connection conn) {
         String sql = "INSERT INTO vehicle (model, vin, licence_plate, kilometers, price, year, state, price_mode) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?::vehicle_state, ?) RETURNING id";
+                "VALUES (?, ?, ?, ?, ?, ?, ?::vehicle_state, ?::price_mode) RETURNING id";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, vehicle.getModelId());
             ps.setString(2, vehicle.getVin());
@@ -158,7 +158,7 @@ public final class PostgresVehicleDao implements VehicleDao {
 
     @Override
     public void update(Vehicle vehicle, Connection conn) {
-        String sql = "UPDATE vehicle SET model = ?, licence_plate = ?, kilometers = ?, price = ?, state = ?::vehicle_state, price_mode = ? " +
+        String sql = "UPDATE vehicle SET model = ?, licence_plate = ?, kilometers = ?, price = ?, state = ?::vehicle_state, price_mode = ?::price_mode " +
                 "WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, vehicle.getModelId());
@@ -180,7 +180,7 @@ public final class PostgresVehicleDao implements VehicleDao {
 
     @Override
     public void updatePricing(Vehicle vehicle, Connection conn) {
-        String sql = "UPDATE vehicle SET price = ?, price_mode = ? WHERE id = ?";
+        String sql = "UPDATE vehicle SET price = ?, price_mode = ?::price_mode WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setBigDecimal(1, vehicle.getPrice());
             ps.setString(2, vehicle.getPriceMode().name());

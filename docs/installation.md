@@ -13,7 +13,10 @@ L'installazione locale è stata aggiornata e usa il solo contenitore
 `drivehub-db`, sulla porta 55432 tramite `run.bat`. Lo script di conversione è
 stato ritirato dopo l'uso: [stato e backup](data-conversion.md). Per altre
 installazioni popolate occorre prima verificare la compatibilità del contratto;
-schema e demo non aggiornano dati esistenti.
+schema e demo non aggiornano dati esistenti. Il contratto corrente richiede
+quattro enum PostgreSQL: `vehicle_state`, `request_type`, `price_mode` e
+`sale_type`. Le versioni con `vehicle.price_mode` o `sale.type` testuali richiedono
+una conversione prima di usare il codice corrente; il launcher non la esegue.
 
 ## Prerequisiti
 

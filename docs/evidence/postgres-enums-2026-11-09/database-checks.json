@@ -1,0 +1,74 @@
+{
+  "backup_restored_and_all_rows_sequences_equal": true,
+  "rollback_after_real_type_changes": true,
+  "rollback_data_and_schema_identical": true,
+  "converted_copy_all_rows_sequences_equal": true,
+  "migration_sha256": "28741942ce46b384d593ffd752a48beac1799bd178c8a68014d3fc07f85e4425",
+  "second_execution_refused_without_changes": true,
+  "fresh_schema_matches_converted_enum_definitions_defaults_nullability": true,
+  "database": "drivehub",
+  "container": "drivehub-db",
+  "port": 55432,
+  "source_unchanged_before_conversion": true,
+  "application_connections_before_conversion": 0,
+  "all_rows_and_sequences_preserved": true,
+  "only_two_column_definitions_changed": true,
+  "only_two_redundant_checks_removed": true,
+  "final_backup_restored_and_verified": true,
+  "enums": {
+    "price_mode": [
+      "AUTOMATIC",
+      "MANUAL"
+    ],
+    "request_type": [
+      "PURCHASE",
+      "SALE"
+    ],
+    "sale_type": [
+      "SALE",
+      "PURCHASE",
+      "PENALTY"
+    ],
+    "vehicle_state": [
+      "SALE",
+      "RENT",
+      "BLOCKED",
+      "WAITING",
+      "SOLD"
+    ]
+  },
+  "tables": {
+    "bank_account": 15,
+    "brand": 5,
+    "client": 15,
+    "drivehub_quickstart_initialized": 1,
+    "manager": 1,
+    "model": 20,
+    "model_discount": 2,
+    "rent": 10,
+    "request": 13,
+    "sale": 41,
+    "salesman": 4,
+    "test_drive": 10,
+    "vehicle": 56,
+    "vehicle_discount": 5
+  },
+  "sequences": 7,
+  "backups": {
+    "before-enums.dump": {
+      "sha256": "60454bd9f80655a4d218311410e276ad66bd2113b0a300bed29f8124a50989f0",
+      "bytes": 37797
+    },
+    "after-enums.dump": {
+      "sha256": "7f17cf180db76f4ac4cd5c56dd44020dbee909ee0a2b19e8694018e70717d5fe",
+      "bytes": 37971
+    }
+  },
+  "local_dao_read_check": true,
+  "all_rows_and_sequences_unchanged_after_dao_check": true,
+  "test_sentinel_all_rows_and_sequences_unchanged": true,
+  "temporary_conversion_script_removed": true,
+  "temporary_test_container_stopped": true,
+  "temporary_test_container_removed": false,
+  "cleanup_limited_by_wsl_interop": true
+}
