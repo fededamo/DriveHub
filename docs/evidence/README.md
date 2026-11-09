@@ -1,5 +1,12 @@
 # Versioni delle evidenze
 
+La verifica corrente dopo consolidamento del database e rimozione dello script
+è in [db-consolidation-2026-11-09](db-consolidation-2026-11-09/verification.md).
+Le prove di conversione e il relativo harness sotto `data-conversion-03/`
+richiedono il checkout storico `d31a1ce`: script e fixture sono stati ritirati
+successivamente su richiesta dell'utente. I log precedenti restano immutati.
+
+
 La conversione dal contratto precedente a entrambi i ticket e il risultato
 integrato sono verificati nel [ticket 03](data-conversion-03/verification.md).
 Le prove del [ticket 02: registro della concessionaria](sale-semantics-02/verification.md)

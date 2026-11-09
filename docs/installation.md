@@ -9,9 +9,11 @@ I percorsi dei comandi seguenti sono relativi alla radice `DriveHub/`.
 Il contratto persistito delle richieste usa `SALE` per il
 cliente che compra, `PURCHASE` con stima positiva per il cliente che cede il
 veicolo. Il registro usa `SALE`, `PURCHASE` e `PENALTY`, con importi non negativi.
-Per un'installazione popolata nella versione `841d4bc` (`a260598^`), seguire
-prima la [conversione dedicata](data-conversion.md), con applicazione ferma e
-tutti i ticket 01, 02 e 03 installati. Schema e demo non convertono dati esistenti.
+L'installazione locale è stata aggiornata e usa il solo contenitore
+`drivehub-db`, sulla porta 55432 tramite `run.bat`. Lo script di conversione è
+stato ritirato dopo l'uso: [stato e backup](data-conversion.md). Per altre
+installazioni popolate occorre prima verificare la compatibilità del contratto;
+schema e demo non aggiornano dati esistenti.
 
 ## Prerequisiti
 
@@ -129,11 +131,10 @@ scaduti vengono trattati all'accesso del cliente. Il conto è dimostrativo;
 l'identificativo generato ha forma simile a un IBAN e non certifica un conto
 bancario reale né un checksum bancario.
 
-La [conversione delle operazioni](data-conversion.md) supporta soltanto il
-contratto `841d4bc`, già comprensivo di prezzo/modalità, totale concordato,
-unicità delle richieste, esclusione delle sovrapposizioni e FK storiche.
-Le versioni anteriori richiedono un'analisi separata. Non ricavare totali
-storici dal listino corrente o tipi dai soli vecchi segni.
+L'aggiornamento locale è documentato in [stato e backup](data-conversion.md).
+Per un'altra installazione popolata non eseguire schema/demo e non ricavare
+accordi storici dal listino corrente: occorre verificare e aggiornare il suo
+contratto separatamente prima di avviare il nuovo codice.
 
 ## Build e avvio ordinario
 

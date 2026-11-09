@@ -1,0 +1,23 @@
+{
+  "rent": true,
+  "sale": true,
+  "brand": true,
+  "model": true,
+  "client": true,
+  "manager": true,
+  "request": true,
+  "vehicle": true,
+  "salesman": true,
+  "test_drive": true,
+  "rent_id_seq": true,
+  "sale_id_seq": true,
+  "user_id_seq": true,
+  "bank_account": true,
+  "model_id_seq": true,
+  "model_discount": true,
+  "request_id_seq": true,
+  "vehicle_id_seq": true,
+  "vehicle_discount": true,
+  "test_drive_id_seq": true,
+  "drivehub_quickstart_initialized": true
+}

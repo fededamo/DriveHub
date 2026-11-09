@@ -1,6 +1,6 @@
 $ErrorActionPreference = 'Stop'
 Set-Location $PSScriptRoot
-$container = 'drivehub-quickstart-db'
+$container = 'drivehub-db'
 $image = 'postgres:16'
 
 try {

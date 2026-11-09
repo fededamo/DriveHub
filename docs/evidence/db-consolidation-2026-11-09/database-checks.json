@@ -1,0 +1,26 @@
+{
+  "database": "drivehub",
+  "container": "drivehub-db",
+  "host_port": 55432,
+  "requests": 13,
+  "ledger_rows": 41,
+  "request_types": {
+    "SALE": 9,
+    "PURCHASE": 4
+  },
+  "ledger_types": {
+    "SALE": 32,
+    "PENALTY": 9
+  },
+  "backups_restored": true,
+  "source_rows_constraints_sequences_verified": true,
+  "rollback_after_real_changes_verified": true,
+  "prior_expiry_preserved_without_repayment": true,
+  "balances_match_more_recent_operational_state": true,
+  "final_snapshot_matches_expected": true,
+  "backup_files": {
+    "drivehub-final.dump": "0c3446a72e762bae3c91ef7695f52e903f4c65122bb3e9f97835d76b2dfca68d",
+    "drivehub-quickstart-db.dump": "2422886844d397df28fbaefbdc968fb3aeb429cff12711baf06001f34176e419",
+    "drivehub-db.dump": "779923a6a4bfdf4876a0b23a9578ebe1dfbf442b268d64577f1a5fd78da90bf0"
+  }
+}

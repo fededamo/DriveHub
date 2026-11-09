@@ -13,7 +13,7 @@ cd C:\DEV\DriveHub
 .\run.bat
 ```
 
-Lo script avvia Docker Desktop se necessario, crea al primo avvio il contenitore `drivehub-quickstart-db` con PostgreSQL e dati demo, quindi avvia l'app. I dati sono conservati nel volume Docker `drivehub-quickstart-data` tra un avvio e l'altro. La porta locale **55432** deve essere libera. Il database demo usa credenziali locali dimostrative e non è destinato alla produzione. Chiudere la finestra dell'app non arresta il database.
+Lo script avvia Docker Desktop se necessario, crea al primo avvio il contenitore `drivehub-db` con PostgreSQL e dati demo, quindi avvia l'app. I dati sono conservati nel volume Docker `drivehub-quickstart-data` tra un avvio e l'altro. La porta locale **55432** deve essere libera. Il database demo usa credenziali locali dimostrative e non è destinato alla produzione. Chiudere la finestra dell'app non arresta il database.
 
 | Ruolo | Email | Password demo |
 |---|---|---|
@@ -21,7 +21,7 @@ Lo script avvia Docker Desktop se necessario, crea al primo avvio il contenitore
 | Venditore | `paolo.costa@drivehub.it` | `password` |
 | Manager | `vittorio.manager@drivehub.it` | `password` |
 
-Per fermare il database dopo l'uso: `docker stop drivehub-quickstart-db`. Il successivo `run.bat` lo riavvia conservando i dati. Se l'inizializzazione si interrompe o la porta è occupata, controllare il messaggio nella finestra e i log con `docker logs drivehub-quickstart-db`; lo script non reinizializza automaticamente volumi esistenti.
+Per fermare il database dopo l'uso: `docker stop drivehub-db`. Il successivo `run.bat` lo riavvia conservando i dati. Se l'inizializzazione si interrompe o la porta è occupata, controllare il messaggio nella finestra e i log con `docker logs drivehub-db`; lo script non reinizializza automaticamente volumi esistenti.
 
 Per configurare PostgreSQL manualmente o avviare l'app su altri sistemi, consulta [installazione e avvio](docs/installation.md). Gli script SQL di schema e demo sono distruttivi e vanno eseguiti solo su un database nuovo o sacrificabile.
 
@@ -37,10 +37,10 @@ Le richieste usano il punto di vista della concessionaria: `SALE` per il cliente
 che compra (acconto e totale concordato), `PURCHASE` per la cessione del cliente
 (stima non negativa, senza totale concordato). Il registro `Sale` usa `SALE` per la vendita al cliente, `PURCHASE` per
 l'acquisto dal cliente e `PENALTY` per la penale, con importi non negativi.
-Per aggiornare i dati della versione `841d4bc` (`a260598^`) usare la
-[conversione dedicata del ticket 03](docs/data-conversion.md), con applicazione
-ferma e tutti e tre i ticket installati. Inizializzazione e demo servono a
-database nuovi o sacrificabili; non usarle per aggiornare un'installazione popolata.
+L'installazione locale è stata consolidata e aggiornata al contratto finale.
+Lo script di conversione è stato rimosso dopo l'uso, anche dai test, su richiesta.
+[Stato dell'aggiornamento e backup](docs/data-conversion.md). Inizializzazione e
+demo servono soltanto a database nuovi o sacrificabili.
 
 ```bash
 mvn -DskipTests clean package

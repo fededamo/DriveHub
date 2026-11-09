@@ -1,0 +1,4 @@
+PowerShell parser: OK
+127.0.0.1:5432 - accepting connections
+1
+Controlli launcher/database: OK
