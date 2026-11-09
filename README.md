@@ -23,7 +23,94 @@ Lo script avvia Docker Desktop se necessario, crea al primo avvio il contenitore
 
 Per fermare il database dopo l'uso: `docker stop drivehub-db`. Il successivo `run.bat` lo riavvia conservando i dati. Se l'inizializzazione si interrompe o la porta è occupata, controllare il messaggio nella finestra e i log con `docker logs drivehub-db`; lo script non reinizializza automaticamente volumi esistenti.
 
-Per configurare PostgreSQL manualmente o avviare l'app su altri sistemi, consulta [installazione e avvio](docs/installation.md). Gli script SQL di schema e demo sono distruttivi e vanno eseguiti solo su un database nuovo o sacrificabile.
+## Avvio manuale da terminale
+
+Puoi avviare DriveHub senza `run.bat` o `run.ps1`, usando PostgreSQL installato sul computer. In questo caso Docker non serve. Se hai già un database inizializzato e compatibile con questa versione, salta la creazione e il caricamento dei dati: configura il collegamento e avvia l'app.
+
+### Prerequisiti
+
+- **JDK 21** e **Maven 3.9+**.
+- **PostgreSQL 16**, client **psql** e file dell'estensione **btree_gist** disponibili sul server (pacchetto contrib, se previsto dalla distribuzione).
+- Un ambiente grafico per JavaFX; su Linux servono anche le librerie GTK3/X11.
+- Internet alla prima esecuzione per scaricare le dipendenze. Maven scarica JavaFX e il driver JDBC: non serve installare un SDK JavaFX separato.
+
+Verifica che i comandi siano nel PATH e che anche `mvn -version` indichi Java **21**:
+
+```bash
+java -version
+javac -version
+mvn -version
+psql --version
+```
+
+Apri il terminale nella cartella **DriveHub che contiene `pom.xml`**. Tutti i percorsi seguenti partono da lì; i comandi sono su una sola riga e si possono usare anche in PowerShell.
+
+### Prima configurazione del database
+
+Questi passaggi servono **una sola volta, su un nuovo database**. **`schema.sql` e `demo.sql` cancellano i dati esistenti: non eseguirli su un database da conservare.**
+
+1. Avvia il servizio PostgreSQL con gli strumenti del tuo sistema e collegati come amministratore (nell'esempio l'utente è `postgres`):
+
+   ```bash
+   psql -h 127.0.0.1 -p 5432 -U postgres -d postgres
+   ```
+
+2. Dentro `psql`, crea l'utente e il database applicativi:
+
+   ```sql
+   CREATE ROLE drivehub LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS;
+   \password drivehub
+   CREATE DATABASE drivehub OWNER drivehub;
+   REVOKE CONNECT ON DATABASE drivehub FROM PUBLIC;
+   GRANT CONNECT ON DATABASE drivehub TO drivehub;
+   \q
+   ```
+
+   `\password` ti chiede di scegliere la password del database; `\q` torna al terminale.
+
+3. Modifica `src/main/resources/application.properties`, inserendo la password scelta al posto di `PASSWORD_SCELTA`:
+
+   ```properties
+   db.url=jdbc:postgresql://127.0.0.1:5432/drivehub
+   db.user=drivehub
+   db.password=PASSWORD_SCELTA
+   ```
+
+   Adatta host e porta se necessario e non committare password personali. Le variabili `DRIVEHUB_DB_URL`, `DRIVEHUB_DB_USER` e `DRIVEHUB_DB_PASSWORD`, se impostate, prevalgono sul file.
+
+4. Dal terminale, verifica di collegarti al database giusto e al server PostgreSQL 16:
+
+   ```bash
+   psql -X -W -h 127.0.0.1 -p 5432 -U drivehub -d drivehub -v ON_ERROR_STOP=1 -c "SELECT current_database(), current_user; SHOW server_version;"
+   ```
+
+   Se la destinazione è corretta, crea le tabelle sul nuovo database vuoto:
+
+   ```bash
+   psql -X -W -h 127.0.0.1 -p 5432 -U drivehub -d drivehub -v ON_ERROR_STOP=1 --single-transaction -f src/main/resources/db/schema.sql
+   ```
+
+5. **Facoltativo:** carica catalogo e utenti demo per provare tutti i ruoli:
+
+   ```bash
+   psql -X -W -h 127.0.0.1 -p 5432 -U drivehub -d drivehub -v ON_ERROR_STOP=1 --single-transaction -f src/main/resources/db/demo.sql
+   ```
+
+   Puoi usare le credenziali demo nella tabella sopra. Senza demo, catalogo e utenti sono vuoti: puoi registrare nuovi clienti, ma non manager o venditori dalla schermata pubblica.
+
+### Avvio dell'app e avvii successivi
+
+Con PostgreSQL in esecuzione, compila e avvia l'app dalla cartella contenente `pom.xml`:
+
+```bash
+mvn compile javafx:run
+```
+
+Per gli avvii successivi basta avere PostgreSQL acceso ed eseguire `mvn javafx:run`. Non ripetere creazione del database, schema o demo. Chiudere la finestra dell'app non arresta PostgreSQL.
+
+Se usi il **database Docker già inizializzato da `run.bat`**, avvia Docker e poi esegui `docker start drivehub-db`. Salta la prima configurazione e usa URL `jdbc:postgresql://127.0.0.1:55432/drivehub`, utente `drivehub` e password demo `drivehub-demo` nel file di configurazione, quindi avvia l'app con Maven.
+
+Per dettagli e risoluzione dei problemi, consulta [installazione e avvio](docs/installation.md).
 
 ## Architettura e funzionalità
 
