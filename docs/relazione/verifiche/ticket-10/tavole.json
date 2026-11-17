@@ -1,0 +1,279 @@
+[
+  {
+    "sezione": "2.1",
+    "nome": "casi-uso-autori",
+    "etichetta": "fig:uc-autori",
+    "basi": [
+      "docs/Users SWE.drawio"
+    ],
+    "adattamenti": "Attori, ellissi, generalizzazioni, include e disposizione conservati; solo cliente registrabile, livelli O/F/S e significato UC-03/04 chiariti.",
+    "fonti": [
+      "src/main/java/it/unifi/drivehub/App.java",
+      "src/main/java/it/unifi/drivehub/presentation/view/LoginView.java",
+      "src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java",
+      "src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java",
+      "src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java"
+    ],
+    "sorgente": "docs/relazione/diagrammi/casi-uso-autori.drawio",
+    "esportazione": "docs/relazione/diagrammi/casi-uso-autori.drawio.pdf",
+    "figura": "2.1",
+    "pagina_pdf": 8,
+    "pagine_pdf": [
+      8
+    ]
+  },
+  {
+    "sezione": "2.4",
+    "nome": "navigazione-autori",
+    "etichetta": "fig:nav-autori",
+    "basi": [
+      "docs/Page Navigation Diagram.drawio"
+    ],
+    "adattamenti": "Tre diramazioni, forme e struttura conservate; LoginView iniziale, dispatch senza selezione ruolo, 4/2/5 tab e dialoghi comuni.",
+    "fonti": [
+      "src/main/java/it/unifi/drivehub/App.java",
+      "src/main/java/it/unifi/drivehub/presentation/view/LoginView.java",
+      "src/main/java/it/unifi/drivehub/presentation/view/AccountManagementDialog.java"
+    ],
+    "sorgente": "docs/relazione/diagrammi/navigazione-autori.drawio",
+    "esportazione": "docs/relazione/diagrammi/navigazione-autori.drawio.pdf",
+    "figura": "2.21",
+    "pagina_pdf": 36,
+    "pagine_pdf": [
+      36
+    ]
+  },
+  {
+    "sezione": "2.5",
+    "nome": "package-autori",
+    "etichetta": "fig:pkg",
+    "basi": [
+      "docs/Package diagram.drawio"
+    ],
+    "adattamenti": "Copia nativa con stessi gruppi, colori e forme; undici package, nomi e dipendenze attuali; nota sui collegamenti ripetuti. Archi instradati fuori dai package estranei e nel contenitore comune corretto.",
+    "fonti": [
+      "src/main/java/it/unifi/drivehub/App.java",
+      "src/main/java/it/unifi/drivehub/AppContext.java",
+      "src/main/java/it/unifi/drivehub/dao/DatabaseManager.java",
+      "src/main/java/it/unifi/drivehub/event/VehicleEventPublisher.java"
+    ],
+    "sorgente": "docs/relazione/diagrammi/package-autori.drawio",
+    "esportazione": "docs/relazione/diagrammi/package-autori.drawio.pdf",
+    "figura": "2.25",
+    "pagina_pdf": 41,
+    "pagine_pdf": [
+      41
+    ]
+  },
+  {
+    "sezione": "2.6.1",
+    "nome": "classi-dominio-insieme",
+    "etichetta": "fig:catalogo-corpo",
+    "basi": [
+      "Relazione_SWE/images/class-domain-drivehub.pdf",
+      "Relazione_SWE/diagrams/class-domain-drivehub.puml",
+      "Relazione_SWE/diagrams/drivehub-class-theme.puml"
+    ],
+    "adattamenti": "Ricostruzione nativa dal riferimento visivo: gruppi interni rossi, classi e UML; ruoli reali, conto, ID, enum e accordo. Eventi ricollocati nel gruppo business.",
+    "fonti": [
+      "src/main/java/it/unifi/drivehub/domain/user/User.java",
+      "src/main/java/it/unifi/drivehub/domain/user/AbstractUser.java",
+      "src/main/java/it/unifi/drivehub/domain/user/Client.java",
+      "src/main/java/it/unifi/drivehub/domain/user/BankAccount.java",
+      "src/main/java/it/unifi/drivehub/domain/vehicle/Vehicle.java",
+      "src/main/java/it/unifi/drivehub/domain/vehicle/Model.java",
+      "src/main/java/it/unifi/drivehub/domain/discount/Discount.java",
+      "src/main/java/it/unifi/drivehub/domain/operation/Request.java",
+      "src/main/java/it/unifi/drivehub/domain/operation/Sale.java"
+    ],
+    "sorgente": "docs/relazione/diagrammi/classi-dominio-insieme.drawio",
+    "esportazione": "docs/relazione/diagrammi/classi-dominio-insieme.drawio.pdf",
+    "figura": "2.26",
+    "pagina_pdf": 43,
+    "pagine_pdf": [
+      43
+    ]
+  },
+  {
+    "sezione": "2.6.2",
+    "nome": "classi-business-insieme",
+    "etichetta": "fig:eventi-corpo",
+    "basi": [
+      "Relazione_SWE/images/class-business-drivehub.pdf",
+      "Relazione_SWE/diagrams/class-business-drivehub.puml",
+      "Relazione_SWE/diagrams/drivehub-class-theme.puml"
+    ],
+    "adattamenti": "Stesso gruppo servizi giallo e collaboratori DAO/eventi; calcolatore concreto, DatabaseManager, record evento distinto dal contratto e Observer. Rimossi Strategy e UnitOfWork.",
+    "fonti": [
+      "src/main/java/it/unifi/drivehub/AppContext.java",
+      "src/main/java/it/unifi/drivehub/service/PurchaseService.java",
+      "src/main/java/it/unifi/drivehub/service/RentalService.java",
+      "src/main/java/it/unifi/drivehub/service/SaleToDealershipService.java",
+      "src/main/java/it/unifi/drivehub/service/PriceCalculatorService.java",
+      "src/main/java/it/unifi/drivehub/service/AuthService.java",
+      "src/main/java/it/unifi/drivehub/service/TestDriveCancellationObserver.java",
+      "src/main/java/it/unifi/drivehub/event/VehicleCommitmentEvent.java",
+      "src/main/java/it/unifi/drivehub/event/VehicleCommitmentObserver.java",
+      "src/main/java/it/unifi/drivehub/security/PasswordHasher.java"
+    ],
+    "sorgente": "docs/relazione/diagrammi/classi-business-insieme.drawio",
+    "esportazione": "docs/relazione/diagrammi/classi-business-insieme.drawio.pdf",
+    "figura": "2.27",
+    "pagina_pdf": 45,
+    "pagine_pdf": [
+      45
+    ]
+  },
+  {
+    "sezione": "2.6.3",
+    "nome": "classi-dao-insieme",
+    "etichetta": "fig:dao-insieme",
+    "basi": [
+      "Relazione_SWE/images/class-dao-drivehub.pdf",
+      "Relazione_SWE/diagrams/class-dao-drivehub.puml",
+      "Relazione_SWE/diagrams/drivehub-class-theme.puml"
+    ],
+    "adattamenti": "Due contenitori blu, quattro coppie rappresentative e nota delle altre sei; callback del gestore e Connection al posto di factory/UnitOfWork/loader. TransactionConsumer e TransactionFunction<T> sono due interfacce distinte, con execute : void e execute : T.",
+    "fonti": [
+      "src/main/java/it/unifi/drivehub/dao/DatabaseManager.java",
+      "src/main/java/it/unifi/drivehub/dao/UserDao.java",
+      "src/main/java/it/unifi/drivehub/dao/VehicleDao.java",
+      "src/main/java/it/unifi/drivehub/dao/RentDao.java",
+      "src/main/java/it/unifi/drivehub/dao/RequestDao.java",
+      "src/main/java/it/unifi/drivehub/dao/postgres/PostgresUserDao.java",
+      "src/main/java/it/unifi/drivehub/dao/postgres/PostgresVehicleDao.java",
+      "src/main/java/it/unifi/drivehub/dao/postgres/PostgresRentDao.java",
+      "src/main/java/it/unifi/drivehub/dao/postgres/PostgresRequestDao.java"
+    ],
+    "sorgente": "docs/relazione/diagrammi/classi-dao-insieme.drawio",
+    "esportazione": "docs/relazione/diagrammi/classi-dao-insieme.drawio.pdf",
+    "figura": "2.28",
+    "pagina_pdf": 47,
+    "pagine_pdf": [
+      47
+    ]
+  },
+  {
+    "sezione": "2.6.4",
+    "nome": "classi-presentazione-insieme",
+    "etichetta": "fig:presentazione-insieme",
+    "basi": [
+      "Relazione_SWE/images/class-presentation-drivehub.pdf",
+      "Relazione_SWE/diagrams/class-presentation-drivehub.puml",
+      "Relazione_SWE/diagrams/drivehub-class-theme.puml"
+    ],
+    "adattamenti": "Gruppo verde e collaboratori, classi UML; viste Java al posto dei controller, dialogo utility, AsyncLoad e App con navigator anonimo.",
+    "fonti": [
+      "src/main/java/it/unifi/drivehub/App.java",
+      "src/main/java/it/unifi/drivehub/domain/user/UserDashboardNavigator.java",
+      "src/main/java/it/unifi/drivehub/presentation/view/AccountManagementDialog.java",
+      "src/main/java/it/unifi/drivehub/presentation/view/AsyncLoad.java"
+    ],
+    "sorgente": "docs/relazione/diagrammi/classi-presentazione-insieme.drawio",
+    "esportazione": "docs/relazione/diagrammi/classi-presentazione-insieme.drawio.pdf",
+    "figura": "2.29",
+    "pagina_pdf": 49,
+    "pagine_pdf": [
+      49
+    ]
+  },
+  {
+    "sezione": "2.7.1",
+    "nome": "sequenza-vendita-insieme",
+    "etichetta": "fig:sq-vendita-insieme",
+    "basi": [
+      "Relazione_SWE/images/sequence-purchase-drivehub.pdf",
+      "Relazione_SWE/diagrams/sequence-purchase-drivehub.puml",
+      "Relazione_SWE/diagrams/drivehub-sequence-theme.puml"
+    ],
+    "adattamenti": "Attori, lifeline, frecce, divisori acconto/autorizzazione/saldo e palette originali; T1–T3, accordo persistito, conto e Observer. Letture autonome dichiarate.",
+    "fonti": [
+      "src/main/java/it/unifi/drivehub/service/PurchaseService.java",
+      "src/main/java/it/unifi/drivehub/dao/DatabaseManager.java",
+      "src/main/java/it/unifi/drivehub/dao/postgres/PostgresVehicleDao.java",
+      "src/main/java/it/unifi/drivehub/dao/postgres/PostgresRequestDao.java",
+      "src/main/java/it/unifi/drivehub/service/TestDriveCancellationObserver.java"
+    ],
+    "sorgente": "docs/relazione/diagrammi/sequenza-vendita-insieme.drawio",
+    "esportazione": "docs/relazione/diagrammi/sequenza-vendita-insieme.drawio.pdf",
+    "figura": "2.30",
+    "pagina_pdf": 51,
+    "pagine_pdf": [
+      51
+    ]
+  },
+  {
+    "sezione": "2.7.2",
+    "nome": "sequenza-noleggio-insieme",
+    "etichetta": "fig:sq-noleggio-insieme",
+    "basi": [
+      "Relazione_SWE/images/sequence-rental-drivehub.pdf",
+      "Relazione_SWE/diagrams/sequence-rental-drivehub.puml",
+      "Relazione_SWE/diagrams/drivehub-sequence-theme.puml"
+    ],
+    "adattamenti": "Stessa sequenza del noleggio con attore e collaboratori colorati; preventivo separato, lock, formula geometrica, addebito e Observer sulla stessa Connection. Alternative nei dettagli SQ-02/SQ-OB.",
+    "fonti": [
+      "src/main/java/it/unifi/drivehub/service/RentalService.java",
+      "src/main/java/it/unifi/drivehub/service/PriceCalculatorService.java",
+      "src/main/java/it/unifi/drivehub/dao/postgres/PostgresRentDao.java",
+      "src/main/java/it/unifi/drivehub/dao/postgres/PostgresUserDao.java",
+      "src/main/java/it/unifi/drivehub/service/TestDriveCancellationObserver.java",
+      "src/main/resources/db/schema.sql"
+    ],
+    "sorgente": "docs/relazione/diagrammi/sequenza-noleggio-insieme.drawio",
+    "esportazione": "docs/relazione/diagrammi/sequenza-noleggio-insieme.drawio.pdf",
+    "figura": "2.35",
+    "pagina_pdf": 60,
+    "pagine_pdf": [
+      60
+    ]
+  },
+  {
+    "sezione": "2.7.3",
+    "nome": "sequenza-cessione-insieme",
+    "etichetta": "fig:sq-cessione-insieme",
+    "basi": [
+      "Relazione_SWE/images/sequence-acquisition-drivehub.pdf",
+      "Relazione_SWE/diagrams/sequence-acquisition-drivehub.puml",
+      "Relazione_SWE/diagrams/drivehub-sequence-theme.puml"
+    ],
+    "adattamenti": "Due attori, lifeline e divisori proposta/approvazione; stima persistita, VIN e storico, accettazione e rifiuto. Nessun gateway o UnitOfWork annidato. La chiamata al calcolatore è estimateVehicleValue; calculateEstimate resta nel servizio.",
+    "fonti": [
+      "src/main/java/it/unifi/drivehub/service/SaleToDealershipService.java",
+      "src/main/java/it/unifi/drivehub/dao/postgres/PostgresSaleDao.java",
+      "src/main/java/it/unifi/drivehub/dao/postgres/PostgresVehicleDao.java",
+      "src/main/java/it/unifi/drivehub/dao/postgres/PostgresRequestDao.java",
+      "src/main/java/it/unifi/drivehub/domain/user/BankAccount.java"
+    ],
+    "sorgente": "docs/relazione/diagrammi/sequenza-cessione-insieme.drawio",
+    "esportazione": "docs/relazione/diagrammi/sequenza-cessione-insieme.drawio.pdf",
+    "figura": "2.38",
+    "pagina_pdf": 65,
+    "pagine_pdf": [
+      65
+    ]
+  },
+  {
+    "sezione": "2.8.1",
+    "nome": "database-er-autori",
+    "etichetta": "fig:er-autori",
+    "basi": [
+      "docs/SWE ER.drawio"
+    ],
+    "adattamenti": "Tabelle a tre colonne, generalizzazione concettuale, cardinalità a zampa di corvo e seconda pagina di legenda conservate; 13 tabelle, 62 attributi e 15 FK verificati, legenda NULL e rinvio testuale aggiornati.",
+    "fonti": [
+      "src/main/java/it/unifi/drivehub/dao/postgres/PostgresUserDao.java",
+      "src/main/java/it/unifi/drivehub/domain/operation/Request.java",
+      "src/main/java/it/unifi/drivehub/domain/vehicle/PriceMode.java",
+      "src/main/resources/db/schema.sql"
+    ],
+    "sorgente": "docs/relazione/diagrammi/database-er-autori.drawio",
+    "esportazione": "docs/relazione/diagrammi/database-er-autori.drawio.pdf",
+    "figura": "2.41",
+    "pagina_pdf": 70,
+    "pagine_pdf": [
+      70,
+      71
+    ]
+  }
+]

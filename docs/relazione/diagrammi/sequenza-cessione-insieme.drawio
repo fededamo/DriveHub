@@ -1,0 +1,226 @@
+<mxfile host="Electron" version="32.6.10">
+  <diagram name="Acquisto dal cliente — proposta ed esito" id="ticket10">
+    <mxGraphModel adaptiveColors="auto" page="1" pageScale="1" pageWidth="1450" pageHeight="1250" background="#ffffff">
+      <root>
+        <mxCell id="0" style="" />
+        <mxCell id="1" parent="0" style="" />
+        <mxCell id="title" value="Acquisto dal cliente — proposta ed esito" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=16;strokeColor=#596579;text;align=center;fontSize=22;fontStyle=1;">
+          <mxGeometry x="20" y="8" width="1410" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="client" value="Cliente" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=16;strokeColor=#596579;shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;fillColor=#ffffff;fontSize=16;">
+          <mxGeometry x="50.0" y="40" width="40" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="life-client" parent="1" edge="1" style="html=1;dashed=1;strokeColor=#89939F;endArrow=none;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="70.0" y="110" as="sourcePoint" />
+            <mxPoint x="70.0" y="1145" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seller" value="Venditore" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=16;strokeColor=#596579;shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;fillColor=#ffffff;fontSize=16;">
+          <mxGeometry x="237.1428571428571" y="40" width="40" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="life-seller" parent="1" edge="1" style="html=1;dashed=1;strokeColor=#89939F;endArrow=none;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="257.1428571428571" y="110" as="sourcePoint" />
+            <mxPoint x="257.1428571428571" y="1145" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ui" value="Viste JavaFX" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=16;strokeColor=#596579;rounded=0;fillColor=#D5E8D4;fontSize=16;">
+          <mxGeometry x="379.2857142857143" y="55" width="130" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="life-ui" parent="1" edge="1" style="html=1;dashed=1;strokeColor=#89939F;endArrow=none;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="444.2857142857143" y="110" as="sourcePoint" />
+            <mxPoint x="444.2857142857143" y="1145" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="svc" value="SaleToDealership&lt;br&gt;Service" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=16;strokeColor=#596579;rounded=0;fillColor=#FFF2CC;fontSize=16;">
+          <mxGeometry x="566.4285714285714" y="55" width="130" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="life-svc" parent="1" edge="1" style="html=1;dashed=1;strokeColor=#89939F;endArrow=none;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="631.4285714285714" y="110" as="sourcePoint" />
+            <mxPoint x="631.4285714285714" y="1145" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="db" value="DatabaseManager" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=16;strokeColor=#596579;rounded=0;fillColor=#FFF2CC;fontSize=16;">
+          <mxGeometry x="753.5714285714286" y="55" width="130" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="life-db" parent="1" edge="1" style="html=1;dashed=1;strokeColor=#89939F;endArrow=none;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="818.5714285714286" y="110" as="sourcePoint" />
+            <mxPoint x="818.5714285714286" y="1145" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dao" value="DAO PostgreSQL" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=16;strokeColor=#596579;rounded=0;fillColor=#DAE8FC;fontSize=16;">
+          <mxGeometry x="940.7142857142857" y="55" width="130" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="life-dao" parent="1" edge="1" style="html=1;dashed=1;strokeColor=#89939F;endArrow=none;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1005.7142857142857" y="110" as="sourcePoint" />
+            <mxPoint x="1005.7142857142857" y="1145" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="price" value="Calcolatore" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=16;strokeColor=#596579;rounded=0;fillColor=#FFF2CC;fontSize=16;">
+          <mxGeometry x="1127.857142857143" y="55" width="130" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="life-price" parent="1" edge="1" style="html=1;dashed=1;strokeColor=#89939F;endArrow=none;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1192.857142857143" y="110" as="sourcePoint" />
+            <mxPoint x="1192.857142857143" y="1145" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="account" value="BankAccount" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=16;strokeColor=#596579;rounded=0;fillColor=#F8CECC;fontSize=16;">
+          <mxGeometry x="1315.0" y="55" width="130" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="life-account" parent="1" edge="1" style="html=1;dashed=1;strokeColor=#89939F;endArrow=none;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1380.0" y="110" as="sourcePoint" />
+            <mxPoint x="1380.0" y="1145" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="phase0" value="Proposta — T6: nessun pagamento" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=16;strokeColor=#596579;fillColor=#EAF2F8;strokeColor=#517A95;fontStyle=1;align=center;">
+          <mxGeometry x="20" y="126" width="1410" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="msg1" value="invia dati del veicolo; preventivo facoltativo" parent="1" edge="1" style="html=1;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;strokeColor=#526174;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="70.0" y="180" as="sourcePoint" />
+            <mxPoint x="444.2857142857143" y="180" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg2" value="submitSaleProposal(clientId,modelId,VIN,...)" parent="1" edge="1" style="html=1;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;strokeColor=#526174;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="444.2857142857143" y="220" as="sourcePoint" />
+            <mxPoint x="631.4285714285714" y="220" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg3" value="executeInTransactionWithResult(callback)" parent="1" edge="1" style="html=1;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;strokeColor=#526174;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="631.4285714285714" y="260" as="sourcePoint" />
+            <mxPoint x="818.5714285714286" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg4" value="cerca VIN FOR UPDATE (c6): lock solo se già esiste" parent="1" edge="1" style="html=1;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;strokeColor=#526174;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="631.4285714285714" y="300" as="sourcePoint" />
+            <mxPoint x="1005.7142857142857" y="300" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg5" value="se noto: SOLD, ultima SALE al cliente, nessuna Request (c6)" parent="1" edge="1" style="html=1;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;strokeColor=#526174;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="631.4285714285714" y="340" as="sourcePoint" />
+            <mxPoint x="1005.7142857142857" y="340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg6" value="VIN nuovo: crea Vehicle WAITING; noto: aggiorna WAITING (c6)" parent="1" edge="1" style="html=1;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;strokeColor=#526174;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="631.4285714285714" y="380" as="sourcePoint" />
+            <mxPoint x="1005.7142857142857" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg7" value="modello e sconto modello: letture autonome" parent="1" edge="1" style="html=1;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;strokeColor=#526174;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="631.4285714285714" y="420" as="sourcePoint" />
+            <mxPoint x="1005.7142857142857" y="420" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg8" value="estimateVehicleValue(...) ricalcola stima" parent="1" edge="1" style="html=1;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;strokeColor=#526174;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="631.4285714285714" y="460" as="sourcePoint" />
+            <mxPoint x="1192.857142857143" y="460" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg9" value="salva Request PURCHASE; deposit=stima, agreed_total=NULL (c6)" parent="1" edge="1" style="html=1;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;strokeColor=#526174;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="631.4285714285714" y="500" as="sourcePoint" />
+            <mxPoint x="1005.7142857142857" y="500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg10" value="commit c6" parent="1" edge="1" style="html=1;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;strokeColor=#526174;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="818.5714285714286" y="540" as="sourcePoint" />
+            <mxPoint x="1005.7142857142857" y="540" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="phase11" value="Accettazione — T7: sessione del venditore" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=16;strokeColor=#596579;fillColor=#EAF2F8;strokeColor=#517A95;fontStyle=1;align=center;">
+          <mxGeometry x="20" y="566" width="1410" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="msg12" value="seleziona PURCHASE e approva" parent="1" edge="1" style="html=1;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;strokeColor=#526174;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="257.1428571428571" y="620" as="sourcePoint" />
+            <mxPoint x="444.2857142857143" y="620" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg13" value="approveSaleProposal(requestId,salesmanId)" parent="1" edge="1" style="html=1;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;strokeColor=#526174;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="444.2857142857143" y="660" as="sourcePoint" />
+            <mxPoint x="631.4285714285714" y="660" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg14" value="executeInTransaction(callback)" parent="1" edge="1" style="html=1;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;strokeColor=#526174;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="631.4285714285714" y="700" as="sourcePoint" />
+            <mxPoint x="818.5714285714286" y="700" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg15" value="Request e Vehicle FOR UPDATE: PURCHASE / WAITING (c7)" parent="1" edge="1" style="html=1;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;strokeColor=#526174;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="631.4285714285714" y="740" as="sourcePoint" />
+            <mxPoint x="1005.7142857142857" y="740" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m16" value="richiede salesmanId non nullo" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=16;strokeColor=#596579;shape=note;fillColor=#FFFBE6;strokeColor=#D2B65A;align=left;spacing=8;fontSize=14;">
+          <mxGeometry x="496.42857142857144" y="766" width="270" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="msg17" value="BankAccount FOR UPDATE (c7)" parent="1" edge="1" style="html=1;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;strokeColor=#526174;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="631.4285714285714" y="820" as="sourcePoint" />
+            <mxPoint x="1005.7142857142857" y="820" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg18" value="deposit(stima persistita)" parent="1" edge="1" style="html=1;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;strokeColor=#526174;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="631.4285714285714" y="860" as="sourcePoint" />
+            <mxPoint x="1380.0" y="860" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg19" value="aggiorna saldo; Sale PURCHASE; WAITING → SALE; elimina Request (c7)" parent="1" edge="1" style="html=1;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;strokeColor=#526174;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="631.4285714285714" y="900" as="sourcePoint" />
+            <mxPoint x="1005.7142857142857" y="900" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg20" value="commit c7" parent="1" edge="1" style="html=1;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;strokeColor=#526174;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="818.5714285714286" y="940" as="sourcePoint" />
+            <mxPoint x="1005.7142857142857" y="940" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg21" value="esito; ricarica richieste e inventario" parent="1" edge="1" style="html=1;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;strokeColor=#526174;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="631.4285714285714" y="980" as="sourcePoint" />
+            <mxPoint x="444.2857142857143" y="980" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="phase22" value="Alternativa: rifiuto in una transazione distinta da un’accettazione" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=16;strokeColor=#596579;fillColor=#EAF2F8;strokeColor=#517A95;fontStyle=1;align=center;">
+          <mxGeometry x="20" y="1006" width="1410" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="msg23" value="rejectSaleProposal(requestId)" parent="1" edge="1" style="html=1;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;strokeColor=#526174;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="444.2857142857143" y="1060" as="sourcePoint" />
+            <mxPoint x="631.4285714285714" y="1060" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg24" value="blocca e ricontrolla; elimina Request; storico → SOLD, altrimenti delete Vehicle" parent="1" edge="1" style="html=1;fontFamily=Arial;fontSize=16;labelBackgroundColor=#ffffff;endArrow=open;endFill=0;strokeColor=#526174;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="631.4285714285714" y="1100" as="sourcePoint" />
+            <mxPoint x="1005.7142857142857" y="1100" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="notes" value="DatabaseManager coordina una sola connessione per ciascun esito; errore → rollback dell’esito. Rifiuto: nessun accredito e storico conservato; commit prima del ritorno alla vista.&lt;br&gt;Nessuna UnitOfWork annidata, nessun venditore costante, nessun Observer. Stima zero persistibile ma accredito zero rifiutato dal conto: rollback. Dettagli SQ-03a/b." vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=16;strokeColor=#596579;shape=note;fillColor=#FFFBE6;strokeColor=#D2B65A;align=left;spacing=8;fontSize=14;">
+          <mxGeometry x="20" y="1160" width="1410" height="65" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,17 @@
+{
+  "method": "Solo calcolo aritmetico documentale Python; non esecuzione Java",
+  "formula_veicolo": "25333.87",
+  "noleggio_tre_giorni": "57.05",
+  "base_manuale": 30000,
+  "effettivo": 27000,
+  "acconto": 5400,
+  "saldo": 21600,
+  "accordo_persistito": [
+    20000,
+    4000,
+    16000
+  ],
+  "scadenza_acconto": 4000,
+  "penale": 800,
+  "rimborso": 3200
+}

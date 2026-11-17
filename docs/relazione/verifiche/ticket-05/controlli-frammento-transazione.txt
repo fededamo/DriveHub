@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/home/federico/dev/Drivehub/DriveHub/docs/relazione/verifiche/ticket-05/controlla-documento.py", line 118, in <module>
+    assert compatto(code) == compatto(row['text']), (marker, code)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('Frammento 3.5:', '\npublic <T> T executeInTransactionWithResult(TransactionFunction<T> function) {\n\ntry (Connection conn = getConnection()) {\n\nconn.setAutoCommit(false);\n\ntry {\n\nT result = function.execute(conn);\n\nconn.commit();\n\nreturn result;\n\n} catch (Exception e) {\n\ntry {\n\nconn.rollback();\n\n} catch (SQLException rollbackEx) {\n\ne.addSuppressed(rollbackEx);\n\n}\n\nthrow new RuntimeException("Transazione fallita: eseguito rollback.", e);\n\n}\n\n} catch (SQLException e) {\n\nthrow new RuntimeException("Errore di connessione al database durante la\ntransazione.", e);\n\n}\n\n}\n')

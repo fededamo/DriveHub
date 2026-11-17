@@ -1,0 +1,50 @@
+Rilevamento ambiente ticket 04 — 2026-11-13T11:57:17.651436+00:00
+$ date --iso-8601=seconds
+2026-11-13T12:57:17+01:00
+
+exit: 0
+$ uname -sr
+Linux 6.18.54.1-microsoft-standard-WSL2
+
+exit: 0
+$ cat /etc/os-release
+PRETTY_NAME="Ubuntu 26.04.1 LTS"
+NAME="Ubuntu"
+VERSION_ID="26.04"
+VERSION="26.04.1 LTS (Resolute Raccoon)"
+VERSION_CODENAME=resolute
+ID=ubuntu
+ID_LIKE=debian
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+UBUNTU_CODENAME=resolute
+LOGO=ubuntu-logo
+
+exit: 0
+$ node --version
+v24.22.1
+
+exit: 0
+$ python3 --version
+Python 3.14.4
+
+exit: 0
+$ /tmp/drivehub-ticket04-tools/tectonic --version
+Tectonic 0.17.0
+
+exit: 0
+$ dpkg-deb -f /tmp/drivehub-ticket04-tools/drawio.deb Package Version Architecture
+Package: draw.io
+Version: 32.6.10
+Architecture: amd64
+
+exit: 0
+$ /tmp/drivehub-ticket04-tools/venv/bin/python -c import sys,pymupdf; print(sys.version); print(pymupdf.__doc__)
+3.14.4 (main, Aug 20 2026, 10:41:58) [GCC 15.2.0]
+PyMuPDF 2.1: Python bindings for the MuPDF 1.28.6 library.
+Python 3.14 running on linux (64-bit).
+
+
+exit: 0

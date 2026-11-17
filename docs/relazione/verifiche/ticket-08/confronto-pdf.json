@@ -1,0 +1,18 @@
+{
+  "initial_pdf_sha256": "1fcc18bb426426cdc9809a69ac04993c3ffeb384a5014e515719a12643e71f4e",
+  "final_pdf_sha256": "e046f9efc5b3a7411354bfdde71b288e0d748f01ebea8c2aa7b3534c5a8990d4",
+  "initial_pages": 107,
+  "final_pages": 107,
+  "normalization": "testo nella regione y<780pt; rimossi trattini di sillabazione a fine riga e spazi",
+  "pages_with_text_delta": [
+    31,
+    77
+  ],
+  "expected_changes": {
+    "31": "rinvio a capitolo 3 completo",
+    "77": "alternativa e nota limite accredito zero"
+  },
+  "other_pages_equal": 105,
+  "main_sections": 25,
+  "outline_entries": 77
+}

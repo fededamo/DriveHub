@@ -1,0 +1,111 @@
+<mxfile host="Electron" version="32.6.10">
+  <diagram name="DriveHub — Business Layer" id="ticket10">
+    <mxGraphModel adaptiveColors="auto" page="1" pageScale="1" pageWidth="1200" pageHeight="850" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="DriveHub — Business Layer" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;text;align=center;fontSize=22;fontStyle=1;">
+          <mxGeometry x="20" y="8" width="1160" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="svc" value="service" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;shape=folder;tabWidth=110;tabHeight=24;align=left;verticalAlign=top;spacingTop=3;spacingLeft=8;fillColor=#FFF2CC;">
+          <mxGeometry x="20" y="55" width="735" height="545" as="geometry" />
+        </mxCell>
+        <mxCell id="auth" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;AuthService&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;UserDao; BankAccountDao; db&lt;br&gt;PasswordHasher&lt;hr style=&quot;margin:2px 0&quot;&gt;+ login(...); registerClient(...)&lt;/div&gt;" vertex="1" parent="svc" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="25" y="45" width="220" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="test" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;TestDriveService&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;VehicleDao; UserDao; TestDriveDao&lt;hr style=&quot;margin:2px 0&quot;&gt;+ bookTestDrive(...)&lt;/div&gt;" vertex="1" parent="svc" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="25" y="205" width="220" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="query" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;OperationQueryService&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;DAO delle operazioni&lt;hr style=&quot;margin:2px 0&quot;&gt;+ getClientRequests(...)&lt;/div&gt;" vertex="1" parent="svc" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="25" y="365" width="220" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="catalog" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;CatalogService&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;catalogo e righe di lettura&lt;hr style=&quot;margin:2px 0&quot;&gt;+ getAllBrands(); getAllModels()&lt;/div&gt;" vertex="1" parent="svc" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="485" y="365" width="220" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="purchase" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;PurchaseService&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;DAO; db; calcolatore; publisher&lt;hr style=&quot;margin:2px 0&quot;&gt;+ initiatePurchase(...); completePurchase(...)&lt;/div&gt;" vertex="1" parent="svc" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="255" y="45" width="220" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="rental" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;RentalService&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;DAO; db; calcolatore; publisher&lt;hr style=&quot;margin:2px 0&quot;&gt;+ bookRental(...); changeVehicleRentalState(...)&lt;/div&gt;" vertex="1" parent="svc" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="255" y="205" width="220" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="cessione" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;SaleToDealershipService&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;DAO; db; calcolatore&lt;hr style=&quot;margin:2px 0&quot;&gt;+ submitSaleProposal(...); approveSaleProposal(...)&lt;/div&gt;" vertex="1" parent="svc" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="485" y="45" width="220" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="price" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;PriceCalculatorService&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;calcolo centralizzato concreto&lt;hr style=&quot;margin:2px 0&quot;&gt;+ calculateVehiclePrice(...); calculateTotalRentalCost(...)&lt;/div&gt;" vertex="1" parent="svc" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="485" y="205" width="220" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1" source="purchase" target="price" value="" parent="svc" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;endArrow=open;endFill=0;exitX=1;exitY=0.5;entryX=0;entryY=0.5;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="480" y="107" />
+              <mxPoint x="480" y="267" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge2" source="rental" target="price" value="" parent="svc" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;endArrow=open;endFill=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3" source="cessione" target="price" value="" parent="svc" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;endArrow=open;endFill=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sql" value="dao / JDBC" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;shape=folder;tabWidth=110;tabHeight=24;align=left;verticalAlign=top;spacingTop=3;spacingLeft=8;fillColor=#DAE8FC;">
+          <mxGeometry x="800" y="55" width="380" height="185" as="geometry" />
+        </mxCell>
+        <mxCell id="db" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;DatabaseManager&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;apre connessioni; callback&lt;hr style=&quot;margin:2px 0&quot;&gt;+ executeInTransaction(...)&lt;br&gt;+ executeInTransactionWithResult(...)&lt;/div&gt;" vertex="1" parent="sql" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="20" y="40" width="340" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="edge4" source="svc" target="db" value="servizi di scrittura" parent="1" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;dashed=1;endArrow=open;endFill=0;exitX=1;exitY=0.5;entryX=0;entryY=0.5;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="780" y="327" />
+              <mxPoint x="780" y="155" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="security" value="security" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;shape=folder;tabWidth=110;tabHeight=24;align=left;verticalAlign=top;spacingTop=3;spacingLeft=8;fillColor=#FFF2CC;">
+          <mxGeometry x="800" y="270" width="380" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="hasher" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;«interface» PasswordHasher&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;hash / verify&lt;hr style=&quot;margin:2px 0&quot;&gt;+ hash(password); verify(...)&lt;/div&gt;" vertex="1" parent="security" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="20" y="40" width="155" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="pbk" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;Pbkdf2Password&lt;br&gt;Hasher&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;PBKDF2&lt;hr style=&quot;margin:2px 0&quot;&gt;+ hash(...); verify(...)&lt;/div&gt;" vertex="1" parent="security" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="200" y="40" width="160" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="edge5" source="pbk" target="hasher" value="" parent="security" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;dashed=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="event" value="event" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;shape=folder;tabWidth=110;tabHeight=24;align=left;verticalAlign=top;spacingTop=3;spacingLeft=8;fillColor=#F8CECC;">
+          <mxGeometry x="20" y="615" width="735" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="publisher" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;VehicleEventPublisher&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;- observers : List&lt;hr style=&quot;margin:2px 0&quot;&gt;+ attach(...)&lt;br&gt;+ publishCommitment(event,c)&lt;/div&gt;" vertex="1" parent="event" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="20" y="30" width="220" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="contract" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;«interface»&lt;br&gt;VehicleCommitmentObserver&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;+ onVehicleCommitted(event,c)&lt;/div&gt;" vertex="1" parent="event" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="270" y="30" width="235" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="eventrecord" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;«record»&lt;br&gt;VehicleCommitment&lt;br&gt;Event&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;vehicleId : Long&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;/div&gt;" vertex="1" parent="event" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="535" y="30" width="180" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="edge6" source="publisher" target="contract" value="" parent="event" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;endArrow=open;endFill=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="observer" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;TestDriveCancellationObserver&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;TestDriveDao&lt;hr style=&quot;margin:2px 0&quot;&gt;+ onVehicleCommitted(event,c)&lt;/div&gt;" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="815" y="535" width="350" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="edge7" source="observer" target="contract" value="" parent="1" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;dashed=1;endArrow=block;endFill=0;exitX=0;exitY=0.5;entryX=1;entryY=0.5;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="790" y="590" />
+              <mxPoint x="790" y="610" />
+              <mxPoint x="540" y="610" />
+              <mxPoint x="540" y="700" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="note" value="AppContext costruisce e inietta DAO, servizi, hasher e publisher; registra l’Observer una volta.&lt;br&gt;PurchaseService e RentalService usano VehicleEventPublisher; onVehicleCommitted riceve VehicleCommitmentEvent e Connection.&lt;br&gt;Il calcolatore non realizza una Strategy. DatabaseManager sostituisce TransactionRunner / UnitOfWork.&lt;br&gt;Observer sincrono sulla stessa Connection prima del commit; errore → rollback. Nessuna outbox. Membri e frecce selezionati; dettagli CL-01/06/07/11." vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;shape=note;fillColor=#FFFBE6;strokeColor=#D2B65A;align=left;spacing=8;fontSize=12;">
+          <mxGeometry x="20" y="775" width="1160" height="65" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

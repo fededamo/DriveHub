@@ -1,0 +1,110 @@
+{
+  "head": "61ce18ae1d4e0458b63e970b793b0b3a634a3adf",
+  "date": "2026-11-15",
+  "changed_existing": [
+    {
+      "path": "docs/relazione/README.md",
+      "before": "793d091c4c957e9af1f449d03b7a406949b5ed21a269fb013608ac1769d591b9",
+      "after": "956e83b1a2a474bb91052c141b4f4589eaa4434948fddd998a257066b96240c7"
+    },
+    {
+      "path": "docs/relazione/appendici/a_casi_uso.tex",
+      "before": "7fbe4eba7aca8c1f6c135f08b0e073868633ae6e05be260f8e4686322ffc934c",
+      "after": "773e5d0acc51951bff5016c104020bff14f88a42151475d2bc1cf91ba0f09b81"
+    },
+    {
+      "path": "docs/relazione/capitoli/2_architettura.tex",
+      "before": "27e5360f283143fdadafcc19b606ee426c36b2ef253fff1a8ee34e0d3c3d87ce",
+      "after": "8fddef7641b08f3f8f2e8eca8f9c2b0fc60a38a66ef35c92a909d85978da8587"
+    },
+    {
+      "path": "docs/relazione/main.tex",
+      "before": "7a44a30f3b77acb2c58a97c3f642244e946056b59f2024674d260a35b78a84de",
+      "after": "f0fea59db75c7244294f0a009f647fc44f66382be97636fdbdd3136128f237ce"
+    },
+    {
+      "path": "docs/relazione/piano.md",
+      "before": "241f28cd1023177f79a646e0d99f709dc7091848b0920be432a216f0b54ae538",
+      "after": "8b5aea0ae5504d710bef276dc18b6f81f54016351ff2fe1c0432e2b2c9dfa5f1"
+    },
+    {
+      "path": "docs/relazione/relazione-drivehub.pdf",
+      "before": "1fcc18bb426426cdc9809a69ac04993c3ffeb384a5014e515719a12643e71f4e",
+      "after": "e046f9efc5b3a7411354bfdde71b288e0d748f01ebea8c2aa7b3534c5a8990d4"
+    }
+  ],
+  "unchanged_existing": 2327,
+  "new_outside_evidence": [
+    "docs/relazione/LEGGIMI-consegna.md",
+    "docs/relazione/tracker/issues/08-verifica-finale.md"
+  ],
+  "new_evidence": [
+    "docs/relazione/verifiche/ticket-08/README.md",
+    "docs/relazione/verifiche/ticket-08/SHA256SUMS",
+    "docs/relazione/verifiche/ticket-08/ambiente.txt",
+    "docs/relazione/verifiche/ticket-08/autonomia-pacchetto.json",
+    "docs/relazione/verifiche/ticket-08/baseline-conservazione.json",
+    "docs/relazione/verifiche/ticket-08/baseline-editoriale.sha256",
+    "docs/relazione/verifiche/ticket-08/baseline-editoriale.tar.gz",
+    "docs/relazione/verifiche/ticket-08/comandi.md",
+    "docs/relazione/verifiche/ticket-08/compilazione-correzioni-1.txt",
+    "docs/relazione/verifiche/ticket-08/compilazione-correzioni-2.txt",
+    "docs/relazione/verifiche/ticket-08/compilazione-correzioni-3.txt",
+    "docs/relazione/verifiche/ticket-08/compilazione-pacchetto-1.txt",
+    "docs/relazione/verifiche/ticket-08/compilazione-pacchetto-2.txt",
+    "docs/relazione/verifiche/ticket-08/compilazione-pacchetto-3.txt",
+    "docs/relazione/verifiche/ticket-08/compilazione-pacchetto-finale-1.txt",
+    "docs/relazione/verifiche/ticket-08/compilazione-pacchetto-finale-2.txt",
+    "docs/relazione/verifiche/ticket-08/compilazione-pacchetto-finale-3.txt",
+    "docs/relazione/verifiche/ticket-08/compilazione-paperspecs-mancante.txt",
+    "docs/relazione/verifiche/ticket-08/compilazione-passaggio-1.txt",
+    "docs/relazione/verifiche/ticket-08/compilazione-passaggio-2.txt",
+    "docs/relazione/verifiche/ticket-08/compilazione-passaggio-3.txt",
+    "docs/relazione/verifiche/ticket-08/confronto-pdf.json",
+    "docs/relazione/verifiche/ticket-08/conservazione.txt",
+    "docs/relazione/verifiche/ticket-08/controlla-finale.py",
+    "docs/relazione/verifiche/ticket-08/controlli-chiusura-2026-11-15.txt",
+    "docs/relazione/verifiche/ticket-08/controlli-documento.txt",
+    "docs/relazione/verifiche/ticket-08/controlli-pacchetto.txt",
+    "docs/relazione/verifiche/ticket-08/controllo-visivo.md",
+    "docs/relazione/verifiche/ticket-08/delta-documentale-finale.diff",
+    "docs/relazione/verifiche/ticket-08/delta-documentale.diff",
+    "docs/relazione/verifiche/ticket-08/delta-files-finale.json",
+    "docs/relazione/verifiche/ticket-08/delta-files.json",
+    "docs/relazione/verifiche/ticket-08/diagnostica-tex.json",
+    "docs/relazione/verifiche/ticket-08/esito-documentale.json",
+    "docs/relazione/verifiche/ticket-08/finalizzazione.txt",
+    "docs/relazione/verifiche/ticket-08/fontmap.txt",
+    "docs/relazione/verifiche/ticket-08/formato-pdflatex.txt",
+    "docs/relazione/verifiche/ticket-08/formato-xelatex.txt",
+    "docs/relazione/verifiche/ticket-08/input-review-finale.json",
+    "docs/relazione/verifiche/ticket-08/input-review.json",
+    "docs/relazione/verifiche/ticket-08/latex-log.txt",
+    "docs/relazione/verifiche/ticket-08/matrice-finale.md",
+    "docs/relazione/verifiche/ticket-08/note-corso.txt",
+    "docs/relazione/verifiche/ticket-08/pacchetto-input.fls",
+    "docs/relazione/verifiche/ticket-08/pacchetto-latex-log.txt",
+    "docs/relazione/verifiche/ticket-08/predisposizione-texlive.txt",
+    "docs/relazione/verifiche/ticket-08/rendering-sha256.json",
+    "docs/relazione/verifiche/ticket-08/review-spec-chiusura.md",
+    "docs/relazione/verifiche/ticket-08/review-spec-ricontrollo.md",
+    "docs/relazione/verifiche/ticket-08/review-spec.md",
+    "docs/relazione/verifiche/ticket-08/review-standards-chiusura.md",
+    "docs/relazione/verifiche/ticket-08/review-standards-ricontrollo.md",
+    "docs/relazione/verifiche/ticket-08/review-standards.md",
+    "docs/relazione/verifiche/ticket-08/revisione.md",
+    "docs/relazione/verifiche/ticket-08/riferimento-review-finale.txt",
+    "docs/relazione/verifiche/ticket-08/riferimento-review.txt",
+    "docs/relazione/verifiche/ticket-08/ripresa-2026-11-15.md",
+    "docs/relazione/verifiche/ticket-08/riscontri-statici.json",
+    "docs/relazione/verifiche/ticket-08/sorgenti-relazione.zip",
+    "docs/relazione/verifiche/ticket-08/specifica-ticket.md",
+    "docs/relazione/verifiche/ticket-08/stato-finale.txt",
+    "docs/relazione/verifiche/ticket-08/stato-iniziale.txt",
+    "docs/relazione/verifiche/ticket-08/stato-ripresa-2026-11-15.txt",
+    "docs/relazione/verifiche/ticket-08/strumenti-sha256.json",
+    "docs/relazione/verifiche/ticket-08/testo-iniziale.txt",
+    "docs/relazione/verifiche/ticket-08/valutazione-messaggi-tex.md",
+    "docs/relazione/verifiche/ticket-08/verifica-pacchetto.py"
+  ]
+}

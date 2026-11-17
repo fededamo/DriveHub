@@ -1,0 +1,352 @@
+[
+  {
+    "originale": [
+      "chapter",
+      "Implementazione"
+    ],
+    "attuale": [
+      "chapter",
+      "Implementazione"
+    ]
+  },
+  {
+    "originale": [
+      "section",
+      "Domain Model"
+    ],
+    "attuale": [
+      "section",
+      "Domain Model"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "Users"
+    ],
+    "attuale": [
+      "subsection",
+      "Users"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "Vehicles"
+    ],
+    "attuale": [
+      "subsection",
+      "Vehicles"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "Rentals"
+    ],
+    "attuale": [
+      "subsection",
+      "Rentals"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "Sales"
+    ],
+    "attuale": [
+      "subsection",
+      "Sales"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "Observer"
+    ],
+    "attuale": [
+      "subsection",
+      "Eventi e contratto Observer"
+    ]
+  },
+  {
+    "originale": [
+      "section",
+      "Business Layer"
+    ],
+    "attuale": [
+      "section",
+      "Business Layer"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "Core: unità di lavoro e transazioni"
+    ],
+    "attuale": [
+      "subsection",
+      "Coordinamento e transazioni"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "Services: responsabilità"
+    ],
+    "attuale": [
+      "subsection",
+      "Services: responsabilità"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "Services: flussi applicativi"
+    ],
+    "attuale": [
+      "subsection",
+      "Services: flussi applicativi"
+    ]
+  },
+  {
+    "originale": [
+      "subsubsection",
+      "Catalogo e test drive"
+    ],
+    "attuale": [
+      "subsubsection",
+      "Catalogo e test drive"
+    ]
+  },
+  {
+    "originale": [
+      "subsubsection",
+      "Noleggio con saldo del conto"
+    ],
+    "attuale": [
+      "subsubsection",
+      "Noleggio con saldo del conto"
+    ]
+  },
+  {
+    "originale": [
+      "subsubsection",
+      "Richiesta di acquisto, saldo e penale"
+    ],
+    "attuale": [
+      "subsubsection",
+      "Richiesta di vendita al cliente, saldo e penale"
+    ]
+  },
+  {
+    "originale": [
+      "subsubsection",
+      "Proposta di cessione del veicolo"
+    ],
+    "attuale": [
+      "subsubsection",
+      "Proposta di cessione del veicolo"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "Strategies: prezzi e sconti"
+    ],
+    "attuale": [
+      "subsection",
+      "Calcolo dei prezzi e sconti"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "Security e Banking: autenticazione e conto"
+    ],
+    "attuale": [
+      "subsection",
+      "Autenticazione e conto dimostrativo"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "Observer e gestione dell'inventario"
+    ],
+    "attuale": [
+      "subsection",
+      "Observer e gestione dell'inventario"
+    ]
+  },
+  {
+    "originale": [
+      "section",
+      "Presentation Layer"
+    ],
+    "attuale": [
+      "section",
+      "Presentation Layer"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "Controller e aree applicative"
+    ],
+    "attuale": [
+      "subsection",
+      "Viste e aree applicative"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "Creazione dei controller e navigazione"
+    ],
+    "attuale": [
+      "subsection",
+      "Creazione delle viste e navigazione"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "Gateway, dati della UI e aggiornamento"
+    ],
+    "attuale": [
+      "subsection",
+      "Servizi, dati della UI e aggiornamento"
+    ]
+  },
+  {
+    "originale": [
+      "section",
+      "Persistenza: livello DAO e mapping oggetti/tabelle"
+    ],
+    "attuale": [
+      "section",
+      "\\raggedright Persistenza: livello DAO e mapping oggetti/tabelle"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "Porte DAO e implementazioni JDBC"
+    ],
+    "attuale": [
+      "subsection",
+      "Porte DAO e implementazioni JDBC"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "Mapping degli utenti e vista unificata"
+    ],
+    "attuale": [
+      "subsection",
+      "Mapping degli utenti e vista unificata"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "Mapping delle operazioni e valori opzionali"
+    ],
+    "attuale": [
+      "subsection",
+      "Mapping delle operazioni e valori opzionali"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "Vincoli SQL e controlli dei servizi"
+    ],
+    "attuale": [
+      "subsection",
+      "Vincoli SQL e controlli dei servizi"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "Connessione condivisa e Unit of Work"
+    ],
+    "attuale": [
+      "subsection",
+      "Connessione condivisa e confine transazionale"
+    ]
+  },
+  {
+    "originale": [
+      "section",
+      "Idiomi e Design Pattern"
+    ],
+    "attuale": [
+      "section",
+      "Idiomi e Design Pattern"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "Observer"
+    ],
+    "attuale": [
+      "subsection",
+      "Observer"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "Strategy"
+    ],
+    "attuale": [
+      "subsection",
+      "Calcolo centralizzato e assenza di Strategy"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "Metodi statici di creazione"
+    ],
+    "attuale": [
+      "subsection",
+      "Metodi statici di creazione"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "Istanza centrale per la navigazione"
+    ],
+    "attuale": [
+      "subsection",
+      "Navigazione e contesto applicativo"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "DAO e Unit of Work"
+    ],
+    "attuale": [
+      "subsection",
+      "DAO e coordinamento transazionale"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "Idiomi Java usati nei confini tra livelli"
+    ],
+    "attuale": [
+      "subsection",
+      "Idiomi Java usati nei confini tra livelli"
+    ]
+  }
+]

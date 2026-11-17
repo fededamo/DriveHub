@@ -1,0 +1,272 @@
+[
+  {
+    "label": "lst:vehicle-invariante",
+    "fragment": "3.1",
+    "page": 84,
+    "source": "src/main/java/it/unifi/drivehub/domain/vehicle/Vehicle.java",
+    "lines": [
+      59,
+      62
+    ]
+  },
+  {
+    "label": "lst:request-accordo",
+    "fragment": "3.2",
+    "page": 85,
+    "source": "src/main/java/it/unifi/drivehub/domain/operation/Request.java",
+    "lines": [
+      54,
+      65
+    ]
+  },
+  {
+    "label": "lst:request-factory",
+    "fragment": "3.3",
+    "page": 86,
+    "source": "src/main/java/it/unifi/drivehub/domain/operation/Request.java",
+    "lines": [
+      68,
+      74
+    ]
+  },
+  {
+    "label": "lst:transazione",
+    "fragment": "3.4",
+    "page": 87,
+    "source": "src/main/java/it/unifi/drivehub/dao/DatabaseManager.java",
+    "lines": [
+      88,
+      106
+    ]
+  },
+  {
+    "label": "lst:callback",
+    "fragment": "3.5",
+    "page": 87,
+    "source": "src/main/java/it/unifi/drivehub/dao/DatabaseManager.java",
+    "lines": [
+      53,
+      60
+    ]
+  },
+  {
+    "label": "lst:test-drive",
+    "fragment": "3.6",
+    "page": 89,
+    "source": "src/main/java/it/unifi/drivehub/service/TestDriveService.java",
+    "lines": [
+      47,
+      66
+    ]
+  },
+  {
+    "label": "lst:overlap",
+    "fragment": "3.7",
+    "page": 90,
+    "source": "src/main/java/it/unifi/drivehub/dao/postgres/PostgresRentDao.java",
+    "lines": [
+      98,
+      104
+    ]
+  },
+  {
+    "label": "lst:letture-prezzo",
+    "fragment": "3.8",
+    "page": 91,
+    "source": "src/main/java/it/unifi/drivehub/service/PurchaseService.java",
+    "lines": [
+      74,
+      82
+    ]
+  },
+  {
+    "label": "lst:base",
+    "fragment": "3.9",
+    "page": 92,
+    "source": "src/main/java/it/unifi/drivehub/domain/vehicle/Vehicle.java",
+    "lines": [
+      122,
+      124
+    ]
+  },
+  {
+    "label": "lst:registrazione",
+    "fragment": "3.10",
+    "page": 94,
+    "source": "src/main/java/it/unifi/drivehub/service/AuthService.java",
+    "lines": [
+      57,
+      64
+    ]
+  },
+  {
+    "label": "lst:observer",
+    "fragment": "3.11",
+    "page": 95,
+    "source": "src/main/java/it/unifi/drivehub/event/VehicleEventPublisher.java",
+    "lines": [
+      28,
+      32
+    ]
+  },
+  {
+    "label": "lst:app-login",
+    "fragment": "3.12",
+    "page": 96,
+    "source": "src/main/java/it/unifi/drivehub/App.java",
+    "lines": [
+      54,
+      60
+    ]
+  },
+  {
+    "label": "lst:navigazione",
+    "fragment": "3.13",
+    "page": 96,
+    "source": "src/main/java/it/unifi/drivehub/domain/user/Client.java",
+    "lines": [
+      32,
+      35
+    ]
+  },
+  {
+    "label": "lst:async",
+    "fragment": "3.14",
+    "page": 97,
+    "source": "src/main/java/it/unifi/drivehub/presentation/view/AsyncLoad.java",
+    "lines": [
+      60,
+      73
+    ]
+  },
+  {
+    "label": "lst:user-dao-letture",
+    "fragment": "3.15",
+    "page": 98,
+    "source": "src/main/java/it/unifi/drivehub/dao/UserDao.java",
+    "lines": [
+      16,
+      23
+    ]
+  },
+  {
+    "label": "lst:user-dao-comandi",
+    "fragment": "3.16",
+    "page": 98,
+    "source": "src/main/java/it/unifi/drivehub/dao/UserDao.java",
+    "lines": [
+      29,
+      40
+    ]
+  },
+  {
+    "label": "lst:update-condizionale",
+    "fragment": "3.17",
+    "page": 98,
+    "source": "src/main/java/it/unifi/drivehub/dao/postgres/PostgresVehicleDao.java",
+    "lines": [
+      195,
+      206
+    ]
+  },
+  {
+    "label": "lst:user-mapping",
+    "fragment": "3.18",
+    "page": 99,
+    "source": "src/main/java/it/unifi/drivehub/dao/postgres/PostgresUserDao.java",
+    "lines": [
+      69,
+      75
+    ]
+  },
+  {
+    "label": "lst:mapping",
+    "fragment": "3.19",
+    "page": 100,
+    "source": "src/main/java/it/unifi/drivehub/dao/postgres/PostgresRequestDao.java",
+    "lines": [
+      214,
+      227
+    ]
+  },
+  {
+    "label": "lst:sale-mapping",
+    "fragment": "3.20",
+    "page": 100,
+    "source": "src/main/java/it/unifi/drivehub/dao/postgres/PostgresSaleDao.java",
+    "lines": [
+      123,
+      135
+    ]
+  },
+  {
+    "label": "lst:vincolo-vin",
+    "fragment": "3.21",
+    "page": 101,
+    "source": "src/main/resources/db/schema.sql",
+    "lines": [
+      90,
+      91
+    ]
+  },
+  {
+    "label": "lst:vincolo-saldo",
+    "fragment": "3.22",
+    "page": 101,
+    "source": "src/main/resources/db/schema.sql",
+    "lines": [
+      195,
+      195
+    ]
+  },
+  {
+    "label": "lst:vincolo-rent",
+    "fragment": "3.23",
+    "page": 101,
+    "source": "src/main/resources/db/schema.sql",
+    "lines": [
+      289,
+      292
+    ]
+  },
+  {
+    "label": "lst:dao-connection",
+    "fragment": "3.24",
+    "page": 102,
+    "source": "src/main/java/it/unifi/drivehub/dao/postgres/PostgresVehicleDao.java",
+    "lines": [
+      61,
+      72
+    ]
+  },
+  {
+    "label": "lst:contratto-observer",
+    "fragment": "3.25",
+    "page": 103,
+    "source": "src/main/java/it/unifi/drivehub/event/VehicleCommitmentObserver.java",
+    "lines": [
+      6,
+      8
+    ]
+  },
+  {
+    "label": "lst:vehicle-factory",
+    "fragment": "3.26",
+    "page": 104,
+    "source": "src/main/java/it/unifi/drivehub/domain/vehicle/Vehicle.java",
+    "lines": [
+      40,
+      42
+    ]
+  },
+  {
+    "label": "lst:singleton",
+    "fragment": "3.27",
+    "page": 104,
+    "source": "src/main/java/it/unifi/drivehub/AppContext.java",
+    "lines": [
+      112,
+      117
+    ]
+  }
+]

@@ -1,0 +1,170 @@
+[
+  {
+    "source": "src/main/java/it/unifi/drivehub/dao/DatabaseManager.java",
+    "first": 49,
+    "last": 106,
+    "sha256": "b30cacdcbf306a405e624317989c84b9d7876e8499136627bb0006c9d155293e"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/service/PriceCalculatorService.java",
+    "first": 26,
+    "last": 111,
+    "sha256": "d155f4a7eeb9c6128eaa885cd62f975e20db8539f75baafadd223e567846598d"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/service/RentalService.java",
+    "first": 59,
+    "last": 178,
+    "sha256": "42263a9b0f92adca140e77d51c9d1003823f4a8b0aee82ea08e8cb24389a7eeb"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/service/PurchaseService.java",
+    "first": 65,
+    "last": 233,
+    "sha256": "438acae05cb1758976461e5ecfe0983deac2dc7d3732145be9cf8a826350cd8f"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/service/SaleToDealershipService.java",
+    "first": 55,
+    "last": 182,
+    "sha256": "81e9ee97d7623974842655d784a61121cb31fff08f776dcce541f863f68506cf"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/service/TestDriveService.java",
+    "first": 40,
+    "last": 87,
+    "sha256": "c43062b2a64b2b586990e0f4e72edd27cc2d81d1214399ac126907dff4af2131"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/event/VehicleEventPublisher.java",
+    "first": 28,
+    "last": 32,
+    "sha256": "724a6ae08558963fbd9a3167948c4e739312d153fc96dfaa797cbadeb68552be"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/service/TestDriveCancellationObserver.java",
+    "first": 15,
+    "last": 26,
+    "sha256": "29f9f98fb4a76bd00f09e9ed1627ab83923c08b870b4e0d1c8d922cdb4540946"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/presentation/view/AsyncLoad.java",
+    "first": 23,
+    "last": 75,
+    "sha256": "4fd2af28fc7244174667fd282716f44737df94e9863ef413ed2f9ea0023d5a90"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/App.java",
+    "first": 34,
+    "last": 122,
+    "sha256": "edaf87db70942350669f6997f5931d6998b2b59fb425ef8cd3079fd60e420c2e"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/dao/postgres/PostgresRequestDao.java",
+    "first": 147,
+    "last": 168,
+    "sha256": "d104e64cbc4b3a2d7bceb21c28b8e712181bb85579b9c485cb742147f4b99ce6"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/dao/postgres/PostgresRequestDao.java",
+    "first": 214,
+    "last": 227,
+    "sha256": "d104e64cbc4b3a2d7bceb21c28b8e712181bb85579b9c485cb742147f4b99ce6"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/dao/postgres/PostgresUserDao.java",
+    "first": 215,
+    "last": 291,
+    "sha256": "e9b4a4ea84e3102aee9563498bc8a9da6fef29732c5d8f3589e21ba00cb81286"
+  },
+  {
+    "source": "src/main/resources/db/schema.sql",
+    "first": 36,
+    "last": 39,
+    "sha256": "12c08063fcdf3bd88953ff4f89ef85e017c7fbfd8ef127a4906480aa365afc5e"
+  },
+  {
+    "source": "src/main/resources/db/schema.sql",
+    "first": 79,
+    "last": 96,
+    "sha256": "12c08063fcdf3bd88953ff4f89ef85e017c7fbfd8ef127a4906480aa365afc5e"
+  },
+  {
+    "source": "src/main/resources/db/schema.sql",
+    "first": 147,
+    "last": 310,
+    "sha256": "12c08063fcdf3bd88953ff4f89ef85e017c7fbfd8ef127a4906480aa365afc5e"
+  },
+  {
+    "source": "src/test/java/it/unifi/drivehub/AuthServiceIntegrationTest.java",
+    "first": 19,
+    "last": 104,
+    "sha256": "ccdd26cf6bce9ddae2d86aacf62abd006fa89837a9fc6eaf9130d71201b0361e"
+  },
+  {
+    "source": "src/test/java/it/unifi/drivehub/PurchaseAgreementIntegrationTest.java",
+    "first": 26,
+    "last": 78,
+    "sha256": "2c7b947cb67dd6f455451f7f320b8f0404f246172d75590abe4faa567bee6b5b"
+  },
+  {
+    "source": "src/test/java/it/unifi/drivehub/TestDriveCancellationIntegrationTest.java",
+    "first": 25,
+    "last": 181,
+    "sha256": "b9aac2d2a77c1c647a3c2959f91994f279307e3256ec273763b74cf78868f039"
+  },
+  {
+    "source": "src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java",
+    "first": 35,
+    "last": 85,
+    "sha256": "f424d3be4aa8e65865c8180ee4f4cbb15d031220784e40e8aecb1f0d72042a61"
+  },
+  {
+    "source": "src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java",
+    "first": 172,
+    "last": 179,
+    "sha256": "f424d3be4aa8e65865c8180ee4f4cbb15d031220784e40e8aecb1f0d72042a61"
+  },
+  {
+    "source": "src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java",
+    "first": 267,
+    "last": 355,
+    "sha256": "f424d3be4aa8e65865c8180ee4f4cbb15d031220784e40e8aecb1f0d72042a61"
+  },
+  {
+    "source": "src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java",
+    "first": 309,
+    "last": 323,
+    "sha256": "3903f28bae4e308db15882264b739fdecf80d8683e2e8839c0d419c631ea66f5"
+  },
+  {
+    "source": "src/test/java/it/unifi/drivehub/DemoSqlValidationTest.java",
+    "first": 16,
+    "last": 51,
+    "sha256": "a7a5e3ef8736f54557eea9e359969b47612a67477e22dadb74f4cab936bc70b4"
+  },
+  {
+    "source": "src/test/java/it/unifi/drivehub/PriceSelectionIntegrationTest.java",
+    "first": 25,
+    "last": 30,
+    "sha256": "87737dd554101b98c6f594c23a4b3ab785f45595b77a6b7f2620bfbbe9343048"
+  },
+  {
+    "source": "src/test/java/it/unifi/drivehub/PriceSelectionIntegrationTest.java",
+    "first": 61,
+    "last": 69,
+    "sha256": "87737dd554101b98c6f594c23a4b3ab785f45595b77a6b7f2620bfbbe9343048"
+  },
+  {
+    "source": "src/test/java/it/unifi/drivehub/PriceCalculatorServiceTest.java",
+    "first": 93,
+    "last": 166,
+    "sha256": "1b8195b0390699c1b84094c8f71683cde7e40f9529e4b656659de724ea53326a"
+  },
+  {
+    "source": "src/test/java/it/unifi/drivehub/SaleTypeTest.java",
+    "first": 16,
+    "last": 71,
+    "sha256": "4ecd080a6c1ebf88c34e3b69ac9a2876ac53f0fe099e8b5c2ab797b064ce7cdc"
+  }
+]

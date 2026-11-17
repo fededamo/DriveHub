@@ -1,0 +1,104 @@
+{
+  "system": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.43",
+  "python_system": "3.14.4",
+  "tool_root": "/home/federico/dev/Drivehub/.ticket11-tools",
+  "packages": {
+    "fonts-lmodern_2.005-1build1_all.deb": {
+      "sha256": "7dd5a8ca5942d55c6a207dc558789621679c8c7f49905e9f57b7de61cb61b15a",
+      "bytes": 4788444
+    },
+    "libkpathsea6_2025.20250727.75242+ds-5build1_amd64.deb": {
+      "sha256": "46d092e728e02f9b4d75ff942ac6a34166d68ab8874a7acd997d8112de127b3b",
+      "bytes": 66032
+    },
+    "libmpfi0_1.5.4+ds-4build1_amd64.deb": {
+      "sha256": "a387cd3668fbdfe2d17a76a7878b52dfb1a605e72a9266aa6cb8e43e2c0c453c",
+      "bytes": 36592
+    },
+    "libpaper2_2.2.5-0.3maysync1_amd64.deb": {
+      "sha256": "e667f3a89b8237f15f43bc837f1f6606fdf5164a7670338573a4dc16a04c0fb4",
+      "bytes": 17218
+    },
+    "libpotrace0_1.16-2build2_amd64.deb": {
+      "sha256": "5dad1784eb18d36a5abe721bdce6bf365ea4c06c013310c662207e6b8623fb67",
+      "bytes": 17868
+    },
+    "libptexenc1_2025.20250727.75242+ds-5build1_amd64.deb": {
+      "sha256": "f2a68d08840abc9ee3698a1c106c1284ef008713c0abe7b62ff9ebcd70979ed9",
+      "bytes": 46356
+    },
+    "libsynctex2_2025.20250727.75242+ds-5build1_amd64.deb": {
+      "sha256": "3682db699c8bdc6ed7074004e2a1f5d4f5db0fc533c299f64fb679c90857083b",
+      "bytes": 62104
+    },
+    "libteckit0_2.5.13+ds-1_amd64.deb": {
+      "sha256": "106b67a475271ade083ef383b32c786c92dc6f57c5aa709695de940d8be22867",
+      "bytes": 430588
+    },
+    "libtexlua53-5_2025.20250727.75242+ds-5build1_amd64.deb": {
+      "sha256": "f2c7072b6ce0ca160edd501d20e288e548062cad592a29cddae148e943b725b4",
+      "bytes": 124876
+    },
+    "libzzip-0-13t64_0.13.78+dfsg.1-0.2_amd64.deb": {
+      "sha256": "4275dc3e8dd6380e08c669b0066ed67bc15770bda7c621fd34e8a16adeed02d1",
+      "bytes": 30112
+    },
+    "lmodern_2.005-1build1_all.deb": {
+      "sha256": "bb6167716c24f9bff16535e527085efc78384e2acd161c57b4aaeda77454f0ba",
+      "bytes": 9537814
+    },
+    "texlive-base_2025.20260124-1_all.deb": {
+      "sha256": "5971a8d995cb34d708355a62a40fb0bc8af45edff49680590cc803f4af7eb8a5",
+      "bytes": 22801456
+    },
+    "texlive-binaries_2025.20250727.75242+ds-5build1_amd64.deb": {
+      "sha256": "cda02814822862de96c6e25d7911371c8978cffcb1f20a868653c544e48cd29b",
+      "bytes": 8746662
+    },
+    "texlive-fonts-recommended_2025.20260124-1_all.deb": {
+      "sha256": "594cd0a3c14ce79664b33aab26085beee1299e4fb963542618c9f2d7b0237edb",
+      "bytes": 4972476
+    },
+    "texlive-lang-italian_2025.20260124-1_all.deb": {
+      "sha256": "139c295ad906d5534d89cc85939150e11b7cbf1c36d055f43341d8013278a6d7",
+      "bytes": 11197060
+    },
+    "texlive-latex-base_2025.20260124-1_all.deb": {
+      "sha256": "f18bdba64de8dd509c27561a46da2b3cf83b391f82ba12f47165d84cf15a2584",
+      "bytes": 1320976
+    },
+    "texlive-latex-extra_2025.20260124-1_all.deb": {
+      "sha256": "0522a96ca321464c4c0a5609de995bcdb2ae7e796a59183224e8162e0fd2b4fe",
+      "bytes": 32324364
+    },
+    "texlive-latex-recommended_2025.20260124-1_all.deb": {
+      "sha256": "580efe1bfdccb1290e0126b334fb66740b3584833259fd059891793b747720a6",
+      "bytes": 8501380
+    },
+    "texlive-xetex_2025.20260124-1_all.deb": {
+      "sha256": "9f0c18ae86cbc5148d4c7bfc01d6f66880a6278d9755ec36c61e7937813f3d71",
+      "bytes": 10802636
+    }
+  },
+  "venv_python": "Python 3.14.4",
+  "python_packages": [
+    "flatbuffers==25.12.19",
+    "networkx==3.7",
+    "numpy==2.5.5",
+    "onnxruntime==1.32.0",
+    "packaging==26.3",
+    "pillow==13.0.0",
+    "protobuf==7.36.2",
+    "psutil==7.2.2",
+    "pymupdf==2.1",
+    "pymupdf4llm==2.1",
+    "pymupdf_layout==2.1",
+    "PyYAML==6.0.3",
+    "tabulate==0.10.0"
+  ],
+  "executables": {
+    "xetex": "b457bea31831f6d1e2497a68b101cfec76aa5c47419fda1cb582dc414d52cd7d",
+    "xdvipdfmx": "8ac51bdd427674645a5de01240a7ec4e7d8032f5ceb002b358a9d93ad18882a2",
+    "kpsewhich": "77034e32f02c448c700fc9bdcf0fb0b9d080a2d3de15c09da448cc831ddb900d"
+  }
+}

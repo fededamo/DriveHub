@@ -1,0 +1,2 @@
+2b3a86250906c92ed0a3ae8aaa454ec55bd6cede8593b3e549640177f6aecaa3  /tmp/drivehub-ticket06-tools/tectonic
+9f5a5579f839d87330e20c6e1e189233dc52d18a678ca30bb03a678f95c98f1f  /tmp/drivehub-ticket06-tools/venv/lib/python3.14/site-packages/pymupdf/__init__.py

@@ -1,0 +1,8 @@
+UPDATE 6
+UPDATE 10
+UPDATE 1
+    current_database    |   current_user    | current_date 
+------------------------+-------------------+--------------
+ drivehub_ticket02_demo | drivehub_ticket02 | 2026-11-12
+(1 row)
+

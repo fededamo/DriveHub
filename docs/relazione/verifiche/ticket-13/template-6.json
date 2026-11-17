@@ -1,0 +1,282 @@
+[
+  {
+    "id": "2.2.1",
+    "original": {
+      "id": "2.2.1",
+      "level": "subsection",
+      "star": false,
+      "title": "Prenotare un test drive",
+      "source": "Relazione_SWE/templates/test_drive.tex",
+      "line": 1,
+      "offset": 101,
+      "content_sha256": "73702e20a4948f5923e3b0b50748f4c325de59adca6d2a96587ac2ad716b71da",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/templates/test_drive.tex",
+          "first": 1,
+          "last": 35
+        },
+        {
+          "source": "Relazione_SWE/capitoli/2a_casi_uso.tex",
+          "first": 14,
+          "last": 15
+        }
+      ]
+    },
+    "destination": {
+      "id": "2.2.1",
+      "level": "subsection",
+      "star": false,
+      "title": "UC-01 --- Prenotare un test drive",
+      "source": "docs/relazione/capitoli/2_template.tex",
+      "line": 32,
+      "offset": 204,
+      "content_sha256": "25140c2d9881272e4c84739379d6e5f8936cbc0ff5a1b21863cb583cab897d8f",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_template.tex",
+          "first": 32,
+          "last": 69
+        }
+      ]
+    },
+    "treatment": "**Ricollocare.** Scheda completa del test drive: attore, condizioni, fascia oraria effettiva, limite di tre prenotazioni, conflitti, cancellazione e prove pertinenti.",
+    "source": "capitoli/2_template.tex e servizi/test citati nei sei paragrafi Prove e portata",
+    "limit": "Attori UI non autorizzazione universale; alternative numerate e oracoli selettivi, non ogni ramo certificato."
+  },
+  {
+    "id": "2.2.2",
+    "original": {
+      "id": "2.2.2",
+      "level": "subsection",
+      "star": false,
+      "title": "Noleggiare un veicolo",
+      "source": "Relazione_SWE/templates/noleggio.tex",
+      "line": 1,
+      "offset": 138,
+      "content_sha256": "b9de808b34b1210701774871e1021591989921ac24eb6b517675965d002476d0",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/templates/noleggio.tex",
+          "first": 1,
+          "last": 36
+        },
+        {
+          "source": "Relazione_SWE/capitoli/2a_casi_uso.tex",
+          "first": 17,
+          "last": 19
+        }
+      ]
+    },
+    "destination": {
+      "id": "2.2.2",
+      "level": "subsection",
+      "star": false,
+      "title": "UC-02 --- Noleggiare un veicolo",
+      "source": "docs/relazione/capitoli/2_template.tex",
+      "line": 70,
+      "offset": 242,
+      "content_sha256": "18b58d59641c741bd32e1baa8f2776f5eef19ebc398f565ac6536d8cc47de7da",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_template.tex",
+          "first": 70,
+          "last": 108
+        }
+      ]
+    },
+    "treatment": "**Ricollocare.** Scheda completa del noleggio: estremi inclusi, costo ricalcolato, saldo, conflitti, annullamento dei test drive futuri e rollback.",
+    "source": "capitoli/2_template.tex e servizi/test citati nei sei paragrafi Prove e portata",
+    "limit": "Attori UI non autorizzazione universale; alternative numerate e oracoli selettivi, non ogni ramo certificato."
+  },
+  {
+    "id": "2.2.3",
+    "original": {
+      "id": "2.2.3",
+      "level": "subsection",
+      "star": false,
+      "title": "Richiedere e completare un acquisto",
+      "source": "Relazione_SWE/templates/acquisto.tex",
+      "line": 1,
+      "offset": 177,
+      "content_sha256": "72662158322d96c7c66394d1269e3fe2ede65de18a0a16bc0355fae551478a73",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/templates/acquisto.tex",
+          "first": 1,
+          "last": 37
+        },
+        {
+          "source": "Relazione_SWE/capitoli/2a_casi_uso.tex",
+          "first": 21,
+          "last": 22
+        }
+      ]
+    },
+    "destination": {
+      "id": "2.2.3",
+      "level": "subsection",
+      "star": false,
+      "title": "UC-03 --- Richiedere e completare una vendita al cliente",
+      "source": "docs/relazione/capitoli/2_template.tex",
+      "line": 109,
+      "offset": 281,
+      "content_sha256": "743d7da27f06e8a6a91f7f419b23a49cd70ea47802da01b8a07270f21929e89a",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_template.tex",
+          "first": 109,
+          "last": 151
+        }
+      ]
+    },
+    "treatment": "**Ricollocare.** UC-03: acconto del 20%, totale fissato, autorizzazione, saldo, rifiuto e scadenza con penale; sostituire le vecchie anomalie di prezzo con il comportamento corretto attuale.",
+    "source": "capitoli/2_template.tex e servizi/test citati nei sei paragrafi Prove e portata",
+    "limit": "Attori UI non autorizzazione universale; alternative numerate e oracoli selettivi, non ogni ramo certificato."
+  },
+  {
+    "id": "2.2.4",
+    "original": {
+      "id": "2.2.4",
+      "level": "subsection",
+      "star": false,
+      "title": "Proporre un veicolo al concessionario",
+      "source": "Relazione_SWE/templates/cessione.tex",
+      "line": 1,
+      "offset": 216,
+      "content_sha256": "4ee4a25f4669af909f229fe47fca78e60a04ae319b5b6d524e39850960fd0d7e",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/templates/cessione.tex",
+          "first": 1,
+          "last": 36
+        },
+        {
+          "source": "Relazione_SWE/capitoli/2a_casi_uso.tex",
+          "first": 24,
+          "last": 26
+        }
+      ]
+    },
+    "destination": {
+      "id": "2.2.4",
+      "level": "subsection",
+      "star": false,
+      "title": "UC-05 --- Proporre un veicolo alla concessionaria",
+      "source": "docs/relazione/capitoli/2_template.tex",
+      "line": 152,
+      "offset": 324,
+      "content_sha256": "de6aab9433dddf732f5ab8addafbc7190aea5ff68be5cc57dec87ddf78d4e372",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_template.tex",
+          "first": 152,
+          "last": 196
+        }
+      ]
+    },
+    "treatment": "**Ricollocare.** UC-05 prima di UC-04 nell'esposizione, conservando gli identificativi: proposta, stima persistita, esito del venditore, storico e limite dell'accredito zero.",
+    "source": "capitoli/2_template.tex e servizi/test citati nei sei paragrafi Prove e portata",
+    "limit": "Attori UI non autorizzazione universale; alternative numerate e oracoli selettivi, non ogni ramo certificato."
+  },
+  {
+    "id": "2.2.5",
+    "original": {
+      "id": "2.2.5",
+      "level": "subsection",
+      "star": false,
+      "title": "Autorizzare una richiesta di acquisto",
+      "source": "Relazione_SWE/templates/autorizzazione_acquisto.tex",
+      "line": 1,
+      "offset": 255,
+      "content_sha256": "d12833cebaa4b35850cffb6c0631745a71d77818e470cf8629f5c07ccefd7df3",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/templates/autorizzazione_acquisto.tex",
+          "first": 1,
+          "last": 34
+        },
+        {
+          "source": "Relazione_SWE/capitoli/2a_casi_uso.tex",
+          "first": 28,
+          "last": 29
+        }
+      ]
+    },
+    "destination": {
+      "id": "2.2.5",
+      "level": "subsection",
+      "star": false,
+      "title": "UC-04 --- Autorizzare una richiesta di vendita al cliente",
+      "source": "docs/relazione/capitoli/2_template.tex",
+      "line": 197,
+      "offset": 369,
+      "content_sha256": "ea1e98af9bfb853c8baa89b61be76cf8db6b225a90b8419ad51d6055b3774e7f",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_template.tex",
+          "first": 197,
+          "last": 237
+        }
+      ]
+    },
+    "treatment": "**Ricollocare.** UC-04: approvazione o rifiuto del venditore, scadenza e rimborso; distinguere autorizzazione e saldo senza rinumerare il caso d'uso.",
+    "source": "capitoli/2_template.tex e servizi/test citati nei sei paragrafi Prove e portata",
+    "limit": "Attori UI non autorizzazione universale; alternative numerate e oracoli selettivi, non ogni ramo certificato."
+  },
+  {
+    "id": "2.2.6",
+    "original": {
+      "id": "2.2.6",
+      "level": "subsection",
+      "star": false,
+      "title": "Gestire lo sconto su un veicolo",
+      "source": "Relazione_SWE/templates/sconto_veicolo.tex",
+      "line": 1,
+      "offset": 291,
+      "content_sha256": "cd8d6f559d58c65e351d711996f354fce3dc28328ac5dcf66dd9a2d283770fa8",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/templates/sconto_veicolo.tex",
+          "first": 1,
+          "last": 35
+        },
+        {
+          "source": "Relazione_SWE/capitoli/2a_casi_uso.tex",
+          "first": 31,
+          "last": 31
+        },
+        {
+          "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+          "first": 1,
+          "last": 1
+        }
+      ]
+    },
+    "destination": {
+      "id": "2.2.6",
+      "level": "subsection",
+      "star": false,
+      "title": "UC-06 --- Gestire lo sconto su un veicolo",
+      "source": "docs/relazione/capitoli/2_template.tex",
+      "line": 238,
+      "offset": 410,
+      "content_sha256": "fb8863ab12a44f5880316bfdb96ffe9019c061583d3e7b5262113e3fff9ad5a6",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_template.tex",
+          "first": 238,
+          "last": 274
+        },
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 60,
+          "last": 101
+        }
+      ]
+    },
+    "treatment": "**Ricollocare.** Scheda UC-06: sconti su modello e veicolo, intervallo 0–50, massimo non cumulato, inserimento/rimozione e accordi già fissati.",
+    "source": "capitoli/2_template.tex e servizi/test citati nei sei paragrafi Prove e portata",
+    "limit": "Attori UI non autorizzazione universale; alternative numerate e oracoli selettivi, non ogni ramo certificato."
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "docs/relazione/main.tex": "31d45417d50d6e5394070607c6cd0db9fb2e731bfe6fa1c0938157129915a937",
+  "docs/relazione/README.md": "89558ff10c0f2b415faf59ad9d98e5a6c46908b7c1131bae44375d065787498a",
+  "docs/relazione/capitoli/3_implementazione.tex": "1754a46ac32992fe64e61aed6f15b254337124ac0b291e18835d58cbef3fcdf8",
+  "docs/relazione/capitoli/4_testing.tex": "4211e705d29c0a039d554d19288859211b19c7390a4038d19d75b6495b9a97b4",
+  "docs/relazione/appendici/appendici.tex": "6db52a95ce8003c53174269475e75de3325404f0880f482c1e1a05bea54d8fa0",
+  "docs/relazione/appendici/c_verifiche.tex": "d179e885787e1f26524aa820af2a6a5a69d9805901e13bcaa49fe6c27c04497d",
+  "docs/relazione/relazione-drivehub.pdf": "ac8e501c9cabec967faa1abfea5646b2698862e3880d01118c8cb77c4053ce7e",
+  "docs/relazione/verifiche/ticket-06/specifica-ticket.md": "58e89ebd4a069d65326e6048679fbce9244c6de884ba6f9ccb222444e4e772f8",
+  "docs/relazione/verifiche/ticket-06/matrice-fonti.md": "33c82728694a5a9fd81680c6e3bd9febfab5a9ff454c4d56bff1d4bd2c29f6da",
+  "docs/relazione/verifiche/ticket-06/fonti.json": "b0bc8a8a95e1b264ac63830928fca1f1f0635f5b075582ca7f5add252914e0c6",
+  "docs/relazione/verifiche/ticket-06/frammenti.json": "1743076653dafe8548c3113bfa0b94d6facdc565565aeaa94a11dad85702790d",
+  "docs/relazione/verifiche/ticket-06/baseline-conservazione.json": "fe75664ac7863b855a96e876113347487557e5e7e062a7607fea5d2fea6afc40",
+  "docs/relazione/verifiche/ticket-06/delta-documentale.diff": "cfa2941b934c60fdf5e8fdfc6299002d762166d544520295db766f611fdaf61f",
+  "docs/relazione/verifiche/ticket-06/esito-documentale.json": "a65d6239fd222d931e0fddabd426754428332a5fd49f7c7a252f44e9d5911e18",
+  "docs/relazione/verifiche/ticket-06/controlla-documento.py": "33f7a387b8ccbb591c20a5ecb696f8020197fb7b484a10398a11d3b922357194",
+  "docs/relazione/verifiche/ticket-06/ticket-06-per-revisione.pdf": "74e2d2e5bd873e4f06ed9bdd62fa6380b3298650cd49977e8c21733e953a20cd",
+  "docs/relazione/verifiche/ticket-06/riscontro-storico.json": "bbcf064abb1ad57712263e97ebb3bd2179cf88b752c3ebfe1ba7034e20049036",
+  "docs/relazione/verifiche/ticket-06/comandi.md": "bfef091764b2d30270473b3c173db7ce74d63e87c533545fb7e2c82bd85a9ccf"
+}

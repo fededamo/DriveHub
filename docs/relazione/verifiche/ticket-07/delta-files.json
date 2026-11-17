@@ -1,0 +1,189 @@
+{
+  "baseline": "baseline-conservazione.json",
+  "modified": [
+    "docs/relazione/README.md",
+    "docs/relazione/capitoli/3_implementazione.tex",
+    "docs/relazione/capitoli/4_testing.tex",
+    "docs/relazione/capitoli/5_uso_ai.tex",
+    "docs/relazione/main.tex",
+    "docs/relazione/piano.md",
+    "docs/relazione/relazione-drivehub.pdf"
+  ],
+  "added": [
+    {
+      "path": "docs/relazione/tracker/issues/07-uso-ai.md",
+      "sha256": "2ff0047f41f65005eabdc013f1fa24ca63aa5dc317fe000d0028156095236c82"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/README.md",
+      "sha256": "c936f8a3425dc3a63a38f2c17e0d839175cd79e820c30d47c4ad411cc33aa1ff"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/SHA256SUMS",
+      "sha256": null
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/ambiente.txt",
+      "sha256": "185f7cdac9d80a3cf773caff4ec6f52bcdb6133a4f1d0bb028e0decfd1f864c2"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/baseline-conservazione.json",
+      "sha256": "22ee2e198fc69a4fdf9c6b9093c001bdc6bdbb0160cbb2272c4948568764842c"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/capitolo-5-per-revisione.pdf",
+      "sha256": "d4c2c1f37678e5a96ebf4433749e76483e7fcb85e752599b8402ef4393338613"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/comandi.md",
+      "sha256": "f6054ef1f13cd070a7808b6d335dc9714e3e9cd5952266c2955b37c4650d0ad1"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/compilazione-cache-font-mancante.txt",
+      "sha256": "ad79754502ab9b3d5e29192f680a8c498bdfe44dc458c41939535ef205c92f1a"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/compilazione-risorse.txt",
+      "sha256": "33da88e10df378a5206736b192dfb881c916860cc33d18b9dea3ec429fa94cbc"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/compilazione.txt",
+      "sha256": "d3c12790517c14e2d9fed07517e83fc64d88c20d1e9c030ae5ca8e75614d2d0f"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/conservazione.txt",
+      "sha256": "6068b949c92559e88f0ef193a37526bb72b0d34a6c99ecbf3d6b2a17c2fee893"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/controlla-documento.py",
+      "sha256": "0b994c843dbbdfcc15c7854ffd23fbf829277c6d97d2433df66a9dae040b4616"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/controlli-documento.txt",
+      "sha256": "eb9b41e2b4519dfd261b713949757c820ea3163b9727079037e236d67ea40bc6"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/controlli-prima-readme.txt",
+      "sha256": "55a3429dc0974e300b51e0c5ef69dbb5ad15a57831203861960aea3b35c2ecf9"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/controlli-primo-conteggio-link.txt",
+      "sha256": "9b9cb3e4d2e3a11a0507c31c3adf0c0cd3563308fc40d63e46d3c520276fd213"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/controllo-visivo.md",
+      "sha256": "b4c06f045ab0a75c44ecb02b780f3f3eb56a2dec558ef5b6faeb1980ce717341"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/cronologia-git.txt",
+      "sha256": "b3326729e4c3d4633aef7f069cbde37fdd4e174c71ff070b01be4f06e5f6b56f"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/delta-documentale.diff",
+      "sha256": "bff53e24d3c31fc1adfdc66aa612a9ef374b5a33c772cc5cb48d1ecef26f6832"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/delta-files.json",
+      "sha256": null
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/esito-documentale.json",
+      "sha256": "80aae9bfc4ca08fcc4582595780ec27b5f2309421d5a8a50e2ba3dbe6cfba1cb"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/finalizzazione.txt",
+      "sha256": null
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/fonti-standards.txt",
+      "sha256": "bf5033dc3df94be23dbd99c881fe143f82e5250c99d3d90195ba8d5f517416be"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/fonti.json",
+      "sha256": "7a036064f46fc7f1f5af730ece4c63680179045241d253355b0d978c65299cdc"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/input-review.json",
+      "sha256": null
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/latex-log.txt",
+      "sha256": "023869718ba622db958e114d5616fe47c7d6407ca3aa98763f170e3071eece9d"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/matrice-fonti.md",
+      "sha256": "7d29254662a7caa384b61e03ec353ee02894ff920c3abd6d14e17b9627484783"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/prima/README.md",
+      "sha256": "89558ff10c0f2b415faf59ad9d98e5a6c46908b7c1131bae44375d065787498a"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/prima/capitoli/3_implementazione.tex",
+      "sha256": "1754a46ac32992fe64e61aed6f15b254337124ac0b291e18835d58cbef3fcdf8"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/prima/capitoli/4_testing.tex",
+      "sha256": "e4cca6bc3db15a339b8927f18f19196052a3c2f641841bb3d3b21b3065aa3347"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/prima/capitoli/5_uso_ai.tex",
+      "sha256": "50a7d4a488bf74e430529bff420e4aa7dbb68125b3faf444071114d8018fb5bd"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/prima/main.tex",
+      "sha256": "31d45417d50d6e5394070607c6cd0db9fb2e731bfe6fa1c0938157129915a937"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/prima/piano.md",
+      "sha256": "4b1c57011d43cca4e02dc9f5ac0c2f68315d77ad829da8815b110e4ed8372694"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/prima/relazione-drivehub.pdf",
+      "sha256": "05aed422b71cf85a5532ff4fab49549d4605add90ad20fe8a397c6720ef844b2"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/registri-zip.json",
+      "sha256": "3a41663f35d706eec45b06a1f87e8e3bad8f297b2298fe4781f7dd4a3677bb3b"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/revisione-spec.md",
+      "sha256": "ed2477abdb8176938ba773a80bd310702c261cd6110ec90a86b5b27d4944ad39"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/revisione-standards.md",
+      "sha256": "caec40988add68d2bd273e4e2496c5b7ec0b2e653c2331c7dbd64aaa9e59426d"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/revisione.md",
+      "sha256": "79c332109de2ee4386ea27b9b83d436045900242a1d8ed02bcf9fe4e96aad1c0"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/riferimento-review.txt",
+      "sha256": "d4628ef1a91fb143c89606b113f0e73121e16c0ff23cf853f55e08e13909f8c7"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/sorgenti-relazione.zip",
+      "sha256": "5991ce1e8dc7316f2a98233694892284f1bd86027744c1b00c23d33ef5f5beb2"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/specifica-ticket.md",
+      "sha256": "cee5567675131f882490883b5087574f96c51c5aeab4e06f6e105b91fd14b24b"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/stato-iniziale.txt",
+      "sha256": "2908141dcc68d765681ec0d2530baf6893982e63ce2944e1a4dc70fe2d82de68"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-07/strumenti-sha256.txt",
+      "sha256": "ccdea44d25b394dacb09c4268d782e8b4a9168f3e7b5c6daffc29e8b0e33e60f"
+    }
+  ],
+  "hash_exclusions": [
+    "SHA256SUMS",
+    "delta-files.json",
+    "finalizzazione.txt",
+    "input-review.json"
+  ],
+  "note": "Delta finale anche dei non tracciati. Solo inventari autoreferenziali senza hash qui; SHA256SUMS separato. Build/cache ignorati esclusi."
+}

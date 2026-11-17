@@ -1,0 +1,171 @@
+\def\UrlBreaks{\do\a\do\b\do\c\do\d\do\e\do\f\do\g\do\h\do\i\do\j\do\k\do\l\do\m\do\n\do\o\do\p\do\q\do\r\do\s\do\t\do\u\do\v\do\w\do\x\do\y\do\z\do\A\do\B\do\C\do\D\do\E\do\F\do\G\do\H\do\I\do\J\do\K\do\L\do\M\do\N\do\O\do\P\do\Q\do\R\do\S\do\T\do\U\do\V\do\W\do\X\do\Y\do\Z}
+\section{Package Diagram}\label{sec:package}
+L'organizzazione corrente comprende undici package con tipi di produzione.
+La figura~\ref{fig:pkg} distingue la composizione dell'applicazione dai suoi
+collaboratori: le frecce indicano chi dipende da chi nel codice, non il verso
+di restituzione dei dati. I package intermedi \code{domain} e
+\code{presentation} non contengono tipi propri e non richiedono viste vuote.
+
+\code{App} avvia JavaFX e collega utente, servizi e callback alle viste;
+\code{AppContext} costruisce i DAO PostgreSQL, il gestore delle connessioni,
+l'hasher, il publisher con il suo observer e i servizi. Questa composizione
+manuale concentra le scelte concrete senza un container. Il contesto riceve
+un \code{DatabaseManager}, ma sceglie internamente le implementazioni:
+non rende quindi sostituibile ogni dipendenza dal solo costruttore.
+
+\subsection*{Il dominio non dipende dagli altri livelli}
+I servizi coordinano i casi d'uso delle sezioni precedenti. Dipendono dai
+contratti DAO e dal dominio; i servizi transazionali conoscono anche
+\code{DatabaseManager} e JDBC. I DAO definiscono letture, scritture e lock
+per risorsa; \code{dao.postgres} ne realizza mapping e SQL. Il dominio
+non richiama i DAO e i suoi quattro package non importano gli altri
+package applicativi. Ciò non equivale a un isolamento completo dalle
+esigenze dell'interfaccia: \code{domain.user} contiene il contratto di
+navigazione per ruolo.
+
+\tavolaautori{package-autori}{Package correnti: struttura degli autori e dipendenze attuali}{fig:pkg}
+\clearpage
+
+Le dipendenze trasversali limitano una lettura rigidamente a strati.
+Le viste usano servizi concreti e tipi del dominio; gli overload di comodo
+richiamano il contesto globale, mentre \code{App} passa esplicitamente i
+servizi. \code{service} dipende da \code{event}, anche attraverso la
+realizzazione dell'observer, ma \code{event} non dipende da \code{service}:
+conosce solo il contratto degli osservatori. La connessione JDBC attraversa
+questa notifica. \code{security} offre hash e verifica delle password a
+\code{AuthService}; non concentra l'autorizzazione di tutte le operazioni.
+Le note della tavola completano gli archi selezionati e rendono visibile
+anche la dipendenza reciproca tra package di avvio e presentazione.
+
+La separazione evita SQL nelle viste e concentra le formule nel calcolatore,
+ma lascia responsabilità ampie nelle dashboard e in \code{AuthService},
+che tratta accesso, identità e conto dimostrativo. I contratti che espongono
+\code{Connection} facilitano la condivisione della transazione, al prezzo
+di legare anche i servizi a JDBC. Non si attribuisce al sistema
+un'architettura esagonale o una separazione ideale assente dai sorgenti.
+
+\section{Class Diagram}\label{sec:classi}
+Le viste selezionano responsabilità, invarianti e collaborazioni: non sono
+cataloghi di tutti i membri. L'appendice~\ref{app:classi} raccoglie le tavole
+CL-01--CL-11, con due tavole CL-08a e CL-08b per il package DAO.
+Gli identificativi rimangono gli stessi nei rimandi e nei sorgenti draw.io.
+
+La legenda distingue generalizzazione (linea continua e triangolo vuoto),
+realizzazione (tratteggio e triangolo), dipendenza (tratteggio e freccia
+aperta) e associazione navigabile (linea continua e freccia aperta).
+Le molteplicità annotate si riferiscono al solo estremo bersaglio;
+l'altro estremo non impone un vincolo numerico. Non sono impiegati rombi
+di aggregazione o composizione: un campo o l'iniezione di un collaboratore
+non ne dimostrano il ciclo di vita. Gli attributi marcati \code{ID} o
+\code{chiave} restano riferimenti scalari, non associazioni a oggetti.
+
+\subsection{Domain Model}
+Il dominio separa identità, catalogo, sconti e operazioni. Nella gerarchia
+degli utenti, \code{AbstractUser} realizza \code{User}; \code{Client},
+\code{Salesman} e \code{Manager} specializzano la parte comune.
+\code{Client} può conservare un \code{BankAccount} oppure non averlo ancora
+caricato: CL-02 mostra quindi una navigazione verso zero o un conto.
+Il conto conserva a sua volta soltanto \code{clientId}; non si disegna
+un collegamento inverso a \code{Client}. Il suo comportamento controlla
+importi e disponibilità nel modello dimostrativo, non integra una banca.
+
+La figura~\ref{fig:catalogo-corpo} mostra una distinzione utile anche per
+UC-03 e UC-09: un veicolo conserva \code{modelId}, mentre riceve un oggetto
+\code{Model} quando deve scegliere la base del prezzo. Il primo è un
+riferimento per ID; il secondo giustifica una dipendenza di metodo.
+Analogamente \code{Model.brand} è una stringa, non un oggetto \code{Brand}.
+Stato e modalità del prezzo sono invece attributi tipizzati dagli enum.
+La base manuale entra nella stessa formula della base modello, come
+stabilito dall'ADR~0001; il totale concordato è un concetto distinto.
+
+\tavolaautori{classi-dominio-insieme}{Domain Model d'insieme: utenti, catalogo, sconti e operazioni}{fig:catalogo-corpo}
+\clearpage
+
+CL-04 rende esplicita la sola generalizzazione degli sconti: il limite
+intero 0--50 appartiene alla base astratta, mentre le specializzazioni
+conservano l'ID del modello o del veicolo. La scelta dello sconto massimo
+è responsabilità del servizio di calcolo, non di una relazione tra entità.
+CL-05 distingue \code{Request} dal registro \code{Sale} e dalle prenotazioni
+\code{Rent}/\code{TestDrive}. Nessuna di queste classi contiene oggetti
+cliente o veicolo. Le richieste \code{SALE} conservano totale e acconto
+dell'accordo di UC-03; nelle \code{PURCHASE}, relative a UC-05, il campo
+\code{deposit} contiene la stima e il totale concordato è assente.
+Il tipo del registro distingue vendita al cliente, acquisto dal cliente e penale con importi
+non negativi, senza dedurre il significato dal segno.
+
+\subsection{Business Layer}
+CL-01 e CL-06 separano composizione e coordinamento. Il contesto conserva
+i collaboratori e li passa ai costruttori. I tre servizi dei flussi
+economici coordinano i DAO, mentre il calcolatore concentra le formule.
+\code{CatalogService} prepara anche righe con nomi e prezzi per le tabelle;
+il servizio di interrogazione espone le letture delle operazioni.
+I record annidati del catalogo sono dati di lettura, non nuove entità persistenti.
+
+L'observer di cancellazione appartiene a \code{service}, perché applica
+la priorità della vendita al cliente e del noleggio sui test drive di UC-01.
+Il contratto, il publisher e l'evento risiedono invece in \code{event}.
+La figura~\ref{fig:eventi-corpo} comprende la collaborazione di notifica sincrona sulla connessione
+del servizio prima del commit: un errore dell'observer deve impedirlo.
+La separazione consente altri osservatori, ma non offre consegna asincrona,
+persistenza degli eventi o recupero tramite outbox.
+
+\tavolaautori{classi-business-insieme}{Business Layer d'insieme: servizi, calcolo, transazioni, sicurezza ed eventi}{fig:eventi-corpo}
+\clearpage
+
+\subsection{DAO}
+CL-08a raccoglie dieci contratti distinti per risorsa, senza un gestore
+comune da cui ereditare. La classe \code{DatabaseManager} apre connessioni ed esegue il corpo
+di una transazione mediante le due callback annidate di CL-08b, tentando
+commit oppure rollback in caso di eccezione. Non è un DAO base né un ORM.
+Le firme con \code{Connection} rendono visibile la partecipazione di più
+scritture alla stessa transazione. Alcuni overload di lettura dei contratti
+forniscono però un default che delega alla lettura senza connessione:
+la sola firma non basta a garantirne il riuso. I DAO PostgreSQL pertinenti
+ridefiniscono tali percorsi.
+
+CL-09 rende riconoscibile ciascuna realizzazione del relativo contratto.
+Ogni DAO PostgreSQL conserva il gestore ricevuto dal costruttore: non si
+deduce una composizione UML da questo riferimento condiviso. Le letture
+autonome gestiscono la propria connessione; quelle transazionali e le
+scritture protette usano quella passata dal servizio. Il mapping ricostruisce
+le entità e converte i domini enumerati in accordo con l'ADR~0002.
+Gli ID che legano i record persistenti non diventano per questo riferimenti
+a oggetti nel dominio. I dettagli SQL e i protocolli dei singoli flussi
+sono rinviati al capitolo~\ref{ch:implementazione}.
+
+
+\tavolaautori{classi-dao-insieme}{DAO d'insieme: contratti, realizzazioni PostgreSQL e gestore JDBC}{fig:dao-insieme}
+\clearpage
+
+\subsection{Presentation Layer}
+CL-10 mostra le viste effettive: accesso e tre dashboard estendono
+\code{BorderPane}; il dialogo di gestione dell'identità è una classe di
+utilità con metodi statici, non un sottotipo di \code{Dialog}. Le viste
+costruiscono controlli JavaFX direttamente, senza controller FXML.
+\code{AsyncLoad}, interno al package, usa \code{Task} e worker virtuali
+per le letture delle tabelle; pubblica solo il caricamento corrente sul
+thread grafico. Ciò non rende asincrone tutte le azioni economiche né
+interrompe immediatamente JDBC quando un caricamento è scartato.
+
+La navigazione delle sezioni 2.3--2.4 parte da \code{User}: il suo metodo
+\code{openDashboard} viene specializzato nei tre ruoli. Il sottotipo invoca
+il metodo specifico del contratto \code{UserDashboardNavigator}.
+\code{App} crea un'implementazione anonima
+che costruisce la dashboard appropriata. È un double dispatch nello
+stile Visitor: aggiungere un ruolo richiede di aggiornare anche il
+contratto e il collegamento delle viste. \code{App} non realizza direttamente
+quell'interfaccia. Il dominio resta privo di import JavaFX, ma conosce
+questa esigenza di navigazione.
+
+CL-11 mostra il confine delle credenziali. Il contratto
+\code{PasswordHasher} è ricevuto da \code{AuthService}; la realizzazione
+PBKDF2 viene scelta nel contesto.
+Questo confine riguarda hash e verifica della password. La scelta della
+dashboard per ruolo non equivale a un controllo autonomo dei permessi
+in ogni metodo dei servizi, che non ricevono tutti un'identità autenticata.
+Non viene quindi attribuita al solo package \code{security} una garanzia
+generale di autorizzazione.
+\clearpage
+
+\tavolaautori{classi-presentazione-insieme}{Presentazione d'insieme: viste, dialogo comune e navigazione}{fig:presentazione-insieme}
+\clearpage

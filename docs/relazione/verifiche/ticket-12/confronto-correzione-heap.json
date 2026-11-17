@@ -1,0 +1,8 @@
+{
+  "pages": 151,
+  "changed_physical_pages": [
+    107
+  ],
+  "unchanged_pages": 150,
+  "correction": "massimo heap JVM Surefire, non memoria totale"
+}

@@ -1,0 +1,86 @@
+[
+  {
+    "part": "Introduzione",
+    "before": [
+      5,
+      7
+    ],
+    "after": [
+      5,
+      7
+    ],
+    "text_equal_without_footer": true,
+    "pixel_equal": 3,
+    "pages": 3
+  },
+  {
+    "part": "Analisi dei requisiti e progettazione",
+    "before": [
+      8,
+      82
+    ],
+    "after": [
+      8,
+      82
+    ],
+    "text_equal_without_footer": true,
+    "pixel_equal": 75,
+    "pages": 75
+  },
+  {
+    "part": "Implementazione",
+    "before": [
+      83,
+      105
+    ],
+    "after": [
+      83,
+      105
+    ],
+    "text_equal_without_footer": true,
+    "pixel_equal": 23,
+    "pages": 23
+  },
+  {
+    "part": "Uso dell'AI",
+    "before": [
+      111,
+      113
+    ],
+    "after": [
+      119,
+      121
+    ],
+    "text_equal_without_footer": true,
+    "pixel_equal": 0,
+    "pages": 3
+  },
+  {
+    "part": "Schede aggiuntive dei casi d'uso",
+    "before": [
+      114,
+      121
+    ],
+    "after": [
+      122,
+      129
+    ],
+    "text_equal_without_footer": true,
+    "pixel_equal": 0,
+    "pages": 8
+  },
+  {
+    "part": "Tavole delle classi",
+    "before": [
+      122,
+      134
+    ],
+    "after": [
+      130,
+      142
+    ],
+    "text_equal_without_footer": true,
+    "pixel_equal": 0,
+    "pages": 13
+  }
+]

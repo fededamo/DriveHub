@@ -1,0 +1,14 @@
+{
+  "python": "3.14.4 (main, Aug 20 2026, 10:41:58) [GCC 15.2.0]",
+  "python_executable": "/home/federico/dev/Drivehub/.ticket11-tools/venv/bin/python",
+  "pymupdf": "2.1",
+  "mupdf": "(1, 28, 6)",
+  "pillow": "13.0.0",
+  "xelatex": "XeTeX 3.141592653-2.6-0.999997 (TeX Live 2025/Debian)",
+  "texlive_packages": "2025.20260124-1",
+  "latin_modern": "2.005",
+  "toolchain_root": "/home/federico/dev/Drivehub/.ticket11-tools",
+  "cache_new": "/tmp/drivehub-ticket13-tex",
+  "drawio": "Nessuna nuova esportazione; hash undici coppie ticket 10/Desktop 32.6.10 verificati; Desktop temporaneo non disponibile",
+  "detail": "strumenti-versioni.txt e input-compilazione.fls contengono percorsi effettivamente risolti; ambiente-tex.sh riproduce la configurazione"
+}

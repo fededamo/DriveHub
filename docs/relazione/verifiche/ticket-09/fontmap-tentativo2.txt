@@ -1,0 +1,60 @@
+updmap will read the following updmap.cfg files (in precedence order):
+  /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg
+updmap may write changes to the following updmap.cfg file:
+  /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg
+dvips output dir: "/tmp/drivehub-ticket09-tools/var/fonts/map/dvips/updmap"
+pdftex output dir: "/tmp/drivehub-ticket09-tools/var/fonts/map/pdftex/updmap"
+dvipdfmx output dir: "/tmp/drivehub-ticket09-tools/var/fonts/map/dvipdfmx/updmap"
+Use of uninitialized value $fn in concatenation (.) or string at /tmp/drivehub-ticket09-tools/texlive/usr/bin/updmap line 2196.
+Use of uninitialized value $fn in concatenation (.) or string at /tmp/drivehub-ticket09-tools/texlive/usr/bin/updmap line 2197.
+updmap: open() failed: No such file or directory at /tmp/drivehub-ticket09-tools/texlive/usr/bin/updmap line 2197.
+Use of uninitialized value $fn in concatenation (.) or string at /tmp/drivehub-ticket09-tools/texlive/usr/bin/updmap line 2196.
+Use of uninitialized value $fn in concatenation (.) or string at /tmp/drivehub-ticket09-tools/texlive/usr/bin/updmap line 2197.
+updmap: open() failed: No such file or directory at /tmp/drivehub-ticket09-tools/texlive/usr/bin/updmap line 2197.
+Use of uninitialized value $fn in concatenation (.) or string at /tmp/drivehub-ticket09-tools/texlive/usr/bin/updmap line 2196.
+Use of uninitialized value $fn in concatenation (.) or string at /tmp/drivehub-ticket09-tools/texlive/usr/bin/updmap line 2197.
+updmap: open() failed: No such file or directory at /tmp/drivehub-ticket09-tools/texlive/usr/bin/updmap line 2197.
+updmap [ERROR]: The following map file(s) couldn't be found:
+updmap [ERROR]: 	charter.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	cm.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	cmextra.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	cmtext-bsr-interpolated.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	cyrillic.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	dummy-space.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	dvips35.map (in builtin)
+updmap [ERROR]: 	epiolmec.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	esint.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	euler.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	eurosym.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	fpls.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	latxfont.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	manfnt.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	marvosym.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	mathalpha.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	mathpple.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	mflogo.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	pazo.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	pdftex35.map (in builtin)
+updmap [ERROR]: 	ps2pk35.map (in builtin)
+updmap [ERROR]: 	pxfonts.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	rsfs.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	scanpages.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	symbols.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	txfonts.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	uag.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	ubk.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	ucr.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	uhv.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	unc.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	upl.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	usy.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	utm.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	utopia.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	uzc.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	uzd.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: 	wasy.map (in /tmp/drivehub-ticket09-tools/config/web2c/updmap.cfg)
+updmap [ERROR]: Did you run mktexlsr?
+
+	You can disable non-existent map entries using the option
+	  --syncwithtrees.
+

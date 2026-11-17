@@ -1,0 +1,31 @@
+{
+  "baseline_printed": [
+    "141",
+    "142",
+    "143",
+    "144",
+    "145"
+  ],
+  "current_printed": [
+    "141",
+    "142",
+    "143",
+    "144",
+    "145"
+  ],
+  "current_physical": [
+    145,
+    146,
+    147,
+    148,
+    149
+  ],
+  "diagnostics": [
+    "ignored error: Infinite glue shrinkage found in box being split [141]",
+    "ignored error: Infinite glue shrinkage found in box being split [142]",
+    "ignored error: Infinite glue shrinkage found in box being split [143]",
+    "ignored error: Infinite glue shrinkage found in box being split [144]",
+    "ignored error: Infinite glue shrinkage found in box being split [145] [146]))"
+  ],
+  "assessment": "Confronto con baseline e osservazione diretta dell’agente nel verbale; messaggi non soppressi né dichiarati risolti."
+}

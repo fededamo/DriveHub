@@ -1,0 +1,407 @@
+% Tracciabilita estesa del ticket documentale 06, riallineata nel ticket 12.
+\begingroup
+\emergencystretch=6em
+\def\UrlBreaks{\do\a\do\b\do\c\do\d\do\e\do\f\do\g\do\h\do\i\do\j\do\k\do\l\do\m\do\n\do\o\do\p\do\q\do\r\do\s\do\t\do\u\do\v\do\w\do\x\do\y\do\z\do\A\do\B\do\C\do\D\do\E\do\F\do\G\do\H\do\I\do\J\do\K\do\L\do\M\do\N\do\O\do\P\do\Q\do\R\do\S\do\T\do\U\do\V\do\W\do\X\do\Y\do\Z}
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.16}
+\section{Criterio di lettura e provenienza}\label{sec:matrice-provenienza}
+La matrice usa le schede principali in 2.2 e quelle aggiuntive
+dell'appendice~\ref{app:casi-uso}, comprese le
+alternative numerate, e i punti delle \emph{User Stories} nella specifica
+\code{docs/relazione/tracker/spec.md}, indicati con S e numero del punto.
+S24--34 riguardano prezzi, accordi, economia, identità, persistenza e UI;
+S35--39 chiedono livelli, tracciabilità, casi critici, provenienza e limiti.
+Questi rinvii non introducono nuovi requisiti funzionali o una seconda
+numerazione dei casi d'uso. I numeri nelle vecchie evidenze R appartengono
+invece ai ticket applicativi, distinti dai ticket documentali della relazione.
+
+\textbf{S0} indica il riscontro statico del 13 novembre, ricontrollato il 17 novembre 2026 nel ticket documentale 12, HEAD
+\code{61ce18ae1d4e0458b63e970b793b0b3a634a3adf}. Non è un esito di test.
+\textbf{E1--E3} identificano registrazioni storiche, descritte sotto.
+Nella matrice una copertura è \emph{parziale} se sono provati alcuni
+comportamenti della scheda: nessuna riga vale come approvazione dell'intero
+requisito. Le lacune riguardano l'insieme di prove esaminato, non una
+dimostrazione che il software sia privo di quella funzionalità.
+
+\paragraph{E1 --- contratto corrente, 9 novembre 2026.}
+Directory \code{docs/evidence/postgres-enums-2026-11-09/}:
+\code{verification.md}, \code{full-suite.txt}, \code{targeted-green.txt}
+e \code{review.md}. Ambiente dichiarato: Linux/WSL, OpenJDK~21.0.12.1,
+Maven~3.9.16 e PostgreSQL~16.15 su Docker temporaneo, porta 55441,
+ruolo/DB test e sentinella distinti. Il comando completo della suite è
+\texttt{mvn -o -B -Ppostgres-tests clean test}; il log termina il
+9 novembre alle 19:57:57 +01:00 con \textbf{423 eseguiti, 0 failure,
+0 errori, 0 saltati}, BUILD SUCCESS. Le 23 righe di classe sommano
+separatamente a quel totale; 55 invocazioni senza DB e 368 PostgreSQL
+sono una classificazione ricavata da quelle righe e dai sorgenti.
+
+La baseline dichiarata è \code{8d089bc}; la review fissa il tree
+\code{d4d82c1815e1fe2d107331fb4f2211b2bc3ca850}, precedente al commit
+finale \code{61ce18a}. Il confronto locale non trova differenze in
+\code{src} e POM fra quel tree e HEAD corrente. Il log conservato espone
+conteggi per classe, non XML per singolo metodo né un manifest dei file
+runtime: la coerenza con la versione corrente è ricostruita da fonti e
+storia, non attestata da impronte dei byte effettivamente eseguiti.
+Non si attribuisce al 423/423 una nuova verifica GUI.
+
+Il mirato separato registra \textbf{82/82, 0 failure/errori/salti}:
+contratto enum, prezzi, registro e demo. I passaggi RED sono altre
+esecuzioni: contratto 4 con 2 failure; schema nuovo e DAO precedenti
+con 77 errori su 81. Sono conservati in \code{contract-red.txt} e
+\code{tdd-failures.zip}; non si sommano ai successi e non descrivono
+lo stato finale. Le prove private di conversione/backup non sono
+necessarie alle associazioni della matrice e non vengono rieseguite.
+
+\paragraph{E2 --- suite integrata, 3 novembre 2026.}
+Directory \code{docs/evidence/r11-integrated/}:
+\code{full.log}, \code{full-surefire/}, \code{full-summary.json},
+\code{full-groups.json}, \code{executed-tests.json} e manifest
+\code{full-inputs.sha256.json}. HEAD iniziale \code{c2a8112} più file
+locali modificati/non tracciati: il solo commit non identifica la versione.
+Fase finale dopo la perdita di /tmp: OpenJDK~21.0.12.1, Maven~3.9.16,
+PostgreSQL server/client~16.15, cluster nuovo 127.0.0.1:55436.
+\texttt{mvn -B -Ppostgres-tests clean test} termina alle 17:36:37 +01:00:
+\textbf{394 eseguiti, 0 failure, 0 errori, 0 saltati}, dei quali 47
+senza DB e 347 PostgreSQL. Gli XML permettono di identificare metodi
+e parametri di quella versione.
+
+Il primo mirato ebbe 363 invocazioni, 0 failure, \textbf{4 errori},
+0 salti; il secondo, identico, 363/363 senza errori. I timeout di
+fixture/connessione del primo non hanno causa dimostrata. I due mirati
+e la suite finale non sono un unico campione e non si sommano.
+La sentinella finale ha un confronto esterno di tredici tabelle e sette
+sequenze prima/dopo suite, oltre alla prova JUnit. Rispetto al manifest
+E2 oggi differiscono 28 input, inclusa la configurazione privata;
+mancava inoltre \code{PostgresEnumIntegrationTest}. Richieste e registro
+avevano semantica precedente, oggi modificata, così come DAO, viste e
+alcuni test. Il dettaglio delle differenze è in
+\code{verifiche/ticket-06/riscontro-storico.json}: E2 non certifica il
+contratto corrente per analogia di nomi.
+
+\paragraph{E3 --- JavaFX, prima fase del 3 novembre 2026.}
+Nella stessa directory R11, i log \code{AgreementUiCheck.log},
+\code{SaleOutcomeUiCheck.log}, \code{DestinationUiCheck.log},
+\code{IdentityUiCheck.log}, \code{TableLifecycleUiCheck.log} e
+\code{SlowModelsUiCheck.log} riportano ciascuno \emph{UI CHECK SUCCESS}.
+\code{AppStartupUiCheck.log} riporta \emph{APP STARTUP SUCCESS}.
+Non sono casi Surefire e non esiste un numero JUnit di riusciti/falliti/
+saltati da aggiungere a E2. Ambiente fase~1: JDK/Maven come sopra,
+PostgreSQL~16.15 sul cluster isolato 55436, Xvfb :90, 1440 per 1000,
+rendering software. I comandi Java/javac sono nei log; il launcher
+storico è \code{run-ui.py}, invocato per nome dell'harness in
+\code{commands.md}.
+
+I manifest \code{*-inputs.json} distinguono originali e copie eseguite;
+le patch conservano percorsi di output adattati, stampa anticipata
+dell'errore in SaleOutcome e cast \code{VehicleRow} in Destination.
+Un primo SaleOutcome finì con exit~2 nel loop modale e un primo
+Destination con ClassCastException dell'harness: non sono successi.
+La sentinella esterna dopo tutti gli harness non fu verificabile dopo
+la perdita dell'ambiente; il confronto finale E2 non colma tale lacuna.
+Nessuna GUI fu ripetuta in fase~2 o in E1.
+
+Gli originali sono in \code{docs/evidence/r04-agreement/},
+\code{r05-sale-outcome/}, \code{r06-destination/}, \code{r07-identity/},
+\code{r08-tables/} e \code{r10-cleanup/}. SaleOutcome usa ancora
+\code{SaleType.ACQUISITION} e importi negativi: è incompatibile con
+l'enum attuale, non una verifica riproducibile tale e quale sul codice
+corrente. Le altre viste produttive sono anch'esse cambiate rispetto a E3.
+Gli screenshot della relazione (ticket documentale~02) illustrano le viste
+correnti, ma non sostituiscono queste asserzioni o una nuova suite GUI.
+
+\section{Requisiti, casi d'uso e asserzioni}\label{sec:matrice-uc}
+I file JUnit indicati sono sotto \code{src/test/java/it/unifi/drivehub/},
+con suffisso \code{.java}; il nome della classe è anche il nome del file.
+I metodi identificano la prova da leggere, non un catalogo esaustivo.
+Per E1 l'esito riportato è quello \emph{della classe} nel log: non è una
+nuova esecuzione del metodo. Tutte le classi E1 citate hanno zero failure,
+errori e salti; il conteggio non si aggiunge quando la classe ricorre in
+più righe. Le associazioni e i limiti sono valutati in S0.
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash}p{2.1cm}>{\raggedright\arraybackslash}p{7.25cm}>{\raggedright\arraybackslash}p{5.25cm}}
+\caption{Matrice funzionale: scenario, prova osservabile e portata dell'associazione.}\label{tab:test-matrice}\\
+\hline
+\textbf{Requisito / caso} & \textbf{File, metodo e asserzione pertinente} & \textbf{Risultato disponibile e lacune}\\\hline
+\endfirsthead
+\multicolumn{3}{l}{\textit{Matrice funzionale --- continua}}\\
+\hline\textbf{Requisito / caso} & \textbf{File, metodo e asserzione pertinente} & \textbf{Risultato disponibile e lacune}\\\hline
+\endhead
+\hline\multicolumn{3}{r}{\textit{Segue nella pagina successiva}}\\\endfoot
+\hline\endlastfoot
+S29, S37; UC-01 &
+\code{BookingRulesTest.testDriveCannotStartAfterSixteenEvenByOneMicrosecond} rifiuta 16:00:00.000001.
+\code{BookingConcurrencyIntegrationTest.sameClientCannotExceedThreeTestDrivesAcrossDifferentVehicles}
+lascia tre prenotazioni, una sola nuova conferma. Nella stessa classe
+\code{failureAfterBookingInsertRollsBackActualWrites} osserva l'INSERT
+prima dell'errore e poi nessuna prenotazione residua. &
+E1: classi 2 e 36 casi. Copertura parziale dei passi 3--4 e alternative
+3.a/4.a. Per 5.b, cancellazione automatica, vedere riga S29/Observer.
+Annullamento dialogo 2.a, conferma grafica 5 e annullamento proprio/altrui
+5.a non hanno qui una prova dedicata individuata.\\\hline
+S29, S31; UC-02 &
+\code{PriceSelectionIntegrationTest.rentalUsesCatalogPriceWithGeometricFormulaAndInclusiveDays}
+confronta uno e tre giorni, basi manuale/automatica.
+\code{BookingConcurrencyIntegrationTest.overlappingRentalsFromDifferentClientsCannotBothBeConfirmed}
+attende rifiuto del secondo, un solo noleggio e conto perdente invariato;
+\code{insufficientBalanceDoesNotCreateRentalOrCancelTestDrives}
+controlla il rifiuto senza effetti collegati. &
+E1: classi 10 e 36 casi. Passi 3--5, alternative 3.a/4.a; per 5.a/6.a
+vedere Observer e UC-08. \code{pastDatesAndReversedRentalPeriodAreRejectedWithoutWrites}
+copre parte di 2.a nel servizio, non l'intero dialogo o la sua anteprima.
+Nessuna nuova prova UI del successo 6.\\\hline
+S25, S27, S31; UC-03 &
+\code{PurchaseAgreementIntegrationTest.completionKeepsAgreementAfterPricingChangesAndNewSession}:
+20.000/4.000/16.000, nuove basi/sconti, altro contesto, vendita 20.000,
+saldo 10.000 su iniziali 30.000, richiesta rimossa e SOLD.
+\code{persistenceFailuresRollBackEveryStep} controlla errore dopo addebito
+e rilettura dello stato precedente. &
+E1: classe 22 casi; copertura parziale dei passi 3--6 e di 3.a/5.a/6.a.
+\code{completionStillRequiresApprovalAndUnexpiredRequest} distingue
+non approvata e scaduta. E3 Agreement prova importi nei dialoghi e saldo
+nella versione storica; l'annullamento 2.a non è così dimostrato.\\\hline
+S25, S31, S37; UC-03 4.a/6.b, UC-04 &
+\code{PurchaseConcurrencyIntegrationTest.competingPhasesConsumeTheRequestOnce}
+verifica gare saldo/rifiuto/scadenza, saldo e registro finali;
+\code{staleExpirationCandidateCannotRefundACompletedOrExtendedRequest}
+non rimborsa una richiesta consumata o prorogata.
+\code{failedOrSkippedWritesRollBackTheWholePhase} rifiuta errori e scritture
+saltate senza alterare accordo/stato. &
+E1: classe 60 casi. Copre rifiuto e scadenza una volta sola, anche ripetuti;
+4.000 comporta penale 800 e rimborso 3.200.
+E3 Agreement esercita approvazione con scadenza, storicamente.
+UC-04 2.a (nessuna selezione), ogni riapprovazione da chiamanti diversi
+e tutte le notifiche grafiche non risultano certificati.\\\hline
+S26, S28; UC-05 proposta &
+\code{SaleProposalIntegrationTest.onlyTheLatestEffectiveBuyerCanProposeAndHistoryIsPreserved}
+confronta titolarità e storico;
+\code{competingProposalsKeepOnlyTheFirstCompleteVehicleAndRequest}
+lascia solo proposta/veicolo del vincitore per VIN nuovo o noto;
+\code{requestFailureRollsBackNewAndKnownVehicles} osserva WAITING prima
+del guasto e confronta lo snapshot precedente. &
+E1: classe 23 casi. Passi 3--4 e alternativa 3.a parzialmente coperti,
+compresi VIN, modello/anno e richiesta esistente. Per 2.a, invio senza
+preventivo, i test chiamano il servizio: non provano l'interazione completa.
+Il preventivo UI non certifica la titolarità.\\\hline
+S26, S28, S31; UC-05 esito &
+\code{SaleOutcomeIntegrationTest.approvalPaysTheClientAndRecordsOneDealershipExpense}
+controlla accredito 16.000 e PURCHASE; \code{rejectionPreservesEveryKindOfHistoryAndRemovesOnlyANewVehicle}
+varia il tipo di storico. \code{failureAfterTheFinalWriteRollsBackEveryActualEffect}
+controlla tutti gli effetti prima del guasto e poi snapshot invariato. &
+E1: classe 67 casi, include esiti concorrenti e sessioni obsolete.
+Passi 5--6 e 5.a/6.a parzialmente coperti.
+\code{zeroPaymentCannotConsumeTheProposalOrWriteAnAcquisition}
+prova il rifiuto dello zero: non soddisfa l'intento di accettare ogni stima
+non negativa. E3 SaleOutcome usa la semantica precedente.\\\hline
+S24--25; UC-06 &
+\code{DomainInvariantsTest.testDiscountRange} verifica limiti 0 e 50 e rifiuti.
+\code{PriceCalculatorServiceTest.testPromotionalDiscountMax} confronta
+massimo modello/veicolo; \code{CatalogListingIntegrationTest.automaticAndManualUseTheSameFormulaAfterRefresh}
+salva e rimuove sconti, confrontando i prezzi delle nuove righe. &
+E1: classi 15, 11 e 4 casi. Passi 3--4, rimozione 3.b e refresh 5.a
+parzialmente coperti; E3 TableLifecycle modifica sconto dalla UI e osserva
+nuovi prezzi. Non dimostrati tutti i parsing/UI 2.a/3.a, ID inesistente
+e rollback 4.a con prova dedicata di questo comando.\\\hline
+S24, S33; UC-07 &
+\code{CatalogListingIntegrationTest.stateFilteringEmptyResultsAndNewSessionRemainCorrect}
+verifica filtro/esclusione del veicolo della fixture e nuova sessione;
+\code{nextRefreshReadsNewModelBaseAndNameWithoutChangingManualBase}
+confronta nuove righe e conserva quelle precedenti.
+E3 \code{TableLifecycleUiCheck.main} osserva caricamento, errore e riprova,
+risultato/errore superato, tastiera durante lock e prezzi ricaricati. &
+E1: classe 4 casi. E3: UI CHECK SUCCESS storico.
+Passo 2 e alternative 2.b/3.a parzialmente coperti. Il nome del metodo
+JUnit non basta: non svuota l'intero catalogo per asserire la tabella
+completamente vuota di 2.a. Nessuna verifica GUI corrente per equivalenza.\\\hline
+S29, S31; UC-08 &
+\code{VehicleDestinationIntegrationTest.rentalIncludingTodayPreventsSaleAndAllRefunds}
+include un noleggio iniziato ieri; \code{futureRentalsAreFullyRefundedForEveryClientWhileHistoryAndOtherVehiclesRemain}
+confronta rimborsi e conservazione;
+\code{missingSecondAccountRollsBackAnAlreadyWrittenFirstRefund} verifica
+sequenza diagnostica chiamata, primo accredito già scritto e poi rollback. &
+E1: classe 33 casi; \code{concurrentDestinationCommandsCannotRefundTwice}
+limita doppio rimborso. Passi 3--4 e 3.a/4.a coperti negli scenari scelti.
+E3 Destination prova conferma e rifiuti su copia adattata a VehicleRow.
+Annullamento 2.a e ogni concorrenza fra anteprima e conferma non provati.\\\hline
+S24, S34; UC-09 &
+\code{PriceSelectionIntegrationTest.equalManualBaseAndReturnToRecommendedSurviveReloadAndModelChange}
+verifica la modalità esplicita anche con basi uguali;
+\code{invalidBaseDoesNotChangePersistedSelection} rifiuta negativi e conserva
+la selezione. \code{DomainInvariantsTest.testRejectedVehiclePlateChangeLeavesVehicleUnchanged}
+controlla l'invariante dopo mutazione rifiutata. &
+E1: classi 10 e 15 casi; E3 TableLifecycle usa il controllo della base
+manuale e il ritorno all'automatico. Copertura di 2.b e parte di 3.a.
+Non dimostrati l'intero CRUD marchi/modelli/veicoli, tutte le cancellazioni
+con associazioni di 2.a o ogni vincolo VIN/targa.\\\hline
+S26, S34; UC-10 &
+\code{SaleOutcomeIntegrationTest.nonNegativeRegisterAmountsKeepTheirExplicitTypeAfterReload}
+salva/rilegge via DAO SALE/PURCHASE/PENALTY con 0 e 123,45,
+confrontando tipo, importo e lettura cliente. \code{SaleTypeTest.factoriesUseTheDealershipPerspectiveAndExplicitTypes}
+asserisce anche il veicolo nullo della penale in memoria; il venditore nullo è riscontrato nella factory, non con un assert dedicato di quel metodo. &
+E1: classi 67 e 11 casi. È prova del contratto persistito e di dominio,
+non dell'intero registro manager. E3 SaleOutcome controlla celle e
+navigazione con vecchi tipi/segni; non dimostra le etichette attuali.
+Vuoto 2.a, errore/riprova 2.b e refresh 3.a del registro non asseriti
+specificamente da quelle prove.\\\hline
+S25, S33; UC-11 &
+\code{FullWorkflowIntegrationTest.testClientLoginAndDataLoading}
+verifica assenza di eccezioni nelle letture cliente, non i contenuti di
+ogni riga. E3 \code{AgreementUiCheck.amounts/checkDialog} confronta
+totale/acconto/residuo e selezione della richiesta approvata;
+\code{PurchaseAgreementIntegrationTest} verifica il successivo saldo. &
+E1: FullWorkflow 4 casi, accordo 22. Copertura parziale dei passi 2--3.
+Tabelle vuote 2.a, errore delle letture sincrone 2.b e comando senza
+selezione 3.a non sono dimostrati dal solo login/lettura. Nessun controllo
+Riprova va dedotto per queste tre tabelle.\\\hline
+S34; UC-S01 &
+Nei file JUnit esaminati non è individuata una prova dedicata di
+registrazione pubblica completa o del suo rollback dopo creazione
+identità/conto. Il riscontro di \code{AuthService.registerClient} è statico;
+non sostituisce un'asserzione eseguita. &
+Associazione non dimostrata: passi 1--3 e alternative 2.a/2.b/3.a.
+Test di modifica email, login e fixture già registrate non certificano
+registrazione o creazione atomica del conto.\\\hline
+S34, S37; UC-S02 &
+\code{FullWorkflowIntegrationTest.testClientLoginAndDataLoading},
+\code{testSalesmanLoginAndDataLoading}, \code{testManagerLoginAndDataLoading}
+asseriscono sottotipo e dati caricati. \code{expirationUsesOnlyTheIsolatedFixture}
+predispone una scadenza relativa e ne osserva la rimozione.
+E3 \code{AppStartupUiCheck.main} chiama App.start e controlla finestra,
+tema e focus raggiungibile con Tab. &
+E1: classe 4 casi; E3 ingresso: APP STARTUP SUCCESS.
+Copertura di autenticazione/letture e parte di 3.b.
+Non è prova completa della navigazione login--dashboard, dell'errore
+lettura o dashboard 2.a/3.a, né della disconnessione 3.c.
+L'ingresso pubblico da solo non prova una connessione DB.\\\hline
+S34, S37; UC-S03 &
+\code{AuthServiceIntegrationTest.validEmailIsNormalizedPersistedAndUsedForLogin}
+e \code{duplicateEmailPreservesBothIdentitiesAndLogins} verificano
+email e accesso. \code{IdentityDeletionIntegrationTest.identitiesWithoutOperationsRemainDeletableIncludingDemonstrationBalance}
+asserisce login rifiutato dopo eliminazione e conto rimosso;
+\code{errorAfterActualIdentityAndAccountDeletionRollsBackBoth} confronta
+snapshot e nuovo login dopo guasto. &
+E1: classi 18 e 60 casi. E3 Identity: annullamento, password errata,
+richieste/storico, tre ruoli eliminabili e callback solo su successo.
+Alternative 2.a/3.a parzialmente coperte. Non dimostrati modifica password
+completa, unicità email globale/concorrenza o ogni dialogo di errore.\\\hline
+S34, S37; UC-S04 &
+\code{BalanceConcurrencyIntegrationTest.everyMovementSharesTheAccountProtocol}
+esegue anche ricarica insieme a un altro movimento e confronta il saldo;
+\code{DomainInvariantsTest.testBankAccountInvariants} verifica deposito,
+prelievo e fondi insufficienti in memoria. &
+E1: classi 16 e 15 casi. Copertura del movimento valido, non dell'intero
+flusso grafico: annullamento 2.a, parsing/importi 2.b, conto assente e
+guasto specifico 3.a non sono provati da questa sola associazione.
+Nessuna integrazione bancaria reale è prevista.\\
+\end{longtable}
+}
+
+\section{Garanzie trasversali e limiti delle prove}\label{sec:matrice-trasversali}
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash}p{2.1cm}>{\raggedright\arraybackslash}p{7.25cm}>{\raggedright\arraybackslash}p{5.25cm}}
+\caption{Controlli trasversali: proprietà effettivamente osservate.}\label{tab:test-trasversali}\\
+\hline\textbf{Obiettivo} & \textbf{Prova / asserzione} & \textbf{Esito e confine}\\\hline
+\endfirsthead
+\multicolumn{3}{l}{\textit{Controlli trasversali --- continua}}\\
+\hline\textbf{Obiettivo} & \textbf{Prova / asserzione} & \textbf{Esito e confine}\\\hline\endhead
+\hline\multicolumn{3}{r}{\textit{Segue nella pagina successiva}}\\\endfoot
+\hline\endlastfoot
+S29, S31; UC-01 5.b, UC-02 5.a, UC-03 6 &
+\code{TestDriveCancellationIntegrationTest.cancellationFailureRollsBackTheCommercialOperation}
+fa fallire un trigger AFTER DELETE solo dopo addebito, operazione e
+cancellazioni. Rilegge saldo, richiesta/stato e i due test drive.
+\code{onlyDatesStrictlyAfterTheOperationTransactionStartAreCancelled}
+predispone date a meno/uguale/più un microsecondo e conserva le prime due. &
+E1: classe 8 casi. Stessa transazione dell'Observer per vendita e noleggio,
+non consegna distribuita o ogni errore possibile. Futuri anche oltre il
+periodo noleggiato; nessuna reattività UI dedotta dall'evento.\\\hline
+S31, S37; conto &
+\code{BalanceConcurrencyIntegrationTest.concurrentPurchaseDepositsKeepBothDebits}
+controlla entrambi gli acconti;
+\code{concurrentRefundsAcquireAccountsInClientOrder} varia i veicoli e
+osserva attese prima del rilascio. \code{PurchaseConcurrencyIntegrationTest.race/awaitWaiters}
+conta PID distinti prima di raccogliere i Future. &
+E1: classi 16 e 60 casi. Gate, query e attese hanno timeout; connessioni
+reali distinte. Le asserzioni hanno portata su quelle gare/fixture,
+non tutti i carichi o l'assenza globale di deadlock.\\\hline
+S34, S37; mapping e null &
+\code{PostgresRequestDao.mapRow} legge salesman/data/BigDecimal e tipo;
+\code{PostgresSaleDao.mapRow} conserva vehicle/salesman nulli.
+\code{PurchaseConcurrencyIntegrationTest.assertConsumed} asserisce nulli
+entrambi per la penale; la prova dell'accordo rilegge totale e acconto.
+\code{SaleProposalIntegrationTest.newVinKeepsTheExistingEstimateAndRejectsSequentialDuplicates}
+asserisce totale nullo sull'oggetto restituito, non sul reloadedRequest. &
+E1: classi pertinenti 60, 22 e 23 casi. Distinti null letto e null
+asserito: nessuna prova autonoma di tutte le combinazioni nullable,
+della precisione di ogni timestamp o di ogni attributo DAO.
+Le chiamate mapRow sono S0, non test aggiuntivi.\\\hline
+S34--35; quattro enum &
+\code{PostgresEnumIntegrationTest.closedDomainsUseNativeEnumsAndRejectUnknownValues}
+parametrizza i quattro attributi, confronta USER-DEFINED/nome tipo,
+lista ordinata etichette e SQLSTATE 22P02 su valore estraneo.
+Prezzi e registro hanno anche prove DAO della matrice funzionale. &
+E1: 4 casi, 0 failure/errori/salti. Non asserisce direttamente default
+AUTOMATIC o ogni NOT NULL, né ricostruisce la conversione di un archivio
+popolato. Il test SQL e il mapping JDBC sono evidenze diverse.\\\hline
+S35, S38--39; fixture e sentinella &
+\code{TestDatabaseConfigurationTest.applicationTargetsAndAmbiguousJdbcUrlsAreRejectedBeforeConnecting}
+rifiuta configurazioni prima della connessione.
+\code{DemoSqlValidationTest.schemaAndDemoCanBeReloadedWithoutChangingRowsOrSequences}
+confronta snapshot ordinati;
+\code{DatabaseIsolationIntegrationTest.applicationSentinelSurvivesRejectedConfigurationAndTestResets}
+asserisce la presenza del marchio sul DB distinto. &
+E1: 7, 1 e 1 casi. Non è una misura di copertura né prova di conservazione
+di qualsiasi DB. E2 ha inoltre fingerprint esterno prima/dopo suite;
+E3 manca del confronto esterno finale. Le destinazioni vanno sempre
+ricontrollate prima di riprodurre prove distruttive.\\\hline
+S33, S35; UI e struttura &
+E3 \code{ReactiveTablesUiCheck.cells} confronta contatori di query/connessioni
+prima/dopo celle, refresh e scroll, dopo tre frame;
+\code{TableLifecycleUiCheck.main} controlla caricamento/riprova e
+risultati superati; \code{SlowModelsUiCheck.main} controlla il clear
+modelli durante query bloccata. &
+Successi storici con log e manifest E3. Non benchmark o prova di ogni
+rendering. Distacco scena in \code{AsyncLoad}: solo S0, nessun assert
+diretto di logout/riapertura con query pendente. Nessuna copertura
+screen reader o accessibilità universale dimostrata.\\
+\end{longtable}
+}
+
+Il POM non produce un rapporto di copertura strutturale. Le scelte guidate
+dal codice (rami di errore, confini temporali, scritture saltate e contatori)
+rafforzano le verifiche funzionali, ma non autorizzano percentuali di linee,
+rami o requisiti coperti. I dati aggregati indicano esiti delle invocazioni
+delimitate, non completezza delle associazioni qui dichiarate parziali.
+
+Restano distinte le segnalazioni applicative nei rapporti
+\emph{difetti-applicativi.md} dei ticket documentali 04--05: importi zero, vincoli email non
+equivalenti all'unicità globale e letture UI dopo commit nello stesso try.
+I ticket documentali 06 e 12 non le correggono né le dichiarano risolte grazie ai test.
+L'incompatibilità dell'harness storico SaleOutcome con l'enum corrente è
+registrata separatamente nelle verifiche 06 e 12, come limite di
+riproducibilità degli strumenti, senza cambiare gli originali.
+
+\section{Riproduzione e riscontro documentale}
+I comandi applicativi e i prerequisiti sono nella
+sezione~\ref{sec:test-esecuzione}; la procedura completa è in
+\code{docs/testing.md} e \code{docs/installation.md}. R11 conserva i
+comandi storici e le patch, non garantisce l'esistenza dei percorsi
+privati /tmp. La riproduzione di E3 con la sua semantica richiede la
+fotografia storica identificata dai manifest; un checkout del solo HEAD
+iniziale non è sufficiente. Per il contratto attuale, i vecchi harness
+incompatibili richiederebbero una revisione separata.
+
+Il pacchetto \code{docs/relazione/verifiche/ticket-06/} conserva
+specifica ricevuta, matrice affermazioni/frammenti--fonti con impronte,
+riscontro dei risultati storici, baseline iniziale, delta documentale,
+comandi effettivi, log di compilazione PDF, controlli e verbale visivo.
+Il riallineamento del 17 novembre conserva questi risultati e registra
+nuovi confronti, frammenti esatti, conteggi ricavati dai log/XML, baseline,
+compilazione, controllo visivo e review in
+\code{docs/relazione/verifiche/ticket-12/}. Nel corpo restano gli esempi
+argomentati dei sei temi Business Logic, DAO/demo e workflow, non soltanto
+i nomi della matrice. Il riscontro PBKDF2 è statico e da login/password errata
+su fixture: manca il precedente test isolato di hash/sale/codifica.
+Questi ultimi sono verifiche del documento; non appartengono ai conteggi
+JUnit e non costituiscono una nuova prova dell'applicazione.
+\endgroup

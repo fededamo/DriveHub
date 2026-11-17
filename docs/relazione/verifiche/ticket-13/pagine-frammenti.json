@@ -1,0 +1,131 @@
+{
+  "lst:vehicle-invariante": [
+    84
+  ],
+  "lst:request-accordo": [
+    85
+  ],
+  "lst:request-factory": [
+    86
+  ],
+  "lst:transazione": [
+    87,
+    111
+  ],
+  "lst:callback": [
+    87
+  ],
+  "lst:test-drive": [
+    89
+  ],
+  "lst:overlap": [
+    90
+  ],
+  "lst:letture-prezzo": [
+    91
+  ],
+  "lst:base": [
+    92
+  ],
+  "lst:registrazione": [
+    94
+  ],
+  "lst:observer": [
+    95
+  ],
+  "lst:app-login": [
+    96
+  ],
+  "lst:navigazione": [
+    96
+  ],
+  "lst:async": [
+    97
+  ],
+  "lst:user-dao-letture": [
+    98
+  ],
+  "lst:user-dao-comandi": [
+    98
+  ],
+  "lst:update-condizionale": [
+    98
+  ],
+  "lst:user-mapping": [
+    99
+  ],
+  "lst:mapping": [
+    100
+  ],
+  "lst:sale-mapping": [
+    100
+  ],
+  "lst:vincolo-vin": [
+    101
+  ],
+  "lst:vincolo-saldo": [
+    101
+  ],
+  "lst:vincolo-rent": [
+    101
+  ],
+  "lst:dao-connection": [
+    102
+  ],
+  "lst:contratto-observer": [
+    103
+  ],
+  "lst:vehicle-factory": [
+    104
+  ],
+  "lst:singleton": [
+    104
+  ],
+  "lst:test-auth": [
+    108
+  ],
+  "lst:test-pricing": [
+    109
+  ],
+  "lst:test-penale": [
+    110
+  ],
+  "lst:test-rental": [
+    111
+  ],
+  "lst:test-transazione": [
+    87,
+    111
+  ],
+  "lst:test-dao-roundtrip": [
+    112
+  ],
+  "lst:test-demo": [
+    114
+  ],
+  "lst:test-checkout-blocked": [
+    116
+  ],
+  "lst:test-checkout-sold": [
+    116
+  ],
+  "lst:test-comando-storico": [
+    118,
+    143
+  ],
+  "lst:test-accordo": [
+    109
+  ],
+  "lst:test-rollback": [
+    114
+  ],
+  "lst:test-gara": [
+    115
+  ],
+  "lst:test-comandi": [
+    117
+  ],
+  "lst:test-comando-ui": [
+    117
+  ]
+}

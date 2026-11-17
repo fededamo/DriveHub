@@ -1,0 +1,58 @@
+Le quattro tavole d'insieme del corpo mantengono i gruppi originali; qui
+restano i dettagli dei singoli package e le collaborazioni ulteriori.
+Le tavole estendono le viste selezionate nella sezione~\ref{sec:classi}.
+Ogni titolo riporta l'identificativo stabile e il package descritto;
+i tipi esterni servono soltanto a leggere una collaborazione e sono
+riconoscibili dalle qualifiche. Il grigio identifica il contesto esterno
+nelle tavole che lo dichiarano; in CL-08a e CL-09 distingue invece la
+persistenza, come indicato nel titolo. Il colore non sostituisce mai
+nome, stereotipo o notazione dell'arco.
+
+I membri sono selezionati: \code{+}, \code{-}, \code{\#} e \texttt{\textasciitilde}
+indicano rispettivamente visibilità pubblica, privata, protetta e di package;
+\code{abstract}, \code{interface}, \code{enumeration} e \code{record}
+qualificano la natura del tipo. Le firme abbreviate mantengono i nomi
+dei metodi, omettendo parametri o tipi non necessari alla lettura.
+I valori tra parentesi quadre indicano opzionalità o molteplicità;
+\code{ID} e \code{chiave} segnalano riferimenti scalari.
+Le note e i vincoli esplicativi non sono nuovi membri Java.
+
+Una freccia continua aperta indica un riferimento navigabile;
+una freccia tratteggiata aperta indica uso, parametro o costruzione.
+Il triangolo vuoto distingue generalizzazione e realizzazione mediante
+linea continua o tratteggiata. Le molteplicità sono annotate al bersaglio
+e non dichiarano una proprietà esclusiva del collaboratore. Nessun rombo
+implica un ciclo di vita non dimostrato. Gli attributi che nominano tipi
+esterni esplicitano ulteriori collaborazioni senza ripetere tutti gli archi.
+
+CL-01 copre avvio e composizione; CL-02--CL-05 i quattro package del dominio;
+CL-06 servizi e record di lettura; CL-07 eventi e observer;
+CL-08a--CL-08b contratti DAO e gestore transazionale; CL-09 le dieci
+implementazioni PostgreSQL; CL-10 presentazione; CL-11 credenziali.
+Le undici viste di package coprono tutti i 65 tipi principali correnti,
+senza richiedere package intermedi vuoti. La selettività riguarda soprattutto
+i membri, gli archi ripetuti e i tipi annidati: i record di lettura del
+catalogo sono richiamati in nota e le callback transazionali sono esplicite.
+La matrice package--tavola--tipi--sorgenti e il controllo delle relazioni
+sono conservati nelle verifiche documentali del ticket 03.
+
+\newcommand{\tavolaclassi}[4]{%
+  \clearpage
+  \begin{figure}[p]
+    \centering
+    \includegraphics[width=\linewidth,height=.88\textheight,keepaspectratio]{diagrammi/#1.drawio.pdf}
+    \caption{#2 --- #3.}\label{#4}
+  \end{figure}\clearpage}
+
+\tavolaclassi{classi-avvio}{CL-01}{Avvio e composizione, \code{it.unifi.drivehub}}{fig:cl01}
+\tavolaclassi{classi-utenti}{CL-02}{Identità, ruoli e conto, \code{domain.user}}{fig:cl02}
+\tavolaclassi{classi-catalogo}{CL-03}{Catalogo e scelta della base, \code{domain.vehicle}}{fig:cl03}
+\tavolaclassi{classi-sconti}{CL-04}{Sconti per ID, \code{domain.discount}}{fig:cl04}
+\tavolaclassi{classi-operazioni}{CL-05}{Richieste, prenotazioni e registro, \code{domain.operation}}{fig:cl05}
+\tavolaclassi{classi-servizi}{CL-06}{Servizi e collaborazioni, \code{service}}{fig:cl06}
+\tavolaclassi{classi-eventi}{CL-07}{Eventi e observer sincroni, \code{event}}{fig:cl07}
+\tavolaclassi{classi-dao}{CL-08a}{Contratti per risorsa, \code{dao}}{fig:cl08a}
+\tavolaclassi{classi-transazioni}{CL-08b}{Gestore e callback transazionali, \code{dao}}{fig:cl08b}
+\tavolaclassi{classi-postgres}{CL-09}{Realizzazioni PostgreSQL, \code{dao.postgres}}{fig:cl09}
+\tavolaclassi{classi-presentazione}{CL-10}{Viste, dialoghi e caricamenti, \code{presentation.view}}{fig:cl10}
+\tavolaclassi{classi-sicurezza}{CL-11}{Contratto e realizzazione per le password, \code{security}}{fig:cl11}

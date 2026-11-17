@@ -1,0 +1,537 @@
+{
+  "status": "PASS",
+  "zip_sha256": "4264917500906131dabb95b21f402b89c339636e70fb74dd53c02c017b0658ff",
+  "archive": "/home/federico/dev/Drivehub/DriveHub/docs/relazione/verifiche/ticket-13/sorgenti-relazione.zip",
+  "extraction": "/tmp/drivehub-ticket13-consegna-kapcb71i",
+  "attempt": 1,
+  "members": 118,
+  "editorial_inputs": [
+    "appendici/a_casi_uso.tex",
+    "appendici/appendici.tex",
+    "appendici/b_classi.tex",
+    "appendici/c_verifiche.tex",
+    "capitoli/1_introduzione.tex",
+    "capitoli/2_architettura.tex",
+    "capitoli/2_database.tex",
+    "capitoli/2_funzioni.tex",
+    "capitoli/2_progettazione.tex",
+    "capitoli/2_sequenze.tex",
+    "capitoli/2_template.tex",
+    "capitoli/3_implementazione.tex",
+    "capitoli/4_testing.tex",
+    "capitoli/5_uso_ai.tex",
+    "diagrammi/casi-uso-autori.drawio.pdf",
+    "diagrammi/casi-uso-cliente.drawio.pdf",
+    "diagrammi/casi-uso-manager.drawio.pdf",
+    "diagrammi/casi-uso-venditore.drawio.pdf",
+    "diagrammi/classi-avvio.drawio.pdf",
+    "diagrammi/classi-business-insieme.drawio.pdf",
+    "diagrammi/classi-catalogo.drawio.pdf",
+    "diagrammi/classi-dao-insieme.drawio.pdf",
+    "diagrammi/classi-dao.drawio.pdf",
+    "diagrammi/classi-dominio-insieme.drawio.pdf",
+    "diagrammi/classi-eventi.drawio.pdf",
+    "diagrammi/classi-operazioni.drawio.pdf",
+    "diagrammi/classi-postgres.drawio.pdf",
+    "diagrammi/classi-presentazione-insieme.drawio.pdf",
+    "diagrammi/classi-presentazione.drawio.pdf",
+    "diagrammi/classi-sconti.drawio.pdf",
+    "diagrammi/classi-servizi.drawio.pdf",
+    "diagrammi/classi-sicurezza.drawio.pdf",
+    "diagrammi/classi-transazioni.drawio.pdf",
+    "diagrammi/classi-utenti.drawio.pdf",
+    "diagrammi/database-er-autori.drawio.pdf",
+    "diagrammi/database-er-catalogo.drawio.pdf",
+    "diagrammi/database-er-identita.drawio.pdf",
+    "diagrammi/database-relazionale-catalogo.drawio.pdf",
+    "diagrammi/database-relazionale-identita.drawio.pdf",
+    "diagrammi/database-relazionale-operazioni.drawio.pdf",
+    "diagrammi/navigazione-autori.drawio.pdf",
+    "diagrammi/navigazione-cliente.drawio.pdf",
+    "diagrammi/navigazione-manager.drawio.pdf",
+    "diagrammi/navigazione-venditore.drawio.pdf",
+    "diagrammi/package-autori.drawio.pdf",
+    "diagrammi/sequenza-cessione-esito.drawio.pdf",
+    "diagrammi/sequenza-cessione-insieme.drawio.pdf",
+    "diagrammi/sequenza-cessione-proposta.drawio.pdf",
+    "diagrammi/sequenza-noleggio-insieme.drawio.pdf",
+    "diagrammi/sequenza-noleggio.drawio.pdf",
+    "diagrammi/sequenza-observer.drawio.pdf",
+    "diagrammi/sequenza-vendita-avvio.drawio.pdf",
+    "diagrammi/sequenza-vendita-esito.drawio.pdf",
+    "diagrammi/sequenza-vendita-insieme.drawio.pdf",
+    "diagrammi/sequenza-vendita-saldo.drawio.pdf",
+    "diagrammi/sequenza-vendita-scadenza.drawio.pdf",
+    "main.tex",
+    "screenshot/01-accesso.png",
+    "screenshot/02-registrazione.png",
+    "screenshot/03-cliente-catalogo.png",
+    "screenshot/04-cliente-dialogo-test-drive.png",
+    "screenshot/05-cliente-noleggio.png",
+    "screenshot/06-cliente-dialogo-noleggio.png",
+    "screenshot/07-cliente-cessione.png",
+    "screenshot/08-cliente-operazioni.png",
+    "screenshot/09-cliente-identita.png",
+    "screenshot/10-venditore-richieste.png",
+    "screenshot/11-venditore-inventario.png",
+    "screenshot/12-manager-marchi.png",
+    "screenshot/13-manager-modelli.png",
+    "screenshot/14-manager-veicoli.png",
+    "screenshot/15-manager-sconti.png",
+    "screenshot/16-manager-registro.png"
+  ],
+  "generated_inputs": [
+    "build/main.aux",
+    "build/main.out",
+    "build/main.toc"
+  ],
+  "external_toolchain_resources": [
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm",
+      "sha256": "6b4254217851e285d1d5c6dfe677284396eeffc59f709ad775404b76dc99d513"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi10.tfm",
+      "sha256": "e442c5487f84df70218ff37f775c87060856f5b6e04c011b6cadbbadfcf46645"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi12.tfm",
+      "sha256": "79563547084d85388e6909888f9fa7f5cad33bdda44ca6b25b362e1d301db539"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi6.tfm",
+      "sha256": "ab6ecb4aaba9ca1b4259b1d1f64309a785bbaeb09183fd79a066b7764a448a28"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi8.tfm",
+      "sha256": "65af8c1e162a952cab8e93c834fcf43ce09b508e6c16e512ebb673cd850b0d41"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr10.tfm",
+      "sha256": "87f2d8981927644cbecaf3d639e96e348ea4e7be49d8804468bd8ba9ff3f5244"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr12.tfm",
+      "sha256": "1ce8af37ed38e93940829d3540e494eaaddc5201758d036b9074467e70a738dc"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr6.tfm",
+      "sha256": "106afa9172f0c00e58b9f5cbc72b302a18aaeeaddf50caca145af9cc0b81afd2"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr8.tfm",
+      "sha256": "4c5ae243ac0aa254e7ec7f0602cc2a4351e5011ff0cb6dc150a5f6de19585de6"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm",
+      "sha256": "0ca13d421ac7133271aed7c935099ecf3d1d08ac9e15f81acb34a16564ab8a46"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy6.tfm",
+      "sha256": "137eb9f38f661c66309614066a7b5d63d8969d33aba0c9efee9f844a4ce65b50"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy8.tfm",
+      "sha256": "84c37f07ca360c41ad0a0fba7387d279d72457c69bdae03653208c683d8de6bc"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/babel-italian/italian.ldf",
+      "sha256": "4c7eac0ce132b5f98dba31541939da043469fb827155a8b0d8c9e420efe3d436"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/babel/babel.sty",
+      "sha256": "2dcaa179d48d4fc8e66f1208e8d97e0dc1256fa89c0ad49cc18859232f691993"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/babel/locale/it/babel-it.ini",
+      "sha256": "6cabe88bf11ded50e3fe59f98918fdf052089a16abbc296c1e459b0551bbbee2"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/babel/locale/it/babel-italian.tex",
+      "sha256": "e7995cba08d09ec9b8cc03be5df65df2c741528363cca8b4e75de2c2ed8b9b95"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/babel/xebabel.def",
+      "sha256": "4cb9124a294c905141123336a44dd6c7a1517151395b24f67bff0512a90e2e61"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty",
+      "sha256": "050f2ad3a3671a1f4f9bcf97784836301bc751507e7ada546632379406aea103"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty",
+      "sha256": "af5c7196c69dc9d28225189169b60c9b9039125bc1756c04d54886f0a3e1891e"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty",
+      "sha256": "26ab10fd43fd5a90f98bcbed3a99978808da8878eb73835db4e0346371aee41e"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty",
+      "sha256": "0dc0cefe2131f82330a3b8e62034c184455329d7d9bb94abe21e740821630381"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty",
+      "sha256": "1138730b9ad7d9f664b4760a4ea0ae0945afd21c006b76b67e623e863bbf3756"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty",
+      "sha256": "8c3e23b8bb7d940ff26cb0cf96e0151f540acf55020dc3c1aa8bcdb2eb66305c"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty",
+      "sha256": "1343ba1b10b245bfd199c22947249af1d756808690c7811c90f07fe0a3772080"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty",
+      "sha256": "c42f0c2628dc5fbd95b535cf8cd3cc964347653c099d38c0d416f896d84e8240"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty",
+      "sha256": "8fea89995d37ba4c69137186faafc589c470edcc5026d8a31aadbe5cef47dcb4"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty",
+      "sha256": "b3f0e56366c11b85dae521f9a48a6fd415dec1ce8c83152fde813a9f64445b49"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty",
+      "sha256": "2df7e0bd148c99d8097352b8ac9948dccf91d61ba360dcf43f82206933b6045b"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/stringenc/stringenc.sty",
+      "sha256": "b134a7bba648a6987afc83ddfb6a3fcdad43bcae6b616e533eb484306d56ac45"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty",
+      "sha256": "9d11c81501953d689787ff14c073d2f1eda5874068db9e882b8dbbf9a9d863b0"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty",
+      "sha256": "9ac0a88ddda40526aa1ec403c27a6325d3723c14fa9f02918011a79f93a72ef0"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty",
+      "sha256": "5cf8d0558b78d60e2fac171d6e3486f44d500974214ab9ad95e33ffb47fbb717"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/base/report.cls",
+      "sha256": "7aad08c51e33c67a75c4b7575fe3e88f3f6040a59e794de8c7f6ed7f75706110"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo",
+      "sha256": "1fa2b9b8a83a342cbf5fcd90bda383099b130c9e347891cb20d9e7e6924bde89"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/colortbl/colortbl.sty",
+      "sha256": "c7fd4b74cc19b9a5b55e287a08cd8c1d68ff67940fd26c0a1badcaafc39c1b6b"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/enumitem/enumitem.sty",
+      "sha256": "628ef5b6916c682f586a066e735ceb6191e73fe3216dfb2fb4aa8e2f4c819dba"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/eso-pic/eso-pic.sty",
+      "sha256": "5e99778acb16d1284a98a0cf5a6eec4cbf2add0727dbc541c1d19438aaa50f39"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty",
+      "sha256": "e48026fcea59b4906d1fd47bde658cb5caf0a7928c45a45ea563b18d5b40ebd4"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty",
+      "sha256": "d5d36ad74051ad36288242b51438e2d9a5db2bd6c063b9b5704d0931fbc9f439"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg",
+      "sha256": "a3529ccdadc8248b4c5d7c34ceea53bdc1509b54f18a192ad51b924bd297d8df"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg",
+      "sha256": "feb91e48789a21e4acced98e952c77a2e2cf4a77e01bf147b59fa56a1b3f2008"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/graphics-def/xetex.def",
+      "sha256": "13d509c28743a76de667c5b0f238256381661299a981ca3446f34947338fdb64"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty",
+      "sha256": "96ce1dd3c3b57440c5a040f3ee31b2741d29fed7cd1c388b49cf5a5c668abb4a"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty",
+      "sha256": "979abfd05c3f5453ebdc2683f2e2e1a24600255c7246e3708b5670168c7259c4"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty",
+      "sha256": "90ffc59f1718ff399539023d15a5a2b14ce7d227b101c35ed64abcc7186c9338"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty",
+      "sha256": "d3faa310a1e4485b8efb1ed3ae8b11f9552e70b630dc35290a7aabdcd064b09a"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/graphics/lscape.sty",
+      "sha256": "c73611f56e2b515faa325b22d3675224ad0810b7693317e40f3891d78e795e6f"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx",
+      "sha256": "0804bb6e9e1eeeaeda861f29206d308194ea7cc846e38abaa344cdefa1d408cd"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty",
+      "sha256": "3c1add9bf649d1bee7db64bae800afb3dfac21b793afbbe2263553e0de66c450"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty",
+      "sha256": "8acaa03eda19a8158780356701e905e354e1dc47dc736e6e26fc860c12a15e14"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hyperref/hxetex.def",
+      "sha256": "c4a250132c40267eadb220e7f3e2981fa6ac0973c3c07395250a57ff414e9c1a"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty",
+      "sha256": "2f4e273fd02a736d3b4c9479fa5e535ac8dc77ababc7747b2ad85ecfccf09f76"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty",
+      "sha256": "5dfa44a8a8a9eabe2c8e72a46e6997d3825d28fe65daea99b03b8b059a6a1a68"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def",
+      "sha256": "49d7a97f9830087e38633177297d3f2f6a2177c266e0f4771015f07fa30f0bbe"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def",
+      "sha256": "fcf7ee9957bc5a3e0d4fb0e92ea1ec56bd5a191666512b1cbb9d051288db5108"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty",
+      "sha256": "70595629ec990ba8c0b6e6a54afcff2603464e6fce380a54a98549a78d2fc74a"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty",
+      "sha256": "e3fcf7f3372a27bb478eb9488eca1e25ed382480d02a6898f190bd955388e055"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-xetex.def",
+      "sha256": "760955e68d0cc81842936802b967b2ecd41824327837143c44cd6cc5013a1cb7"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg",
+      "sha256": "5464ab55dadb072fe38c20205ca8ef35e76ac59292b44b366370edf926a231fd"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/listings/listings.sty",
+      "sha256": "574c30237aa72d0fe7021d1388ce04a911fa785023a4470a8bc2d29c0cc8342a"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty",
+      "sha256": "a84ae857da6cdab27743f9ce73044e079f6c5981d7d19a6c45899d6c72ed5342"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty",
+      "sha256": "5411c733b2fdd7cc57a59e050d2a23bc9cace435a5de08bc49a910562db0ceba"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/listings/lstpatch.sty",
+      "sha256": "0a9bb48acb234c19a096611de95f23429de2d1c4e14f4b6e27410c0a795a5754"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape-nometadata.sty",
+      "sha256": "36ecfb1264ecb2edbdc7a25bec1ef1d6becdbae3d03b9763a5d272082930c519"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape.sty",
+      "sha256": "5a5b3200bc032d9a3ca8f28aca25d429f9c28618bc690b3bea43924ddb67e63c"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/pdfpages/pdfpages.sty",
+      "sha256": "b31d3167397894e37f0e783efbc3f61fae96d4744a90a9c6f19590750037defa"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/pdfpages/ppxetex.def",
+      "sha256": "6ab3ab7e37b6fb15b0e72e6850663e288100df9289267ae0d8f5a2b8927d4b6e"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty",
+      "sha256": "1bd5d42025520bef74f8808af99cf3f3be7d2e3774b9931bf85c11ba81bb6cab"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty",
+      "sha256": "7771d8fb8f76147d1d6fc5b205c8989feb270bafccd6021570cd7e5152ead1d6"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty",
+      "sha256": "537013de60c6606caecfc2eee9b81cd95f093ebb0f99b43277775073f00d9160"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty",
+      "sha256": "662f4630feb4206cfd75524b46875f58bc247d1e7df6d242424fb3977b70a5ea"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/tools/longtable.sty",
+      "sha256": "aa616239c15b0d4ce13f35287cfe5309d2d53caac4f3a52fbb7a06e37f16594a"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/url/url.sty",
+      "sha256": "2373f56849ac606473e77053e5c1d14c92aba312b3f684e02a130eaf36f2de47"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty",
+      "sha256": "478888f8e8f00345fd645b6cdd6fa7db1e9efdd6f585b25c89bb3665d9029295"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-dist/web2c/texmf.cnf",
+      "sha256": "7cd9dcb52a32a52aa6538feb9fae419493a9c8da52713b14f50f638abb8f3be4"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texmf/fonts/tfm/public/lm/ec-lmbx10.tfm",
+      "sha256": "0895c940bd2e763b70dcab18ebf27fd3f93c2490f43b2a8c028fc7fc24b2e855"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texmf/fonts/tfm/public/lm/ec-lmbx12.tfm",
+      "sha256": "d19c45859d453c0802699d27aa2bff735574b9bc97d8791aa76e3c7de6c38a36"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texmf/fonts/tfm/public/lm/ec-lmcsc10.tfm",
+      "sha256": "0918c1e4cc3cbe056794ec14697f38e266aab7475d48ea182912360c287b9e05"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texmf/fonts/tfm/public/lm/ec-lmr10.tfm",
+      "sha256": "cd13479f463b9a575d053dd7bf0884daa46bfdeffe4b7f537c193861652ac9e5"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texmf/fonts/tfm/public/lm/ec-lmr12.tfm",
+      "sha256": "299021120f0a29ef61278a2363903bd8defbb8faaade458eb79067342aecb56f"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texmf/fonts/tfm/public/lm/ec-lmr17.tfm",
+      "sha256": "67fb845ec934b2d50e788280d2c6d63ae719c9d8ac16a02d42fd346c81196c0c"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texmf/fonts/tfm/public/lm/ec-lmr6.tfm",
+      "sha256": "db2ec8f82b5dd559b686afb9da660c397f79c819905ed2706c86b0fd3e1017c7"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texmf/fonts/tfm/public/lm/ec-lmr7.tfm",
+      "sha256": "8cbbca3361fad7a70510d9e506bed78c1288065c1d83adce828df8c31afeedaf"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texmf/fonts/tfm/public/lm/ec-lmr8.tfm",
+      "sha256": "9c60dbef6aea9e108bd6512f10bd2855331b31ffa49bfb6161bf4ee9ac570584"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texmf/fonts/tfm/public/lm/ec-lmri10.tfm",
+      "sha256": "372f968b4eeb47bf6a6c941c8793bce118d1800f12e194a351c7493ecc158f2a"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texmf/fonts/tfm/public/lm/ec-lmri12.tfm",
+      "sha256": "879072f2a2086f46e61934977f2e919bb6f196c08442b5b62242e78e576820ce"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texmf/fonts/tfm/public/lm/ec-lmtk10.tfm",
+      "sha256": "25f28595923ef8f87efac2828637e8f10751b92b7a55ca5ca2c2ecbb6bcaf142"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texmf/fonts/tfm/public/lm/ec-lmtt10.tfm",
+      "sha256": "d1d413f1d0d07f65ff7bc3ebc09a3c104087e20eccd10ccb384da5c4f175c485"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texmf/fonts/tfm/public/lm/ec-lmtt12.tfm",
+      "sha256": "4f0e668985d5c6fbdf92a9255675035e41a18f196ef9c050b719041d4a0de73c"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texmf/fonts/tfm/public/lm/ec-lmtti10.tfm",
+      "sha256": "ed33cf8297166bceb9f52fa700b39e69c47849b7ee261a6109f1917d81db8a92"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texmf/fonts/tfm/public/lm/ts1-lmr12.tfm",
+      "sha256": "8b05e23c3ae967fd0ec8e3071fcb4d1081b71e2c17a948f465b65ad85c138e33"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texmf/fonts/tfm/public/lm/ts1-lmtt10.tfm",
+      "sha256": "e3dba75e17953de0b9f56ebcb809bc8343554b8379d2b3b10c496a8eb459b858"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texmf/fonts/tfm/public/lm/ts1-lmtti10.tfm",
+      "sha256": "5584f41a4f1fdca9111a5fced370aefecfa76a920c08568761d412a439fa0a31"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texmf/tex/latex/lm/t1lmr.fd",
+      "sha256": "6b61abc8a6796f1884f819afcfc4c33558564f7e5c1d47b720e50ee15dba829a"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texmf/tex/latex/lm/t1lmtt.fd",
+      "sha256": "eb5aca0fcd27d1d7d97d35e7a4d01eb12ba1a054f9fe1114a779c9ae084be602"
+    },
+    {
+      "path": "/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texmf/tex/latex/lm/ts1lmtt.fd",
+      "sha256": "7be94a31403bd3a74b78a3a49cd3396b1f37aa2a345618bf0beda2309daa298d"
+    },
+    {
+      "path": "/tmp/drivehub-ticket13-tex/var/web2c/xetex/xelatex.fmt",
+      "sha256": "39f922bdd9627ad96e96b4413c7edb4fecab3407025ce614eae97af6f314d1ee"
+    }
+  ],
+  "pages": 151,
+  "same_pagination": true,
+  "same_text_all_pages": true,
+  "same_pixels_all_pages_dpi": 96,
+  "delivered_pdf_sha256": "79536e7bd909b03e433d16c5b2fccd0f18269e432436463e30e75cb40a954b5e",
+  "rebuilt_pdf_sha256": "8e97404c1885f720d6e60baf66b6139a2ce24ec65719e707bd75b5e9ba14f7d0",
+  "delivered_metadata": {
+    "format": "PDF 1.7",
+    "title": "DriveHub – Relazione di Ingegneria del Software",
+    "author": "Federico D'Amodio, Matteo Orlandi",
+    "subject": "Relazione completa: capitoli 1–5 e appendici A–C proposti agli autori",
+    "keywords": "",
+    "creator": "LaTeX with hyperref",
+    "producer": "xdvipdfmx (20250410)",
+    "creationDate": "D:20261117130227+01'00'",
+    "modDate": "",
+    "trapped": "",
+    "encryption": null
+  },
+  "rebuilt_metadata": {
+    "format": "PDF 1.7",
+    "title": "DriveHub – Relazione di Ingegneria del Software",
+    "author": "Federico D'Amodio, Matteo Orlandi",
+    "subject": "Relazione completa: capitoli 1–5 e appendici A–C proposti agli autori",
+    "keywords": "",
+    "creator": "LaTeX with hyperref",
+    "producer": "xdvipdfmx (20250410)",
+    "creationDate": "D:20261117130831+01'00'",
+    "modDate": "",
+    "trapped": "",
+    "encryption": null
+  },
+  "delivered_ID": [
+    "array",
+    "[<985A8217243078C91222C103CB1F3800><985A8217243078C91222C103CB1F3800>]"
+  ],
+  "rebuilt_ID": [
+    "array",
+    "[<E0B2F3F7DF315B2F49E3F34A022944A2><E0B2F3F7DF315B2F49E3F34A022944A2>]"
+  ],
+  "tex_messages": 5,
+  "stabilization": [
+    {
+      "main.toc": "4d3df36b141b323761a975e1d5738b9bbc991792e784701e84ab60ac83acf69f",
+      "main.aux": "bd25987b8d2ee85f9302c05532159564be0778aab975bfeb464cceaef3e4abeb",
+      "main.out": "055896a35ca9bf52ca7dae6ed7aa09697f0e016012cdf41529ff92f009416503"
+    },
+    {
+      "main.toc": "4d3df36b141b323761a975e1d5738b9bbc991792e784701e84ab60ac83acf69f",
+      "main.aux": "4c4438003fa185a928e74d8e554015b9e0646d95e4f8e323b893be6e301b4406",
+      "main.out": "055896a35ca9bf52ca7dae6ed7aa09697f0e016012cdf41529ff92f009416503"
+    },
+    {
+      "main.toc": "4d3df36b141b323761a975e1d5738b9bbc991792e784701e84ab60ac83acf69f",
+      "main.aux": "4c4438003fa185a928e74d8e554015b9e0646d95e4f8e323b893be6e301b4406",
+      "main.out": "055896a35ca9bf52ca7dae6ed7aa09697f0e016012cdf41529ff92f009416503"
+    }
+  ],
+  "binary_difference": "Metadati e ID registrati; identità binaria distinta dalla verifica completa di contenuto e resa."
+}

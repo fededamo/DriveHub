@@ -1,0 +1,12 @@
+15 novembre 2026 — controlli statici di chiusura, exit 0
+2333 file iniziali; 6 modifiche documentali ammesse; 2327 invariati; nessuna eliminazione.
+104 copie della baseline verificate; storico 01–07 e software intatti.
+Nuovi file non ignorati solo in ticket-08, LEGGIMI-consegna.md e tracker/issues/08-verifica-finale.md.
+HEAD invariato: 61ce18ae1d4e0458b63e970b793b0b3a634a3adf; nessun commit.
+PDF SHA-256 e046f9efc5b3a7411354bfdde71b288e0d748f01ebea8c2aa7b3534c5a8990d4
+ZIP SHA-256 9b450b53f3bf623b919f81edf63f7b288728bea92818f25b8da8011f6c93837c
+Sei rapporti distinti (iniziali, ricontrollo del rilievo e chiusura); zero rilievi aperti.
+106 collegamenti Markdown locali esistenti.
+Cinque messaggi TeX per log finale: valutati e conservati, non risolti.
+Revisione degli autori ancora da svolgere. Nessun invio o pubblicazione.
+Manifest finale: sha256sum --check --quiet SHA256SUMS (dalla directory ticket-08).

@@ -1,0 +1,28 @@
+[
+  {
+    "chapter": "Introduzione",
+    "old_pages": [
+      4,
+      6
+    ],
+    "new_pages": [
+      5,
+      7
+    ],
+    "text_identical": true,
+    "pixels_identical": true
+  },
+  {
+    "chapter": "Analisi dei requisiti e progettazione",
+    "old_pages": [
+      7,
+      81
+    ],
+    "new_pages": [
+      8,
+      82
+    ],
+    "text_identical": true,
+    "pixels_identical": true
+  }
+]

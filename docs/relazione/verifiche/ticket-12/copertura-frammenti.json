@@ -1,0 +1,123 @@
+[
+  {
+    "id": 1,
+    "originale": "Relazione_SWE/capitoli/4_testing.tex",
+    "firstline": 29,
+    "lastline": 33,
+    "estratti": [
+      "lst:test-auth"
+    ],
+    "destinazione": "4.2.2",
+    "funzione": "Registrazione duplicata ed effetti esclusi",
+    "adattamento": "Modifica email PostgreSQL e nuove letture di identità/login: non prova registrazione atomica né assenza chiamate hash/save. Equivalente unitario assente.",
+    "original_sha256": "67bd408d8f93ef69457290f743c8bd8f7c570da73c0b3beefb3cb1d9d6770d71"
+  },
+  {
+    "id": 2,
+    "originale": "Relazione_SWE/capitoli/4_testing.tex",
+    "firstline": 38,
+    "lastline": 43,
+    "estratti": [
+      "lst:test-pricing"
+    ],
+    "destinazione": "4.2.3",
+    "funzione": "Assert tariffa noleggio",
+    "adattamento": "Tre giorni inclusi e formula corrente: 57,05 su20.000; non riprodotti40/76/108,30/137,18 della vecchia Strategy.",
+    "original_sha256": "7f80c3e9a1a7af08585561fbeb1e46d9678c6ff08960b02920082d671e099b74"
+  },
+  {
+    "id": 3,
+    "originale": "Relazione_SWE/capitoli/4_testing.tex",
+    "firstline": 50,
+    "lastline": 57,
+    "estratti": [
+      "lst:test-penale"
+    ],
+    "destinazione": "4.2.4",
+    "funzione": "Annullamento/scadenza con penale",
+    "adattamento": "Scadenza corrente, non rifiuto:20% acconto trattenuto,80% rimborsato; rifiuto integrale spiegato separatamente. Fixture centesimi e riletture/helper espliciti.",
+    "original_sha256": "3cce21eaed7c72e83e68b796ede0a33357d6e49102582c833664aaa07774e3bf"
+  },
+  {
+    "id": 4,
+    "originale": "Relazione_SWE/capitoli/4_testing.tex",
+    "firstline": 64,
+    "lastline": 71,
+    "estratti": [
+      "lst:test-rental"
+    ],
+    "destinazione": "4.2.5",
+    "funzione": "Addebito e registrazione noleggio",
+    "adattamento": "Ramo rental PostgreSQL: date e importo Rent, saldo riletto da nuovo contesto dopo confirm; preparazione e chiamata descritte, nessun verify su mock.",
+    "original_sha256": "50476b7b35e07d878f24429a248139ee509c16ffa0a861d7df059f6d138577fc"
+  },
+  {
+    "id": 5,
+    "originale": "Relazione_SWE/capitoli/4_testing.tex",
+    "firstline": 76,
+    "lastline": 82,
+    "estratti": [
+      "lst:test-transazione",
+      "lst:test-rollback"
+    ],
+    "destinazione": "4.2.6 /4.3.2",
+    "funzione": "Errore transazionale, causa, soppressa, ordine",
+    "adattamento": "Metodo reale DatabaseManager classificato S0; test dopo eliminazioni reali conservato. Nessuna prova dedicata di errore commit/rollback equivalente al vecchio mock.",
+    "original_sha256": "2ae3cfd4337f3cce78860c575016a8df4e8ff9cd6eb16fbaae7e3e7b2d109a2a"
+  },
+  {
+    "id": 6,
+    "originale": "Relazione_SWE/capitoli/4_testing.tex",
+    "firstline": 92,
+    "lastline": 98,
+    "estratti": [
+      "lst:test-dao-roundtrip"
+    ],
+    "destinazione": "4.3.1",
+    "funzione": "Roundtrip con nuova lettura",
+    "adattamento": "Base/modalità veicolo attraverso CatalogService/PostgresVehicleDao, nuovo AppContext e nuova Connection dopo commit; assente UnitOfWork.",
+    "original_sha256": "0ed6b4d09ebb35e011039e28f1824f4bf387d97ebe582c807af585bbd7296b5b"
+  },
+  {
+    "id": 7,
+    "originale": "Relazione_SWE/capitoli/4_testing.tex",
+    "firstline": 105,
+    "lastline": 112,
+    "estratti": [
+      "lst:test-demo"
+    ],
+    "destinazione": "4.3.2",
+    "funzione": "Schema/demo e conteggi",
+    "adattamento": "DemoSqlValidationTest:32SALE/8PENALTY, importi e snapshot di13tabelle/sequenze dopo reload/reset; assente bootstrap/migration Java.",
+    "original_sha256": "be37d49d10fde2e646144d036d531fe6e9d5ac31e1d51e630cd7e95c8efb621d"
+  },
+  {
+    "id": 8,
+    "originale": "Relazione_SWE/capitoli/4_testing.tex",
+    "firstline": 117,
+    "lastline": 125,
+    "estratti": [
+      "lst:test-checkout-blocked",
+      "lst:test-checkout-sold"
+    ],
+    "destinazione": "4.4",
+    "funzione": "Workflow BLOCKED/SOLD",
+    "adattamento": "Due intervalli del medesimo scenario PurchaseAgreement, con approvazione/cambio listino/nuova sessione descritti fra essi; FullWorkflow non esteso a tutti i flussi.",
+    "original_sha256": "78d62b9e1f042f30aa1aae5aef3d822f471cf740a4967bcf8373c2905e65f552"
+  },
+  {
+    "id": 9,
+    "originale": "Relazione_SWE/capitoli/4_testing.tex",
+    "firstline": 131,
+    "lastline": 133,
+    "estratti": [
+      "lst:test-comando-storico",
+      "lst:test-comandi",
+      "lst:test-comando-ui"
+    ],
+    "destinazione": "4.5",
+    "funzione": "Comando Maven ed esito storico",
+    "adattamento": "Comando E1letterale dal verbale, conteggi dal log9novembre; attuali istruzioni separate e harness esterno.57storico non trasferito; esecuzioni non sommate.",
+    "original_sha256": "b183538a39deca895eeca5fed7872568db5e4fa1e871360f9b7ae64fcc0aa1a4"
+  }
+]

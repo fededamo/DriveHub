@@ -1,0 +1,208 @@
+{
+  "r11_manifest": "docs/evidence/r11-integrated/full-inputs.sha256.json",
+  "r11_different_inputs": [
+    "src/main/java/it/unifi/drivehub/dao/DatabaseManager.java",
+    "src/main/java/it/unifi/drivehub/dao/RequestDao.java",
+    "src/main/java/it/unifi/drivehub/dao/SaleDao.java",
+    "src/main/java/it/unifi/drivehub/dao/postgres/PostgresRequestDao.java",
+    "src/main/java/it/unifi/drivehub/dao/postgres/PostgresSaleDao.java",
+    "src/main/java/it/unifi/drivehub/dao/postgres/PostgresVehicleDao.java",
+    "src/main/java/it/unifi/drivehub/domain/operation/Request.java",
+    "src/main/java/it/unifi/drivehub/domain/operation/RequestType.java",
+    "src/main/java/it/unifi/drivehub/domain/operation/Sale.java",
+    "src/main/java/it/unifi/drivehub/domain/operation/SaleType.java",
+    "src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java",
+    "src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java",
+    "src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java",
+    "src/main/java/it/unifi/drivehub/service/PurchaseService.java",
+    "src/main/java/it/unifi/drivehub/service/SaleToDealershipService.java",
+    "src/main/resources/application.properties",
+    "src/main/resources/db/demo.sql",
+    "src/main/resources/db/schema.sql",
+    "src/test/java/it/unifi/drivehub/BalanceConcurrencyIntegrationTest.java",
+    "src/test/java/it/unifi/drivehub/DemoSqlValidationTest.java",
+    "src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java",
+    "src/test/java/it/unifi/drivehub/PriceSelectionIntegrationTest.java",
+    "src/test/java/it/unifi/drivehub/PurchaseAgreementIntegrationTest.java",
+    "src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java",
+    "src/test/java/it/unifi/drivehub/RequestAgreementTest.java",
+    "src/test/java/it/unifi/drivehub/SaleOutcomeIntegrationTest.java",
+    "src/test/java/it/unifi/drivehub/SaleProposalIntegrationTest.java",
+    "src/test/java/it/unifi/drivehub/SaleTypeTest.java"
+  ],
+  "enum_full_log": "docs/evidence/postgres-enums-2026-11-09/full-suite.txt",
+  "enum_class_results": [
+    {
+      "tests": "22",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "class": "PurchaseAgreementIntegrationTest"
+    },
+    {
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "class": "RequestAgreementTest"
+    },
+    {
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "class": "TestDriveCancellationIntegrationTest"
+    },
+    {
+      "tests": "67",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "class": "SaleOutcomeIntegrationTest"
+    },
+    {
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "class": "PriceSelectionIntegrationTest"
+    },
+    {
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "class": "BookingRulesTest"
+    },
+    {
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "class": "PostgresEnumIntegrationTest"
+    },
+    {
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "class": "TestDatabaseConfigurationTest"
+    },
+    {
+      "tests": "11",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "class": "PriceCalculatorServiceTest"
+    },
+    {
+      "tests": "36",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "class": "BookingConcurrencyIntegrationTest"
+    },
+    {
+      "tests": "60",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "class": "PurchaseConcurrencyIntegrationTest"
+    },
+    {
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "class": "DemoSqlValidationTest"
+    },
+    {
+      "tests": "60",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "class": "IdentityDeletionIntegrationTest"
+    },
+    {
+      "tests": "16",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "class": "BalanceConcurrencyIntegrationTest"
+    },
+    {
+      "tests": "33",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "class": "VehicleDestinationIntegrationTest"
+    },
+    {
+      "tests": "11",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "class": "SaleTypeTest"
+    },
+    {
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "class": "DatabaseIsolationIntegrationTest"
+    },
+    {
+      "tests": "23",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "class": "SaleProposalIntegrationTest"
+    },
+    {
+      "tests": "18",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "class": "AuthServiceIntegrationTest"
+    },
+    {
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "class": "CatalogListingIntegrationTest"
+    },
+    {
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "class": "DatabaseConnectionIntegrationTest"
+    },
+    {
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "class": "FullWorkflowIntegrationTest"
+    },
+    {
+      "tests": "15",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "class": "DomainInvariantsTest"
+    }
+  ],
+  "enum_log_totals": [
+    423,
+    0,
+    0,
+    0
+  ],
+  "note": "Parsing di registrazioni storiche; nessun test eseguito.",
+  "enum_groups_derived_from_class_log": {
+    "without_db": 55,
+    "postgres": 368
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "fixed_point": "baseline.json + baseline-editoriale.tar.gz (non tracciati inclusi)",
+  "head": "61ce18ae1d4e0458b63e970b793b0b3a634a3adf",
+  "artifacts": {
+    "docs/relazione/relazione-drivehub.pdf": "79536e7bd909b03e433d16c5b2fccd0f18269e432436463e30e75cb40a954b5e",
+    "docs/relazione/verifiche/ticket-13/sorgenti-relazione.zip": "4264917500906131dabb95b21f402b89c339636e70fb74dd53c02c017b0658ff",
+    "docs/relazione/verifiche/ticket-13/ricompilato-da-zip.pdf": "8e97404c1885f720d6e60baf66b6139a2ce24ec65719e707bd75b5e9ba14f7d0",
+    "docs/relazione/capitoli/5_uso_ai.tex": "3a6341e5972953c974f0f987aa5210ce379304780f7b86faa86b2b5edb996977",
+    "docs/relazione/LEGGIMI-consegna.md": "e60236b48ce0a5800e180988d19ff5a065d390c886fe0e3f5c49ef3445ea2553"
+  },
+  "state": "Review tecniche indipendenti da completare prima di done"
+}

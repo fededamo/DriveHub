@@ -1,0 +1,12 @@
+PDF aperto e renderizzato: 63 pagine A4, 95 link interni risolti, 45 font incorporati.
+Indice: 5 capitoli, 25 sezioni, appendici A–C; sottosezioni 2.6 nell'ordine concordato.
+2.5–2.6 complete: pagine fisiche 25–31; B completa: 50–62.
+Provvisori: 2.7–2.8, capitoli 3–5, appendice C. Nessuna approvazione degli autori dichiarata.
+13 nuovi draw.io validi, 13 esportazioni su singola pagina con XML incorporato corrispondente.
+Copertura: 11 package, 65 tipi principali; impronte sorgenti identiche al riscontro iniziale.
+Conservazione: 2046 file protetti invariati, inclusi evidenze/manifest 01–02, screenshot, diagrammi precedenti, software e SQL.
+Capitolo 1: testo identico all'estratto storico. 2.1–2.4/A: testo delle 32 pagine identico all'estratto 02, esclusi avviso di stato e numerazione; sorgenti e figure invariati.
+LaTeX: nessun box difettoso, carattere mancante o riferimento irrisolto; 57 soli avvisi noti Tectonic PDF 1.7/1.5.
+Font minimi nelle esportazioni prima della riduzione nel documento: [('classi-avvio', 12.65), ('classi-catalogo', 12.65), ('classi-dao', 12.68), ('classi-eventi', 12.65), ('classi-operazioni', 12.65), ('classi-postgres', 12.68), ('classi-presentazione', 12.68), ('classi-sconti', 12.65), ('classi-servizi', 12.68), ('classi-sicurezza', 12.65), ('classi-transazioni', 12.68), ('classi-utenti', 12.65), ('package-architettura', 11.69)]
+Controllo visivo da registrare separatamente; questi assert non lo sostituiscono.
+SHA-256 PDF: 568d76ead85fa06d6d3942c25ab0505722e10b1b4365aa5455fbbfa1a18e2d95

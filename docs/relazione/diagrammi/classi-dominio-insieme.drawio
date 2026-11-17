@@ -1,0 +1,125 @@
+<mxfile host="Electron" version="32.6.10">
+  <diagram name="DriveHub — Domain Model" id="ticket10">
+    <mxGraphModel adaptiveColors="auto" page="1" pageScale="1" pageWidth="1200" pageHeight="850" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="DriveHub — Domain Model" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;text;align=center;fontSize=22;fontStyle=1;">
+          <mxGeometry x="20" y="8" width="1160" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="users" value="domain.user" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;shape=folder;tabWidth=110;tabHeight=24;align=left;verticalAlign=top;spacingTop=3;spacingLeft=8;fillColor=#F8CECC;">
+          <mxGeometry x="20" y="55" width="555" height="365" as="geometry" />
+        </mxCell>
+        <mxCell id="user" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;«interface» User&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;identità e credenziali&lt;hr style=&quot;margin:2px 0&quot;&gt;+ openDashboard(navigator)&lt;/div&gt;" vertex="1" parent="users" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="30" y="45" width="220" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="abstract" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;«abstract» AbstractUser&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;# id : Long&lt;br&gt;# email : String&lt;hr style=&quot;margin:2px 0&quot;&gt;+ updateEmail(email)&lt;/div&gt;" vertex="1" parent="users" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="290" y="45" width="220" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="client" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;Client&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;- bankAccount : BankAccount [0..1]&lt;hr style=&quot;margin:2px 0&quot;&gt;+ openDashboard(navigator)&lt;/div&gt;" vertex="1" parent="users" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="30" y="170" width="220" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="bank" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;BankAccount&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;- clientId : Long (ID)&lt;br&gt;- balance : BigDecimal&lt;hr style=&quot;margin:2px 0&quot;&gt;+ deposit(...); withdraw(...)&lt;/div&gt;" vertex="1" parent="users" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="30" y="270" width="220" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1" source="client" target="bank" value="" parent="users" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;endArrow=open;endFill=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="salesman" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;Salesman&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;+ openDashboard(navigator)&lt;/div&gt;" vertex="1" parent="users" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="290" y="180" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="manager" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;Manager&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;+ openDashboard(navigator)&lt;/div&gt;" vertex="1" parent="users" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="290" y="270" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="edge2" source="abstract" target="user" value="" parent="users" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;dashed=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3" source="client" target="abstract" value="" parent="users" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;endArrow=block;endFill=0;exitX=1;exitY=0.5;entryX=0.5;entryY=1;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="270" y="215" />
+              <mxPoint x="270" y="160" />
+              <mxPoint x="400" y="160" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge4" source="salesman" target="abstract" value="" parent="users" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge5" source="manager" target="abstract" value="" parent="users" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;endArrow=block;endFill=0;exitX=1;exitY=0.5;entryX=1;entryY=0.5;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="535" y="305" />
+              <mxPoint x="535" y="95" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="catalog" value="domain.vehicle" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;shape=folder;tabWidth=110;tabHeight=24;align=left;verticalAlign=top;spacingTop=3;spacingLeft=8;fillColor=#F8CECC;">
+          <mxGeometry x="605" y="55" width="575" height="350" as="geometry" />
+        </mxCell>
+        <mxCell id="brand" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;Brand&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;- name : String&lt;hr style=&quot;margin:2px 0&quot;&gt;+ create(name)&lt;/div&gt;" vertex="1" parent="catalog" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="25" y="40" width="220" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="model" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;Model&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;- brand : String (chiave)&lt;br&gt;- releasePrice; releaseYear&lt;hr style=&quot;margin:2px 0&quot;&gt;+ create(...)&lt;/div&gt;" vertex="1" parent="catalog" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="25" y="125" width="220" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="vehicle" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;Vehicle&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;- modelId : Long (ID); price&lt;br&gt;- priceMode : PriceMode&lt;br&gt;- state : VehicleState&lt;hr style=&quot;margin:2px 0&quot;&gt;+ getSelectedBasePrice(model)&lt;/div&gt;" vertex="1" parent="catalog" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="305" y="40" width="220" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="states" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;«enumeration» VehicleState&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;SALE / RENT / BLOCKED&lt;br&gt;WAITING / SOLD&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;/div&gt;" vertex="1" parent="catalog" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="305" y="225" width="220" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="mode" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;«enumeration» PriceMode&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;AUTOMATIC / MANUAL&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;/div&gt;" vertex="1" parent="catalog" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="25" y="250" width="220" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="edge6" source="vehicle" target="states" value="" parent="catalog" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;endArrow=open;endFill=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge7" source="vehicle" target="model" value="" parent="catalog" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;dashed=1;endArrow=open;endFill=0;exitX=0;exitY=0.5;entryX=1;entryY=0.5;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="275" y="105" />
+              <mxPoint x="275" y="175" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="discounts" value="domain.discount" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;shape=folder;tabWidth=110;tabHeight=24;align=left;verticalAlign=top;spacingTop=3;spacingLeft=8;fillColor=#F8CECC;">
+          <mxGeometry x="20" y="430" width="555" height="290" as="geometry" />
+        </mxCell>
+        <mxCell id="discount" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;«abstract» Discount&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;value : int [0..50]&lt;hr style=&quot;margin:2px 0&quot;&gt;+ getValue()&lt;/div&gt;" vertex="1" parent="discounts" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="160" y="42" width="220" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="md" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;ModelDiscount&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;modelId : Long (ID)&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;/div&gt;" vertex="1" parent="discounts" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="25" y="180" width="220" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="vd" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;VehicleDiscount&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;vehicleId : Long (ID)&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;/div&gt;" vertex="1" parent="discounts" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="305" y="180" width="220" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="edge8" source="md" target="discount" value="" parent="discounts" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge9" source="vd" target="discount" value="" parent="discounts" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ops" value="domain.operation" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;shape=folder;tabWidth=110;tabHeight=24;align=left;verticalAlign=top;spacingTop=3;spacingLeft=8;fillColor=#F8CECC;">
+          <mxGeometry x="605" y="430" width="575" height="290" as="geometry" />
+        </mxCell>
+        <mxCell id="request" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;Request&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;vehicleId; clientId; salesmanId?&lt;br&gt;deposit; agreedTotal?; type&lt;hr style=&quot;margin:2px 0&quot;&gt;+ getRemainingAmount()&lt;/div&gt;" vertex="1" parent="ops" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="25" y="42" width="220" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="sale" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;Sale&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;vehicleId?; salesmanId?; clientId&lt;br&gt;amount ≥ 0; type : SaleType&lt;hr style=&quot;margin:2px 0&quot;&gt;+ createSaleRecord(...)&lt;/div&gt;" vertex="1" parent="ops" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="305" y="42" width="220" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="rent" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;Rent&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;- vehicleId; clientId (ID)&lt;br&gt;- amount; startDate; endDate&lt;hr style=&quot;margin:2px 0&quot;&gt;+ create(...)&lt;/div&gt;" vertex="1" parent="ops" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="25" y="177" width="220" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="td" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;TestDrive&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;- vehicleId; clientId (ID)&lt;br&gt;- date : LocalDateTime&lt;hr style=&quot;margin:2px 0&quot;&gt;+ create(...)&lt;/div&gt;" vertex="1" parent="ops" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="305" y="177" width="220" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="note" value="Riferimenti per ID: nessuna associazione Java cliente–veicolo–operazione.&lt;br&gt;Client → BankAccount [0..1] è invece un riferimento reale; il conto conserva clientId e controlla deposit/withdraw.&lt;br&gt;Eventi e Observer non appartengono più al dominio: sono nel Business Layer (event / service).&lt;br&gt;Triangolo vuoto: ereditarietà (tratto continuo) / realizzazione (tratteggio); freccia aperta: riferimento / uso. Membri selezionati; dettagli CL-02–05." vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;shape=note;fillColor=#FFFBE6;strokeColor=#D2B65A;align=left;spacing=8;fontSize=12;">
+          <mxGeometry x="20" y="745" width="1160" height="90" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,31 @@
+$ date --iso-8601=seconds
+2026-11-12T15:18:05+01:00
+Exit code: 0
+
+$ git rev-parse HEAD
+61ce18ae1d4e0458b63e970b793b0b3a634a3adf
+Exit code: 0
+
+$ uname -srmo
+Linux 6.18.54.1-microsoft-standard-WSL2 x86_64 GNU/Linux
+Exit code: 0
+
+$ java -version
+openjdk version "21.0.13.0.3" 2026-10-24
+OpenJDK Runtime Environment (build 21.0.13.0.3+1-1-26.04.1-Ubuntu)
+OpenJDK 64-Bit Server VM (build 21.0.13.0.3+1-1-26.04.1-Ubuntu, mixed mode, sharing)
+Exit code: 0
+
+$ javac -version
+javac 21.0.13.0.3
+Exit code: 0
+
+$ psql --version
+psql (PostgreSQL) 16.15 (Ubuntu 16.15-1.pgdg26.04+2)
+Exit code: 0
+
+JavaFX 21.0.2 (moduli Linux nella cache Maven); PostgreSQL JDBC 42.7.3.
+Display Xvfb :92, 1600x1000x24, software rendering; dashboard 1500x930, accesso 900x650, dialoghi nella propria dimensione.
+PostgreSQL: cluster /tmp/drivehub-ticket02-session/pgdata, bind 127.0.0.1:55442; DB drivehub_ticket02_demo; ruolo drivehub_ticket02.
+Tectonic 0.17.0, draw.io Desktop 32.6.10, PyMuPDF 2.1 / MuPDF 1.28.6.
+Strumenti estratti in /tmp; nessuna installazione di sistema. Maven e suite applicative non eseguiti.

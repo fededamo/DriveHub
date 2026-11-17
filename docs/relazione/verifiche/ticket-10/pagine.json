@@ -1,0 +1,510 @@
+{
+  "pdf_pages": 129,
+  "chapter2": [
+    7,
+    81
+  ],
+  "appendices_AB": [
+    100,
+    120
+  ],
+  "inspected_pages": [
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    100,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    111,
+    112,
+    113,
+    114,
+    115,
+    116,
+    117,
+    118,
+    119,
+    120
+  ],
+  "extra_pages": [
+    2,
+    3,
+    121,
+    122,
+    123,
+    124,
+    125,
+    126,
+    127,
+    128,
+    129
+  ],
+  "extract_pages": 96,
+  "toc": [
+    [
+      1,
+      "Introduzione",
+      4
+    ],
+    [
+      2,
+      "Descrizione",
+      4
+    ],
+    [
+      2,
+      "Stack tecnologico",
+      5
+    ],
+    [
+      2,
+      "Semplificazioni adottate",
+      6
+    ],
+    [
+      1,
+      "Analisi dei requisiti e progettazione",
+      7
+    ],
+    [
+      2,
+      "Diagramma dei casi d'uso",
+      7
+    ],
+    [
+      2,
+      "Template dei casi principali",
+      12
+    ],
+    [
+      3,
+      "UC-01 — Prenotare un test drive",
+      13
+    ],
+    [
+      3,
+      "UC-02 — Noleggiare un veicolo",
+      14
+    ],
+    [
+      3,
+      "UC-03 — Richiedere e completare una vendita al cliente",
+      15
+    ],
+    [
+      3,
+      "UC-05 — Proporre un veicolo alla concessionaria",
+      16
+    ],
+    [
+      3,
+      "UC-04 — Autorizzare una richiesta di vendita al cliente",
+      17
+    ],
+    [
+      3,
+      "UC-06 — Gestire lo sconto su un veicolo",
+      18
+    ],
+    [
+      2,
+      "Mockups",
+      20
+    ],
+    [
+      3,
+      "Autenticazione",
+      20
+    ],
+    [
+      3,
+      "Area Customer",
+      22
+    ],
+    [
+      3,
+      "Area Salesman",
+      28
+    ],
+    [
+      3,
+      "Area Manager",
+      30
+    ],
+    [
+      2,
+      "Page Navigation Diagram",
+      35
+    ],
+    [
+      2,
+      "Package Diagram",
+      40
+    ],
+    [
+      2,
+      "Class Diagram",
+      42
+    ],
+    [
+      3,
+      "Domain Model",
+      42
+    ],
+    [
+      3,
+      "Business Layer",
+      44
+    ],
+    [
+      3,
+      "DAO",
+      46
+    ],
+    [
+      3,
+      "Presentation Layer",
+      48
+    ],
+    [
+      2,
+      "Sequence Diagram",
+      50
+    ],
+    [
+      3,
+      "Vendita di un veicolo al cliente",
+      50
+    ],
+    [
+      3,
+      "Prenotazione di un noleggio",
+      59
+    ],
+    [
+      3,
+      "Acquisto di un veicolo dal cliente",
+      64
+    ],
+    [
+      2,
+      "Database",
+      69
+    ],
+    [
+      3,
+      "Schema ER",
+      69
+    ],
+    [
+      3,
+      "Modello relazionale",
+      75
+    ],
+    [
+      3,
+      "Utenti, vincoli e semplificazioni",
+      80
+    ],
+    [
+      1,
+      "Implementazione",
+      82
+    ],
+    [
+      2,
+      "Domain Model",
+      82
+    ],
+    [
+      3,
+      "Invarianti locali e stato mutabile",
+      82
+    ],
+    [
+      3,
+      "Gerarchie, identità e riferimenti",
+      83
+    ],
+    [
+      2,
+      "Business Layer",
+      83
+    ],
+    [
+      3,
+      "Calcolo dei prezzi e accordo economico",
+      83
+    ],
+    [
+      3,
+      "Transazioni, lock e operazioni economiche",
+      84
+    ],
+    [
+      3,
+      "Notifiche sincrone ed errori",
+      86
+    ],
+    [
+      3,
+      "Identità e conto dimostrativo",
+      86
+    ],
+    [
+      2,
+      "Presentation Layer",
+      87
+    ],
+    [
+      3,
+      "Navigazione e responsabilità delle viste",
+      87
+    ],
+    [
+      3,
+      "Caricamenti, righe preparate e ciclo di vita",
+      87
+    ],
+    [
+      3,
+      "Aggiornamenti ed esiti dei comandi",
+      88
+    ],
+    [
+      2,
+      "Persistenza: livello DAO e mapping oggetti/tabelle",
+      88
+    ],
+    [
+      3,
+      "Contratti JDBC e proprietà della connessione",
+      88
+    ],
+    [
+      3,
+      "Tipi, nullabilità e ricostruzione",
+      90
+    ],
+    [
+      2,
+      "Idiomi e Design Pattern",
+      91
+    ],
+    [
+      1,
+      "Testing",
+      92
+    ],
+    [
+      2,
+      "Strategia di verifica",
+      92
+    ],
+    [
+      2,
+      "Livello 1: Business Logic",
+      93
+    ],
+    [
+      2,
+      "Livello 2: Persistence Layer (DAO)",
+      93
+    ],
+    [
+      2,
+      "Verifiche funzionali e della presentazione",
+      95
+    ],
+    [
+      2,
+      "Esecuzione della suite e portata dei risultati",
+      96
+    ],
+    [
+      1,
+      "Uso dell'AI",
+      97
+    ],
+    [
+      2,
+      "Progettazione e sviluppo iniziale manuali",
+      97
+    ],
+    [
+      2,
+      "Revisione assistita da Codex",
+      97
+    ],
+    [
+      2,
+      "Verifica e controllo umano",
+      98
+    ],
+    [
+      2,
+      "Documentazione, diagrammi e limiti",
+      99
+    ],
+    [
+      1,
+      "Schede aggiuntive dei casi d'uso",
+      100
+    ],
+    [
+      2,
+      "UC-07 — Consultazione del catalogo",
+      101
+    ],
+    [
+      2,
+      "UC-08 — Cambio di destinazione del veicolo",
+      101
+    ],
+    [
+      2,
+      "UC-09 — Gestione del catalogo e delle basi prezzo",
+      102
+    ],
+    [
+      2,
+      "UC-10 — Consultazione del registro economico",
+      103
+    ],
+    [
+      2,
+      "UC-11 — Consultazione delle proprie operazioni",
+      104
+    ],
+    [
+      2,
+      "UC-S01 — Registrazione del cliente",
+      104
+    ],
+    [
+      2,
+      "UC-S02 — Accesso al sistema",
+      105
+    ],
+    [
+      2,
+      "UC-S03 — Gestione dell'identità",
+      106
+    ],
+    [
+      2,
+      "UC-S04 — Ricarica del conto demo",
+      107
+    ],
+    [
+      1,
+      "Tavole delle classi",
+      108
+    ],
+    [
+      1,
+      "Matrice delle verifiche",
+      121
+    ],
+    [
+      2,
+      "Criterio di lettura e provenienza",
+      121
+    ],
+    [
+      2,
+      "Requisiti, casi d'uso e asserzioni",
+      122
+    ],
+    [
+      2,
+      "Garanzie trasversali e limiti delle prove",
+      127
+    ],
+    [
+      2,
+      "Riproduzione e riscontro documentale",
+      129
+    ]
+  ]
+}

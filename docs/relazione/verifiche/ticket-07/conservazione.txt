@@ -1,0 +1,3 @@
+Baseline 2291: 2284 intatti, 7 modifiche documentali autorizzate, zero eliminazioni.
+Software/test/SQL/dati, vecchia relazione, evidenze e manifest 01–06 identici.
+Capitoli 3–4: solo rimozione delle due frasi di stato inesatte. Sette parti PDF pregresse equivalenti.

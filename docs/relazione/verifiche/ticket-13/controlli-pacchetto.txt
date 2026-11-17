@@ -1,0 +1,2 @@
+PASS: ZIP 4264917500906131dabb95b21f402b89c339636e70fb74dd53c02c017b0658ff; 118 membri; 73 input editoriali interni; 151 pagine identiche a testo e pixel a 96 dpi.
+Estrazione pulita: /tmp/drivehub-ticket13-consegna-kapcb71i

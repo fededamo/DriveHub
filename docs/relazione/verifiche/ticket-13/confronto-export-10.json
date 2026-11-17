@@ -1,0 +1,101 @@
+[
+  {
+    "name": "casi-uso-autori",
+    "source": "docs/relazione/diagrammi/casi-uso-autori.drawio",
+    "source_sha256": "a04a6e7604921790cc717eeb82d2abd5de8af6446cd85df23efc7b66f311f4b3",
+    "export": "docs/relazione/diagrammi/casi-uso-autori.drawio.pdf",
+    "export_sha256": "8d89b62a5301119bf43c603ed271a7c5d432a97072b3782315b87043304c1ffe",
+    "historical_manifest": "ticket-10/esportazioni.json",
+    "unchanged": true
+  },
+  {
+    "name": "navigazione-autori",
+    "source": "docs/relazione/diagrammi/navigazione-autori.drawio",
+    "source_sha256": "766d052ebe8834f1c2288ee8c83dd65d5eff4162777fe1c56ceff88aa0a440d1",
+    "export": "docs/relazione/diagrammi/navigazione-autori.drawio.pdf",
+    "export_sha256": "d7d463c5d40eba2b4af82bcf373ee2c94d4ee32ec190cddb0aa23e4f6e264355",
+    "historical_manifest": "ticket-10/esportazioni.json",
+    "unchanged": true
+  },
+  {
+    "name": "package-autori",
+    "source": "docs/relazione/diagrammi/package-autori.drawio",
+    "source_sha256": "094a026be043fc5395c1671922f0277db3c29a2410c779155f342012f4e3be0a",
+    "export": "docs/relazione/diagrammi/package-autori.drawio.pdf",
+    "export_sha256": "41084cfa926c1c20cb1a893fbd8db0dc52f8c5823bfa339eed0eaeaeeda33661",
+    "historical_manifest": "ticket-10/esportazioni.json",
+    "unchanged": true
+  },
+  {
+    "name": "classi-dominio-insieme",
+    "source": "docs/relazione/diagrammi/classi-dominio-insieme.drawio",
+    "source_sha256": "28e11bb9def9f586c766c348a3896be044cae364c845731dc18ad122f10fe908",
+    "export": "docs/relazione/diagrammi/classi-dominio-insieme.drawio.pdf",
+    "export_sha256": "485def3c83bae6748827967815ca4af64794148cff9de7c247a0a33cfef40258",
+    "historical_manifest": "ticket-10/esportazioni.json",
+    "unchanged": true
+  },
+  {
+    "name": "classi-business-insieme",
+    "source": "docs/relazione/diagrammi/classi-business-insieme.drawio",
+    "source_sha256": "f8f0beee1d37d1aff4cda730d739d9da1d85124122eb3824642cf6b6d5d7619a",
+    "export": "docs/relazione/diagrammi/classi-business-insieme.drawio.pdf",
+    "export_sha256": "38ea22cea120c45481fc675f9247656ef5e16641cc74a5af9f20c76760091673",
+    "historical_manifest": "ticket-10/esportazioni.json",
+    "unchanged": true
+  },
+  {
+    "name": "classi-dao-insieme",
+    "source": "docs/relazione/diagrammi/classi-dao-insieme.drawio",
+    "source_sha256": "622f0d68ee24aab06495fff3b0da1c44b21ea5d5823c0f2acaeb0d61ed4d30dd",
+    "export": "docs/relazione/diagrammi/classi-dao-insieme.drawio.pdf",
+    "export_sha256": "1d2e6f0a852ca64500f325a9000bd7060bfd3084add88712b7a430a928ce59a2",
+    "historical_manifest": "ticket-10/esportazioni.json",
+    "unchanged": true
+  },
+  {
+    "name": "classi-presentazione-insieme",
+    "source": "docs/relazione/diagrammi/classi-presentazione-insieme.drawio",
+    "source_sha256": "fda0f7d2506d27f4bf59595d44a75015244db1ce4ff3b1a1b68398e2797f2b80",
+    "export": "docs/relazione/diagrammi/classi-presentazione-insieme.drawio.pdf",
+    "export_sha256": "78d270e6da2647d2b205be8b96abd5404113f2077ae4d051faca5edcfdec3c9a",
+    "historical_manifest": "ticket-10/esportazioni.json",
+    "unchanged": true
+  },
+  {
+    "name": "sequenza-vendita-insieme",
+    "source": "docs/relazione/diagrammi/sequenza-vendita-insieme.drawio",
+    "source_sha256": "dcae75d6aa96602dd45e87c826014159c73c1463e198506db9ff9ccd08e667b8",
+    "export": "docs/relazione/diagrammi/sequenza-vendita-insieme.drawio.pdf",
+    "export_sha256": "200937c6dbae667c08803ebe28cd54d8bc28b6770f0514a6c0ca618e30d182fe",
+    "historical_manifest": "ticket-10/esportazioni.json",
+    "unchanged": true
+  },
+  {
+    "name": "sequenza-noleggio-insieme",
+    "source": "docs/relazione/diagrammi/sequenza-noleggio-insieme.drawio",
+    "source_sha256": "a2a9d7a7058d857cbec8d13ee82230692d45777f6fcd818a945eff1028c78d1c",
+    "export": "docs/relazione/diagrammi/sequenza-noleggio-insieme.drawio.pdf",
+    "export_sha256": "4bcd8cee95ab9bd3dace119a5242d85c21de3baca74b4638dc2f8f67be911d4f",
+    "historical_manifest": "ticket-10/esportazioni.json",
+    "unchanged": true
+  },
+  {
+    "name": "sequenza-cessione-insieme",
+    "source": "docs/relazione/diagrammi/sequenza-cessione-insieme.drawio",
+    "source_sha256": "60887e395be621dbd4dfbb4cad5dca08c4fdb5404a0dca240bbd67c7e1cd6c35",
+    "export": "docs/relazione/diagrammi/sequenza-cessione-insieme.drawio.pdf",
+    "export_sha256": "417a4aca504cdb691019589579605fe73a4b49e61b3a2313d825630e97f01562",
+    "historical_manifest": "ticket-10/esportazioni.json",
+    "unchanged": true
+  },
+  {
+    "name": "database-er-autori",
+    "source": "docs/relazione/diagrammi/database-er-autori.drawio",
+    "source_sha256": "cb3c38e07118297eef7ddd458d91f12760c564865f10fc18529a0c32f49cc49b",
+    "export": "docs/relazione/diagrammi/database-er-autori.drawio.pdf",
+    "export_sha256": "421c927ed6be33f6d299b2af74efb5c4f2d04920834576b9d57edc341c4d79c2",
+    "historical_manifest": "ticket-10/esportazioni.json",
+    "unchanged": true
+  }
+]

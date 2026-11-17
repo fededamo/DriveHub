@@ -1,0 +1,780 @@
+note: Running TeX ...
+note: downloading longtable.sty
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: capitoli/4_testing:30: Overfull \hbox (47.33505pt too wide) in paragraph at lines 26--30
+warning: capitoli/4_testing:103: Underfull \hbox (badness 2573) in paragraph at lines 95--103
+warning: capitoli/4_testing:103: Underfull \hbox (badness 1325) in paragraph at lines 95--103
+warning: capitoli/4_testing:103: Overfull \hbox (51.10614pt too wide) in paragraph at lines 95--103
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: appendici/c_verifiche:23: Underfull \hbox (badness 10000) in paragraph at lines 16--23
+warning: appendici/c_verifiche:23: Underfull \hbox (badness 1902) in paragraph at lines 16--23
+warning: appendici/c_verifiche:35: Underfull \hbox (badness 2608) in paragraph at lines 25--35
+warning: appendici/c_verifiche:35: Underfull \hbox (badness 10000) in paragraph at lines 25--35
+warning: appendici/c_verifiche:35: Underfull \hbox (badness 1931) in paragraph at lines 25--35
+warning: appendici/c_verifiche:44: Overfull \hbox (86.15381pt too wide) in paragraph at lines 36--44
+warning: appendici/c_verifiche:65: Underfull \hbox (badness 8170) in paragraph at lines 54--65
+warning: appendici/c_verifiche:65: Underfull \hbox (badness 10000) in paragraph at lines 54--65
+warning: appendici/c_verifiche:65: Underfull \hbox (badness 2608) in paragraph at lines 54--65
+warning: appendici/c_verifiche:91: Underfull \hbox (badness 10000) in paragraph at lines 80--91
+warning: appendici/c_verifiche:91: Underfull \hbox (badness 1668) in paragraph at lines 80--91
+warning: appendici/c_verifiche:91: Underfull \hbox (badness 1097) in paragraph at lines 80--91
+warning: appendici/c_verifiche:109: Underfull \hbox (badness 6575) in paragraph at lines 101--109
+note: downloading ec-lmbx10.tfm
+warning: appendici/c_verifiche:123: Underfull \hbox (badness 10000) in paragraph at lines 123--123
+note: downloading ec-lmri10.tfm
+warning: appendici/c_verifiche:126: Underfull \hbox (badness 10000) in paragraph at lines 126--126
+warning: appendici/c_verifiche:130: Underfull \hbox (badness 10000) in paragraph at lines 130--130
+warning: appendici/c_verifiche:135: Underfull \hbox (badness 10000) in paragraph at lines 131--135
+warning: appendici/c_verifiche:135: Overfull \hbox (92.65167pt too wide) in paragraph at lines 131--135
+warning: appendici/c_verifiche:135: Underfull \hbox (badness 10000) in paragraph at lines 131--135
+warning: appendici/c_verifiche:135: Underfull \hbox (badness 10000) in paragraph at lines 131--135
+warning: appendici/c_verifiche:135: Overfull \hbox (138.64154pt too wide) in paragraph at lines 131--135
+warning: appendici/c_verifiche:135: Underfull \hbox (badness 2875) in paragraph at lines 131--135
+warning: appendici/c_verifiche:135: Underfull \hbox (badness 10000) in paragraph at lines 131--135
+warning: appendici/c_verifiche:135: Overfull \hbox (58.15927pt too wide) in paragraph at lines 131--135
+warning: appendici/c_verifiche:140: Underfull \hbox (badness 10000) in paragraph at lines 140--140
+warning: appendici/c_verifiche:146: Underfull \hbox (badness 10000) in paragraph at lines 141--146
+warning: appendici/c_verifiche:146: Overfull \hbox (127.14407pt too wide) in paragraph at lines 141--146
+warning: appendici/c_verifiche:146: Underfull \hbox (badness 10000) in paragraph at lines 141--146
+warning: appendici/c_verifiche:146: Underfull \hbox (badness 10000) in paragraph at lines 141--146
+warning: appendici/c_verifiche:146: Underfull \hbox (badness 10000) in paragraph at lines 141--146
+warning: appendici/c_verifiche:146: Overfull \hbox (132.8928pt too wide) in paragraph at lines 141--146
+warning: appendici/c_verifiche:146: Underfull \hbox (badness 6348) in paragraph at lines 141--146
+warning: appendici/c_verifiche:146: Underfull \hbox (badness 10000) in paragraph at lines 141--146
+warning: appendici/c_verifiche:146: Overfull \hbox (115.6466pt too wide) in paragraph at lines 141--146
+warning: appendici/c_verifiche:150: Underfull \hbox (badness 10000) in paragraph at lines 147--150
+warning: appendici/c_verifiche:150: Underfull \hbox (badness 3690) in paragraph at lines 147--150
+warning: appendici/c_verifiche:150: Underfull \hbox (badness 10000) in paragraph at lines 147--150
+warning: appendici/c_verifiche:150: Underfull \hbox (badness 10000) in paragraph at lines 147--150
+warning: appendici/c_verifiche:150: Overfull \hbox (172.55211pt too wide) in paragraph at lines 147--150
+warning: appendici/c_verifiche:150: Underfull \hbox (badness 2875) in paragraph at lines 147--150
+warning: appendici/c_verifiche:151: Underfull \hbox (badness 10000) in paragraph at lines 151--151
+warning: appendici/c_verifiche:156: Underfull \hbox (badness 10000) in paragraph at lines 152--156
+warning: appendici/c_verifiche:156: Overfull \hbox (118.68825pt too wide) in paragraph at lines 152--156
+warning: appendici/c_verifiche:156: Underfull \hbox (badness 6675) in paragraph at lines 152--156
+warning: appendici/c_verifiche:156: Overfull \hbox (0.67194pt too wide) in paragraph at lines 152--156
+warning: appendici/c_verifiche:160: Underfull \hbox (badness 10000) in paragraph at lines 157--160
+warning: appendici/c_verifiche:160: Underfull \hbox (badness 10000) in paragraph at lines 157--160
+warning: appendici/c_verifiche:160: Underfull \hbox (badness 10000) in paragraph at lines 157--160
+warning: appendici/c_verifiche:160: Overfull \hbox (138.05971pt too wide) in paragraph at lines 157--160
+warning: appendici/c_verifiche:160: Underfull \hbox (badness 1286) in paragraph at lines 157--160
+warning: appendici/c_verifiche:160: Underfull \hbox (badness 1546) in paragraph at lines 157--160
+warning: appendici/c_verifiche:160: Underfull \hbox (badness 3780) in paragraph at lines 157--160
+warning: appendici/c_verifiche:160: Underfull \hbox (badness 5417) in paragraph at lines 157--160
+warning: appendici/c_verifiche:161: Underfull \hbox (badness 10000) in paragraph at lines 161--161
+warning: appendici/c_verifiche:161: Underfull \hbox (badness 10000) in paragraph at lines 161--161
+warning: appendici/c_verifiche:167: Underfull \hbox (badness 10000) in paragraph at lines 162--167
+warning: appendici/c_verifiche:167: Overfull \hbox (0.67194pt too wide) in paragraph at lines 162--167
+warning: appendici/c_verifiche:167: Underfull \hbox (badness 10000) in paragraph at lines 162--167
+warning: appendici/c_verifiche:167: Underfull \hbox (badness 10000) in paragraph at lines 162--167
+warning: appendici/c_verifiche:167: Overfull \hbox (155.88774pt too wide) in paragraph at lines 162--167
+warning: appendici/c_verifiche:167: Underfull \hbox (badness 10000) in paragraph at lines 162--167
+warning: appendici/c_verifiche:167: Underfull \hbox (badness 10000) in paragraph at lines 162--167
+warning: appendici/c_verifiche:167: Overfull \hbox (35.16434pt too wide) in paragraph at lines 162--167
+warning: appendici/c_verifiche:167: Underfull \hbox (badness 3579) in paragraph at lines 162--167
+warning: appendici/c_verifiche:173: Underfull \hbox (badness 10000) in paragraph at lines 173--173
+warning: appendici/c_verifiche:173: Underfull \hbox (badness 10000) in paragraph at lines 173--173
+warning: appendici/c_verifiche:179: Underfull \hbox (badness 10000) in paragraph at lines 174--179
+warning: appendici/c_verifiche:179: Overfull \hbox (127.14407pt too wide) in paragraph at lines 174--179
+warning: appendici/c_verifiche:179: Underfull \hbox (badness 10000) in paragraph at lines 174--179
+warning: appendici/c_verifiche:179: Overfull \hbox (132.8928pt too wide) in paragraph at lines 174--179
+warning: appendici/c_verifiche:179: Underfull \hbox (badness 10000) in paragraph at lines 174--179
+warning: appendici/c_verifiche:179: Underfull \hbox (badness 10000) in paragraph at lines 174--179
+warning: appendici/c_verifiche:179: Overfull \hbox (35.16434pt too wide) in paragraph at lines 174--179
+warning: appendici/c_verifiche:179: Underfull \hbox (badness 2126) in paragraph at lines 174--179
+warning: appendici/c_verifiche:184: Underfull \hbox (badness 10000) in paragraph at lines 184--184
+warning: appendici/c_verifiche:188: Underfull \hbox (badness 10000) in paragraph at lines 185--188
+warning: appendici/c_verifiche:188: Overfull \hbox (86.90294pt too wide) in paragraph at lines 185--188
+warning: appendici/c_verifiche:188: Overfull \hbox (144.39027pt too wide) in paragraph at lines 185--188
+warning: appendici/c_verifiche:188: Underfull \hbox (badness 10000) in paragraph at lines 185--188
+warning: appendici/c_verifiche:188: Overfull \hbox (86.90294pt too wide) in paragraph at lines 185--188
+warning: appendici/c_verifiche:193: Underfull \hbox (badness 1762) in paragraph at lines 189--193
+warning: appendici/c_verifiche:193: Underfull \hbox (badness 10000) in paragraph at lines 189--193
+warning: appendici/c_verifiche:193: Underfull \hbox (badness 3977) in paragraph at lines 189--193
+warning: appendici/c_verifiche:193: Underfull \hbox (badness 2903) in paragraph at lines 189--193
+warning: appendici/c_verifiche:193: Overfull \hbox (166.80338pt too wide) in paragraph at lines 189--193
+warning: appendici/c_verifiche:198: Underfull \hbox (badness 10000) in paragraph at lines 195--198
+warning: appendici/c_verifiche:198: Underfull \hbox (badness 10000) in paragraph at lines 195--198
+warning: appendici/c_verifiche:198: Underfull \hbox (badness 10000) in paragraph at lines 195--198
+warning: appendici/c_verifiche:198: Underfull \hbox (badness 10000) in paragraph at lines 195--198
+warning: appendici/c_verifiche:198: Overfull \hbox (63.908pt too wide) in paragraph at lines 195--198
+warning: appendici/c_verifiche:203: Underfull \hbox (badness 10000) in paragraph at lines 203--203
+warning: appendici/c_verifiche:209: Underfull \hbox (badness 10000) in paragraph at lines 204--209
+warning: appendici/c_verifiche:209: Overfull \hbox (92.65167pt too wide) in paragraph at lines 204--209
+warning: appendici/c_verifiche:209: Underfull \hbox (badness 10000) in paragraph at lines 204--209
+warning: appendici/c_verifiche:209: Underfull \hbox (badness 10000) in paragraph at lines 204--209
+warning: appendici/c_verifiche:209: Overfull \hbox (138.64154pt too wide) in paragraph at lines 204--209
+warning: appendici/c_verifiche:213: Underfull \hbox (badness 5064) in paragraph at lines 210--213
+warning: appendici/c_verifiche:214: Underfull \hbox (badness 10000) in paragraph at lines 214--214
+warning: appendici/c_verifiche:219: Underfull \hbox (badness 10000) in paragraph at lines 215--219
+warning: appendici/c_verifiche:219: Overfull \hbox (52.41054pt too wide) in paragraph at lines 215--219
+warning: appendici/c_verifiche:219: Underfull \hbox (badness 10000) in paragraph at lines 215--219
+warning: appendici/c_verifiche:219: Overfull \hbox (236.37001pt too wide) in paragraph at lines 215--219
+warning: appendici/c_verifiche:219: Underfull \hbox (badness 10000) in paragraph at lines 215--219
+warning: appendici/c_verifiche:219: Overfull \hbox (115.6466pt too wide) in paragraph at lines 215--219
+warning: appendici/c_verifiche:219: Underfull \hbox (badness 4013) in paragraph at lines 215--219
+warning: appendici/c_verifiche:223: Underfull \hbox (badness 10000) in paragraph at lines 220--223
+warning: appendici/c_verifiche:223: Overfull \hbox (115.06477pt too wide) in paragraph at lines 220--223
+warning: appendici/c_verifiche:223: Underfull \hbox (badness 3701) in paragraph at lines 220--223
+warning: appendici/c_verifiche:223: Underfull \hbox (badness 3118) in paragraph at lines 220--223
+warning: appendici/c_verifiche:223: Underfull \hbox (badness 10000) in paragraph at lines 220--223
+warning: appendici/c_verifiche:223: Underfull \hbox (badness 2229) in paragraph at lines 220--223
+warning: appendici/c_verifiche:224: Underfull \hbox (badness 10000) in paragraph at lines 224--224
+warning: appendici/c_verifiche:229: Underfull \hbox (badness 10000) in paragraph at lines 225--229
+warning: appendici/c_verifiche:229: Overfull \hbox (161.63647pt too wide) in paragraph at lines 225--229
+warning: appendici/c_verifiche:229: Underfull \hbox (badness 10000) in paragraph at lines 225--229
+warning: appendici/c_verifiche:229: Underfull \hbox (badness 10000) in paragraph at lines 225--229
+warning: appendici/c_verifiche:229: Overfull \hbox (35.16434pt too wide) in paragraph at lines 225--229
+warning: appendici/c_verifiche:229: Underfull \hbox (badness 10000) in paragraph at lines 225--229
+warning: appendici/c_verifiche:229: Underfull \hbox (badness 10000) in paragraph at lines 225--229
+warning: appendici/c_verifiche:229: Overfull \hbox (92.65167pt too wide) in paragraph at lines 225--229
+warning: appendici/c_verifiche:229: Underfull \hbox (badness 10000) in paragraph at lines 225--229
+warning: appendici/c_verifiche:234: Underfull \hbox (badness 10000) in paragraph at lines 234--234
+warning: appendici/c_verifiche:238: Underfull \hbox (badness 10000) in paragraph at lines 235--238
+warning: appendici/c_verifiche:238: Overfull \hbox (127.14407pt too wide) in paragraph at lines 235--238
+warning: appendici/c_verifiche:238: Underfull \hbox (badness 10000) in paragraph at lines 235--238
+warning: appendici/c_verifiche:238: Underfull \hbox (badness 10000) in paragraph at lines 235--238
+warning: appendici/c_verifiche:238: Underfull \hbox (badness 10000) in paragraph at lines 235--238
+warning: appendici/c_verifiche:238: Underfull \hbox (badness 3281) in paragraph at lines 235--238
+warning: appendici/c_verifiche:238: Overfull \hbox (92.65167pt too wide) in paragraph at lines 235--238
+warning: appendici/c_verifiche:244: Underfull \hbox (badness 10000) in paragraph at lines 244--244
+warning: appendici/c_verifiche:249: Underfull \hbox (badness 10000) in paragraph at lines 245--249
+warning: appendici/c_verifiche:249: Underfull \hbox (badness 10000) in paragraph at lines 245--249
+warning: appendici/c_verifiche:249: Underfull \hbox (badness 1859) in paragraph at lines 245--249
+warning: appendici/c_verifiche:249: Underfull \hbox (badness 6268) in paragraph at lines 245--249
+warning: appendici/c_verifiche:249: Underfull \hbox (badness 5119) in paragraph at lines 245--249
+warning: appendici/c_verifiche:249: Underfull \hbox (badness 10000) in paragraph at lines 245--249
+warning: appendici/c_verifiche:258: Underfull \hbox (badness 1694) in paragraph at lines 255--258
+warning: appendici/c_verifiche:261: Underfull \hbox (badness 10000) in paragraph at lines 259--261
+warning: appendici/c_verifiche:261: Underfull \hbox (badness 2080) in paragraph at lines 259--261
+warning: appendici/c_verifiche:262: Underfull \hbox (badness 10000) in paragraph at lines 262--262
+warning: appendici/c_verifiche:268: Underfull \hbox (badness 10000) in paragraph at lines 263--268
+warning: appendici/c_verifiche:268: Underfull \hbox (badness 10000) in paragraph at lines 263--268
+warning: appendici/c_verifiche:268: Underfull \hbox (badness 10000) in paragraph at lines 263--268
+warning: appendici/c_verifiche:268: Underfull \hbox (badness 10000) in paragraph at lines 263--268
+warning: appendici/c_verifiche:268: Underfull \hbox (badness 10000) in paragraph at lines 263--268
+warning: appendici/c_verifiche:268: Overfull \hbox (0.67194pt too wide) in paragraph at lines 263--268
+warning: appendici/c_verifiche:268: Underfull \hbox (badness 10000) in paragraph at lines 263--268
+warning: appendici/c_verifiche:268: Underfull \hbox (badness 4518) in paragraph at lines 263--268
+warning: appendici/c_verifiche:268: Underfull \hbox (badness 10000) in paragraph at lines 263--268
+warning: appendici/c_verifiche:268: Underfull \hbox (badness 2608) in paragraph at lines 263--268
+warning: appendici/c_verifiche:273: Underfull \hbox (badness 2591) in paragraph at lines 269--273
+warning: appendici/c_verifiche:273: Underfull \hbox (badness 1127) in paragraph at lines 269--273
+warning: appendici/c_verifiche:273: Underfull \hbox (badness 3068) in paragraph at lines 269--273
+warning: appendici/c_verifiche:274: Underfull \hbox (badness 10000) in paragraph at lines 274--274
+warning: appendici/c_verifiche:280: Underfull \hbox (badness 10000) in paragraph at lines 275--280
+warning: appendici/c_verifiche:280: Overfull \hbox (58.15927pt too wide) in paragraph at lines 275--280
+warning: appendici/c_verifiche:280: Overfull \hbox (65.45934pt too wide) in paragraph at lines 275--280
+warning: appendici/c_verifiche:280: Underfull \hbox (badness 10000) in paragraph at lines 275--280
+warning: appendici/c_verifiche:280: Underfull \hbox (badness 10000) in paragraph at lines 275--280
+warning: appendici/c_verifiche:280: Overfull \hbox (201.87761pt too wide) in paragraph at lines 275--280
+warning: appendici/c_verifiche:280: Underfull \hbox (badness 10000) in paragraph at lines 275--280
+warning: appendici/c_verifiche:280: Underfull \hbox (badness 10000) in paragraph at lines 275--280
+warning: appendici/c_verifiche:280: Overfull \hbox (109.89787pt too wide) in paragraph at lines 275--280
+warning: appendici/c_verifiche:280: Underfull \hbox (badness 1303) in paragraph at lines 275--280
+warning: appendici/c_verifiche:284: Underfull \hbox (badness 1062) in paragraph at lines 281--284
+warning: appendici/c_verifiche:284: Underfull \hbox (badness 1424) in paragraph at lines 281--284
+warning: appendici/c_verifiche:285: Underfull \hbox (badness 10000) in paragraph at lines 285--285
+warning: appendici/c_verifiche:289: Underfull \hbox (badness 10000) in paragraph at lines 286--289
+warning: appendici/c_verifiche:289: Overfull \hbox (6.42067pt too wide) in paragraph at lines 286--289
+warning: appendici/c_verifiche:289: Underfull \hbox (badness 10000) in paragraph at lines 286--289
+warning: appendici/c_verifiche:289: Underfull \hbox (badness 10000) in paragraph at lines 286--289
+warning: appendici/c_verifiche:289: Underfull \hbox (badness 10000) in paragraph at lines 286--289
+warning: appendici/c_verifiche:289: Underfull \hbox (badness 10000) in paragraph at lines 286--289
+warning: appendici/c_verifiche:307: Underfull \hbox (badness 10000) in paragraph at lines 307--307
+warning: appendici/c_verifiche:307: Underfull \hbox (badness 7613) in paragraph at lines 307--307
+warning: appendici/c_verifiche:307: Underfull \hbox (badness 10000) in paragraph at lines 307--307
+warning: appendici/c_verifiche:312: Overfull \hbox (6.42067pt too wide) in paragraph at lines 308--312
+warning: appendici/c_verifiche:312: Overfull \hbox (81.1542pt too wide) in paragraph at lines 308--312
+warning: appendici/c_verifiche:312: Underfull \hbox (badness 10000) in paragraph at lines 308--312
+warning: appendici/c_verifiche:312: Underfull \hbox (badness 10000) in paragraph at lines 308--312
+warning: appendici/c_verifiche:312: Underfull \hbox (badness 7740) in paragraph at lines 308--312
+warning: appendici/c_verifiche:312: Underfull \hbox (badness 2027) in paragraph at lines 308--312
+warning: appendici/c_verifiche:312: Overfull \hbox (150.139pt too wide) in paragraph at lines 308--312
+warning: appendici/c_verifiche:312: Underfull \hbox (badness 1796) in paragraph at lines 308--312
+warning: appendici/c_verifiche:316: Underfull \hbox (badness 10000) in paragraph at lines 316--316
+warning: appendici/c_verifiche:321: Underfull \hbox (badness 10000) in paragraph at lines 317--321
+warning: appendici/c_verifiche:321: Overfull \hbox (23.66687pt too wide) in paragraph at lines 317--321
+warning: appendici/c_verifiche:321: Underfull \hbox (badness 10000) in paragraph at lines 317--321
+warning: appendici/c_verifiche:321: Overfull \hbox (52.41054pt too wide) in paragraph at lines 317--321
+warning: appendici/c_verifiche:321: Underfull \hbox (badness 10000) in paragraph at lines 317--321
+warning: appendici/c_verifiche:321: Underfull \hbox (badness 10000) in paragraph at lines 317--321
+warning: appendici/c_verifiche:321: Underfull \hbox (badness 10000) in paragraph at lines 317--321
+warning: appendici/c_verifiche:321: Underfull \hbox (badness 3646) in paragraph at lines 317--321
+warning: appendici/c_verifiche:325: Underfull \hbox (badness 10000) in paragraph at lines 325--325
+warning: appendici/c_verifiche:325: Underfull \hbox (badness 10000) in paragraph at lines 325--325
+warning: appendici/c_verifiche:331: Underfull \hbox (badness 10000) in paragraph at lines 326--331
+warning: appendici/c_verifiche:331: Underfull \hbox (badness 10000) in paragraph at lines 326--331
+warning: appendici/c_verifiche:331: Underfull \hbox (badness 10000) in paragraph at lines 326--331
+warning: appendici/c_verifiche:331: Underfull \hbox (badness 10000) in paragraph at lines 326--331
+warning: appendici/c_verifiche:331: Underfull \hbox (badness 10000) in paragraph at lines 326--331
+warning: appendici/c_verifiche:331: Underfull \hbox (badness 10000) in paragraph at lines 326--331
+warning: appendici/c_verifiche:331: Underfull \hbox (badness 4505) in paragraph at lines 326--331
+warning: appendici/c_verifiche:331: Underfull \hbox (badness 10000) in paragraph at lines 326--331
+warning: appendici/c_verifiche:331: Underfull \hbox (badness 10000) in paragraph at lines 326--331
+warning: appendici/c_verifiche:331: Overfull \hbox (138.64154pt too wide) in paragraph at lines 326--331
+warning: appendici/c_verifiche:336: Underfull \hbox (badness 10000) in paragraph at lines 336--336
+warning: appendici/c_verifiche:336: Underfull \hbox (badness 10000) in paragraph at lines 336--336
+warning: appendici/c_verifiche:340: Underfull \hbox (badness 10000) in paragraph at lines 337--340
+warning: appendici/c_verifiche:340: Overfull \hbox (75.40547pt too wide) in paragraph at lines 337--340
+warning: appendici/c_verifiche:344: Underfull \hbox (badness 10000) in paragraph at lines 344--344
+warning: appendici/c_verifiche:350: Underfull \hbox (badness 10000) in paragraph at lines 345--350
+warning: appendici/c_verifiche:350: Overfull \hbox (167.38521pt too wide) in paragraph at lines 345--350
+warning: appendici/c_verifiche:350: Underfull \hbox (badness 4266) in paragraph at lines 345--350
+warning: appendici/c_verifiche:350: Underfull \hbox (badness 10000) in paragraph at lines 345--350
+warning: appendici/c_verifiche:350: Overfull \hbox (115.6466pt too wide) in paragraph at lines 345--350
+warning: appendici/c_verifiche:350: Underfull \hbox (badness 10000) in paragraph at lines 345--350
+warning: appendici/c_verifiche:350: Underfull \hbox (badness 10000) in paragraph at lines 345--350
+warning: appendici/c_verifiche:350: Overfull \hbox (144.39027pt too wide) in paragraph at lines 345--350
+warning: appendici/c_verifiche:360: Underfull \hbox (badness 2556) in paragraph at lines 356--360
+note: Rerunning TeX because "main.toc" changed ...
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: capitoli/4_testing:30: Overfull \hbox (47.33505pt too wide) in paragraph at lines 26--30
+warning: capitoli/4_testing:103: Underfull \hbox (badness 2573) in paragraph at lines 95--103
+warning: capitoli/4_testing:103: Underfull \hbox (badness 1325) in paragraph at lines 95--103
+warning: capitoli/4_testing:103: Overfull \hbox (51.10614pt too wide) in paragraph at lines 95--103
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: appendici/c_verifiche:23: Underfull \hbox (badness 10000) in paragraph at lines 16--23
+warning: appendici/c_verifiche:23: Underfull \hbox (badness 1902) in paragraph at lines 16--23
+warning: appendici/c_verifiche:35: Underfull \hbox (badness 2608) in paragraph at lines 25--35
+warning: appendici/c_verifiche:35: Underfull \hbox (badness 10000) in paragraph at lines 25--35
+warning: appendici/c_verifiche:35: Underfull \hbox (badness 1931) in paragraph at lines 25--35
+warning: appendici/c_verifiche:44: Overfull \hbox (86.15381pt too wide) in paragraph at lines 36--44
+warning: appendici/c_verifiche:65: Underfull \hbox (badness 8170) in paragraph at lines 54--65
+warning: appendici/c_verifiche:65: Underfull \hbox (badness 10000) in paragraph at lines 54--65
+warning: appendici/c_verifiche:65: Underfull \hbox (badness 2608) in paragraph at lines 54--65
+warning: appendici/c_verifiche:91: Underfull \hbox (badness 10000) in paragraph at lines 80--91
+warning: appendici/c_verifiche:91: Underfull \hbox (badness 1668) in paragraph at lines 80--91
+warning: appendici/c_verifiche:91: Underfull \hbox (badness 1097) in paragraph at lines 80--91
+warning: appendici/c_verifiche:109: Underfull \hbox (badness 6575) in paragraph at lines 101--109
+warning: appendici/c_verifiche:123: Underfull \hbox (badness 10000) in paragraph at lines 123--123
+warning: appendici/c_verifiche:126: Underfull \hbox (badness 10000) in paragraph at lines 126--126
+warning: appendici/c_verifiche:130: Underfull \hbox (badness 10000) in paragraph at lines 130--130
+warning: appendici/c_verifiche:135: Underfull \hbox (badness 10000) in paragraph at lines 131--135
+warning: appendici/c_verifiche:135: Overfull \hbox (92.65167pt too wide) in paragraph at lines 131--135
+warning: appendici/c_verifiche:135: Underfull \hbox (badness 10000) in paragraph at lines 131--135
+warning: appendici/c_verifiche:135: Underfull \hbox (badness 10000) in paragraph at lines 131--135
+warning: appendici/c_verifiche:135: Overfull \hbox (138.64154pt too wide) in paragraph at lines 131--135
+warning: appendici/c_verifiche:135: Underfull \hbox (badness 2875) in paragraph at lines 131--135
+warning: appendici/c_verifiche:135: Underfull \hbox (badness 10000) in paragraph at lines 131--135
+warning: appendici/c_verifiche:135: Overfull \hbox (58.15927pt too wide) in paragraph at lines 131--135
+warning: appendici/c_verifiche:140: Underfull \hbox (badness 10000) in paragraph at lines 140--140
+warning: appendici/c_verifiche:146: Underfull \hbox (badness 10000) in paragraph at lines 141--146
+warning: appendici/c_verifiche:146: Overfull \hbox (127.14407pt too wide) in paragraph at lines 141--146
+warning: appendici/c_verifiche:146: Underfull \hbox (badness 10000) in paragraph at lines 141--146
+warning: appendici/c_verifiche:146: Underfull \hbox (badness 10000) in paragraph at lines 141--146
+warning: appendici/c_verifiche:146: Underfull \hbox (badness 10000) in paragraph at lines 141--146
+warning: appendici/c_verifiche:146: Overfull \hbox (132.8928pt too wide) in paragraph at lines 141--146
+warning: appendici/c_verifiche:146: Underfull \hbox (badness 6348) in paragraph at lines 141--146
+warning: appendici/c_verifiche:146: Underfull \hbox (badness 10000) in paragraph at lines 141--146
+warning: appendici/c_verifiche:146: Overfull \hbox (115.6466pt too wide) in paragraph at lines 141--146
+warning: appendici/c_verifiche:150: Underfull \hbox (badness 10000) in paragraph at lines 147--150
+warning: appendici/c_verifiche:150: Underfull \hbox (badness 3690) in paragraph at lines 147--150
+warning: appendici/c_verifiche:150: Underfull \hbox (badness 10000) in paragraph at lines 147--150
+warning: appendici/c_verifiche:150: Underfull \hbox (badness 10000) in paragraph at lines 147--150
+warning: appendici/c_verifiche:150: Overfull \hbox (172.55211pt too wide) in paragraph at lines 147--150
+warning: appendici/c_verifiche:150: Underfull \hbox (badness 2875) in paragraph at lines 147--150
+warning: appendici/c_verifiche:151: Underfull \hbox (badness 10000) in paragraph at lines 151--151
+warning: appendici/c_verifiche:156: Underfull \hbox (badness 10000) in paragraph at lines 152--156
+warning: appendici/c_verifiche:156: Overfull \hbox (118.68825pt too wide) in paragraph at lines 152--156
+warning: appendici/c_verifiche:156: Underfull \hbox (badness 6675) in paragraph at lines 152--156
+warning: appendici/c_verifiche:156: Overfull \hbox (0.67194pt too wide) in paragraph at lines 152--156
+warning: appendici/c_verifiche:160: Underfull \hbox (badness 10000) in paragraph at lines 157--160
+warning: appendici/c_verifiche:160: Underfull \hbox (badness 10000) in paragraph at lines 157--160
+warning: appendici/c_verifiche:160: Underfull \hbox (badness 10000) in paragraph at lines 157--160
+warning: appendici/c_verifiche:160: Overfull \hbox (138.05971pt too wide) in paragraph at lines 157--160
+warning: appendici/c_verifiche:160: Underfull \hbox (badness 1286) in paragraph at lines 157--160
+warning: appendici/c_verifiche:160: Underfull \hbox (badness 1546) in paragraph at lines 157--160
+warning: appendici/c_verifiche:160: Underfull \hbox (badness 3780) in paragraph at lines 157--160
+warning: appendici/c_verifiche:160: Underfull \hbox (badness 5417) in paragraph at lines 157--160
+warning: appendici/c_verifiche:161: Underfull \hbox (badness 10000) in paragraph at lines 161--161
+warning: appendici/c_verifiche:161: Underfull \hbox (badness 10000) in paragraph at lines 161--161
+warning: appendici/c_verifiche:167: Underfull \hbox (badness 10000) in paragraph at lines 162--167
+warning: appendici/c_verifiche:167: Overfull \hbox (0.67194pt too wide) in paragraph at lines 162--167
+warning: appendici/c_verifiche:167: Underfull \hbox (badness 10000) in paragraph at lines 162--167
+warning: appendici/c_verifiche:167: Underfull \hbox (badness 10000) in paragraph at lines 162--167
+warning: appendici/c_verifiche:167: Overfull \hbox (155.88774pt too wide) in paragraph at lines 162--167
+warning: appendici/c_verifiche:167: Underfull \hbox (badness 10000) in paragraph at lines 162--167
+warning: appendici/c_verifiche:167: Underfull \hbox (badness 10000) in paragraph at lines 162--167
+warning: appendici/c_verifiche:167: Overfull \hbox (35.16434pt too wide) in paragraph at lines 162--167
+warning: appendici/c_verifiche:167: Underfull \hbox (badness 3579) in paragraph at lines 162--167
+warning: appendici/c_verifiche:173: Underfull \hbox (badness 10000) in paragraph at lines 173--173
+warning: appendici/c_verifiche:173: Underfull \hbox (badness 10000) in paragraph at lines 173--173
+warning: appendici/c_verifiche:179: Underfull \hbox (badness 10000) in paragraph at lines 174--179
+warning: appendici/c_verifiche:179: Overfull \hbox (127.14407pt too wide) in paragraph at lines 174--179
+warning: appendici/c_verifiche:179: Underfull \hbox (badness 10000) in paragraph at lines 174--179
+warning: appendici/c_verifiche:179: Overfull \hbox (132.8928pt too wide) in paragraph at lines 174--179
+warning: appendici/c_verifiche:179: Underfull \hbox (badness 10000) in paragraph at lines 174--179
+warning: appendici/c_verifiche:179: Underfull \hbox (badness 10000) in paragraph at lines 174--179
+warning: appendici/c_verifiche:179: Overfull \hbox (35.16434pt too wide) in paragraph at lines 174--179
+warning: appendici/c_verifiche:179: Underfull \hbox (badness 2126) in paragraph at lines 174--179
+warning: appendici/c_verifiche:184: Underfull \hbox (badness 10000) in paragraph at lines 184--184
+warning: appendici/c_verifiche:188: Underfull \hbox (badness 10000) in paragraph at lines 185--188
+warning: appendici/c_verifiche:188: Overfull \hbox (86.90294pt too wide) in paragraph at lines 185--188
+warning: appendici/c_verifiche:188: Overfull \hbox (144.39027pt too wide) in paragraph at lines 185--188
+warning: appendici/c_verifiche:188: Underfull \hbox (badness 10000) in paragraph at lines 185--188
+warning: appendici/c_verifiche:188: Overfull \hbox (86.90294pt too wide) in paragraph at lines 185--188
+warning: appendici/c_verifiche:193: Underfull \hbox (badness 1762) in paragraph at lines 189--193
+warning: appendici/c_verifiche:193: Underfull \hbox (badness 10000) in paragraph at lines 189--193
+warning: appendici/c_verifiche:193: Underfull \hbox (badness 3977) in paragraph at lines 189--193
+warning: appendici/c_verifiche:193: Underfull \hbox (badness 2903) in paragraph at lines 189--193
+warning: appendici/c_verifiche:193: Overfull \hbox (166.80338pt too wide) in paragraph at lines 189--193
+warning: appendici/c_verifiche:198: Underfull \hbox (badness 10000) in paragraph at lines 195--198
+warning: appendici/c_verifiche:198: Underfull \hbox (badness 10000) in paragraph at lines 195--198
+warning: appendici/c_verifiche:198: Underfull \hbox (badness 10000) in paragraph at lines 195--198
+warning: appendici/c_verifiche:198: Underfull \hbox (badness 10000) in paragraph at lines 195--198
+warning: appendici/c_verifiche:198: Overfull \hbox (63.908pt too wide) in paragraph at lines 195--198
+warning: appendici/c_verifiche:203: Underfull \hbox (badness 10000) in paragraph at lines 203--203
+warning: appendici/c_verifiche:209: Underfull \hbox (badness 10000) in paragraph at lines 204--209
+warning: appendici/c_verifiche:209: Overfull \hbox (92.65167pt too wide) in paragraph at lines 204--209
+warning: appendici/c_verifiche:209: Underfull \hbox (badness 10000) in paragraph at lines 204--209
+warning: appendici/c_verifiche:209: Underfull \hbox (badness 10000) in paragraph at lines 204--209
+warning: appendici/c_verifiche:209: Overfull \hbox (138.64154pt too wide) in paragraph at lines 204--209
+warning: appendici/c_verifiche:213: Underfull \hbox (badness 5064) in paragraph at lines 210--213
+warning: appendici/c_verifiche:214: Underfull \hbox (badness 10000) in paragraph at lines 214--214
+warning: appendici/c_verifiche:219: Underfull \hbox (badness 10000) in paragraph at lines 215--219
+warning: appendici/c_verifiche:219: Overfull \hbox (52.41054pt too wide) in paragraph at lines 215--219
+warning: appendici/c_verifiche:219: Underfull \hbox (badness 10000) in paragraph at lines 215--219
+warning: appendici/c_verifiche:219: Overfull \hbox (236.37001pt too wide) in paragraph at lines 215--219
+warning: appendici/c_verifiche:219: Underfull \hbox (badness 10000) in paragraph at lines 215--219
+warning: appendici/c_verifiche:219: Overfull \hbox (115.6466pt too wide) in paragraph at lines 215--219
+warning: appendici/c_verifiche:219: Underfull \hbox (badness 4013) in paragraph at lines 215--219
+warning: appendici/c_verifiche:223: Underfull \hbox (badness 10000) in paragraph at lines 220--223
+warning: appendici/c_verifiche:223: Overfull \hbox (115.06477pt too wide) in paragraph at lines 220--223
+warning: appendici/c_verifiche:223: Underfull \hbox (badness 3701) in paragraph at lines 220--223
+warning: appendici/c_verifiche:223: Underfull \hbox (badness 3118) in paragraph at lines 220--223
+warning: appendici/c_verifiche:223: Underfull \hbox (badness 10000) in paragraph at lines 220--223
+warning: appendici/c_verifiche:223: Underfull \hbox (badness 2229) in paragraph at lines 220--223
+warning: appendici/c_verifiche:224: Underfull \hbox (badness 10000) in paragraph at lines 224--224
+warning: appendici/c_verifiche:229: Underfull \hbox (badness 10000) in paragraph at lines 225--229
+warning: appendici/c_verifiche:229: Overfull \hbox (161.63647pt too wide) in paragraph at lines 225--229
+warning: appendici/c_verifiche:229: Underfull \hbox (badness 10000) in paragraph at lines 225--229
+warning: appendici/c_verifiche:229: Underfull \hbox (badness 10000) in paragraph at lines 225--229
+warning: appendici/c_verifiche:229: Overfull \hbox (35.16434pt too wide) in paragraph at lines 225--229
+warning: appendici/c_verifiche:229: Underfull \hbox (badness 10000) in paragraph at lines 225--229
+warning: appendici/c_verifiche:229: Underfull \hbox (badness 10000) in paragraph at lines 225--229
+warning: appendici/c_verifiche:229: Overfull \hbox (92.65167pt too wide) in paragraph at lines 225--229
+warning: appendici/c_verifiche:229: Underfull \hbox (badness 10000) in paragraph at lines 225--229
+warning: appendici/c_verifiche:234: Underfull \hbox (badness 10000) in paragraph at lines 234--234
+warning: appendici/c_verifiche:238: Underfull \hbox (badness 10000) in paragraph at lines 235--238
+warning: appendici/c_verifiche:238: Overfull \hbox (127.14407pt too wide) in paragraph at lines 235--238
+warning: appendici/c_verifiche:238: Underfull \hbox (badness 10000) in paragraph at lines 235--238
+warning: appendici/c_verifiche:238: Underfull \hbox (badness 10000) in paragraph at lines 235--238
+warning: appendici/c_verifiche:238: Underfull \hbox (badness 10000) in paragraph at lines 235--238
+warning: appendici/c_verifiche:238: Underfull \hbox (badness 3281) in paragraph at lines 235--238
+warning: appendici/c_verifiche:238: Overfull \hbox (92.65167pt too wide) in paragraph at lines 235--238
+warning: appendici/c_verifiche:244: Underfull \hbox (badness 10000) in paragraph at lines 244--244
+warning: appendici/c_verifiche:249: Underfull \hbox (badness 10000) in paragraph at lines 245--249
+warning: appendici/c_verifiche:249: Underfull \hbox (badness 10000) in paragraph at lines 245--249
+warning: appendici/c_verifiche:249: Underfull \hbox (badness 1859) in paragraph at lines 245--249
+warning: appendici/c_verifiche:249: Underfull \hbox (badness 6268) in paragraph at lines 245--249
+warning: appendici/c_verifiche:249: Underfull \hbox (badness 5119) in paragraph at lines 245--249
+warning: appendici/c_verifiche:249: Underfull \hbox (badness 10000) in paragraph at lines 245--249
+warning: appendici/c_verifiche:258: Underfull \hbox (badness 1694) in paragraph at lines 255--258
+warning: appendici/c_verifiche:261: Underfull \hbox (badness 10000) in paragraph at lines 259--261
+warning: appendici/c_verifiche:261: Underfull \hbox (badness 2080) in paragraph at lines 259--261
+warning: appendici/c_verifiche:262: Underfull \hbox (badness 10000) in paragraph at lines 262--262
+warning: appendici/c_verifiche:268: Underfull \hbox (badness 10000) in paragraph at lines 263--268
+warning: appendici/c_verifiche:268: Underfull \hbox (badness 10000) in paragraph at lines 263--268
+warning: appendici/c_verifiche:268: Underfull \hbox (badness 10000) in paragraph at lines 263--268
+warning: appendici/c_verifiche:268: Underfull \hbox (badness 10000) in paragraph at lines 263--268
+warning: appendici/c_verifiche:268: Underfull \hbox (badness 10000) in paragraph at lines 263--268
+warning: appendici/c_verifiche:268: Overfull \hbox (0.67194pt too wide) in paragraph at lines 263--268
+warning: appendici/c_verifiche:268: Underfull \hbox (badness 10000) in paragraph at lines 263--268
+warning: appendici/c_verifiche:268: Underfull \hbox (badness 4518) in paragraph at lines 263--268
+warning: appendici/c_verifiche:268: Underfull \hbox (badness 10000) in paragraph at lines 263--268
+warning: appendici/c_verifiche:268: Underfull \hbox (badness 2608) in paragraph at lines 263--268
+warning: appendici/c_verifiche:273: Underfull \hbox (badness 2591) in paragraph at lines 269--273
+warning: appendici/c_verifiche:273: Underfull \hbox (badness 1127) in paragraph at lines 269--273
+warning: appendici/c_verifiche:273: Underfull \hbox (badness 3068) in paragraph at lines 269--273
+warning: appendici/c_verifiche:274: Underfull \hbox (badness 10000) in paragraph at lines 274--274
+warning: appendici/c_verifiche:280: Underfull \hbox (badness 10000) in paragraph at lines 275--280
+warning: appendici/c_verifiche:280: Overfull \hbox (58.15927pt too wide) in paragraph at lines 275--280
+warning: appendici/c_verifiche:280: Overfull \hbox (65.45934pt too wide) in paragraph at lines 275--280
+warning: appendici/c_verifiche:280: Underfull \hbox (badness 10000) in paragraph at lines 275--280
+warning: appendici/c_verifiche:280: Underfull \hbox (badness 10000) in paragraph at lines 275--280
+warning: appendici/c_verifiche:280: Overfull \hbox (201.87761pt too wide) in paragraph at lines 275--280
+warning: appendici/c_verifiche:280: Underfull \hbox (badness 10000) in paragraph at lines 275--280
+warning: appendici/c_verifiche:280: Underfull \hbox (badness 10000) in paragraph at lines 275--280
+warning: appendici/c_verifiche:280: Overfull \hbox (109.89787pt too wide) in paragraph at lines 275--280
+warning: appendici/c_verifiche:280: Underfull \hbox (badness 1303) in paragraph at lines 275--280
+warning: appendici/c_verifiche:284: Underfull \hbox (badness 1062) in paragraph at lines 281--284
+warning: appendici/c_verifiche:284: Underfull \hbox (badness 1424) in paragraph at lines 281--284
+warning: appendici/c_verifiche:285: Underfull \hbox (badness 10000) in paragraph at lines 285--285
+warning: appendici/c_verifiche:289: Underfull \hbox (badness 10000) in paragraph at lines 286--289
+warning: appendici/c_verifiche:289: Overfull \hbox (6.42067pt too wide) in paragraph at lines 286--289
+warning: appendici/c_verifiche:289: Underfull \hbox (badness 10000) in paragraph at lines 286--289
+warning: appendici/c_verifiche:289: Underfull \hbox (badness 10000) in paragraph at lines 286--289
+warning: appendici/c_verifiche:289: Underfull \hbox (badness 10000) in paragraph at lines 286--289
+warning: appendici/c_verifiche:289: Underfull \hbox (badness 10000) in paragraph at lines 286--289
+warning: appendici/c_verifiche:307: Underfull \hbox (badness 10000) in paragraph at lines 307--307
+warning: appendici/c_verifiche:307: Underfull \hbox (badness 7613) in paragraph at lines 307--307
+warning: appendici/c_verifiche:307: Underfull \hbox (badness 10000) in paragraph at lines 307--307
+warning: appendici/c_verifiche:312: Overfull \hbox (6.42067pt too wide) in paragraph at lines 308--312
+warning: appendici/c_verifiche:312: Overfull \hbox (81.1542pt too wide) in paragraph at lines 308--312
+warning: appendici/c_verifiche:312: Underfull \hbox (badness 10000) in paragraph at lines 308--312
+warning: appendici/c_verifiche:312: Underfull \hbox (badness 10000) in paragraph at lines 308--312
+warning: appendici/c_verifiche:312: Underfull \hbox (badness 7740) in paragraph at lines 308--312
+warning: appendici/c_verifiche:312: Underfull \hbox (badness 2027) in paragraph at lines 308--312
+warning: appendici/c_verifiche:312: Overfull \hbox (150.139pt too wide) in paragraph at lines 308--312
+warning: appendici/c_verifiche:312: Underfull \hbox (badness 1796) in paragraph at lines 308--312
+warning: appendici/c_verifiche:316: Underfull \hbox (badness 10000) in paragraph at lines 316--316
+warning: appendici/c_verifiche:321: Underfull \hbox (badness 10000) in paragraph at lines 317--321
+warning: appendici/c_verifiche:321: Overfull \hbox (23.66687pt too wide) in paragraph at lines 317--321
+warning: appendici/c_verifiche:321: Underfull \hbox (badness 10000) in paragraph at lines 317--321
+warning: appendici/c_verifiche:321: Overfull \hbox (52.41054pt too wide) in paragraph at lines 317--321
+warning: appendici/c_verifiche:321: Underfull \hbox (badness 10000) in paragraph at lines 317--321
+warning: appendici/c_verifiche:321: Underfull \hbox (badness 10000) in paragraph at lines 317--321
+warning: appendici/c_verifiche:321: Underfull \hbox (badness 10000) in paragraph at lines 317--321
+warning: appendici/c_verifiche:321: Underfull \hbox (badness 3646) in paragraph at lines 317--321
+warning: appendici/c_verifiche:325: Underfull \hbox (badness 10000) in paragraph at lines 325--325
+warning: appendici/c_verifiche:325: Underfull \hbox (badness 10000) in paragraph at lines 325--325
+warning: appendici/c_verifiche:331: Underfull \hbox (badness 10000) in paragraph at lines 326--331
+warning: appendici/c_verifiche:331: Underfull \hbox (badness 10000) in paragraph at lines 326--331
+warning: appendici/c_verifiche:331: Underfull \hbox (badness 10000) in paragraph at lines 326--331
+warning: appendici/c_verifiche:331: Underfull \hbox (badness 10000) in paragraph at lines 326--331
+warning: appendici/c_verifiche:331: Underfull \hbox (badness 10000) in paragraph at lines 326--331
+warning: appendici/c_verifiche:331: Underfull \hbox (badness 10000) in paragraph at lines 326--331
+warning: appendici/c_verifiche:331: Underfull \hbox (badness 4505) in paragraph at lines 326--331
+warning: appendici/c_verifiche:331: Underfull \hbox (badness 10000) in paragraph at lines 326--331
+warning: appendici/c_verifiche:331: Underfull \hbox (badness 10000) in paragraph at lines 326--331
+warning: appendici/c_verifiche:331: Overfull \hbox (138.64154pt too wide) in paragraph at lines 326--331
+warning: appendici/c_verifiche:336: Underfull \hbox (badness 10000) in paragraph at lines 336--336
+warning: appendici/c_verifiche:336: Underfull \hbox (badness 10000) in paragraph at lines 336--336
+warning: appendici/c_verifiche:340: Underfull \hbox (badness 10000) in paragraph at lines 337--340
+warning: appendici/c_verifiche:340: Overfull \hbox (75.40547pt too wide) in paragraph at lines 337--340
+warning: appendici/c_verifiche:344: Underfull \hbox (badness 10000) in paragraph at lines 344--344
+warning: appendici/c_verifiche:350: Underfull \hbox (badness 10000) in paragraph at lines 345--350
+warning: appendici/c_verifiche:350: Overfull \hbox (167.38521pt too wide) in paragraph at lines 345--350
+warning: appendici/c_verifiche:350: Underfull \hbox (badness 4266) in paragraph at lines 345--350
+warning: appendici/c_verifiche:350: Underfull \hbox (badness 10000) in paragraph at lines 345--350
+warning: appendici/c_verifiche:350: Overfull \hbox (115.6466pt too wide) in paragraph at lines 345--350
+warning: appendici/c_verifiche:350: Underfull \hbox (badness 10000) in paragraph at lines 345--350
+warning: appendici/c_verifiche:350: Underfull \hbox (badness 10000) in paragraph at lines 345--350
+warning: appendici/c_verifiche:350: Overfull \hbox (144.39027pt too wide) in paragraph at lines 345--350
+warning: appendici/c_verifiche:360: Underfull \hbox (badness 2556) in paragraph at lines 356--360
+note: Rerunning TeX because "main.aux" changed ...
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: capitoli/4_testing:30: Overfull \hbox (47.33505pt too wide) in paragraph at lines 26--30
+warning: capitoli/4_testing:103: Underfull \hbox (badness 2573) in paragraph at lines 95--103
+warning: capitoli/4_testing:103: Underfull \hbox (badness 1325) in paragraph at lines 95--103
+warning: capitoli/4_testing:103: Overfull \hbox (51.10614pt too wide) in paragraph at lines 95--103
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: appendici/c_verifiche:23: Underfull \hbox (badness 10000) in paragraph at lines 16--23
+warning: appendici/c_verifiche:23: Underfull \hbox (badness 1902) in paragraph at lines 16--23
+warning: appendici/c_verifiche:35: Underfull \hbox (badness 2608) in paragraph at lines 25--35
+warning: appendici/c_verifiche:35: Underfull \hbox (badness 10000) in paragraph at lines 25--35
+warning: appendici/c_verifiche:35: Underfull \hbox (badness 1931) in paragraph at lines 25--35
+warning: appendici/c_verifiche:44: Overfull \hbox (86.15381pt too wide) in paragraph at lines 36--44
+warning: appendici/c_verifiche:65: Underfull \hbox (badness 8170) in paragraph at lines 54--65
+warning: appendici/c_verifiche:65: Underfull \hbox (badness 10000) in paragraph at lines 54--65
+warning: appendici/c_verifiche:65: Underfull \hbox (badness 2608) in paragraph at lines 54--65
+warning: appendici/c_verifiche:91: Underfull \hbox (badness 10000) in paragraph at lines 80--91
+warning: appendici/c_verifiche:91: Underfull \hbox (badness 1668) in paragraph at lines 80--91
+warning: appendici/c_verifiche:91: Underfull \hbox (badness 1097) in paragraph at lines 80--91
+warning: appendici/c_verifiche:109: Underfull \hbox (badness 6575) in paragraph at lines 101--109
+warning: appendici/c_verifiche:123: Underfull \hbox (badness 10000) in paragraph at lines 123--123
+warning: appendici/c_verifiche:126: Underfull \hbox (badness 10000) in paragraph at lines 126--126
+warning: appendici/c_verifiche:130: Underfull \hbox (badness 10000) in paragraph at lines 130--130
+warning: appendici/c_verifiche:135: Underfull \hbox (badness 10000) in paragraph at lines 131--135
+warning: appendici/c_verifiche:135: Overfull \hbox (92.65167pt too wide) in paragraph at lines 131--135
+warning: appendici/c_verifiche:135: Underfull \hbox (badness 10000) in paragraph at lines 131--135
+warning: appendici/c_verifiche:135: Underfull \hbox (badness 10000) in paragraph at lines 131--135
+warning: appendici/c_verifiche:135: Overfull \hbox (138.64154pt too wide) in paragraph at lines 131--135
+warning: appendici/c_verifiche:135: Underfull \hbox (badness 2875) in paragraph at lines 131--135
+warning: appendici/c_verifiche:135: Underfull \hbox (badness 10000) in paragraph at lines 131--135
+warning: appendici/c_verifiche:135: Overfull \hbox (58.15927pt too wide) in paragraph at lines 131--135
+warning: appendici/c_verifiche:140: Underfull \hbox (badness 10000) in paragraph at lines 140--140
+warning: appendici/c_verifiche:146: Underfull \hbox (badness 10000) in paragraph at lines 141--146
+warning: appendici/c_verifiche:146: Overfull \hbox (127.14407pt too wide) in paragraph at lines 141--146
+warning: appendici/c_verifiche:146: Underfull \hbox (badness 10000) in paragraph at lines 141--146
+warning: appendici/c_verifiche:146: Underfull \hbox (badness 10000) in paragraph at lines 141--146
+warning: appendici/c_verifiche:146: Underfull \hbox (badness 10000) in paragraph at lines 141--146
+warning: appendici/c_verifiche:146: Overfull \hbox (132.8928pt too wide) in paragraph at lines 141--146
+warning: appendici/c_verifiche:146: Underfull \hbox (badness 6348) in paragraph at lines 141--146
+warning: appendici/c_verifiche:146: Underfull \hbox (badness 10000) in paragraph at lines 141--146
+warning: appendici/c_verifiche:146: Overfull \hbox (115.6466pt too wide) in paragraph at lines 141--146
+warning: appendici/c_verifiche:150: Underfull \hbox (badness 10000) in paragraph at lines 147--150
+warning: appendici/c_verifiche:150: Underfull \hbox (badness 3690) in paragraph at lines 147--150
+warning: appendici/c_verifiche:150: Underfull \hbox (badness 10000) in paragraph at lines 147--150
+warning: appendici/c_verifiche:150: Underfull \hbox (badness 10000) in paragraph at lines 147--150
+warning: appendici/c_verifiche:150: Overfull \hbox (172.55211pt too wide) in paragraph at lines 147--150
+warning: appendici/c_verifiche:150: Underfull \hbox (badness 2875) in paragraph at lines 147--150
+warning: appendici/c_verifiche:151: Underfull \hbox (badness 10000) in paragraph at lines 151--151
+warning: appendici/c_verifiche:156: Underfull \hbox (badness 10000) in paragraph at lines 152--156
+warning: appendici/c_verifiche:156: Overfull \hbox (118.68825pt too wide) in paragraph at lines 152--156
+warning: appendici/c_verifiche:156: Underfull \hbox (badness 6675) in paragraph at lines 152--156
+warning: appendici/c_verifiche:156: Overfull \hbox (0.67194pt too wide) in paragraph at lines 152--156
+warning: appendici/c_verifiche:160: Underfull \hbox (badness 10000) in paragraph at lines 157--160
+warning: appendici/c_verifiche:160: Underfull \hbox (badness 10000) in paragraph at lines 157--160
+warning: appendici/c_verifiche:160: Underfull \hbox (badness 10000) in paragraph at lines 157--160
+warning: appendici/c_verifiche:160: Overfull \hbox (138.05971pt too wide) in paragraph at lines 157--160
+warning: appendici/c_verifiche:160: Underfull \hbox (badness 1286) in paragraph at lines 157--160
+warning: appendici/c_verifiche:160: Underfull \hbox (badness 1546) in paragraph at lines 157--160
+warning: appendici/c_verifiche:160: Underfull \hbox (badness 3780) in paragraph at lines 157--160
+warning: appendici/c_verifiche:160: Underfull \hbox (badness 5417) in paragraph at lines 157--160
+warning: appendici/c_verifiche:161: Underfull \hbox (badness 10000) in paragraph at lines 161--161
+warning: appendici/c_verifiche:161: Underfull \hbox (badness 10000) in paragraph at lines 161--161
+warning: appendici/c_verifiche:167: Underfull \hbox (badness 10000) in paragraph at lines 162--167
+warning: appendici/c_verifiche:167: Overfull \hbox (0.67194pt too wide) in paragraph at lines 162--167
+warning: appendici/c_verifiche:167: Underfull \hbox (badness 10000) in paragraph at lines 162--167
+warning: appendici/c_verifiche:167: Underfull \hbox (badness 10000) in paragraph at lines 162--167
+warning: appendici/c_verifiche:167: Overfull \hbox (155.88774pt too wide) in paragraph at lines 162--167
+warning: appendici/c_verifiche:167: Underfull \hbox (badness 10000) in paragraph at lines 162--167
+warning: appendici/c_verifiche:167: Underfull \hbox (badness 10000) in paragraph at lines 162--167
+warning: appendici/c_verifiche:167: Overfull \hbox (35.16434pt too wide) in paragraph at lines 162--167
+warning: appendici/c_verifiche:167: Underfull \hbox (badness 3579) in paragraph at lines 162--167
+warning: appendici/c_verifiche:173: Underfull \hbox (badness 10000) in paragraph at lines 173--173
+warning: appendici/c_verifiche:173: Underfull \hbox (badness 10000) in paragraph at lines 173--173
+warning: appendici/c_verifiche:179: Underfull \hbox (badness 10000) in paragraph at lines 174--179
+warning: appendici/c_verifiche:179: Overfull \hbox (127.14407pt too wide) in paragraph at lines 174--179
+warning: appendici/c_verifiche:179: Underfull \hbox (badness 10000) in paragraph at lines 174--179
+warning: appendici/c_verifiche:179: Overfull \hbox (132.8928pt too wide) in paragraph at lines 174--179
+warning: appendici/c_verifiche:179: Underfull \hbox (badness 10000) in paragraph at lines 174--179
+warning: appendici/c_verifiche:179: Underfull \hbox (badness 10000) in paragraph at lines 174--179
+warning: appendici/c_verifiche:179: Overfull \hbox (35.16434pt too wide) in paragraph at lines 174--179
+warning: appendici/c_verifiche:179: Underfull \hbox (badness 2126) in paragraph at lines 174--179
+warning: appendici/c_verifiche:184: Underfull \hbox (badness 10000) in paragraph at lines 184--184
+warning: appendici/c_verifiche:188: Underfull \hbox (badness 10000) in paragraph at lines 185--188
+warning: appendici/c_verifiche:188: Overfull \hbox (86.90294pt too wide) in paragraph at lines 185--188
+warning: appendici/c_verifiche:188: Overfull \hbox (144.39027pt too wide) in paragraph at lines 185--188
+warning: appendici/c_verifiche:188: Underfull \hbox (badness 10000) in paragraph at lines 185--188
+warning: appendici/c_verifiche:188: Overfull \hbox (86.90294pt too wide) in paragraph at lines 185--188
+warning: appendici/c_verifiche:193: Underfull \hbox (badness 1762) in paragraph at lines 189--193
+warning: appendici/c_verifiche:193: Underfull \hbox (badness 10000) in paragraph at lines 189--193
+warning: appendici/c_verifiche:193: Underfull \hbox (badness 3977) in paragraph at lines 189--193
+warning: appendici/c_verifiche:193: Underfull \hbox (badness 2903) in paragraph at lines 189--193
+warning: appendici/c_verifiche:193: Overfull \hbox (166.80338pt too wide) in paragraph at lines 189--193
+warning: appendici/c_verifiche:198: Underfull \hbox (badness 10000) in paragraph at lines 195--198
+warning: appendici/c_verifiche:198: Underfull \hbox (badness 10000) in paragraph at lines 195--198
+warning: appendici/c_verifiche:198: Underfull \hbox (badness 10000) in paragraph at lines 195--198
+warning: appendici/c_verifiche:198: Underfull \hbox (badness 10000) in paragraph at lines 195--198
+warning: appendici/c_verifiche:198: Overfull \hbox (63.908pt too wide) in paragraph at lines 195--198
+warning: appendici/c_verifiche:203: Underfull \hbox (badness 10000) in paragraph at lines 203--203
+warning: appendici/c_verifiche:209: Underfull \hbox (badness 10000) in paragraph at lines 204--209
+warning: appendici/c_verifiche:209: Overfull \hbox (92.65167pt too wide) in paragraph at lines 204--209
+warning: appendici/c_verifiche:209: Underfull \hbox (badness 10000) in paragraph at lines 204--209
+warning: appendici/c_verifiche:209: Underfull \hbox (badness 10000) in paragraph at lines 204--209
+warning: appendici/c_verifiche:209: Overfull \hbox (138.64154pt too wide) in paragraph at lines 204--209
+warning: appendici/c_verifiche:213: Underfull \hbox (badness 5064) in paragraph at lines 210--213
+warning: appendici/c_verifiche:214: Underfull \hbox (badness 10000) in paragraph at lines 214--214
+warning: appendici/c_verifiche:219: Underfull \hbox (badness 10000) in paragraph at lines 215--219
+warning: appendici/c_verifiche:219: Overfull \hbox (52.41054pt too wide) in paragraph at lines 215--219
+warning: appendici/c_verifiche:219: Underfull \hbox (badness 10000) in paragraph at lines 215--219
+warning: appendici/c_verifiche:219: Overfull \hbox (236.37001pt too wide) in paragraph at lines 215--219
+warning: appendici/c_verifiche:219: Underfull \hbox (badness 10000) in paragraph at lines 215--219
+warning: appendici/c_verifiche:219: Overfull \hbox (115.6466pt too wide) in paragraph at lines 215--219
+warning: appendici/c_verifiche:219: Underfull \hbox (badness 4013) in paragraph at lines 215--219
+warning: appendici/c_verifiche:223: Underfull \hbox (badness 10000) in paragraph at lines 220--223
+warning: appendici/c_verifiche:223: Overfull \hbox (115.06477pt too wide) in paragraph at lines 220--223
+warning: appendici/c_verifiche:223: Underfull \hbox (badness 3701) in paragraph at lines 220--223
+warning: appendici/c_verifiche:223: Underfull \hbox (badness 3118) in paragraph at lines 220--223
+warning: appendici/c_verifiche:223: Underfull \hbox (badness 10000) in paragraph at lines 220--223
+warning: appendici/c_verifiche:223: Underfull \hbox (badness 2229) in paragraph at lines 220--223
+warning: appendici/c_verifiche:224: Underfull \hbox (badness 10000) in paragraph at lines 224--224
+warning: appendici/c_verifiche:229: Underfull \hbox (badness 10000) in paragraph at lines 225--229
+warning: appendici/c_verifiche:229: Overfull \hbox (161.63647pt too wide) in paragraph at lines 225--229
+warning: appendici/c_verifiche:229: Underfull \hbox (badness 10000) in paragraph at lines 225--229
+warning: appendici/c_verifiche:229: Underfull \hbox (badness 10000) in paragraph at lines 225--229
+warning: appendici/c_verifiche:229: Overfull \hbox (35.16434pt too wide) in paragraph at lines 225--229
+warning: appendici/c_verifiche:229: Underfull \hbox (badness 10000) in paragraph at lines 225--229
+warning: appendici/c_verifiche:229: Underfull \hbox (badness 10000) in paragraph at lines 225--229
+warning: appendici/c_verifiche:229: Overfull \hbox (92.65167pt too wide) in paragraph at lines 225--229
+warning: appendici/c_verifiche:229: Underfull \hbox (badness 10000) in paragraph at lines 225--229
+warning: appendici/c_verifiche:234: Underfull \hbox (badness 10000) in paragraph at lines 234--234
+warning: appendici/c_verifiche:238: Underfull \hbox (badness 10000) in paragraph at lines 235--238
+warning: appendici/c_verifiche:238: Overfull \hbox (127.14407pt too wide) in paragraph at lines 235--238
+warning: appendici/c_verifiche:238: Underfull \hbox (badness 10000) in paragraph at lines 235--238
+warning: appendici/c_verifiche:238: Underfull \hbox (badness 10000) in paragraph at lines 235--238
+warning: appendici/c_verifiche:238: Underfull \hbox (badness 10000) in paragraph at lines 235--238
+warning: appendici/c_verifiche:238: Underfull \hbox (badness 3281) in paragraph at lines 235--238
+warning: appendici/c_verifiche:238: Overfull \hbox (92.65167pt too wide) in paragraph at lines 235--238
+warning: appendici/c_verifiche:244: Underfull \hbox (badness 10000) in paragraph at lines 244--244
+warning: appendici/c_verifiche:249: Underfull \hbox (badness 10000) in paragraph at lines 245--249
+warning: appendici/c_verifiche:249: Underfull \hbox (badness 10000) in paragraph at lines 245--249
+warning: appendici/c_verifiche:249: Underfull \hbox (badness 1859) in paragraph at lines 245--249
+warning: appendici/c_verifiche:249: Underfull \hbox (badness 6268) in paragraph at lines 245--249
+warning: appendici/c_verifiche:249: Underfull \hbox (badness 5119) in paragraph at lines 245--249
+warning: appendici/c_verifiche:249: Underfull \hbox (badness 10000) in paragraph at lines 245--249
+warning: appendici/c_verifiche:258: Underfull \hbox (badness 1694) in paragraph at lines 255--258
+warning: appendici/c_verifiche:261: Underfull \hbox (badness 10000) in paragraph at lines 259--261
+warning: appendici/c_verifiche:261: Underfull \hbox (badness 2080) in paragraph at lines 259--261
+warning: appendici/c_verifiche:262: Underfull \hbox (badness 10000) in paragraph at lines 262--262
+warning: appendici/c_verifiche:268: Underfull \hbox (badness 10000) in paragraph at lines 263--268
+warning: appendici/c_verifiche:268: Underfull \hbox (badness 10000) in paragraph at lines 263--268
+warning: appendici/c_verifiche:268: Underfull \hbox (badness 10000) in paragraph at lines 263--268
+warning: appendici/c_verifiche:268: Underfull \hbox (badness 10000) in paragraph at lines 263--268
+warning: appendici/c_verifiche:268: Underfull \hbox (badness 10000) in paragraph at lines 263--268
+warning: appendici/c_verifiche:268: Overfull \hbox (0.67194pt too wide) in paragraph at lines 263--268
+warning: appendici/c_verifiche:268: Underfull \hbox (badness 10000) in paragraph at lines 263--268
+warning: appendici/c_verifiche:268: Underfull \hbox (badness 4518) in paragraph at lines 263--268
+warning: appendici/c_verifiche:268: Underfull \hbox (badness 10000) in paragraph at lines 263--268
+warning: appendici/c_verifiche:268: Underfull \hbox (badness 2608) in paragraph at lines 263--268
+warning: appendici/c_verifiche:273: Underfull \hbox (badness 2591) in paragraph at lines 269--273
+warning: appendici/c_verifiche:273: Underfull \hbox (badness 1127) in paragraph at lines 269--273
+warning: appendici/c_verifiche:273: Underfull \hbox (badness 3068) in paragraph at lines 269--273
+warning: appendici/c_verifiche:274: Underfull \hbox (badness 10000) in paragraph at lines 274--274
+warning: appendici/c_verifiche:280: Underfull \hbox (badness 10000) in paragraph at lines 275--280
+warning: appendici/c_verifiche:280: Overfull \hbox (58.15927pt too wide) in paragraph at lines 275--280
+warning: appendici/c_verifiche:280: Overfull \hbox (65.45934pt too wide) in paragraph at lines 275--280
+warning: appendici/c_verifiche:280: Underfull \hbox (badness 10000) in paragraph at lines 275--280
+warning: appendici/c_verifiche:280: Underfull \hbox (badness 10000) in paragraph at lines 275--280
+warning: appendici/c_verifiche:280: Overfull \hbox (201.87761pt too wide) in paragraph at lines 275--280
+warning: appendici/c_verifiche:280: Underfull \hbox (badness 10000) in paragraph at lines 275--280
+warning: appendici/c_verifiche:280: Underfull \hbox (badness 10000) in paragraph at lines 275--280
+warning: appendici/c_verifiche:280: Overfull \hbox (109.89787pt too wide) in paragraph at lines 275--280
+warning: appendici/c_verifiche:280: Underfull \hbox (badness 1303) in paragraph at lines 275--280
+warning: appendici/c_verifiche:284: Underfull \hbox (badness 1062) in paragraph at lines 281--284
+warning: appendici/c_verifiche:284: Underfull \hbox (badness 1424) in paragraph at lines 281--284
+warning: appendici/c_verifiche:285: Underfull \hbox (badness 10000) in paragraph at lines 285--285
+warning: appendici/c_verifiche:289: Underfull \hbox (badness 10000) in paragraph at lines 286--289
+warning: appendici/c_verifiche:289: Overfull \hbox (6.42067pt too wide) in paragraph at lines 286--289
+warning: appendici/c_verifiche:289: Underfull \hbox (badness 10000) in paragraph at lines 286--289
+warning: appendici/c_verifiche:289: Underfull \hbox (badness 10000) in paragraph at lines 286--289
+warning: appendici/c_verifiche:289: Underfull \hbox (badness 10000) in paragraph at lines 286--289
+warning: appendici/c_verifiche:289: Underfull \hbox (badness 10000) in paragraph at lines 286--289
+warning: appendici/c_verifiche:307: Underfull \hbox (badness 10000) in paragraph at lines 307--307
+warning: appendici/c_verifiche:307: Underfull \hbox (badness 7613) in paragraph at lines 307--307
+warning: appendici/c_verifiche:307: Underfull \hbox (badness 10000) in paragraph at lines 307--307
+warning: appendici/c_verifiche:312: Overfull \hbox (6.42067pt too wide) in paragraph at lines 308--312
+warning: appendici/c_verifiche:312: Overfull \hbox (81.1542pt too wide) in paragraph at lines 308--312
+warning: appendici/c_verifiche:312: Underfull \hbox (badness 10000) in paragraph at lines 308--312
+warning: appendici/c_verifiche:312: Underfull \hbox (badness 10000) in paragraph at lines 308--312
+warning: appendici/c_verifiche:312: Underfull \hbox (badness 7740) in paragraph at lines 308--312
+warning: appendici/c_verifiche:312: Underfull \hbox (badness 2027) in paragraph at lines 308--312
+warning: appendici/c_verifiche:312: Overfull \hbox (150.139pt too wide) in paragraph at lines 308--312
+warning: appendici/c_verifiche:312: Underfull \hbox (badness 1796) in paragraph at lines 308--312
+warning: appendici/c_verifiche:316: Underfull \hbox (badness 10000) in paragraph at lines 316--316
+warning: appendici/c_verifiche:321: Underfull \hbox (badness 10000) in paragraph at lines 317--321
+warning: appendici/c_verifiche:321: Overfull \hbox (23.66687pt too wide) in paragraph at lines 317--321
+warning: appendici/c_verifiche:321: Underfull \hbox (badness 10000) in paragraph at lines 317--321
+warning: appendici/c_verifiche:321: Overfull \hbox (52.41054pt too wide) in paragraph at lines 317--321
+warning: appendici/c_verifiche:321: Underfull \hbox (badness 10000) in paragraph at lines 317--321
+warning: appendici/c_verifiche:321: Underfull \hbox (badness 10000) in paragraph at lines 317--321
+warning: appendici/c_verifiche:321: Underfull \hbox (badness 10000) in paragraph at lines 317--321
+warning: appendici/c_verifiche:321: Underfull \hbox (badness 3646) in paragraph at lines 317--321
+warning: appendici/c_verifiche:325: Underfull \hbox (badness 10000) in paragraph at lines 325--325
+warning: appendici/c_verifiche:325: Underfull \hbox (badness 10000) in paragraph at lines 325--325
+warning: appendici/c_verifiche:331: Underfull \hbox (badness 10000) in paragraph at lines 326--331
+warning: appendici/c_verifiche:331: Underfull \hbox (badness 10000) in paragraph at lines 326--331
+warning: appendici/c_verifiche:331: Underfull \hbox (badness 10000) in paragraph at lines 326--331
+warning: appendici/c_verifiche:331: Underfull \hbox (badness 10000) in paragraph at lines 326--331
+warning: appendici/c_verifiche:331: Underfull \hbox (badness 10000) in paragraph at lines 326--331
+warning: appendici/c_verifiche:331: Underfull \hbox (badness 10000) in paragraph at lines 326--331
+warning: appendici/c_verifiche:331: Underfull \hbox (badness 4505) in paragraph at lines 326--331
+warning: appendici/c_verifiche:331: Underfull \hbox (badness 10000) in paragraph at lines 326--331
+warning: appendici/c_verifiche:331: Underfull \hbox (badness 10000) in paragraph at lines 326--331
+warning: appendici/c_verifiche:331: Overfull \hbox (138.64154pt too wide) in paragraph at lines 326--331
+warning: appendici/c_verifiche:336: Underfull \hbox (badness 10000) in paragraph at lines 336--336
+warning: appendici/c_verifiche:336: Underfull \hbox (badness 10000) in paragraph at lines 336--336
+warning: appendici/c_verifiche:340: Underfull \hbox (badness 10000) in paragraph at lines 337--340
+warning: appendici/c_verifiche:340: Overfull \hbox (75.40547pt too wide) in paragraph at lines 337--340
+warning: appendici/c_verifiche:344: Underfull \hbox (badness 10000) in paragraph at lines 344--344
+warning: appendici/c_verifiche:350: Underfull \hbox (badness 10000) in paragraph at lines 345--350
+warning: appendici/c_verifiche:350: Overfull \hbox (167.38521pt too wide) in paragraph at lines 345--350
+warning: appendici/c_verifiche:350: Underfull \hbox (badness 4266) in paragraph at lines 345--350
+warning: appendici/c_verifiche:350: Underfull \hbox (badness 10000) in paragraph at lines 345--350
+warning: appendici/c_verifiche:350: Overfull \hbox (115.6466pt too wide) in paragraph at lines 345--350
+warning: appendici/c_verifiche:350: Underfull \hbox (badness 10000) in paragraph at lines 345--350
+warning: appendici/c_verifiche:350: Underfull \hbox (badness 10000) in paragraph at lines 345--350
+warning: appendici/c_verifiche:350: Overfull \hbox (144.39027pt too wide) in paragraph at lines 345--350
+warning: appendici/c_verifiche:360: Underfull \hbox (badness 2556) in paragraph at lines 356--360
+warning: warnings were issued by the TeX engine; use --print and/or --keep-logs for details.
+note: Running xdvipdfmx ...
+note: downloading lmbx10.pfb
+note: downloading lmri10.pfb
+note: Writing `build/main.log` (49.0263671875 KiB)
+note: Writing `build/main.toc` (9.7060546875 KiB)
+note: Writing `build/main.out` (15.244140625 KiB)
+note: Writing `build/main.aux` (42.814453125 KiB)
+note: Writing `build/main.pdf` (2.2376842498779297 MiB)

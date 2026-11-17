@@ -1,0 +1,62 @@
+{
+  "status": "PASS",
+  "pdf_sha256": "79536e7bd909b03e433d16c5b2fccd0f18269e432436463e30e75cb40a954b5e",
+  "pages": 151,
+  "ranges": {
+    "Introduzione": [
+      5,
+      7
+    ],
+    "Analisi dei requisiti e progettazione": [
+      8,
+      82
+    ],
+    "Implementazione": [
+      83,
+      105
+    ],
+    "Testing": [
+      106,
+      118
+    ],
+    "Uso dell'AI": [
+      119,
+      121
+    ],
+    "Schede aggiuntive dei casi d'uso": [
+      122,
+      129
+    ],
+    "Tavole delle classi": [
+      130,
+      142
+    ],
+    "Matrice delle verifiche": [
+      143,
+      151
+    ]
+  },
+  "A3_pages": [
+    9,
+    37,
+    42,
+    44,
+    46,
+    48,
+    50,
+    52,
+    61,
+    66,
+    71,
+    72
+  ],
+  "resolved_refs": 82,
+  "internal_links": 238,
+  "embedded_fonts": 107,
+  "original_entries": 102,
+  "original_fragments": 23,
+  "current_blocks": 42,
+  "diagrams": 43,
+  "residual_tex_messages": 5,
+  "visual_inspection": "Verbale separato: il rendering e questi assert non dimostrano osservazione."
+}

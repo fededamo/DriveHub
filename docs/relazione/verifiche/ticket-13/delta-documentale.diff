@@ -1,0 +1,438 @@
+--- baseline/docs/relazione/LEGGIMI-consegna.md
++++ docs/relazione/LEGGIMI-consegna.md
+@@ -1,18 +1,19 @@
+-# DriveHub — sorgenti per la revisione finale degli autori
++# DriveHub — sorgenti per la revisione degli autori
+ 
+-15 novembre 2026. Relazione completa, capitoli 1–5 e appendici A–C,
+-con le tre tavole originali degli autori corrette e integrate.
+-Il pacchetto è proposto agli autori per la revisione finale: non ne attesta
+-l'approvazione e non autorizza invio al docente o pubblicazione.
++17 novembre 2026. Pacchetto autonomo del riallineamento documentale 09–13:
++capitoli 1–5 e appendici A–C. PDF e sorgenti sono proposti agli autori;
++chiusura tecnica e review assistite non ne attestano l'approvazione.
++Nessun invio al docente o pubblicazione è stato effettuato.
+ 
+ ## Compilare lo ZIP estratto
+ 
+-Estrarre tutto lo ZIP in una directory e aprire un terminale in quella
+-directory, dove si trova `main.tex`. Occorre una distribuzione LaTeX con
+-XeLaTeX, lingua italiana e pacchetti `geometry`, `graphicx`, `enumitem`,
+-`xcolor`, `listings`, `longtable`, `array`, `hyperref`, `pdfpages` e font Latin Modern.
+-Nel ticket 08 è stata verificata TeX Live 2025/Debian, XeTeX 0.999997,
+-con pacchetti Ubuntu `2025.20260124-1`.
++Estrarre tutto `sorgenti-relazione.zip` in una directory pulita e aprire
++un terminale dove si trova `main.tex`. Occorrono XeLaTeX, lingua italiana,
++font Latin Modern (anche OpenType) e pacchetti `geometry`, `graphicx`,
++`pdfpages`, `enumitem`, `xcolor`, `listings`, `longtable`, `array`, `hyperref`.
++Il ticket 13 verifica XeTeX 0.999997, TeX Live 2025/Debian, pacchetti
++TeX Live `2025.20260124-1`, Latin Modern 2.005. Versioni, risorse effettive,
++font incorporati e impronte sono nelle verifiche 13 del repository.
+ 
+ ```bash
+ mkdir -p build
+@@ -21,38 +22,57 @@
+ xelatex -no-shell-escape -halt-on-error -interaction=nonstopmode -recorder -output-directory=build main.tex
+ ```
+ 
+-Il risultato è `build/main.pdf`. I passaggi successivi al primo stabilizzano
+-indice, numeri e riferimenti; leggere gli avvisi del log. Nessun accesso a
+-Java, Maven, database o servizi applicativi è necessario. Tutti gli input
+-editoriali sono inclusi: 14 file LaTeX, 35 figure PDF con i rispettivi
+-35 sorgenti draw.io modificabili e 16 screenshot PNG. Le tre tavole degli
+-autori occupano quattro fogli A3 orizzontali (l'ER comprende la legenda);
+-le altre pagine restano A4. I frammenti di codice
+-sono incorporati nei sorgenti LaTeX.
++Il risultato è `build/main.pdf`. Gli ultimi passaggi stabilizzano indice,
++etichette e riferimenti: confrontare anche `main.toc`, `main.aux` e `main.out`
++e leggere tutti i messaggi. Restano cinque messaggi preesistenti
++`ignored error: Infinite glue shrinkage found in box being split` nelle
++tabelle dell'appendice C. Le pagine coinvolte sono state osservate nella
++nuova composizione: nessun difetto visivo riscontrato, messaggi non eliminati.
++Con una diversa toolchain occorre ricontrollare impaginazione e diagnostica.
+ 
+-Per modificare una tavola aprire il `.drawio` e aggiornare anche il relativo
+-`.drawio.pdf`, mantenendo il nome usato dal LaTeX. La compilazione non richiede
+-draw.io perché usa le esportazioni incluse. Le copie corrette degli autori
+-sono `casi-uso-autori`, `navigazione-autori` e `database-er-autori`.
+-Per stampare le quattro pagine A3 mantenere il formato originale o usare
+-il ridimensionamento del visualizzatore, tenendo conto della leggibilità.
++## Materiali distribuiti
++
++Lo ZIP contiene 118 file: 15 sorgenti LaTeX, 43 nativi `.drawio`,
++43 esportazioni PDF, 16 screenshot PNG e queste istruzioni. Sono inclusi
++anche i dettagli di diagramma conservati; tutti gli input editoriali del
++recorder risultano nell'estrazione. I frammenti sono incorporati nel LaTeX.
++Non servono Java, Maven, database, il repository applicativo o file editoriali
++esterni. Toolchain e risorse TeX sono prerequisiti esterni espliciti;
++nessuna cache o directory `/tmp` preesistente è richiesta all'autore.
++
++Le undici tavole d'insieme riallineate occupano dodici pagine A3:
++nove orizzontali e tre sequenze verticali; ER e legenda occupano due fogli.
++Gli altri fogli sono A4. Per la stampa mantenere i formati originali,
++valutando la leggibilità se si ridimensiona. Ogni esportazione conserva
++il nativo come allegato o XML nel Subject; i `.drawio` autonomi restano
++le copie primarie modificabili. Per modificarli usare draw.io e aggiornare
++anche l'esportazione con lo stesso nome. La compilazione usa i PDF inclusi
++e non richiede draw.io.
++
++Sono esclusi PDF di consegna (fornito separatamente), intermedi `build`,
++verifiche e ZIP storici, software/test, SQL/dati, toolchain, cache e backup.
++Le figure originali degli autori restano nel repository: il pacchetto
++include i corrispondenti nativi adattati e le esportazioni verificate.
+ 
+ ## Provenienza e limiti
+ 
+-La compilazione del pacchetto estratto è stata eseguita separatamente da
+-quella nel repository; gli input registrati non dipendono da percorsi
+-editoriali esterni. Distribuzione, font ed eseguibili sono prerequisiti,
+-non contenuti dello ZIP. Non si garantisce identità binaria o impaginazione
+-identica fra versioni dei motori e dei pacchetti. Tectonic 0.17.0 era stato
+-usato nei ticket precedenti; non è stato nuovamente eseguito nel ticket 08.
+-Windows e macOS non sono stati verificati.
++Il PDF ricompilato dal presente ZIP è confrontato con quello consegnato
++per testo, paginazione e pixel di tutte le pagine. Differenze binarie possono
++dipendere da date, identificativi PDF e percorsi registrati dal compilatore;
++non si garantisce identità binaria o impaginazione fra versioni diverse.
++Le istruzioni generiche sopra richiedono una distribuzione TeX configurata;
++la prova locale usa una toolchain estratta, senza installazione di sistema.
++Windows, macOS, stampa e accessibilità PDF con screen reader non verificati.
+ 
+-Le citazioni a sorgenti, ADR ed evidenze indicano percorsi nel repository
+-DriveHub, HEAD `61ce18ae1d4e0458b63e970b793b0b3a634a3adf`, e richiedono quel
+-repository per approfondire le fonti; non sono input necessari alla compilazione.
+-Le verifiche del precedente pacchetto restano conservate in
+-`docs/relazione/verifiche/ticket-08/`. L'integrazione delle tavole, i nuovi
+-controlli e il pacchetto corrente sono in `docs/relazione/verifiche/tavole-autori/`.
+-Le prove applicative citate restano storiche. I limiti su importi zero,
+-unicità delle identità, aggiornamenti UI dopo commit e riproduzione degli
+-harness storici restano dichiarati e non sono corretti da questo pacchetto.
++Le citazioni di codice, ADR e prove storiche sono percorsi nel repository
++DriveHub, HEAD `61ce18ae1d4e0458b63e970b793b0b3a634a3adf`: servono per
++approfondire le fonti, non come input di compilazione. S0 è lettura statica;
++E1/E2/E3 restano sessioni applicative storiche distinte. Non sono stati
++rieseguiti test, harness, avvii UI o accessi DB. Restano i limiti su movimenti
++zero, identità, aggiornamenti dopo commit e riproduzione degli harness.
++
++Le verifiche del pacchetto corrente, i log della compilazione da estrazione,
++la corrispondenza consolidata, il verbale visivo e le due review indipendenti
++sono in `docs/relazione/verifiche/ticket-13/`. Le impronte definitive di
++PDF e ZIP sono in `artefatti-finali.json` e `SHA256SUMS` di quella directory.
++I pacchetti dei ticket 07/08 e delle tavole del 15 novembre restano storici.
+--- baseline/docs/relazione/README.md
++++ docs/relazione/README.md
+@@ -1,6 +1,25 @@
+ # Relazione DriveHub
+ 
+-**17 novembre 2026 — ticket 09–12 conclusi tecnicamente; riallineamento ancora in corso.**
++**17 novembre 2026 — documento integrato di 151 pagine e ZIP autonomo aggiornato.**
++[PDF completo](relazione-drivehub.pdf),
++[sorgenti autonomi del ticket 13](verifiche/ticket-13/sorgenti-relazione.zip),
++[istruzioni di compilazione e consegna](LEGGIMI-consegna.md).
++L’estrazione dello ZIP è stata ricompilata realmente: tutte le 151 pagine
++coincidono per testo, formato e resa; [prova](verifiche/ticket-13/autonomia-pacchetto.json).
++Il ticket 13 conserva i capitoli conclusi e aggiorna il capitolo 5 sul
++riallineamento 09–13. [102 corrispondenze](verifiche/ticket-13/corrispondenza-102.md),
++[materiali censiti](verifiche/ticket-13/corrispondenza-materiali.md),
++[undici tavole](verifiche/ticket-13/tavole.md),
++[verbale di tutte le pagine](verifiche/ticket-13/controllo-visivo.md) e
++[verifiche integrate](verifiche/ticket-13/README.md).
++Le [review finali indipendenti Standards/Spec](verifiche/ticket-13/revisione.md)
++sono chiuse senza rilievi; il ticket 13 è **concluso tecnicamente (`done`)**.
++PDF e sorgenti sono proposti agli autori,
++senza dedurne approvazione. Nessun invio o pubblicazione.
++
++## Provenienza dei capitoli e stato alla chiusura del ticket 12
++
++La sezione conserva lo stato precedente all’integrazione del ticket 13.
+ Il capitolo 1 conserva il testo valido della prima stesura: riordinati soltanto
+ ambiente di esecuzione e processi aziendali per seguire l'originale.
+ [Confronto di ogni blocco e fonti](verifiche/ticket-09/confronto.md),
+@@ -55,7 +74,7 @@
+ Completamento tecnico e review assistite restano distinti dalla revisione
+ degli autori ancora da svolgere; nessun invio o pubblicazione.
+ 
+-- [Pacchetto sorgenti autonomo del 15 novembre (storico)](verifiche/tavole-autori/sorgenti-relazione.zip) e [istruzioni incluse](LEGGIMI-consegna.md)
++- [Pacchetto sorgenti autonomo del 15 novembre (storico, con le proprie istruzioni incluse)](verifiche/tavole-autori/sorgenti-relazione.zip)
+ - [Verifiche finali 08](verifiche/ticket-08/README.md), con matrice finale, osservazione di tutte le pagine e prova di compilazione dello ZIP estratto
+ 
+ - [PDF compilato](relazione-drivehub.pdf)
+@@ -101,9 +120,11 @@
+ seguire i tre passaggi nelle [istruzioni di consegna](LEGGIMI-consegna.md).
+ La compilazione non richiede il repository applicativo né contenuti editoriali
+ in `/tmp`. La prova nell'ambiente temporaneo, i prerequisiti e i limiti sono
+-registrati nelle verifiche 08; motore e risorse LaTeX restano prerequisiti esterni.
+-
+-Procedura Tectonic usata nei ticket 01–07, non rieseguita nel ticket 08:
++registrati nelle [verifiche 13](verifiche/ticket-13/README.md), con nuova
++estrazione e ricompilazione del pacchetto corrente; motore e risorse LaTeX
++restano prerequisiti esterni. Le verifiche 08 attestano il loro pacchetto storico.
++
++Procedura storica Tectonic usata nei ticket 01–07, non rieseguita nel 13:
+ 
+ Eseguire dalla directory `docs/relazione`. Con **Tectonic 0.17.0**, che gestisce
+ automaticamente i passaggi necessari per indice e riferimenti:
+@@ -128,11 +149,11 @@
+ essere aperto.
+ 
+ I sorgenti usano pacchetti LaTeX comuni (`babel` con italiano, `geometry`,
+-`graphicx`, `enumitem`, `xcolor`, `listings`, `longtable`, `array`, `hyperref`) e mantengono le convenzioni di
++`graphicx`, `pdfpages`, `enumitem`, `xcolor`, `listings`, `longtable`, `array`, `hyperref`) e mantengono le convenzioni di
+ `Relazione_SWE/main.tex`: classe `report`, A4, corpo 12 pt, margini di 2,5 cm,
+ frontespizio, indice in numeri romani e capitoli in numeri arabi. Il ramo per
+ `pdfminorversion` è condizionale per consentire anche il motore di Tectonic.
+-Il ticket 08 verifica anche la distribuzione XeLaTeX sopra indicata;
++Il ticket 13 verifica la distribuzione XeLaTeX sopra indicata sul pacchetto corrente;
+ identità binaria fra motori e funzionamento Windows/macOS non sono garantiti.
+ 
+ ## Materiali e perimetro
+--- baseline/docs/relazione/allineamento.md
++++ docs/relazione/allineamento.md
+@@ -5,7 +5,15 @@
+ con [confronto e review finali](verifiche/ticket-11/README.md). Il ticket 12 è concluso tecnicamente sul testing: quindici voci,
+ nove funzioni originali, quindici blocchi censiti e tre estratti iniziali
+ identici; [confronto, fonti, PDF e review](verifiche/ticket-12/README.md).
+-Resta il ticket 13; nessuna approvazione degli autori presunta.
++Il ticket 13 ha integrato e compilato il documento, osservato tutte le
++151 pagine e verificato lo ZIP mediante ricompilazione da estrazione;
++review finali Standards/Spec chiuse senza rilievi: ticket **done**.
++[Evidenze integrate](verifiche/ticket-13/README.md),
++[102 corrispondenze con intervalli](verifiche/ticket-13/corrispondenza-102.md)
++e [materiali censiti](verifiche/ticket-13/corrispondenza-materiali.md).
++La matrice conserva sotto il trattamento concordato il 16 novembre;
++la corrispondenza 13 ne attesta le destinazioni effettive e i limiti.
++Nessuna approvazione degli autori presunta.
+ 
+ Gli autori chiedono di rifare la relazione vecchia mantenendone tutti i contenuti, la struttura e l'ordine, riadattati esattamente all'implementazione attuale. La relazione di riferimento è quella effettivamente composta da [Relazione_SWE/main.tex](../../Relazione_SWE/main.tex). Ogni spiegazione, scheda, esempio, frammento, figura e tabella deve avere un corrispondente attuale: il riallineamento non si esaurisce nella coincidenza dei titoli o in una sintesi degli argomenti. Il riferimento tecnico resta il codice corrente.
+ 
+--- baseline/docs/relazione/capitoli/5_uso_ai.tex
++++ docs/relazione/capitoli/5_uso_ai.tex
+@@ -3,7 +3,8 @@
+ nei materiali conservati e ciò che tali materiali non permettono di stabilire.
+ È completo e proposto agli autori per revisione, senza attribuirne
+ l'approvazione. La matrice affermazioni--fonti e i controlli documentali sono
+-in \code{docs/relazione/verifiche/ticket-07/}.
++in \code{docs/relazione/verifiche/ticket-07/}; l'integrazione del
++riallineamento è documentata nelle verifiche del ticket~13.
+ 
+ \begingroup
+ \emergencystretch=6em
+@@ -102,10 +103,15 @@
+ umane. Per la relazione, le verifiche 05--06 documentano correzioni,
+ compilazione e ispezione del PDF; i capitoli sono stati proposti agli
+ autori e restano da loro rivedere. L'eventuale approvazione non viene
+-dedotta dal silenzio o dalla chiusura di un ticket.\footnote{\raggedright 
++dedotta dal silenzio o dalla chiusura di un ticket. Anche le review separate
++dei ticket documentali 09--12 chiudono valutazioni tecniche, comprese le
++correzioni ricontrollate, senza attestare una validazione degli autori.\footnote{\raggedright 
+ \code{docs/evidence/r03-prices/verification.md}, \emph{Revisione indipendente};
+ \code{docs/relazione/verifiche/ticket-05/revisione.md} e
+-\code{docs/relazione/verifiche/ticket-06/revisione.md}.}
++\code{docs/relazione/verifiche/ticket-06/revisione.md};
++\code{docs/relazione/verifiche/ticket-09/revisione.md},
++\code{ticket-10/revisione.md}, \code{ticket-11/revisione.md} e
++\code{ticket-12/revisione.md}, sotto la stessa directory delle verifiche.}
+ 
+ \section{Documentazione, diagrammi e limiti}
+ % AI-08
+@@ -143,6 +149,27 @@
+ all'AI la progettazione delle tavole originali. Le copie corrette e i
+ controlli sono conservati in \code{docs/relazione/verifiche/tavole-autori/}.
+ 
++% AI-11
++Su richiesta degli autori registrata nel piano il 16 novembre 2026,
++il riallineamento 09--13 conserva anche la scansione interna e la funzione
++espositiva dei materiali di \code{Relazione_SWE}. Codex ha confrontato
++le 102 voci e i 23 frammenti originali con spiegazioni, esempi e oracoli
++correnti; le sei schede principali sono complete nel corpo e le aggiuntive
++in A. Il ticket~10 documenta gli undici rifacimenti/adattamenti draw.io:
++quattro ripartono dai nativi degli autori, sette dai riferimenti visivi
++e PlantUML originali. Non si attribuiscono all'AI i disegni di partenza.
++Il ticket~13 riusa questi artefatti, integra il documento e verifica
++compilazione, tutte le pagine e autonomia dei sorgenti tramite estrazione
++e ricompilazione dello ZIP. Baseline, corrispondenze, log, verbale visivo
++e review separate identificano gli artefatti effettivamente controllati.
++Sono verifiche documentali: non nuove esecuzioni Java, test, harness o DB,
++né un'approvazione umana.\footnote{\raggedright
++\code{docs/relazione/piano.md}, \emph{Riallineamento richiesto dagli autori};
++\code{docs/relazione/allineamento.md};
++\code{docs/relazione/verifiche/ticket-10/tavole.md};
++\code{docs/relazione/verifiche/ticket-13/README.md} e
++\code{docs/relazione/verifiche/ticket-13/capitolo-5-fonti.md}.}
++
+ % AI-10
+ Le tracce non sono una cronologia completa delle conversazioni. Non
+ consentono di ricostruire prompt integrali, versioni dei modelli, tempi
+--- baseline/docs/relazione/diagrammi/README.md
++++ docs/relazione/diagrammi/README.md
+@@ -1,4 +1,12 @@
+ # Diagrammi della relazione
++
++Nel ticket 13 le undici tavole rifatte/riadattate del ticket 10 e le 32
++viste di dettaglio sono riusate intatte. Verificati nativi, export e fonti,
++con osservazione dei dodici fogli A3 e di tutte le pagine che li integrano:
++[tavole e provenienza](../verifiche/ticket-13/tavole.md),
++[43 coppie](../verifiche/ticket-13/diagrammi-43.json),
++[confronto con gli hash finali del 10](../verifiche/ticket-13/confronto-export-10.json).
++Nessuna nuova esportazione Desktop dichiarata; originali conservati.
+ 
+ ## Ticket 10 — undici tavole riallineate
+ 
+--- baseline/docs/relazione/indice.md
++++ docs/relazione/indice.md
+@@ -4,7 +4,13 @@
+ frammenti originali coperti e 27 estratti correnti verificati; [confronto e
+ review 11](verifiche/ticket-11/README.md). Il ticket 12 ha riallineato il testing nelle quindici voci originali:
+ [confronto, nove frammenti, fonti e review](verifiche/ticket-12/README.md).
+-Il PDF completo ha 151 pagine; resta la verifica integrata del ticket 13. [Confronto e verifiche 09](verifiche/ticket-09/README.md), [confronto e verifiche 10](verifiche/ticket-10/README.md). Gli autori chiedono di rifare la relazione vecchia mantenendo tutti i contenuti e la loro scansione, riadattati esattamente all'implementazione attuale: spiegazioni, schede, esempi, frammenti, figure e tabelle, oltre a capitoli e titoli.
++Il PDF completo ha 151 pagine; il ticket 13 ha eseguito compilazione integrata,
++osservazione di tutte le pagine e ricompilazione dello ZIP estratto, con
++review finali Standards/Spec chiuse senza rilievi: ticket **done**,
++[verifiche 13](verifiche/ticket-13/README.md). Nessuna approvazione degli autori presunta.
++La [corrispondenza consolidata](verifiche/ticket-13/corrispondenza-102.md)
++riscontra livelli, ordine, contenuto e fonti di ogni voce.
++[Confronto e verifiche 09](verifiche/ticket-09/README.md), [confronto e verifiche 10](verifiche/ticket-10/README.md). Gli autori chiedono di rifare la relazione vecchia mantenendo tutti i contenuti e la loro scansione, riadattati esattamente all'implementazione attuale: spiegazioni, schede, esempi, frammenti, figure e tabelle, oltre a capitoli e titoli.
+ 
+ La [matrice di corrispondenza](allineamento.md) collega tutte le 102 voci originali alle fonti attuali, alle destinazioni e agli adattamenti. L’ordine resta quello degli input di `Relazione_SWE/main.tex`; un titolo cambia solo per descrivere correttamente l’implementazione attuale. Il capitolo 5 resta l’aggiunta sull’AI.
+ 
+--- baseline/docs/relazione/piano.md
++++ docs/relazione/piano.md
+@@ -151,7 +151,7 @@
+ quella registrata sopra; la nuova ricostruzione non attribuisce le singole righe.
+ Non sono stati eseguiti test applicativi, accessi DB, harness o commit.
+ 
+-## Prossimo passaggio
++## Sequenza del riallineamento — stato alla chiusura del ticket 12
+ 
+ Riallineamento secondo la matrice e l'indice dettagliato del 16 novembre 2026:
+ ticket 09–12 sui capitoli 1–4, poi ticket 13 di integrazione, compilazione e
+@@ -175,8 +175,8 @@
+ ed estratto 4/C di 22. [Fonti, controlli, conservazione e review 12](verifiche/ticket-12/README.md).
+ Standards e Spec conformi, precisazione heap ricontrollata nel PDF;
+ cinque messaggi TeX preesistenti in C ancora dichiarati e osservati.
+-Capitoli 1–3, altre parti, tavole e storici conservati. Il ticket 13 resta
+-da eseguire, senza nuovo pacchetto finale o integrazione anticipata.
++Capitoli 1–3, altre parti, tavole e storici conservati. Alla chiusura del 12,
++il ticket 13 restava da eseguire, senza attestare anticipatamente il pacchetto.
+ La revisione degli autori resta distinta dalla chiusura tecnica e dalle
+ review assistite; nessun invio al docente o pubblicazione è autorizzato.
+ 
+@@ -257,3 +257,19 @@
+ il distinto Package diagram per i package. Tutte le undici tavole della
+ relazione originale vanno rifatte/riadattate; le viste attuali sono basi e
+ approfondimenti, non sostituti del percorso originale.
++
++## Integrazione del riallineamento — 17 novembre 2026
++
++Il ticket 13 riusa i capitoli conclusi e le undici tavole del 10. Consolida
++102 voci e 23 funzioni dei frammenti, diciotto funzioni UI, sei schede e due
++tabelle; aggiorna il capitolo 5 sul lavoro documentale 09–13 senza attribuzioni
++non dimostrate. [Corrispondenze e fonti](verifiche/ticket-13/README.md).
++Il PDF mantiene 151 pagine: solo 119–121 cambiano contenuto; le altre 148
++sono identiche a testo e pixel, compreso l’indice. Tutte osservate, A3 incluse.
++I cinque messaggi TeX preesistenti in C sono confrontati e valutati, non
++rimossi. Lo ZIP aggiornato di 118 membri è estratto e ricompilato realmente:
++73 input editoriali interni, tutte le pagine uguali per contenuto e resa.
++Le review indipendenti Standards e Spec del nuovo documento sono chiuse
++senza rilievi; il ticket 13 è concluso tecnicamente (`done`).
++PDF e sorgenti proposti agli autori, senza approvazione
++presunta, invio, pubblicazione o commit. Nessuna attività applicativa eseguita.
+--- baseline/docs/relazione/tracker/issues/13-verifica-riallineamento.md
++++ docs/relazione/tracker/issues/13-verifica-riallineamento.md
+@@ -1,6 +1,6 @@
+ # 13 — Integrazione e verifica del riallineamento
+ 
+-Status: ready-for-agent
++Status: done
+ 
+ Blocked by: 09 — Riallineamento dell'introduzione; 10 — Riallineamento di
+ requisiti e progettazione; 11 — Riallineamento dell'implementazione;
+@@ -18,34 +18,34 @@
+ 
+ ## Acceptance criteria
+ 
+-- [ ] Ticket 09–12 conclusi con verifiche documentate; nessuna approvazione
++- [x] Ticket 09–12 conclusi con verifiche documentate; nessuna approvazione
+   umana dedotta dalla loro chiusura tecnica.
+-- [ ] Tutte le 102 voci originali e i 23 frammenti hanno trattamento
++- [x] Tutte le 102 voci originali e i 23 frammenti hanno trattamento
+   verificato; controllate anche diciotto schermate, undici diagrammi, sei
+   template e due tabelle argomentative originali. Ogni scostamento residuo
+   è motivato; la sola corrispondenza dei titoli non vale come completezza.
+-- [ ] Capitolo 5 conservato, con riferimenti coerenti e ricostruzione anche
++- [x] Capitolo 5 conservato, con riferimenti coerenti e ricostruzione anche
+   del riallineamento; nessuna attribuzione o metrica AI inventata.
+-- [ ] Tutti gli undici diagrammi originali rifatti/riadattati con la skill
++- [x] Tutti gli undici diagrammi originali rifatti/riadattati con la skill
+   `drawio:drawio`, secondo i [vincoli operativi](../../allineamento.md#diagrammi-vincoli-operativi).
+   Verificate le basi degli autori, lo stile riconoscibile, i sorgenti nativi,
+   le esportazioni e la corrispondenza al codice attuale per ciascuna tavola;
+   il semplice riuso delle viste della prima stesura non vale come completamento.
+-- [ ] Appendice A contiene le schede aggiuntive senza duplicare le sei
++- [x] Appendice A contiene le schede aggiuntive senza duplicare le sei
+   principali; B conserva tutti i package; C conserva tracciabilità e limiti.
+   Rimandi, etichette, didascalie e indice riflettono la collocazione definitiva.
+-- [ ] Nessuna funzionalità o componente rimossi presentati come attuali;
++- [x] Nessuna funzionalità o componente rimossi presentati come attuali;
+   limiti reali, risultati storici e nuove verifiche documentali distinti.
+-- [ ] Compilazione reale e osservazione di tutte le pagine del nuovo PDF,
++- [x] Compilazione reale e osservazione di tutte le pagine del nuovo PDF,
+   comprese le A3; valutazione esplicita dei messaggi TeX residui e assenza di
+   rinvii irrisolti o stati provvisori fuorvianti.
+-- [ ] ZIP autonomo aggiornato e ricompilato dopo estrazione; istruzioni,
++- [x] ZIP autonomo aggiornato e ricompilato dopo estrazione; istruzioni,
+   README, piano e stato della matrice aggiornati, con impronte del PDF/ZIP
+   effettivamente verificati e baseline dei materiali precedenti conservata.
+-- [ ] Revisione finale separata di conformità alle istruzioni e aderenza
++- [x] Revisione finale separata di conformità alle istruzioni e aderenza
+   alla specifica; eventuali rilievi risolti o dichiarati, senza usare i
+   verbali della prima stesura come review della nuova versione.
+-- [ ] PDF e sorgenti proposti agli autori, con limiti residui espliciti;
++- [x] PDF e sorgenti proposti agli autori, con limiti residui espliciti;
+   nessun invio, pubblicazione, commit o modifica al software/schema/dati.
+ 
+ ## Comments
+@@ -54,3 +54,20 @@
+ documento integrato. Le compilazioni e i pacchetti dei ticket 01–08 e delle
+ tavole degli autori restano fotografie storiche e non soddisfano questi
+ criteri per la versione riallineata.
++
++17 novembre 2026: concluso tecnicamente dopo review finali indipendenti
++Standards e Spec, a contesto iniziale separato, entrambe senza rilievi.
++[Evidenze integrate](../../verifiche/ticket-13/README.md),
++[corrispondenza di 102 voci](../../verifiche/ticket-13/corrispondenza-102.md),
++[materiali censiti](../../verifiche/ticket-13/corrispondenza-materiali.md),
++[PDF di 151 pagine](../../relazione-drivehub.pdf) e
++[ZIP autonomo aggiornato](../../verifiche/ticket-13/sorgenti-relazione.zip).
++Baseline dei non tracciati e storici conservata; solo capitolo 5 aggiornato
++nel corpo, nessun cambio di paginazione e altre 148 pagine identiche.
++Tutte le pagine osservate, comprese dodici A3; cinque messaggi TeX in C
++immutati e valutati. ZIP estratto e realmente ricompilato: 118 membri,
++73 input editoriali interni, 151 pagine identiche per testo, formato e resa.
++[Review e ricontrolli](../../verifiche/ticket-13/revisione.md),
++[impronte finali](../../verifiche/ticket-13/artefatti-finali.json).
++PDF e sorgenti proposti agli autori per revisione; nessuna approvazione
++attribuita. Nessuna attività applicativa, commit, invio o pubblicazione.
+--- baseline/docs/relazione/tracker/spec.md
++++ docs/relazione/tracker/spec.md
+@@ -1,6 +1,6 @@
+ # Specifica della riscrittura della relazione DriveHub
+ 
+-Status: ready-for-agent
++Status: done
+ 
+ Revisione del 16 novembre 2026: riallineamento della prima stesura completa
+ alla struttura interna di `Relazione_SWE`. La [matrice](../allineamento.md)
+@@ -323,3 +323,12 @@
+ intervento sui diagrammi, basi degli autori e rifacimento/adattamento di
+ tutte le tavole originali. Il semplice riuso delle tavole della prima
+ riscrittura non soddisfa da solo questo requisito.
++
++17 novembre 2026: riallineamento documentale 09–13 concluso tecnicamente.
++Il ticket 13 integra il capitolo 5, verifica il PDF completo di 151 pagine,
++consolida tutte le 102 voci e i materiali originali e ricompila davvero
++lo ZIP aggiornato dopo estrazione. [Fonti, corrispondenze, verbale visivo,
++review Standards/Spec separate e impronte](../verifiche/ticket-13/README.md).
++Le due review finali sono conformi senza rilievi. Lo stato `done` riguarda
++il lavoro tecnico; PDF e sorgenti restano proposti agli autori, senza
++approvazione presunta, invio, pubblicazione o modifica al software.

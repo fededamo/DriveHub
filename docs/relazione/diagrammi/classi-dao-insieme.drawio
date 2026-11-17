@@ -1,0 +1,86 @@
+<mxfile host="Electron" version="32.6.10">
+  <diagram name="DriveHub — DAO Layer" id="ticket10">
+    <mxGraphModel adaptiveColors="auto" page="1" pageScale="1" pageWidth="1200" pageHeight="850" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="DriveHub — DAO Layer" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;text;align=center;fontSize=22;fontStyle=1;">
+          <mxGeometry x="20" y="8" width="1160" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="dao" value="dao" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;shape=folder;tabWidth=110;tabHeight=24;align=left;verticalAlign=top;spacingTop=3;spacingLeft=8;fillColor=#DAE8FC;">
+          <mxGeometry x="600" y="55" width="580" height="650" as="geometry" />
+        </mxCell>
+        <mxCell id="db" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;DatabaseManager&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;configurazione JDBC&lt;hr style=&quot;margin:2px 0&quot;&gt;+ getConnection()&lt;br&gt;+ executeInTransaction(callback)&lt;/div&gt;" vertex="1" parent="dao" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="30" y="50" width="245" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="consumer" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;«interface»&lt;br&gt;TransactionConsumer&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;+ execute(Connection) : void&lt;/div&gt;" vertex="1" parent="dao" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="310" y="35" width="245" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="function" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;«interface»&lt;br&gt;TransactionFunction&amp;lt;T&amp;gt;&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;+ execute(Connection) : T&lt;/div&gt;" vertex="1" parent="dao" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="310" y="135" width="245" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1" source="db" target="consumer" value="" parent="dao" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;dashed=1;endArrow=open;endFill=0;exitX=1;exitY=0.25;entryX=0;entryY=0.5;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="292" y="82" />
+              <mxPoint x="292" y="77" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge2" source="db" target="function" value="" parent="dao" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;dashed=1;endArrow=open;endFill=0;exitX=1;exitY=0.9;entryX=0;entryY=0.5;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="292" y="167" />
+              <mxPoint x="292" y="177" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pg" value="dao.postgres" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;shape=folder;tabWidth=110;tabHeight=24;align=left;verticalAlign=top;spacingTop=3;spacingLeft=8;fillColor=#DAE8FC;">
+          <mxGeometry x="20" y="55" width="540" height="650" as="geometry" />
+        </mxCell>
+        <mxCell id="iUser" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;«interface» UserDao&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;+ findByEmail(...)&lt;/div&gt;" vertex="1" parent="dao" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="315" y="230" width="240" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="pUser" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;PostgresUserDao&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;- db : DatabaseManager&lt;hr style=&quot;margin:2px 0&quot;&gt;+ findByEmail(...)&lt;/div&gt;" vertex="1" parent="pg" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="30" y="230" width="450" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3" source="pUser" target="iUser" value="" parent="1" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;dashed=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="iVehicle" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;«interface» VehicleDao&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;+ findByIdForUpdate(...)&lt;/div&gt;" vertex="1" parent="dao" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="315" y="325" width="240" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="pVehicle" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;PostgresVehicleDao&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;- db : DatabaseManager&lt;hr style=&quot;margin:2px 0&quot;&gt;+ findByIdForUpdate(...)&lt;/div&gt;" vertex="1" parent="pg" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="30" y="325" width="450" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="edge4" source="pVehicle" target="iVehicle" value="" parent="1" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;dashed=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="iRent" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;«interface» RentDao&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;+ save(rent,c)&lt;/div&gt;" vertex="1" parent="dao" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="315" y="420" width="240" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="pRent" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;PostgresRentDao&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;- db : DatabaseManager&lt;hr style=&quot;margin:2px 0&quot;&gt;+ save(rent,c)&lt;/div&gt;" vertex="1" parent="pg" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="30" y="420" width="450" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="edge5" source="pRent" target="iRent" value="" parent="1" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;dashed=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="iRequest" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;«interface» RequestDao&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;+ findByIdForUpdate(...)&lt;/div&gt;" vertex="1" parent="dao" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="315" y="515" width="240" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="pRequest" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;PostgresRequestDao&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;- db : DatabaseManager&lt;hr style=&quot;margin:2px 0&quot;&gt;+ findByIdForUpdate(...)&lt;/div&gt;" vertex="1" parent="pg" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="30" y="515" width="450" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="edge6" source="pRequest" target="iRequest" value="" parent="1" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;dashed=1;endArrow=block;endFill=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge7" source="pg" target="db" value="gestore condiviso" parent="1" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;dashed=1;endArrow=open;endFill=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="note" value="Le altre sei porte seguono lo stesso schema: BankAccountDao, BrandDao, ModelDao, DiscountDao, TestDriveDao, SaleDao, con le rispettive Postgres*Dao.&lt;br&gt;Le firme con c : Connection partecipano alla transazione del servizio; letture autonome aprono e chiudono connessioni proprie. I mapper sono nei DAO concreti.&lt;br&gt;Commit / rollback appartengono al gestore. Non esistono DaoFactory, UnitOfWork, JdbcEntityLoader né bootstrap Java.&lt;br&gt;Realizzazione: tratteggio con triangolo vuoto; uso: freccia tratteggiata. La tavola seleziona quattro coppie come nell’originale; CL-08a/08b/09 coprono tutte le porte e implementazioni." vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;shape=note;fillColor=#FFFBE6;strokeColor=#D2B65A;align=left;spacing=8;fontSize=12;">
+          <mxGeometry x="20" y="735" width="1160" height="105" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

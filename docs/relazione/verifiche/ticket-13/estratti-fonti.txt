@@ -1,0 +1,1764 @@
+Riscontri S0 del ticket 13: sole letture, nessuna esecuzione applicativa.
+
+src/main/java/it/unifi/drivehub/dao/DatabaseManager.java:49–106
+49:     public Connection getConnection() throws SQLException {
+50:         return DriverManager.getConnection(url, user, password);
+51:     }
+52: 
+53:     @FunctionalInterface
+54:     public interface TransactionConsumer {
+55:         void execute(Connection conn) throws Exception;
+56:     }
+57: 
+58:     @FunctionalInterface
+59:     public interface TransactionFunction<T> {
+60:         T execute(Connection conn) throws Exception;
+61:     }
+62: 
+63:     /**
+64:      * Esegue una sequenza di operazioni in una transazione ACID con rollback atomico su errore.
+65:      */
+66:     public void executeInTransaction(TransactionConsumer consumer) {
+67:         try (Connection conn = getConnection()) {
+68:             conn.setAutoCommit(false);
+69:             try {
+70:                 consumer.execute(conn);
+71:                 conn.commit();
+72:             } catch (Exception e) {
+73:                 try {
+74:                     conn.rollback();
+75:                 } catch (SQLException rollbackEx) {
+76:                     e.addSuppressed(rollbackEx);
+77:                 }
+78:                 throw new RuntimeException("Transazione fallita: eseguito rollback.", e);
+79:             }
+80:         } catch (SQLException e) {
+81:             throw new RuntimeException("Errore di connessione al database durante la transazione.", e);
+82:         }
+83:     }
+84: 
+85:     /**
+86:      * Esegue una transazione con valore di ritorno e rollback atomico su eccezione.
+87:      */
+88:     public <T> T executeInTransactionWithResult(TransactionFunction<T> function) {
+89:         try (Connection conn = getConnection()) {
+90:             conn.setAutoCommit(false);
+91:             try {
+92:                 T result = function.execute(conn);
+93:                 conn.commit();
+94:                 return result;
+95:             } catch (Exception e) {
+96:                 try {
+97:                     conn.rollback();
+98:                 } catch (SQLException rollbackEx) {
+99:                     e.addSuppressed(rollbackEx);
+100:                 }
+101:                 throw new RuntimeException("Transazione fallita: eseguito rollback.", e);
+102:             }
+103:         } catch (SQLException e) {
+104:             throw new RuntimeException("Errore di connessione al database durante la transazione.", e);
+105:         }
+106:     }
+
+src/main/java/it/unifi/drivehub/service/PriceCalculatorService.java:26–111
+26:     public BigDecimal calculateVehiclePrice(Model model, Vehicle vehicle, Integer modelDiscount, Integer vehicleDiscount) {
+27:         return calculatePriceFromBase(vehicle.getSelectedBasePrice(model), vehicle, modelDiscount, vehicleDiscount);
+28:     }
+29: 
+30:     public BigDecimal calculateRecommendedVehiclePrice(Model model, Vehicle vehicle, Integer modelDiscount, Integer vehicleDiscount) {
+31:         return calculatePriceFromBase(model.getReleasePrice(), vehicle, modelDiscount, vehicleDiscount);
+32:     }
+33: 
+34:     private BigDecimal calculatePriceFromBase(BigDecimal base, Vehicle vehicle, Integer modelDiscount, Integer vehicleDiscount) {
+35:         int mDisc = modelDiscount != null ? modelDiscount : 0;
+36:         int vDisc = vehicleDiscount != null ? vehicleDiscount : 0;
+37:         return applyStandardDepreciation(base, Math.max(mDisc, vDisc), vehicle.getLicencePlate(), vehicle.getKilometers(), vehicle.getYear());
+38:     }
+39: 
+40:     /**
+41:      * Calcola il preventivo per un veicolo che un cliente vuole vendere alla concessionaria.
+42:      */
+43:     public BigDecimal estimateVehicleValue(BigDecimal modelBasePrice, int modelDiscount, String plate, int km, int year) {
+44:         return applyStandardDepreciation(modelBasePrice, modelDiscount, plate, km, year);
+45:     }
+46: 
+47:     /**
+48:      * Algoritmo centralizzato di ammortamento e sconti a cascata (DRY).
+49:      */
+50:     private BigDecimal applyStandardDepreciation(BigDecimal basePrice, int promoDiscount, String licencePlate, int km, int year) {
+51:         BigDecimal currentPrice = basePrice;
+52: 
+53:         // 1. Sconto promozionale
+54:         if (promoDiscount > 0) {
+55:             double promoFactor = 1.0 - (promoDiscount / 100.0);
+56:             currentPrice = currentPrice.multiply(BigDecimal.valueOf(promoFactor));
+57:         }
+58: 
+59:         // 2. Sconto sull'usato (20% se targa presente)
+60:         if (licencePlate != null && !licencePlate.trim().isEmpty()) {
+61:             currentPrice = currentPrice.multiply(BigDecimal.valueOf(0.80));
+62:         }
+63: 
+64:         // 3. Ammortamento anno (5% all'anno rispetto all'anno corrente)
+65:         int currentYear = Year.now().getValue();
+66:         int yearsOld = Math.max(0, currentYear - year);
+67:         if (yearsOld > 0) {
+68:             double yearFactor = Math.pow(0.95, yearsOld);
+69:             currentPrice = currentPrice.multiply(BigDecimal.valueOf(yearFactor));
+70:         }
+71: 
+72:         // 4. Ammortamento chilometri (5% ogni 20.000 km)
+73:         if (km > 0) {
+74:             double kmExponent = (double) km / 20000.0;
+75:             double kmFactor = Math.pow(0.95, kmExponent);
+76:             currentPrice = currentPrice.multiply(BigDecimal.valueOf(kmFactor));
+77:         }
+78: 
+79:         return currentPrice.setScale(2, RoundingMode.HALF_UP);
+80:     }
+81: 
+82:     /**
+83:      * Calcola l'acconto dovuto per l'acquisto (20% del prezzo attuale del veicolo).
+84:      */
+85:     public BigDecimal calculatePurchaseDeposit(BigDecimal currentPrice) {
+86:         return currentPrice.multiply(BigDecimal.valueOf(0.20)).setScale(2, RoundingMode.HALF_UP);
+87:     }
+88: 
+89:     /**
+90:      * Calcola la tariffa giornaliera di noleggio (0.1% del valore attuale del veicolo).
+91:      */
+92:     public BigDecimal calculateDailyRentalRate(BigDecimal currentPrice) {
+93:         return currentPrice.multiply(BigDecimal.valueOf(0.001)).setScale(2, RoundingMode.HALF_UP);
+94:     }
+95: 
+96:     /**
+97:      * Calcola il costo totale del noleggio per il periodo specificato.
+98:      * Formula geometrica da appunti (Pagina 1):
+99:      * totale = (prezzo_attuale * 0.1%) * ((1 - 0.95^giorni) / 0.05)
+100:      */
+101:     public BigDecimal calculateTotalRentalCost(BigDecimal currentPrice, LocalDate start, LocalDate end) {
+102:         long days = ChronoUnit.DAYS.between(start, end) + 1;
+103:         if (days <= 0) {
+104:             throw new IllegalArgumentException("Il periodo di noleggio deve comprendere almeno 1 giorno.");
+105:         }
+106: 
+107:         double dailyRate = currentPrice.doubleValue() * 0.001;
+108:         double sumGeometric = (1.0 - Math.pow(0.95, days)) / 0.05;
+109:         double totalCost = dailyRate * sumGeometric;
+110: 
+111:         return BigDecimal.valueOf(totalCost).setScale(2, RoundingMode.HALF_UP);
+
+src/main/java/it/unifi/drivehub/service/RentalService.java:59–178
+59:     public BigDecimal calculateRentalCost(Long vehicleId, LocalDate start, LocalDate end) {
+60:         return db.executeInTransactionWithResult(conn -> {
+61:             Vehicle vehicle = vehicleDao.findById(vehicleId, conn)
+62:                     .orElseThrow(() -> new IllegalArgumentException("Veicolo non trovato: " + vehicleId));
+63:             return calculateRentalCost(vehicle, start, end, conn);
+64:         });
+65:     }
+66: 
+67:     private BigDecimal calculateRentalCost(Vehicle vehicle, LocalDate start, LocalDate end, Connection conn) {
+68:         Model model = modelDao.findById(vehicle.getModelId(), conn)
+69:                 .orElseThrow(() -> new IllegalArgumentException("Modello non trovato: " + vehicle.getModelId()));
+70: 
+71:         Integer mDisc = discountDao.findModelDiscount(model.getId(), conn).map(ModelDiscount::getValue).orElse(0);
+72:         Integer vDisc = discountDao.findVehicleDiscount(vehicle.getId(), conn).map(VehicleDiscount::getValue).orElse(0);
+73:         BigDecimal currentPrice = priceCalculator.calculateVehiclePrice(model, vehicle, mDisc, vDisc);
+74: 
+75:         return priceCalculator.calculateTotalRentalCost(currentPrice, start, end);
+76:     }
+77: 
+78:     /**
+79:      * Prenota un noleggio. Controllo concorrente delle date e creazione eseguite nella stessa transazione.
+80:      * Addebito immediato al 100% dell'importo sul conto bancario.
+81:      */
+82:     public Rent bookRental(Long vehicleId, Long clientId, LocalDate start, LocalDate end) {
+83:         if (start.isBefore(LocalDate.now())) {
+84:             throw new IllegalArgumentException("La data di inizio noleggio non può essere nel passato.");
+85:         }
+86:         if (end.isBefore(start)) {
+87:             throw new IllegalArgumentException("La data di fine noleggio non può precedere la data di inizio.");
+88:         }
+89: 
+90:         try {
+91:             return db.executeInTransactionWithResult(conn -> {
+92:                 Vehicle vehicle = vehicleDao.findByIdForUpdate(vehicleId, conn)
+93:                         .orElseThrow(() -> new IllegalStateException("Veicolo non trovato: " + vehicleId));
+94:                 if (vehicle.getState() != VehicleState.RENT) {
+95:                     throw new IllegalStateException("Il veicolo non è abilitato per il noleggio.");
+96:                 }
+97:                 userDao.lockClient(clientId, conn);
+98: 
+99:                 // Verifica concorrente delle date nella stessa transazione
+100:                 boolean available = rentDao.isVehicleAvailableForRent(vehicleId, start, end, conn);
+101:                 if (!available) {
+102:                     throw new IllegalStateException("Il veicolo risulta già prenotato per il periodo o per alcune date selezionate.");
+103:                 }
+104: 
+105:                 BigDecimal totalCost = calculateRentalCost(vehicle, start, end, conn);
+106: 
+107:                 // Addebito al 100% sul conto del cliente
+108:                 BankAccount account = bankAccountDao.findByClientIdForUpdate(clientId, conn)
+109:                         .orElseThrow(() -> new IllegalStateException("Conto cliente non trovato."));
+110:                 account.withdraw(totalCost);
+111:                 bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
+112: 
+113:                 // Salvataggio tupla Rent
+114:                 Rent rent = Rent.create(null, vehicleId, clientId, totalCost, start, end);
+115:                 Rent createdRent = rentDao.save(rent, conn);
+116:                 eventPublisher.publishCommitment(new VehicleCommitmentEvent(vehicleId), conn);
+117:                 return createdRent;
+118:             });
+119:         } catch (RuntimeException failure) {
+120:             if (failure.getCause() instanceof RuntimeException reason
+121:                     && (reason instanceof IllegalArgumentException || reason instanceof IllegalStateException)) {
+122:                 throw reason;
+123:             }
+124:             throw failure;
+125:         }
+126: 
+127:     }
+128: 
+129:     /**
+130:      * Cambio stato veicolo da RENT a SALE (o viceversa) da parte del venditore.
+131:      * Come da appunti (Pagina 3):
+132:      * "Se un veicolo adibito al noleggio con prenotazioni future viene cambiato di stato,
+133:      * i clienti devono essere rimborsati dell'addebito precedentemente versato.
+134:      * Le prenotazioni future vengono annullate."
+135:      */
+136:     public int changeVehicleRentalState(Long vehicleId, VehicleState targetState) {
+137:         if (targetState != VehicleState.SALE && targetState != VehicleState.RENT) {
+138:             throw new IllegalArgumentException("La transizione ammessa è solo tra RENT e SALE.");
+139:         }
+140: 
+141:         try {
+142:             return db.executeInTransactionWithResult(conn -> {
+143:                 Vehicle vehicle = vehicleDao.findByIdForUpdate(vehicleId, conn)
+144:                         .orElseThrow(() -> new IllegalStateException("Veicolo non trovato: " + vehicleId));
+145:                 VehicleState oldState = vehicle.getState();
+146:                 if ((oldState != VehicleState.SALE && oldState != VehicleState.RENT) || oldState == targetState) {
+147:                     throw new IllegalStateException("La transizione è ammessa solo tra vendita e noleggio; stato attuale: " + oldState + ".");
+148:                 }
+149: 
+150:                 int refundedCount = 0;
+151:                 if (oldState == VehicleState.RENT && targetState == VehicleState.SALE) {
+152:                     LocalDate today = LocalDate.now();
+153:                     if (!rentDao.isVehicleAvailableForRent(vehicleId, today, today, conn)) {
+154:                         throw new IllegalStateException("Impossibile destinare alla vendita un veicolo con un noleggio in corso.");
+155:                     }
+156:                     // Elimina prenotazioni future e rimborsa i clienti
+157:                     List<Rent> cancelledRents = rentDao.deleteFutureByVehicleId(vehicleId, conn);
+158:                     cancelledRents.sort(Comparator.comparing(Rent::getClientId));
+159:                     for (Rent cancelled : cancelledRents) {
+160:                         BankAccount account = bankAccountDao.findByClientIdForUpdate(cancelled.getClientId(), conn)
+161:                                 .orElseThrow(() -> new IllegalStateException("Conto cliente non trovato."));
+162:                         account.deposit(cancelled.getAmount());
+163:                         bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
+164:                         refundedCount++;
+165:                     }
+166:                 }
+167: 
+168:                 vehicle.setState(targetState);
+169:                 vehicleDao.update(vehicle, conn);
+170:                 return refundedCount;
+171:             });
+172:         } catch (RuntimeException failure) {
+173:             if (failure.getCause() instanceof RuntimeException reason
+174:                     && (reason instanceof IllegalArgumentException || reason instanceof IllegalStateException)) {
+175:                 throw reason;
+176:             }
+177:             throw failure;
+178:         }
+
+src/main/java/it/unifi/drivehub/service/PurchaseService.java:65–233
+65:     public Request initiatePurchase(Long vehicleId, Long clientId) {
+66:         return db.executeInTransactionWithResult(conn -> {
+67:             // 1. Concorrenza: lo stato passa a BLOCKED solo se era SALE (nella stessa query)
+68:             boolean updated = vehicleDao.updateStateAtomically(vehicleId, VehicleState.SALE, VehicleState.BLOCKED, conn);
+69:             if (!updated) {
+70:                 throw new IllegalStateException("Il veicolo non è più disponibile per l'acquisto (è già stato riservato o venduto).");
+71:             }
+72: 
+73:             // 2. Calcolo prezzo effettivo e acconto (20%)
+74:             Vehicle vehicle = vehicleDao.findById(vehicleId, conn)
+75:                     .orElseThrow(() -> new IllegalStateException("Veicolo non trovato: " + vehicleId));
+76:             Model model = modelDao.findById(vehicle.getModelId())
+77:                     .orElseThrow(() -> new IllegalStateException("Modello non trovato: " + vehicle.getModelId()));
+78: 
+79:             Integer mDisc = discountDao.findModelDiscount(model.getId()).map(ModelDiscount::getValue).orElse(0);
+80:             Integer vDisc = discountDao.findVehicleDiscount(vehicle.getId()).map(VehicleDiscount::getValue).orElse(0);
+81:             BigDecimal currentPrice = priceCalculator.calculateVehiclePrice(model, vehicle, mDisc, vDisc);
+82:             BigDecimal deposit = priceCalculator.calculatePurchaseDeposit(currentPrice);
+83: 
+84:             // 3. Verifica e addebito sul conto corrente del cliente
+85:             BankAccount account = bankAccountDao.findByClientIdForUpdate(clientId, conn)
+86:                     .orElseThrow(() -> new IllegalStateException("Conto corrente non trovato per il cliente id: " + clientId));
+87: 
+88:             account.withdraw(deposit);
+89:             bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
+90: 
+91:             // 4. Creazione tupla in Request con salesman = null e exp_date = null
+92:             Request newRequest = Request.createNewSaleRequest(vehicleId, clientId, deposit, currentPrice);
+93:             return requestDao.save(newRequest, conn);
+94:         });
+95:     }
+96: 
+97:     /**
+98:      * Passo 4.1: Il venditore rifiuta la proposta di acquisto.
+99:      * I soldi dell'acconto vengono restituiti, il veicolo torna SALE, la request viene cancellata.
+100:      */
+101:     public void rejectPurchase(Long requestId) {
+102:         db.executeInTransaction(conn -> {
+103:             Request request = requestDao.findByIdForUpdate(requestId, conn)
+104:                     .orElseThrow(() -> new IllegalStateException("Richiesta non trovata: " + requestId));
+105:             if (request.getType() != RequestType.SALE) {
+106:                 throw new IllegalArgumentException("La richiesta non è di acquisto.");
+107:             }
+108: 
+109:             // Restituzione acconto
+110:             BankAccount account = bankAccountDao.findByClientIdForUpdate(request.getClientId(), conn)
+111:                     .orElseThrow(() -> new IllegalStateException("Conto cliente non trovato."));
+112:             account.deposit(request.getDeposit());
+113:             bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
+114: 
+115:             // Stato veicolo torna SALE
+116:             if (!vehicleDao.updateStateAtomically(request.getVehicleId(), VehicleState.BLOCKED, VehicleState.SALE, conn)) {
+117:                 throw new IllegalStateException("Il veicolo della richiesta non è riservato per l'acquisto.");
+118:             }
+119: 
+120:             // Eliminazione richiesta
+121:             requestDao.delete(requestId, conn);
+122:         });
+123:     }
+124: 
+125:     /**
+126:      * Passo 4.2: Il venditore approva la richiesta.
+127:      * La tupla viene aggiornata con salesman e scadenza fissata a un mese dopo.
+128:      */
+129:     public void approvePurchase(Long requestId, Long salesmanId) {
+130:         db.executeInTransaction(conn -> {
+131:             Request request = requestDao.findByIdForUpdate(requestId, conn)
+132:                     .orElseThrow(() -> new IllegalStateException("Richiesta non trovata: " + requestId));
+133:             if (request.getType() != RequestType.SALE) {
+134:                 throw new IllegalArgumentException("La richiesta non è di acquisto.");
+135:             }
+136: 
+137:             request.setSalesmanId(salesmanId);
+138:             request.setExpDate(LocalDate.now().plusMonths(1));
+139:             requestDao.update(request, conn);
+140:         });
+141:     }
+142: 
+143:     /**
+144:      * Passo 5.1: Il cliente paga il restante 80% entro la scadenza.
+145:      * Si crea la riga in Sale, si cancella la Request, il veicolo diventa SOLD.
+146:      */
+147:     public void completePurchase(Long requestId) {
+148:         db.executeInTransaction(conn -> {
+149:             Request request = requestDao.findByIdForUpdate(requestId, conn)
+150:                     .orElseThrow(() -> new IllegalStateException("Richiesta non trovata: " + requestId));
+151:             if (request.getType() != RequestType.SALE) {
+152:                 throw new IllegalArgumentException("La richiesta non è di acquisto.");
+153:             }
+154:             if (request.getSalesmanId() == null || request.getExpDate() == null) {
+155:                 throw new IllegalStateException("La richiesta deve essere prima approvata da un venditore.");
+156:             }
+157:             if (request.isExpired()) {
+158:                 throw new IllegalStateException("La richiesta è scaduta e non può più essere saldata.");
+159:             }
+160: 
+161:             BigDecimal fullPrice = request.getAgreedTotal();
+162:             BigDecimal remainingAmount = request.getRemainingAmount();
+163: 
+164:             // Addebito saldo restante
+165:             BankAccount account = bankAccountDao.findByClientIdForUpdate(request.getClientId(), conn)
+166:                     .orElseThrow(() -> new IllegalStateException("Conto cliente non trovato."));
+167:             account.withdraw(remainingAmount);
+168:             bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
+169: 
+170:             // Generazione riga in Sale (importo totale veicolo)
+171:             Sale saleRecord = Sale.createSaleRecord(request.getVehicleId(), request.getSalesmanId(), request.getClientId(), fullPrice);
+172:             saleDao.save(saleRecord, conn);
+173: 
+174:             // Cancellazione riga Request
+175:             requestDao.delete(requestId, conn);
+176: 
+177:             // Stato veicolo impostato su SOLD
+178:             if (!vehicleDao.updateStateAtomically(request.getVehicleId(), VehicleState.BLOCKED, VehicleState.SOLD, conn)) {
+179:                 throw new IllegalStateException("Il veicolo della richiesta non è riservato per l'acquisto.");
+180:             }
+181: 
+182:             eventPublisher.publishCommitment(new VehicleCommitmentEvent(request.getVehicleId()), conn);
+183:         });
+184:     }
+185: 
+186:     /**
+187:      * Passo 5.2: Controllo scadenze all'accesso del cliente.
+188:      * Se una richiesta d'acquisto approvata è scaduta senza saldo finale:
+189:      * - Restituito l'80% dell'acconto al cliente (penale del 20%)
+190:      * - Generata tupla in Sale con salesman = null, amount = 20% acconto trattenuto
+191:      * - Cancellata la Request
+192:      * - Veicolo torna in stato SALE
+193:      * Ritorna i messaggi di notifica per l'utente.
+194:      */
+195:     public List<String> checkAndHandleExpiredRequests(Long clientId) {
+196:         List<String> notifications = new ArrayList<>();
+197:         List<Request> clientRequests = requestDao.findByClientId(clientId);
+198: 
+199:         for (Request candidate : clientRequests) {
+200:             String notification = db.executeInTransactionWithResult(conn -> {
+201:                 Request request = requestDao.findByIdForUpdate(candidate.getId(), conn).orElse(null);
+202:                 if (request == null || request.getType() != RequestType.SALE
+203:                         || !request.getClientId().equals(clientId) || request.getSalesmanId() == null
+204:                         || !request.isExpired()) {
+205:                     return null;
+206:                 }
+207: 
+208:                 BigDecimal deposit = request.getDeposit();
+209:                 BigDecimal penalty = deposit.multiply(BigDecimal.valueOf(0.20)).setScale(2, RoundingMode.HALF_UP);
+210:                 BigDecimal refunded = deposit.subtract(penalty);
+211: 
+212:                 BankAccount account = bankAccountDao.findByClientIdForUpdate(clientId, conn)
+213:                         .orElseThrow(() -> new IllegalStateException("Conto cliente non trovato."));
+214:                 account.deposit(refunded);
+215:                 bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
+216: 
+217:                 Sale penaltyRecord = Sale.createPenaltyRecord(clientId, penalty);
+218:                 saleDao.save(penaltyRecord, conn);
+219:                 requestDao.delete(request.getId(), conn);
+220: 
+221:                 if (!vehicleDao.updateStateAtomically(request.getVehicleId(), VehicleState.BLOCKED, VehicleState.SALE, conn)) {
+222:                     throw new IllegalStateException("Il veicolo della richiesta non è riservato per l'acquisto.");
+223:                 }
+224: 
+225:                 return "La richiesta di acquisto per il veicolo #" + request.getVehicleId()
+226:                         + " è scaduta in data " + request.getExpDate()
+227:                         + ". Come da regolamento, è stata applicata una penale del 20% sull'acconto. Ti sono stati rimborsati € "
+228:                         + refunded + ".";
+229:             });
+230:             if (notification != null) notifications.add(notification);
+231:         }
+232:         return notifications;
+233:     }
+
+src/main/java/it/unifi/drivehub/service/SaleToDealershipService.java:55–182
+55:     public BigDecimal calculateEstimate(Long modelId, String plate, int km, int year) {
+56:         Model model = modelDao.findById(modelId)
+57:                 .orElseThrow(() -> new IllegalArgumentException("Modello non trovato: " + modelId));
+58:         if (year < model.getReleaseYear()) {
+59:             throw new IllegalArgumentException("L'anno di produzione del veicolo (" + year
+60:                     + ") non può essere precedente all'anno di rilascio del modello (" + model.getReleaseYear() + ").");
+61:         }
+62:         int mDisc = discountDao.findModelDiscount(modelId).map(ModelDiscount::getValue).orElse(0);
+63:         return priceCalculator.estimateVehicleValue(model.getReleasePrice(), mDisc, plate, km, year);
+64:     }
+65: 
+66:     /**
+67:      * Passo 1: Il cliente conferma la proposta di vendita alla concessionaria.
+68:      * Il VIN noto richiede stato SOLD, ultima vendita al proponente e nessuna richiesta aperta.
+69:      * Lock/rilettura e scritture condividono la transazione; VIN e richiesta sono univoci anche nel DB.
+70:      */
+71:     public Request submitSaleProposal(Long clientId, Long modelId, String vin, String licencePlate, int km, int year) {
+72:         try {
+73:             return db.executeInTransactionWithResult(conn -> {
+74:                 Optional<Vehicle> existingOpt = vehicleDao.findByVinForUpdate(vin, conn);
+75:                 Vehicle vehicle;
+76:                 if (existingOpt.isPresent()) {
+77:                     vehicle = existingOpt.get();
+78:                     if (vehicle.getState() != VehicleState.SOLD) {
+79:                         throw new IllegalStateException("Puoi proporre solo un veicolo venduto a te e senza richieste aperte.");
+80:                     }
+81:                     Sale latestSale = saleDao.findLatestSaleForVehicle(vehicle.getId(), conn)
+82:                             .orElseThrow(() -> new IllegalStateException("Nessuna vendita al cliente registrata per questo VIN."));
+83:                     if (!latestSale.getClientId().equals(clientId)) {
+84:                         throw new IllegalStateException("L'ultima vendita di questo veicolo è a un altro cliente.");
+85:                     }
+86:                     if (requestDao.hasOpenRequestForVehicle(vehicle.getId(), conn)) {
+87:                         throw new IllegalStateException("Esiste già una richiesta aperta per questo veicolo.");
+88:                     }
+89:                     if (!vehicle.getModelId().equals(modelId) || vehicle.getYear() != year) {
+90:                         throw new IllegalArgumentException("Modello e anno devono corrispondere al veicolo già registrato per questo VIN.");
+91:                     }
+92:                     vehicle.setLicencePlate(licencePlate);
+93:                     vehicle.setKilometers(km);
+94:                     vehicle.setState(VehicleState.WAITING);
+95:                     vehicleDao.update(vehicle, conn);
+96:                 } else {
+97:                     BigDecimal modelBase = modelDao.findById(modelId)
+98:                             .orElseThrow(() -> new IllegalArgumentException("Modello non trovato: " + modelId)).getReleasePrice();
+99:                     Vehicle newVehicle = Vehicle.create(null, modelId, vin, licencePlate, km, modelBase, year, VehicleState.WAITING);
+100:                     vehicle = vehicleDao.save(newVehicle, conn);
+101:                 }
+102:                 BigDecimal estimatedPrice = calculateEstimate(modelId, licencePlate, km, year);
+103:                 Request request = Request.createNewPurchaseRequest(vehicle.getId(), clientId, estimatedPrice);
+104:                 return requestDao.save(request, conn);
+105:             });
+106:         } catch (RuntimeException failure) {
+107:             if (failure.getCause() instanceof RuntimeException reason
+108:                     && (reason instanceof IllegalArgumentException || reason instanceof IllegalStateException)) {
+109:                 throw reason;
+110:             }
+111:             throw failure;
+112:         }
+113:     }
+114:     /**
+115:      * Passo 2: Il venditore approva la proposta di vendita.
+116:      * - Registra un acquisto della concessionaria con importo non negativo
+117:      * - Lo stato del veicolo diventa SALE
+118:      * - Elimina la tupla da Request
+119:      * - Accredita il pagamento sul conto corrente del cliente
+120:      */
+121:     public void approveSaleProposal(Long requestId, Long salesmanId) {
+122:         db.executeInTransaction(conn -> {
+123:             Request request = lockWaitingPurchaseRequest(requestId, conn);
+124:             if (salesmanId == null) throw new IllegalArgumentException("Il venditore che accetta la cessione è obbligatorio.");
+125: 
+126:             BigDecimal payout = request.getDeposit();
+127: 
+128:             // Accredito sul conto del cliente
+129:             BankAccount account = bankAccountDao.findByClientIdForUpdate(request.getClientId(), conn)
+130:                     .orElseThrow(() -> new IllegalStateException("Conto corrente cliente non trovato."));
+131:             account.deposit(payout);
+132:             bankAccountDao.updateBalance(account.getIban(), account.getBalance(), conn);
+133: 
+134:             // Registrazione compravendita in Sale
+135:             Sale saleRecord = Sale.createPurchaseRecord(request.getVehicleId(), salesmanId, request.getClientId(), payout);
+136:             saleDao.save(saleRecord, conn);
+137: 
+138:             // Stato veicolo diventa SALE
+139:             if (!vehicleDao.updateStateAtomically(request.getVehicleId(), VehicleState.WAITING, VehicleState.SALE, conn)) {
+140:                 throw new IllegalStateException("Il veicolo non è più in attesa di valutazione.");
+141:             }
+142: 
+143:             // Eliminazione richiesta
+144:             requestDao.delete(requestId, conn);
+145:         });
+146:     }
+147: 
+148:     /**
+149:      * Il venditore rifiuta la proposta di vendita del cliente.
+150:      * Elimina il veicolo soltanto se privo di storico; altrimenti ripristina SOLD.
+151:      * La presenza di operazioni non equivale alla titolarità, che richiede l'ultima SALE.
+152:      */
+153:     public void rejectSaleProposal(Long requestId) {
+154:         db.executeInTransaction(conn -> {
+155:             Request request = lockWaitingPurchaseRequest(requestId, conn);
+156: 
+157:             Long vehicleId = request.getVehicleId();
+158:             requestDao.delete(requestId, conn);
+159: 
+160:             if (vehicleDao.hasAssociatedOperations(vehicleId, conn)) {
+161:                 if (!vehicleDao.updateStateAtomically(vehicleId, VehicleState.WAITING, VehicleState.SOLD, conn)) {
+162:                     throw new IllegalStateException("Il veicolo non è più in attesa di valutazione.");
+163:                 }
+164:             } else {
+165:                 vehicleDao.delete(vehicleId, conn);
+166:             }
+167:         });
+168:     }
+169: 
+170:     private Request lockWaitingPurchaseRequest(Long requestId, Connection conn) {
+171:         Request request = requestDao.findByIdForUpdate(requestId, conn)
+172:                 .orElseThrow(() -> new IllegalStateException("Richiesta non trovata: " + requestId));
+173:         if (request.getType() != RequestType.PURCHASE) {
+174:             throw new IllegalArgumentException("La richiesta selezionata non è una cessione.");
+175:         }
+176:         Vehicle vehicle = vehicleDao.findByIdForUpdate(request.getVehicleId(), conn)
+177:                 .orElseThrow(() -> new IllegalStateException("Veicolo non trovato: " + request.getVehicleId()));
+178:         if (vehicle.getState() != VehicleState.WAITING) {
+179:             throw new IllegalStateException("Il veicolo non è in attesa di valutazione.");
+180:         }
+181:         return request;
+182:     }
+
+src/main/java/it/unifi/drivehub/service/TestDriveService.java:40–87
+40:     public TestDrive bookTestDrive(Long vehicleId, Long clientId, LocalDateTime dateTime) {
+41:         if (dateTime.isBefore(LocalDateTime.now())) {
+42:             throw new IllegalArgumentException("Impossibile prenotare un test drive nel passato.");
+43:         }
+44: 
+45:         try {
+46:             return db.executeInTransactionWithResult(conn -> {
+47:                 Vehicle vehicle = vehicleDao.findByIdForUpdate(vehicleId, conn)
+48:                         .orElseThrow(() -> new IllegalStateException("Veicolo non trovato: " + vehicleId));
+49:                 if (vehicle.getState() != VehicleState.SALE && vehicle.getState() != VehicleState.RENT) {
+50:                     throw new IllegalStateException("I test drive possono essere prenotati solo su veicoli in vendita o a noleggio.");
+51:                 }
+52:                 userDao.lockClient(clientId, conn);
+53:                 // Controllo concorrente atomico: massimo 3 test drive attivi per il cliente
+54:                 int activeCount = testDriveDao.countActiveByClientId(clientId, conn);
+55:                 if (activeCount >= 3) {
+56:                     throw new IllegalStateException("Hai già raggiunto il limite massimo di 3 test drive prenotati.");
+57:                 }
+58: 
+59:                 // Verifica disponibilità concorrente
+60:                 boolean available = testDriveDao.isVehicleAvailableForTestDrive(vehicleId, dateTime, conn);
+61:                 if (!available) {
+62:                     throw new IllegalStateException("Fascia oraria non disponibile: il veicolo è già prenotato o noleggiato per questa data.");
+63:                 }
+64: 
+65:                 TestDrive td = TestDrive.create(null, vehicleId, clientId, dateTime);
+66:                 return testDriveDao.save(td, conn);
+67:             });
+68:         } catch (RuntimeException failure) {
+69:             if (failure.getCause() instanceof RuntimeException reason
+70:                     && (reason instanceof IllegalArgumentException || reason instanceof IllegalStateException)) {
+71:                 throw reason;
+72:             }
+73:             throw failure;
+74:         }
+75:     }
+76: 
+77:     public List<TestDrive> getClientTestDrives(Long clientId) {
+78:         return testDriveDao.findByClientId(clientId);
+79:     }
+80: 
+81:     public void cancelTestDrive(Long testDriveId, Long clientId) {
+82:         db.executeInTransaction(conn -> {
+83:             TestDrive td = testDriveDao.findById(testDriveId, conn)
+84:                     .filter(t -> t.getClientId().equals(clientId))
+85:                     .orElseThrow(() -> new IllegalArgumentException("Test drive non trovato per l'utente specificato."));
+86:             testDriveDao.delete(td.getId(), conn);
+87:         });
+
+src/main/java/it/unifi/drivehub/event/VehicleEventPublisher.java:28–32
+28:     public void publishCommitment(VehicleCommitmentEvent event, Connection conn) {
+29:         for (VehicleCommitmentObserver observer : observers) {
+30:             observer.onVehicleCommitted(event, conn);
+31:         }
+32:     }
+
+src/main/java/it/unifi/drivehub/service/TestDriveCancellationObserver.java:15–26
+15: 
+16:     private final TestDriveDao testDriveDao;
+17: 
+18:     public TestDriveCancellationObserver(TestDriveDao testDriveDao) {
+19:         this.testDriveDao = testDriveDao;
+20:     }
+21: 
+22:     @Override
+23:     public void onVehicleCommitted(VehicleCommitmentEvent event, Connection conn) {
+24:         testDriveDao.deleteFutureByVehicleId(event.vehicleId(), conn);
+25:     }
+26: }
+
+src/main/java/it/unifi/drivehub/presentation/view/AsyncLoad.java:23–75
+23: 
+24:     AsyncLoad(String name, Node target, Supplier<T> source, Consumer<T> apply) {
+25:         super(8);
+26:         this.target = target;
+27:         this.source = source;
+28:         this.apply = apply;
+29:         setAlignment(Pos.CENTER_LEFT);
+30:         progress.setMaxSize(20, 20);
+31:         progress.setFocusTraversable(false);
+32:         status.setWrapText(true);
+33:         refresh.setAccessibleText("Aggiorna o riprova: " + name);
+34:         refresh.setOnAction(event -> load());
+35:         getChildren().addAll(refresh, progress, status);
+36:         target.sceneProperty().addListener((obs, oldScene, scene) -> {
+37:             if (oldScene != null && scene == null && current != null) {
+38:                 current.cancel();
+39:                 current = null;
+40:             }
+41:         });
+42:     }
+43: 
+44:     void load(Supplier<T> source) {
+45:         this.source = source;
+46:         load();
+47:     }
+48: 
+49:     void load() {
+50:         if (current != null) current.cancel();
+51:         Supplier<T> request = source;
+52:         Task<T> task = new Task<>() {
+53:             @Override protected T call() { return request.get(); }
+54:         };
+55:         current = task;
+56:         target.setDisable(true);
+57:         progress.setVisible(true);
+58:         status.setText("Caricamento in corso…");
+59:         refresh.setText("Aggiorna");
+60:         task.setOnSucceeded(event -> {
+61:             if (current != task) return;
+62:             apply.accept(task.getValue());
+63:             progress.setVisible(false);
+64:             status.setText("Aggiornato");
+65:             target.setDisable(false);
+66:         });
+67:         task.setOnFailed(event -> {
+68:             if (current != task) return;
+69:             progress.setVisible(false);
+70:             status.setText("Caricamento non riuscito. Riprova.");
+71:             refresh.setText("Riprova");
+72:         });
+73:         Thread.ofVirtual().name("drivehub-table-load").start(task);
+74:     }
+75: }
+
+src/main/java/it/unifi/drivehub/App.java:34–122
+34:     private AppContext ctx;
+35: 
+36:     @Override
+37:     public void start(Stage primaryStage) {
+38:         this.primaryStage = primaryStage;
+39:         primaryStage.setTitle("DriveHub - Piattaforma Concessionario Auto");
+40: 
+41:         Platform.setImplicitExit(false);
+42:         primaryStage.setOnCloseRequest(e -> {
+43:             Platform.exit();
+44:             System.exit(0);
+45:         });
+46: 
+47:         // Inizializzazione Composition Root
+48:         this.ctx = AppContext.getInstance();
+49: 
+50:         showLoginView();
+51:         primaryStage.show();
+52:     }
+53: 
+54:     private void showLoginView() {
+55:         LoginView loginView = new LoginView(ctx.getAuthService(), this::showDashboardForUser);
+56:         Scene scene = new Scene(loginView, 900, 650);
+57:         applyTheme(scene);
+58:         primaryStage.setScene(scene);
+59:         primaryStage.centerOnScreen();
+60:     }
+61: 
+62:     private void showDashboardForUser(User user) {
+63:         user.openDashboard(new UserDashboardNavigator() {
+64:             @Override
+65:             public void showClientDashboard(Client client) {
+66:                 ClientDashboardView dashboard = new ClientDashboardView(
+67:                         client,
+68:                         ctx.getAuthService(),
+69:                         ctx.getPurchaseService(),
+70:                         ctx.getSaleToDealershipService(),
+71:                         ctx.getRentalService(),
+72:                         ctx.getTestDriveService(),
+73:                         ctx.getCatalogService(),
+74:                         ctx.getOperationQueryService(),
+75:                         ctx.getPriceCalculatorService(),
+76:                         App.this::showLoginView
+77:                 );
+78:                 displayScene(dashboard, 1100, 750);
+79:             }
+80: 
+81:             @Override
+82:             public void showSalesmanDashboard(Salesman salesman) {
+83:                 SalesmanDashboardView dashboard = new SalesmanDashboardView(
+84:                         salesman,
+85:                         ctx.getAuthService(),
+86:                         ctx.getPurchaseService(),
+87:                         ctx.getSaleToDealershipService(),
+88:                         ctx.getRentalService(),
+89:                         ctx.getCatalogService(),
+90:                         ctx.getOperationQueryService(),
+91:                         App.this::showLoginView
+92:                 );
+93:                 displayScene(dashboard, 1050, 720);
+94:             }
+95: 
+96:             @Override
+97:             public void showManagerDashboard(Manager manager) {
+98:                 ManagerDashboardView dashboard = new ManagerDashboardView(
+99:                         manager,
+100:                         ctx.getAuthService(),
+101:                         ctx.getCatalogService(),
+102:                         ctx.getOperationQueryService(),
+103:                         App.this::showLoginView
+104:                 );
+105:                 displayScene(dashboard, 1150, 750);
+106:             }
+107:         });
+108:     }
+109: 
+110:     private void displayScene(Parent root, double width, double height) {
+111:         Scene scene = new Scene(root, width, height);
+112:         applyTheme(scene);
+113:         primaryStage.setScene(scene);
+114:         primaryStage.centerOnScreen();
+115:     }
+116: 
+117:     private void applyTheme(Scene scene) {
+118:         String css = getClass().getResource("/css/style.css") != null
+119:                 ? getClass().getResource("/css/style.css").toExternalForm()
+120:                 : null;
+121:         if (css != null) {
+122:             scene.getStylesheets().add(css);
+
+src/main/java/it/unifi/drivehub/dao/postgres/PostgresRequestDao.java:147–168
+147:     public Request save(Request request, Connection conn) {
+148:         String sql = "INSERT INTO request (vehicle, client, salesman, deposit, exp_date, type, agreed_total) " +
+149:                 "VALUES (?, ?, ?, ?, ?, ?::request_type, ?) RETURNING id";
+150:         try (PreparedStatement ps = conn.prepareStatement(sql)) {
+151:             ps.setLong(1, request.getVehicleId());
+152:             ps.setLong(2, request.getClientId());
+153:             if (request.getSalesmanId() != null) {
+154:                 ps.setLong(3, request.getSalesmanId());
+155:             } else {
+156:                 ps.setNull(3, Types.BIGINT);
+157:             }
+158:             ps.setBigDecimal(4, request.getDeposit());
+159:             if (request.getExpDate() != null) {
+160:                 ps.setDate(5, Date.valueOf(request.getExpDate()));
+161:             } else {
+162:                 ps.setNull(5, Types.DATE);
+163:             }
+164:             ps.setString(6, request.getType().name());
+165:             ps.setBigDecimal(7, request.getAgreedTotal());
+166: 
+167:             try (ResultSet rs = ps.executeQuery()) {
+168:                 if (rs.next()) {
+
+src/main/java/it/unifi/drivehub/dao/postgres/PostgresRequestDao.java:214–227
+214:     private static Request mapRow(ResultSet rs) throws SQLException {
+215:         Long salesman = rs.getObject("salesman") != null ? rs.getLong("salesman") : null;
+216:         Date expDate = rs.getDate("exp_date");
+217:         return Request.create(
+218:                 rs.getLong("id"),
+219:                 rs.getLong("vehicle"),
+220:                 rs.getLong("client"),
+221:                 salesman,
+222:                 rs.getBigDecimal("deposit"),
+223:                 rs.getBigDecimal("agreed_total"),
+224:                 expDate != null ? expDate.toLocalDate() : null,
+225:                 RequestType.valueOf(rs.getString("type_str"))
+226:         );
+227:     }
+
+src/main/java/it/unifi/drivehub/dao/postgres/PostgresUserDao.java:215–291
+215:     public void lockUser(Long id, String role, Connection conn) {
+216:         String table = resolveTable(role);
+217:         // Compatibile con i KEY SHARE delle FK: un acquisto già sul conto può terminare.
+218:         try (PreparedStatement ps = conn.prepareStatement("SELECT id FROM " + table + " WHERE id = ? FOR NO KEY UPDATE")) {
+219:             if (conn.getAutoCommit()) throw new IllegalArgumentException("Il lock dell'identità richiede una transazione attiva.");
+220:             ps.setLong(1, id);
+221:             try (ResultSet rs = ps.executeQuery()) {
+222:                 if (!rs.next()) throw new IllegalStateException("Identità non trovata per il ruolo indicato.");
+223:             }
+224:         } catch (SQLException e) {
+225:             throw new RuntimeException("Errore durante il lock dell'identità.", e);
+226:         }
+227:     }
+228: 
+229:     @Override
+230:     public void deleteUser(Long id, String role, Connection conn) {
+231:         String table = resolveTable(role);
+232:         String sql = "DELETE FROM " + table + " WHERE id = ?";
+233:         try (PreparedStatement ps = conn.prepareStatement(sql)) {
+234:             ps.setLong(1, id);
+235:             if (ps.executeUpdate() != 1) throw new IllegalStateException("Cancellazione dell'identità non eseguita.");
+236:         } catch (SQLException e) {
+237:             if ("23503".equals(e.getSQLState())) {
+238:                 throw new IllegalStateException("Impossibile eliminare l'identità: un'operazione associata ne impedisce la cancellazione.", e);
+239:             }
+240:             throw new RuntimeException("Errore durante la cancellazione dell'utente.", e);
+241:         }
+242:     }
+243: 
+244:     @Override
+245:     public boolean hasAssociatedOperations(Long userId, String role, Connection conn) {
+246:         String table = resolveTable(role);
+247:         String checkSql;
+248:         if ("client".equals(table)) {
+249:             checkSql = "SELECT (" +
+250:                     "EXISTS(SELECT 1 FROM request WHERE client = ?) OR " +
+251:                     "EXISTS(SELECT 1 FROM test_drive WHERE client = ?) OR " +
+252:                     "EXISTS(SELECT 1 FROM rent WHERE client = ?) OR " +
+253:                     "EXISTS(SELECT 1 FROM sale WHERE client = ?)" +
+254:                     ") AS has_ops";
+255:         } else if ("salesman".equals(table)) {
+256:             checkSql = "SELECT (" +
+257:                     "EXISTS(SELECT 1 FROM request WHERE salesman = ?) OR " +
+258:                     "EXISTS(SELECT 1 FROM sale WHERE salesman = ?)" +
+259:                     ") AS has_ops";
+260:         } else {
+261:             return false;
+262:         }
+263: 
+264:         try (PreparedStatement ps = conn.prepareStatement(checkSql)) {
+265:             if ("client".equals(table)) {
+266:                 ps.setLong(1, userId);
+267:                 ps.setLong(2, userId);
+268:                 ps.setLong(3, userId);
+269:                 ps.setLong(4, userId);
+270:             } else {
+271:                 ps.setLong(1, userId);
+272:                 ps.setLong(2, userId);
+273:             }
+274:             try (ResultSet rs = ps.executeQuery()) {
+275:                 if (rs.next()) {
+276:                     return rs.getBoolean("has_ops");
+277:                 }
+278:             }
+279:         } catch (SQLException e) {
+280:             throw new RuntimeException("Errore durante la verifica delle operazioni associate all'utente.", e);
+281:         }
+282:         return false;
+283:     }
+284: 
+285:     private static String resolveTable(String role) {
+286:         return switch (role.toUpperCase()) {
+287:             case "CLIENT", "CLIENTE" -> "client";
+288:             case "SALESMAN", "VENDITORE" -> "salesman";
+289:             case "MANAGER" -> "manager";
+290:             default -> throw new IllegalArgumentException("Ruolo non valido: " + role);
+291:         };
+
+src/main/resources/db/schema.sql:36–39
+36: CREATE TYPE vehicle_state AS ENUM ('SALE', 'RENT', 'BLOCKED', 'WAITING', 'SOLD');
+37: CREATE TYPE request_type AS ENUM ('PURCHASE', 'SALE');
+38: CREATE TYPE price_mode AS ENUM ('AUTOMATIC', 'MANUAL');
+39: CREATE TYPE sale_type AS ENUM ('SALE', 'PURCHASE', 'PENALTY');
+
+src/main/resources/db/schema.sql:79–96
+79: CREATE TABLE "vehicle" (
+80:     "id" BIGINT GENERATED BY DEFAULT AS IDENTITY,
+81:     "model" BIGINT NOT NULL,
+82:     "vin" VARCHAR(17) NOT NULL,
+83:     "licence_plate" VARCHAR(10),
+84:     "kilometers" INT NOT NULL,
+85:     "price" DECIMAL(10, 2) NOT NULL, -- base commerciale, mai risultato della formula
+86:     "price_mode" price_mode NOT NULL DEFAULT 'AUTOMATIC',
+87:     "year" SMALLINT NOT NULL,
+88:     "state" vehicle_state NOT NULL,
+89:     CONSTRAINT "pk_vehicle" PRIMARY KEY ("id"),
+90:     CONSTRAINT "uq_vehicle_vin" UNIQUE ("vin"),
+91:     CONSTRAINT "uq_vehicle_licence_plate" UNIQUE ("licence_plate"),
+92:     CONSTRAINT "fk_vehicle_model" FOREIGN KEY ("model") REFERENCES "model" ("id") ON DELETE RESTRICT,
+93:     CONSTRAINT "chk_vehicle_price" CHECK ("price" >= 0),
+94:     CONSTRAINT "chk_vehicle_kilometers" CHECK ("kilometers" >= 0),
+95:     CONSTRAINT "chk_vehicle_year" CHECK ("year" >= 1900),
+96:     CONSTRAINT "chk_vehicle_plate_km" CHECK ("licence_plate" IS NOT NULL OR "kilometers" = 0)
+
+src/main/resources/db/schema.sql:147–310
+147: CREATE SEQUENCE IF NOT EXISTS "user_id_seq" START WITH 1 INCREMENT BY 1;
+148: 
+149: -- 6a. Client (Cliente)
+150: CREATE TABLE "client" (
+151:     "id" BIGINT DEFAULT nextval('user_id_seq'),
+152:     "name" VARCHAR(50) NOT NULL,
+153:     "surname" VARCHAR(50) NOT NULL,
+154:     "email" VARCHAR(50) NOT NULL,
+155:     "hash_password" VARCHAR(255) NOT NULL,
+156:     CONSTRAINT "pk_client" PRIMARY KEY ("id"),
+157:     CONSTRAINT "uq_client_email" UNIQUE ("email"),
+158:     CONSTRAINT "chk_client_email_fmt" CHECK ("email" LIKE '%_@_%._%')
+159: );
+160: 
+161: -- 6b. Salesman (Venditore)
+162: CREATE TABLE "salesman" (
+163:     "id" BIGINT DEFAULT nextval('user_id_seq'),
+164:     "name" VARCHAR(50) NOT NULL,
+165:     "surname" VARCHAR(50) NOT NULL,
+166:     "email" VARCHAR(50) NOT NULL,
+167:     "hash_password" VARCHAR(255) NOT NULL,
+168:     CONSTRAINT "pk_salesman" PRIMARY KEY ("id"),
+169:     CONSTRAINT "uq_salesman_email" UNIQUE ("email"),
+170:     CONSTRAINT "chk_salesman_email_fmt" CHECK ("email" LIKE '%_@_%._%')
+171: );
+172: 
+173: -- 6c. Manager (Dirigente)
+174: CREATE TABLE "manager" (
+175:     "id" BIGINT DEFAULT nextval('user_id_seq'),
+176:     "name" VARCHAR(50) NOT NULL,
+177:     "surname" VARCHAR(50) NOT NULL,
+178:     "email" VARCHAR(50) NOT NULL,
+179:     "hash_password" VARCHAR(255) NOT NULL,
+180:     CONSTRAINT "pk_manager" PRIMARY KEY ("id"),
+181:     CONSTRAINT "uq_manager_email" UNIQUE ("email"),
+182:     CONSTRAINT "chk_manager_email_fmt" CHECK ("email" LIKE '%_@_%._%')
+183: );
+184: 
+185: -- -----------------------------------------------------------------------------
+186: -- 7. BankAccount (Conto Corrente del Cliente)
+187: -- -----------------------------------------------------------------------------
+188: CREATE TABLE "bank_account" (
+189:     "iban" VARCHAR(27) NOT NULL,
+190:     "client" BIGINT NOT NULL,
+191:     "balance" DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+192:     CONSTRAINT "pk_bank_account" PRIMARY KEY ("iban"),
+193:     CONSTRAINT "uq_bank_account_client" UNIQUE ("client"),
+194:     CONSTRAINT "fk_bank_account_client" FOREIGN KEY ("client") REFERENCES "client" ("id") ON DELETE CASCADE,
+195:     CONSTRAINT "chk_bank_account_balance" CHECK ("balance" >= 0)
+196: );
+197: 
+198: -- -----------------------------------------------------------------------------
+199: -- Vincolo di Disgiunzione Email: Trigger su client, salesman, manager
+200: -- -----------------------------------------------------------------------------
+201: CREATE OR REPLACE FUNCTION check_user_email_disjoint()
+202: RETURNS TRIGGER AS $$
+203: BEGIN
+204:     IF TG_TABLE_NAME <> 'client' AND EXISTS (SELECT 1 FROM "client" WHERE "email" = NEW."email" AND "id" <> COALESCE(NEW."id", -1)) THEN
+205:         RAISE EXCEPTION 'Violazione vincolo di disgiunzione: email % appartiene già a un cliente.', NEW."email";
+206:     END IF;
+207:     IF TG_TABLE_NAME <> 'salesman' AND EXISTS (SELECT 1 FROM "salesman" WHERE "email" = NEW."email" AND "id" <> COALESCE(NEW."id", -1)) THEN
+208:         RAISE EXCEPTION 'Violazione vincolo di disgiunzione: email % appartiene già a un venditore.', NEW."email";
+209:     END IF;
+210:     IF TG_TABLE_NAME <> 'manager' AND EXISTS (SELECT 1 FROM "manager" WHERE "email" = NEW."email" AND "id" <> COALESCE(NEW."id", -1)) THEN
+211:         RAISE EXCEPTION 'Violazione vincolo di disgiunzione: email % appartiene già a un manager.', NEW."email";
+212:     END IF;
+213:     RETURN NEW;
+214: END;
+215: $$ LANGUAGE plpgsql;
+216: 
+217: CREATE TRIGGER "trg_client_disjoint_email"
+218: BEFORE INSERT OR UPDATE OF "email" ON "client"
+219: FOR EACH ROW EXECUTE FUNCTION check_user_email_disjoint();
+220: 
+221: CREATE TRIGGER "trg_salesman_disjoint_email"
+222: BEFORE INSERT OR UPDATE OF "email" ON "salesman"
+223: FOR EACH ROW EXECUTE FUNCTION check_user_email_disjoint();
+224: 
+225: CREATE TRIGGER "trg_manager_disjoint_email"
+226: BEFORE INSERT OR UPDATE OF "email" ON "manager"
+227: FOR EACH ROW EXECUTE FUNCTION check_user_email_disjoint();
+228: 
+229: -- Vista unificata "user" per agevolare l'autenticazione on-demand
+230: CREATE OR REPLACE VIEW "user" AS
+231:     SELECT "id", "name", "surname", "email", "hash_password", 'CLIENT' AS "role" FROM "client"
+232:     UNION ALL
+233:     SELECT "id", "name", "surname", "email", "hash_password", 'SALESMAN' AS "role" FROM "salesman"
+234:     UNION ALL
+235:     SELECT "id", "name", "surname", "email", "hash_password", 'MANAGER' AS "role" FROM "manager";
+236: 
+237: -- -----------------------------------------------------------------------------
+238: -- 8. Request (Richiesta di acquisto o di vendita auto del cliente)
+239: -- -----------------------------------------------------------------------------
+240: CREATE TABLE "request" (
+241:     "id" BIGINT GENERATED BY DEFAULT AS IDENTITY,
+242:     "vehicle" BIGINT NOT NULL,
+243:     "client" BIGINT NOT NULL,
+244:     "salesman" BIGINT,
+245:     "deposit" DECIMAL(10, 2) NOT NULL,
+246:     "agreed_total" DECIMAL(10, 2),
+247:     "exp_date" DATE,
+248:     "type" request_type NOT NULL,
+249:     CONSTRAINT "pk_request" PRIMARY KEY ("id"),
+250:     CONSTRAINT "uq_request_vehicle" UNIQUE ("vehicle"),
+251:     CONSTRAINT "ck_request_agreement" CHECK (
+252:         ("type" = 'SALE' AND "agreed_total" IS NOT NULL AND "agreed_total" >= 0
+253:             AND "deposit" >= 0 AND "deposit" <= "agreed_total")
+254:         OR ("type" = 'PURCHASE' AND "agreed_total" IS NULL AND "deposit" >= 0)
+255:     ),
+256:     CONSTRAINT "fk_request_vehicle" FOREIGN KEY ("vehicle") REFERENCES "vehicle" ("id") ON DELETE RESTRICT,
+257:     CONSTRAINT "fk_request_client" FOREIGN KEY ("client") REFERENCES "client" ("id") ON DELETE RESTRICT,
+258:     CONSTRAINT "fk_request_salesman" FOREIGN KEY ("salesman") REFERENCES "salesman" ("id") ON DELETE RESTRICT
+259: );
+260: 
+261: -- -----------------------------------------------------------------------------
+262: -- 9. TestDrive (Prenotazione giro di prova)
+263: -- -----------------------------------------------------------------------------
+264: CREATE TABLE "test_drive" (
+265:     "id" BIGINT GENERATED BY DEFAULT AS IDENTITY,
+266:     "vehicle" BIGINT NOT NULL,
+267:     "client" BIGINT NOT NULL,
+268:     "date" TIMESTAMP NOT NULL,
+269:     CONSTRAINT "pk_test_drive" PRIMARY KEY ("id"),
+270:     CONSTRAINT "fk_test_drive_vehicle" FOREIGN KEY ("vehicle") REFERENCES "vehicle" ("id") ON DELETE RESTRICT,
+271:     CONSTRAINT "fk_test_drive_client" FOREIGN KEY ("client") REFERENCES "client" ("id") ON DELETE RESTRICT,
+272:     CONSTRAINT "uq_test_drive_vehicle_date" UNIQUE ("vehicle", "date"),
+273:     CONSTRAINT "chk_test_drive_time_slot" CHECK (CAST("date" AS TIME) >= TIME '09:00:00' AND CAST("date" AS TIME) <= TIME '16:00:00')
+274: );
+275: 
+276: -- -----------------------------------------------------------------------------
+277: -- 10. Rent (Noleggio)
+278: -- -----------------------------------------------------------------------------
+279: CREATE TABLE "rent" (
+280:     "id" BIGINT GENERATED BY DEFAULT AS IDENTITY,
+281:     "vehicle" BIGINT NOT NULL,
+282:     "client" BIGINT NOT NULL,
+283:     "amount" DECIMAL(10, 2) NOT NULL,
+284:     "start" DATE NOT NULL,
+285:     "end" DATE NOT NULL,
+286:     CONSTRAINT "pk_rent" PRIMARY KEY ("id"),
+287:     CONSTRAINT "fk_rent_vehicle" FOREIGN KEY ("vehicle") REFERENCES "vehicle" ("id") ON DELETE RESTRICT,
+288:     CONSTRAINT "fk_rent_client" FOREIGN KEY ("client") REFERENCES "client" ("id") ON DELETE RESTRICT,
+289:     CONSTRAINT "chk_rent_amount" CHECK ("amount" >= 0),
+290:     CONSTRAINT "chk_rent_dates" CHECK ("end" >= "start"),
+291:     CONSTRAINT "ex_rent_vehicle_period" EXCLUDE USING gist
+292:         ("vehicle" WITH =, daterange("start", "end", '[]') WITH &&)
+293: );
+294: 
+295: -- -----------------------------------------------------------------------------
+296: -- 11. Sale (Registro compravendite e penali)
+297: -- -----------------------------------------------------------------------------
+298: CREATE TABLE "sale" (
+299:     "id" BIGINT GENERATED BY DEFAULT AS IDENTITY,
+300:     "vehicle" BIGINT,
+301:     "salesman" BIGINT,
+302:     "client" BIGINT NOT NULL,
+303:     "amount" DECIMAL(10, 2) NOT NULL,
+304:     "date" TIMESTAMP NOT NULL,
+305:     "type" sale_type NOT NULL,
+306:     CONSTRAINT "ck_sale_amount_type" CHECK ("amount" >= 0),
+307:     CONSTRAINT "pk_sale" PRIMARY KEY ("id"),
+308:     CONSTRAINT "fk_sale_vehicle" FOREIGN KEY ("vehicle") REFERENCES "vehicle" ("id") ON DELETE SET NULL,
+309:     CONSTRAINT "fk_sale_salesman" FOREIGN KEY ("salesman") REFERENCES "salesman" ("id") ON DELETE RESTRICT,
+310:     CONSTRAINT "fk_sale_client" FOREIGN KEY ("client") REFERENCES "client" ("id") ON DELETE RESTRICT
+
+src/test/java/it/unifi/drivehub/AuthServiceIntegrationTest.java:19–104
+19:     @BeforeEach
+20:     void setUp() throws Exception {
+21:         auth = new AppContext(TestDatabase.fromEnvironment().reset()).getAuthService();
+22:     }
+23: 
+24:     @ParameterizedTest
+25:     @ValueSource(strings = {"mario.rossi@email.it", "paolo.costa@drivehub.it", "vittorio.manager@drivehub.it"})
+26:     void rejectedEmailPreservesStoredIdentityAndLogin(String email) {
+27:         User before = auth.login(email, "password");
+28: 
+29:         IllegalArgumentException error = assertThrows(IllegalArgumentException.class,
+30:                 () -> auth.changeEmail(before.getId(), before.getRoleDisplayName(), "nuova email@example.it", "password"));
+31: 
+32:         assertEquals("Nuovo formato email non valido: nuova email@example.it", error.getMessage());
+33:         assertIdentityUnchanged(before);
+34:     }
+35: 
+36:     @ParameterizedTest
+37:     @ValueSource(strings = {"mario.rossi@email.it", "paolo.costa@drivehub.it", "vittorio.manager@drivehub.it"})
+38:     void validEmailIsNormalizedPersistedAndUsedForLogin(String email) {
+39:         User before = auth.login(email, "password");
+40: 
+41:         auth.changeEmail(before.getId(), before.getRoleDisplayName(), "  Nuova.Email@Example.IT \t", "password");
+42: 
+43:         User after = auth.login("nuova.email@example.it", "password");
+44:         assertAll(
+45:                 () -> assertEquals(before.getId(), after.getId()),
+46:                 () -> assertEquals("nuova.email@example.it", after.getEmail()),
+47:                 () -> assertEquals(before.getHashPassword(), after.getHashPassword()),
+48:                 () -> assertEquals(before.getRoleDisplayName(), after.getRoleDisplayName()),
+49:                 () -> assertThrows(IllegalArgumentException.class, () -> auth.login(email, "password")));
+50:     }
+51: 
+52:     @ParameterizedTest
+53:     @CsvSource({
+54:             "mario.rossi@email.it, luigi.verdi@email.it",
+55:             "paolo.costa@drivehub.it, laura.gatti@drivehub.it",
+56:             "mario.rossi@email.it, paolo.costa@drivehub.it",
+57:             "paolo.costa@drivehub.it, vittorio.manager@drivehub.it",
+58:             "vittorio.manager@drivehub.it, mario.rossi@email.it"
+59:     })
+60:     void duplicateEmailPreservesBothIdentitiesAndLogins(String email, String duplicate) {
+61:         User before = auth.login(email, "password");
+62:         User owner = auth.login(duplicate, "password");
+63: 
+64:         assertThrows(RuntimeException.class,
+65:                 () -> auth.changeEmail(before.getId(), before.getRoleDisplayName(),
+66:                         "  " + duplicate.toUpperCase(java.util.Locale.ROOT) + "  ", "password"));
+67: 
+68:         assertIdentityUnchanged(before);
+69:         assertIdentityUnchanged(owner);
+70:     }
+71: 
+72:     @ParameterizedTest
+73:     @ValueSource(strings = {"mario.rossi@email.it", "paolo.costa@drivehub.it", "vittorio.manager@drivehub.it"})
+74:     void wrongPasswordPreservesStoredIdentityAndLogin(String email) {
+75:         User before = auth.login(email, "password");
+76: 
+77:         IllegalArgumentException error = assertThrows(IllegalArgumentException.class,
+78:                 () -> auth.changeEmail(before.getId(), before.getRoleDisplayName(), "nuova@example.it", "errata"));
+79: 
+80:         assertEquals("Password attuale errata: operazione annullata.", error.getMessage());
+81:         assertIdentityUnchanged(before);
+82:     }
+83: 
+84:     @ParameterizedTest
+85:     @NullAndEmptySource
+86:     @ValueSource(strings = {" \t ", "senza-chiocciola"})
+87:     void malformedEmailPreservesStoredIdentityAndLogin(String email) {
+88:         User before = auth.login("mario.rossi@email.it", "password");
+89: 
+90:         assertThrows(IllegalArgumentException.class,
+91:                 () -> auth.changeEmail(before.getId(), before.getRoleDisplayName(), email, "password"));
+92: 
+93:         assertIdentityUnchanged(before);
+94:     }
+95: 
+96:     private void assertIdentityUnchanged(User before) {
+97:         User after = auth.login(before.getEmail(), "password");
+98:         assertAll(
+99:                 () -> assertEquals(before.getId(), after.getId()),
+100:                 () -> assertEquals(before.getName(), after.getName()),
+101:                 () -> assertEquals(before.getSurname(), after.getSurname()),
+102:                 () -> assertEquals(before.getEmail(), after.getEmail()),
+103:                 () -> assertEquals(before.getHashPassword(), after.getHashPassword()),
+104:                 () -> assertEquals(before.getRoleDisplayName(), after.getRoleDisplayName()));
+
+src/test/java/it/unifi/drivehub/PurchaseAgreementIntegrationTest.java:26–78
+26:     @BeforeEach
+27:     void setUp() throws Exception {
+28:         ctx = new AppContext(TestDatabase.fromEnvironment().reset());
+29:         try (var conn = ctx.getDatabaseManager().getConnection(); var sql = conn.createStatement()) {
+30:             sql.execute("DELETE FROM sale; DELETE FROM rent; DELETE FROM test_drive; DELETE FROM request;"
+31:                     + "UPDATE bank_account SET balance = 30000 WHERE client = 1");
+32:         }
+33:     }
+34: 
+35:     @ParameterizedTest
+36:     @ValueSource(booleans = {false, true})
+37:     void completionKeepsAgreementAfterPricingChangesAndNewSession(boolean manual) throws Exception {
+38:         int year = Year.now().getValue();
+39:         var catalog = ctx.getCatalogService();
+40:         var model = catalog.addModel("Fiat", "Ticket06", new BigDecimal("20000"), year);
+41:         vehicle = catalog.addVehicle(model.getId(), "T0600000000000001", null, 0,
+42:                 manual ? new BigDecimal("20000") : null, year, VehicleState.SALE);
+43:         Request request = ctx.getPurchaseService().initiatePurchase(vehicle.getId(), 1L);
+44:         assertEquals(RequestType.SALE, request.getType());
+45:         assertEquals(new BigDecimal("4000.00"), request.getDeposit());
+46:         assertEquals(new BigDecimal("20000.00"), request.getAgreedTotal());
+47:         assertEquals(new BigDecimal("16000.00"), request.getRemainingAmount());
+48:         assertEquals(VehicleState.BLOCKED, ctx.getCatalogService().getVehicleById(vehicle.getId()).orElseThrow().getState());
+49:         assertThrows(RuntimeException.class, () -> ctx.getPurchaseService().initiatePurchase(vehicle.getId(), 2L));
+50:         assertEquals(1, ctx.getOperationQueryService().getClientRequests(1L).size());
+51:         assertEquals(new BigDecimal("26000.00"), ctx.getAuthService().getClientBankAccount(1L).getBalance());
+52:         ctx.getPurchaseService().approvePurchase(request.getId(), 16L);
+53: 
+54:         try (var conn = ctx.getDatabaseManager().getConnection();
+55:              var sql = conn.prepareStatement("UPDATE model SET release_price = 30000 WHERE id = ?")) {
+56:             sql.setLong(1, model.getId());
+57:             assertEquals(1, sql.executeUpdate());
+58:         }
+59:         catalog.updateVehiclePricing(vehicle.getId(), manual ? null : new BigDecimal("35000"));
+60:         catalog.setModelDiscount(model.getId(), 10);
+61:         catalog.setVehicleDiscount(vehicle.getId(), 20);
+62:         ctx = new AppContext(ctx.getDatabaseManager());
+63:         assertNotEquals(new BigDecimal("20000.00"), ctx.getCatalogService().getEffectiveVehiclePrice(
+64:                 ctx.getCatalogService().getVehicleById(vehicle.getId()).orElseThrow()));
+65:         Request reloaded = request(request.getId());
+66:         assertEquals(RequestType.SALE, reloaded.getType());
+67:         assertEquals(new BigDecimal("20000.00"), reloaded.getAgreedTotal());
+68:         assertEquals(new BigDecimal("4000.00"), reloaded.getDeposit());
+69:         assertEquals(new BigDecimal("16000.00"), reloaded.getRemainingAmount());
+70:         ctx.getPurchaseService().completePurchase(request.getId());
+71:         var sale = ctx.getOperationQueryService().getClientSales(1L).stream()
+72:                 .filter(s -> s.getVehicleId().equals(vehicle.getId())).findFirst().orElseThrow();
+73:         assertEquals(it.unifi.drivehub.domain.operation.SaleType.SALE, sale.getType());
+74:         assertEquals(new BigDecimal("20000.00"), sale.getAmount());
+75:         assertEquals(new BigDecimal("10000.00"), ctx.getAuthService().getClientBankAccount(1L).getBalance());
+76:         assertEquals(VehicleState.SOLD, ctx.getCatalogService().getVehicleById(vehicle.getId()).orElseThrow().getState());
+77:         assertTrue(ctx.getOperationQueryService().getClientRequests(1L).stream()
+78:                 .noneMatch(r -> r.getId().equals(request.getId())));
+
+src/test/java/it/unifi/drivehub/TestDriveCancellationIntegrationTest.java:25–181
+25:     @BeforeEach
+26:     void setUp() throws Exception {
+27:         ctx = new AppContext(TestDatabase.fromEnvironment().reset());
+28:         sql("DELETE FROM sale; DELETE FROM rent; DELETE FROM test_drive; DELETE FROM request;"
+29:                 + "UPDATE bank_account SET balance = 30000 WHERE client = 1");
+30:     }
+31: 
+32:     @AfterEach
+33:     void cleanUp() throws Exception {
+34:         if (ctx != null) sql("DROP FUNCTION IF EXISTS fail_ticket08() CASCADE;"
+35:                 + "DROP FUNCTION IF EXISTS boundary_ticket08() CASCADE");
+36:     }
+37: 
+38:     @ParameterizedTest
+39:     @ValueSource(booleans = {false, true})
+40:     void cancellationFailureRollsBackTheCommercialOperation(boolean rental) throws Exception {
+41:         prepareOperation(rental);
+42:         sql("INSERT INTO test_drive (id, vehicle, client, date) VALUES "
+43:                 + "(1001, " + vehicle.getId() + ", 2, CURRENT_DATE + 1 + TIME '10:00'),"
+44:                 + "(1002, " + vehicle.getId() + ", 3, CURRENT_DATE + 20 + TIME '10:00')");
+45:         sql("CREATE FUNCTION fail_ticket08() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN "
+46:                 + "IF (SELECT balance FROM bank_account WHERE client = 1) >= "
+47:                 + (rental ? "30000" : "26000")
+48:                 + " THEN RAISE EXCEPTION 'ticket08_debit_not_observed'; END IF; "
+49:                 + (rental
+50:                 ? "IF NOT EXISTS (SELECT 1 FROM rent WHERE vehicle = " + vehicle.getId() + ") "
+51:                 : "IF NOT EXISTS (SELECT 1 FROM sale WHERE vehicle = " + vehicle.getId() + ") "
+52:                     + "OR EXISTS (SELECT 1 FROM request WHERE vehicle = " + vehicle.getId() + ") "
+53:                     + "OR (SELECT state FROM vehicle WHERE id = " + vehicle.getId() + ") <> 'SOLD' ")
+54:                 + "THEN RAISE EXCEPTION 'ticket08_operation_not_observed'; END IF; "
+55:                 + "IF EXISTS (SELECT 1 FROM test_drive WHERE vehicle = " + vehicle.getId() + ") "
+56:                 + "THEN RAISE EXCEPTION 'ticket08_deletions_not_observed'; END IF; "
+57:                 + "RAISE EXCEPTION 'ticket08_cancellation_failed'; END $$; "
+58:                 + "CREATE TRIGGER fail_ticket08 AFTER DELETE ON test_drive "
+59:                 + "FOR EACH STATEMENT EXECUTE FUNCTION fail_ticket08()");
+60:         RuntimeException failure = assertThrows(RuntimeException.class, () -> confirm(rental));
+61:         assertTrue(rootMessage(failure).contains("ticket08_cancellation_failed"), rootMessage(failure));
+62:         ctx = new AppContext(ctx.getDatabaseManager());
+63:         assertEquals(new BigDecimal(rental ? "30000.00" : "26000.00"),
+64:                 ctx.getAuthService().getClientBankAccount(1L).getBalance());
+65:         assertTrue(ctx.getOperationQueryService().getAllSales().isEmpty());
+66:         assertTrue(ctx.getOperationQueryService().getClientRents(1L).isEmpty());
+67:         assertEquals(rental ? VehicleState.RENT : VehicleState.BLOCKED,
+68:                 ctx.getCatalogService().getVehicleById(vehicle.getId()).orElseThrow().getState());
+69:         assertEquals(List.of(1001L), testDriveIds(2L));
+70:         assertEquals(List.of(1002L), testDriveIds(3L));
+71:         if (rental) {
+72:             assertTrue(ctx.getOperationQueryService().getClientRequests(1L).isEmpty());
+73:         } else {
+74:             var saved = ctx.getOperationQueryService().getClientRequests(1L).getFirst();
+75:             assertEquals(request.getId(), saved.getId());
+76:             assertEquals(request.getAgreedTotal(), saved.getAgreedTotal());
+77:             assertEquals(request.getDeposit(), saved.getDeposit());
+78:             assertEquals(16L, saved.getSalesmanId());
+79:             assertEquals(request.getExpDate(), saved.getExpDate());
+80:         }
+81:     }
+82: 
+83:     @ParameterizedTest
+84:     @ValueSource(booleans = {false, true})
+85:     void confirmationCancelsEveryFutureAndPreservesHistoryAndOtherVehicles(boolean rental) throws Exception {
+86:         prepareOperation(rental);
+87:         var other = ctx.getCatalogService().addVehicle(vehicle.getModelId(), "T0800000000000002", null, 0,
+88:                 null, Year.now().getValue(), VehicleState.SALE);
+89:         sql("INSERT INTO test_drive (id, vehicle, client, date) VALUES "
+90:                 + "(1000, " + vehicle.getId() + ", 2, CURRENT_DATE - 1 + TIME '10:00'),"
+91:                 + "(1001, " + vehicle.getId() + ", 2, CURRENT_DATE + 1 + TIME '10:00'),"
+92:                 + "(1002, " + vehicle.getId() + ", 3, CURRENT_DATE + 6 + TIME '10:00'),"
+93:                 + "(1003, " + vehicle.getId() + ", 3, CURRENT_DATE + 20 + TIME '10:00'),"
+94:                 + "(1004, " + other.getId() + ", 2, CURRENT_DATE + 1 + TIME '10:00')");
+95:         confirm(rental);
+96:         ctx = new AppContext(ctx.getDatabaseManager());
+97:         assertEquals(List.of(1000L, 1004L), testDriveIds(2L));
+98:         assertTrue(testDriveIds(3L).isEmpty());
+99:         assertEquals(rental ? VehicleState.RENT : VehicleState.SOLD,
+100:                 ctx.getCatalogService().getVehicleById(vehicle.getId()).orElseThrow().getState());
+101:         assertTrue(ctx.getOperationQueryService().getClientRequests(1L).isEmpty());
+102:         if (rental) {
+103:             var rents = ctx.getOperationQueryService().getClientRents(1L);
+104:             assertEquals(1, rents.size());
+105:             assertEquals(new BigDecimal("57.05"), rents.getFirst().getAmount());
+106:             assertEquals(LocalDate.now().plusDays(5), rents.getFirst().getStartDate());
+107:             assertEquals(LocalDate.now().plusDays(7), rents.getFirst().getEndDate());
+108:             assertEquals(new BigDecimal("29942.95"), ctx.getAuthService().getClientBankAccount(1L).getBalance());
+109:             assertTrue(ctx.getOperationQueryService().getAllSales().isEmpty());
+110:         } else {
+111:             var sales = ctx.getOperationQueryService().getClientSales(1L);
+112:             assertEquals(1, sales.size());
+113:             assertEquals(new BigDecimal("20000.00"), sales.getFirst().getAmount());
+114:             assertEquals(new BigDecimal("10000.00"), ctx.getAuthService().getClientBankAccount(1L).getBalance());
+115:             assertTrue(ctx.getOperationQueryService().getClientRents(1L).isEmpty());
+116:         }
+117:     }
+118: 
+119:     @ParameterizedTest
+120:     @ValueSource(booleans = {false, true})
+121:     void onlyDatesStrictlyAfterTheOperationTransactionStartAreCancelled(boolean rental) throws Exception {
+122:         prepareOperation(rental);
+123:         // Mantiene il confine nell'orario 09–16 anche nelle esecuzioni notturne, senza cambiare il clock.
+124:         sql("CREATE FUNCTION boundary_ticket08() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN "
+125:                 + "PERFORM set_config('TimeZone', 'UTC' || "
+126:                 + "(EXTRACT(HOUR FROM CURRENT_TIMESTAMP AT TIME ZONE 'UTC')::int - 12)::text, true); "
+127:                 + "INSERT INTO test_drive (id, vehicle, client, date) VALUES "
+128:                 + "(1000, " + vehicle.getId() + ", 2, LOCALTIMESTAMP - INTERVAL '1 microsecond'),"
+129:                 + "(1001, " + vehicle.getId() + ", 2, LOCALTIMESTAMP),"
+130:                 + "(1002, " + vehicle.getId() + ", 2, LOCALTIMESTAMP + INTERVAL '1 microsecond'); "
+131:                 + "RETURN NEW; END $$; "
+132:                 + "CREATE TRIGGER boundary_ticket08 AFTER UPDATE ON bank_account "
+133:                 + "FOR EACH ROW EXECUTE FUNCTION boundary_ticket08()");
+134:         confirm(rental);
+135:         ctx = new AppContext(ctx.getDatabaseManager());
+136:         assertEquals(List.of(1000L, 1001L), testDriveIds(2L));
+137:     }
+138: 
+139:     @ParameterizedTest
+140:     @ValueSource(booleans = {false, true})
+141:     void confirmationAlsoSucceedsWithoutFutureTestDrives(boolean rental) {
+142:         prepareOperation(rental);
+143:         assertDoesNotThrow(() -> confirm(rental));
+144:         ctx = new AppContext(ctx.getDatabaseManager());
+145:         assertTrue(ctx.getTestDriveService().getClientTestDrives(2L).isEmpty());
+146:         assertEquals(1, rental ? ctx.getOperationQueryService().getClientRents(1L).size()
+147:                 : ctx.getOperationQueryService().getClientSales(1L).size());
+148:     }
+149: 
+150:     private void prepareOperation(boolean rental) {
+151:         var model = ctx.getCatalogService().addModel("Fiat", "Cancellation08", new BigDecimal("20000"),
+152:                 Year.now().getValue());
+153:         vehicle = ctx.getCatalogService().addVehicle(model.getId(), "T0800000000000001", null, 0,
+154:                 null, Year.now().getValue(), rental ? VehicleState.RENT : VehicleState.SALE);
+155:         if (!rental) {
+156:             request = ctx.getPurchaseService().initiatePurchase(vehicle.getId(), 1L);
+157:             ctx.getPurchaseService().approvePurchase(request.getId(), 16L);
+158:             request = ctx.getOperationQueryService().getClientRequests(1L).getFirst();
+159:         }
+160:     }
+161: 
+162:     private void confirm(boolean rental) {
+163:         if (rental) ctx.getRentalService().bookRental(vehicle.getId(), 1L,
+164:                 LocalDate.now().plusDays(5), LocalDate.now().plusDays(7));
+165:         else ctx.getPurchaseService().completePurchase(request.getId());
+166:     }
+167: 
+168:     private List<Long> testDriveIds(Long clientId) {
+169:         return ctx.getTestDriveService().getClientTestDrives(clientId).stream()
+170:                 .map(td -> td.getId()).sorted().toList();
+171:     }
+172: 
+173:     private void sql(String statement) throws Exception {
+174:         try (var conn = ctx.getDatabaseManager().getConnection(); var sql = conn.createStatement()) {
+175:             sql.execute(statement);
+176:         }
+177:     }
+178: 
+179:     private static String rootMessage(Throwable failure) {
+180:         while (failure.getCause() != null) failure = failure.getCause();
+181:         return failure.getMessage();
+
+src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java:35–85
+35:     void setUp() throws Exception {
+36:         db = TestDatabase.fromEnvironment().reset();
+37:         ctx = new AppContext(db);
+38:         sql("""
+39:                 DELETE FROM sale; DELETE FROM rent; DELETE FROM test_drive; DELETE FROM request;
+40:                 UPDATE bank_account SET balance = 50000 WHERE client = 1;
+41:                 INSERT INTO model (id, brand, name, release_price, release_year)
+42:                   VALUES (1001, 'Fiat', 'Ticket07', 20000, EXTRACT(YEAR FROM CURRENT_DATE));
+43:                 INSERT INTO vehicle (id, model, vin, kilometers, price, year, state)
+44:                   VALUES (1001, 1001, 'T0700000000000001', 0, 20000, EXTRACT(YEAR FROM CURRENT_DATE), 'SALE');
+45:                 """);
+46:         var request = ctx.getPurchaseService().initiatePurchase(1001L, 1L);
+47:         sql("UPDATE request SET id = 1001 WHERE id = " + request.getId());
+48:         ctx.getPurchaseService().approvePurchase(1001L, 16L);
+49:     }
+50: 
+51:     @Test
+52:     void concurrentCompletionsChargeAndSellOnlyOnce() throws Exception {
+53:         var failures = race(
+54:                 () -> new AppContext(db).getPurchaseService().completePurchase(1001L),
+55:                 () -> new AppContext(db).getPurchaseService().completePurchase(1001L));
+56: 
+57:         assertNull(failures.get(0));
+58:         assertNotNull(failures.get(1), "La seconda sessione deve rileggere una richiesta già consumata");
+59:         balance("30000.00");
+60:         assertEquals(VehicleState.SOLD, ctx.getCatalogService().getVehicleById(1001L).orElseThrow().getState());
+61:         assertTrue(ctx.getOperationQueryService().getClientRequests(1L).isEmpty());
+62:         var sales = ctx.getOperationQueryService().getClientSales(1L);
+63:         assertEquals(1, sales.size());
+64:         assertEquals(new BigDecimal("20000.00"), sales.getFirst().getAmount());
+65:     }
+66: 
+67:     @ParameterizedTest
+68:     @CsvSource({"completion,rejection,30000.00,SOLD,20000.00", "rejection,completion,50000.00,SALE,0",
+69:             "rejection,rejection,50000.00,SALE,0", "expiration,rejection,49200.00,SALE,800.00",
+70:             "rejection,expiration,50000.00,SALE,0", "expiration,expiration,49200.00,SALE,800.00",
+71:             "completion,approval,30000.00,SOLD,20000.00", "rejection,approval,50000.00,SALE,0"})
+72:     void competingPhasesConsumeTheRequestOnce(String first, String second, String expectedBalance,
+73:                                              VehicleState state, BigDecimal amount) throws Exception {
+74:         if (first.equals("expiration") || second.equals("expiration")) {
+75:             sql("UPDATE request SET exp_date = CURRENT_DATE - 1 WHERE id = 1001");
+76:         }
+77:         var notices = new AtomicInteger();
+78:         var failures = race(operation(first, notices), operation(second, notices));
+79:         assertNull(failures.get(0));
+80:         if (second.equals("expiration")) assertNull(failures.get(1));
+81:         else assertNotNull(failures.get(1));
+82:         assertConsumed(expectedBalance, state, amount);
+83:         assertEquals(first.equals("expiration") ? 1 : 0, notices.get());
+84:         assertTrue(ctx.getPurchaseService().checkAndHandleExpiredRequests(1L).isEmpty());
+85:         assertConsumed(expectedBalance, state, amount);
+
+src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java:172–179
+172:     void expirationUsesTheRefundActuallyWrittenInTheNotification() throws Exception {
+173:         sql("UPDATE request SET deposit = 0.03, agreed_total = 0.15, exp_date = CURRENT_DATE - 1 WHERE id = 1001");
+174:         var notices = ctx.getPurchaseService().checkAndHandleExpiredRequests(1L);
+175:         assertEquals(1, notices.size());
+176:         assertTrue(notices.getFirst().contains("€ 0.02."));
+177:         assertConsumed("46000.02", VehicleState.SALE, new BigDecimal("0.01"));
+178:         assertTrue(ctx.getPurchaseService().checkAndHandleExpiredRequests(1L).isEmpty());
+179:         assertConsumed("46000.02", VehicleState.SALE, new BigDecimal("0.01"));
+
+src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java:267–355
+267:     private void assertConsumed(String expectedBalance, VehicleState state, BigDecimal amount) {
+268:         ctx = new AppContext(db);
+269:         balance(expectedBalance);
+270:         assertEquals(state, ctx.getCatalogService().getVehicleById(1001L).orElseThrow().getState());
+271:         assertTrue(ctx.getOperationQueryService().getClientRequests(1L).isEmpty());
+272:         var sales = ctx.getOperationQueryService().getClientSales(1L);
+273:         assertEquals(amount.signum() == 0 ? 0 : 1, sales.size());
+274:         if (amount.signum() != 0) {
+275:             assertEquals(0, amount.compareTo(sales.getFirst().getAmount()));
+276:             assertEquals(state == VehicleState.SALE ? it.unifi.drivehub.domain.operation.SaleType.PENALTY
+277:                     : it.unifi.drivehub.domain.operation.SaleType.SALE, sales.getFirst().getType());
+278:             if (state == VehicleState.SALE) {
+279:                 assertNull(sales.getFirst().getVehicleId());
+280:                 assertNull(sales.getFirst().getSalesmanId());
+281:             } else {
+282:                 assertEquals(1001L, sales.getFirst().getVehicleId());
+283:                 assertEquals(16L, sales.getFirst().getSalesmanId());
+284:             }
+285:         }
+286:     }
+287: 
+288:     // Il conto ferma la prima fase; la seconda attende il conto (RED) o la richiesta (GREEN).
+289:     private List<RuntimeException> race(Runnable first, Runnable second) throws Exception {
+290:         return race("SELECT client FROM bank_account WHERE client = 1 FOR UPDATE", false, first, second);
+291:     }
+292: 
+293:     private List<RuntimeException> race(String gateQuery, boolean commitGate, Runnable first, Runnable second) throws Exception {
+294:         var workers = Executors.newFixedThreadPool(2);
+295:         try (Connection gate = db.getConnection(); Connection observer = db.getConnection()) {
+296:             gate.setAutoCommit(false);
+297:             try (var statement = gate.createStatement()) {
+298:                 statement.setQueryTimeout(10);
+299:                 statement.execute(gateQuery);
+300:             }
+301:             var a = workers.submit(outcome(first));
+302:             try {
+303:                 awaitWaiters(observer, 1);
+304:                 var b = workers.submit(outcome(second));
+305:                 awaitWaiters(observer, 2);
+306:                 if (commitGate) gate.commit();
+307:                 else gate.rollback();
+308:                 return Arrays.asList(a.get(10, TimeUnit.SECONDS), b.get(10, TimeUnit.SECONDS));
+309:             } finally {
+310:                 gate.rollback();
+311:                 try (var statement = observer.createStatement()) {
+312:                     statement.setQueryTimeout(10);
+313:                     statement.executeQuery("""
+314:                             SELECT pg_cancel_backend(pid) FROM pg_stat_activity
+315:                             WHERE datname = current_database() AND usename = current_user
+316:                               AND pid <> pg_backend_pid() AND state = 'active' AND wait_event_type = 'Lock'
+317:                             """).close();
+318:                 }
+319:             }
+320:         } finally {
+321:             workers.shutdownNow();
+322:             assertTrue(workers.awaitTermination(10, TimeUnit.SECONDS), "Worker JDBC non terminati");
+323:         }
+324:     }
+325: 
+326:     private static Callable<RuntimeException> outcome(Runnable operation) {
+327:         return () -> {
+328:             try {
+329:                 operation.run();
+330:                 return null;
+331:             } catch (RuntimeException e) {
+332:                 return e;
+333:             }
+334:         };
+335:     }
+336: 
+337:     private static void awaitWaiters(Connection observer, int expected) throws Exception {
+338:         long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(10);
+339:         try (var statement = observer.createStatement()) {
+340:             statement.setQueryTimeout(10);
+341:             do {
+342:                 try (var result = statement.executeQuery("""
+343:                         SELECT count(DISTINCT pid) FROM pg_stat_activity
+344:                         WHERE datname = current_database() AND usename = current_user
+345:                           AND pid <> pg_backend_pid() AND state = 'active' AND wait_event_type = 'Lock'
+346:                           AND (query ILIKE '%request%' OR query ILIKE '%bank_account%')
+347:                           AND cardinality(pg_blocking_pids(pid)) > 0
+348:                         """)) {
+349:                     assertTrue(result.next());
+350:                     if (result.getInt(1) == expected) return;
+351:                 }
+352:             } while (System.nanoTime() < deadline);
+353:         }
+354:         fail("Attese PostgreSQL distinte mancanti: " + expected);
+355:     }
+
+src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java:309–323
+309:     void errorAfterActualIdentityAndAccountDeletionRollsBackBoth() throws Exception {
+310:         sql("""
+311:                 CREATE SEQUENCE ticket13_writes;
+312:                 CREATE FUNCTION ticket13_fail() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN
+313:                 IF EXISTS (SELECT 1 FROM client WHERE id = 1) OR EXISTS (SELECT 1 FROM bank_account WHERE client = 1)
+314:                 THEN RAISE EXCEPTION 'ticket13_deletions_not_observed'; END IF;
+315:                 PERFORM nextval('ticket13_writes'); RAISE EXCEPTION 'ticket13_after_deletions'; END $$;
+316:                 CREATE TRIGGER ticket13_fail AFTER DELETE ON client FOR EACH ROW EXECUTE FUNCTION ticket13_fail();
+317:                 """);
+318:         var before = snapshot();
+319:         var failure = assertThrows(RuntimeException.class, () -> ctx.getAuthService().deleteAccount(1L, "Cliente", "password"));
+320:         assertTrue(rootCause(failure).getMessage().contains("ticket13_after_deletions"));
+321:         assertEquals(1, scalar("SELECT last_value FROM ticket13_writes"));
+322:         assertEquals(before, snapshot());
+323:         assertEquals(1L, new AppContext(db).getAuthService().login("mario.rossi@email.it", "password").getId());
+
+src/test/java/it/unifi/drivehub/DemoSqlValidationTest.java:16–51
+16:     void schemaAndDemoCanBeReloadedWithoutChangingRowsOrSequences() throws Exception {
+17:         TestDatabase fixture = TestDatabase.fromEnvironment();
+18:         DatabaseManager db = fixture.reset();
+19:         var sales = new AppContext(db).getOperationQueryService().getAllSales();
+20:         assertEquals(32, sales.stream().filter(s -> s.getType() == it.unifi.drivehub.domain.operation.SaleType.SALE).count());
+21:         assertEquals(8, sales.stream().filter(s -> s.getType() == it.unifi.drivehub.domain.operation.SaleType.PENALTY).count());
+22:         assertTrue(sales.stream().allMatch(s -> s.getAmount().signum() >= 0));
+23:         List<String> expected = snapshot(db);
+24:         assertFalse(expected.isEmpty());
+25: 
+26:         fixture.reloadDemo();
+27:         assertEquals(expected, snapshot(db), "Secondo caricamento demo");
+28:         fixture.reloadDemo();
+29:         assertEquals(expected, snapshot(db), "Terzo caricamento demo");
+30:         fixture.reset();
+31:         assertEquals(expected, snapshot(db), "Secondo caricamento schema e demo");
+32:     }
+33: 
+34:     private static List<String> snapshot(DatabaseManager db) throws Exception {
+35:         List<String> rows = new ArrayList<>();
+36:         try (Connection conn = db.getConnection(); var statement = conn.createStatement()) {
+37:             for (String table : List.of("brand", "model", "model_discount", "vehicle", "vehicle_discount",
+38:                     "client", "bank_account", "salesman", "manager", "request", "test_drive", "rent", "sale")) {
+39:                 try (var result = statement.executeQuery("SELECT row_to_json(t)::text FROM public.\""
+40:                         + table + "\" t ORDER BY row_to_json(t)::text")) {
+41:                     while (result.next()) rows.add(table + ":" + result.getString(1));
+42:                 }
+43:             }
+44:             try (var result = statement.executeQuery("""
+45:                     SELECT sequencename, last_value FROM pg_sequences
+46:                     WHERE schemaname = 'public' ORDER BY sequencename
+47:                     """)) {
+48:                 while (result.next()) rows.add(result.getString(1) + ":" + result.getString(2));
+49:             }
+50:         }
+51:         return rows;
+
+src/test/java/it/unifi/drivehub/PriceSelectionIntegrationTest.java:25–30
+25:     @BeforeEach
+26:     void setUp() throws Exception {
+27:         ctx = new AppContext(TestDatabase.fromEnvironment().reset());
+28:         model = ctx.getCatalogService().addModel("Fiat", "Ticket05", new BigDecimal("20000"), year);
+29:         ctx.getCatalogService().setModelDiscount(model.getId(), 10);
+30:     }
+
+src/test/java/it/unifi/drivehub/PriceSelectionIntegrationTest.java:61–69
+61:     void catalogPersistsManualBaseAndAppliesPromotionOnce() {
+62:         Vehicle saved = ctx.getCatalogService().addVehicle(model.getId(), "T0500000000000001", null, 0,
+63:                 new BigDecimal("10000"), year, VehicleState.SALE);
+64:         Vehicle reloaded = new AppContext(ctx.getDatabaseManager()).getCatalogService()
+65:                 .getVehicleById(saved.getId()).orElseThrow();
+66:         assertEquals(new BigDecimal("9000.00"), ctx.getCatalogService().getEffectiveVehiclePrice(reloaded));
+67:         assertEquals(PriceMode.MANUAL, saved.getPriceMode());
+68:         assertEquals(PriceMode.MANUAL, reloaded.getPriceMode());
+69:         assertEquals(0, new BigDecimal("10000").compareTo(reloaded.getPrice()));
+
+src/test/java/it/unifi/drivehub/PriceCalculatorServiceTest.java:93–166
+93:     void testPromotionalDiscountMax() {
+94:         int currentYear = Year.now().getValue();
+95:         Model model = Model.create(1L, "Fiat", "500", BigDecimal.valueOf(20000), currentYear);
+96:         // Nuovo (senza targa, 0 km, anno corrente)
+97:         Vehicle vehicle = Vehicle.create(1L, 1L, "12345678901234567", null, 0, BigDecimal.valueOf(20000), currentYear, VehicleState.SALE);
+98: 
+99:         // Modello 10%, Veicolo 20% -> deve applicare 20%
+100:         BigDecimal price = calculator.calculateVehiclePrice(model, vehicle, 10, 20);
+101:         // 20000 * 0.8 = 16000.00
+102:         assertEquals(new BigDecimal("16000.00"), price);
+103:     }
+104: 
+105:     @Test
+106:     @DisplayName("Regola 2: Sconto usato 20% se targa != null")
+107:     void testUsedVehicleDiscount() {
+108:         int currentYear = Year.now().getValue();
+109:         Model model = Model.create(1L, "Fiat", "500", BigDecimal.valueOf(20000), currentYear);
+110:         // Usato (con targa, 0 km, anno corrente, no promo)
+111:         Vehicle vehicle = Vehicle.create(1L, 1L, "12345678901234567", "AB123CD", 0, BigDecimal.valueOf(20000), currentYear, VehicleState.SALE);
+112: 
+113:         BigDecimal price = calculator.calculateVehiclePrice(model, vehicle, 0, 0);
+114:         // 20000 * 0.8 = 16000.00
+115:         assertEquals(new BigDecimal("16000.00"), price);
+116:     }
+117: 
+118:     @Test
+119:     @DisplayName("Regola 3: Ammortamento anno 5% per anno di anzianità")
+120:     void testYearAmortization() {
+121:         int currentYear = Year.now().getValue();
+122:         Model model = Model.create(1L, "Fiat", "500", BigDecimal.valueOf(20000), currentYear - 2);
+123:         // Auto di 2 anni fa (nuova da stock, senza targa, 0 km)
+124:         Vehicle vehicle = Vehicle.create(1L, 1L, "12345678901234567", null, 0, BigDecimal.valueOf(20000), currentYear - 2, VehicleState.SALE);
+125: 
+126:         BigDecimal price = calculator.calculateVehiclePrice(model, vehicle, 0, 0);
+127:         // 20000 * (0.95)^2 = 20000 * 0.9025 = 18050.00
+128:         assertEquals(new BigDecimal("18050.00"), price);
+129:     }
+130: 
+131:     @Test
+132:     @DisplayName("Regola 4: Ammortamento chilometri 5% ogni 20000 km")
+133:     void testMileageAmortization() {
+134:         int currentYear = Year.now().getValue();
+135:         Model model = Model.create(1L, "Fiat", "500", BigDecimal.valueOf(20000), currentYear);
+136:         // Con 40.000 km (usata)
+137:         Vehicle vehicle = Vehicle.create(1L, 1L, "12345678901234567", "AB123CD", 40000, BigDecimal.valueOf(20000), currentYear, VehicleState.SALE);
+138: 
+139:         BigDecimal price = calculator.calculateVehiclePrice(model, vehicle, 0, 0);
+140:         // 1. Usato: 20000 * 0.80 = 16000
+141:         // 2. Anno: 0 anni -> 16000
+142:         // 3. Km: 40000 / 20000 = 2 -> 16000 * (0.95)^2 = 16000 * 0.9025 = 14440.00
+143:         assertEquals(new BigDecimal("14440.00"), price);
+144:     }
+145: 
+146:     @Test
+147:     @DisplayName("Calcolo acconto acquisto (20% del prezzo attuale)")
+148:     void testPurchaseDeposit() {
+149:         BigDecimal deposit = calculator.calculatePurchaseDeposit(BigDecimal.valueOf(15000));
+150:         assertEquals(new BigDecimal("3000.00"), deposit);
+151:     }
+152: 
+153:     @Test
+154:     @DisplayName("Calcolo costo noleggio geometrico con 0.1% giornaliero")
+155:     void testRentalCostFormula() {
+156:         BigDecimal carPrice = BigDecimal.valueOf(20000);
+157:         LocalDate start = LocalDate.of(2026, 11, 1);
+158:         LocalDate end = LocalDate.of(2026, 11, 3); // 3 giorni inclusi: 1, 2, 3
+159: 
+160:         BigDecimal cost = calculator.calculateTotalRentalCost(carPrice, start, end);
+161:         // dailyRate = 20000 * 0.001 = 20.00
+162:         // giorno 1: 20.00
+163:         // giorno 2: 20.00 * 0.95 = 19.00
+164:         // giorno 3: 19.00 * 0.95 = 18.05
+165:         // Somma = 20 + 19 + 18.05 = 57.05
+166:         assertEquals(new BigDecimal("57.05"), cost);
+
+src/test/java/it/unifi/drivehub/SaleTypeTest.java:16–71
+16:     @Test
+17:     void registerUsesOnlyDealershipSalePurchaseAndPenalty() {
+18:         assertEquals(java.util.Set.of("SALE", "PURCHASE", "PENALTY"),
+19:                 java.util.Arrays.stream(SaleType.values()).map(Enum::name)
+20:                         .collect(java.util.stream.Collectors.toSet()));
+21:     }
+22: 
+23:     @Test
+24:     void factoriesUseTheDealershipPerspectiveAndExplicitTypes() {
+25:         BigDecimal amount = new BigDecimal("123.45");
+26:         var sale = Sale.createSaleRecord(1L, 16L, 1L, amount);
+27:         var purchase = Sale.createPurchaseRecord(1L, 16L, 1L, amount);
+28:         var penalty = Sale.createPenaltyRecord(1L, amount);
+29:         assertEquals(SaleType.SALE, sale.getType());
+30:         assertEquals(SaleType.PURCHASE, purchase.getType());
+31:         assertEquals(SaleType.PENALTY, penalty.getType());
+32:         assertEquals(amount, sale.getAmount());
+33:         assertEquals(amount, purchase.getAmount());
+34:         assertEquals(amount, penalty.getAmount());
+35:         assertNull(penalty.getVehicleId());
+36:         assertThrows(IllegalArgumentException.class,
+37:                 () -> Sale.create(1L, 1L, 16L, 1L, amount, LocalDateTime.now(), null));
+38:     }
+39: 
+40:     @ParameterizedTest
+41:     @CsvSource({"SALE,-0.01", "PURCHASE,-0.01", "PENALTY,-0.01"})
+42:     void reconstructionRejectsNegativeAmountsForEveryType(SaleType type, BigDecimal amount) {
+43:         assertThrows(IllegalArgumentException.class,
+44:                 () -> Sale.create(1L, 1L, 16L, 1L, amount, LocalDateTime.now(), type));
+45:     }
+46: 
+47:     @Test
+48:     void zeroAmountsKeepTheirExplicitType() {
+49:         assertEquals(SaleType.PURCHASE, Sale.createPurchaseRecord(1L, 16L, 1L, BigDecimal.ZERO).getType());
+50:         assertEquals(SaleType.SALE, Sale.createSaleRecord(1L, 16L, 1L, BigDecimal.ZERO).getType());
+51:         assertEquals(SaleType.PENALTY, Sale.createPenaltyRecord(1L, BigDecimal.ZERO).getType());
+52:     }
+53: 
+54:     @ParameterizedTest
+55:     @CsvSource({"-0.01", "-16000"})
+56:     void factoriesRejectNegativeInputsWithoutNormalizingThem(BigDecimal amount) {
+57:         assertThrows(IllegalArgumentException.class, () -> Sale.createSaleRecord(1L, 16L, 1L, amount));
+58:         assertThrows(IllegalArgumentException.class, () -> Sale.createPurchaseRecord(1L, 16L, 1L, amount));
+59:         assertThrows(IllegalArgumentException.class, () -> Sale.createPenaltyRecord(1L, amount));
+60:     }
+61: 
+62:     @ParameterizedTest
+63:     @EnumSource(SaleType.class)
+64:     void reconstructionKeepsNonNegativeAmountsAndExplicitTypes(SaleType type) {
+65:         for (BigDecimal amount : java.util.List.of(BigDecimal.ZERO, new BigDecimal("16000.00"))) {
+66:             Sale sale = Sale.create(1L, 1L, 16L, 1L, amount, LocalDateTime.now(), type);
+67:             assertEquals(type, sale.getType());
+68:             assertEquals(amount, sale.getAmount());
+69:         }
+70:     }
+71: }

@@ -1,0 +1,1345 @@
+\chapter{Implementazione}\label{ch:implementazione}
+Il capitolo collega le scelte del progetto a porzioni selezionate dei sorgenti
+correnti. Le tavole delle classi in appendice~\ref{app:classi}, le sequenze
+della sezione~\ref{sec:sequenze} e il modello dati della
+sezione~\ref{sec:database} restano i riferimenti d'insieme: qui interessa
+capire dove sono applicate le regole e fin dove valgono.
+I frammenti sono estratti letterali degli intervalli indicati nei sorgenti,
+con numerazione originale: omettono il contesto esterno, descritto nel testo.
+Non sono programmi completi né pseudocodice; eventuali selezioni interne
+sono dichiarate presso l'esempio. Il capitolo è proposto alla revisione
+degli autori, senza attribuirne l'approvazione.
+
+\begingroup
+\setcounter{secnumdepth}{3}
+\emergencystretch=6em
+\renewcommand{\lstlistingname}{Frammento}
+\lstset{language=Java,basicstyle=\ttfamily\footnotesize,
+  columns=fullflexible,keepspaces=true,showstringspaces=false,
+  breaklines=true,breakatwhitespace=false,tabsize=4,gobble=4,upquote=true,
+  numbers=left,numberstyle=\tiny\color{black!60},numbersep=8pt,
+  frame=lines,rulecolor=\color{black!25},captionpos=b,
+  aboveskip=9pt,belowskip=9pt,
+  literate={à}{{\`a}}1 {è}{{\`e}}1 {é}{{\'e}}1
+    {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
+    {…}{{\normalfont\textellipsis}}1}
+\section{Domain Model}\label{sec:impl-dominio}
+Il modello usa i package \code{domain.user}, \code{domain.vehicle},
+\code{domain.discount} e \code{domain.operation}. Manteniamo i cinque gruppi
+espositivi originali: Users, Vehicles, Rentals, Sales e contratto Observer;
+l'ultimo appartiene ora al package separato \code{event}.
+La figura~\ref{fig:catalogo-corpo} e i dettagli CL in
+appendice~\ref{app:classi} distinguono ereditarietà, riferimenti a oggetti
+e semplici ID. Non esiste più \code{BaseEntity.assignId}: un ID nullo può
+indicare un oggetto da inserire; i DAO restituiscono un nuovo oggetto identificato.
+
+\subsection{Users}
+La gerarchia \code{User}/\code{AbstractUser} condivide identificativo,
+nome, cognome, email e hash della password; \code{Client}, \code{Salesman}
+e \code{Manager} specializzano ruolo e apertura della dashboard.
+\code{AbstractUser} è una classe astratta con costruttore protetto.
+Nome e cognome sono finali e ripuliti con trim, email e hash aggiornabili
+con validazione. L'email è normalizzata in minuscolo e verificata con una
+regex; nome, cognome e hash devono essere non vuoti. La validità sintattica
+di un oggetto non prova che l'email sia libera nei dati persistenti.
+
+\code{equals} richiede la stessa classe concreta: confronta gli ID quando
+entrambi presenti e l'email quando entrambi assenti. Non identifica per
+sola email due utenti persistiti né un cliente e un venditore con lo stesso
+numero. La selezione della tabella per ruolo e il limite della ricerca
+comune per solo ID sono ripresi in~\ref{sec:impl-utenti-sql}.
+\code{Client} contiene un riferimento opzionale e sostituibile a
+\code{BankAccount}, caricato anche dopo l'autenticazione: non è una
+composizione UML deducibile dal solo campo.
+
+\code{BankAccount} conserva IBAN e ID cliente finali e saldo modificabile.
+La factory richiede cliente non nullo, saldo non negativo e IBAN normalizzato
+con due lettere, due cifre e da 11 a 30 caratteri alfanumerici successivi:
+non impone esattamente 27 caratteri né controlla la cifra bancaria di verifica.
+\code{createInitial} parte da zero. \code{deposit} e \code{withdraw}
+richiedono importi strettamente positivi; il prelievo verifica la capienza
+prima di sottrarre, lasciando invariato il saldo se fallisce. L'identità
+del conto dipende dall'IBAN. Si tratta di regole in memoria: lock della riga,
+unicità e salvataggio del saldo sono responsabilità persistenti, non effetti
+automatici dei mutatori. Non c'è collegamento a una banca esterna.
+
+\subsection{Vehicles}
+\code{Brand} è identificata dal nome non vuoto e ripulito;
+\code{Model} conserva ID, marca, nome, prezzo e anno di rilascio.
+La marca è un nome scalare, non un oggetto caricato automaticamente.
+La validazione di prezzo non negativo e anno fra 1900 e anno corrente
+precede la costruzione. I campi di \code{Model}, inclusi prezzo e anno,
+sono finali: una modifica persistente non è una mutazione di quell'istanza. La gerarchia \code{Discount}
+riusa nel costruttore il controllo inclusivo 0--50; \code{ModelDiscount}
+e \code{VehicleDiscount} conservano ID del bersaglio e percentuale finali.
+L'unico sconto per bersaglio è anche una proprietà delle chiavi SQL.
+
+\code{Vehicle} è una classe finale con costruttore privato: la factory
+\code{create} controlla i dati prima di costruire l'oggetto. ID, modello,
+VIN e anno sono campi finali; targa, chilometri, base del prezzo, modalità
+e stato possono cambiare. Il frammento~\ref{lst:vehicle-invariante}
+mostra una regola che riguarda due attributi, anziché due controlli
+indipendenti.
+
+% Fonte: src/main/java/it/unifi/drivehub/domain/vehicle/Vehicle.java:59-62
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=59,caption={\code{Vehicle.java}: normalizzazione della targa e coerenza con i chilometri.},
+  label=lst:vehicle-invariante]
+        String cleanPlate = (licencePlate != null && !licencePlate.trim().isEmpty()) ? licencePlate.trim().toUpperCase() : null;
+        if (cleanPlate == null && kilometers != 0) {
+            throw new IllegalArgumentException("Se un veicolo non ha targa, obbligatoriamente i chilometri devono essere 0.");
+        }
+\end{lstlisting}
+\end{minipage}
+
+
+La stessa coerenza è controllata dai mutatori: per rimuovere la targa occorre
+prima portare i chilometri a zero. La factory rifiuta chilometri e prezzo
+negativi, anno fuori dall'intervallo 1900--anno corrente, modello o stato
+nulli. Il VIN viene ripulito e convertito in maiuscolo; il controllo
+effettivo ammette da uno a diciassette caratteri dopo il trim, senza imporre
+diciassette caratteri esatti o verificarne l'alfabeto. L'unicità appartiene
+al database. Il confronto con l'anno del modello richiede
+\code{validateProductionYear}, invocato dal servizio di catalogo, ed è
+anche presidiato dai trigger SQL. Il solo \code{setState} rifiuta null:
+non codifica un automa di transizioni; sono i servizi a verificare gli stati
+ammessi nei singoli comandi.
+
+Lo stato locale \code{VehicleState} comprende \code{WAITING}, \code{SALE},
+\code{RENT}, \code{BLOCKED} e \code{SOLD}. L'esempio originale di
+\code{approve}/\code{block} è sostituito dall'invariante locale sopra e
+dall'UPDATE condizionale del frammento~\ref{lst:update-condizionale}:
+la classe non impone un automa, il servizio decide la transizione e il DAO
+ne verifica atomicamente la precondizione persistita.
+\code{PriceMode.AUTOMATIC}/\code{MANUAL} sceglie la base del calcolo,
+come spiegato in~\ref{sec:impl-prezzi}; non aggiunge uno stato commerciale.
+L'uguaglianza di Model usa l'ID se entrambi gli oggetti sono identificati,
+altrimenti marca/nome se entrambi ne sono privi; Vehicle usa analogamente
+ID oppure VIN. Un oggetto nuovo e uno persistito non diventano uguali
+per il solo nome o VIN. Questi confronti in memoria non aggiungono
+unicità al database né mantengono un'unica istanza Java per riga.
+
+\subsection{Rentals}
+\code{Rent} e \code{TestDrive} sono in \code{domain.operation}, senza
+gli antichi package rentals separati. Conservano ID di cliente e veicolo,
+non riferimenti caricati. \code{Rent} richiede importo non negativo,
+entrambe le date \code{LocalDate} e fine non precedente all'inizio.
+I campi sono finali; \code{overlapsWith} considera inclusi entrambi gli
+estremi e \code{isFuture} richiede inizio successivo a oggi. La factory
+non vieta da sola una data passata: il servizio di prenotazione la rifiuta.
+
+\code{TestDrive} conserva un \code{LocalDateTime} finale, con inizio
+fra le 09:00 e le 16:00 incluse. Prima delle 16 ammette anche minuti,
+secondi e frazioni: alle 16 richiede invece minuto, secondo e nanosecondo
+zero. Un input 15:30 è quindi valido nel dominio; 16:00:01 è rifiutato.
+La UI propone ore intere, ma il servizio non tronca un input alternativo.
+Non esiste un campo fine o un metodo che realizzi una durata di un'ora:
+la query confronta lo stesso istante e il giorno del noleggio.
+
+Nessuna delle due entità può impedire da sola conflitti con altre righe.
+La regola dei tre test drive attivi, la disponibilità, i lock e le
+garanzie SQL si spiegano nei flussi~\ref{sec:impl-flussi} e
+nei vincoli~\ref{sec:impl-vincoli}; un oggetto valido in memoria può
+ancora essere rifiutato al salvataggio.
+
+\subsection{Sales}
+\code{Request} mantiene finali tipo, ID di richiesta, veicolo e cliente,
+acconto e totale;
+venditore e scadenza sono aggiornabili. Le due interpretazioni economiche
+del campo \code{deposit} dipendono da \code{RequestType}: con \code{SALE}
+è l'acconto della vendita al cliente; con \code{PURCHASE} è la stima per
+l'acquisto dal cliente, senza totale concordato.
+
+% Fonte: src/main/java/it/unifi/drivehub/domain/operation/Request.java:54-65
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=54,caption={\code{Request.java}: forma dell'accordo e precisione degli importi.},
+  label=lst:request-accordo]
+        if (type == RequestType.SALE) {
+            if (agreedTotal == null || agreedTotal.signum() < 0
+                    || deposit.compareTo(agreedTotal) > 0) {
+                throw new IllegalArgumentException("Totale concordato e acconto non validi per l'acquisto.");
+            }
+            // Gli importi dell'accordo devono essere già espressi in centesimi, come l'addebito.
+            agreedTotal = agreedTotal.setScale(2, RoundingMode.UNNECESSARY);
+            deposit = deposit.setScale(2, RoundingMode.UNNECESSARY);
+        } else if (agreedTotal != null) {
+            throw new IllegalArgumentException("Il totale concordato riguarda solo gli acquisti del cliente.");
+        }
+        return new Request(id, vehicleId, clientId, salesmanId, deposit, agreedTotal, expDate, type);
+\end{lstlisting}
+\end{minipage}
+
+
+I controlli precedenti a questo estratto rifiutano acconto/stima negativi
+e ID di veicolo o cliente nulli. \code{UNNECESSARY} accetta solo importi
+rappresentabili in centesimi senza arrotondamento; non corregge un valore
+più preciso. \code{getRemainingAmount} sottrae l'acconto dal totale solo
+per \code{SALE}. La ricostruzione tramite \code{create} accetta una
+scadenza già passata: serve a leggere richieste persistite da elaborare.
+È il mutatore \code{setExpDate} a rifiutare una nuova scadenza passata;
+\code{isExpired} confronta la data con oggi, escluso oggi stesso.
+
+Le factory nominate rendono esplicita l'interpretazione economica:
+vendita della concessionaria con totale/acconto, oppure acquisto dal
+cliente con stima. L'estratto è letterale e completo per i due metodi:
+non conserva la vecchia codifica della stima con segno negativo.
+
+% Fonte: src/main/java/it/unifi/drivehub/domain/operation/Request.java:68-74
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=68,gobble=4,caption={Factory dei due tipi di pratica, senza codifica del segno.},label=lst:request-factory]
+    public static Request createNewSaleRequest(Long vehicleId, Long clientId, BigDecimal deposit, BigDecimal agreedTotal) {
+        return create(null, vehicleId, clientId, null, deposit, agreedTotal, null, RequestType.SALE);
+    }
+
+    public static Request createNewPurchaseRequest(Long vehicleId, Long clientId, BigDecimal estimatedValue) {
+        return create(null, vehicleId, clientId, null, estimatedValue, null, null, RequestType.PURCHASE);
+    }
+\end{lstlisting}
+\end{minipage}
+
+\code{Sale} registra esiti economici, mentre \code{Request} descrive
+una pratica aperta. Ha campi finali, importo non negativo, cliente e
+\code{SaleType} obbligatori. \code{SALE}, \code{PURCHASE} e \code{PENALTY}
+indicano il verso economico dal punto di vista della concessionaria,
+senza dedurlo dal segno. La factory della penale passa veicolo e venditore
+nulli; quella generale non impone tutte le combinazioni possibili fra tipo
+e riferimenti. La data deve essere presente: il codice tollera fino a due
+minuti nel futuro, non vieta ogni scarto rispetto all'orologio corrente.
+FK e controlli dei servizi completano le invarianti; l'esistenza di una
+\code{Sale} associata non basta a provare la titolarità corrente del veicolo.
+
+{\raggedright
+\subsection{Eventi e contratto Observer}
+\code{VehicleCommitmentEvent} è un record che trasporta il solo
+\code{vehicleId}; \code{VehicleCommitmentObserver} riceve evento e
+\code{Connection}; \code{VehicleEventPublisher} gestisce iscrizione,
+rimozione e notifica. Sono tutti nel package \code{event}, separato da
+\code{domain}: non si ripristina il vecchio gruppo \code{domain.observer}.
+L'evento rappresenta l'impegno commerciale per vendita completata o
+noleggio; non contiene targa, vecchio/nuovo stato o timestamp.
+Il contratto letterale è in~\ref{lst:contratto-observer}; l'effetto
+concreto e il confine prima del commit sono discussi
+in~\ref{sec:impl-observer}. La presenza di una Connection nel contratto
+rende esplicita la dipendenza JDBC, senza trasformare il record in una
+notifica persistente.\par}
+
+
+\section{Business Layer}\label{sec:impl-business}
+I servizi del package \code{service} coordinano entità e DAO; sicurezza
+ed eventi sono package distinti. La figura~\ref{fig:eventi-corpo} mostra
+i collaboratori attuali. Riprendiamo coordinamento, responsabilità e
+quattro flussi prima di formule, identità e politica Observer.
+
+\subsection{Coordinamento e transazioni}\label{sec:impl-transazioni}
+\code{DatabaseManager} apre una connessione per ogni esecuzione
+transazionale. Il frammento~\ref{lst:transazione} mostra il percorso con
+risultato; quello senza risultato applica lo stesso schema.
+
+% Fonte: src/main/java/it/unifi/drivehub/dao/DatabaseManager.java:88-106
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=88,caption={\code{DatabaseManager.java}: commit, tentativo di rollback e conservazione delle cause.},
+  label=lst:transazione]
+    public <T> T executeInTransactionWithResult(TransactionFunction<T> function) {
+        try (Connection conn = getConnection()) {
+            conn.setAutoCommit(false);
+            try {
+                T result = function.execute(conn);
+                conn.commit();
+                return result;
+            } catch (Exception e) {
+                try {
+                    conn.rollback();
+                } catch (SQLException rollbackEx) {
+                    e.addSuppressed(rollbackEx);
+                }
+                throw new RuntimeException("Transazione fallita: eseguito rollback.", e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore di connessione al database durante la transazione.", e);
+        }
+    }
+\end{lstlisting}
+\end{minipage}
+
+
+Il valore torna al chiamante dopo \code{commit}; il try-with-resources
+chiude la connessione. Le eccezioni del corpo o del commit raggiungono
+il ramo di rollback, poi sono incapsulate con la causa. Un errore del
+rollback è aggiunto come eccezione soppressa: il testo del messaggio
+non dimostra che il rollback sia riuscito. Il codice intercetta
+\code{Exception}, non ogni \code{Error}; un guasto di rete durante il
+commit non permette di dedurne sempre l'esito dal client. Non vi sono
+retry automatici o transazioni annidate implicite.
+
+{\raggedright
+Le due callback annidate sono tipi distinti: \code{TransactionConsumer}
+serve a \code{executeInTransaction}, \code{TransactionFunction<T>}
+a \code{executeInTransactionWithResult}. Entrambe ricevono la Connection
+aperta dal gestore e possono propagare \code{Exception}; la seconda
+restituisce il valore della lambda, reso disponibile dopo il commit.\par}
+
+
+% Fonte: src/main/java/it/unifi/drivehub/dao/DatabaseManager.java:53-60
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=53,gobble=4,caption={Due callback distinte con Connection e risultato.},label=lst:callback]
+    @FunctionalInterface
+    public interface TransactionConsumer {
+        void execute(Connection conn) throws Exception;
+    }
+
+    @FunctionalInterface
+    public interface TransactionFunction<T> {
+        T execute(Connection conn) throws Exception;
+\end{lstlisting}
+\end{minipage}
+
+Il chiamante non possiede un'unità di lavoro implicita o un contesto JDBC
+globale: deve passare realmente \code{conn} a ogni operazione partecipante.
+\code{getConnection} usa \code{DriverManager.getConnection} e apre una
+nuova connessione a ogni chiamata; non è un pool. Il gestore disabilita
+autocommit per la transazione, ma non imposta un livello di isolamento.
+Non attribuiamo quindi serializzabilità o snapshot unico al solo wrapper.
+
+Le \code{SQLException} di apertura, di \code{setAutoCommit} o di chiusura
+seguono il wrapper esterno. Se la chiusura fallisce mentre è già in corso
+una propagazione, try-with-resources conserva il guasto come eccezione
+soppressa; se fallisce dopo un commit riuscito il chiamante può ricevere
+un errore pur con scritture già confermate. Una seconda chiamata del
+gestore apre un'altra transazione: non esistono annidamento automatico,
+retry o rollback di effetti esterni. I lock dei singoli servizi completano
+il coordinamento e non dimostrano assenza generale di deadlock.
+
+{\raggedright
+\subsection{Services: responsabilità}
+\begin{itemize}
+\item \code{AuthService}: Login, registrazione del solo cliente con conto,
+modifiche dell'identità, cancellazione e ricarica dimostrativa; collabora
+con UserDao, BankAccountDao, PasswordHasher e DatabaseManager.
+\item \code{CatalogService}: Letture e manutenzione di marche, modelli,
+veicoli, basi e sconti tramite i relativi DAO; prepara le righe di catalogo
+con PriceCalculatorService, senza demandare query alle celle JavaFX.
+\item \code{OperationQueryService}: Consultazione di richieste, test drive,
+noleggi e registro tramite RequestDao, TestDriveDao, RentDao e SaleDao;
+non è il servizio che completa le operazioni economiche.
+\item \code{PriceCalculatorService}: Formule centralizzate per consigliato,
+effettivo, acconto, tariffa, costo e stima; riceve dati, non esegue SQL.
+\item \code{PurchaseService}: Vendita al cliente: avvio, esito del venditore,
+saldo e scadenza, con veicolo, modello/sconti, richiesta, conto, registro,
+calcolatore e publisher.
+\item \code{RentalService}: Preventivo, prenotazione e cambio di destinazione
+SALE/RENT, con rimborsi dei futuri; usa anche UserDao per il lock del cliente.
+\item \code{SaleToDealershipService}: Stima, proposta di cessione ed esito:
+coordina veicolo, modello/sconto modello, richiesta, conto e storico Sale.
+\item \code{TestDriveService}: Prenotazione, consultazione e cancellazione
+del proprio test drive; coordina veicolo, cliente e disponibilità persistita.
+\end{itemize}
+\code{AppContext} costruisce esplicitamente questi collaboratori e registra
+\code{TestDriveCancellationObserver}. Non ci sono gli antichi servizi
+PricingService/BankAccountService né una DaoFactory/UnitOfWork.
+La DI manuale consente di leggere le dipendenze, ma servizi e contratti
+DAO restano legati a Connection; il contesto sceglie adapter PostgreSQL
+e PBKDF2 concreti.\par}
+
+
+\subsection{Services: flussi applicativi}\label{sec:impl-flussi}
+Ogni comando seguente ha un ingresso distinto e un proprio confine
+transazionale. I rinvii alle sequenze del capitolo 2 completano la lettura
+delle decisioni e delle alternative, senza sostituirle.
+
+\subsubsection{Catalogo e test drive}
+La dashboard legge il catalogo tramite \code{CatalogService.getVehicleRows}
+per stato SALE o RENT. Il servizio carica collettivamente modelli e sconti,
+li indicizza per ID e prepara descrizione e prezzi di ciascun veicolo.
+Sono letture autonome, non una transazione unica; le righe sono descritte
+in~\ref{sec:impl-refresh}. L'inserimento/manutenzione del catalogo compete
+al manager, mentre la destinazione commerciale è gestita dal venditore.
+
+Dal dialogo del cliente arrivano ID veicolo, ID cliente e data/ora a
+\code{TestDriveService.bookTestDrive}. Il controllo iniziale rifiuta il
+passato. Nella lambda, il servizio legge il veicolo con \code{FOR UPDATE},
+ammette solo SALE/RENT, blocca il cliente e conta i test drive con
+\code{date >= CURRENT_TIMESTAMP}. Il quarto attivo è rifiutato.
+Il frammento mostra la sequenza corrente dopo l'apertura della transazione:
+non arrotonda l'ora ricevuta e non usa la vecchia UnitOfWork.
+
+% Fonte: src/main/java/it/unifi/drivehub/service/TestDriveService.java:47-66
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=47,gobble=16,caption={Lock, controlli e inserimento nella lambda di bookTestDrive; omessi apertura e catch.},label=lst:test-drive]
+                Vehicle vehicle = vehicleDao.findByIdForUpdate(vehicleId, conn)
+                        .orElseThrow(() -> new IllegalStateException("Veicolo non trovato: " + vehicleId));
+                if (vehicle.getState() != VehicleState.SALE && vehicle.getState() != VehicleState.RENT) {
+                    throw new IllegalStateException("I test drive possono essere prenotati solo su veicoli in vendita o a noleggio.");
+                }
+                userDao.lockClient(clientId, conn);
+                // Controllo concorrente atomico: massimo 3 test drive attivi per il cliente
+                int activeCount = testDriveDao.countActiveByClientId(clientId, conn);
+                if (activeCount >= 3) {
+                    throw new IllegalStateException("Hai già raggiunto il limite massimo di 3 test drive prenotati.");
+                }
+
+                // Verifica disponibilità concorrente
+                boolean available = testDriveDao.isVehicleAvailableForTestDrive(vehicleId, dateTime, conn);
+                if (!available) {
+                    throw new IllegalStateException("Fascia oraria non disponibile: il veicolo è già prenotato o noleggiato per questa data.");
+                }
+
+                TestDrive td = TestDrive.create(null, vehicleId, clientId, dateTime);
+                return testDriveDao.save(td, conn);
+\end{lstlisting}
+\end{minipage}
+
+\code{PostgresTestDriveDao.isVehicleAvailableForTestDrive} verifica sulla
+stessa connessione l'assenza di un test drive allo stesso istante e di un
+Rent che includa quel giorno. Il dominio valida la fascia e il DAO salva
+il nuovo oggetto, restituito dopo il commit. Un veicolo non idoneo, tre
+attivi, conflitto o errore d'inserimento fanno fallire il comando: niente
+prenotazione parziale. Lock del cliente e del veicolo coordinano i chiamanti
+che seguono questo protocollo; UNIQUE(veicolo, data) è una difesa SQL
+aggiuntiva, non un'esclusione di ogni intervallo di un'ora.
+
+Per annullare, \code{cancelTestDrive} legge la riga con \code{conn}, verifica
+che appartenga al cliente passato ed elimina nella stessa transazione;
+una riga assente o altrui è rifiutata. Non c'è addebito né rimborso per il
+test drive. Il caso UC-01 e la sezione~\ref{sec:template} mantengono ingresso
+e alternative della UI; questa spiegazione precisa i controlli persistenti.
+
+\subsubsection{Noleggio con saldo del conto}
+Il dialogo riceve veicolo e intervallo e mostra \code{calculateRentalCost};
+quel preventivo apre una transazione di lettura e usa la stessa connessione
+per veicolo, modello e sconti. La conferma chiama \code{bookRental} con
+date, ID veicolo e cliente, senza fidarsi del costo esposto. Sono rifiutati
+inizio passato e fine precedente all'inizio. Nella transazione il servizio
+blocca il veicolo, richiede RENT e blocca il cliente; verifica poi
+\code{isVehicleAvailableForRent} sulla stessa connessione.
+
+% Fonte: src/main/java/it/unifi/drivehub/dao/postgres/PostgresRentDao.java:98-104
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=98,gobble=8,caption={Query di disponibilità e ordine dei parametri; omessi esecuzione e gestione errori.},label=lst:overlap]
+        String sql = "SELECT NOT EXISTS (" +
+                "SELECT 1 FROM rent WHERE vehicle = ? AND start <= ? AND \"end\" >= ?" +
+                ") AS is_available";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, vehicleId);
+            ps.setDate(2, Date.valueOf(end));
+            ps.setDate(3, Date.valueOf(start));
+\end{lstlisting}
+\end{minipage}
+
+L'ordine dei parametri è veicolo, fine richiesta, inizio richiesto: il
+predicato cerca \code{start <= end} e \code{end >= start} fra i due
+periodi. Se un noleggio finisce il 10 e il nuovo inizia il 10 c'è conflitto;
+iniziare l'11 è ammesso. La query non cerca test drive da conservare:
+un noleggio confermato li cancella attraverso l'Observer.
+
+Il servizio rilegge modello/sconti con \code{conn}, ricalcola prezzo
+effettivo e costo geometrico sui giorni inclusi, blocca il conto,
+preleva il 100\% e salva il saldo. Costruisce e inserisce \code{Rent},
+pubblica \code{VehicleCommitmentEvent} sulla stessa connessione e solo
+allora il wrapper esegue commit. Conto assente, saldo insufficiente,
+conflitto, violazione EXCLUDE o errore Observer impediscono la conferma;
+il rollback normale comprende saldo, Rent e cancellazioni. Modello e
+sconti partecipano alla transazione, senza un isolamento esplicito che
+congeli l'intero listino. La figura~\ref{fig:sq-noleggio-insieme}, SQ-02
+(\ref{fig:sq02}) e SQ-OB (\ref{fig:sqob}) rappresentano questi collaboratori.
+
+Il cambio di destinazione \code{changeVehicleRentalState} è un altro
+comando del venditore, non una cancellazione libera del noleggio del
+cliente. Ammette solo un passaggio effettivo SALE/RENT e blocca il veicolo.
+Per RENT verso SALE rifiuta un noleggio che includa oggi; elimina i futuri
+con inizio dopo oggi, li ordina per ID cliente crescente, blocca ciascun
+conto e rimborsa l'importo intero persistito. Infine aggiorna lo stato.
+Nel verso SALE verso RENT non esegue quei rimborsi. Eliminazioni, accrediti
+e destinazione condividono il commit; il risultato conta i noleggi rimborsati.
+
+\subsubsection{Richiesta di vendita al cliente, saldo e penale}
+\code{PurchaseService.initiatePurchase} riceve ID veicolo e cliente,
+non un acconto scelto dalla UI. Nella transazione l'UPDATE condizionale
+SALE verso BLOCKED deve modificare una riga. Seguono lettura del veicolo,
+modello e sconti, calcolo dell'effettivo e acconto del 20\%.
+
+% Fonte: src/main/java/it/unifi/drivehub/service/PurchaseService.java:74-82
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=74,caption={\code{PurchaseService.java}: prezzo corrente e acconto prima della persistenza dell'accordo.},
+  label=lst:letture-prezzo]
+            Vehicle vehicle = vehicleDao.findById(vehicleId, conn)
+                    .orElseThrow(() -> new IllegalStateException("Veicolo non trovato: " + vehicleId));
+            Model model = modelDao.findById(vehicle.getModelId())
+                    .orElseThrow(() -> new IllegalStateException("Modello non trovato: " + vehicle.getModelId()));
+
+            Integer mDisc = discountDao.findModelDiscount(model.getId()).map(ModelDiscount::getValue).orElse(0);
+            Integer vDisc = discountDao.findVehicleDiscount(vehicle.getId()).map(VehicleDiscount::getValue).orElse(0);
+            BigDecimal currentPrice = priceCalculator.calculateVehiclePrice(model, vehicle, mDisc, vDisc);
+            BigDecimal deposit = priceCalculator.calculatePurchaseDeposit(currentPrice);
+\end{lstlisting}
+\end{minipage}
+
+Il parametro \code{conn} compare nella lettura del veicolo ma manca in
+quelle di modello e sconti: queste aprono connessioni autonome. Il comando
+protegge le scritture dell'accordo, senza offrire uno snapshot comune
+dell'intero listino. Poi blocca il conto, addebita l'acconto e salva
+\code{Request.createNewSaleRequest} con \code{currentPrice} come totale
+concordato, venditore e scadenza nulli. Conto assente, saldo insufficiente
+o veicolo già riservato impediscono l'avvio e annullano il passaggio a BLOCKED.
+
+L'esito del venditore è una transazione successiva. \code{approvePurchase}
+blocca la richiesta e verifica SALE, poi assegna ID del venditore e
+scadenza a un mese da oggi. L'approvazione non incassa il saldo né crea
+la riga nel registro. \code{rejectPurchase} blocca invece richiesta e
+conto, restituisce tutto l'acconto, riporta atomicamente BLOCKED a SALE
+ed elimina la richiesta; non applica una penale. I servizi ricevono gli
+ID dal chiamante: questi controlli non equivalgono a un controllo generale
+della sessione o del ruolo autenticato.
+
+\code{completePurchase} riceve l'ID richiesta e la rilegge sotto lock.
+Richiede tipo SALE, venditore e scadenza presenti e pratica non scaduta
+(oggi è ancora ammesso). Usa \code{getAgreedTotal} e
+\code{getRemainingAmount}: totale meno acconto, senza ricalcolare il listino.
+Blocca il conto e addebita il residuo; salva \code{SaleType.SALE} per il
+totale intero, elimina la Request, richiede BLOCKED verso SOLD e pubblica
+l'evento prima del commit. Qualunque errore di questi passi, incluso
+l'Observer, ricade nel rollback della singola operazione. Il risultato
+confermato è una vendita registrata, non una richiesta soltanto autorizzata.
+
+\code{checkAndHandleExpiredRequests} è attivato all'apertura della dashboard
+cliente, senza scheduler persistente. La lista dei candidati è una lettura
+autonoma; ogni candidato viene riletto e bloccato nella propria transazione.
+Il servizio ricontrolla presenza, tipo, cliente, venditore e scadenza,
+saltando candidati che non soddisfano più queste condizioni. Calcola il
+20\% dell'acconto con HALF\_UP, restituisce il resto sul conto bloccato,
+salva una PENALTY senza veicolo/venditore, elimina la richiesta e riporta
+BLOCKED a SALE. Un errore interrompe la chiamata senza annullare eventuali
+candidati già confermati. Il rifiuto e la scadenza sono quindi esiti diversi.
+La figura~\ref{fig:sq-vendita-insieme} e SQ-01a--d
+(\ref{fig:sq01a}--\ref{fig:sq01d}) completano il flusso.
+
+{\raggedright
+\subsubsection{Proposta di cessione del veicolo}
+Il cliente seleziona un modello esistente, VIN, eventuale targa, chilometri
+e anno; \code{calculateEstimate} legge autonomamente modello e sconto
+modello, verifica l'anno rispetto al rilascio e invoca
+\code{PriceCalculatorService.estimateVehicleValue}. Non crea marche/modelli
+con fallback né chiama sul calcolatore un metodo chiamato calculateEstimate.
+L'anteprima non è ancora un credito e può cambiare prima dell'invio.\par}
+
+
+\code{submitSaleProposal} riceve cliente e dati del veicolo. Nella
+transazione cerca il VIN con \code{findByVinForUpdate}. Se noto, richiede
+SOLD, ultima \code{SALE} al proponente, nessuna richiesta aperta e stesso
+modello/anno; poi aggiorna targa, chilometri e WAITING. Una qualunque
+operazione pregressa non prova la titolarità. Se il VIN è nuovo, legge
+autonomamente la base modello, crea il veicolo WAITING e lo salva con
+\code{conn}; vincoli unici e richiesta unica difendono anche le gare
+all'inserimento, senza un lock preventivo di una riga VIN inesistente.
+
+Ricalcola la stima tramite \code{calculateEstimate}, ancora con letture
+autonome di modello/sconto, e salva \code{createNewPurchaseRequest}:
+tipo PURCHASE, stima non negativa in deposit, totale concordato assente.
+Veicolo e Request condividono la transazione, senza un unico snapshot
+dei dati che formano la stima. L'esito è una proposta da esaminare e
+nessun movimento sul conto.
+
+{\raggedright
+\code{approveSaleProposal} riceve richiesta e venditore: il metodo comune
+\code{lockWaitingPurchaseRequest} blocca la richiesta, richiede PURCHASE,
+blocca il veicolo e richiede WAITING. Verifica il venditore non nullo,
+preleva la stima persistita, blocca il conto e la accredita. Poi salva
+\code{SaleType.PURCHASE} con il venditore ricevuto, esige WAITING verso
+SALE ed elimina la richiesta, tutto prima del commit. Non ricalcola il
+prezzo all'accettazione e non apre una seconda UnitOfWork; un guasto
+annulla accredito, storico e transizione nel percorso normale di rollback.\par}
+
+
+\code{rejectSaleProposal} usa gli stessi lock e controlli, elimina la
+richiesta e verifica lo storico: se esistono operazioni conserva il
+veicolo ripristinando SOLD, altrimenti elimina il nuovo veicolo. Non
+accredita né trattiene importi. Una stima zero può essere proposta ma
+fallisce all'accettazione perché deposit richiede un importo positivo;
+il limite è discusso in~\ref{sec:impl-prezzi}. La
+figura~\ref{fig:sq-cessione-insieme} e SQ-03a/b
+(\ref{fig:sq03a}, \ref{fig:sq03b}) mostrano proposta ed esito separati.
+
+\subsection{Calcolo dei prezzi e sconti}\label{sec:impl-prezzi}
+Il calcolatore \code{PriceCalculatorService} è concreto e non esegue SQL.
+Seguendo l'ADR~0001, la base manuale sostituisce la base del modello
+nella stessa formula; non è un totale finale imposto.
+
+% Fonte: src/main/java/it/unifi/drivehub/domain/vehicle/Vehicle.java:122-124
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=122,caption={\code{Vehicle.java}: selezione della base, prima della formula.},
+  label=lst:base]
+    public BigDecimal getSelectedBasePrice(Model model) {
+        return priceMode == PriceMode.MANUAL ? price : model.getReleasePrice();
+    }
+\end{lstlisting}
+\end{minipage}
+
+Il consigliato parte sempre da \code{Model.releasePrice}; l'effettivo
+usa la base selezionata dal frammento. Definendo $B$ questa base,
+$s=\max(s_m,s_v)$ (sconto assente uguale a zero), $a=\max(0,Y-y)$
+con $Y$ anno corrente e $k$ chilometri, si ha:
+\[
+ P=\mathrm{round}_{2}\!\left[
+ B(1-s/100)f_t\,0{,}95^{a}\,0{,}95^{k/20000}\right],
+ \qquad f_t=\left\{\begin{array}{ll}0{,}80&\mbox{targa presente},\\1&\mbox{altrimenti}.\end{array}\right.
+\]
+Gli sconti modello/veicolo non si sommano; seguono in cascata usato, età
+e chilometri. L'esponente chilometrico è reale, non il numero intero di
+blocchi da 10.000 o 20.000. La base manuale è portata ai centesimi con
+\code{HALF_UP}; il risultato finale usa lo stesso arrotondamento.
+Fattori e potenze usano \code{double}, poi \code{BigDecimal.valueOf}:
+BigDecimal non rende esatto ogni passaggio del calcolo.
+
+Per esempio, nell'anno corrente, senza targa e a zero chilometri, base
+modello 40.000 e sconti 10\%/5\% danno consigliato ed effettivo 36.000 euro.
+Con base manuale 30.000 il consigliato resta 36.000, l'effettivo diventa
+27.000, l'acconto 5.400 e il saldo 21.600 euro. Con base 40.000, targa,
+due anni e 10.000 km si ottengono invece
+$40.000\cdot0{,}90\cdot0{,}80\cdot0{,}95^2\cdot0{,}95^{0{,}5}
+=25.333{,}87$ euro dopo arrotondamento. Sono valori dimostrativi derivati
+dalla formula, non una valutazione di mercato.
+
+L'acconto è $A=\mathrm{round}_2(0{,}20P)$; il totale $T=P$ è
+persistito con la richiesta e il residuo è $T-A$. L'esempio dell'ADR
+20.000/4.000/16.000 euro resta valido dopo ogni modifica successiva di
+base/sconti: il saldo non legge il nuovo listino. Al rifiuto si restituisce
+$A$ intero; alla scadenza si trattiene
+$Q=\mathrm{round}_2(0{,}20A)$ e si rimborsa $A-Q$.
+Su 4.000 euro sono quindi 800 di penale e 3.200 di rimborso, non il 20\%
+dei 20.000 del totale.
+
+Per il noleggio, la tariffa esposta è
+$r=\mathrm{round}_2(0{,}001P)$, ma il totale usa la tariffa non
+ancora arrotondata e la somma geometrica per
+$d=\mathrm{DAYS.between}(inizio,fine)+1$:
+\[
+ C=\mathrm{round}_2\!\left[0{,}001P
+       \frac{1-0{,}95^d}{0{,}05}\right],\qquad d\geq1.
+\]
+Con $P=20.000$ e tre giorni inclusi: $20(1+0{,}95+0{,}9025)=57{,}05$
+euro, non 60 euro e non un fattore unico applicato a $20\cdot3$.
+Il calcolo del costo usa \code{double} anche per tariffa e somma e
+arrotonda soltanto il totale. Non impone un minimo positivo.
+
+La stima della cessione usa \code{estimateVehicleValue} con base modello,
+solo sconto modello e gli stessi deprezzamenti: manca lo sconto individuale
+di un veicolo del catalogo. Una base 40.000, sconto modello 10\%, targa,
+due anni e 10.000 km dà la stessa stima 25.333,87 euro dell'esempio; viene
+salvata all'invio. L'accettazione accredita quell'importo e non una stima
+ricalcolata. La tabella~\ref{tab:impl-importi} distingue origine e uso,
+recuperando la funzione della tabella originale senza conservarne le anomalie.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Origine degli importi correnti e momento che li rende vincolanti.}\label{tab:impl-importi}
+\begin{tabular}{>{\raggedright\arraybackslash}p{.20\linewidth}>{\raggedright\arraybackslash}p{.43\linewidth}>{\raggedright\arraybackslash}p{.27\linewidth}}
+\textbf{Importo} & \textbf{Origine} & \textbf{Uso e limite}\\\hline
+Consigliato / effettivo & Base modello / base selezionata, stessa formula e massimo sconti. & Catalogo: letture collettive autonome.\\
+Acconto e totale & PurchaseService ricalcola $P$ e il 20\%; salva deposit e agreed\_total. & Scritture atomiche; modello/sconti su connessioni autonome.\\
+Saldo & Totale persistito meno acconto. & Nessun ricalcolo; richiesta e conto bloccati.\\
+Rifiuto / scadenza & Acconto intero / acconto meno penale del 20\% dell'acconto. & Rimborso dal valore salvato; penale registrata solo alla scadenza.\\
+Noleggio & RentalService rilegge $P$ e applica somma geometrica sui giorni inclusi. & Anteprima distinta dalla conferma; letture con conn condivisa.\\
+Stima / accredito & Formula con base e sconto modello; stima salvata nella PURCHASE. & Letture autonome all'invio; all'esito si accredita il valore salvato.\\\hline
+\end{tabular}
+\end{table}
+
+Request SALE esige centesimi esatti tramite \code{UNNECESSARY}; i campi
+SQL economici sono DECIMAL con scala 2. Non tutto il dominio impone però
+la stessa scala: stima PURCHASE, Sale e BankAccount ammettono anche
+BigDecimal più precisi. Nei flussi descritti il calcolatore produce
+centesimi, evitando di affidare l'accordo a un arrotondamento implicito SQL.
+Importi nulli e negativi sono rifiutati secondo i rispettivi contratti;
+zero è invece valido per richiesta, registro e formule, ma non per
+\code{BankAccount.deposit}/\code{withdraw}. I servizi non saltano i
+movimenti zero: possono fallire acconto, residuo, costo o accredito zero;
+una penale arrotondata a zero non equivale a un movimento positivo.
+Questa differenza resta un limite applicativo documentato separatamente,
+senza patch. Il calcolatore non diventa una Strategy intercambiabile.
+
+{\raggedright
+\subsection{Autenticazione e conto dimostrativo}
+L'autenticazione dipende dal contratto \code{PasswordHasher}.
+Il contesto sceglie PBKDF2-HMAC-SHA256; ogni hash usa un sale casuale
+e incorpora i parametri. I valori predefiniti sono 210.000 iterazioni,
+sale di 16 byte e chiave di 256 bit; il verificatore recupera i parametri
+dall'hash salvato. Il confronto finale usa \code{MessageDigest.isEqual}.
+Viene persistito l'hash, senza conservare la password in chiaro.
+Il login legge l'identità dalla vista SQL unificata, verifica l'hash e,
+per il cliente, carica il conto separatamente.\par}
+
+
+% Fonte: src/main/java/it/unifi/drivehub/service/AuthService.java:57-64
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=57,caption={\code{AuthService.java}: registrazione del cliente e conto iniziale nella stessa transazione.},
+  label=lst:registrazione]
+        return db.executeInTransactionWithResult(conn -> {
+            Client savedClient = userDao.saveClient(clientToSave, conn);
+            String generatedIban = generateUniqueIban();
+            BankAccount initialAccount = BankAccount.createInitial(generatedIban, savedClient.getId());
+            bankAccountDao.save(initialAccount, conn);
+            savedClient.setBankAccount(initialAccount);
+            return savedClient;
+        });
+\end{lstlisting}
+\end{minipage}
+
+
+Il nome e l'hash sono validati prima del corpo mostrato. Il conto nasce
+con saldo zero; la ricarica positiva blocca e aggiorna la riga del conto.
+Il formato dell'IBAN è controllato sintatticamente: generazione casuale
+e vincolo UNIQUE non costituiscono un conto bancario reale né un controllo
+bancario della cifra di verifica. Email e password richiedono conferma
+della password corrente, ma la verifica precede la transazione di scrittura.
+La cancellazione blocca l'identità con \texttt{FOR NO KEY UPDATE}, blocca
+il conto del cliente e verifica richieste/storico prima di eliminare;
+le FK preservano le attribuzioni e il conto viene eliminato per CASCADE,
+anche con saldo positivo. Non è un trasferimento bancario.
+
+Dashboard separate e parametri ID/ruolo non equivalgono a un controllo
+generale dell'autorizzazione nei servizi. Inoltre la sequenza utenti
+condivisa assegna i nuovi ID, ma le PK restano locali alle tre tabelle;
+la ricerca per email ignora le maiuscole mentre UNIQUE e trigger SQL
+confrontano i valori esatti. Non si attribuiscono unicità globale o
+esclusione di ogni gara concorrente a questi soli controlli.
+DatabaseManager risolve la configurazione prima dalle variabili ambiente,
+poi da application.properties e infine dai valori dimostrativi predefiniti:
+non sono una configurazione di produzione. Il collegamento JDBC non crea
+schema o dati demo all'avvio; la predisposizione è esterna, come descritto
+nel README tecnico. Questa proprietà è distinta dall'autenticazione
+dell'utente e dalla qualità dell'hash.
+
+
+\subsection{Observer e gestione dell'inventario}\label{sec:impl-observer}
+% Fonte: src/main/java/it/unifi/drivehub/event/VehicleEventPublisher.java:28-32
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=28,caption={\code{VehicleEventPublisher.java}: gli osservatori ricevono la connessione del chiamante.},
+  label=lst:observer]
+    public void publishCommitment(VehicleCommitmentEvent event, Connection conn) {
+        for (VehicleCommitmentObserver observer : observers) {
+            observer.onVehicleCommitted(event, conn);
+        }
+    }
+\end{lstlisting}
+\end{minipage}
+
+
+\code{AppContext} registra \code{TestDriveCancellationObserver}.
+Vendita al cliente completata e noleggio confermato pubblicano l'evento
+prima del commit. L'osservatore elimina i test drive con data e ora
+successive a \code{CURRENT_TIMESTAMP} per il veicolo dell'evento, anche
+fuori dal periodo noleggiato, usando la
+stessa connessione. Non c'è un thread degli eventi: una sua eccezione
+risale dal ciclo e impedisce di proseguire verso il commit, annullando
+anche addebito e registrazioni nel normale percorso di rollback.
+La figura~\ref{fig:sqob} rende visibile questo confine.
+Le chiamate successive agli altri osservatori non sono garantite dopo
+un errore; non ci sono coda persistente, outbox o consegna distribuita.
+
+I DAO traducono \code{SQLException} in eccezioni con causa; i servizi
+sollevano errori per stati incompatibili e dati mancanti. Alcuni, come
+\code{RentalService}, estraggono dal wrapper transazionale la causa di
+dominio per mostrarla alla vista; questa politica non è uniforme.
+
+
+\section{Presentation Layer}\label{sec:impl-presentazione}
+Il livello corrente costruisce le viste in Java e usa CSS: non ha
+controller FXML, AbstractController, UiGateway, UiModels o sessione globale.
+La figura~\ref{fig:presentazione-insieme} e la navigazione del capitolo 2
+restano riferimenti validi; qui interessa come sono realizzate le schermate.
+
+\subsection{Viste e aree applicative}
+\code{LoginView} è l'ingresso e ospita accesso e registrazione del solo
+cliente; non c'è una Welcome Page separata né scelta pubblica del ruolo
+staff. Le tre dashboard ricevono l'utente autenticato e i servizi:
+\code{ClientDashboardView} offre cataloghi, test drive/noleggio, richieste
+e saldo, cessione, conto e gestione account; \code{SalesmanDashboardView}
+tratta SALE/PURCHASE pendenti, inventario e cambio destinazione;
+\code{ManagerDashboardView} gestisce marche, modelli, parco veicoli e
+sconti e consulta il registro. Restano le aree spiegate in 2.3, compresa
+l'assenza della vecchia panoramica prenotazioni per il venditore.
+
+Le viste costruiscono controlli e dialoghi, raccolgono e convertono input,
+verificano selezione e campi prima dei comandi. I servizi ripetono le
+regole persistenti: un pulsante disabilitato non è una garanzia per un
+chiamante alternativo. \code{AccountManagementDialog}, aperto da tutte
+le dashboard, raccoglie password corrente e modifiche a email/password
+o conferma di cancellazione. Usa AuthService e callback di aggiornamento
+utente/logout; non possiede un archivio globale dell'identità.
+\code{UiUtils} centralizza intestazioni, formattazione monetaria/date,
+conferme e messaggi. Non è il gateway del dominio: le viste chiamano
+direttamente i servizi, e i messaggi di errore dei comandi possono ancora
+derivare da \code{Exception.getMessage}.
+
+\subsection{Creazione delle viste e navigazione}
+\code{App} mantiene Stage e contesto, costruisce la vista di accesso e
+sostituisce la Scene. Il frammento sostituisce l'antico passaggio del
+contesto dopo FXMLLoader: AuthService e callback sono argomenti del
+costruttore, senza un secondo ciclo initialize/onContextReady.
+
+% Fonte: src/main/java/it/unifi/drivehub/App.java:54-60
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=54,gobble=4,caption={Costruzione di LoginView e passaggio dei collaboratori.},label=lst:app-login]
+    private void showLoginView() {
+        LoginView loginView = new LoginView(ctx.getAuthService(), this::showDashboardForUser);
+        Scene scene = new Scene(loginView, 900, 650);
+        applyTheme(scene);
+        primaryStage.setScene(scene);
+        primaryStage.centerOnScreen();
+    }
+\end{lstlisting}
+\end{minipage}
+
+{\raggedright
+Al login \code{showDashboardForUser} chiama \code{user.openDashboard}
+con un \code{UserDashboardNavigator} anonimo. Ogni tipo concreto chiama
+il proprio metodo tipizzato del navigator; App vi costruisce la dashboard
+con utente, servizi presi dal contesto e \code{App.this::showLoginView}.\par}
+
+
+% Fonte: src/main/java/it/unifi/drivehub/domain/user/Client.java:32-35
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=32,caption={\code{Client.java}: selezione dell'overload del navigator con il tipo concreto.},
+  label=lst:navigazione]
+    @Override
+    public void openDashboard(UserDashboardNavigator navigator) {
+        navigator.showClientDashboard(this);
+    }
+\end{lstlisting}
+\end{minipage}
+
+Questo double dispatch separa la costruzione JavaFX dalle entità, pur
+facendo conoscere loro il contratto di navigazione. Il logout e la
+cancellazione riuscita richiamano la costruzione del login; non svuotano
+un vecchio SessionContext assente. Il contesto conserva servizi e DAO,
+non l'utente autenticato. Alcuni costruttori di comodo delle viste accedono
+direttamente al Singleton: l'iniezione non è uniforme. La
+sezione~\ref{sec:navigazione} mantiene il percorso per ruolo, tab e dialoghi.
+
+\subsection{Servizi, dati della UI e aggiornamento}\label{sec:impl-refresh}
+Le tabelle del catalogo ricevono \code{CatalogService.VehicleRow}: modello,
+base, consigliato, effettivo e tariffa sono preparati dal servizio usando
+letture collettive e mappe per ID. Le celle di queste tabelle leggono
+le righe già preparate, senza query durante il rendering. Non è una cache
+persistente né uno snapshot transazionale comune; altre consultazioni,
+come le proprie operazioni e alcune descrizioni di veicolo, usano ancora
+letture sincrone.
+
+\code{AsyncLoad} associa al controllo una sorgente \code{Supplier} e una
+callback \code{Consumer}. Ogni \code{load} cancella il Task precedente,
+cattura la sorgente corrente, crea un nuovo Task e disabilita il controllo
+durante il caricamento. \code{call} esegue il Supplier sul thread virtuale
+avviato in fondo al frammento; i gestori di completamento di Task sono
+eseguiti sul thread JavaFX.
+
+% Fonte: src/main/java/it/unifi/drivehub/presentation/view/AsyncLoad.java:60-73
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=60,caption={\code{AsyncLoad.java}: pubblicazione del risultato corrente e stato di errore.},
+  label=lst:async]
+        task.setOnSucceeded(event -> {
+            if (current != task) return;
+            apply.accept(task.getValue());
+            progress.setVisible(false);
+            status.setText("Aggiornato");
+            target.setDisable(false);
+        });
+        task.setOnFailed(event -> {
+            if (current != task) return;
+            progress.setVisible(false);
+            status.setText("Caricamento non riuscito. Riprova.");
+            refresh.setText("Riprova");
+        });
+        Thread.ofVirtual().name("drivehub-table-load").start(task);
+\end{lstlisting}
+\end{minipage}
+
+
+L'identità \code{current != task} scarta una risposta superata dopo un
+nuovo caricamento. Il successo sostituisce le righe e riabilita il
+controllo; il fallimento mostra un messaggio generico e lascia disponibile
+\emph{Riprova}, mantenendo il controllo destinazione disabilitato.
+Il listener sulla proprietà \code{scene} cancella il Task e azzera
+\code{current} quando il controllo viene staccato da una Scene.
+Questo presidia la sostituzione della vista, senza costituire un gestore
+generale del ciclo di vita di ogni dialogo. La cancellazione del Task
+non garantisce l'interruzione immediata di una chiamata JDBC già avviata.
+
+Per esempio, \code{handlePurchaseAction} mostra un preventivo e chiede
+conferma; il servizio ricalcola poi l'accordo. Al ritorno aggiorna saldo,
+catalogo e richieste e mostra totale e acconto effettivamente persistiti.
+Il saldo rilegge ancora la richiesta nel servizio, anche se i controlli
+preventivi della vista usano una copia precedente. Le scritture non
+dipendono quindi dall'attualità della riga selezionata nella tabella.
+
+Questi handler restano sincroni sul thread grafico: \code{AsyncLoad}
+non rende asincrono ogni gesto dell'applicazione. Anche
+\code{Platform.runLater}, usato per il controllo iniziale delle scadenze,
+rinvia lavoro sul thread JavaFX, senza spostarlo su un worker. Quel
+controllo stampa l'errore su stderr; non applica lo stato Riprova delle
+tabelle. I dialoghi intercettano gli errori dei comandi e li presentano
+con \code{UiUtils}. Il commit precede il successo mostrato, ma gli
+aggiornamenti UI non fanno parte della transazione: una lettura di
+aggiornamento fallita dopo il commit può produrre un messaggio di errore
+pur avendo già completato l'operazione economica.
+
+
+\section[Persistenza: livello DAO e mapping oggetti/tabelle]{\raggedright Persistenza: livello DAO e mapping oggetti/tabelle}\label{sec:impl-dao}
+La persistenza è JDBC esplicito, senza ORM. I dieci contratti nel package
+\code{dao} sono UserDao, BankAccountDao, BrandDao, ModelDao, VehicleDao,
+DiscountDao, RequestDao, TestDriveDao, RentDao e SaleDao; ciascuno ha
+un'implementazione \code{Postgres*Dao}. La figura~\ref{fig:dao-insieme}
+e CL-08/09 in B distinguono contratti, adapter e gestore.
+
+\subsection{Porte DAO e implementazioni JDBC}
+Non c'è un CRUD generico: ogni contratto espone ricerche, lock e comandi
+necessari ai casi d'uso. Questi due intervalli letterali di UserDao
+omettono altre firme; mostrano che le letture comuni possono essere
+autonome, mentre le modifiche ricevono connessione e ruolo.
+
+% Fonte: src/main/java/it/unifi/drivehub/dao/UserDao.java:16-23
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=16,gobble=4,caption={Selezione delle firme di lettura e lock; omesse altre operazioni.},label=lst:user-dao-letture]
+    Optional<User> findByEmail(String email);
+
+    Optional<User> findById(Long id);
+
+    Optional<Client> findClientById(Long id);
+
+    /** Serializza le prenotazioni del cliente nella transazione, dopo il veicolo e prima del conto. */
+    void lockClient(Long id, Connection conn);
+\end{lstlisting}
+\end{minipage}
+
+% Fonte: src/main/java/it/unifi/drivehub/dao/UserDao.java:29-40
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=29,gobble=4,caption={Selezione delle firme di scrittura con ruolo e Connection.},label=lst:user-dao-comandi]
+    Client saveClient(Client client, Connection conn);
+
+    void updateEmail(Long id, String role, String newEmail, Connection conn);
+
+    void updatePassword(Long id, String role, String newHashPassword, Connection conn);
+
+    /** Blocca l'identità prima del conto e della verifica dei vincoli di cancellazione. */
+    void lockUser(Long id, String role, Connection conn);
+
+    void deleteUser(Long id, String role, Connection conn);
+
+    boolean hasAssociatedOperations(Long userId, String role, Connection conn);
+\end{lstlisting}
+\end{minipage}
+
+\code{Optional} distingue assenza e riga trovata; le query multiple
+restituiscono liste, gli inserimenti l'entità con chiave restituita.
+\code{PreparedStatement} separa SQL e valori con placeholder: gli ID e
+le stringhe non sono concatenati. L'eccezione per il nome della tabella
+utente usa una selezione chiusa per ruolo, non testo libero del chiamante.
+I DAO traducono SQLException mantenendone la causa e chiudono statement
+e result set. Numero di righe aggiornate e semantica del risultato sono
+parte del contratto concreto: non ogni comando garantisce che esattamente
+una riga sia cambiata.
+
+% Fonte: src/main/java/it/unifi/drivehub/dao/postgres/PostgresVehicleDao.java:195-206
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=195,caption={\code{PostgresVehicleDao.java}: transizione condizionata e conteggio delle righe.},
+  label=lst:update-condizionale]
+    public boolean updateStateAtomically(Long vehicleId, VehicleState expectedOldState, VehicleState newState, Connection conn) {
+        String sql = "UPDATE vehicle SET state = ?::vehicle_state WHERE id = ? AND state = ?::vehicle_state";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, newState.name());
+            ps.setLong(2, vehicleId);
+            ps.setString(3, expectedOldState.name());
+            int affected = ps.executeUpdate();
+            return affected > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore durante l'aggiornamento atomico dello stato del veicolo.", e);
+        }
+    }
+\end{lstlisting}
+\end{minipage}
+
+I placeholder parametrizzano i valori; il servizio decide cosa fare del
+booleano. Nell'avvio e nel saldo falso è un errore: evita di completare
+un'operazione su stato incompatibile. Eliminazione Request e aggiornamento
+saldo verificano invece un conteggio pari a uno; alcune modifiche utenti
+non controllano il conteggio. Non si generalizza il protocollo a ogni UPDATE.
+
+\subsection{Mapping degli utenti e vista unificata}\label{sec:impl-utenti-sql}
+La vista SQL \code{user} unisce con UNION ALL client, salesman e manager
+e aggiunge il ruolo letterale: non è una quarta tabella né il supertipo
+concettuale dell'ER trasformato in una riga proprietaria di tutte le FK.
+\code{PostgresUserDao.findById} legge la vista, estrae i campi comuni e
+ricostruisce il sottotipo con uno switch chiuso:
+
+% Fonte: src/main/java/it/unifi/drivehub/dao/postgres/PostgresUserDao.java:69-75
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=69,gobble=20,caption={Ricostruzione del sottotipo dopo la lettura della vista; omesso accesso JDBC.},label=lst:user-mapping]
+                    User user = switch (role.toUpperCase()) {
+                        case "CLIENT" -> Client.createWithoutAccount(userId, name, surname, mail, hash);
+                        case "SALESMAN" -> Salesman.create(userId, name, surname, mail, hash);
+                        case "MANAGER" -> Manager.create(userId, name, surname, mail, hash);
+                        default -> throw new IllegalStateException("Ruolo utente non riconosciuto: " + role);
+                    };
+                    return Optional.of(user);
+\end{lstlisting}
+\end{minipage}
+
+Il mapper del login fa la stessa selezione; \code{Client.createWithoutAccount}
+lascia ad AuthService il caricamento separato del conto. Le scritture
+usano \code{resolveTable}: CLIENT/CLIENTE, SALESMAN/VENDITORE e MANAGER
+sono tradotti nelle tre tabelle; un altro ruolo è rifiutato. Non c'è un
+Role enum del vecchio progetto da ripristinare.
+
+Le tre tabelle usano la sequenza comune \code{user_id_seq} come default,
+che evita collisioni nelle assegnazioni ordinarie. Le PK restano locali:
+un inserimento manuale può riusare lo stesso ID in ruoli diversi e la
+ricerca comune per solo ID prenderebbe la prima riga. Modifica e
+cancellazione ricevono anche il ruolo, ma non creano una PK globale.
+L'email è UNIQUE per tabella; i trigger cercano disgiunzione fra ruoli
+con confronto esatto ed escludono l'ID uguale al nuovo. La ricerca email
+usa LOWER, mentre UNIQUE/trigger non normalizzano ogni scrittura SQL:
+non sono una garanzia globale contro maiuscole diverse o gare concorrenti.
+Il dominio normalizza i valori passati dalle sue factory, senza sanare
+tutti gli inserimenti esterni. Questi limiti sono distinti dalla sicurezza
+dell'hash e dalla validità dell'oggetto Java.
+
+Il caso SQLSTATE \code{23503} nella cancellazione dell'identità è tradotto
+da PostgresUserDao in errore di dominio; gli altri errori conservano la
+causa SQL. Non c'è una tassonomia uniforme di eccezioni applicative per
+tutti i DAO.
+
+\subsection{Mapping delle operazioni e valori opzionali}
+% Fonte: src/main/java/it/unifi/drivehub/dao/postgres/PostgresRequestDao.java:214-227
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=214,caption={\code{PostgresRequestDao.java}: NULL preservati e factory anche in lettura.},
+  label=lst:mapping]
+    private static Request mapRow(ResultSet rs) throws SQLException {
+        Long salesman = rs.getObject("salesman") != null ? rs.getLong("salesman") : null;
+        Date expDate = rs.getDate("exp_date");
+        return Request.create(
+                rs.getLong("id"),
+                rs.getLong("vehicle"),
+                rs.getLong("client"),
+                salesman,
+                rs.getBigDecimal("deposit"),
+                rs.getBigDecimal("agreed_total"),
+                expDate != null ? expDate.toLocalDate() : null,
+                RequestType.valueOf(rs.getString("type_str"))
+        );
+    }
+\end{lstlisting}
+\end{minipage}
+
+
+\code{getLong} da solo non distingue un NULL da zero: per il venditore
+opzionale il controllo su \code{getObject} conserva null.
+\code{getBigDecimal} conserva i valori decimali di \code{deposit} e
+\code{agreed_total}; \code{getDate}/\code{toLocalDate} ricostruiscono
+una data senza orario, preservandone l'assenza. I campi obbligatori per FK
+sono letti come ID, senza caricare le entità collegate.
+La scrittura simmetrica usa \code{setNull} con \code{Types.BIGINT} o
+\code{Types.DATE}, \code{Date.valueOf} e \code{setBigDecimal}; per il
+totale opzionale passa il BigDecimal anche quando nullo. La ricostruzione
+attraverso la factory riapplica i controlli del dominio: un dato incompatibile
+può fallire durante la lettura, non viene silenziosamente sanato.
+
+Per Sale, veicolo e venditore possono essere NULL: la penale li omette;
+una FK veicolo rimossa può inoltre diventare NULL secondo lo schema.
+Il mapper controlla presenza prima di \code{getLong} e converte timestamp
+e tipo senza interpretare il segno dell'importo.
+
+% Fonte: src/main/java/it/unifi/drivehub/dao/postgres/PostgresSaleDao.java:123-135
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=123,gobble=4,caption={Mapper Sale completo: NULL, BigDecimal, timestamp e tipo.},label=lst:sale-mapping]
+    private static Sale mapRow(ResultSet rs) throws SQLException {
+        Long vehicle = rs.getObject("vehicle") != null ? rs.getLong("vehicle") : null;
+        Long salesman = rs.getObject("salesman") != null ? rs.getLong("salesman") : null;
+        return Sale.create(
+                rs.getLong("id"),
+                vehicle,
+                salesman,
+                rs.getLong("client"),
+                rs.getBigDecimal("amount"),
+                rs.getTimestamp("date").toLocalDateTime(),
+                SaleType.valueOf(rs.getString("type"))
+        );
+    }
+\end{lstlisting}
+\end{minipage}
+
+In scrittura \code{PostgresSaleDao.save} usa \code{setNull(Types.BIGINT)}
+per le due FK assenti, \code{setBigDecimal} per amount,
+\code{Timestamp.valueOf} per date e \code{enum.name()} per type.
+Request usa DATE per exp\_date, Rent due DATE e TestDrive un TIMESTAMP;
+non sono istanti con fuso orario persistito. L'estratto della Request
+conserva agreed\_total nullo per PURCHASE e presente per SALE.
+I campi monetari DECIMAL sono letti con BigDecimal, senza convertirli in
+double nel mapper. Le factory riapplicano la validazione anche durante
+la lettura: dati incompatibili possono fallire, non sono corretti dal DAO.
+
+I quattro domini chiusi sono enum Java e tipi PostgreSQL distinti, come
+stabilito dall'ADR~0002. I cast JDBC mantengono questa corrispondenza:
+
+\begin{center}\small
+\begin{tabular}{lll}
+Attributo & Tipo Java & Cast SQL in scrittura \\\hline
+\code{vehicle.state} & \code{VehicleState} & \code{?::vehicle_state} \\
+\code{request.type} & \code{RequestType} & \code{?::request_type} \\
+\code{vehicle.price_mode} & \code{PriceMode} & \code{?::price_mode} \\
+\code{sale.type} & \code{SaleType} & \code{?::sale_type}
+\end{tabular}
+\end{center}
+
+I parametri sono impostati da \code{enum.name()}; in lettura i DAO
+convertono con \code{valueOf}, in alcuni SELECT dopo \texttt{::text}
+e alias. I valori ammessi sono quelli già riportati in
+sezione~\ref{sec:database}: il cast non verifica regole su importi,
+accordi o associazioni. Aggiungere o rinominare un valore richiede
+coerenza fra Java, SQL e dati; non c'è una conversione automatica nascosta.
+
+
+\subsection{Vincoli SQL e controlli dei servizi}\label{sec:impl-vincoli}
+Lo schema corrente sostituisce init.sql: UNIQUE su VIN/targa, richiesta
+unica per veicolo e coppia veicolo/data dei test drive; CHECK su importi,
+saldo, percentuali, accordo e date; FK verso entità e ruoli pertinenti.
+Gli intervalli seguenti sono estratti separati e letterali dello schema,
+non righe consecutive di un'unica CREATE TABLE.
+
+% Fonte: src/main/resources/db/schema.sql:90-91
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=90,gobble=4,caption={Due UNIQUE di vehicle, estratto dalla definizione della tabella.},label=lst:vincolo-vin]
+    CONSTRAINT "uq_vehicle_vin" UNIQUE ("vin"),
+    CONSTRAINT "uq_vehicle_licence_plate" UNIQUE ("licence_plate"),
+\end{lstlisting}
+\end{minipage}
+
+% Fonte: src/main/resources/db/schema.sql:195-195
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=195,gobble=4,caption={CHECK saldo, estratto dalla definizione di bank\_account.},label=lst:vincolo-saldo]
+    CONSTRAINT "chk_bank_account_balance" CHECK ("balance" >= 0)
+\end{lstlisting}
+\end{minipage}
+
+% Fonte: src/main/resources/db/schema.sql:289-292
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=289,gobble=4,caption={CHECK importo e date ed esclusione GiST degli intervalli inclusi.},label=lst:vincolo-rent]
+    CONSTRAINT "chk_rent_amount" CHECK ("amount" >= 0),
+    CONSTRAINT "chk_rent_dates" CHECK ("end" >= "start"),
+    CONSTRAINT "ex_rent_vehicle_period" EXCLUDE USING gist
+        ("vehicle" WITH =, daterange("start", "end", '[]') WITH &&)
+\end{lstlisting}
+\end{minipage}
+
+L'EXCLUDE richiede btree\_gist e usa daterange con estremi inclusi:
+impedisce sovrapposizioni per lo stesso veicolo anche fra scritture
+concorrenti. La query di~\ref{lst:overlap} permette un errore applicativo
+prima dell'inserimento, senza sostituire la difesa del vincolo.
+Il limite dei tre test drive, stato idoneo, titolarità dell'ultima vendita,
+approvazione e scadenza restano controlli dei servizi. La UNIQUE del test
+drive confronta lo stesso timestamp, senza garantire intervalli distinti
+di un'ora. I trigger sugli anni confrontano veicolo/modello anche dopo
+aggiornamento; non sono lo stesso controllo Java sull'anno corrente.
+Gli enum nativi e i cast della tabella precedente limitano i valori
+ammessi, non autorizzano transizioni o utenti. La
+tabella~\ref{tab:impl-garanzie} recupera la funzione argomentativa originale.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Garanzie osservate e loro confine effettivo.}\label{tab:impl-garanzie}
+\begin{tabular}{>{\raggedright\arraybackslash}p{.23\linewidth}>{\raggedright\arraybackslash}p{.35\linewidth}>{\raggedright\arraybackslash}p{.32\linewidth}}
+\textbf{Regola} & \textbf{Meccanismo} & \textbf{Limite}\\\hline
+Scritture del comando & Connection condivisa, commit/rollback e Observer con conn. & Escluse letture autonome, UI ed effetti esterni.\\
+Saldo & Invariante BankAccount, conto FOR UPDATE e CHECK non negativo. & Protocollo dei servizi; zero rifiutato dal movimento.\\
+VIN e targa & UNIQUE SQL e normalizzazione Java. & Non equivalgono a controllo di titolarità.\\
+Test drive & Lock veicolo/cliente, conteggio, query e UNIQUE veicolo/data. & Identico istante, non intervalli di un'ora; limite tre nei servizi.\\
+Noleggi & Query inclusiva, lock veicolo e EXCLUDE GiST. & Non decide stato RENT o capienza del conto.\\
+Stato commerciale & Controlli del servizio e UPDATE con stato atteso. & setState e ogni UPDATE generico non impongono lo stesso automa.\\
+Accordo & Totale/acconto persistiti, CHECK e Request SALE in centesimi. & Il listino iniziale può provenire da letture autonome.\\
+Identità & Sequenza comune, PK locali, email UNIQUE e trigger. & Nessuna PK globale o unicità email globale case insensitive.\\\hline
+\end{tabular}
+\end{table}
+
+\subsection{Connessione condivisa e confine transazionale}
+Le interfacce DAO espongono operazioni sui tipi del dominio; le
+implementazioni \code{Postgres*Dao} contengono SQL e mapping espliciti.
+Non c'è un ORM: i contratti stessi conoscono \code{java.sql.Connection}.
+Il criterio per il riuso è verificabile nei corpi, non nel nome del DAO.
+
+% Fonte: src/main/java/it/unifi/drivehub/dao/postgres/PostgresVehicleDao.java:61-72
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=61,caption={\code{PostgresVehicleDao.java}: lettura autonoma e overload con connessione ricevuta.},
+  label=lst:dao-connection]
+    public Optional<Vehicle> findById(Long id) {
+        try (Connection conn = db.getConnection()) {
+            return findById(id, conn);
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore di connessione durante la ricerca del veicolo id: " + id, e);
+        }
+    }
+
+    @Override
+    public Optional<Vehicle> findById(Long id, Connection conn) {
+        return findById(id, conn, false);
+    }
+\end{lstlisting}
+\end{minipage}
+
+
+Il primo overload apre e chiude la connessione; il secondo passa quella
+ricevuta al metodo comune, che chiude solo statement e result set.
+La responsabilità di commit e chiusura resta al chiamante. Le varianti
+\code{findByIdForUpdate} aggiungono \texttt{FOR UPDATE} e rifiutano
+autocommit attivo. Una lettura autonoma chiamata dentro una lambda
+transazionale non si unisce per questo alla connessione della lambda.
+
+L'inserimento \code{RETURNING id} ricostruisce l'entità, anziché assegnare
+un ID al campo finale dell'oggetto originario. Non c'è identity map:
+due letture possono dare due copie dello stesso record e mutare una copia
+non produce un UPDATE automatico. Non c'è rilevamento delle modifiche,
+flush, contratto UnitOfWork o JdbcEntityLoader condiviso.
+
+La tabella precedente e il frammento~\ref{lst:transazione} vanno letti
+insieme: il wrapper possiede commit/rollback/close, gli overload con conn
+usano quella ricevuta e chiudono le sole risorse locali. Una lettura senza
+conn dentro la lambda apre comunque un'altra connessione. Nel noleggio
+modello e sconti partecipano; nell'avvio vendita e nella stima della
+cessione le letture autonome indicate nei flussi non partecipano.
+Il medesimo DatabaseManager non estende i lock a tutte queste connessioni.
+Richiesta, autorizzazione e saldo restano tre transazioni distinte; il
+rollback di una non annulla le precedenti già confermate.
+
+\section{Idiomi e Design Pattern}\label{sec:impl-pattern}
+La classificazione dipende dalle collaborazioni effettive e dalla
+figura~\ref{fig:pkg}, non da un'etichetta nei Javadoc. Il Mode \#2
+non richiede di raggiungere un numero prefissato di pattern.
+
+\subsection{Observer}
+Il problema è applicare la politica di cancellazione dopo un impegno
+commerciale senza duplicarla nei servizi vendita e noleggio. Il Subject
+\code{VehicleEventPublisher} tiene una CopyOnWriteArrayList, offre
+attach/detach e chiama il contratto seguente per ogni osservatore:
+
+% Fonte: src/main/java/it/unifi/drivehub/event/VehicleCommitmentObserver.java:6-8
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=6,gobble=0,caption={Contratto Observer completo, senza import e commenti introduttivi.},label=lst:contratto-observer]
+public interface VehicleCommitmentObserver {
+    void onVehicleCommitted(VehicleCommitmentEvent event, Connection conn);
+}
+\end{lstlisting}
+\end{minipage}
+
+AppContext registra l'osservatore concreto, i due servizi pubblicano
+l'evento e \code{TestDriveCancellationObserver} usa TestDriveDao: è la
+collaborazione Observer GoF. Il frammento~\ref{lst:observer} e
+SQ-OB mostrano notifica sincrona e connessione condivisa. L'errore si
+propaga, interrompe la notifica e può provocare rollback; il vecchio
+listener che ignorava eccezioni non descrive il comportamento corrente.
+Non ci sono consegna persistente, outbox o rollback automatico di effetti
+esterni di un futuro osservatore.
+
+\subsection{Calcolo centralizzato e assenza di Strategy}
+Il problema della variabilità delle formule rimane, ma il progetto
+attuale lo affronta con \code{PriceCalculatorService} finale e concreto.
+CatalogService, PurchaseService, RentalService e SaleToDealershipService
+ricevono quella classe; non esistono PricingStrategy e selezione di
+algoritmi intercambiabili. Il frammento~\ref{lst:base}, le formule e la
+tabella~\ref{tab:impl-importi} mostrano la scelta di dati (base e sconti)
+all'interno di uno stesso algoritmo, non una Strategy GoF. La centralizzazione
+evita formule duplicate, ma cambiare la policy richiede cambiare il
+calcolatore e verificare i flussi che ne usano il risultato. Non si
+introduce un'interfaccia soltanto per conservare il vecchio titolo.
+
+\subsection{Metodi statici di creazione}
+Il problema è nominare casi di costruzione e applicare le invarianti
+prima di rendere disponibile l'oggetto. Vehicle.create e le factory di
+Request/Sale nascondono costruttori privati e sono usate anche nei mapper.
+Il frammento~\ref{lst:request-factory} distingue i due tipi di pratica;
+questo overload di Vehicle sceglie la modalità automatica:
+
+% Fonte: src/main/java/it/unifi/drivehub/domain/vehicle/Vehicle.java:40-42
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=40,gobble=4,caption={Overload completo della factory che sceglie AUTOMATIC; validazione delegata omessa.},label=lst:vehicle-factory]
+    public static Vehicle create(Long id, Long modelId, String vin, String licencePlate, int kilometers, BigDecimal price, int year, VehicleState state) {
+        return create(id, modelId, vin, licencePlate, kilometers, price, year, state, PriceMode.AUTOMATIC);
+    }
+\end{lstlisting}
+\end{minipage}
+
+Il chiamante passa null come ID per una nuova entità; save inserisce e
+restituisce una nuova istanza con chiave, senza BaseEntity.assignId.
+L'altro overload applica le validazioni, incluso PriceMode, e può essere
+usato per ricostruire valori persistiti. Il codice della factory non
+prova unicità o titolarità, che richiedono DAO/servizi. Si tratta di factory
+statiche: manca una gerarchia Creator con metodo ridefinibile che scelga
+il prodotto, quindi non è Factory Method GoF.
+
+{\raggedright
+\subsection{Navigazione e contesto applicativo}
+Il problema della selezione del workspace è risolto dal double dispatch:
+User.openDashboard seleziona il metodo tipizzato, App fornisce il navigator
+e costruisce la vista (\ref{lst:navigazione}, \ref{lst:app-login}). È nello
+stile Visitor, ma non attraversa arbitrariamente un grafo del dominio.
+Il contratto enumera tre ruoli e User conosce la navigazione pur senza
+importare JavaFX: un ruolo nuovo richiede modifiche anche a navigator,
+App e mapper, non soltanto una nuova classe.\par}
+
+
+Il problema della composizione iniziale è distinto. Il seguente accesso
+realizza un Singleton per il contesto predefinito:
+
+% Fonte: src/main/java/it/unifi/drivehub/AppContext.java:112-117
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=112,caption={\code{AppContext.java}: accesso Singleton sincronizzato al contesto predefinito.},
+  label=lst:singleton]
+    public static synchronized AppContext getInstance() {
+        if (instance == null) {
+            instance = new AppContext();
+        }
+        return instance;
+    }
+\end{lstlisting}
+\end{minipage}
+
+Il costruttore pubblico con DatabaseManager consente però contesti
+separati: non impone una sola istanza nel processo. La sincronizzazione
+protegge l'inizializzazione, non ogni vista o entità. Gli overload di
+comodo che lo consultano globalmente rendono meno esplicite alcune
+dipendenze; il percorso di App passa invece collaboratori e logout.
+Non si ripristina NavigationManager né una sessione globale.
+
+\subsection{DAO e coordinamento transazionale}
+Il problema di separare SQL e casi d'uso è affrontato dalle porte DAO e
+dagli adapter Postgres, con mapping esplicito e Connection visibile:
+DAO è un pattern di accesso ai dati esterno al catalogo GoF, non un ORM
+o un repository di aggregati DDD. Gli esempi di UserDao e mapping in
+3.4 mostrano il confine; non rendono i servizi indipendenti da JDBC.
+
+Il problema dell'atomicità di un comando è affrontato dalle due callback
+di DatabaseManager: \ref{lst:callback} e \ref{lst:transazione} mostrano
+chi possiede la connessione e quando commit/rollback avvengono. Non è
+il vecchio contratto UnitOfWork e non aggiunge identity map o flush.
+La DI manuale di AppContext è una tecnica di composizione: riceve il
+gestore ma sceglie internamente PostgreSQL e PBKDF2; le viste ricevono
+servizi concreti. L'inversione delle dipendenze rimane parziale, e
+l'atomicità non include i refresh UI né le letture autonome.
+
+\subsection{Idiomi Java usati nei confini tra livelli}
+Optional nei DAO distingue assenza da errore: per esempio RentalService
+trasforma un veicolo assente in IllegalStateException con orElseThrow.
+Le query di più righe restituiscono liste, non Optional di liste.
+\code{CatalogService.VehicleRow} e \code{ModelDiscountRow} sono record
+di lettura per le tabelle; il primo contiene un Vehicle mutabile e non
+ne garantisce immutabilità profonda. VehicleCommitmentEvent è un altro
+record, con la funzione diversa di trasportare l'ID nella notifica.
+Non sono i vecchi UiModels o RegistrationRequest.
+
+Enum esprimono insiemi chiusi per stato, prezzo e tipo economico; un enum
+di stati non realizza da solo State GoF. Campi finali stabilizzano ID o
+importi nelle entità che li dichiarano, ma una classe finale come Vehicle
+resta mutabile. Le lambda implementano TransactionConsumer/Function e
+Supplier/Consumer di AsyncLoad senza una nuova classe per ogni lavoro.
+Try-with-resources chiude Connection nel gestore e statement/result set
+negli adapter, conservando gli errori soppressi. Task e thread virtuale
+separano le letture asincrone dall'applicazione dei risultati nella UI
+(\ref{lst:async}); non rendono asincrone le scritture. Sono idiomi e
+tecniche della piattaforma che sostengono i confini, senza introdurre
+ulteriori pattern GoF per il solo uso di una funzionalità Java.
+\endgroup
+\setcounter{secnumdepth}{2}

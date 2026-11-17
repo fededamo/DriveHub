@@ -1,0 +1,5 @@
+2026-11-13T12:00:28.231346+00:00
+/tmp/drivehub-ticket04-tools/drawio/opt/drawio/drawio --disable-gpu --user-data-dir=/tmp/drivehub-ticket04-profile -x -f pdf -e --crop -b 10 -o /home/federico/dev/Drivehub/DriveHub/docs/relazione/diagrammi/sequenza-vendita-esito.drawio.pdf /home/federico/dev/Drivehub/DriveHub/docs/relazione/diagrammi/sequenza-vendita-esito.drawio
+/home/federico/dev/Drivehub/DriveHub/docs/relazione/diagrammi/sequenza-vendita-esito.drawio -> /home/federico/dev/Drivehub/DriveHub/docs/relazione/diagrammi/sequenza-vendita-esito.drawio.pdf
+
+exit: 0

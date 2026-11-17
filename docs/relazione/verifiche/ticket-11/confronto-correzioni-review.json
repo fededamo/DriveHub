@@ -1,0 +1,10 @@
+{
+  "pages": 143,
+  "changed_rendered_pages": [
+    83,
+    99
+  ],
+  "unchanged_pages": 141,
+  "old_pdf_sha256": "b87ffa38ce1ffe7a6569ffb7d8e48a10497582e5a617136e3715c096eacd8236",
+  "final_pdf_sha256": "3e08ead9770f414bdf7ed988725bb28d0eae813a79a50491225cdb2572490195"
+}

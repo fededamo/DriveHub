@@ -1,0 +1,47 @@
+{
+  "it.unifi.drivehub": [
+    "it.unifi.drivehub.dao",
+    "it.unifi.drivehub.dao.postgres",
+    "it.unifi.drivehub.domain.user",
+    "it.unifi.drivehub.event",
+    "it.unifi.drivehub.presentation.view",
+    "it.unifi.drivehub.security",
+    "it.unifi.drivehub.service"
+  ],
+  "it.unifi.drivehub.dao": [
+    "it.unifi.drivehub.domain.discount",
+    "it.unifi.drivehub.domain.operation",
+    "it.unifi.drivehub.domain.user",
+    "it.unifi.drivehub.domain.vehicle"
+  ],
+  "it.unifi.drivehub.dao.postgres": [
+    "it.unifi.drivehub.dao",
+    "it.unifi.drivehub.domain.discount",
+    "it.unifi.drivehub.domain.operation",
+    "it.unifi.drivehub.domain.user",
+    "it.unifi.drivehub.domain.vehicle"
+  ],
+  "it.unifi.drivehub.domain.discount": [],
+  "it.unifi.drivehub.domain.operation": [],
+  "it.unifi.drivehub.domain.user": [],
+  "it.unifi.drivehub.domain.vehicle": [],
+  "it.unifi.drivehub.event": [],
+  "it.unifi.drivehub.presentation.view": [
+    "it.unifi.drivehub",
+    "it.unifi.drivehub.domain.discount",
+    "it.unifi.drivehub.domain.operation",
+    "it.unifi.drivehub.domain.user",
+    "it.unifi.drivehub.domain.vehicle",
+    "it.unifi.drivehub.service"
+  ],
+  "it.unifi.drivehub.security": [],
+  "it.unifi.drivehub.service": [
+    "it.unifi.drivehub.dao",
+    "it.unifi.drivehub.domain.discount",
+    "it.unifi.drivehub.domain.operation",
+    "it.unifi.drivehub.domain.user",
+    "it.unifi.drivehub.domain.vehicle",
+    "it.unifi.drivehub.event",
+    "it.unifi.drivehub.security"
+  ]
+}

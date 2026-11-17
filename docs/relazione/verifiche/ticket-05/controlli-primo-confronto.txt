@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/home/federico/dev/Drivehub/DriveHub/docs/relazione/verifiche/ticket-05/controlla-documento.py", line 86, in <module>
+    assert testo(pdf, *intervallo(pdf, title, following)) == testo(old, *intervallo(old, title, following)), title
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Analisi dei requisiti e progettazione

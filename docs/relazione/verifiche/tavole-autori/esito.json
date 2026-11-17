@@ -1,0 +1,40 @@
+{
+  "pages": 113,
+  "a3_pages": [
+    8,
+    24,
+    49,
+    50
+  ],
+  "author_diagrams": {
+    "navigazione-autori": [
+      24
+    ],
+    "database-er-autori": [
+      49,
+      50
+    ],
+    "casi-uso-autori": [
+      8
+    ]
+  },
+  "drawio_pdf_pairs": 35,
+  "preserved_detail_files": 64,
+  "ddl_tables": 13,
+  "ddl_columns": 62,
+  "foreign_key_pairs": 15,
+  "original_sha256": {
+    "Page Navigation Diagram.drawio": "7155e0b22cd6f9d5f267d494fca902143124ef7f234340588c3d39203d6f6655",
+    "Users SWE.drawio": "b4dae894c8cdaf335f05ad7d3e793c1d5ffdd84a2cea8d02348ebc07e917d5dc",
+    "SWE ER.drawio": "bbc2e6d2604e86067a94be86d570972f3d1d0c3cd4f54a75da0485e3c7cd7fde"
+  },
+  "tex_diagnostics": [
+    "ignored error: Infinite glue shrinkage found in box being split [104]",
+    "ignored error: Infinite glue shrinkage found in box being split [105]",
+    "ignored error: Infinite glue shrinkage found in box being split [106]",
+    "ignored error: Infinite glue shrinkage found in box being split [107]",
+    "ignored error: Infinite glue shrinkage found in box being split [108] [109]))"
+  ],
+  "pdf_sha256": "ffc261d6709bbdcde5d5acd119ea967aaf2ade927d3197568c7808da86d8f24b",
+  "zip_sha256": "5d7065226859fbb9c37124251e429a6e900588f3df6163a120efb12de1a1c231"
+}

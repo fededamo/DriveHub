@@ -1,0 +1,9 @@
+PDF aperto e renderizzato: 15 pagine A4, senza cifratura.
+Indice: 5 capitoli, 3 appendici, 25 sezioni concordate, nell'ordine previsto.
+Frontespizio: dati confermati presenti. Collegamenti interni validi: 50.
+Font incorporati: 7. Log LaTeX: nessun warning, box difettoso o carattere mancante.
+Capitolo 1: pagine fisiche 4–6, estratto in capitolo-1.pdf.
+Capitoli successivi e appendici: segnaposto provvisori presenti.
+Draw.io: PDF aperto e renderizzato; XML incorporato recuperato e corrispondente al sorgente.
+Il controllo visivo delle immagini richiede un'ispezione separata.
+SHA-256 relazione-drivehub.pdf: e8883b217b95d7498365ccae6d94227084edbd1ffe704a2db250d46290fe9b86

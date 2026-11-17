@@ -1,0 +1,45 @@
+<mxGraphModel adaptiveColors="auto" grid="1" page="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+    <mxCell id="v2" value="REL-01 · Relazioni del catalogo" style="text;strokeColor=none;fillColor=none;fontColor=#172b3a;fontSize=27;fontStyle=1;align=center;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="10" y="8" width="940" height="48" as="geometry" />
+    </mxCell>
+    <mxCell id="v3" value="PK = primaria; CK = candidata alternativa; FK → riferimento; ? = nullable; UQ = UNIQUE. Tutti gli altri attributi sono NOT NULL." style="text;strokeColor=none;fillColor=none;fontColor=#172b3a;fontSize=20;fontStyle=0;align=center;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="65" width="920" height="68" as="geometry" />
+    </mxCell>
+    <mxCell id="v4" value="brand" style="rounded=0;strokeColor=#647a8c;fillColor=#dcebf5;fontSize=23;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="155" width="920" height="45" as="geometry" />
+    </mxCell>
+    <mxCell id="v5" value="name VARCHAR(50) PK" style="text;strokeColor=none;fillColor=#f7f9fa;fontColor=#172b3a;fontSize=21;fontStyle=0;align=left;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="200" width="920" height="36" as="geometry" />
+    </mxCell>
+    <mxCell id="v6" value="model" style="rounded=0;strokeColor=#647a8c;fillColor=#dcebf5;fontSize=23;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="260" width="920" height="45" as="geometry" />
+    </mxCell>
+    <mxCell id="v7" value="id BIGINT PK identity · brand VARCHAR(50) FK → brand.name&lt;br&gt;name VARCHAR(50) CK · release_price DECIMAL(10,2) ≥ 0&lt;br&gt;release_year SMALLINT ≥ 1900" style="text;strokeColor=none;fillColor=#f7f9fa;fontColor=#172b3a;fontSize=21;fontStyle=0;align=left;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="305" width="920" height="98" as="geometry" />
+    </mxCell>
+    <mxCell id="v8" value="model_discount" style="rounded=0;strokeColor=#647a8c;fillColor=#dcebf5;fontSize=23;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="427" width="920" height="45" as="geometry" />
+    </mxCell>
+    <mxCell id="v9" value="model BIGINT PK/FK → model.id · value SMALLINT fra 0 e 50" style="text;strokeColor=none;fillColor=#f7f9fa;fontColor=#172b3a;fontSize=21;fontStyle=0;align=left;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="472" width="920" height="36" as="geometry" />
+    </mxCell>
+    <mxCell id="v10" value="vehicle" style="rounded=0;strokeColor=#647a8c;fillColor=#dcebf5;fontSize=23;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="532" width="920" height="45" as="geometry" />
+    </mxCell>
+    <mxCell id="v11" value="id BIGINT PK identity · model BIGINT FK → model.id · vin VARCHAR(17) CK&lt;br&gt;licence_plate VARCHAR(10) ? UQ · kilometers INT ≥ 0 · price DECIMAL(10,2) ≥ 0&lt;br&gt;price_mode price_mode DEFAULT AUTOMATIC · year SMALLINT ≥ 1900&lt;br&gt;state vehicle_state · CHECK: licence_plate IS NOT NULL OR kilometers = 0" style="text;strokeColor=none;fillColor=#f7f9fa;fontColor=#172b3a;fontSize=21;fontStyle=0;align=left;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="577" width="920" height="129" as="geometry" />
+    </mxCell>
+    <mxCell id="v12" value="vehicle_discount" style="rounded=0;strokeColor=#647a8c;fillColor=#dcebf5;fontSize=23;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="730" width="920" height="45" as="geometry" />
+    </mxCell>
+    <mxCell id="v13" value="vehicle BIGINT PK/FK → vehicle.id · value SMALLINT fra 0 e 50" style="text;strokeColor=none;fillColor=#f7f9fa;fontColor=#172b3a;fontSize=21;fontStyle=0;align=left;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="775" width="920" height="36" as="geometry" />
+    </mxCell>
+    <mxCell id="v14" value="DELETE: model.brand e vehicle.model RESTRICT; model_discount.model e vehicle_discount.vehicle CASCADE.&lt;br&gt;UPDATE: solo model.brand CASCADE; per tutte le altre FK dello schema vale NO ACTION predefinito.&lt;br&gt;Trigger bidirezionali sui cambi anno/modello: vehicle.year ≥ model.release_year. price è una base commerciale, non il prezzo finale della formula." style="text;strokeColor=none;fillColor=#fff7df;fontColor=#172b3a;fontSize=20;fontStyle=0;align=left;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="840" width="920" height="140" as="geometry" />
+    </mxCell>
+  </root>
+</mxGraphModel>

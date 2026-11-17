@@ -1,0 +1,183 @@
+--- baseline/docs/relazione/README.md
++++ corrente/docs/relazione/README.md
+@@ -4,6 +4,13 @@
+ appendici A–C completi e proposti agli autori per revisione**, non approvati.
+ Il capitolo 1 è conservato dal ticket 01. Il PDF è completo nei contenuti
+ concordati; la revisione degli autori precede la consegna al docente.
++
++Il ticket 08 verifica il documento unitario e prepara il pacchetto per tale
++revisione. Completamento tecnico e review assistite restano distinti dalla
++revisione degli autori ancora da svolgere; nessun invio o pubblicazione.
++
++- [Pacchetto sorgenti autonomo](verifiche/ticket-08/sorgenti-relazione.zip) e [istruzioni incluse](LEGGIMI-consegna.md)
++- [Verifiche finali 08](verifiche/ticket-08/README.md), con matrice finale, osservazione di tutte le pagine e prova di compilazione dello ZIP estratto
+ 
+ - [PDF compilato](relazione-drivehub.pdf)
+ - [Capitolo 5 — Uso dell'AI](capitoli/5_uso_ai.tex) e [estratto per gli autori](verifiche/ticket-07/capitolo-5-per-revisione.pdf)
+@@ -34,6 +41,14 @@
+ 
+ ## Compilazione
+ 
++Per il pacchetto finale è verificato **XeLaTeX, TeX Live 2025/Debian**:
++seguire i tre passaggi nelle [istruzioni di consegna](LEGGIMI-consegna.md).
++La compilazione non richiede il repository applicativo né contenuti editoriali
++in `/tmp`. La prova nell'ambiente temporaneo, i prerequisiti e i limiti sono
++registrati nelle verifiche 08; motore e risorse LaTeX restano prerequisiti esterni.
++
++Procedura Tectonic usata nei ticket 01–07, non rieseguita nel ticket 08:
++
+ Eseguire dalla directory `docs/relazione`. Con **Tectonic 0.17.0**, che gestisce
+ automaticamente i passaggi necessari per indice e riferimenti:
+ 
+@@ -61,7 +76,8 @@
+ `Relazione_SWE/main.tex`: classe `report`, A4, corpo 12 pt, margini di 2,5 cm,
+ frontespizio, indice in numeri romani e capitoli in numeri arabi. Il ramo per
+ `pdfminorversion` è condizionale per consentire anche il motore di Tectonic.
+-Non è stata verificata una seconda distribuzione LaTeX.
++Il ticket 08 verifica anche la distribuzione XeLaTeX sopra indicata;
++identità binaria fra motori e funzionamento Windows/macOS non sono garantiti.
+ 
+ ## Materiali e perimetro
+ 
+--- baseline/docs/relazione/appendici/a_casi_uso.tex
++++ corrente/docs/relazione/appendici/a_casi_uso.tex
+@@ -206,13 +206,15 @@
+   correggere al passo 1.
+ \item[5.a] Rifiuto: nessun accredito; richiesta eliminata.
+   Il veicolo senza operazioni associate viene eliminato; con storico torna \code{SOLD}.
+-\item[6.a] Conto mancante, richiesta non pi\`u valida o errore di persistenza:
++\item[6.a] Stima nulla, conto mancante, richiesta non pi\`u valida o errore di persistenza:
+   rollback dell'intero esito, senza pagamento o acquisizione parziali.
+ \end{description}
+ \begin{flushleft}\textbf{Riscontro:} \code{SaleToDealershipService},
+ \code{ClientDashboardView}, \code{SalesmanDashboardView}. Il registro conserva
+ un importo non negativo con tipo acquisto; il suo significato \`e un esborso
+-per la concessionaria. Non esiste un successivo pagamento a saldo per la cessione.\end{flushleft}
++per la concessionaria. Non esiste un successivo pagamento a saldo per la cessione.
++La proposta ammette una stima nulla, ma il conto rifiuta l'accredito zero:
++l'accettazione fallisce con rollback (sezione~\ref{sec:sequenze}).\end{flushleft}
+ 
+ \clearpage
+ \scheda{UC-06}{Gestione degli sconti}
+--- baseline/docs/relazione/capitoli/2_architettura.tex
++++ corrente/docs/relazione/capitoli/2_architettura.tex
+@@ -141,7 +141,7 @@
+ le entità e converte i domini enumerati in accordo con l'ADR~0002.
+ Gli ID che legano i record persistenti non diventano per questo riferimenti
+ a oggetti nel dominio. I dettagli SQL e i protocolli dei singoli flussi
+-sono rinviati al capitolo Implementazione ancora da redigere.
++sono rinviati al capitolo~\ref{ch:implementazione}.
+ 
+ \subsection{Presentation Layer}
+ CL-10 mostra le viste effettive: accesso e tre dashboard estendono
+--- baseline/docs/relazione/main.tex
++++ corrente/docs/relazione/main.tex
+@@ -22,7 +22,6 @@
+ \emergencystretch=2em
+ \setcounter{tocdepth}{2}
+ \DeclareRobustCommand{\code}[1]{\nolinkurl{#1}}
+-\newcommand{\provvisorio}[1]{\noindent\textbf{Provvisorio.} #1\par}
+ 
+ \begin{document}
+ \special{pdf:majorversion 1}
+--- baseline/docs/relazione/piano.md
++++ corrente/docs/relazione/piano.md
+@@ -148,3 +148,17 @@
+ Revisione degli autori sui capitoli 1–5 e sulle appendici A–C completi.
+ La chiusura documentale e le review assistite non costituiscono approvazione
+ umana né autorizzano invio al docente o pubblicazione.
++
++## Verifica finale e pacchetto — 14 novembre 2026
++
++Il ticket documentale 08 riscontra il documento unitario rispetto a specifica,
++indice e note del corso, conserva la baseline anche dei non tracciati e prepara
++PDF e ZIP autonomo per gli autori. [Verifiche e matrice finale](verifiche/ticket-08/README.md).
++Le sole correzioni al testo rimuovono un rinvio a un capitolo ancora da redigere
++e precisano in UC-05 il limite dell'accredito zero già dichiarato nel corpo;
++rimossa anche la macro inutilizzata per i segnaposto. Diagrammi riusati.
++La compilazione finale usa XeLaTeX/TeX Live 2025 predisposto in `/tmp`, senza
++input editoriali esterni. Vecchia relazione, evidenze e manifest 01–07 restano
++intatti. Nessuna compilazione Java, prova applicativa, accesso DB, harness o commit.
++Il completamento tecnico, documentato nelle verifiche 08, non chiude la
++revisione degli autori: i limiti applicativi e di riproduzione restano espliciti.
+--- /dev/null
++++ corrente/docs/relazione/LEGGIMI-consegna.md
+@@ -0,0 +1,52 @@
++# DriveHub — sorgenti per la revisione finale degli autori
++
++14 novembre 2026. Relazione completa, capitoli 1–5 e appendici A–C.
++Il pacchetto è proposto agli autori per la revisione finale: non ne attesta
++l'approvazione e non autorizza invio al docente o pubblicazione.
++
++## Compilare lo ZIP estratto
++
++Estrarre tutto lo ZIP in una directory e aprire un terminale in quella
++directory, dove si trova `main.tex`. Occorre una distribuzione LaTeX con
++XeLaTeX, lingua italiana e pacchetti `geometry`, `graphicx`, `enumitem`,
++`xcolor`, `listings`, `longtable`, `array`, `hyperref` e font Latin Modern.
++Nel ticket 08 è stata verificata TeX Live 2025/Debian, XeTeX 0.999997,
++con pacchetti Ubuntu `2025.20260124-1`.
++
++```bash
++mkdir -p build
++xelatex -no-shell-escape -halt-on-error -interaction=nonstopmode -recorder -output-directory=build main.tex
++xelatex -no-shell-escape -halt-on-error -interaction=nonstopmode -recorder -output-directory=build main.tex
++xelatex -no-shell-escape -halt-on-error -interaction=nonstopmode -recorder -output-directory=build main.tex
++```
++
++Il risultato è `build/main.pdf`. I passaggi successivi al primo stabilizzano
++indice, numeri e riferimenti; leggere gli avvisi del log. Nessun accesso a
++Java, Maven, database o servizi applicativi è necessario. Tutti gli input
++editoriali sono inclusi: 14 file LaTeX, 32 figure PDF con i rispettivi
++32 sorgenti draw.io modificabili e 16 screenshot PNG. I frammenti di codice
++sono incorporati nei sorgenti LaTeX.
++
++Per modificare una tavola aprire il `.drawio` e aggiornare anche il relativo
++`.drawio.pdf`, mantenendo il nome usato dal LaTeX. La compilazione non richiede
++draw.io perché usa le esportazioni incluse. Non sono state create nuove tavole
++nel ticket 08.
++
++## Provenienza e limiti
++
++La compilazione del pacchetto estratto è stata eseguita separatamente da
++quella nel repository; gli input registrati non dipendono da percorsi
++editoriali esterni. Distribuzione, font ed eseguibili sono prerequisiti,
++non contenuti dello ZIP. Non si garantisce identità binaria o impaginazione
++identica fra versioni dei motori e dei pacchetti. Tectonic 0.17.0 era stato
++usato nei ticket precedenti; non è stato nuovamente eseguito nel ticket 08.
++Windows e macOS non sono stati verificati.
++
++Le citazioni a sorgenti, ADR ed evidenze indicano percorsi nel repository
++DriveHub, HEAD `61ce18ae1d4e0458b63e970b793b0b3a634a3adf`, e richiedono quel
++repository per approfondire le fonti; non sono input necessari alla compilazione.
++Le verifiche finali, i log, la matrice, le impronte e i rapporti indipendenti
++sono conservati nel repository in `docs/relazione/verifiche/ticket-08/`.
++Le prove applicative citate restano storiche. I limiti su importi zero,
++unicità delle identità, aggiornamenti UI dopo commit e riproduzione degli
++harness storici restano dichiarati e non sono corretti da questo pacchetto.
+--- /dev/null
++++ corrente/docs/relazione/tracker/issues/08-verifica-finale.md
+@@ -0,0 +1,23 @@
++# 08 — Verifica finale e pacchetto di consegna
++
++Status: ready-for-agent
++
++Blocked by: None. Ticket documentali 01–07 conclusi secondo la richiesta
++operativa, indipendente dai ticket precedentemente pubblicati.
++
++## Specifica e criteri di accettazione
++
++Fa fede la [specifica operativa ricevuta](../../verifiche/ticket-08/specifica-ticket.md).
++Verificare relazione completa, indice e corso, coerenza tecnica e terminologica,
++provenienza delle prove, leggibilità di tutte le pagine e assenza di stati superati.
++Conservare baseline e storico; compilare il PDF e lo ZIP estratto; concludere
++con due review indipendenti Standards/Spec e consegna proposta agli autori.
++Perimetro soltanto documentale, senza commit o verifiche applicative.
++
++## Comments
++
++14 novembre 2026: baseline acquisita prima delle modifiche, HEAD
++`61ce18ae1d4e0458b63e970b793b0b3a634a3adf`; 2.333 file censiti e
++104 copie editoriali. Gli esiti e gli artefatti sono raccolti nelle
++[verifiche 08](../../verifiche/ticket-08/README.md).
++La revisione degli autori resta da svolgere e non coincide con la chiusura tecnica.

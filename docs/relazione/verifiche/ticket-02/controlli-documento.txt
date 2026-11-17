@@ -1,0 +1,10 @@
+PDF aperto e renderizzato: 45 pagine A4; 91 collegamenti interni risolti; 19 font incorporati.
+Indice: 5 capitoli, 25 sezioni concordate, appendici A–C, 15 schede stabili, ordine corretto.
+Sezioni 2.1–2.4: pagine fisiche 7–24; appendice A: 30–43.
+Capitolo 1: testo delle pagine identico all'estratto ticket 01; 2.5–2.8, capitoli 3–5 e appendici B–C provvisori.
+Draw.io: 6 sorgenti XML validi; PDF aperti/renderizzati; XML incorporati corrispondenti.
+Schermate: 16 PNG, acquisite dall'app corrente; 15 incluse nel PDF.
+Conservazione: 1973 file invariati, incluse evidenze ticket 01, software, SQL e capitolo 1.
+Log LaTeX: nessun box difettoso o riferimento irrisolto; 18 soli avvisi noti Tectonic sulla versione PDF inclusa (output effettivo 1.7).
+Ispezione visiva da registrare separatamente.
+SHA-256 PDF: 2294c523c6afe86efba750bb92d9f09c1fff8318e0f8d9cd486db01e22066ac2

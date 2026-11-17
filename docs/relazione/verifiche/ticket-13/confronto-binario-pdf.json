@@ -1,0 +1,1239 @@
+{
+  "binary_equal": false,
+  "equal_after_normalizing_dates_and_trailer_ID": false,
+  "bytes_delivered": 2940087,
+  "bytes_rebuilt": 2940085,
+  "xref_count_equal": true,
+  "different_objects": [
+    {
+      "xref": 2,
+      "object_equal": false,
+      "object_equal_normalized_dates": true,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Creator (LaTeX with hyperref)\n  /Title <FEFF0044007200690076006500480075006200202013002000520065006C0061007A0069006F006E006500200064006900200049006E006700650067006E0065007200690061002000640065006C00200053006F006600740077006100720065>\n  /Subject <FEFF00520065006C0061007A0069006F006E006500200063006F006D0070006C006500740061003A002000630061007000690074006F006C006900200031201300350020006500200061007000700065006E0064006900630069002000412013004300",
+      "object_b": "<<\n  /Creator (LaTeX with hyperref)\n  /Title <FEFF0044007200690076006500480075006200202013002000520065006C0061007A0069006F006E006500200064006900200049006E006700650067006E0065007200690061002000640065006C00200053006F006600740077006100720065>\n  /Subject <FEFF00520065006C0061007A0069006F006E006500200063006F006D0070006C006500740061003A002000630061007000690074006F006C006900200031201300350020006500200061007000700065006E0064006900630069002000412013004300"
+    },
+    {
+      "xref": 4,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2805 0 R\n  /FirstChar 70\n  /LastChar 224\n  /Encoding 2865 0 R\n  /ToUnicode 2866 0 R\n  /BaseFont /JWHDPY+LMRomanCaps10-Regular\n  /FontDescriptor 2867 0 R\n>>",
+      "object_b": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2805 0 R\n  /FirstChar 70\n  /LastChar 224\n  /Encoding 2865 0 R\n  /ToUnicode 2866 0 R\n  /BaseFont /KAESKB+LMRomanCaps10-Regular\n  /FontDescriptor 2867 0 R\n>>"
+    },
+    {
+      "xref": 5,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2807 0 R\n  /FirstChar 19\n  /LastChar 249\n  /Encoding 2865 0 R\n  /ToUnicode 2866 0 R\n  /BaseFont /QDBBMB+LMRoman12-Regular\n  /FontDescriptor 2868 0 R\n>>",
+      "object_b": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2807 0 R\n  /FirstChar 19\n  /LastChar 249\n  /Encoding 2865 0 R\n  /ToUnicode 2866 0 R\n  /BaseFont /LJJUGG+LMRoman12-Regular\n  /FontDescriptor 2868 0 R\n>>"
+    },
+    {
+      "xref": 6,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2809 0 R\n  /FirstChar 21\n  /LastChar 224\n  /Encoding 2865 0 R\n  /ToUnicode 2866 0 R\n  /BaseFont /XUUHTT+LMRoman12-Bold\n  /FontDescriptor 2869 0 R\n>>",
+      "object_b": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2809 0 R\n  /FirstChar 21\n  /LastChar 224\n  /Encoding 2865 0 R\n  /ToUnicode 2866 0 R\n  /BaseFont /WBYMLR+LMRoman12-Bold\n  /FontDescriptor 2869 0 R\n>>"
+    },
+    {
+      "xref": 7,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2811 0 R\n  /FirstChar 28\n  /LastChar 224\n  /Encoding 2865 0 R\n  /ToUnicode 2866 0 R\n  /BaseFont /RXTJJL+LMRoman12-Italic\n  /FontDescriptor 2870 0 R\n>>",
+      "object_b": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2811 0 R\n  /FirstChar 28\n  /LastChar 224\n  /Encoding 2865 0 R\n  /ToUnicode 2866 0 R\n  /BaseFont /AAOBEI+LMRoman12-Italic\n  /FontDescriptor 2870 0 R\n>>"
+    },
+    {
+      "xref": 8,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2813 0 R\n  /FirstChar 21\n  /LastChar 249\n  /Encoding 2865 0 R\n  /ToUnicode 2866 0 R\n  /BaseFont /LFGAIA+LMRoman10-Regular\n  /FontDescriptor 2871 0 R\n>>",
+      "object_b": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2813 0 R\n  /FirstChar 21\n  /LastChar 249\n  /Encoding 2865 0 R\n  /ToUnicode 2866 0 R\n  /BaseFont /DTGYVH+LMRoman10-Regular\n  /FontDescriptor 2871 0 R\n>>"
+    },
+    {
+      "xref": 122,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2815 0 R\n  /FirstChar 61\n  /LastChar 136\n  /Encoding 2872 0 R\n  /ToUnicode 2873 0 R\n  /BaseFont /IMAOJZ+LMRoman12-Regular\n  /FontDescriptor 2874 0 R\n>>",
+      "object_b": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2815 0 R\n  /FirstChar 61\n  /LastChar 136\n  /Encoding 2872 0 R\n  /ToUnicode 2873 0 R\n  /BaseFont /LSNTHS+LMRoman12-Regular\n  /FontDescriptor 2874 0 R\n>>"
+    },
+    {
+      "xref": 126,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2817 0 R\n  /FirstChar 33\n  /LastChar 126\n  /Encoding 2865 0 R\n  /ToUnicode 2866 0 R\n  /BaseFont /FFVUAM+LMMono12-Regular\n  /FontDescriptor 2875 0 R\n>>",
+      "object_b": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2817 0 R\n  /FirstChar 33\n  /LastChar 126\n  /Encoding 2865 0 R\n  /ToUnicode 2866 0 R\n  /BaseFont /QFAICK+LMMono12-Regular\n  /FontDescriptor 2875 0 R\n>>"
+    },
+    {
+      "xref": 208,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2819 0 R\n  /FirstChar 22\n  /LastChar 224\n  /Encoding 2865 0 R\n  /ToUnicode 2866 0 R\n  /BaseFont /DGMEOK+LMRoman10-Italic\n  /FontDescriptor 2876 0 R\n>>",
+      "object_b": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2819 0 R\n  /FirstChar 22\n  /LastChar 224\n  /Encoding 2865 0 R\n  /ToUnicode 2866 0 R\n  /BaseFont /TLTDUV+LMRoman10-Italic\n  /FontDescriptor 2876 0 R\n>>"
+    },
+    {
+      "xref": 212,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2821 0 R\n  /FirstChar 28\n  /LastChar 122\n  /Encoding 2865 0 R\n  /ToUnicode 2866 0 R\n  /BaseFont /UELIOB+LMRoman10-Bold\n  /FontDescriptor 2877 0 R\n>>",
+      "object_b": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2821 0 R\n  /FirstChar 28\n  /LastChar 122\n  /Encoding 2865 0 R\n  /ToUnicode 2866 0 R\n  /BaseFont /DQURKC+LMRoman10-Bold\n  /FontDescriptor 2877 0 R\n>>"
+    },
+    {
+      "xref": 213,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2823 0 R\n  /FirstChar 33\n  /LastChar 232\n  /Encoding 2865 0 R\n  /ToUnicode 2866 0 R\n  /BaseFont /TAXWUQ+LMMono10-Regular\n  /FontDescriptor 2878 0 R\n>>",
+      "object_b": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2823 0 R\n  /FirstChar 33\n  /LastChar 232\n  /Encoding 2865 0 R\n  /ToUnicode 2866 0 R\n  /BaseFont /SBEJVQ+LMMono10-Regular\n  /FontDescriptor 2878 0 R\n>>"
+    },
+    {
+      "xref": 227,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /Font\n  /Subtype /Type1\n  /ToUnicode 2825 0 R\n  /Widths 2826 0 R\n  /FirstChar 58\n  /LastChar 80\n  /BaseFont /EMYKTB+CMMI10\n  /FontDescriptor 2879 0 R\n>>",
+      "object_b": "<<\n  /Type /Font\n  /Subtype /Type1\n  /ToUnicode 2825 0 R\n  /Widths 2826 0 R\n  /FirstChar 58\n  /LastChar 80\n  /BaseFont /FFNCPF+CMMI10\n  /FontDescriptor 2879 0 R\n>>"
+    },
+    {
+      "xref": 246,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /Font\n  /Subtype /Type1\n  /ToUnicode 2828 0 R\n  /Widths 2829 0 R\n  /FirstChar 58\n  /LastChar 122\n  /BaseFont /AZWQAQ+CMMI12\n  /FontDescriptor 2880 0 R\n>>",
+      "object_b": "<<\n  /Type /Font\n  /Subtype /Type1\n  /ToUnicode 2828 0 R\n  /Widths 2829 0 R\n  /FirstChar 58\n  /LastChar 122\n  /BaseFont /EMWLRE+CMMI12\n  /FontDescriptor 2880 0 R\n>>"
+    },
+    {
+      "xref": 834,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2831 0 R\n  /FirstChar 95\n  /LastChar 122\n  /Encoding 2865 0 R\n  /ToUnicode 2866 0 R\n  /BaseFont /FONMPP+LMMonoLt10-Bold\n  /FontDescriptor 2882 0 R\n>>",
+      "object_b": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2831 0 R\n  /FirstChar 95\n  /LastChar 122\n  /Encoding 2865 0 R\n  /ToUnicode 2866 0 R\n  /BaseFont /TESGVW+LMMonoLt10-Bold\n  /FontDescriptor 2882 0 R\n>>"
+    },
+    {
+      "xref": 905,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2833 0 R\n  /FirstChar 48\n  /LastChar 57\n  /Encoding 2865 0 R\n  /ToUnicode 2866 0 R\n  /BaseFont /OFZSAH+LMRoman6-Regular\n  /FontDescriptor 2883 0 R\n>>",
+      "object_b": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2833 0 R\n  /FirstChar 48\n  /LastChar 57\n  /Encoding 2865 0 R\n  /ToUnicode 2866 0 R\n  /BaseFont /UGLWWJ+LMRoman6-Regular\n  /FontDescriptor 2883 0 R\n>>"
+    },
+    {
+      "xref": 913,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2835 0 R\n  /FirstChar 39\n  /LastChar 39\n  /Encoding 2872 0 R\n  /ToUnicode 2873 0 R\n  /BaseFont /WLEWSO+LMMono10-Regular\n  /FontDescriptor 2884 0 R\n>>",
+      "object_b": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2835 0 R\n  /FirstChar 39\n  /LastChar 39\n  /Encoding 2872 0 R\n  /ToUnicode 2873 0 R\n  /BaseFont /JGIPTU+LMMono10-Regular\n  /FontDescriptor 2884 0 R\n>>"
+    },
+    {
+      "xref": 914,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2837 0 R\n  /FirstChar 35\n  /LastChar 224\n  /Encoding 2865 0 R\n  /ToUnicode 2866 0 R\n  /BaseFont /GQTMWW+LMMono10-Italic\n  /FontDescriptor 2885 0 R\n>>",
+      "object_b": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2837 0 R\n  /FirstChar 35\n  /LastChar 224\n  /Encoding 2865 0 R\n  /ToUnicode 2866 0 R\n  /BaseFont /MDPIYD+LMMono10-Italic\n  /FontDescriptor 2885 0 R\n>>"
+    },
+    {
+      "xref": 915,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2839 0 R\n  /FirstChar 39\n  /LastChar 39\n  /Encoding 2872 0 R\n  /ToUnicode 2873 0 R\n  /BaseFont /WMYLAM+LMMono10-Italic\n  /FontDescriptor 2886 0 R\n>>",
+      "object_b": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2839 0 R\n  /FirstChar 39\n  /LastChar 39\n  /Encoding 2872 0 R\n  /ToUnicode 2873 0 R\n  /BaseFont /VAUQSV+LMMono10-Italic\n  /FontDescriptor 2886 0 R\n>>"
+    },
+    {
+      "xref": 953,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /Font\n  /Subtype /Type1\n  /ToUnicode 2841 0 R\n  /Widths 2842 0 R\n  /FirstChar 40\n  /LastChar 120\n  /BaseFont /KFQKQE+CMR12\n  /FontDescriptor 2887 0 R\n>>",
+      "object_b": "<<\n  /Type /Font\n  /Subtype /Type1\n  /ToUnicode 2841 0 R\n  /Widths 2842 0 R\n  /FirstChar 40\n  /LastChar 120\n  /BaseFont /QBTBWD+CMR12\n  /FontDescriptor 2887 0 R\n>>"
+    },
+    {
+      "xref": 954,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /Font\n  /Subtype /Type1\n  /ToUnicode 2844 0 R\n  /Widths 2845 0 R\n  /FirstChar 59\n  /LastChar 118\n  /BaseFont /CENJHY+CMMI8\n  /FontDescriptor 2888 0 R\n>>",
+      "object_b": "<<\n  /Type /Font\n  /Subtype /Type1\n  /ToUnicode 2844 0 R\n  /Widths 2845 0 R\n  /FirstChar 59\n  /LastChar 118\n  /BaseFont /YKOTFI+CMMI8\n  /FontDescriptor 2888 0 R\n>>"
+    },
+    {
+      "xref": 955,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /Font\n  /Subtype /Type1\n  /ToUnicode 2847 0 R\n  /Widths 2848 0 R\n  /FirstChar 0\n  /LastChar 21\n  /BaseFont /CIVFNL+CMSY10\n  /FontDescriptor 2889 0 R\n>>",
+      "object_b": "<<\n  /Type /Font\n  /Subtype /Type1\n  /ToUnicode 2847 0 R\n  /Widths 2848 0 R\n  /FirstChar 0\n  /LastChar 21\n  /BaseFont /UKUPBV+CMSY10\n  /FontDescriptor 2889 0 R\n>>"
+    },
+    {
+      "xref": 956,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /Font\n  /Subtype /Type1\n  /ToUnicode 2850 0 R\n  /Widths 2851 0 R\n  /FirstChar 48\n  /LastChar 53\n  /BaseFont /KSKWSE+CMR8\n  /FontDescriptor 2890 0 R\n>>",
+      "object_b": "<<\n  /Type /Font\n  /Subtype /Type1\n  /ToUnicode 2850 0 R\n  /Widths 2851 0 R\n  /FirstChar 48\n  /LastChar 53\n  /BaseFont /ZKQFDF+CMR8\n  /FontDescriptor 2890 0 R\n>>"
+    },
+    {
+      "xref": 957,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /Font\n  /Subtype /Type1\n  /ToUnicode 2853 0 R\n  /Widths 2854 0 R\n  /FirstChar 34\n  /LastChar 105\n  /BaseFont /LWILYB+CMEX10\n  /FontDescriptor 2891 0 R\n>>",
+      "object_b": "<<\n  /Type /Font\n  /Subtype /Type1\n  /ToUnicode 2853 0 R\n  /Widths 2854 0 R\n  /FirstChar 34\n  /LastChar 105\n  /BaseFont /SPPJFE+CMEX10\n  /FontDescriptor 2891 0 R\n>>"
+    },
+    {
+      "xref": 1035,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /Font\n  /Subtype /Type0\n  /BaseFont /OANBAK+LMMono10-Regular-Identity-H\n  /Encoding /Identity-H\n  /DescendantFonts [ 1036 0 R ]\n  /ToUnicode 2856 0 R\n>>",
+      "object_b": "<<\n  /Type /Font\n  /Subtype /Type0\n  /BaseFont /FZCOXY+LMMono10-Regular-Identity-H\n  /Encoding /Identity-H\n  /DescendantFonts [ 1036 0 R ]\n  /ToUnicode 2856 0 R\n>>"
+    },
+    {
+      "xref": 1036,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /Font\n  /Subtype /CIDFontType0\n  /BaseFont /OANBAK+LMMono10-Regular\n  /CIDSystemInfo <<\n    /Registry (Adobe)\n    /Ordering (Identity)\n    /Supplement 0\n  >>\n  /FontDescriptor 2861 0 R\n  /DW 280\n  /W 2863 0 R\n>>",
+      "object_b": "<<\n  /Type /Font\n  /Subtype /CIDFontType0\n  /BaseFont /FZCOXY+LMMono10-Regular\n  /CIDSystemInfo <<\n    /Registry (Adobe)\n    /Ordering (Identity)\n    /Supplement 0\n  >>\n  /FontDescriptor 2861 0 R\n  /DW 280\n  /W 2863 0 R\n>>"
+    },
+    {
+      "xref": 1070,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2857 0 R\n  /FirstChar 49\n  /LastChar 57\n  /Encoding 2865 0 R\n  /ToUnicode 2866 0 R\n  /BaseFont /VVOPEX+LMRoman8-Regular\n  /FontDescriptor 2892 0 R\n>>",
+      "object_b": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2857 0 R\n  /FirstChar 49\n  /LastChar 57\n  /Encoding 2865 0 R\n  /ToUnicode 2866 0 R\n  /BaseFont /KBYEKD+LMRoman8-Regular\n  /FontDescriptor 2892 0 R\n>>"
+    },
+    {
+      "xref": 1074,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2859 0 R\n  /FirstChar 49\n  /LastChar 57\n  /Encoding 2865 0 R\n  /ToUnicode 2866 0 R\n  /BaseFont /RGWAWR+LMRoman7-Regular\n  /FontDescriptor 2893 0 R\n>>",
+      "object_b": "<<\n  /Type /Font\n  /Subtype /Type1\n  /Widths 2859 0 R\n  /FirstChar 49\n  /LastChar 57\n  /Encoding 2865 0 R\n  /ToUnicode 2866 0 R\n  /BaseFont /DFGYHH+LMRoman7-Regular\n  /FontDescriptor 2893 0 R\n>>"
+    },
+    {
+      "xref": 2733,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Type /ObjStm\n  /N 200\n  /First 1975\n  /Filter /FlateDecode\n  /Length 5580\n>>",
+      "object_b": "<<\n  /Type /ObjStm\n  /N 200\n  /First 1975\n  /Filter /FlateDecode\n  /Length 5578\n>>"
+    },
+    {
+      "xref": 2806,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 2224\n>>",
+      "object_b": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 2225\n>>"
+    },
+    {
+      "xref": 2808,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 8827\n>>",
+      "object_b": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 8828\n>>"
+    },
+    {
+      "xref": 2810,
+      "object_equal": true,
+      "object_equal_normalized_dates": true,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 6848\n>>",
+      "object_b": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 6848\n>>"
+    },
+    {
+      "xref": 2812,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 5862\n>>",
+      "object_b": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 5863\n>>"
+    },
+    {
+      "xref": 2814,
+      "object_equal": true,
+      "object_equal_normalized_dates": true,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 8202\n>>",
+      "object_b": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 8202\n>>"
+    },
+    {
+      "xref": 2816,
+      "object_equal": true,
+      "object_equal_normalized_dates": true,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 366\n>>",
+      "object_b": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 366\n>>"
+    },
+    {
+      "xref": 2818,
+      "object_equal": true,
+      "object_equal_normalized_dates": true,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 6987\n>>",
+      "object_b": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 6987\n>>"
+    },
+    {
+      "xref": 2820,
+      "object_equal": true,
+      "object_equal_normalized_dates": true,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 4786\n>>",
+      "object_b": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 4786\n>>"
+    },
+    {
+      "xref": 2822,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 4101\n>>",
+      "object_b": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 4102\n>>"
+    },
+    {
+      "xref": 2824,
+      "object_equal": true,
+      "object_equal_normalized_dates": true,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 7451\n>>",
+      "object_b": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 7451\n>>"
+    },
+    {
+      "xref": 2825,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Filter /FlateDecode\n  /Length 246\n>>",
+      "object_b": "<<\n  /Filter /FlateDecode\n  /Length 245\n>>"
+    },
+    {
+      "xref": 2827,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 554\n>>",
+      "object_b": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 552\n>>"
+    },
+    {
+      "xref": 2828,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Filter /FlateDecode\n  /Length 333\n>>",
+      "object_b": "<<\n  /Filter /FlateDecode\n  /Length 331\n>>"
+    },
+    {
+      "xref": 2830,
+      "object_equal": true,
+      "object_equal_normalized_dates": true,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 3229\n>>",
+      "object_b": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 3229\n>>"
+    },
+    {
+      "xref": 2832,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 2660\n>>",
+      "object_b": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 2659\n>>"
+    },
+    {
+      "xref": 2834,
+      "object_equal": true,
+      "object_equal_normalized_dates": true,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 1550\n>>",
+      "object_b": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 1550\n>>"
+    },
+    {
+      "xref": 2836,
+      "object_equal": true,
+      "object_equal_normalized_dates": true,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 364\n>>",
+      "object_b": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 364\n>>"
+    },
+    {
+      "xref": 2838,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 5485\n>>",
+      "object_b": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 5482\n>>"
+    },
+    {
+      "xref": 2840,
+      "object_equal": true,
+      "object_equal_normalized_dates": true,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 360\n>>",
+      "object_b": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 360\n>>"
+    },
+    {
+      "xref": 2841,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Filter /FlateDecode\n  /Length 343\n>>",
+      "object_b": "<<\n  /Filter /FlateDecode\n  /Length 342\n>>"
+    },
+    {
+      "xref": 2843,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 3291\n>>",
+      "object_b": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 3292\n>>"
+    },
+    {
+      "xref": 2844,
+      "object_equal": true,
+      "object_equal_normalized_dates": true,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Filter /FlateDecode\n  /Length 277\n>>",
+      "object_b": "<<\n  /Filter /FlateDecode\n  /Length 277\n>>"
+    },
+    {
+      "xref": 2846,
+      "object_equal": true,
+      "object_equal_normalized_dates": true,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 1377\n>>",
+      "object_b": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 1377\n>>"
+    },
+    {
+      "xref": 2847,
+      "object_equal": true,
+      "object_equal_normalized_dates": true,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Filter /FlateDecode\n  /Length 247\n>>",
+      "object_b": "<<\n  /Filter /FlateDecode\n  /Length 247\n>>"
+    },
+    {
+      "xref": 2849,
+      "object_equal": true,
+      "object_equal_normalized_dates": true,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 472\n>>",
+      "object_b": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 472\n>>"
+    },
+    {
+      "xref": 2850,
+      "object_equal": true,
+      "object_equal_normalized_dates": true,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Filter /FlateDecode\n  /Length 243\n>>",
+      "object_b": "<<\n  /Filter /FlateDecode\n  /Length 243\n>>"
+    },
+    {
+      "xref": 2852,
+      "object_equal": true,
+      "object_equal_normalized_dates": true,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 700\n>>",
+      "object_b": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 700\n>>"
+    },
+    {
+      "xref": 2853,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Filter /FlateDecode\n  /Length 256\n>>",
+      "object_b": "<<\n  /Filter /FlateDecode\n  /Length 255\n>>"
+    },
+    {
+      "xref": 2855,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 612\n>>",
+      "object_b": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 611\n>>"
+    },
+    {
+      "xref": 2856,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Filter /FlateDecode\n  /Length 476\n>>",
+      "object_b": "<<\n  /Filter /FlateDecode\n  /Length 477\n>>"
+    },
+    {
+      "xref": 2858,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 1489\n>>",
+      "object_b": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 1487\n>>"
+    },
+    {
+      "xref": 2860,
+      "object_equal": true,
+      "object_equal_normalized_dates": true,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 1444\n>>",
+      "object_b": "<<\n  /Subtype /Type1C\n  /Filter /FlateDecode\n  /Length 1444\n>>"
+    },
+    {
+      "xref": 2861,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /FontDescriptor\n  /Ascent 778\n  /Descent -222\n  /StemV 69\n  /CapHeight 778\n  /AvgWidth 500\n  /FontBBox [ -451 -316 731 1016 ]\n  /ItalicAngle 0\n  /Flags 7\n  /Style <<\n    /Panose <000000000509000000000000>\n  >>\n  /FontName /OANBAK+LMMono10-Regular\n  /FontFile3 2862 0 R\n  /CIDSet 2864 0 R\n>>",
+      "object_b": "<<\n  /Type /FontDescriptor\n  /Ascent 778\n  /Descent -222\n  /StemV 69\n  /CapHeight 778\n  /AvgWidth 500\n  /FontBBox [ -451 -316 731 1016 ]\n  /ItalicAngle 0\n  /Flags 7\n  /Style <<\n    /Panose <000000000509000000000000>\n  >>\n  /FontName /FZCOXY+LMMono10-Regular\n  /FontFile3 2862 0 R\n  /CIDSet 2864 0 R\n>>"
+    },
+    {
+      "xref": 2867,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 514\n  /Descent 0\n  /ItalicAngle 0\n  /StemV 89\n  /Flags 131078\n  /FontBBox [ -496 -290 1501 1100 ]\n  /FontFile3 2806 0 R\n  /CharSet (/F/S/U/d/e/g/i/l/n/r/s/t/u/v/z/agrave)\n  /FontName /JWHDPY+LMRomanCaps10-Regular\n>>",
+      "object_b": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 514\n  /Descent 0\n  /ItalicAngle 0\n  /StemV 89\n  /Flags 131078\n  /FontBBox [ -496 -290 1501 1100 ]\n  /FontFile3 2806 0 R\n  /CharSet (/F/S/U/d/e/g/i/l/n/r/s/t/u/v/z/agrave)\n  /FontName /KAESKB+LMRomanCaps10-Regular\n>>"
+    },
+    {
+      "xref": 2868,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle 0\n  /StemV 65\n  /Flags 6\n  /FontBBox [ -422 -280 1394 1127 ]\n  /FontFile3 2808 0 R\n  /CharSet (/guillemotleft/guillemotright/endash/emdash/ff/fi/fl/ffi/numbersign/percent/quoteright/parenleft/parenright/plus/comma/hyphen/period/slash/zero/one/two/three/four/five/six/seven/eight/nine/colon/semicolon/A/B/C/D/E/F/G/H/I/J/K/L/M/N/O/P/Q/R/S/T/U/V/W/X/Y/Z/underscor",
+      "object_b": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle 0\n  /StemV 65\n  /Flags 6\n  /FontBBox [ -422 -280 1394 1127 ]\n  /FontFile3 2808 0 R\n  /CharSet (/guillemotleft/guillemotright/endash/emdash/ff/fi/fl/ffi/numbersign/percent/quoteright/parenleft/parenright/plus/comma/hyphen/period/slash/zero/one/two/three/four/five/six/seven/eight/nine/colon/semicolon/A/B/C/D/E/F/G/H/I/J/K/L/M/N/O/P/Q/R/S/T/U/V/W/X/Y/Z/underscor"
+    },
+    {
+      "xref": 2869,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /FontDescriptor\n  /CapHeight 686\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle 0\n  /StemV 109\n  /Flags 6\n  /FontBBox [ -476 -289 1577 1137 ]\n  /FontFile3 2810 0 R\n  /CharSet (/endash/emdash/ff/fi/fl/quoteright/parenleft/parenright/comma/hyphen/period/slash/zero/one/two/three/four/five/six/seven/eight/nine/colon/A/B/C/D/E/F/G/H/I/J/L/M/N/O/P/Q/R/S/T/U/V/X/a/b/c/d/e/f/g/h/i/k/l/m/n/o/p/q/r/s/t/u/v/w/x/y/z/agrave)\n  /FontName /XUUHTT+LMRom",
+      "object_b": "<<\n  /Type /FontDescriptor\n  /CapHeight 686\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle 0\n  /StemV 109\n  /Flags 6\n  /FontBBox [ -476 -289 1577 1137 ]\n  /FontFile3 2810 0 R\n  /CharSet (/endash/emdash/ff/fi/fl/quoteright/parenleft/parenright/comma/hyphen/period/slash/zero/one/two/three/four/five/six/seven/eight/nine/colon/A/B/C/D/E/F/G/H/I/J/L/M/N/O/P/Q/R/S/T/U/V/X/a/b/c/d/e/f/g/h/i/k/l/m/n/o/p/q/r/s/t/u/v/w/x/y/z/agrave)\n  /FontName /WBYMLR+LMRom"
+    },
+    {
+      "xref": 2870,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle -14.0362\n  /StemV 52\n  /Flags 70\n  /FontBBox [ -449 -289 1358 1125 ]\n  /FontFile3 2812 0 R\n  /CharSet (/fi/parenleft/parenright/hyphen/period/slash/A/C/D/E/F/G/H/I/K/L/M/N/O/P/R/S/T/U/V/W/a/b/c/d/e/f/g/h/i/k/l/m/n/o/p/q/r/s/t/u/v/w/z/agrave)\n  /FontName /RXTJJL+LMRoman12-Italic\n>>",
+      "object_b": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle -14.0362\n  /StemV 52\n  /Flags 70\n  /FontBBox [ -449 -289 1358 1125 ]\n  /FontFile3 2812 0 R\n  /CharSet (/fi/parenleft/parenright/hyphen/period/slash/A/C/D/E/F/G/H/I/K/L/M/N/O/P/R/S/T/U/V/W/a/b/c/d/e/f/g/h/i/k/l/m/n/o/p/q/r/s/t/u/v/w/z/agrave)\n  /FontName /AAOBEI+LMRoman12-Italic\n>>"
+    },
+    {
+      "xref": 2871,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle 0\n  /StemV 69\n  /Flags 6\n  /FontBBox [ -430 -290 1417 1127 ]\n  /FontFile3 2814 0 R\n  /CharSet (/endash/emdash/ff/fi/fl/ffi/percent/quoteright/parenleft/parenright/comma/hyphen/period/slash/zero/one/two/three/four/five/six/seven/eight/nine/colon/semicolon/A/B/C/D/E/F/G/H/I/J/K/L/M/N/O/P/Q/R/S/T/U/V/W/X/Y/underscore/a/b/c/d/e/f/g/h/i/k/l/m/n/o/p/q/r/s/t/u/v/w/x",
+      "object_b": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle 0\n  /StemV 69\n  /Flags 6\n  /FontBBox [ -430 -290 1417 1127 ]\n  /FontFile3 2814 0 R\n  /CharSet (/endash/emdash/ff/fi/fl/ffi/percent/quoteright/parenleft/parenright/comma/hyphen/period/slash/zero/one/two/three/four/five/six/seven/eight/nine/colon/semicolon/A/B/C/D/E/F/G/H/I/J/K/L/M/N/O/P/Q/R/S/T/U/V/W/X/Y/underscore/a/b/c/d/e/f/g/h/i/k/l/m/n/o/p/q/r/s/t/u/v/w/x"
+    },
+    {
+      "xref": 2874,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle 0\n  /StemV 65\n  /Flags 6\n  /FontBBox [ -422 -280 1394 1127 ]\n  /FontFile3 2816 0 R\n  /CharSet (/minus/bullet)\n  /FontName /IMAOJZ+LMRoman12-Regular\n>>",
+      "object_b": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle 0\n  /StemV 65\n  /Flags 6\n  /FontBBox [ -422 -280 1394 1127 ]\n  /FontFile3 2816 0 R\n  /CharSet (/minus/bullet)\n  /FontName /LSNTHS+LMRoman12-Regular\n>>"
+    },
+    {
+      "xref": 2875,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /FontDescriptor\n  /CapHeight 611\n  /Ascent 611\n  /Descent -222\n  /ItalicAngle 0\n  /StemV 65\n  /Flags 6\n  /FontBBox [ -444 -311 715 1019 ]\n  /FontFile3 2818 0 R\n  /CharSet (/exclam/numbersign/quoteright/parenleft/parenright/asterisk/plus/hyphen/period/slash/zero/one/two/three/four/five/six/seven/eight/nine/colon/less/equal/greater/question/at/A/B/C/D/E/F/G/H/I/J/K/L/M/N/O/P/Q/R/S/T/U/V/W/X/Y/bracketleft/bracketright/underscore/a/b/c/d/e",
+      "object_b": "<<\n  /Type /FontDescriptor\n  /CapHeight 611\n  /Ascent 611\n  /Descent -222\n  /ItalicAngle 0\n  /StemV 65\n  /Flags 6\n  /FontBBox [ -444 -311 715 1019 ]\n  /FontFile3 2818 0 R\n  /CharSet (/exclam/numbersign/quoteright/parenleft/parenright/asterisk/plus/hyphen/period/slash/zero/one/two/three/four/five/six/seven/eight/nine/colon/less/equal/greater/question/at/A/B/C/D/E/F/G/H/I/J/K/L/M/N/O/P/Q/R/S/T/U/V/W/X/Y/bracketleft/bracketright/underscore/a/b/c/d/e"
+    },
+    {
+      "xref": 2876,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle -14.0362\n  /StemV 56\n  /Flags 70\n  /FontBBox [ -458 -290 1386 1125 ]\n  /FontFile3 2820 0 R\n  /CharSet (/emdash/fi/quoteright/period/A/C/D/I/L/M/N/O/P/R/S/T/U/V/a/b/c/d/e/f/g/h/i/l/m/n/o/p/q/r/s/t/u/v/z/agrave)\n  /FontName /DGMEOK+LMRoman10-Italic\n>>",
+      "object_b": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle -14.0362\n  /StemV 56\n  /Flags 70\n  /FontBBox [ -458 -290 1386 1125 ]\n  /FontFile3 2820 0 R\n  /CharSet (/emdash/fi/quoteright/period/A/C/D/I/L/M/N/O/P/R/S/T/U/V/a/b/c/d/e/f/g/h/i/l/m/n/o/p/q/r/s/t/u/v/z/agrave)\n  /FontName /TLTDUV+LMRoman10-Italic\n>>"
+    },
+    {
+      "xref": 2877,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /FontDescriptor\n  /CapHeight 686\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle 0\n  /StemV 114\n  /Flags 6\n  /FontBBox [ -486 -295 1607 1133 ]\n  /FontFile3 2822 0 R\n  /CharSet (/fi/comma/period/slash/two/three/four/five/six/colon/C/E/F/I/L/M/O/P/R/U/a/b/c/d/e/g/i/l/m/n/o/p/q/r/s/t/u/v/z)\n  /FontName /UELIOB+LMRoman10-Bold\n>>",
+      "object_b": "<<\n  /Type /FontDescriptor\n  /CapHeight 686\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle 0\n  /StemV 114\n  /Flags 6\n  /FontBBox [ -486 -295 1607 1133 ]\n  /FontFile3 2822 0 R\n  /CharSet (/fi/comma/period/slash/two/three/four/five/six/colon/C/E/F/I/L/M/O/P/R/U/a/b/c/d/e/g/i/l/m/n/o/p/q/r/s/t/u/v/z)\n  /FontName /DQURKC+LMRoman10-Bold\n>>"
+    },
+    {
+      "xref": 2878,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /FontDescriptor\n  /CapHeight 611\n  /Ascent 611\n  /Descent -222\n  /ItalicAngle 0\n  /StemV 69\n  /Flags 6\n  /FontBBox [ -451 -316 731 1016 ]\n  /FontFile3 2824 0 R\n  /CharSet (/exclam/quotedbl/ampersand/parenleft/parenright/plus/comma/hyphen/period/slash/zero/one/two/three/four/five/six/seven/eight/nine/colon/semicolon/less/equal/greater/question/at/A/B/C/D/E/F/G/H/I/J/K/L/M/N/O/P/Q/R/S/T/U/V/W/X/Y/bracketleft/backslash/bracketright/unders",
+      "object_b": "<<\n  /Type /FontDescriptor\n  /CapHeight 611\n  /Ascent 611\n  /Descent -222\n  /ItalicAngle 0\n  /StemV 69\n  /Flags 6\n  /FontBBox [ -451 -316 731 1016 ]\n  /FontFile3 2824 0 R\n  /CharSet (/exclam/quotedbl/ampersand/parenleft/parenright/plus/comma/hyphen/period/slash/zero/one/two/three/four/five/six/seven/eight/nine/colon/semicolon/less/equal/greater/question/at/A/B/C/D/E/F/G/H/I/J/K/L/M/N/O/P/Q/R/S/T/U/V/W/X/Y/bracketleft/backslash/bracketright/unders"
+    },
+    {
+      "xref": 2879,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle -14.04\n  /StemV 72\n  /Flags 70\n  /FontBBox [ -32 -250 1048 750 ]\n  /FontFile3 2827 0 R\n  /CharSet (/period/slash/P)\n  /FontName /EMYKTB+CMMI10\n>>",
+      "object_b": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle -14.04\n  /StemV 72\n  /Flags 70\n  /FontBBox [ -32 -250 1048 750 ]\n  /FontFile3 2827 0 R\n  /CharSet (/period/slash/P)\n  /FontName /FFNCPF+CMMI10\n>>"
+    },
+    {
+      "xref": 2880,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle -14.04\n  /StemV 65\n  /Flags 70\n  /FontBBox [ -31 -250 1026 750 ]\n  /FontFile3 2830 0 R\n  /CharSet (/period/comma/slash/A/B/C/P/Q/T/Y/a/d/e/f/i/k/n/o/r/s/y/z)\n  /FontName /AZWQAQ+CMMI12\n>>",
+      "object_b": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle -14.04\n  /StemV 65\n  /Flags 70\n  /FontBBox [ -31 -250 1026 750 ]\n  /FontFile3 2830 0 R\n  /CharSet (/period/comma/slash/A/B/C/P/Q/T/Y/a/d/e/f/i/k/n/o/r/s/y/z)\n  /FontName /EMWLRE+CMMI12\n>>"
+    },
+    {
+      "xref": 2881,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Type /ObjStm\n  /N 30\n  /First 283\n  /Filter /FlateDecode\n  /Length 1623\n>>",
+      "object_b": "<<\n  /Type /ObjStm\n  /N 30\n  /First 283\n  /Filter /FlateDecode\n  /Length 1626\n>>"
+    },
+    {
+      "xref": 2882,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /FontDescriptor\n  /CapHeight 611\n  /Ascent 611\n  /Descent -216\n  /ItalicAngle 0\n  /StemV 83\n  /Flags 6\n  /FontBBox [ -454 -308 734 1039 ]\n  /FontFile3 2832 0 R\n  /CharSet (/underscore/a/b/c/d/e/f/g/h/i/k/l/m/n/o/p/q/r/s/t/u/v/w/y/z)\n  /FontName /FONMPP+LMMonoLt10-Bold\n>>",
+      "object_b": "<<\n  /Type /FontDescriptor\n  /CapHeight 611\n  /Ascent 611\n  /Descent -216\n  /ItalicAngle 0\n  /StemV 83\n  /Flags 6\n  /FontBBox [ -454 -308 734 1039 ]\n  /FontFile3 2832 0 R\n  /CharSet (/underscore/a/b/c/d/e/f/g/h/i/k/l/m/n/o/p/q/r/s/t/u/v/w/y/z)\n  /FontName /TESGVW+LMMonoLt10-Bold\n>>"
+    },
+    {
+      "xref": 2883,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle 0\n  /StemV 83\n  /Flags 6\n  /FontBBox [ -515 -298 1647 1125 ]\n  /FontFile3 2834 0 R\n  /CharSet (/zero/one/two/three/four/five/six/seven/eight/nine)\n  /FontName /OFZSAH+LMRoman6-Regular\n>>",
+      "object_b": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle 0\n  /StemV 83\n  /Flags 6\n  /FontBBox [ -515 -298 1647 1125 ]\n  /FontFile3 2834 0 R\n  /CharSet (/zero/one/two/three/four/five/six/seven/eight/nine)\n  /FontName /UGLWWJ+LMRoman6-Regular\n>>"
+    },
+    {
+      "xref": 2884,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /FontDescriptor\n  /CapHeight 611\n  /Ascent 611\n  /Descent -222\n  /ItalicAngle 0\n  /StemV 69\n  /Flags 6\n  /FontBBox [ -451 -316 731 1016 ]\n  /FontFile3 2836 0 R\n  /CharSet (/quotesingle.ts1)\n  /FontName /WLEWSO+LMMono10-Regular\n>>",
+      "object_b": "<<\n  /Type /FontDescriptor\n  /CapHeight 611\n  /Ascent 611\n  /Descent -222\n  /ItalicAngle 0\n  /StemV 69\n  /Flags 6\n  /FontBBox [ -451 -316 731 1016 ]\n  /FontFile3 2836 0 R\n  /CharSet (/quotesingle.ts1)\n  /FontName /JGIPTU+LMMono10-Regular\n>>"
+    },
+    {
+      "xref": 2885,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /FontDescriptor\n  /CapHeight 611\n  /Ascent 611\n  /Descent -222\n  /ItalicAngle -14.0362\n  /StemV 69\n  /Flags 70\n  /FontBBox [ -491 -316 834 1016 ]\n  /FontFile3 2838 0 R\n  /CharSet (/numbersign/asterisk/plus/comma/period/slash/zero/one/two/three/five/seven/eight/nine/colon/equal/A/B/C/D/G/I/J/K/L/P/R/S/V/Y/a/b/c/d/e/f/g/i/l/m/n/o/p/r/s/t/u/v/y/z/agrave)\n  /FontName /GQTMWW+LMMono10-Italic\n>>",
+      "object_b": "<<\n  /Type /FontDescriptor\n  /CapHeight 611\n  /Ascent 611\n  /Descent -222\n  /ItalicAngle -14.0362\n  /StemV 69\n  /Flags 70\n  /FontBBox [ -491 -316 834 1016 ]\n  /FontFile3 2838 0 R\n  /CharSet (/numbersign/asterisk/plus/comma/period/slash/zero/one/two/three/five/seven/eight/nine/colon/equal/A/B/C/D/G/I/J/K/L/P/R/S/V/Y/a/b/c/d/e/f/g/i/l/m/n/o/p/r/s/t/u/v/y/z/agrave)\n  /FontName /MDPIYD+LMMono10-Italic\n>>"
+    },
+    {
+      "xref": 2886,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /FontDescriptor\n  /CapHeight 611\n  /Ascent 611\n  /Descent -222\n  /ItalicAngle -14.0362\n  /StemV 69\n  /Flags 70\n  /FontBBox [ -491 -316 834 1016 ]\n  /FontFile3 2840 0 R\n  /CharSet (/quotesingle.ts1)\n  /FontName /WMYLAM+LMMono10-Italic\n>>",
+      "object_b": "<<\n  /Type /FontDescriptor\n  /CapHeight 611\n  /Ascent 611\n  /Descent -222\n  /ItalicAngle -14.0362\n  /StemV 69\n  /Flags 70\n  /FontBBox [ -491 -316 834 1016 ]\n  /FontFile3 2840 0 R\n  /CharSet (/quotesingle.ts1)\n  /FontName /VAUQSV+LMMono10-Italic\n>>"
+    },
+    {
+      "xref": 2887,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle 0\n  /StemV 65\n  /Flags 6\n  /FontBBox [ -34 -251 988 750 ]\n  /FontFile3 2843 0 R\n  /CharSet (/parenleft/parenright/plus/zero/one/two/three/four/five/seven/eight/nine/equal/A/D/S/Y/a/b/d/e/m/n/o/r/t/u/w/x)\n  /FontName /KFQKQE+CMR12\n>>",
+      "object_b": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle 0\n  /StemV 65\n  /Flags 6\n  /FontBBox [ -34 -251 988 750 ]\n  /FontFile3 2843 0 R\n  /CharSet (/parenleft/parenright/plus/zero/one/two/three/four/five/seven/eight/nine/equal/A/D/S/Y/a/b/d/e/m/n/o/r/t/u/w/x)\n  /FontName /QBTBWD+CMR12\n>>"
+    },
+    {
+      "xref": 2888,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle -14.04\n  /StemV 78\n  /Flags 70\n  /FontBBox [ -24 -250 1110 750 ]\n  /FontFile3 2846 0 R\n  /CharSet (/comma/slash/a/d/k/m/n/t/v)\n  /FontName /CENJHY+CMMI8\n>>",
+      "object_b": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle -14.04\n  /StemV 78\n  /Flags 70\n  /FontBBox [ -24 -250 1110 750 ]\n  /FontFile3 2846 0 R\n  /CharSet (/comma/slash/a/d/k/m/n/t/v)\n  /FontName /YKOTFI+CMMI8\n>>"
+    },
+    {
+      "xref": 2889,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 0\n  /Descent 0\n  /ItalicAngle -14.04\n  /StemV 40\n  /Flags 70\n  /FontBBox [ -29 -960 1116 775 ]\n  /FontFile3 2849 0 R\n  /CharSet (/minus/periodcentered/greaterequal)\n  /FontName /CIVFNL+CMSY10\n>>",
+      "object_b": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 0\n  /Descent 0\n  /ItalicAngle -14.04\n  /StemV 40\n  /Flags 70\n  /FontBBox [ -29 -960 1116 775 ]\n  /FontFile3 2849 0 R\n  /CharSet (/minus/periodcentered/greaterequal)\n  /FontName /UKUPBV+CMSY10\n>>"
+    },
+    {
+      "xref": 2890,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle 0\n  /StemV 76\n  /Flags 6\n  /FontBBox [ -36 -250 1070 750 ]\n  /FontFile3 2852 0 R\n  /CharSet (/zero/two/five)\n  /FontName /KSKWSE+CMR8\n>>",
+      "object_b": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle 0\n  /StemV 76\n  /Flags 6\n  /FontBBox [ -36 -250 1070 750 ]\n  /FontFile3 2852 0 R\n  /CharSet (/zero/two/five)\n  /FontName /ZKQFDF+CMR8\n>>"
+    },
+    {
+      "xref": 2891,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /FontDescriptor\n  /CapHeight 0\n  /Ascent 0\n  /Descent 0\n  /ItalicAngle 0\n  /StemV 47\n  /Flags 6\n  /FontBBox [ -24 -2960 1454 772 ]\n  /FontFile3 2855 0 R\n  /CharSet (/bracketleftBigg/bracketrightBigg/braceleftBigg/bracketleftBig/bracketrightBig)\n  /FontName /LWILYB+CMEX10\n>>",
+      "object_b": "<<\n  /Type /FontDescriptor\n  /CapHeight 0\n  /Ascent 0\n  /Descent 0\n  /ItalicAngle 0\n  /StemV 47\n  /Flags 6\n  /FontBBox [ -24 -2960 1454 772 ]\n  /FontFile3 2855 0 R\n  /CharSet (/bracketleftBigg/bracketrightBigg/braceleftBigg/bracketleftBig/bracketrightBig)\n  /FontName /SPPJFE+CMEX10\n>>"
+    },
+    {
+      "xref": 2892,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle 0\n  /StemV 76\n  /Flags 6\n  /FontBBox [ -456 -292 1497 1125 ]\n  /FontFile3 2858 0 R\n  /CharSet (/one/two/three/four/five/six/seven/eight/nine)\n  /FontName /VVOPEX+LMRoman8-Regular\n>>",
+      "object_b": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle 0\n  /StemV 76\n  /Flags 6\n  /FontBBox [ -456 -292 1497 1125 ]\n  /FontFile3 2858 0 R\n  /CharSet (/one/two/three/four/five/six/seven/eight/nine)\n  /FontName /KBYEKD+LMRoman8-Regular\n>>"
+    },
+    {
+      "xref": 2893,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": true,
+      "object_a": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle 0\n  /StemV 79\n  /Flags 6\n  /FontBBox [ -483 -292 1562 1124 ]\n  /FontFile3 2860 0 R\n  /CharSet (/one/two/three/four/five/six/seven/eight/nine)\n  /FontName /RGWAWR+LMRoman7-Regular\n>>",
+      "object_b": "<<\n  /Type /FontDescriptor\n  /CapHeight 683\n  /Ascent 694\n  /Descent -194\n  /ItalicAngle 0\n  /StemV 79\n  /Flags 6\n  /FontBBox [ -483 -292 1562 1124 ]\n  /FontFile3 2860 0 R\n  /CharSet (/one/two/three/four/five/six/seven/eight/nine)\n  /FontName /DFGYHH+LMRoman7-Regular\n>>"
+    },
+    {
+      "xref": 2894,
+      "object_equal": false,
+      "object_equal_normalized_dates": false,
+      "decoded_stream_equal": false,
+      "object_a": "<<\n  /Type /XRef\n  /ID [ <985A8217243078C91222C103CB1F3800> <985A8217243078C91222C103CB1F3800> ]\n  /Root 1 0 R\n  /Info 2 0 R\n  /Size 2895\n  /W [ 1 3 2 ]\n  /Filter /FlateDecode\n  /Length 6885\n>>",
+      "object_b": "<<\n  /Type /XRef\n  /ID [ <E0B2F3F7DF315B2F49E3F34A022944A2> <E0B2F3F7DF315B2F49E3F34A022944A2> ]\n  /Root 1 0 R\n  /Info 2 0 R\n  /Size 2895\n  /W [ 1 3 2 ]\n  /Filter /FlateDecode\n  /Length 6890\n>>"
+    }
+  ],
+  "trailer_ID_a": [
+    "array",
+    "[<985A8217243078C91222C103CB1F3800><985A8217243078C91222C103CB1F3800>]"
+  ],
+  "trailer_ID_b": [
+    "array",
+    "[<E0B2F3F7DF315B2F49E3F34A022944A2><E0B2F3F7DF315B2F49E3F34A022944A2>]"
+  ],
+  "normalized_objects": [
+    {
+      "xref": 2,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 4,
+      "type": "/Font",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 5,
+      "type": "/Font",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 6,
+      "type": "/Font",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 7,
+      "type": "/Font",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 8,
+      "type": "/Font",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 122,
+      "type": "/Font",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 126,
+      "type": "/Font",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 208,
+      "type": "/Font",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 212,
+      "type": "/Font",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 213,
+      "type": "/Font",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 227,
+      "type": "/Font",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 246,
+      "type": "/Font",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 834,
+      "type": "/Font",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 905,
+      "type": "/Font",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 913,
+      "type": "/Font",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 914,
+      "type": "/Font",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 915,
+      "type": "/Font",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 953,
+      "type": "/Font",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 954,
+      "type": "/Font",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 955,
+      "type": "/Font",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 956,
+      "type": "/Font",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 957,
+      "type": "/Font",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 1035,
+      "type": "/Font",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 1036,
+      "type": "/Font",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 1070,
+      "type": "/Font",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 1074,
+      "type": "/Font",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2733,
+      "type": "/ObjStm",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2806,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2808,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2810,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2812,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2814,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2816,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2818,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2820,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2822,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2824,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2825,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2827,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2828,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2830,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2832,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2834,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2836,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2838,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2840,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2841,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2843,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2844,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2846,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2847,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2849,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2850,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2852,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2853,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2855,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2856,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2858,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2860,
+      "type": "null",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2861,
+      "type": "/FontDescriptor",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2867,
+      "type": "/FontDescriptor",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2868,
+      "type": "/FontDescriptor",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2869,
+      "type": "/FontDescriptor",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2870,
+      "type": "/FontDescriptor",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2871,
+      "type": "/FontDescriptor",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2874,
+      "type": "/FontDescriptor",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2875,
+      "type": "/FontDescriptor",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2876,
+      "type": "/FontDescriptor",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2877,
+      "type": "/FontDescriptor",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2878,
+      "type": "/FontDescriptor",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2879,
+      "type": "/FontDescriptor",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2880,
+      "type": "/FontDescriptor",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2881,
+      "type": "/ObjStm",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2882,
+      "type": "/FontDescriptor",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2883,
+      "type": "/FontDescriptor",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2884,
+      "type": "/FontDescriptor",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2885,
+      "type": "/FontDescriptor",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2886,
+      "type": "/FontDescriptor",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2887,
+      "type": "/FontDescriptor",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2888,
+      "type": "/FontDescriptor",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2889,
+      "type": "/FontDescriptor",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2890,
+      "type": "/FontDescriptor",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2891,
+      "type": "/FontDescriptor",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2892,
+      "type": "/FontDescriptor",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2893,
+      "type": "/FontDescriptor",
+      "object_equal_normalized": true,
+      "stream_equal_normalized": true
+    },
+    {
+      "xref": 2894,
+      "type": "/XRef",
+      "object_equal_normalized": false,
+      "stream_equal_normalized": false
+    }
+  ],
+  "unexplained_non_xref_objects": [],
+  "assessment": "Date e ID PDF, prefissi dei subset Latin Modern, lunghezze compresse e offset xref conseguenti. Gli altri oggetti e gli stream decodificati coincidono normalizzando date, soli prefissi subset e Length degli stream. Identità visiva verificata separatamente su tutte le pagine."
+}

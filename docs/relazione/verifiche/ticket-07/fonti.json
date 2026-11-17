@@ -1,0 +1,174 @@
+[
+  {
+    "source": "docs/AGENTS.md",
+    "sha256": "c6074e979a232f529604e79bf05b38a247f5be4554e0e662329e097fd0b18002"
+  },
+  {
+    "source": "docs/agents/issue-tracker.md",
+    "sha256": "86ba053e0c54250ff0fa6c6b5db58328ed3254a40355d69bebedbb68f4ae32d9"
+  },
+  {
+    "source": "docs/agents/triage-labels.md",
+    "sha256": "5b1ba858cc9f896331371bb5c19e41f552a419df9642d90a9bb5261d2cd779f6"
+  },
+  {
+    "source": "docs/agents/domain.md",
+    "sha256": "74770fdb97a3712c6122714a0eebe718e8ba4603863426df1637238aaddfb109"
+  },
+  {
+    "source": "docs/relazione/tracker/spec.md",
+    "sha256": "ea0dbc7b5235156c07f2fc6a0f158fcc3603c071ba9ac3b1cd296cd734688990"
+  },
+  {
+    "source": "docs/relazione/indice.md",
+    "sha256": "51049243dcbe3ee75eb6e94a0432f4406e851ebb18ec272bbceab23a87c668dd"
+  },
+  {
+    "source": "docs/relazione/piano.md",
+    "sha256": "241f28cd1023177f79a646e0d99f709dc7091848b0920be432a216f0b54ae538"
+  },
+  {
+    "source": "docs/relazione/GLOSSARY.md",
+    "sha256": "659b0f568f5e7159850b4c962b631496af5a95d306b6a5f9b45442c149b70fde"
+  },
+  {
+    "source": "docs/adr/0001-base-manuale-e-prezzo-concordato.md",
+    "sha256": "59c781d4a660e2850ad292ef6799592eb405c4193a6e6893479ac06b45bac5e6"
+  },
+  {
+    "source": "docs/adr/0002-enumerazioni-native-postgresql.md",
+    "sha256": "451d7cb10ebd1eadab564f01138de81f3bf6d529a0744c784bfcc6698571d16e"
+  },
+  {
+    "source": "README.md",
+    "sha256": "79415f5aae7c1d66b537f694f4c940f81fc87cefafba9de46c796d952d664f40"
+  },
+  {
+    "source": "docs/evidence/revision-records.zip",
+    "sha256": "32df90fbd245d5b24e57c42ae1794597af917acb81ed7f6f6036be700c9e999f"
+  },
+  {
+    "source": "docs/evidence/r03-prices/verification.md",
+    "sha256": "19c410ebf9f2131699995925be2c8f1a172c731a3847fab310bdbaa4cb8ad4c3"
+  },
+  {
+    "source": "docs/evidence/r03-prices/rounding-red.log",
+    "sha256": "5ebd2aa9491fe5527d874c7547c0bf2548981e4b354a593133d9bb4afa8581fd"
+  },
+  {
+    "source": "docs/evidence/r03-prices/rounding-green.log",
+    "sha256": "4436543128a46f915a8d2d48a7f8c01c570616878e28e00392536952aad63ac8"
+  },
+  {
+    "source": "docs/evidence/r04-agreement/verification.md",
+    "sha256": "29dd8ca025f57579067b8bcb9d52f35435e08bd35a23f02103ef3d5d2596e8ae"
+  },
+  {
+    "source": "docs/evidence/r08-tables/verification.md",
+    "sha256": "5d4a1d0b139c86e942bd39d12154248933e9e488b6423bdb500bc845b6862254"
+  },
+  {
+    "source": "docs/evidence/r10-cleanup/verification.md",
+    "sha256": "271943f7dd9d4f38bff57a174c54baed0ba940bdbc90d977a4d6db0da77c6770"
+  },
+  {
+    "source": "docs/evidence/r09-instructions/verification.md",
+    "sha256": "7c4a6bdb125340a0e0a5764a4ee281e1adab836db233bce0e1d5c316ea8f81be"
+  },
+  {
+    "source": "docs/evidence/r09-diagrams/verification.md",
+    "sha256": "3709e1d92fbfe51b9662046a598b9605768827705c6a84757d552393fb8125f6"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/verification.md",
+    "sha256": "3e946c10b1720f1bee7dac7b6dcabd48eda8cf8f8a71273a6001a708fa551ee2"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/acceptance-matrix.md",
+    "sha256": "b8e2bae9944d70c8ea4a643285bd20ab358ca0cb457def0931a45eb1b4d7c3e2"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/full.log",
+    "sha256": "8eb9090acbec26693a4b68add7b9bfcdebfc4569c5ef191cb962e766e633bb08"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/full-inputs.sha256.json",
+    "sha256": "5235ea984286e4b3c43d18c750c9864cf9883afe2b9cac18d187afa7deb13844"
+  },
+  {
+    "source": "docs/evidence/request-semantics-01/verification.md",
+    "sha256": "a6f4c6ab961415b7992e17c2cfea152278dea524e6d8c0bad70c77ef2ca41d3d"
+  },
+  {
+    "source": "docs/evidence/sale-semantics-02/verification.md",
+    "sha256": "8fef84a5e8cf8440f538e929357d5b28a58ccbe0ec6fc0872be4aa3831ef3e0b"
+  },
+  {
+    "source": "docs/evidence/data-conversion-03/verification.md",
+    "sha256": "b3f704704c21fc04d5697767c8cffcb6d6b63f174ac84b2c002a7ff81c666ddd"
+  },
+  {
+    "source": "docs/evidence/db-consolidation-2026-11-09/verification.md",
+    "sha256": "fdb1498db903ad532e43459f96286f81a32790480fc1501c6bdce76f4ae0a6a3"
+  },
+  {
+    "source": "docs/evidence/postgres-enums-2026-11-09/verification.md",
+    "sha256": "7bd24d81838dca7fb22b323028a06a6c0ecd9a749252b76dccfef3ab3efbaa63"
+  },
+  {
+    "source": "docs/evidence/postgres-enums-2026-11-09/review.md",
+    "sha256": "9a0c9447979b08af89eed802874bb1147b3b809f336cab7ef6fe75c2813debc5"
+  },
+  {
+    "source": "docs/evidence/postgres-enums-2026-11-09/full-suite.txt",
+    "sha256": "554c1adfbc8b73bc48492ad4cdb79ab217a9ddcdd285aac044a31566a044d24a"
+  },
+  {
+    "source": "docs/relazione/diagrammi/README.md",
+    "sha256": "3015a4c9dddfd2130ff0859b413421935125d44a592abf10ae64416017f3a1e6"
+  },
+  {
+    "source": "docs/relazione/verifiche/ticket-03/matrice-copertura.md",
+    "sha256": "1f3f069fc2350536ab5f96b382cadd9bc43967a60e018b3fc5e64395cea0e572"
+  },
+  {
+    "source": "docs/relazione/verifiche/ticket-04/README.md",
+    "sha256": "7767f79c9e42fea5aa4adedcab20d9563174a83e86779fb75ec72304d2cfc96b"
+  },
+  {
+    "source": "docs/relazione/appendici/c_verifiche.tex",
+    "sha256": "d179e885787e1f26524aa820af2a6a5a69d9805901e13bcaa49fe6c27c04497d"
+  },
+  {
+    "source": "docs/relazione/verifiche/ticket-05/README.md",
+    "sha256": "4085c6afc2aaba73db399c5d82390eec41a9328699cdd4799a2ed7d0b3bed419"
+  },
+  {
+    "source": "docs/relazione/verifiche/ticket-05/revisione.md",
+    "sha256": "00496601ef80f42eef0a5a1345133708f3badc095aaeb194243f89f53ab2a476"
+  },
+  {
+    "source": "docs/relazione/verifiche/ticket-05/revisione-standards.md",
+    "sha256": "9e9fa00babca947068bcb68fc9cd51596b8dda4afc7d497947d7d12d2381520f"
+  },
+  {
+    "source": "docs/relazione/verifiche/ticket-05/revisione-spec.md",
+    "sha256": "578bc808defb1444c79ac8d397579c7e4ca37bd8e79028bcdcdd823739db317f"
+  },
+  {
+    "source": "docs/relazione/verifiche/ticket-06/README.md",
+    "sha256": "21d8a7412f545915d3725b2a21413ba657be6825ac2a06cdec151651b3f619ad"
+  },
+  {
+    "source": "docs/relazione/verifiche/ticket-06/revisione.md",
+    "sha256": "1060567f789d9b3b1550dcc7dd6c25c1d0e75e8bcbfdde0eb0af30f5ecda0f52"
+  },
+  {
+    "source": "docs/relazione/verifiche/ticket-06/revisione-standards.md",
+    "sha256": "5a9d18d2ca3de05b5fd5293f61922d070bd0141c0395ce9e3eef9811a912d102"
+  },
+  {
+    "source": "docs/relazione/verifiche/ticket-06/revisione-spec.md",
+    "sha256": "c65792f743a791714492ce748ed370dfedd71ae9e63b4ca8bd0289360e5d0a74"
+  }
+]

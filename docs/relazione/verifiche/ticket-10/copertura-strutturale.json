@@ -1,0 +1,566 @@
+[
+  {
+    "originale": [
+      "section",
+      "",
+      "Diagramma dei casi d'uso"
+    ],
+    "attuale": [
+      "section",
+      "",
+      "Diagramma dei casi d'uso"
+    ]
+  },
+  {
+    "originale": [
+      "section",
+      "",
+      "Template dei casi principali"
+    ],
+    "attuale": [
+      "section",
+      "",
+      "Template dei casi principali"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "",
+      "Prenotare un test drive"
+    ],
+    "attuale": [
+      "subsection",
+      "",
+      "UC-01 --- Prenotare un test drive"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "",
+      "Noleggiare un veicolo"
+    ],
+    "attuale": [
+      "subsection",
+      "",
+      "UC-02 --- Noleggiare un veicolo"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "",
+      "Richiedere e completare un acquisto"
+    ],
+    "attuale": [
+      "subsection",
+      "",
+      "UC-03 --- Richiedere e completare una vendita al cliente"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "",
+      "Proporre un veicolo al concessionario"
+    ],
+    "attuale": [
+      "subsection",
+      "",
+      "UC-05 --- Proporre un veicolo alla concessionaria"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "",
+      "Autorizzare una richiesta di acquisto"
+    ],
+    "attuale": [
+      "subsection",
+      "",
+      "UC-04 --- Autorizzare una richiesta di vendita al cliente"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "",
+      "Gestire lo sconto su un veicolo"
+    ],
+    "attuale": [
+      "subsection",
+      "",
+      "UC-06 --- Gestire lo sconto su un veicolo"
+    ]
+  },
+  {
+    "originale": [
+      "section",
+      "",
+      "Mockups"
+    ],
+    "attuale": [
+      "section",
+      "",
+      "Mockups"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "",
+      "Autenticazione"
+    ],
+    "attuale": [
+      "subsection",
+      "",
+      "Autenticazione"
+    ]
+  },
+  {
+    "originale": [
+      "subsubsection",
+      "",
+      "Schermata iniziale"
+    ],
+    "attuale": [
+      "subsubsection",
+      "",
+      "Schermata iniziale"
+    ]
+  },
+  {
+    "originale": [
+      "subsubsection",
+      "",
+      "Accesso"
+    ],
+    "attuale": [
+      "subsubsection",
+      "",
+      "Accesso"
+    ]
+  },
+  {
+    "originale": [
+      "subsubsection",
+      "",
+      "Registrazione"
+    ],
+    "attuale": [
+      "subsubsection",
+      "",
+      "Registrazione"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "",
+      "Area Customer"
+    ],
+    "attuale": [
+      "subsection",
+      "",
+      "Area Customer"
+    ]
+  },
+  {
+    "originale": [
+      "subsubsection",
+      "",
+      "Catalogo veicoli"
+    ],
+    "attuale": [
+      "subsubsection",
+      "",
+      "Catalogo veicoli"
+    ]
+  },
+  {
+    "originale": [
+      "subsubsection",
+      "",
+      "Acquisti e richieste"
+    ],
+    "attuale": [
+      "subsubsection",
+      "",
+      "Vendite al cliente e richieste"
+    ]
+  },
+  {
+    "originale": [
+      "subsubsection",
+      "",
+      "Noleggi e test drive"
+    ],
+    "attuale": [
+      "subsubsection",
+      "",
+      "Noleggi e test drive"
+    ]
+  },
+  {
+    "originale": [
+      "subsubsection",
+      "",
+      "Proposta di vendita del proprio veicolo"
+    ],
+    "attuale": [
+      "subsubsection",
+      "",
+      "Proposta di cessione del proprio veicolo"
+    ]
+  },
+  {
+    "originale": [
+      "subsubsection",
+      "",
+      "Conto dimostrativo"
+    ],
+    "attuale": [
+      "subsubsection",
+      "",
+      "Conto dimostrativo"
+    ]
+  },
+  {
+    "originale": [
+      "subsubsection",
+      "",
+      "Profilo"
+    ],
+    "attuale": [
+      "subsubsection",
+      "",
+      "Profilo"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "",
+      "Area Salesman"
+    ],
+    "attuale": [
+      "subsection",
+      "",
+      "Area Salesman"
+    ]
+  },
+  {
+    "originale": [
+      "subsubsection",
+      "",
+      "Veicoli in attesa"
+    ],
+    "attuale": [
+      "subsubsection",
+      "",
+      "Proposte di cessione in attesa"
+    ]
+  },
+  {
+    "originale": [
+      "subsubsection",
+      "",
+      "Richieste di acquisto"
+    ],
+    "attuale": [
+      "subsubsection",
+      "",
+      "Richieste di vendita al cliente"
+    ]
+  },
+  {
+    "originale": [
+      "subsubsection",
+      "",
+      "Stato dei veicoli"
+    ],
+    "attuale": [
+      "subsubsection",
+      "",
+      "Stato dei veicoli"
+    ]
+  },
+  {
+    "originale": [
+      "subsubsection",
+      "",
+      "Panoramica prenotazioni"
+    ],
+    "attuale": [
+      "subsubsection",
+      "",
+      "Panoramica prenotazioni: limite attuale"
+    ]
+  },
+  {
+    "originale": [
+      "subsubsection",
+      "",
+      "Profilo"
+    ],
+    "attuale": [
+      "subsubsection",
+      "",
+      "Profilo"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "",
+      "Area Manager"
+    ],
+    "attuale": [
+      "subsection",
+      "",
+      "Area Manager"
+    ]
+  },
+  {
+    "originale": [
+      "subsubsection",
+      "",
+      "Parco veicoli"
+    ],
+    "attuale": [
+      "subsubsection",
+      "",
+      "Parco veicoli"
+    ]
+  },
+  {
+    "originale": [
+      "subsubsection",
+      "",
+      "Marche e modelli"
+    ],
+    "attuale": [
+      "subsubsection",
+      "",
+      "Marche e modelli"
+    ]
+  },
+  {
+    "originale": [
+      "subsubsection",
+      "",
+      "Registro delle operazioni"
+    ],
+    "attuale": [
+      "subsubsection",
+      "",
+      "Registro delle operazioni"
+    ]
+  },
+  {
+    "originale": [
+      "subsubsection",
+      "",
+      "Profilo"
+    ],
+    "attuale": [
+      "subsubsection",
+      "",
+      "Profilo"
+    ]
+  },
+  {
+    "originale": [
+      "section",
+      "",
+      "Page Navigation Diagram"
+    ],
+    "attuale": [
+      "section",
+      "",
+      "Page Navigation Diagram"
+    ]
+  },
+  {
+    "originale": [
+      "section",
+      "",
+      "Package Diagram"
+    ],
+    "attuale": [
+      "section",
+      "",
+      "Package Diagram"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "*",
+      "Il dominio non dipende dagli altri livelli"
+    ],
+    "attuale": [
+      "subsection",
+      "*",
+      "Il dominio non dipende dagli altri livelli"
+    ]
+  },
+  {
+    "originale": [
+      "section",
+      "",
+      "Class Diagram"
+    ],
+    "attuale": [
+      "section",
+      "",
+      "Class Diagram"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "",
+      "Domain Model"
+    ],
+    "attuale": [
+      "subsection",
+      "",
+      "Domain Model"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "",
+      "Business Layer"
+    ],
+    "attuale": [
+      "subsection",
+      "",
+      "Business Layer"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "",
+      "DAO"
+    ],
+    "attuale": [
+      "subsection",
+      "",
+      "DAO"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "",
+      "Presentation Layer"
+    ],
+    "attuale": [
+      "subsection",
+      "",
+      "Presentation Layer"
+    ]
+  },
+  {
+    "originale": [
+      "section",
+      "",
+      "Sequence Diagram"
+    ],
+    "attuale": [
+      "section",
+      "",
+      "Sequence Diagram"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "",
+      "Acquisto di un veicolo"
+    ],
+    "attuale": [
+      "subsection",
+      "",
+      "Vendita di un veicolo al cliente"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "",
+      "Prenotazione di un noleggio"
+    ],
+    "attuale": [
+      "subsection",
+      "",
+      "Prenotazione di un noleggio"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "",
+      "Acquisizione di un veicolo del Customer"
+    ],
+    "attuale": [
+      "subsection",
+      "",
+      "Acquisto di un veicolo dal cliente"
+    ]
+  },
+  {
+    "originale": [
+      "section",
+      "",
+      "Database"
+    ],
+    "attuale": [
+      "section",
+      "",
+      "Database"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "",
+      "Schema ER"
+    ],
+    "attuale": [
+      "subsection",
+      "",
+      "Schema ER"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "",
+      "Modello relazionale"
+    ],
+    "attuale": [
+      "subsection",
+      "",
+      "Modello relazionale"
+    ]
+  },
+  {
+    "originale": [
+      "subsection",
+      "",
+      "Utenti, vincoli e semplificazioni"
+    ],
+    "attuale": [
+      "subsection",
+      "",
+      "Utenti, vincoli e semplificazioni"
+    ]
+  }
+]

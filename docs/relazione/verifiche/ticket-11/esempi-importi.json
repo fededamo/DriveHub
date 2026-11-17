@@ -1,0 +1,10 @@
+{
+  "prezzo_stima_usato": "25333.87",
+  "noleggio_tre_giorni": "57.05",
+  "base_manuale_effettivo": "27000.00",
+  "acconto": "5400.00",
+  "residuo": "21600.00",
+  "penale_su_acconto_4000": "800.00",
+  "rimborso": "3200.00",
+  "method": "Riproduzione numerica documentale delle formule lette, senza eseguire Java o DB."
+}

@@ -1,0 +1,114 @@
+[
+  {
+    "ticket": 9,
+    "status": "done",
+    "issue": "docs/relazione/tracker/issues/09-riallineamento-introduzione.md",
+    "reports": [
+      {
+        "path": "docs/relazione/verifiche/ticket-09/review-spec.md",
+        "sha256": "cb85c9a976e78ef28d67d0e5a6d330a0946019ca48cbe106e675eda3b622ed9b"
+      },
+      {
+        "path": "docs/relazione/verifiche/ticket-09/review-standards.md",
+        "sha256": "493e132ffcb54128bae5e25b7eee53fe1a20bcd00086558b5f4db6d5dd869773"
+      },
+      {
+        "path": "docs/relazione/verifiche/ticket-09/revisione.md",
+        "sha256": "fa5336d08a41eb95af6afab7010e368b3409e44b015c70647235153e16a35cef"
+      }
+    ],
+    "limit": "Chiusura tecnica e review assistite della propria versione; nessuna approvazione degli autori. Storici letti, non checker rieseguiti."
+  },
+  {
+    "ticket": 10,
+    "status": "done",
+    "issue": "docs/relazione/tracker/issues/10-riallineamento-progettazione.md",
+    "reports": [
+      {
+        "path": "docs/relazione/verifiche/ticket-10/review-spec-chiusura.md",
+        "sha256": "6a2ad829b0750250f8e99ac4523490990c9860684ebf3f318ec1caf451fde380"
+      },
+      {
+        "path": "docs/relazione/verifiche/ticket-10/review-spec.md",
+        "sha256": "0c54078a24151d7479b02b76f8a8c7f383577778097fc322ed417b1a215dad53"
+      },
+      {
+        "path": "docs/relazione/verifiche/ticket-10/review-standards-chiusura.md",
+        "sha256": "5948b176262cad2518986661561bbdcbd605d35a31f76f96b20266c20fca7523"
+      },
+      {
+        "path": "docs/relazione/verifiche/ticket-10/review-standards.md",
+        "sha256": "772c09e30ec16bb9d72d98f7b698ce3f7e0aeca538958599afbc84fcb412248e"
+      },
+      {
+        "path": "docs/relazione/verifiche/ticket-10/revisione.md",
+        "sha256": "806811b6c565176661b7c31650c6fbdb17dfc522b681f492f9e2a3f180025ca9"
+      }
+    ],
+    "limit": "Chiusura tecnica e review assistite della propria versione; nessuna approvazione degli autori. Storici letti, non checker rieseguiti."
+  },
+  {
+    "ticket": 11,
+    "status": "done",
+    "issue": "docs/relazione/tracker/issues/11-riallineamento-implementazione.md",
+    "reports": [
+      {
+        "path": "docs/relazione/verifiche/ticket-11/review-spec-chiusura.md",
+        "sha256": "bacaa4cc3efc2044c87ac95f2f321da6e232c973956c5b4c233eaecc05c2249f"
+      },
+      {
+        "path": "docs/relazione/verifiche/ticket-11/review-spec-stati.md",
+        "sha256": "2632f72cffe8169e7f14745ca406fa69b08974f262b82e4c0f35f010f6b42bcd"
+      },
+      {
+        "path": "docs/relazione/verifiche/ticket-11/review-spec.md",
+        "sha256": "e9c6895e2e677f0e43ec41f4fea0bc1cf344b055c929085356b3d87e6669d634"
+      },
+      {
+        "path": "docs/relazione/verifiche/ticket-11/review-standards-chiusura.md",
+        "sha256": "64e47f574226b743cbe88e7038e974b5b0b7540c2fd7fe246016cac391c4213c"
+      },
+      {
+        "path": "docs/relazione/verifiche/ticket-11/review-standards-stati.md",
+        "sha256": "3fecd3e56df5c2eac7460975981eac3a70e1844e0c52dc6b9bba0c2cdece0a42"
+      },
+      {
+        "path": "docs/relazione/verifiche/ticket-11/review-standards.md",
+        "sha256": "eea44244597393fed996121c486c07d2368788c0d9f0749b1160c65413d434da"
+      },
+      {
+        "path": "docs/relazione/verifiche/ticket-11/revisione.md",
+        "sha256": "cbe2abd268890d547e282cc83dd432659fe0836aa441035f7cf22eaa3de9dca0"
+      }
+    ],
+    "limit": "Chiusura tecnica e review assistite della propria versione; nessuna approvazione degli autori. Storici letti, non checker rieseguiti."
+  },
+  {
+    "ticket": 12,
+    "status": "done",
+    "issue": "docs/relazione/tracker/issues/12-riallineamento-testing.md",
+    "reports": [
+      {
+        "path": "docs/relazione/verifiche/ticket-12/review-spec-stati.md",
+        "sha256": "0ee3b1f7ff292b720e1fe75067516531c43300a16c2165f93e54aaa626af9015"
+      },
+      {
+        "path": "docs/relazione/verifiche/ticket-12/review-spec.md",
+        "sha256": "64f590213d1ef2092d9249522a03173b415e5e70997019ad10695a3d269e9636"
+      },
+      {
+        "path": "docs/relazione/verifiche/ticket-12/review-standards-stati.md",
+        "sha256": "db11b48610f79cd623d6183b8dc52ec00d55d3bdf06660197f4a9a953b57fda4"
+      },
+      {
+        "path": "docs/relazione/verifiche/ticket-12/review-standards.md",
+        "sha256": "296802d131ff1405e83ad120170762c8e43bed440d26f1ea432a28649f8a3189"
+      },
+      {
+        "path": "docs/relazione/verifiche/ticket-12/revisione.md",
+        "sha256": "570afcc41801965fef1cfffc9fbf7925d93bdd62050fb438856d96cd203a52fd"
+      }
+    ],
+    "limit": "Chiusura tecnica e review assistite della propria versione; nessuna approvazione degli autori. Storici letti, non checker rieseguiti."
+  }
+]

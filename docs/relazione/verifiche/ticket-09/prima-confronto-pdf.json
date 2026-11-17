@@ -1,0 +1,680 @@
+[
+  {
+    "pagina_fisica": 1,
+    "etichetta": "1",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 2,
+    "etichetta": "i",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 3,
+    "etichetta": "ii",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 4,
+    "etichetta": "1",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 5,
+    "etichetta": "2",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 6,
+    "etichetta": "3",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 7,
+    "etichetta": "4",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 8,
+    "etichetta": "5",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 9,
+    "etichetta": "6",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 10,
+    "etichetta": "7",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 11,
+    "etichetta": "8",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 12,
+    "etichetta": "9",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 13,
+    "etichetta": "10",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 14,
+    "etichetta": "11",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 15,
+    "etichetta": "12",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 16,
+    "etichetta": "13",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 17,
+    "etichetta": "14",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 18,
+    "etichetta": "15",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 19,
+    "etichetta": "16",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 20,
+    "etichetta": "17",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 21,
+    "etichetta": "18",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 22,
+    "etichetta": "19",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 23,
+    "etichetta": "20",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 24,
+    "etichetta": "21",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 25,
+    "etichetta": "22",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 26,
+    "etichetta": "23",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 27,
+    "etichetta": "24",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 28,
+    "etichetta": "25",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 29,
+    "etichetta": "26",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 30,
+    "etichetta": "27",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 31,
+    "etichetta": "28",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 32,
+    "etichetta": "29",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 33,
+    "etichetta": "30",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 34,
+    "etichetta": "31",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 35,
+    "etichetta": "32",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 36,
+    "etichetta": "33",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 37,
+    "etichetta": "34",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 38,
+    "etichetta": "35",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 39,
+    "etichetta": "36",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 40,
+    "etichetta": "37",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 41,
+    "etichetta": "38",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 42,
+    "etichetta": "39",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 43,
+    "etichetta": "40",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 44,
+    "etichetta": "41",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 45,
+    "etichetta": "42",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 46,
+    "etichetta": "43",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 47,
+    "etichetta": "44",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 48,
+    "etichetta": "45",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 49,
+    "etichetta": "46",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 50,
+    "etichetta": "47",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 51,
+    "etichetta": "48",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 52,
+    "etichetta": "49",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 53,
+    "etichetta": "50",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 54,
+    "etichetta": "51",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 55,
+    "etichetta": "52",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 56,
+    "etichetta": "53",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 57,
+    "etichetta": "54",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 58,
+    "etichetta": "55",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 59,
+    "etichetta": "56",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 60,
+    "etichetta": "57",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 61,
+    "etichetta": "58",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 62,
+    "etichetta": "59",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 63,
+    "etichetta": "60",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 64,
+    "etichetta": "61",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 65,
+    "etichetta": "62",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 66,
+    "etichetta": "63",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 67,
+    "etichetta": "64",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 68,
+    "etichetta": "65",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 69,
+    "etichetta": "66",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 70,
+    "etichetta": "67",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 71,
+    "etichetta": "68",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 72,
+    "etichetta": "69",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 73,
+    "etichetta": "70",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 74,
+    "etichetta": "71",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 75,
+    "etichetta": "72",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 76,
+    "etichetta": "73",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 77,
+    "etichetta": "74",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 78,
+    "etichetta": "75",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 79,
+    "etichetta": "76",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 80,
+    "etichetta": "77",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 81,
+    "etichetta": "78",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 82,
+    "etichetta": "79",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 83,
+    "etichetta": "80",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 84,
+    "etichetta": "81",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 85,
+    "etichetta": "82",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 86,
+    "etichetta": "83",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 87,
+    "etichetta": "84",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 88,
+    "etichetta": "85",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 89,
+    "etichetta": "86",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 90,
+    "etichetta": "87",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 91,
+    "etichetta": "88",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 92,
+    "etichetta": "89",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 93,
+    "etichetta": "90",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 94,
+    "etichetta": "91",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 95,
+    "etichetta": "92",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 96,
+    "etichetta": "93",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 97,
+    "etichetta": "94",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 98,
+    "etichetta": "95",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 99,
+    "etichetta": "96",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 100,
+    "etichetta": "97",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 101,
+    "etichetta": "98",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 102,
+    "etichetta": "99",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 103,
+    "etichetta": "100",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 104,
+    "etichetta": "101",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 105,
+    "etichetta": "102",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 106,
+    "etichetta": "103",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 107,
+    "etichetta": "104",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 108,
+    "etichetta": "105",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 109,
+    "etichetta": "106",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 110,
+    "etichetta": "107",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 111,
+    "etichetta": "108",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 112,
+    "etichetta": "109",
+    "testo_identico": true,
+    "render_identico": true
+  },
+  {
+    "pagina_fisica": 113,
+    "etichetta": "110",
+    "testo_identico": true,
+    "render_identico": true
+  }
+]

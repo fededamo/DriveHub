@@ -1,0 +1,33 @@
+[
+  {
+    "original": "Relazione_SWE/capitoli/3c_prezzi_sicurezza.tex:21–31",
+    "original_label": "tab:prezzi",
+    "destination": "docs/relazione/capitoli/3_implementazione.tex:631–643",
+    "current_label": "tab:impl-importi",
+    "function": "Origine degli importi: listino/base, acconto, saldo, noleggio e stima; momento vincolante.",
+    "treatment": "Anomalia saldo/listino risolta dall’accordo persistito; base manuale nella formula e geometrica corrente.",
+    "sources": [
+      "service/PriceCalculatorService.java:26–111",
+      "service/PurchaseService.java:65–183",
+      "service/SaleToDealershipService.java:55–182",
+      "docs/adr/0001-base-manuale-e-prezzo-concordato.md"
+    ],
+    "limit": "Formula didattica, double e arrotondamenti; nessuna stima di mercato, zero nel dato diverso da movimento consentito."
+  },
+  {
+    "original": "Relazione_SWE/capitoli/3d_dao.tex:60–71",
+    "original_label": "tab:garanzie",
+    "destination": "docs/relazione/capitoli/3_implementazione.tex:1143–1157",
+    "current_label": "tab:impl-garanzie",
+    "function": "Regola, meccanismo e limite delle garanzie transazionali e dei vincoli.",
+    "treatment": "Connection/callback, lock, UNIQUE/EXCLUDE e Observer transazionale sostituiscono UnitOfWork e vecchie lacune.",
+    "sources": [
+      "dao/DatabaseManager.java:66–106",
+      "event/VehicleEventPublisher.java:28–32",
+      "src/main/resources/db/schema.sql:79–96",
+      "src/main/resources/db/schema.sql:147–310",
+      "dao/postgres/PostgresUserDao.java:215–291"
+    ],
+    "limit": "Letture autonome, PK/email locali e assenza di autorizzazione universale, retry/outbox o prova dedicata commit/rollback."
+  }
+]

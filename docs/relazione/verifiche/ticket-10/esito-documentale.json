@@ -1,0 +1,19 @@
+{
+  "baseline_files": 3053,
+  "preserved": 3030,
+  "changed": 23,
+  "added": 219,
+  "structural_entries": 47,
+  "ui_functions": 18,
+  "principal_cases": 6,
+  "additional_cases": 9,
+  "relations": 13,
+  "original_diagrams": 11,
+  "drawio_pairs": 43,
+  "resolved_refs": 60,
+  "pdf_pages": 129,
+  "extract_pages": 96,
+  "chapter1_identical": true,
+  "tex_underfull": 0,
+  "tex_infinite_glue": 5
+}

@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "pages": 151,
+  "structural_entries": 15,
+  "listings": 15,
+  "retained_exact_listings": 3,
+  "historical_classes_E1": 23,
+  "historical_classes_E2": 22,
+  "historical_counts": "Separate, nessuna esecuzione o coverage derivata",
+  "changed": [
+    "docs/relazione/README.md",
+    "docs/relazione/allineamento.md",
+    "docs/relazione/appendici/c_verifiche.tex",
+    "docs/relazione/capitoli/4_testing.tex",
+    "docs/relazione/indice.md",
+    "docs/relazione/piano.md",
+    "docs/relazione/relazione-drivehub.pdf",
+    "docs/relazione/tracker/issues/12-riallineamento-testing.md"
+  ],
+  "pdf_sha256": "be80f25106eafe5c7a05a7f428b3c805d75b5d67d908daed05c490a3d16ba239",
+  "extract_sha256": "728068c5dc68d6f3044f46a30bb78aa63221e6dc2792b5845fbaa57b7df1fe19",
+  "visual_inspection": "Verbale manuale separato; non dimostrata da questo script."
+}

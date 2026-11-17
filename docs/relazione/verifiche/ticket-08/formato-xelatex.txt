@@ -1,0 +1,193 @@
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025/Debian) (INITEX)
+ restricted \write18 enabled.
+entering extended mode
+
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/te
+x-ini-files/xelatex.ini
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/latex.ltx
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/texsys.cfg)
+./texsys.aux found
+
+
+\@currdir set to: ./.
+
+
+Assuming \openin and \input 
+have the same search path.
+
+
+Defining UNIX/DOS style filename parser.
+
+catcodes, registers, parameters,
+LaTeX2e <2025-11-01>
+
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/l3
+kernel/expl3.ltx
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/l3
+kernel/expl3-code.tex)) hacks, document commands, templates, control, par,
+spacing, files, font encodings, lengths, NFSS base, NFSS axes, NFSS tracing,
+NFSS declarative interface, NFSS initialization,
+====================================
+
+Local config file fonttext.cfg used
+
+====================================
+
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/fonttext.cfg
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/fonttext.ltx
+=== Don't modify this file, use a .cfg file instead ===
+
+
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/omlenc.def)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/omsenc.def)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/ot1enc.def)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/t1enc.def)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/ts1enc.def)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/tuenc.def)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/tulmr.fd)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/tulmss.fd)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/tulmtt.fd)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texmf/tex/latex/lm/ts1lmr.fd)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/t1cmr.fd)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/ot1cmr.fd)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/ts1cmr.fd)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/t1cmss.fd)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/t1cmtt.fd)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/ot1cmss.fd)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/ot1cmtt.fd)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/ts1cmss.fd)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/ts1cmtt.fd)))
+====================================
+
+Local config file fontmath.cfg used
+
+====================================
+
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/fontmath.cfg
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/fontmath.ltx
+=== Don't modify this file, use a .cfg file instead ===
+
+
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/omlcmm.fd)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/omscmsy.fd)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/omxcmex.fd)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/ucmr.fd)))
+====================================
+
+Local config file preload.cfg used
+
+=====================================
+
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/preload.cfg
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/preload.ltx)) page nos., x-ref, environments, center, verbatim,
+math definitions, boxes, title, sectioning, contents, floats, footnotes,
+index, bibliography, output,  Unicode character data,
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+unicode-data/load-unicode-data.tex 
+load-unicode-data.tex v1.19 (2025-09-26)
+Reading Unicode data
+# UnicodeData-17.0.0.txt
+# Modified 2025-09-26 07:00 GMT [JAW]
+)
+===========================================
+Local configuration file hyphen.cfg used
+===========================================
+
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+babel/hyphen.cfg
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+babel/xebabel.def)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+hyphen/hyphen.tex)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+hyph-utf8/loadhyph/loadhyph-it.tex UTF-8 Italian hyphenation patterns
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+hyph-utf8/patterns/tex/hyph-it.tex)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+hyph-utf8/patterns/quote/hyph-quote-it.tex)))
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/fi
+rstaid/latex2e-first-aid-for-external-files.ltx)
+ ) )
+Beginning to dump on file xelatex.fmt
+ (preloaded format=xelatex 2026.11.14)
+95348 strings of total length 774808
+425709 memory locations dumped; current usage is 317&385866
+28688 multiletter control sequences
+\font\nullfont=nullfont
+\font\c__fp_exp_intarray=cmr10 at 0.00002pt
+\font\c__fp_trig_intarray=cmr10 at 0.00003pt
+\font\c_initex_cctab=cmr10 at 0.00005pt
+\font\c_other_cctab=cmr10 at 0.00006pt
+\font\c_str_cctab=cmr10 at 0.00008pt
+\font\g_tmpa_cctab=cmr10 at 0.00009pt
+\font\g_tmpb_cctab=cmr10 at 0.0001pt
+\font\g__regex_state_active_intarray=cmr10 at 0.00012pt
+\font\g__regex_thread_info_intarray=cmr10 at 0.00014pt
+\font\g__regex_submatch_prev_intarray=cmr10 at 0.00015pt
+\font\g__regex_submatch_begin_intarray=cmr10 at 0.00017pt
+\font\g__regex_submatch_end_intarray=cmr10 at 0.00018pt
+\font\g__regex_submatch_case_intarray=cmr10 at 0.0002pt
+\font\g__regex_balance_intarray=cmr10 at 0.00021pt
+\font\g__codepoint_category_index_intarray=cmr10 at 0.00023pt
+\font\g__codepoint_grapheme_index_intarray=cmr10 at 0.00024pt
+\font\g__codepoint_lowercase_index_intarray=cmr10 at 0.00026pt
+\font\g__codepoint_uppercase_index_intarray=cmr10 at 0.00027pt
+\font\g__codepoint_wordbreak_index_intarray=cmr10 at 0.00029pt
+\font\g__codepoint_category_blocks_intarray=cmr10 at 0.0003pt
+\font\g__codepoint_grapheme_blocks_intarray=cmr10 at 0.00032pt
+\font\g__codepoint_lowercase_blocks_intarray=cmr10 at 0.00034pt
+\font\g__codepoint_uppercase_blocks_intarray=cmr10 at 0.00035pt
+\font\g__codepoint_wordbreak_blocks_intarray=cmr10 at 0.00037pt
+\font\OMX/cmex/m/n/10=cmex10
+\font\tenln=line10
+\font\tenlnw=linew10
+\font\tencirc=lcircle10
+\font\tencircw=lcirclew10
+\font\OT1/cmr/m/n/5=cmr5
+\font\OT1/cmr/m/n/7=cmr7
+\font\OT1/cmr/m/n/10=cmr10
+\font\OML/cmm/m/it/5=cmmi5
+\font\OML/cmm/m/it/7=cmmi7
+\font\OML/cmm/m/it/10=cmmi10
+\font\OMS/cmsy/m/n/5=cmsy5
+\font\OMS/cmsy/m/n/7=cmsy7
+\font\OMS/cmsy/m/n/10=cmsy10
+\font\c_code_cctab=cmr10 at 0.00038pt
+\font\c_document_cctab=cmr10 at 0.0004pt
+627714 words of font info for 40 preloaded fonts
+14 hyphenation exceptions
+Hyphenation trie of length 14618 has 218 ops out of 35111
+  37 for language 1
+  181 for language 0
+No pages of output.
+Transcript written on xelatex.log.

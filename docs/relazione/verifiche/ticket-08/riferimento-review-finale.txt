@@ -1,0 +1,5 @@
+HEAD iniziale e finale: 61ce18ae1d4e0458b63e970b793b0b3a634a3adf
+Baseline effettiva: baseline-conservazione.json + baseline-editoriale.tar.gz.
+Prima review: delta-documentale.diff + delta-files.json + input-review.json.
+Chiusura: delta-documentale-finale.diff + delta-files-finale.json + input-review-finale.json.
+Rapporti distinti e ricontrolli: revisione.md. Nessun commit.

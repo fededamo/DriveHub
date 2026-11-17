@@ -1,0 +1,26 @@
+Ticket 12 — chiusura tecnica del 17 novembre 2026
+
+PASS: sha256sum -c docs/relazione/verifiche/ticket-12/SHA256SUMS
+95 file verificati, nessuna impronta differente o mancante.
+Il manifest comprende gli otto file modificati rispetto alla baseline e
+le nuove evidenze del ticket 12, compresi PDF, estratto, sorgenti censiti,
+rapporti indipendenti, log, rendering e archivio iniziale.
+SHA256SUMS esclude se stesso e questo resoconto, scritto dopo la verifica.
+Non è un pacchetto finale della relazione né l'integrazione del ticket 13.
+
+Baseline: 2804 file, inclusi non tracciati; 8 modificati
+nel perimetro documentale, 2796 immutati, nessuna rimozione.
+Capitoli 1–3: 101 pagine identiche a testo e pixel; fonti, originali,
+tavole, codice, test, harness e storici conservati.
+PDF completo: 151 pagine; capitolo 4: 106–118; C: 143–151;
+estratto: 22 pagine. Cinque impronte del candidato revisionato invariate.
+Controlli documentali PASS, 370 collegamenti locali e 7 ancore verificati.
+Compilazioni TeX reali; 25 pagine osservate. Persistono cinque messaggi
+TeX preesistenti in C alle pagine fisiche 145–149, senza difetti visivi
+riscontrati. Nessun Overfull, Underfull, glifo mancante o rinvio irrisolto.
+
+Standards e Spec: nessun rilievo aperto; ricontrolli amministrativi conformi.
+Ticket 12 done con 9/9 criteri; approvazione degli autori ancora distinta.
+Nessun Java, Maven, JUnit, harness, avvio UI, accesso DB, commit o invio.
+Git diff --check: exit 0; il delta effettivo dei materiali non tracciati
+è delta-documentale.diff, confrontato con l'archivio iniziale.

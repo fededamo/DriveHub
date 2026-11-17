@@ -1,0 +1,475 @@
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025/Debian) (preloaded format=xelatex)
+entering extended mode
+(./main.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2026-01-19>
+
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/report.cls
+Document Class: report 2025/01/22 v1.4n Standard LaTeX document class
+
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/size12.clo))
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/fontenc.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texmf/tex/latex/lm/t1lmr.fd))
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+babel/babel.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+babel/xebabel.def)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+babel/locale/it/babel-italian.tex)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+babel-italian/italian.ldf))
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/et
+oolbox/etoolbox.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ge
+ometry/geometry.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/gr
+aphics/keyval.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+iftex/ifvtex.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+iftex/iftex.sty)))
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/gr
+aphics/graphicx.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/gr
+aphics/graphics.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/gr
+aphics/trig.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/gr
+aphics-cfg/graphics.cfg)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/gr
+aphics-def/xetex.def)))
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/en
+umitem/enumitem.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/xc
+olor/xcolor.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/gr
+aphics-cfg/color.cfg)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/gr
+aphics/mathcolor.ltx))
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/co
+lortbl/colortbl.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/to
+ols/array.sty))
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/li
+stings/listings.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/li
+stings/lstpatch.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/li
+stings/lstmisc.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/li
+stings/listings.cfg))
+==> First Aid for listings.sty no longer applied!
+    Expected:
+        2024/09/23 1.10c (Carsten Heinz)
+    but found:
+        2025/11/14 1.11b (Carsten Heinz)
+    so I'm assuming it got fixed.
+
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/to
+ols/longtable.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hy
+perref/hyperref.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/kv
+setkeys/kvsetkeys.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+kvdefinekeys/kvdefinekeys.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+pdfescape/pdfescape.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+ltxcmds/ltxcmds.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+pdftexcmds/pdftexcmds.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+infwarerr/infwarerr.sty)))
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hy
+color/hycolor.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hy
+perref/nameref.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/re
+fcount/refcount.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+gettitlestring/gettitlestring.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/kv
+options/kvoptions.sty)))
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+stringenc/stringenc.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hy
+perref/pd1enc.def)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+intcalc/intcalc.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hy
+perref/puenc.def)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ur
+l/url.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+bitset/bitset.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+bigintcalc/bigintcalc.sty)))
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hy
+perref/hxetex.def
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/re
+runfilecheck/rerunfilecheck.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+uniquecounter/uniquecounter.sty)))
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/l3
+backend/l3backend-xetex.def)
+(/home/federico/dev/Drivehub/DriveHub/docs/relazione/build/ticket08/main.aux)
+*geometry* driver: auto-detecting
+*geometry* detected driver: xetex
+(/home/federico/dev/Drivehub/DriveHub/docs/relazione/build/ticket08/main.out)
+(/home/federico/dev/Drivehub/DriveHub/docs/relazione/build/ticket08/main.out)
+
+Package hyperref Warning: Rerun to get /PageLabels entry.
+
+[1]
+(/home/federico/dev/Drivehub/DriveHub/docs/relazione/build/ticket08/main.toc)
+[1] (./capitoli/1_introduzione.tex
+Capitolo 1.
+[1]
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texmf/tex/latex/lm/t1lmtt.fd)
+[2]) (./capitoli/2_progettazione.tex [3]
+Capitolo 2.
+(./capitoli/2_funzioni.tex
+
+LaTeX Warning: Reference `fig:uc-cliente' on page 4 undefined on input line 5.
+
+
+LaTeX Warning: Reference `fig:uc-manager' on page 4 undefined on input line 5.
+
+
+LaTeX Warning: Reference `app:casi-uso' on page 4 undefined on input line 17.
+
+[4] [5] [6] [7]
+
+LaTeX Warning: Reference `app:casi-uso' on page 8 undefined on input line 42.
+
+
+LaTeX Warning: Reference `uc:UC-01' on page 8 undefined on input line 51.
+
+
+LaTeX Warning: Reference `uc:UC-02' on page 8 undefined on input line 56.
+
+
+LaTeX Warning: Reference `uc:UC-03' on page 8 undefined on input line 61.
+
+
+LaTeX Warning: Reference `uc:UC-04' on page 8 undefined on input line 65.
+
+
+LaTeX Warning: Reference `uc:UC-05' on page 8 undefined on input line 70.
+
+
+LaTeX Warning: Reference `uc:UC-06' on page 8 undefined on input line 74.
+
+[8]
+
+LaTeX Warning: Reference `uc:UC-07' on page 9 undefined on input line 101.
+
+
+LaTeX Warning: Reference `uc:UC-08' on page 9 undefined on input line 102.
+
+
+LaTeX Warning: Reference `uc:UC-09' on page 9 undefined on input line 103.
+
+
+LaTeX Warning: Reference `uc:UC-10' on page 9 undefined on input line 103.
+
+
+LaTeX Warning: Reference `uc:UC-11' on page 9 undefined on input line 104.
+
+
+LaTeX Warning: Reference `uc:UC-S01' on page 9 undefined on input line 105.
+
+
+LaTeX Warning: Reference `uc:UC-S02' on page 9 undefined on input line 106.
+
+
+LaTeX Warning: Reference `uc:UC-S03' on page 9 undefined on input line 106.
+
+
+LaTeX Warning: Reference `uc:UC-S04' on page 9 undefined on input line 107.
+
+[9] [10] [11] [12] [13] [14] [15] [16] [17] [18]
+
+LaTeX Warning: Reference `fig:nav-cliente' on page 19 undefined on input line 1
+80.
+
+
+LaTeX Warning: Reference `fig:nav-manager' on page 19 undefined on input line 1
+80.
+
+
+LaTeX Warning: Reference `fig:ui-cliente-catalogo' on page 19 undefined on inpu
+t line 196.
+
+
+LaTeX Warning: Reference `fig:ui-identita' on page 19 undefined on input line 1
+96.
+
+
+LaTeX Warning: Reference `fig:ui-cliente-catalogo' on page 19 undefined on inpu
+t line 196.
+
+
+LaTeX Warning: Reference `fig:ui-identita' on page 19 undefined on input line 1
+96.
+
+[19]
+
+LaTeX Warning: Reference `fig:ui-venditore-richieste' on page 20 undefined on i
+nput line 201.
+
+
+LaTeX Warning: Reference `fig:ui-venditore-inventario' on page 20 undefined on 
+input line 201.
+
+
+LaTeX Warning: Reference `fig:ui-venditore-richieste' on page 20 undefined on i
+nput line 201.
+
+
+LaTeX Warning: Reference `fig:ui-venditore-inventario' on page 20 undefined on 
+input line 201.
+
+[20]
+
+LaTeX Warning: Reference `fig:ui-manager-marchi' on page 21 undefined on input 
+line 211.
+
+
+LaTeX Warning: Reference `fig:ui-manager-registro' on page 21 undefined on inpu
+t line 211.
+
+
+LaTeX Warning: Reference `fig:ui-manager-marchi' on page 21 undefined on input 
+line 211.
+
+
+LaTeX Warning: Reference `fig:ui-manager-registro' on page 21 undefined on inpu
+t line 211.
+
+[21]) (./capitoli/2_architettura.tex
+
+LaTeX Warning: Reference `fig:pkg' on page 22 undefined on input line 3.
+
+[22] [23]
+
+LaTeX Warning: Reference `app:classi' on page 24 undefined on input line 51.
+
+
+LaTeX Warning: Reference `fig:catalogo-corpo' on page 24 undefined on input lin
+e 74.
+
+[24] [25]
+
+LaTeX Warning: Reference `fig:eventi-corpo' on page 26 undefined on input line 
+113.
+
+[26] [27]
+
+LaTeX Warning: Reference `ch:implementazione' on page 28 undefined on input lin
+e 144.
+
+[28]) (./capitoli/2_sequenze.tex
+
+LaTeX Warning: Reference `app:casi-uso' on page 29 undefined on input line 3.
+
+
+LaTeX Warning: Reference `fig:sq01a' on page 29 undefined on input line 36.
+
+[29] [30]
+
+LaTeX Warning: Reference `fig:sq01b' on page 31 undefined on input line 53.
+
+
+LaTeX Warning: Reference `fig:sq01c' on page 31 undefined on input line 63.
+
+[31] [32] [33]
+
+LaTeX Warning: Reference `fig:sq01d' on page 34 undefined on input line 86.
+
+[34] [35]
+
+LaTeX Warning: Reference `fig:sq02' on page 36 undefined on input line 108.
+
+
+LaTeX Warning: Reference `fig:sqob' on page 36 undefined on input line 120.
+
+[36] [37] [38]
+
+LaTeX Warning: Reference `fig:sq03a' on page 39 undefined on input line 145.
+
+
+LaTeX Warning: Reference `fig:sq03b' on page 39 undefined on input line 157.
+
+[39] [40] [41]) (./capitoli/2_database.tex
+
+LaTeX Warning: Reference `fig:er01' on page 42 undefined on input line 10.
+
+
+LaTeX Warning: Reference `fig:er02' on page 42 undefined on input line 10.
+
+[42] [43] [44]
+
+LaTeX Warning: Reference `fig:rel01' on page 45 undefined on input line 49.
+
+
+LaTeX Warning: Reference `fig:rel03' on page 45 undefined on input line 49.
+
+[45] [46] [47] [48] [49])) (./capitoli/3_implementazione.tex [50]
+Capitolo 3.
+
+LaTeX Warning: Reference `app:classi' on page 51 undefined on input line 3.
+
+
+LaTeX Warning: Reference `sec:sequenze' on page 51 undefined on input line 4.
+
+
+LaTeX Warning: Reference `sec:database' on page 51 undefined on input line 5.
+
+
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/li
+stings/lstlang1.sty)
+
+LaTeX Warning: Reference `lst:vehicle-invariante' on page 51 undefined on input
+ line 28.
+
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texmf/tex/latex/lm/ts1lmtt.fd)
+[51] [52]
+
+LaTeX Warning: Reference `lst:transazione' on page 53 undefined on input line 1
+80.
+
+[53] [54]
+
+LaTeX Warning: Reference `fig:sqob' on page 55 undefined on input line 271.
+
+[55]
+
+LaTeX Warning: Reference `sec:navigazione' on page 56 undefined on input line 3
+48.
+
+[56] [57] [58]
+
+LaTeX Warning: Reference `sec:database' on page 59 undefined on input line 533.
+
+
+
+LaTeX Warning: Reference `fig:rel02' on page 59 undefined on input line 541.
+
+
+LaTeX Warning: Reference `fig:rel03' on page 59 undefined on input line 541.
+
+
+LaTeX Warning: Reference `fig:pkg' on page 59 undefined on input line 550.
+
+[59]
+
+LaTeX Warning: Reference `lst:observer' on page 60 undefined on input line 565.
+
+
+
+LaTeX Warning: Reference `lst:navigazione' on page 60 undefined on input line 5
+73.
+
+
+LaTeX Warning: Reference `lst:singleton' on page 60 undefined on input line 589
+.
+
+) (./capitoli/4_testing.tex [60]
+Capitolo 4.
+
+LaTeX Warning: Reference `app:verifiche' on page 61 undefined on input line 5.
+
+[61]
+
+LaTeX Warning: Reference `lst:test-accordo' on page 62 undefined on input line 
+78.
+
+[62]
+
+LaTeX Warning: Reference `lst:test-rollback' on page 63 undefined on input line
+ 162.
+
+[63]
+
+LaTeX Warning: Reference `lst:test-gara' on page 64 undefined on input line 191
+.
+
+
+LaTeX Warning: Reference `sec:sequenze' on page 64 undefined on input line 218.
+
+
+[64]
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/li
+stings/lstlang1.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/li
+stings/lstlang1.sty)
+
+LaTeX Warning: Reference `app:verifiche' on page 65 undefined on input line 305
+.
+
+) (./capitoli/5_uso_ai.tex [65]
+Capitolo 5.
+[66]
+
+LaTeX Warning: Reference `app:verifiche' on page 67 undefined on input line 65.
+
+
+
+LaTeX Warning: Reference `ch:testing' on page 67 undefined on input line 95.
+
+
+LaTeX Warning: Reference `app:verifiche' on page 67 undefined on input line 95.
+
+
+[67]
+
+LaTeX Warning: Reference `app:classi' on page 68 undefined on input line 130.
+
+) (./appendici/appendici.tex [68]
+Appendice A.
+(./appendici/a_casi_uso.tex [69] [70] [71] [72] [73] [74] [75] [76] [77]
+[78] [79] [80] [81]) [82]
+Appendice B.
+(./appendici/b_classi.tex
+
+LaTeX Warning: Reference `sec:classi' on page 83 undefined on input line 1.
+
+[83] [84] [85] [86] [87] [88] [89] [90] [91] [92] [93] [94] [95])
+Appendice C.
+(./appendici/c_verifiche.tex
+
+LaTeX Warning: Reference `app:casi-uso' on page 96 undefined on input line 8.
+
+[96] [97]
+ignored error: Infinite glue shrinkage found in box being split [98]
+ignored error: Infinite glue shrinkage found in box being split [99]
+ignored error: Infinite glue shrinkage found in box being split [100]
+ignored error: Infinite glue shrinkage found in box being split [101]
+ignored error: Infinite glue shrinkage found in box being split [102] [103]
+
+LaTeX Warning: Reference `sec:test-esecuzione' on page 104 undefined on input l
+ine 385.
+
+)) [104]
+(/home/federico/dev/Drivehub/DriveHub/docs/relazione/build/ticket08/main.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `main.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+ )
+Output written on /home/federico/dev/Drivehub/DriveHub/docs/relazione/build/tic
+ket08/main.pdf (106 pages).
+Transcript written on /home/federico/dev/Drivehub/DriveHub/docs/relazione/build
+/ticket08/main.log.

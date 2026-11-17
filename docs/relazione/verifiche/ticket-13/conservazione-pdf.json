@@ -1,0 +1,100 @@
+[
+  {
+    "part": "Introduzione",
+    "initial": [
+      5,
+      7
+    ],
+    "final": [
+      5,
+      7
+    ],
+    "pages": 3,
+    "text_equal": true,
+    "pixel_equal": true
+  },
+  {
+    "part": "Analisi dei requisiti e progettazione",
+    "initial": [
+      8,
+      82
+    ],
+    "final": [
+      8,
+      82
+    ],
+    "pages": 75,
+    "text_equal": true,
+    "pixel_equal": true
+  },
+  {
+    "part": "Implementazione",
+    "initial": [
+      83,
+      105
+    ],
+    "final": [
+      83,
+      105
+    ],
+    "pages": 23,
+    "text_equal": true,
+    "pixel_equal": true
+  },
+  {
+    "part": "Testing",
+    "initial": [
+      106,
+      118
+    ],
+    "final": [
+      106,
+      118
+    ],
+    "pages": 13,
+    "text_equal": true,
+    "pixel_equal": true
+  },
+  {
+    "part": "Schede aggiuntive dei casi d'uso",
+    "initial": [
+      122,
+      129
+    ],
+    "final": [
+      122,
+      129
+    ],
+    "pages": 8,
+    "text_equal": true,
+    "pixel_equal": true
+  },
+  {
+    "part": "Tavole delle classi",
+    "initial": [
+      130,
+      142
+    ],
+    "final": [
+      130,
+      142
+    ],
+    "pages": 13,
+    "text_equal": true,
+    "pixel_equal": true
+  },
+  {
+    "part": "Matrice delle verifiche",
+    "initial": [
+      143,
+      151
+    ],
+    "final": [
+      143,
+      151
+    ],
+    "pages": 9,
+    "text_equal": true,
+    "pixel_equal": true
+  }
+]

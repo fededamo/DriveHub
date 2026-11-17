@@ -1,0 +1,25 @@
+{
+  "file_baseline": 2430,
+  "file_precedenti_conservati": 2423,
+  "modificati": [
+    "docs/relazione/README.md",
+    "docs/relazione/allineamento.md",
+    "docs/relazione/capitoli/1_introduzione.tex",
+    "docs/relazione/indice.md",
+    "docs/relazione/piano.md",
+    "docs/relazione/relazione-drivehub.pdf",
+    "docs/relazione/tracker/issues/09-riallineamento-introduzione.md"
+  ],
+  "riferimenti_risolti": 62,
+  "pagine_pdf": 113,
+  "pagine_identiche_alla_baseline": 112,
+  "unica_pagina_modificata": 6,
+  "messaggi_tex_residui": [
+    "104",
+    "105",
+    "106",
+    "107",
+    "108"
+  ],
+  "test_applicativi_eseguiti": false
+}

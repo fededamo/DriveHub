@@ -1,0 +1,28 @@
+PASS Destinazione demo dedicata
+PASS JavaFX avviato
+PASS App.start mostra LoginView
+SCREENSHOT 01-accesso
+SCREENSHOT 02-registrazione
+PASS Dati demo caricati in ClientDashboardView
+LOGIN ClientDashboardView
+SCREENSHOT 03-cliente-catalogo
+PASS Catalogo non vuoto prima del dialogo
+SCREENSHOT 04-cliente-dialogo-test-drive
+SCREENSHOT 05-cliente-noleggio
+PASS Catalogo non vuoto prima del dialogo
+SCREENSHOT 06-cliente-dialogo-noleggio
+SCREENSHOT 07-cliente-cessione
+SCREENSHOT 08-cliente-operazioni
+SCREENSHOT 09-cliente-identita
+PASS Dati demo caricati in SalesmanDashboardView
+LOGIN SalesmanDashboardView
+SCREENSHOT 10-venditore-richieste
+SCREENSHOT 11-venditore-inventario
+PASS Dati demo caricati in ManagerDashboardView
+LOGIN ManagerDashboardView
+SCREENSHOT 12-manager-marchi
+SCREENSHOT 13-manager-modelli
+SCREENSHOT 14-manager-veicoli
+SCREENSHOT 15-manager-sconti
+SCREENSHOT 16-manager-registro
+ACQUISIZIONE COMPLETATA: 16 screenshot, tre login e ritorni all'accesso.

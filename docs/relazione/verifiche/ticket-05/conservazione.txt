@@ -1,0 +1,22 @@
+2026-11-13 12:39:47.296027+00:00
+$ git rev-parse 61ce18ae1d4e0458b63e970b793b0b3a634a3adf
+61ce18ae1d4e0458b63e970b793b0b3a634a3adf
+
+
+exit 0
+$ git diff 61ce18ae1d4e0458b63e970b793b0b3a634a3adf...HEAD
+
+
+exit 0
+$ git log 61ce18ae1d4e0458b63e970b793b0b3a634a3adf..HEAD --oneline
+
+
+exit 0
+$ git status --short
+?? .serena/
+?? docs/AGENTS.md
+?? docs/agents/
+?? docs/relazione/
+
+
+exit 0

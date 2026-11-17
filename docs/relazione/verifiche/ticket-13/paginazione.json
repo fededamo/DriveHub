@@ -1,0 +1,82 @@
+{
+  "initial_pages": 151,
+  "final_pages": 151,
+  "initial_ranges": {
+    "Introduzione": [
+      5,
+      7
+    ],
+    "Analisi dei requisiti e progettazione": [
+      8,
+      82
+    ],
+    "Implementazione": [
+      83,
+      105
+    ],
+    "Testing": [
+      106,
+      118
+    ],
+    "Uso dell'AI": [
+      119,
+      121
+    ],
+    "Schede aggiuntive dei casi d'uso": [
+      122,
+      129
+    ],
+    "Tavole delle classi": [
+      130,
+      142
+    ],
+    "Matrice delle verifiche": [
+      143,
+      151
+    ]
+  },
+  "final_ranges": {
+    "Introduzione": [
+      5,
+      7
+    ],
+    "Analisi dei requisiti e progettazione": [
+      8,
+      82
+    ],
+    "Implementazione": [
+      83,
+      105
+    ],
+    "Testing": [
+      106,
+      118
+    ],
+    "Uso dell'AI": [
+      119,
+      121
+    ],
+    "Schede aggiuntive dei casi d'uso": [
+      122,
+      129
+    ],
+    "Tavole delle classi": [
+      130,
+      142
+    ],
+    "Matrice delle verifiche": [
+      143,
+      151
+    ]
+  },
+  "changed_text_pages": [
+    119,
+    120,
+    121
+  ],
+  "changed_pixel_pages": [
+    119,
+    120,
+    121
+  ]
+}

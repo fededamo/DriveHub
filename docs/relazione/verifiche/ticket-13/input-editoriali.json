@@ -1,0 +1,166 @@
+{
+  "original": [
+    {
+      "source": "Relazione_SWE/main.tex",
+      "sha256": "3a9e112161f59fc938af8f7ab4ca4bca46748e1c5078823a5344516d58b851bd"
+    },
+    {
+      "source": "Relazione_SWE/capitoli/1_introduzione.tex",
+      "sha256": "6f0f69483286455f26057eb819b934cc73f50c4862cc7e6e69886a4309e05096"
+    },
+    {
+      "source": "Relazione_SWE/capitoli/2_progettazione.tex",
+      "sha256": "d338ab213fd58388685f014fc3d8a35d8eeb919bbdcee75ebfa2068c0bb60de8"
+    },
+    {
+      "source": "Relazione_SWE/capitoli/2a_casi_uso.tex",
+      "sha256": "4630903546c3295552b3759240fca484a4fbee16fe1e089d0ee3b8b62242c0ba"
+    },
+    {
+      "source": "Relazione_SWE/templates/test_drive.tex",
+      "sha256": "bc981bf308447ac43830e778cc94748993ddbbc6b595c71756c0e8f122697592"
+    },
+    {
+      "source": "Relazione_SWE/templates/noleggio.tex",
+      "sha256": "58f5118782b9e02147cc3f7827dbaf21aba5a9c750f612e89e5a4b536f229a56"
+    },
+    {
+      "source": "Relazione_SWE/templates/acquisto.tex",
+      "sha256": "de30f5db39f954c2c6024ab06a52a8019f1e20c79bbdb0e44dd222ed171956d4"
+    },
+    {
+      "source": "Relazione_SWE/templates/cessione.tex",
+      "sha256": "8a075a79b9bb23de5fdb80d2a58c46ac222d01fc3f9805561203f2cab617d0bb"
+    },
+    {
+      "source": "Relazione_SWE/templates/autorizzazione_acquisto.tex",
+      "sha256": "d61e2a0ebc76619b7f44ff689881222b3d89f395a1d25812f2a00c11b2d78627"
+    },
+    {
+      "source": "Relazione_SWE/templates/sconto_veicolo.tex",
+      "sha256": "fdd2e41860d0b1e7ebf953b179d31ef3a68cb70afce9b94370d90df367505068"
+    },
+    {
+      "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+      "sha256": "24fe1f43b5156730a6fc703b82c040b949c08c5a749e1478eceb925a2e016097"
+    },
+    {
+      "source": "Relazione_SWE/capitoli/2c_package_diagram.tex",
+      "sha256": "b77aeaf0160ecc6cc269eb386b84a4d2caae92fae9207acd3d69476a79c7e066"
+    },
+    {
+      "source": "Relazione_SWE/capitoli/2c_class_diagram.tex",
+      "sha256": "78bf88a8a20afde690e7278ac47c136732ee60a4e98b5c0acfeeca4760d42890"
+    },
+    {
+      "source": "Relazione_SWE/capitoli/2c_sequence_diagram.tex",
+      "sha256": "5aee8bbde34a14a07a3503e8de6620388adb3c9b80633c286d5f61d95f8359e0"
+    },
+    {
+      "source": "Relazione_SWE/capitoli/2c_database.tex",
+      "sha256": "668248450e03c3d23a5267ed0eb9d29f1cf84daff664e48d88bb6dc5f2cec470"
+    },
+    {
+      "source": "Relazione_SWE/capitoli/3_implementazione.tex",
+      "sha256": "422a4aa1a45c4c6158dc332275985af0b9d6f73c9e6ea38e3ea110189c9a4f5d"
+    },
+    {
+      "source": "Relazione_SWE/capitoli/3a_domain_model.tex",
+      "sha256": "7dbb45a2f0e4771a4fac1b1e4a43ad913e856a08efcfd7e854952c6c133464fc"
+    },
+    {
+      "source": "Relazione_SWE/capitoli/3b_business_layer.tex",
+      "sha256": "310640a1858423403eaf699e4a4be8a2e4b7f646c65750bc3059d1f5eaed79f1"
+    },
+    {
+      "source": "Relazione_SWE/capitoli/3b_flussi.tex",
+      "sha256": "15b49820efe36b6191bcd2a208835ad80c6013c2b50716857ed0abda8b5b9374"
+    },
+    {
+      "source": "Relazione_SWE/capitoli/3c_prezzi_sicurezza.tex",
+      "sha256": "9f0d658f46e73eca990b58eb2614f89dea78f0549c7edbf577a7654d68f43e63"
+    },
+    {
+      "source": "Relazione_SWE/capitoli/3a_presentazione_dominio.tex",
+      "sha256": "7045ef5176c5c85816bc18c3eb1757a66dd531c4346125535e2e0e2928c59dbc"
+    },
+    {
+      "source": "Relazione_SWE/capitoli/3d_dao.tex",
+      "sha256": "81b8a20b3c3ee70a9dfec4ce1d8276d03c85e7fe99b6ebebe80d5fe597c714f9"
+    },
+    {
+      "source": "Relazione_SWE/capitoli/3e_pattern.tex",
+      "sha256": "0f712c75b8be877403fe31764a5c0dc60a293227bd1498b11dd149828b845a64"
+    },
+    {
+      "source": "Relazione_SWE/capitoli/4_testing.tex",
+      "sha256": "74e8e27123a6507eb381edc1666e43f33ba80044e23aca43262bd14e2daea2a6"
+    }
+  ],
+  "current": [
+    {
+      "source": "docs/relazione/main.tex",
+      "sha256": "d8b8d74e8b00425653660dbddebd84b50f93ecc41a6e113411a1040334b112f8"
+    },
+    {
+      "source": "docs/relazione/capitoli/1_introduzione.tex",
+      "sha256": "6b37e2c36ce2175949caec357b69ac9cb3b0529658b72775f232bf8a6edae020"
+    },
+    {
+      "source": "docs/relazione/capitoli/2_progettazione.tex",
+      "sha256": "f40f33318861696ca66c9a225c48b65b610d2b3c6ff0fbb96c07928ee7cf3d85"
+    },
+    {
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "sha256": "b4304776b3da46a6e4287e88b61ca67fa22638fa7eba894e6fc27194d1693832"
+    },
+    {
+      "source": "docs/relazione/capitoli/2_template.tex",
+      "sha256": "978b909b5806b8614b070da8d259f8c2661c74bb28f7a8711bcdf78d753219db"
+    },
+    {
+      "source": "docs/relazione/capitoli/2_architettura.tex",
+      "sha256": "7cbb21c11ebd610a07f79033c0dd68c0c094ccc9818b4de452fee3a4a75a80e4"
+    },
+    {
+      "source": "docs/relazione/capitoli/2_sequenze.tex",
+      "sha256": "19a7eff040599abfaba3310167154c514ee2f65c5b19a173d19c84f422cacccb"
+    },
+    {
+      "source": "docs/relazione/capitoli/2_database.tex",
+      "sha256": "d66c374ad99ec6811e97b7d93ac7d0a38f5a456b65130f6bf15e69ce75d8354e"
+    },
+    {
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "sha256": "6b6a947f0aa4c2581c44aa44baacedea8b52f8321c030f54c28fedeecd072302"
+    },
+    {
+      "source": "docs/relazione/capitoli/4_testing.tex",
+      "sha256": "169b4f4430f6403abf8b8641583e7b9cade285de7db8a22c7edb6d3bab005f71"
+    },
+    {
+      "source": "docs/relazione/capitoli/5_uso_ai.tex",
+      "sha256": "3a6341e5972953c974f0f987aa5210ce379304780f7b86faa86b2b5edb996977"
+    },
+    {
+      "source": "docs/relazione/appendici/appendici.tex",
+      "sha256": "30cc015d7c35c2bcf053ab8b3ce98ee7255f723d971811c714c7b7ada0b7e5f1"
+    },
+    {
+      "source": "docs/relazione/appendici/a_casi_uso.tex",
+      "sha256": "1037e575a1200f94e0fcb5269c298c896bd1e8e1daf6e162c06bb885186c5c5b"
+    },
+    {
+      "source": "docs/relazione/appendici/b_classi.tex",
+      "sha256": "7a95c1e6853a673e529e548c3a383a7cee73d0aec507e5d62c1aeb145d32cc5d"
+    },
+    {
+      "source": "docs/relazione/appendici/c_verifiche.tex",
+      "sha256": "bf7093a386bfa9d0c444fe33732b8684499f34674f266e45d2d8eae45ea5eeab"
+    }
+  ],
+  "excluded_original_inputs": [
+    "capitoli/2c_architettura.tex",
+    "capitoli/2d_dati_flussi.tex"
+  ]
+}

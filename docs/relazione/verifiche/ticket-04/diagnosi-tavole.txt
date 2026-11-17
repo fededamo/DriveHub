@@ -1,0 +1,250 @@
+note: using only cached resource files
+note: Running TeX ...
+(probe-all.tex
+LaTeX2e <2021-11-15> patch level 1
+L3 programming layer <2022-02-24> (report.cls
+Document Class: report 2021/10/04 v1.4n Standard LaTeX document class
+(size12.clo)) (fontenc.sty (t1lmr.fd)) (graphicx.sty (keyval.sty) (graphics.sty
+(trig.sty) (graphics.cfg) (xetex.def))) (l3backend-xetex.def)
+No file probe-all.aux.
+(ts1cmr.fd)
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+
+warning: probe-all.tex:1: Overfull \hbox (54.7918pt too wide) in paragraph at lines 1--1
+Overfull \hbox (54.7918pt too wide) in paragraph at lines 1--1
+[][] 
+[1]
+warning: probe-all.tex:1: Overfull \vbox (7.32144pt too high) has occurred while \output is active
+Overfull \vbox (7.32144pt too high) has occurred while \output is active
+[2]warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+
+warning: probe-all.tex:1: Overfull \hbox (54.7918pt too wide) in paragraph at lines 1--1
+Overfull \hbox (54.7918pt too wide) in paragraph at lines 1--1
+[][] 
+[3]warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+
+warning: probe-all.tex:1: Overfull \hbox (54.7918pt too wide) in paragraph at lines 1--1
+Overfull \hbox (54.7918pt too wide) in paragraph at lines 1--1
+[][] 
+[4]warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+
+warning: probe-all.tex:1: Overfull \hbox (54.7918pt too wide) in paragraph at lines 1--1
+Overfull \hbox (54.7918pt too wide) in paragraph at lines 1--1
+[][] 
+[5]warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+
+warning: probe-all.tex:1: Overfull \hbox (54.7918pt too wide) in paragraph at lines 1--1
+Overfull \hbox (54.7918pt too wide) in paragraph at lines 1--1
+[][] 
+[6]warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+ [7]
+warning: probe-all.tex:1: Overfull \vbox (33.95615pt too high) has occurred while \output is active
+Overfull \vbox (33.95615pt too high) has occurred while \output is active
+[8]warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+ [9]
+warning: probe-all.tex:1: Overfull \vbox (33.99254pt too high) has occurred while \output is active
+Overfull \vbox (33.99254pt too high) has occurred while \output is active
+[10]warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+
+warning: probe-all.tex:1: Overfull \hbox (1.88802pt too wide) in paragraph at lines 1--1
+Overfull \hbox (1.88802pt too wide) in paragraph at lines 1--1
+[][] 
+[11]
+warning: probe-all.tex:1: Overfull \vbox (33.95328pt too high) has occurred while \output is active
+Overfull \vbox (33.95328pt too high) has occurred while \output is active
+[12]warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+
+warning: probe-all.tex:1: Overfull \hbox (54.79459pt too wide) in paragraph at lines 1--1
+Overfull \hbox (54.79459pt too wide) in paragraph at lines 1--1
+[][] 
+[13]warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+
+warning: probe-all.tex:1: Overfull \hbox (5.66776pt too wide) in paragraph at lines 1--1
+Overfull \hbox (5.66776pt too wide) in paragraph at lines 1--1
+[][] 
+[14]
+warning: probe-all.tex:1: Overfull \vbox (33.95184pt too high) has occurred while \output is active
+Overfull \vbox (33.95184pt too high) has occurred while \output is active
+[15]warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+
+warning: probe-all.tex:1: Overfull \hbox (5.13695pt too wide) in paragraph at lines 1--1
+Overfull \hbox (5.13695pt too wide) in paragraph at lines 1--1
+[][] 
+[16]
+warning: probe-all.tex:1: Overfull \vbox (33.95184pt too high) has occurred while \output is active
+Overfull \vbox (33.95184pt too high) has occurred while \output is active
+[17]warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+
+warning: probe-all.tex:1: Overfull \hbox (5.13695pt too wide) in paragraph at lines 1--1
+Overfull \hbox (5.13695pt too wide) in paragraph at lines 1--1
+[][] 
+[18]
+warning: probe-all.tex:1: Overfull \vbox (33.95184pt too high) has occurred while \output is active
+Overfull \vbox (33.95184pt too high) has occurred while \output is active
+[19]warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+ [20]
+warning: probe-all.tex:1: Overfull \vbox (33.95615pt too high) has occurred while \output is active
+Overfull \vbox (33.95615pt too high) has occurred while \output is active
+[21] (probe-all.aux) )
+(see the transcript file for additional information)
+Output written on probe-all.xdv (21 pages, 5328 bytes).
+Transcript written on probe-all.log.
+note: Rerunning TeX because "probe-all.aux" changed ...
+(probe-all.tex
+LaTeX2e <2021-11-15> patch level 1
+L3 programming layer <2022-02-24> (report.cls
+Document Class: report 2021/10/04 v1.4n Standard LaTeX document class
+(size12.clo)) (fontenc.sty (t1lmr.fd)) (graphicx.sty (keyval.sty) (graphics.sty
+(trig.sty) (graphics.cfg) (xetex.def))) (l3backend-xetex.def) (probe-all.aux)
+(ts1cmr.fd)warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+
+warning: probe-all.tex:1: Overfull \hbox (54.7918pt too wide) in paragraph at lines 1--1
+Overfull \hbox (54.7918pt too wide) in paragraph at lines 1--1
+[][] 
+[1]
+warning: probe-all.tex:1: Overfull \vbox (7.32144pt too high) has occurred while \output is active
+Overfull \vbox (7.32144pt too high) has occurred while \output is active
+[2]warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+
+warning: probe-all.tex:1: Overfull \hbox (54.7918pt too wide) in paragraph at lines 1--1
+Overfull \hbox (54.7918pt too wide) in paragraph at lines 1--1
+[][] 
+[3]warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+
+warning: probe-all.tex:1: Overfull \hbox (54.7918pt too wide) in paragraph at lines 1--1
+Overfull \hbox (54.7918pt too wide) in paragraph at lines 1--1
+[][] 
+[4]warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+
+warning: probe-all.tex:1: Overfull \hbox (54.7918pt too wide) in paragraph at lines 1--1
+Overfull \hbox (54.7918pt too wide) in paragraph at lines 1--1
+[][] 
+[5]warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+
+warning: probe-all.tex:1: Overfull \hbox (54.7918pt too wide) in paragraph at lines 1--1
+Overfull \hbox (54.7918pt too wide) in paragraph at lines 1--1
+[][] 
+[6]warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+ [7]
+warning: probe-all.tex:1: Overfull \vbox (33.95615pt too high) has occurred while \output is active
+Overfull \vbox (33.95615pt too high) has occurred while \output is active
+[8]warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+ [9]
+warning: probe-all.tex:1: Overfull \vbox (33.99254pt too high) has occurred while \output is active
+Overfull \vbox (33.99254pt too high) has occurred while \output is active
+[10]warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+
+warning: probe-all.tex:1: Overfull \hbox (1.88802pt too wide) in paragraph at lines 1--1
+Overfull \hbox (1.88802pt too wide) in paragraph at lines 1--1
+[][] 
+[11]
+warning: probe-all.tex:1: Overfull \vbox (33.95328pt too high) has occurred while \output is active
+Overfull \vbox (33.95328pt too high) has occurred while \output is active
+[12]warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+
+warning: probe-all.tex:1: Overfull \hbox (54.79459pt too wide) in paragraph at lines 1--1
+Overfull \hbox (54.79459pt too wide) in paragraph at lines 1--1
+[][] 
+[13]warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+
+warning: probe-all.tex:1: Overfull \hbox (5.66776pt too wide) in paragraph at lines 1--1
+Overfull \hbox (5.66776pt too wide) in paragraph at lines 1--1
+[][] 
+[14]
+warning: probe-all.tex:1: Overfull \vbox (33.95184pt too high) has occurred while \output is active
+Overfull \vbox (33.95184pt too high) has occurred while \output is active
+[15]warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+
+warning: probe-all.tex:1: Overfull \hbox (5.13695pt too wide) in paragraph at lines 1--1
+Overfull \hbox (5.13695pt too wide) in paragraph at lines 1--1
+[][] 
+[16]
+warning: probe-all.tex:1: Overfull \vbox (33.95184pt too high) has occurred while \output is active
+Overfull \vbox (33.95184pt too high) has occurred while \output is active
+[17]warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+
+warning: probe-all.tex:1: Overfull \hbox (5.13695pt too wide) in paragraph at lines 1--1
+Overfull \hbox (5.13695pt too wide) in paragraph at lines 1--1
+[][] 
+[18]
+warning: probe-all.tex:1: Overfull \vbox (33.95184pt too high) has occurred while \output is active
+Overfull \vbox (33.95184pt too high) has occurred while \output is active
+[19]warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+ [20]
+warning: probe-all.tex:1: Overfull \vbox (33.95615pt too high) has occurred while \output is active
+Overfull \vbox (33.95615pt too high) has occurred while \output is active
+[21] (probe-all.aux) )
+(see the transcript file for additional information)
+Output written on probe-all.xdv (21 pages, 5328 bytes).
+Transcript written on probe-all.log.
+warning: warnings were issued by the TeX engine; use --print and/or --keep-logs for details.
+note: Running xdvipdfmx ...
+[1][2
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+][3
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+][4
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+][5
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+][6
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+][7][8
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+][9][10
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+][11][12
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+][13
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+][14][15
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+][16][17
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+][18][19
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+][20][21
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+warning: Trying to include PDF file with version (1.7), which is newer than current output PDF setting (1.5).
+]355469 bytes written
+note: Writing `build/probe-all.log` (6.0390625 KiB)
+note: Writing `build/probe-all.pdf` (347.1376953125 KiB)
+note: Skipped writing 1 intermediate files (use --keep-intermediates to keep them)

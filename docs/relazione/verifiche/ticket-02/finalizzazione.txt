@@ -1,0 +1,6 @@
+Conservazione: 1973 file invariati.
+PDF: impronta corrispondente al documento compilato e controllato visivamente.
+Collegamenti Markdown locali: risolti.
+HEAD: 61ce18ae1d4e0458b63e970b793b0b3a634a3adf
+Nessun nuovo commit creato dall'agente.
+La cache temporanea /tmp della sessione precedente non è più disponibile: il controllo PDF non è stato ripetuto in questa finalizzazione. Restano conservati i risultati della compilazione e dell'ispezione effettivamente eseguite.

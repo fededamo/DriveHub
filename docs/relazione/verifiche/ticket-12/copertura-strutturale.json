@@ -1,0 +1,62 @@
+[
+  {
+    "level": "chapter",
+    "title": "Testing"
+  },
+  {
+    "level": "section",
+    "title": "Strategia di verifica"
+  },
+  {
+    "level": "subsection",
+    "title": "Tecnologie e strumenti"
+  },
+  {
+    "level": "section",
+    "title": "Livello 1: Business Logic"
+  },
+  {
+    "level": "subsection",
+    "title": "Invarianti del dominio"
+  },
+  {
+    "level": "subsection",
+    "title": "Autenticazione e identità"
+  },
+  {
+    "level": "subsection",
+    "title": "Prezzi e sicurezza"
+  },
+  {
+    "level": "subsection",
+    "title": "Richieste, vendite e accordo economico"
+  },
+  {
+    "level": "subsection",
+    "title": "Noleggio e conto dimostrativo"
+  },
+  {
+    "level": "subsection",
+    "title": "Transazioni e Observer"
+  },
+  {
+    "level": "section",
+    "title": "Livello 2: Persistence Layer (DAO)"
+  },
+  {
+    "level": "subsection",
+    "title": "DAO e mapping su PostgreSQL"
+  },
+  {
+    "level": "subsection",
+    "title": "Schema e dati dimostrativi"
+  },
+  {
+    "level": "section",
+    "title": "Verifiche funzionali e della presentazione"
+  },
+  {
+    "level": "section",
+    "title": "Esecuzione della suite e portata dei risultati"
+  }
+]

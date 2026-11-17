@@ -1,0 +1,106 @@
+[
+  {
+    "label": "lst:vehicle-invariante",
+    "source": "src/main/java/it/unifi/drivehub/domain/vehicle/Vehicle.java",
+    "firstline": 59,
+    "lastline": 62,
+    "sha256": "dd88c0d59106ab8e54d95fd9019afd2db097e4033964c1f3aa67d94699961922",
+    "text": "        String cleanPlate = (licencePlate != null && !licencePlate.trim().isEmpty()) ? licencePlate.trim().toUpperCase() : null;\n        if (cleanPlate == null && kilometers != 0) {\n            throw new IllegalArgumentException(\"Se un veicolo non ha targa, obbligatoriamente i chilometri devono essere 0.\");\n        }\n"
+  },
+  {
+    "label": "lst:request-accordo",
+    "source": "src/main/java/it/unifi/drivehub/domain/operation/Request.java",
+    "firstline": 54,
+    "lastline": 65,
+    "sha256": "6c90d87bf93367229b08fac184aa7441aaef3a91314cd6350d016eab5f2a2d44",
+    "text": "        if (type == RequestType.SALE) {\n            if (agreedTotal == null || agreedTotal.signum() < 0\n                    || deposit.compareTo(agreedTotal) > 0) {\n                throw new IllegalArgumentException(\"Totale concordato e acconto non validi per l'acquisto.\");\n            }\n            // Gli importi dell'accordo devono essere già espressi in centesimi, come l'addebito.\n            agreedTotal = agreedTotal.setScale(2, RoundingMode.UNNECESSARY);\n            deposit = deposit.setScale(2, RoundingMode.UNNECESSARY);\n        } else if (agreedTotal != null) {\n            throw new IllegalArgumentException(\"Il totale concordato riguarda solo gli acquisti del cliente.\");\n        }\n        return new Request(id, vehicleId, clientId, salesmanId, deposit, agreedTotal, expDate, type);\n"
+  },
+  {
+    "label": "lst:base",
+    "source": "src/main/java/it/unifi/drivehub/domain/vehicle/Vehicle.java",
+    "firstline": 122,
+    "lastline": 124,
+    "sha256": "85c096ed3ca252debbb843ebff67e29f9254a02679a82f5c0c890ee336054b47",
+    "text": "    public BigDecimal getSelectedBasePrice(Model model) {\n        return priceMode == PriceMode.MANUAL ? price : model.getReleasePrice();\n    }\n"
+  },
+  {
+    "label": "lst:letture-prezzo",
+    "source": "src/main/java/it/unifi/drivehub/service/PurchaseService.java",
+    "firstline": 74,
+    "lastline": 82,
+    "sha256": "fce5e98e6630b5433b3d718695778ae2c3872ee7cd64f2b482e623fc9f216edd",
+    "text": "            Vehicle vehicle = vehicleDao.findById(vehicleId, conn)\n                    .orElseThrow(() -> new IllegalStateException(\"Veicolo non trovato: \" + vehicleId));\n            Model model = modelDao.findById(vehicle.getModelId())\n                    .orElseThrow(() -> new IllegalStateException(\"Modello non trovato: \" + vehicle.getModelId()));\n\n            Integer mDisc = discountDao.findModelDiscount(model.getId()).map(ModelDiscount::getValue).orElse(0);\n            Integer vDisc = discountDao.findVehicleDiscount(vehicle.getId()).map(VehicleDiscount::getValue).orElse(0);\n            BigDecimal currentPrice = priceCalculator.calculateVehiclePrice(model, vehicle, mDisc, vDisc);\n            BigDecimal deposit = priceCalculator.calculatePurchaseDeposit(currentPrice);\n"
+  },
+  {
+    "label": "lst:transazione",
+    "source": "src/main/java/it/unifi/drivehub/dao/DatabaseManager.java",
+    "firstline": 88,
+    "lastline": 106,
+    "sha256": "d9eac9347074cdd5713983d4e2a4157504441b967b820921218e4984a6193300",
+    "text": "    public <T> T executeInTransactionWithResult(TransactionFunction<T> function) {\n        try (Connection conn = getConnection()) {\n            conn.setAutoCommit(false);\n            try {\n                T result = function.execute(conn);\n                conn.commit();\n                return result;\n            } catch (Exception e) {\n                try {\n                    conn.rollback();\n                } catch (SQLException rollbackEx) {\n                    e.addSuppressed(rollbackEx);\n                }\n                throw new RuntimeException(\"Transazione fallita: eseguito rollback.\", e);\n            }\n        } catch (SQLException e) {\n            throw new RuntimeException(\"Errore di connessione al database durante la transazione.\", e);\n        }\n    }\n"
+  },
+  {
+    "label": "lst:observer",
+    "source": "src/main/java/it/unifi/drivehub/event/VehicleEventPublisher.java",
+    "firstline": 28,
+    "lastline": 32,
+    "sha256": "68142f006fb398ca776c0cdc59d4a60d14e43639b78bd5ee42451e3ff4a6a358",
+    "text": "    public void publishCommitment(VehicleCommitmentEvent event, Connection conn) {\n        for (VehicleCommitmentObserver observer : observers) {\n            observer.onVehicleCommitted(event, conn);\n        }\n    }\n"
+  },
+  {
+    "label": "lst:registrazione",
+    "source": "src/main/java/it/unifi/drivehub/service/AuthService.java",
+    "firstline": 57,
+    "lastline": 64,
+    "sha256": "d9902e6bc860f5efedf318890565e981eb0a8904137128066d97c6747fb57517",
+    "text": "        return db.executeInTransactionWithResult(conn -> {\n            Client savedClient = userDao.saveClient(clientToSave, conn);\n            String generatedIban = generateUniqueIban();\n            BankAccount initialAccount = BankAccount.createInitial(generatedIban, savedClient.getId());\n            bankAccountDao.save(initialAccount, conn);\n            savedClient.setBankAccount(initialAccount);\n            return savedClient;\n        });\n"
+  },
+  {
+    "label": "lst:navigazione",
+    "source": "src/main/java/it/unifi/drivehub/domain/user/Client.java",
+    "firstline": 32,
+    "lastline": 35,
+    "sha256": "cf072357679c89f72d30ce50df7fdd0946406544fd2978f69d843ae314502b51",
+    "text": "    @Override\n    public void openDashboard(UserDashboardNavigator navigator) {\n        navigator.showClientDashboard(this);\n    }\n"
+  },
+  {
+    "label": "lst:async",
+    "source": "src/main/java/it/unifi/drivehub/presentation/view/AsyncLoad.java",
+    "firstline": 60,
+    "lastline": 73,
+    "sha256": "988cc87341a8909456272f368d54bb8e74050a91d35b7e2486b2b8d9901b3ed4",
+    "text": "        task.setOnSucceeded(event -> {\n            if (current != task) return;\n            apply.accept(task.getValue());\n            progress.setVisible(false);\n            status.setText(\"Aggiornato\");\n            target.setDisable(false);\n        });\n        task.setOnFailed(event -> {\n            if (current != task) return;\n            progress.setVisible(false);\n            status.setText(\"Caricamento non riuscito. Riprova.\");\n            refresh.setText(\"Riprova\");\n        });\n        Thread.ofVirtual().name(\"drivehub-table-load\").start(task);\n"
+  },
+  {
+    "label": "lst:dao-connection",
+    "source": "src/main/java/it/unifi/drivehub/dao/postgres/PostgresVehicleDao.java",
+    "firstline": 61,
+    "lastline": 72,
+    "sha256": "31d1f32cd31a40e4bbf081fdfa737571672d9e4b2e017b6725a6044bd1f8d3b2",
+    "text": "    public Optional<Vehicle> findById(Long id) {\n        try (Connection conn = db.getConnection()) {\n            return findById(id, conn);\n        } catch (SQLException e) {\n            throw new RuntimeException(\"Errore di connessione durante la ricerca del veicolo id: \" + id, e);\n        }\n    }\n\n    @Override\n    public Optional<Vehicle> findById(Long id, Connection conn) {\n        return findById(id, conn, false);\n    }\n"
+  },
+  {
+    "label": "lst:update-condizionale",
+    "source": "src/main/java/it/unifi/drivehub/dao/postgres/PostgresVehicleDao.java",
+    "firstline": 195,
+    "lastline": 205,
+    "sha256": "24e250d139340bbc7259171860f97567a10f7639dbc86aee64accfaa2e42c154",
+    "text": "    public boolean updateStateAtomically(Long vehicleId, VehicleState expectedOldState, VehicleState newState, Connection conn) {\n        String sql = \"UPDATE vehicle SET state = ?::vehicle_state WHERE id = ? AND state = ?::vehicle_state\";\n        try (PreparedStatement ps = conn.prepareStatement(sql)) {\n            ps.setString(1, newState.name());\n            ps.setLong(2, vehicleId);\n            ps.setString(3, expectedOldState.name());\n            int affected = ps.executeUpdate();\n            return affected > 0;\n        } catch (SQLException e) {\n            throw new RuntimeException(\"Errore durante l'aggiornamento atomico dello stato del veicolo.\", e);\n        }\n"
+  },
+  {
+    "label": "lst:mapping",
+    "source": "src/main/java/it/unifi/drivehub/dao/postgres/PostgresRequestDao.java",
+    "firstline": 214,
+    "lastline": 226,
+    "sha256": "d8b84d86a71150ffdc436a403946fc15cef8fed6cd52135c82a8f88e9b99c0f6",
+    "text": "    private static Request mapRow(ResultSet rs) throws SQLException {\n        Long salesman = rs.getObject(\"salesman\") != null ? rs.getLong(\"salesman\") : null;\n        Date expDate = rs.getDate(\"exp_date\");\n        return Request.create(\n                rs.getLong(\"id\"),\n                rs.getLong(\"vehicle\"),\n                rs.getLong(\"client\"),\n                salesman,\n                rs.getBigDecimal(\"deposit\"),\n                rs.getBigDecimal(\"agreed_total\"),\n                expDate != null ? expDate.toLocalDate() : null,\n                RequestType.valueOf(rs.getString(\"type_str\"))\n        );\n"
+  },
+  {
+    "label": "lst:singleton",
+    "source": "src/main/java/it/unifi/drivehub/AppContext.java",
+    "firstline": 112,
+    "lastline": 117,
+    "sha256": "0f3cff6deb7b3de0aa5f14b24757c50c1fa79f4c8bd643536d1136ee4c22f7a8",
+    "text": "    public static synchronized AppContext getInstance() {\n        if (instance == null) {\n            instance = new AppContext();\n        }\n        return instance;\n    }\n"
+  }
+]

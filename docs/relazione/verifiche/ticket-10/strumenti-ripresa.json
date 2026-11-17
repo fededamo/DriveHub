@@ -1,0 +1,93 @@
+{
+  "python": "3.14.4 (main, Aug 20 2026, 10:41:58) [GCC 15.2.0]",
+  "packages": {
+    "/tmp/drivehub-ticket10-ripresa/deb/fonts-lmodern_2.005-1build1_all.deb": {
+      "bytes": 4788444,
+      "sha256": "7dd5a8ca5942d55c6a207dc558789621679c8c7f49905e9f57b7de61cb61b15a"
+    },
+    "/tmp/drivehub-ticket10-ripresa/deb/libkpathsea6_2025.20250727.75242+ds-5build1_amd64.deb": {
+      "bytes": 66032,
+      "sha256": "46d092e728e02f9b4d75ff942ac6a34166d68ab8874a7acd997d8112de127b3b"
+    },
+    "/tmp/drivehub-ticket10-ripresa/deb/libmpfi0_1.5.4+ds-4build1_amd64.deb": {
+      "bytes": 36592,
+      "sha256": "a387cd3668fbdfe2d17a76a7878b52dfb1a605e72a9266aa6cb8e43e2c0c453c"
+    },
+    "/tmp/drivehub-ticket10-ripresa/deb/libpaper2_2.2.5-0.3maysync1_amd64.deb": {
+      "bytes": 17218,
+      "sha256": "e667f3a89b8237f15f43bc837f1f6606fdf5164a7670338573a4dc16a04c0fb4"
+    },
+    "/tmp/drivehub-ticket10-ripresa/deb/libpotrace0_1.16-2build2_amd64.deb": {
+      "bytes": 17868,
+      "sha256": "5dad1784eb18d36a5abe721bdce6bf365ea4c06c013310c662207e6b8623fb67"
+    },
+    "/tmp/drivehub-ticket10-ripresa/deb/libptexenc1_2025.20250727.75242+ds-5build1_amd64.deb": {
+      "bytes": 46356,
+      "sha256": "f2a68d08840abc9ee3698a1c106c1284ef008713c0abe7b62ff9ebcd70979ed9"
+    },
+    "/tmp/drivehub-ticket10-ripresa/deb/libsynctex2_2025.20250727.75242+ds-5build1_amd64.deb": {
+      "bytes": 62104,
+      "sha256": "3682db699c8bdc6ed7074004e2a1f5d4f5db0fc533c299f64fb679c90857083b"
+    },
+    "/tmp/drivehub-ticket10-ripresa/deb/libteckit0_2.5.13+ds-1_amd64.deb": {
+      "bytes": 430588,
+      "sha256": "106b67a475271ade083ef383b32c786c92dc6f57c5aa709695de940d8be22867"
+    },
+    "/tmp/drivehub-ticket10-ripresa/deb/libtexlua53-5_2025.20250727.75242+ds-5build1_amd64.deb": {
+      "bytes": 124876,
+      "sha256": "f2c7072b6ce0ca160edd501d20e288e548062cad592a29cddae148e943b725b4"
+    },
+    "/tmp/drivehub-ticket10-ripresa/deb/libzzip-0-13t64_0.13.78+dfsg.1-0.2_amd64.deb": {
+      "bytes": 30112,
+      "sha256": "4275dc3e8dd6380e08c669b0066ed67bc15770bda7c621fd34e8a16adeed02d1"
+    },
+    "/tmp/drivehub-ticket10-ripresa/deb/lmodern_2.005-1build1_all.deb": {
+      "bytes": 9537814,
+      "sha256": "bb6167716c24f9bff16535e527085efc78384e2acd161c57b4aaeda77454f0ba"
+    },
+    "/tmp/drivehub-ticket10-ripresa/deb/texlive-base_2025.20260124-1_all.deb": {
+      "bytes": 22801456,
+      "sha256": "5971a8d995cb34d708355a62a40fb0bc8af45edff49680590cc803f4af7eb8a5"
+    },
+    "/tmp/drivehub-ticket10-ripresa/deb/texlive-binaries_2025.20250727.75242+ds-5build1_amd64.deb": {
+      "bytes": 8746662,
+      "sha256": "cda02814822862de96c6e25d7911371c8978cffcb1f20a868653c544e48cd29b"
+    },
+    "/tmp/drivehub-ticket10-ripresa/deb/texlive-fonts-recommended_2025.20260124-1_all.deb": {
+      "bytes": 4972476,
+      "sha256": "594cd0a3c14ce79664b33aab26085beee1299e4fb963542618c9f2d7b0237edb"
+    },
+    "/tmp/drivehub-ticket10-ripresa/deb/texlive-lang-italian_2025.20260124-1_all.deb": {
+      "bytes": 11197060,
+      "sha256": "139c295ad906d5534d89cc85939150e11b7cbf1c36d055f43341d8013278a6d7"
+    },
+    "/tmp/drivehub-ticket10-ripresa/deb/texlive-latex-base_2025.20260124-1_all.deb": {
+      "bytes": 1320976,
+      "sha256": "f18bdba64de8dd509c27561a46da2b3cf83b391f82ba12f47165d84cf15a2584"
+    },
+    "/tmp/drivehub-ticket10-ripresa/deb/texlive-latex-extra_2025.20260124-1_all.deb": {
+      "bytes": 32324364,
+      "sha256": "0522a96ca321464c4c0a5609de995bcdb2ae7e796a59183224e8162e0fd2b4fe"
+    },
+    "/tmp/drivehub-ticket10-ripresa/deb/texlive-latex-recommended_2025.20260124-1_all.deb": {
+      "bytes": 8501380,
+      "sha256": "580efe1bfdccb1290e0126b334fb66740b3584833259fd059891793b747720a6"
+    },
+    "/tmp/drivehub-ticket10-ripresa/deb/texlive-xetex_2025.20260124-1_all.deb": {
+      "bytes": 10802636,
+      "sha256": "9f0c18ae86cbc5148d4c7bfc01d6f66880a6278d9755ec36c61e7937813f3d71"
+    },
+    "/tmp/drivehub-ticket10-ripresa/drawio.deb": {
+      "bytes": 122104752,
+      "sha256": "fc96faafe68cb4e06c0b7116779891592b20fce2cde7907adec504f23c5af83c"
+    },
+    "/tmp/drivehub-ticket10-tools32/opt/drawio/drawio": {
+      "bytes": 229031240,
+      "sha256": "3ca05f7db09f6fa31a45321b29d494b0003abfb3db1b6bd38831f798f29eb322"
+    },
+    "/tmp/drivehub-ticket09-tools/texlive/usr/bin/xetex": {
+      "bytes": 729560,
+      "sha256": "b457bea31831f6d1e2497a68b101cfec76aa5c47419fda1cb582dc414d52cd7d"
+    }
+  }
+}

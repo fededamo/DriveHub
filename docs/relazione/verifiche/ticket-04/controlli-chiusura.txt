@@ -1,0 +1,9 @@
+2026-11-13T12:07:24.704148+00:00
+PDF finale SHA256: 0b25ad25962fb0886e408ac23d4a97a68eafe87e8fd8533b5647897fc7441a37
+Nuova compilazione Tectonic GNU: exit 0.
+Controlla-documento.py: exit 0, 84 pagine/108 link/71 font/2116 file protetti.
+Verifica mirata PyMuPDF: spazi SQL pagine34/39/48/52, guillemets32/52, handler43: assert riusciti.
+Osservazione visiva: tutte13tavole e correzioni interessate, dettagli in controllo-visivo.md.
+Nessun comando applicativo o DB; nessun commit.
+Collegamenti documentali locali: 141 destinazioni esistenti.
+Revisioni Standards e Spec concluse sul medesimo hash definitivo, nessun rilievo aperto.

@@ -1,0 +1,11 @@
+PDF aperto e renderizzato: 84 pagine A4, 108 collegamenti interni risolti, 71 font incorporati.
+2.7–2.8 complete: pagine fisiche 32–53; capitolo 2: 7–53.
+Indice e sei sottosezioni in ordine; capitoli 1–2 e A–B completi per revisione, capitoli 3–5 e C provvisori.
+13 draw.io e PDF su singola pagina: XML incorporato identico, etichette integrali e dentro la pagina.
+Copertura statica: 13 tabelle, 15 FK, tutti gli attributi, quattro enum; matrici/fonti controllate.
+Conservazione: 2116 file protetti intatti; evidenze e manifest 01–03, software, SQL, storico, figure precedenti preservati.
+Confronti PDF: capitolo 1 identico; 2.1–2.4/A e 2.5–2.6/B identici agli estratti storici, salvo avviso di stato e numeri pagina.
+LaTeX: nessun riferimento irrisolto, box difettoso o carattere mancante; 96 soli avvisi noti di versione PDF Tectonic.
+Font minimi nelle esportazioni (prima della riduzione nel documento): [('database-er-catalogo', 12.66), ('database-er-identita', 12.66), ('database-relazionale-catalogo', 14.06), ('database-relazionale-identita', 14.06), ('database-relazionale-operazioni', 14.06), ('sequenza-cessione-esito', 11.25), ('sequenza-cessione-proposta', 11.25), ('sequenza-noleggio', 11.25), ('sequenza-observer', 11.25), ('sequenza-vendita-avvio', 11.25), ('sequenza-vendita-esito', 11.25), ('sequenza-vendita-saldo', 11.25), ('sequenza-vendita-scadenza', 11.25)]
+Osservazione visiva da registrare separatamente: gli assert non dimostrano la semantica o la leggibilità.
+SHA-256 PDF: 0b25ad25962fb0886e408ac23d4a97a68eafe87e8fd8533b5647897fc7441a37

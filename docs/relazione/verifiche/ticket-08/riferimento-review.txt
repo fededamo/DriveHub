@@ -1,0 +1,3 @@
+61ce18ae1d4e0458b63e970b793b0b3a634a3adf
+git diff HEAD-iniziale...HEAD e git log HEAD-iniziale..HEAD: vuoti, nessun commit.
+Confine effettivo: baseline-conservazione.json + baseline-editoriale.tar.gz + delta-documentale.diff + delta-files.json.

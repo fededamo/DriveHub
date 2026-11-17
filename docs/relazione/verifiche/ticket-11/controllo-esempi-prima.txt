@@ -1,0 +1,1 @@
+Controllo documentale numerico iniziale: valore riportato 25334.19, formula corrente 25333.87; assert non superato. Corretto il solo esempio nel capitolo, in entrambe le occorrenze (prezzo/stima). Noleggio tre giorni: 57.05, confermato. Nessuna esecuzione Java o DB.

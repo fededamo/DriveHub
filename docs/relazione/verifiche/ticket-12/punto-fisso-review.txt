@@ -1,0 +1,2 @@
+Punto fisso: baseline.json + baseline-editoriale.tar.gz, acquisiti prima delle modifiche, inclusi non tracciati. HEAD61ce18ae1d4e0458b63e970b793b0b3a634a3adf.
+git diff 61ce18ae1d4e0458b63e970b793b0b3a634a3adf...HEAD -- e git log 61ce18ae1d4e0458b63e970b793b0b3a634a3adf..HEAD --oneline sono vuoti; confronto effettivo delta-documentale.diff/delta-files.json e archivio locale.

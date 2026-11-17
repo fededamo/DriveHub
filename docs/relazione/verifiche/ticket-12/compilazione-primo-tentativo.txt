@@ -1,0 +1,153 @@
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025/Debian) (preloaded format=xelatex)
+entering extended mode
+(../main.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2026-01-19>
+
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/base/report.cls
+Document Class: report 2025/01/22 v1.4n Standard LaTeX document class
+
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/base/size12.clo))
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/base/fontenc.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texmf/tex/latex/
+lm/t1lmr.fd))
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/babel/babel.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/babel/xebabel.def)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/babel/locale/it/babel-italian.tex)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/babel-italian/italian.ldf))
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/etoolbox/etoolbox.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/geometry/geometry.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/graphics/keyval.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/iftex/ifvtex.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/iftex/iftex.sty)))
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/graphics/graphicx.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/graphics/graphics.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/graphics/trig.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/graphics-cfg/graphics.cfg)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/graphics-def/xetex.def)))
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/pdfpages/pdfpages.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/base/ifthen.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/tools/calc.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/eso-pic/eso-pic.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/xcolor/xcolor.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/graphics-cfg/color.cfg)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/graphics/mathcolor.ltx)))
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/pdfpages/ppxetex.def))
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/enumitem/enumitem.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/colortbl/colortbl.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/tools/array.sty))
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/listings/listings.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/listings/lstpatch.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/listings/lstmisc.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/listings/listings.cfg))
+==> First Aid for listings.sty no longer applied!
+    Expected:
+        2024/09/23 1.10c (Carsten Heinz)
+    but found:
+        2025/11/14 1.11b (Carsten Heinz)
+    so I'm assuming it got fixed.
+
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/tools/longtable.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/hyperref/hyperref.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/kvsetkeys/kvsetkeys.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/pdfescape/pdfescape.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/ltxcmds/ltxcmds.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/pdftexcmds/pdftexcmds.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/infwarerr/infwarerr.sty)))
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/hycolor/hycolor.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/hyperref/nameref.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/refcount/refcount.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/gettitlestring/gettitlestring.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/kvoptions/kvoptions.sty)))
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/stringenc/stringenc.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/hyperref/pd1enc.def)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/intcalc/intcalc.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/hyperref/puenc.def)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/url/url.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/bitset/bitset.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/bigintcalc/bigintcalc.sty)))
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/hyperref/hxetex.def
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/uniquecounter/uniquecounter.sty)))
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/l3backend/l3backend-xetex.def) (./main.aux)
+*geometry* driver: auto-detecting
+*geometry* detected driver: xetex
+
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/pdflscape/pdflscape.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/pdflscape/pdflscape-nometadata.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/graphics/lscape.sty))) (./main.out) (./main.out) [1] (./main.toc
+[1]) [2]
+
+! LaTeX Error: File `capitoli/1_introduzione.tex' not found.
+
+Type X to quit or <RETURN> to proceed,
+or enter new name. (Default extension: tex)
+
+Enter file name: 
+! Emergency stop.
+<read *> 
+         
+l.70 \input{capitoli/1_introduzione}
+                                    ^^M
+Output written on ticket12/main.pdf (3 pages).
+Transcript written on ticket12/main.log.

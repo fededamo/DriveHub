@@ -1,0 +1,1 @@
+PASS: 281 fonti; 28 intervalli; 24 membri dei registri originali.

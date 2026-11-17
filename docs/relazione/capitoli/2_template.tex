@@ -1,0 +1,274 @@
+% Schede riscontrate sul codice corrente; non costituiscono esiti di test.
+\newcommand{\scheda}[7]{%
+  \subsection{\texorpdfstring{\raggedright #1 --- #2}{#1 --- #2}}\label{uc:#1}
+  \begin{longtable}{|p{.20\linewidth}|p{.72\linewidth}|}
+  \caption{Scheda del caso d'uso #1}\\\hline
+  \textbf{Campo} & \textbf{Contenuto}\\\hline\endfirsthead
+  \textbf{Campo} & \textbf{Contenuto (continua)}\\\hline\endhead
+  Identificativo & #1\\\hline
+  Descrizione & #3\\\hline
+  Livello & #4\\\hline
+  Attori & #5\\\hline
+  Precondizioni & #6\\\hline
+  Postcondizioni & #7\\\hline
+  \end{longtable}
+}
+\newcommand{\principale}{\paragraph{Flusso principale}}
+\newcommand{\alternative}{\paragraph{Alternative}}
+
+Ogni titolo riporta identificativo stabile e denominazione. Le alternative
+\emph{n.a}, \emph{n.b} si diramano dal passo \emph{n} della stessa scheda;
+si indica se il caso riprende o termina. O indica un obiettivo applicativo,
+F una sottofunzione applicativa e S una funzione di supporto. Sono livelli
+descrittivi, non livelli di autorizzazione. Gli attori sono ruoli dell'interfaccia;
+non si assume un controllo dei permessi indipendente in ogni servizio.
+Le postcondizioni descrivono il successo; in caso di errore transazionale
+le scritture della singola operazione vengono annullate. Un errore successivo
+nell'aggiornamento della vista non annulla un'operazione gi\`a confermata.
+
+
+Le prove richiamate sono sorgenti e risultati storici, non nuove esecuzioni.
+\clearpage
+\scheda{UC-01}{Prenotare un test drive}
+{Il cliente riserva un giro di prova di un'ora su un veicolo della concessionaria.}
+{O --- obiettivo applicativo.}
+{Cliente; indirettamente altri clienti con prenotazioni concorrenti.}
+{Cliente autenticato; veicolo visibile nel catalogo vendita o noleggio.}
+{Prenotazione associata a cliente, veicolo e data/ora; nessun addebito.}
+\principale
+\begin{enumerate}
+\item Il cliente seleziona un veicolo in \emph{Auto in Vendita} o \emph{Auto a Noleggio}.
+\item Apre \emph{Prenota Test Drive}, sceglie data e ora iniziale e conferma.
+      La UI propone ore intere dalle 09:00 alle 16:00.
+\item Il servizio rilegge il veicolo, ammette solo \code{SALE}/\code{RENT},
+      controlla che l'istante non sia passato, che il cliente abbia meno di tre
+      test drive attivi e che slot e giorno non siano occupati da test drive o noleggi incompatibili.
+\item Il sistema salva la prenotazione nella transazione e aggiorna \emph{Le Mie Operazioni}.
+\item Il cliente legge la conferma con data e ora del giro di prova.
+\end{enumerate}
+\alternative
+\begin{description}
+\item[2.a] Annullamento del dialogo: nessuna prenotazione; termina.
+\item[3.a] Data passata, stato cambiato, limite raggiunto o indisponibilit\`a:
+  errore, nessuna nuova prenotazione; il cliente pu\`o ripartire da 1 o 2.
+\item[4.a] Errore di persistenza: rollback della prenotazione; termina senza successo.
+\item[5.a] Successivamente il cliente seleziona un proprio test drive in
+  \emph{Le Mie Operazioni} e lo annulla: viene rimosso e la tabella aggiornata.
+  Un identificativo non appartenente al cliente viene rifiutato.
+\item[5.b] Un successivo noleggio o completamento di vendita sul veicolo
+  cancella tutti i suoi test drive futuri, anche fuori dal periodo noleggiato.
+  Lo storico rimane; la cancellazione partecipa alla transazione commerciale.
+\end{description}
+\begin{flushleft}\textbf{Riscontro:} \code{TestDriveService}, \code{TestDriveCancellationObserver},
+\code{ClientDashboardView}. La durata \`e una convenzione del giro di prova;
+la UI seleziona ore intere, senza attribuire al servizio un vincolo generale
+sui minuti che il codice non applica per tutte le ore.\end{flushleft}
+
+
+\begin{flushleft}\noindent\textbf{Prove e portata:} \code{BookingRulesTest} (fascia e date), \code{BookingConcurrencyIntegrationTest} (limite, slot concorrenti e rollback), \code{TestDriveCancellationIntegrationTest} (cancellazioni); evidenze storiche \code{r06-bookings}/\code{r11-integrated}.\end{flushleft}
+\clearpage
+\scheda{UC-02}{Noleggiare un veicolo}
+{La concessionaria prenota un proprio veicolo al cliente e incassa subito il costo del periodo.}
+{O --- obiettivo applicativo.}
+{Cliente; clienti titolari di test drive futuri sul medesimo veicolo.}
+{Cliente autenticato con conto demo; veicolo presente nel catalogo noleggio.}
+{Noleggio salvato e costo intero addebitato; test drive futuri del veicolo cancellati;
+il veicolo conserva la destinazione \code{RENT}.}
+\principale
+\begin{enumerate}
+\item Il cliente seleziona un veicolo in \emph{Auto a Noleggio} e apre \emph{Prenota Noleggio}.
+\item Sceglie inizio e fine; il dialogo mostra il costo del periodo con estremi inclusi.
+\item Conferma. Il servizio rilegge stato, disponibilit\`a e prezzo: inizio non passato,
+      fine non precedente all'inizio, stato \code{RENT}, nessuna sovrapposizione.
+\item Il sistema verifica il conto e addebita il 100\% del costo ricalcolato.
+\item Salva il noleggio e cancella tutti i test drive futuri del veicolo,
+      anche oltre il periodo prenotato, nella stessa transazione.
+\item Mostra la conferma e aggiorna saldo e operazioni del cliente.
+\end{enumerate}
+\alternative
+\begin{description}
+\item[2.a] Date incomplete o invertite: il preventivo non \`e valido;
+  il cliente corregge il periodo al passo 2 oppure annulla senza effetti.
+\item[3.a] Stato cambiato o periodo gi\`a occupato, anche per una prenotazione concorrente:
+  rifiuto senza addebito; ripartire da 1 o 2.
+\item[4.a] Conto assente o saldo insufficiente: nessun noleggio e nessun addebito; termina.
+\item[5.a] Errore nel salvataggio o nelle cancellazioni collegate: rollback
+  anche dell'addebito; nessun successo parziale.
+\item[6.a] In seguito UC-08 destina il veicolo alla vendita: se non vi sono
+  noleggi in corso, quelli con inizio futuro sono rimossi e rimborsati al 100\%.
+  Il cliente vede l'effetto ricaricando le proprie operazioni.
+\end{description}
+\begin{flushleft}\textbf{Riscontro:} \code{RentalService}, \code{PriceCalculatorService},
+\code{TestDriveCancellationObserver}. Il preventivo non \`e un accordo fissato:
+il costo viene ricalcolato alla prenotazione. La UI non offre una cancellazione
+autonoma del noleggio al cliente.\end{flushleft}
+
+
+\begin{flushleft}\noindent\textbf{Prove e portata:} \code{BookingConcurrencyIntegrationTest} (conflitti e addebito), \code{TestDriveCancellationIntegrationTest} (rollback Observer), \code{VehicleDestinationIntegrationTest} (rimborsi); evidenze \code{r06-bookings}/\code{r06-destination}/\code{r11-integrated}.\end{flushleft}
+\clearpage
+\scheda{UC-03}{Richiedere e completare una vendita al cliente}
+{La concessionaria vende un veicolo: acconto, autorizzazione del venditore e saldo del totale concordato.}
+{O --- obiettivo applicativo articolato in pi\`u sessioni.}
+{Cliente principale; venditore per UC-04.}
+{Cliente autenticato con conto demo; veicolo proposto in vendita.}
+{Nel successo completo: totale registrato come vendita al cliente,
+richiesta rimossa, veicolo \code{SOLD}; test drive futuri cancellati.
+Dopo il solo acconto: richiesta \code{SALE} aperta, totale fissato e veicolo \code{BLOCKED}.}
+\principale
+\begin{enumerate}
+\item Il cliente seleziona il veicolo in \emph{Auto in Vendita} e avvia l'acquisto.
+\item Legge prezzo indicativo e acconto del 20\% nel dialogo e conferma.
+\item Il servizio riserva il veicolo solo se ancora \code{SALE}, ricalcola il prezzo,
+  addebita l'acconto e salva la richiesta con totale concordato, senza venditore n\'e scadenza.
+\item Il venditore approva la richiesta attraverso UC-04, fissando il termine di un mese.
+\item Il cliente seleziona la richiesta approvata in \emph{Le Mie Operazioni},
+  apre il pagamento del saldo e conferma il residuo del totale concordato.
+\item Il servizio verifica autorizzazione e scadenza, addebita il residuo,
+  registra l'intero totale nel registro, elimina la richiesta e porta il veicolo a \code{SOLD}.
+  Cancella i test drive futuri nella stessa transazione del saldo.
+\end{enumerate}
+\alternative
+\begin{description}
+\item[2.a] Annullamento: il veicolo non viene riservato; termina.
+\item[3.a] Veicolo non pi\`u disponibile, conto assente o fondi insufficienti:
+  rollback di acconto, richiesta e stato; termina.
+\item[4.a] Rifiuto del venditore: rimborso integrale dell'acconto,
+  richiesta eliminata e veicolo di nuovo \code{SALE}; termina.
+\item[5.a] Richiesta non autorizzata o gi\`a scaduta: il saldo viene rifiutato.
+  Annullare il dialogo lascia invece aperta la richiesta.
+\item[6.a] Saldo insufficiente o errore transazionale: nessuna vendita completata;
+  restano acconto e richiesta precedenti; il cliente pu\`o riprovare entro il termine.
+\item[6.b] Mancato saldo entro il termine: all'accesso successivo il controllo
+  delle scadenze trattiene il 20\% dell'acconto come penale, restituisce il resto,
+  rimuove la richiesta e libera il veicolo per la vendita. Non \`e un processo periodico in background.
+\end{description}
+\begin{flushleft}\textbf{Riscontro:} \code{PurchaseService}, \code{Request}, ADR 0001.
+Acconto e saldo hanno transazioni distinte. Basi e sconti successivi non
+modificano il totale gi\`a concordato; la penale \`e il 20\% dell'acconto, non del totale.\end{flushleft}
+
+
+\begin{flushleft}\noindent\textbf{Prove e portata:} \code{PurchaseAgreementIntegrationTest} (accordo immutato, autorizzazione, scadenza, fondi e rollback), \code{TestDriveCancellationIntegrationTest} (Observer); evidenze \code{r04-agreement}/\code{r11-integrated}.\end{flushleft}
+\clearpage
+\scheda{UC-05}{Proporre un veicolo alla concessionaria}
+{La concessionaria valuta e acquista il veicolo ceduto dal cliente; l'etichetta UI \emph{Vendi la tua Auto} usa il punto di vista del cliente.}
+{O --- obiettivo applicativo in due fasi, proposta ed esito.}
+{Cliente proponente; venditore che decide.}
+{Cliente autenticato; modello gi\`a censito; dati del veicolo disponibili.
+Se il VIN \`e noto, stato \code{SOLD}, ultima vendita al proponente e nessuna richiesta aperta.}
+{Accettazione: stima accreditata al cliente, acquisto della concessionaria registrato,
+richiesta rimossa e veicolo \code{SALE}. Dopo la proposta: veicolo \code{WAITING} e richiesta \code{PURCHASE}.}
+\principale
+\begin{enumerate}
+\item Il cliente apre \emph{Vendi la tua Auto} e indica marchio, modello,
+  VIN, targa, chilometri e anno.
+\item Pu\`o calcolare il preventivo, basato sul modello e sui dati inseriti.
+\item Invia la proposta. Il servizio valida i dati e l'eventuale titolarit\`a
+  del VIN noto; crea il veicolo oppure aggiorna quello gi\`a venduto al cliente.
+\item Salva il veicolo \code{WAITING} e la richiesta con stima ricalcolata,
+  positiva o nulla, senza effettuare pagamenti.
+\item Il venditore seleziona la proposta \emph{Acquisto dal cliente} in
+  \emph{Richieste in Sospeso} e aziona \emph{Approva Richiesta}.
+\item Il sistema accredita la stima memorizzata, registra l'acquisto dal cliente
+  con venditore, porta il veicolo a \code{SALE} ed elimina la richiesta,
+  nella stessa transazione. La UI mostra l'esito.
+\end{enumerate}
+\alternative
+\begin{description}
+\item[2.a] Preventivo non richiesto: il cliente pu\`o passare direttamente a 3;
+  il servizio ricalcola comunque la stima all'invio.
+\item[3.a] Dati invalidi, anno precedente al modello, VIN occupato o non
+  appartenente al proponente, richiesta gi\`a aperta: errore e nessuna nuova proposta;
+  correggere al passo 1.
+\item[5.a] Rifiuto: nessun accredito; richiesta eliminata.
+  Il veicolo senza operazioni associate viene eliminato; con storico torna \code{SOLD}.
+\item[6.a] Stima nulla, conto mancante, richiesta non pi\`u valida o errore di persistenza:
+  rollback dell'intero esito, senza pagamento o acquisizione parziali.
+\end{description}
+\begin{flushleft}\textbf{Riscontro:} \code{SaleToDealershipService},
+\code{ClientDashboardView}, \code{SalesmanDashboardView}. Il registro conserva
+un importo non negativo con tipo acquisto; il suo significato \`e un esborso
+per la concessionaria. Non esiste un successivo pagamento a saldo per la cessione.
+La proposta ammette una stima nulla, ma il conto rifiuta l'accredito zero:
+l'accettazione fallisce con rollback (sezione~\ref{sec:sequenze}).\end{flushleft}
+
+
+\begin{flushleft}\noindent\textbf{Prove e portata:} \code{SaleProposalIntegrationTest} (titolarità e VIN), \code{SaleOutcomeIntegrationTest} (accredito, storico, concorrenza e rollback); evidenze \code{r05-sale-outcome}/\code{r11-integrated}.\end{flushleft}
+\clearpage
+\scheda{UC-04}{Autorizzare una richiesta di vendita al cliente}
+{Il venditore decide l'esito della richiesta con cui la concessionaria vender\`a un veicolo al cliente.}
+{F --- sottofunzione applicativa di UC-03, svolta dal venditore.}
+{Venditore principale; cliente destinatario dell'esito.}
+{Venditore autenticato; richiesta \code{SALE} in sospeso, con acconto gi\`a versato e veicolo riservato.}
+{Approvazione: richiesta attribuita al venditore e scadenza impostata a un mese da oggi;
+il saldo resta da pagare e il veicolo rimane \code{BLOCKED}.}
+\principale
+\begin{enumerate}
+\item Il venditore apre \emph{Richieste in Sospeso}.
+\item Seleziona una riga \emph{Vendita al cliente}, verificando totale,
+  acconto e residuo mostrati nella tabella.
+\item Aziona \emph{Approva Richiesta}; non compare una conferma preventiva.
+\item Il servizio rilegge la richiesta, verifica che sia \code{SALE},
+  assegna il venditore e la scadenza a un mese dalla data corrente.
+\item La UI mostra l'esito e ricarica richieste e inventario;
+  il cliente potr\`a saldare in UC-03.
+\end{enumerate}
+\alternative
+\begin{description}
+\item[2.a] Nessuna riga selezionata: messaggio di selezione mancante; ritorno a 2.
+\item[2.b] Riga \emph{Acquisto dal cliente}: non \`e questa autorizzazione;
+  la stessa azione conclude la cessione secondo UC-05.
+\item[3.a] \emph{Rifiuta Richiesta}: il servizio restituisce l'intero acconto,
+  elimina la richiesta e ripristina \code{SALE} nella stessa transazione.
+  La vendita non prosegue; nessuna penale.
+\item[4.a] Richiesta rimossa o tipo non valido: errore, nessuna nuova autorizzazione;
+  il venditore ricarica l'elenco.
+\item[4.b] Errore durante l'aggiornamento oppure durante il rimborso di 3.a:
+  rollback della decisione; lo stato precedente rimane valido.
+\end{description}
+\begin{flushleft}\textbf{Riscontro:} \code{SalesmanDashboardView},
+\code{PurchaseService.approvePurchase}, \code{PurchaseService.rejectPurchase},
+\code{OperationQueryService}. Il caso non registra un nuovo venditore e non
+rappresenta l'abilitazione di un account staff. La selezione delle richieste
+in sospeso \`e affidata alla query della UI; non si attribuisce al comando
+un controllo aggiuntivo contro ogni possibile riapprovazione da un chiamante diverso.\end{flushleft}
+
+
+\begin{flushleft}\noindent\textbf{Prove e portata:} \code{PurchaseAgreementIntegrationTest} (approvazione e termine), \code{PurchaseConcurrencyIntegrationTest} (rifiuto, rimborso ed esiti concorrenti); l\'assenza di selezione e la riapprovazione non sono certificate da quel test. Evidenze \code{r04-agreement}/\code{r11-integrated}.\end{flushleft}
+\clearpage
+\scheda{UC-06}{Gestire lo sconto su un veicolo}
+{Il manager applica o rimuove una promozione di modello o di singolo veicolo.}
+{O --- obiettivo applicativo di gestione commerciale.}
+{Manager; clienti interessati ai nuovi prezzi.}
+{Manager autenticato; modello o veicolo destinatario gi\`a presente nel catalogo.}
+{Sconto salvato o rimosso e tabella aggiornata. I nuovi calcoli usano il massimo
+fra sconto modello e veicolo; i totali concordati nelle richieste aperte restano invariati.}
+\principale
+\begin{enumerate}
+\item Il manager apre la scheda \emph{Sconti}.
+\item Nel riquadro modello seleziona un modello; nel riquadro veicolo
+  inserisce invece l'identificativo del veicolo.
+\item Inserisce una percentuale intera tra 0 e 50 e aziona \emph{Salva} nel riquadro scelto.
+\item Il servizio valida la percentuale e persiste lo sconto;
+  uno sconto gi\`a presente sullo stesso elemento viene aggiornato.
+\item La UI mostra la conferma e ricarica le due tabelle degli sconti.
+\end{enumerate}
+\alternative
+\begin{description}
+\item[2.a] Modello non selezionato o ID non numerico: errore prima del salvataggio;
+  ritorno a 2. Un ID veicolo inesistente viene rifiutato dalla persistenza.
+\item[3.a] Percentuale non intera o esterna a 0--50: errore, nessuna modifica; ritorno a 3.
+\item[3.b] Il manager seleziona uno sconto esistente e aziona \emph{Rimuovi}:
+  il servizio elimina lo sconto e la tabella viene ricaricata.
+  Senza selezione l'azione non modifica dati; non compare una conferma preventiva.
+\item[4.a] Errore transazionale: nessun nuovo sconto salvato; termina senza successo.
+\item[5.a] Un'altra tabella gi\`a aperta mostra ancora il vecchio prezzo:
+  ricaricarla con \emph{Aggiorna} oppure riaprire la vista.
+  La UI non propaga automaticamente ogni modifica a tutte le dashboard gi\`a aperte.
+\end{description}
+\begin{flushleft}\textbf{Riscontro:} \code{CatalogService}, \code{Discount},
+\code{PriceCalculatorService}, \code{ManagerDashboardView}. Gli sconti non
+si sommano. La base manuale del veicolo sostituisce la base del modello nella
+stessa formula; non impone un prezzo finale sottratto agli sconti.\end{flushleft}
+
+
+\begin{flushleft}\noindent\textbf{Prove e portata:} \code{PriceCalculatorServiceTest} (massimo e base manuale), \code{DomainInvariantsTest} (0--50), \code{PriceSelectionIntegrationTest} (persistenza della base); evidenze \code{r03-prices}/\code{r11-integrated}.\end{flushleft}

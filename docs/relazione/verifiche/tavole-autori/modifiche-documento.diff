@@ -1,0 +1,153 @@
+--- ticket-08/main.tex
++++ attuale/main.tex
+@@ -7,6 +7,7 @@
+ \usepackage[italian]{babel}
+ \usepackage[margin=2.5cm]{geometry}
+ \usepackage{graphicx}
++\usepackage{pdfpages}
+ \usepackage{enumitem}
+ \usepackage[table]{xcolor}
+ \usepackage{listings}
+@@ -22,6 +23,12 @@
+ \emergencystretch=2em
+ \setcounter{tocdepth}{2}
+ \DeclareRobustCommand{\code}[1]{\nolinkurl{#1}}
++\newcommand{\tavolaautori}[3]{%
++  \includepdf[pages=-,fitpaper=true,pagecommand={\thispagestyle{empty}%
++    \AddToShipoutPictureFG*{\AtPageLowerLeft{\put(34,14){%
++      \parbox{\dimexpr\paperwidth-24mm\relax}{\small
++        \figurename~\ref{#3}: #2.\hfill\thepage}}}}},
++    addtolist={1,figure,{#2},#3}]{diagrammi/#1.drawio.pdf}}
+ 
+ \begin{document}
+ \special{pdf:majorversion 1}
+--- ticket-08/capitoli/5_uso_ai.tex
++++ attuale/capitoli/5_uso_ai.tex
+@@ -136,6 +136,13 @@
+ \code{docs/relazione/verifiche/ticket-06/README.md}
+ e \code{docs/relazione/verifiche/ticket-07/README.md}.}
+ 
++Le figure~\ref{fig:uc-autori}, \ref{fig:nav-autori} e~\ref{fig:er-autori}
++derivano invece dalle tre tavole realizzate dagli autori e da loro indicate
++per l'integrazione. Codex ne ha corretto i contenuti superati e curato
++l'inserimento, mantenendo stile e struttura; questa revisione non attribuisce
++all'AI la progettazione delle tavole originali. Le copie corrette e i
++controlli sono conservati in \code{docs/relazione/verifiche/tavole-autori/}.
++
+ % AI-10
+ Le tracce non sono una cronologia completa delle conversazioni. Non
+ consentono di ricostruire prompt integrali, versioni dei modelli, tempi
+--- ticket-08/capitoli/2_database.tex
++++ attuale/capitoli/2_database.tex
+@@ -7,6 +7,18 @@
+ relazioni dai controlli che richiedono la collaborazione dei servizi.
+ 
+ \subsection{Schema ER}
++La figura~\ref{fig:er-autori} riprende \emph{SWE ER}, la tavola degli
++autori, conservando tabelle a tre colonne, disposizione, generalizzazione
++e cardinalit\`a a zampa di corvo. Sono aggiornati campi, tipi enumerati e
++unicit\`a della richiesta per veicolo. Il nodo \emph{User} resta un
++supertipo \textbf{concettuale}: non rappresenta una tabella padre, una PK
++globale o un vincolo SQL di disgiunzione. Gli attributi comuni sono
++ripetuti nelle tre tabelle di ruolo; PK e unicit\`a dell'email sono locali
++a ciascuna. La seconda pagina conserva e corregge legenda e note.
++Le due pagine A3 mantengono leggibile la tavola d'insieme; ER-01/02 e
++REL-01--03 dettagliano poi relazioni, mapping e limiti dello schema.
++\tavolaautori{database-er-autori}{Schema ER: tavola degli autori corretta, con notazione e gerarchia concettuale originali}{fig:er-autori}
++
+ Le viste ER-01 e ER-02 (figure~\ref{fig:er01} e~\ref{fig:er02}) sono
+ coordinate: i riquadri ripresi con lo stesso nome indicano la stessa
+ entità. Ogni arco dichiara entrambi i versi con minimo e massimo,
+--- ticket-08/capitoli/2_funzioni.tex
++++ attuale/capitoli/2_funzioni.tex
+@@ -20,6 +20,17 @@
+ di dettaglio: mantengono riconoscibili i casi principali e rendono esplicita
+ la loro scomposizione. In particolare, UC-05 compare sia per il cliente che
+ propone sia per il venditore che accetta o rifiuta.
++
++La figura~\ref{fig:uc-autori} riprende \emph{Users SWE}, la tavola degli
++autori, mantenendo attori, generalizzazioni, ellissi e disposizione d'insieme.
++La registrazione \`e associata al solo cliente; la consultazione delle
++prenotazioni del venditore, assente dall'interfaccia corrente, \`e rimossa.
++Le funzioni comuni sono ereditate da \emph{Utente}; l'addebito incluso nei
++due flussi \`e un comportamento interno, distinto dalla ricarica UC-S04.
++Le due partecipazioni a UC-05 e le due parti di UC-09 non sono casi nuovi.
++La tavola \`e su foglio A3 per conservarne la leggibilit\`a; le tre viste
++seguenti ne dettagliano gli obiettivi per ruolo.
++\tavolaautori{casi-uso-autori}{Casi d'uso: tavola degli autori corretta, con attori e struttura originali}{fig:uc-autori}
+ 
+ \begin{figure}[!htbp]\centering
+ \includegraphics[width=\linewidth,height=.72\textheight,keepaspectratio]{diagrammi/casi-uso-cliente.drawio.pdf}
+@@ -191,6 +202,17 @@
+ l'eliminazione riuscita dell'identit\`a torna all'accesso.
+ La relativa conferma definitiva non va confusa con le rimozioni dirette del catalogo.
+ 
++La figura~\ref{fig:nav-autori} riprende il \emph{Page Navigation Diagram}
++degli autori: conserva l'accesso, la scelta del ruolo e le tre diramazioni.
++\code{LoginView} sostituisce la precedente Welcome Page; i riquadri
++\emph{Accedi} e \emph{Registrati} sono schede della stessa vista, non
++schermate successive. La registrazione riuscita porta direttamente al cliente.
++Le dashboard espongono rispettivamente quattro, due e cinque schede;
++gestione account e ricarica sono comandi, indicati esplicitamente.
++Il foglio A3 conserva la struttura d'insieme; le tavole per ruolo dettagliano
++azioni e dialoghi.
++\tavolaautori{navigazione-autori}{Navigazione: tavola degli autori corretta, con le tre diramazioni originali}{fig:nav-autori}
++
+ \begin{figure}[!htbp]\centering
+ \includegraphics[width=\linewidth,height=.7\textheight,keepaspectratio]{diagrammi/navigazione-cliente.drawio.pdf}
+ \caption{Navigazione cliente: quattro tab; dialoghi di prenotazione, acconto e saldo; proposta nella scheda; gestione identit\`a e conto. Riscontri visivi nelle figure~\ref{fig:ui-cliente-catalogo}--\ref{fig:ui-identita}.}\label{fig:nav-cliente}
+--- ticket-08/LEGGIMI-consegna.md
++++ attuale/LEGGIMI-consegna.md
+@@ -1,6 +1,7 @@
+ # DriveHub — sorgenti per la revisione finale degli autori
+ 
+-14 novembre 2026. Relazione completa, capitoli 1–5 e appendici A–C.
++15 novembre 2026. Relazione completa, capitoli 1–5 e appendici A–C,
++con le tre tavole originali degli autori corrette e integrate.
+ Il pacchetto è proposto agli autori per la revisione finale: non ne attesta
+ l'approvazione e non autorizza invio al docente o pubblicazione.
+ 
+@@ -9,7 +10,7 @@
+ Estrarre tutto lo ZIP in una directory e aprire un terminale in quella
+ directory, dove si trova `main.tex`. Occorre una distribuzione LaTeX con
+ XeLaTeX, lingua italiana e pacchetti `geometry`, `graphicx`, `enumitem`,
+-`xcolor`, `listings`, `longtable`, `array`, `hyperref` e font Latin Modern.
++`xcolor`, `listings`, `longtable`, `array`, `hyperref`, `pdfpages` e font Latin Modern.
+ Nel ticket 08 è stata verificata TeX Live 2025/Debian, XeTeX 0.999997,
+ con pacchetti Ubuntu `2025.20260124-1`.
+ 
+@@ -23,14 +24,18 @@
+ Il risultato è `build/main.pdf`. I passaggi successivi al primo stabilizzano
+ indice, numeri e riferimenti; leggere gli avvisi del log. Nessun accesso a
+ Java, Maven, database o servizi applicativi è necessario. Tutti gli input
+-editoriali sono inclusi: 14 file LaTeX, 32 figure PDF con i rispettivi
+-32 sorgenti draw.io modificabili e 16 screenshot PNG. I frammenti di codice
++editoriali sono inclusi: 14 file LaTeX, 35 figure PDF con i rispettivi
++35 sorgenti draw.io modificabili e 16 screenshot PNG. Le tre tavole degli
++autori occupano quattro fogli A3 orizzontali (l'ER comprende la legenda);
++le altre pagine restano A4. I frammenti di codice
+ sono incorporati nei sorgenti LaTeX.
+ 
+ Per modificare una tavola aprire il `.drawio` e aggiornare anche il relativo
+ `.drawio.pdf`, mantenendo il nome usato dal LaTeX. La compilazione non richiede
+-draw.io perché usa le esportazioni incluse. Non sono state create nuove tavole
+-nel ticket 08.
++draw.io perché usa le esportazioni incluse. Le copie corrette degli autori
++sono `casi-uso-autori`, `navigazione-autori` e `database-er-autori`.
++Per stampare le quattro pagine A3 mantenere il formato originale o usare
++il ridimensionamento del visualizzatore, tenendo conto della leggibilità.
+ 
+ ## Provenienza e limiti
+ 
+@@ -45,8 +50,9 @@
+ Le citazioni a sorgenti, ADR ed evidenze indicano percorsi nel repository
+ DriveHub, HEAD `61ce18ae1d4e0458b63e970b793b0b3a634a3adf`, e richiedono quel
+ repository per approfondire le fonti; non sono input necessari alla compilazione.
+-Le verifiche finali, i log, la matrice, le impronte e i rapporti indipendenti
+-sono conservati nel repository in `docs/relazione/verifiche/ticket-08/`.
++Le verifiche del precedente pacchetto restano conservate in
++`docs/relazione/verifiche/ticket-08/`. L'integrazione delle tavole, i nuovi
++controlli e il pacchetto corrente sono in `docs/relazione/verifiche/tavole-autori/`.
+ Le prove applicative citate restano storiche. I limiti su importi zero,
+ unicità delle identità, aggiornamenti UI dopo commit e riproduzione degli
+ harness storici restano dichiarati e non sono corretti da questo pacchetto.

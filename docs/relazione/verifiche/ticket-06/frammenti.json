@@ -1,0 +1,26 @@
+[
+  {
+    "label": "lst:test-accordo",
+    "source": "src/test/java/it/unifi/drivehub/RequestAgreementTest.java",
+    "firstline": 17,
+    "lastline": 24,
+    "text": "        Request request = Request.createNewSaleRequest(1L, 2L,\n                new BigDecimal(\"4000.01\"), new BigDecimal(\"20000.03\"));\n        assertEquals(RequestType.SALE, request.getType());\n        request.setSalesmanId(16L);\n        request.setExpDate(LocalDate.now().plusMonths(1));\n        assertEquals(new BigDecimal(\"20000.03\"), request.getAgreedTotal());\n        assertEquals(new BigDecimal(\"4000.01\"), request.getDeposit());\n        assertEquals(new BigDecimal(\"16000.02\"), request.getRemainingAmount());\n",
+    "sha256": "50eae494575081c7ee47040450755d3f02f9a1efd0967f292842eaefd384792e"
+  },
+  {
+    "label": "lst:test-rollback",
+    "source": "src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java",
+    "firstline": 318,
+    "lastline": 323,
+    "text": "        var before = snapshot();\n        var failure = assertThrows(RuntimeException.class, () -> ctx.getAuthService().deleteAccount(1L, \"Cliente\", \"password\"));\n        assertTrue(rootCause(failure).getMessage().contains(\"ticket13_after_deletions\"));\n        assertEquals(1, scalar(\"SELECT last_value FROM ticket13_writes\"));\n        assertEquals(before, snapshot());\n        assertEquals(1L, new AppContext(db).getAuthService().login(\"mario.rossi@email.it\", \"password\").getId());\n",
+    "sha256": "4e78266cad970f1401c1a9ee3e66c8c74eb60ab22cfd47ee6fca37507ae839ff"
+  },
+  {
+    "label": "lst:test-gara",
+    "source": "src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java",
+    "firstline": 301,
+    "lastline": 308,
+    "text": "            var a = workers.submit(outcome(first));\n            try {\n                awaitWaiters(observer, 1);\n                var b = workers.submit(outcome(second));\n                awaitWaiters(observer, 2);\n                if (commitGate) gate.commit();\n                else gate.rollback();\n                return Arrays.asList(a.get(10, TimeUnit.SECONDS), b.get(10, TimeUnit.SECONDS));\n",
+    "sha256": "927fb414b6e6f306fcad795cc46c87c2332d92ce50c7ab3001e56d51feaf0c4b"
+  }
+]

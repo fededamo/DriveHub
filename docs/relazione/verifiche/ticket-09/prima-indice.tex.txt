@@ -1,0 +1,119 @@
+\babel@toc {italian}{}\relax 
+\babel@toc {italian}{}\relax 
+\contentsline {chapter}{\numberline {1}Introduzione}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Descrizione}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Stack tecnologico}{2}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Semplificazioni adottate}{3}{section.1.3}%
+\contentsline {chapter}{\numberline {2}Analisi dei requisiti e progettazione}{4}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Diagramma dei casi d'uso}{4}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Template dei casi principali}{9}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Mockups}{11}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Autenticazione}{11}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Area Customer}{13}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Area Salesman}{16}{subsection.2.3.3}%
+\contentsline {subsection}{\numberline {2.3.4}Area Manager}{17}{subsection.2.3.4}%
+\contentsline {section}{\numberline {2.4}Page Navigation Diagram}{20}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Package Diagram}{25}{section.2.5}%
+\contentsline {section}{\numberline {2.6}Class Diagram}{27}{section.2.6}%
+\contentsline {subsection}{\numberline {2.6.1}Domain Model}{27}{subsection.2.6.1}%
+\contentsline {subsection}{\numberline {2.6.2}Business Layer}{29}{subsection.2.6.2}%
+\contentsline {subsection}{\numberline {2.6.3}DAO}{31}{subsection.2.6.3}%
+\contentsline {subsection}{\numberline {2.6.4}Presentation Layer}{31}{subsection.2.6.4}%
+\contentsline {section}{\numberline {2.7}Sequence Diagram}{32}{section.2.7}%
+\contentsline {subsection}{\numberline {2.7.1}Acquisto di un veicolo}{32}{subsection.2.7.1}%
+\contentsline {subsection}{\numberline {2.7.2}Prenotazione di un noleggio}{39}{subsection.2.7.2}%
+\contentsline {subsection}{\numberline {2.7.3}Acquisizione di un veicolo del Customer}{42}{subsection.2.7.3}%
+\contentsline {section}{\numberline {2.8}Database}{45}{section.2.8}%
+\contentsline {subsection}{\numberline {2.8.1}Schema ER}{45}{subsection.2.8.1}%
+\contentsline {subsection}{\numberline {2.8.2}Modello relazionale}{51}{subsection.2.8.2}%
+\contentsline {subsection}{\numberline {2.8.3}Utenti, vincoli e semplificazioni}{55}{subsection.2.8.3}%
+\contentsline {chapter}{\numberline {3}Implementazione}{57}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Domain Model}{57}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Invarianti locali e stato mutabile}{57}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Gerarchie, identità e riferimenti}{58}{subsection.3.1.2}%
+\contentsline {section}{\numberline {3.2}Business Layer}{58}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Calcolo dei prezzi e accordo economico}{58}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Transazioni, lock e operazioni economiche}{59}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Notifiche sincrone ed errori}{61}{subsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.2.4}Identità e conto dimostrativo}{61}{subsection.3.2.4}%
+\contentsline {section}{\numberline {3.3}Presentation Layer}{62}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Navigazione e responsabilità delle viste}{62}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Caricamenti, righe preparate e ciclo di vita}{62}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}Aggiornamenti ed esiti dei comandi}{63}{subsection.3.3.3}%
+\contentsline {section}{\numberline {3.4}Persistenza: livello DAO e mapping oggetti/tabelle}{63}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Contratti JDBC e proprietà della connessione}{63}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}Tipi, nullabilità e ricostruzione}{65}{subsection.3.4.2}%
+\contentsline {section}{\numberline {3.5}Idiomi e Design Pattern}{66}{section.3.5}%
+\contentsline {paragraph}{Factory statiche e idiomi.}{66}{section*.2}%
+\contentsline {paragraph}{Observer GoF.}{66}{section*.3}%
+\contentsline {paragraph}{Navigazione nello stile Visitor.}{66}{section*.4}%
+\contentsline {paragraph}{DAO e dependency injection.}{66}{section*.5}%
+\contentsline {paragraph}{Singleton e composizione.}{66}{section*.6}%
+\contentsline {chapter}{\numberline {4}Testing}{67}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Strategia di verifica}{67}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Livello 1: Business Logic}{68}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Livello 2: Persistence Layer (DAO)}{68}{section.4.3}%
+\contentsline {paragraph}{Rollback dopo scritture effettive.}{69}{section*.7}%
+\contentsline {paragraph}{Conflitti concorrenti.}{70}{section*.8}%
+\contentsline {section}{\numberline {4.4}Verifiche funzionali e della presentazione}{70}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Esecuzione della suite e portata dei risultati}{71}{section.4.5}%
+\contentsline {chapter}{\numberline {5}Uso dell'AI}{72}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Progettazione e sviluppo iniziale manuali}{72}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Revisione assistita da Codex}{72}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Verifica e controllo umano}{73}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Documentazione, diagrammi e limiti}{74}{section.5.4}%
+\contentsline {chapter}{\numberline {A}Schede complete dei casi d'uso}{75}{appendix.Alph1}%
+\contentsline {section}{\numberline {A.1}\raggedright UC-01 --- Prenotazione di un test drive}{76}{section.Alph1.1}%
+\contentsline {paragraph}{Flusso principale}{76}{section*.9}%
+\contentsline {paragraph}{Alternative}{76}{section*.10}%
+\contentsline {section}{\numberline {A.2}\raggedright UC-02 --- Prenotazione di un noleggio}{77}{section.Alph1.2}%
+\contentsline {paragraph}{Flusso principale}{77}{section*.11}%
+\contentsline {paragraph}{Alternative}{77}{section*.12}%
+\contentsline {section}{\numberline {A.3}\raggedright UC-03 --- Vendita al cliente}{78}{section.Alph1.3}%
+\contentsline {paragraph}{Flusso principale}{78}{section*.13}%
+\contentsline {paragraph}{Alternative}{78}{section*.14}%
+\contentsline {section}{\numberline {A.4}\raggedright UC-04 --- Autorizzazione del venditore}{79}{section.Alph1.4}%
+\contentsline {paragraph}{Flusso principale}{79}{section*.15}%
+\contentsline {paragraph}{Alternative}{79}{section*.16}%
+\contentsline {section}{\numberline {A.5}\raggedright UC-05 --- Acquisto dal cliente}{80}{section.Alph1.5}%
+\contentsline {paragraph}{Flusso principale}{80}{section*.17}%
+\contentsline {paragraph}{Alternative}{80}{section*.18}%
+\contentsline {section}{\numberline {A.6}\raggedright UC-06 --- Gestione degli sconti}{81}{section.Alph1.6}%
+\contentsline {paragraph}{Flusso principale}{81}{section*.19}%
+\contentsline {paragraph}{Alternative}{81}{section*.20}%
+\contentsline {section}{\numberline {A.7}\raggedright UC-07 --- Consultazione del catalogo}{82}{section.Alph1.7}%
+\contentsline {paragraph}{Flusso principale}{82}{section*.21}%
+\contentsline {paragraph}{Alternative}{82}{section*.22}%
+\contentsline {section}{\numberline {A.8}\raggedright UC-08 --- Cambio di destinazione del veicolo}{82}{section.Alph1.8}%
+\contentsline {paragraph}{Flusso principale}{82}{section*.23}%
+\contentsline {paragraph}{Alternative}{82}{section*.24}%
+\contentsline {section}{\numberline {A.9}\raggedright UC-09 --- Gestione del catalogo e delle basi prezzo}{83}{section.Alph1.9}%
+\contentsline {paragraph}{Flusso principale}{83}{section*.25}%
+\contentsline {paragraph}{Alternative}{83}{section*.26}%
+\contentsline {section}{\numberline {A.10}\raggedright UC-10 --- Consultazione del registro economico}{84}{section.Alph1.10}%
+\contentsline {paragraph}{Flusso principale}{84}{section*.27}%
+\contentsline {paragraph}{Alternative}{84}{section*.28}%
+\contentsline {section}{\numberline {A.11}\raggedright UC-11 --- Consultazione delle proprie operazioni}{85}{section.Alph1.11}%
+\contentsline {paragraph}{Flusso principale}{85}{section*.29}%
+\contentsline {paragraph}{Alternative}{85}{section*.30}%
+\contentsline {section}{\numberline {A.12}\raggedright UC-S01 --- Registrazione del cliente}{85}{section.Alph1.12}%
+\contentsline {paragraph}{Flusso principale}{85}{section*.31}%
+\contentsline {paragraph}{Alternative}{85}{section*.32}%
+\contentsline {section}{\numberline {A.13}\raggedright UC-S02 --- Accesso al sistema}{86}{section.Alph1.13}%
+\contentsline {paragraph}{Flusso principale}{86}{section*.33}%
+\contentsline {paragraph}{Alternative}{86}{section*.34}%
+\contentsline {section}{\numberline {A.14}\raggedright UC-S03 --- Gestione dell'identit\`a}{87}{section.Alph1.14}%
+\contentsline {paragraph}{Flusso principale}{87}{section*.35}%
+\contentsline {paragraph}{Alternative}{87}{section*.36}%
+\contentsline {section}{\numberline {A.15}\raggedright UC-S04 --- Ricarica del conto demo}{88}{section.Alph1.15}%
+\contentsline {paragraph}{Flusso principale}{88}{section*.37}%
+\contentsline {paragraph}{Alternative}{88}{section*.38}%
+\contentsline {chapter}{\numberline {B}Tavole delle classi}{89}{appendix.Alph2}%
+\contentsline {chapter}{\numberline {C}Matrice delle verifiche}{102}{appendix.Alph3}%
+\contentsline {section}{\numberline {C.1}Criterio di lettura e provenienza}{102}{section.Alph3.1}%
+\contentsline {paragraph}{E1 --- contratto corrente, 9 novembre 2026.}{102}{section*.39}%
+\contentsline {paragraph}{E2 --- suite integrata, 3 novembre 2026.}{103}{section*.40}%
+\contentsline {paragraph}{E3 --- JavaFX, prima fase del 3 novembre 2026.}{103}{section*.41}%
+\contentsline {section}{\numberline {C.2}Requisiti, casi d'uso e asserzioni}{103}{section.Alph3.2}%
+\contentsline {section}{\numberline {C.3}Garanzie trasversali e limiti delle prove}{108}{section.Alph3.3}%
+\contentsline {section}{\numberline {C.4}Riproduzione e riscontro documentale}{110}{section.Alph3.4}%

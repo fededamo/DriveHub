@@ -1,0 +1,422 @@
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025/Debian) (preloaded format=xelatex)
+entering extended mode
+(./main.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2026-01-19>
+
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/base/report.cls
+Document Class: report 2025/01/22 v1.4n Standard LaTeX document class
+
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/base/size12.clo))
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/base/fontenc.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texmf/tex/latex/
+lm/t1lmr.fd))
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/babel/babel.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/babel/xebabel.def)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/babel/locale/it/babel-italian.tex)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/babel-italian/italian.ldf))
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/etoolbox/etoolbox.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/geometry/geometry.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/graphics/keyval.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/iftex/ifvtex.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/iftex/iftex.sty)))
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/graphics/graphicx.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/graphics/graphics.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/graphics/trig.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/graphics-cfg/graphics.cfg)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/graphics-def/xetex.def)))
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/pdfpages/pdfpages.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/base/ifthen.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/tools/calc.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/eso-pic/eso-pic.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/xcolor/xcolor.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/graphics-cfg/color.cfg)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/graphics/mathcolor.ltx)))
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/pdfpages/ppxetex.def))
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/enumitem/enumitem.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/colortbl/colortbl.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/tools/array.sty))
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/listings/listings.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/listings/lstpatch.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/listings/lstmisc.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/listings/listings.cfg))
+==> First Aid for listings.sty no longer applied!
+    Expected:
+        2024/09/23 1.10c (Carsten Heinz)
+    but found:
+        2025/11/14 1.11b (Carsten Heinz)
+    so I'm assuming it got fixed.
+
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/tools/longtable.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/hyperref/hyperref.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/kvsetkeys/kvsetkeys.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/pdfescape/pdfescape.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/ltxcmds/ltxcmds.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/pdftexcmds/pdftexcmds.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/infwarerr/infwarerr.sty)))
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/hycolor/hycolor.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/hyperref/nameref.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/refcount/refcount.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/gettitlestring/gettitlestring.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/kvoptions/kvoptions.sty)))
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/stringenc/stringenc.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/hyperref/pd1enc.def)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/intcalc/intcalc.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/hyperref/puenc.def)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/url/url.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/bitset/bitset.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/bigintcalc/bigintcalc.sty)))
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/hyperref/hxetex.def
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/generic/uniquecounter/uniquecounter.sty)))
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/l3backend/l3backend-xetex.def) (build/ticket11/main.aux)
+*geometry* driver: auto-detecting
+*geometry* detected driver: xetex
+
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/pdflscape/pdflscape.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/pdflscape/pdflscape-nometadata.sty
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/graphics/lscape.sty))) (build/ticket11/main.out)
+(build/ticket11/main.out) [1] (build/ticket11/main.toc) [1]
+(./capitoli/1_introduzione.tex
+Capitolo 1.
+[1]
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texmf/tex/latex/
+lm/t1lmtt.fd) [2]) (./capitoli/2_progettazione.tex [3]
+Capitolo 2.
+(./capitoli/2_funzioni.tex
+
+LaTeX Warning: Reference `app:casi-uso' on page 4 undefined on input line 18.
+
+[4] [5] [6] [7] [8]
+
+LaTeX Warning: Reference `app:casi-uso' on page 9 undefined on input line 55.
+
+(./capitoli/2_template.tex [9] [10] [11] [12] [13] [14]) [15]
+
+LaTeX Warning: Reference `uc:UC-07' on page 16 undefined on input line 85.
+
+
+LaTeX Warning: Reference `uc:UC-08' on page 16 undefined on input line 86.
+
+
+LaTeX Warning: Reference `uc:UC-09' on page 16 undefined on input line 87.
+
+
+LaTeX Warning: Reference `uc:UC-10' on page 16 undefined on input line 87.
+
+
+LaTeX Warning: Reference `uc:UC-11' on page 16 undefined on input line 88.
+
+
+LaTeX Warning: Reference `uc:UC-S01' on page 16 undefined on input line 89.
+
+
+LaTeX Warning: Reference `uc:UC-S02' on page 16 undefined on input line 90.
+
+
+LaTeX Warning: Reference `uc:UC-S03' on page 16 undefined on input line 90.
+
+
+LaTeX Warning: Reference `uc:UC-S04' on page 16 undefined on input line 91.
+
+[16] [17] [18] [19] [20] [21] [22] [23] [24] [25] [26] [27] [28] [29] [30]
+[31] [32] [33] [34] [35] [36]) (./capitoli/2_architettura.tex [37] [38]
+
+LaTeX Warning: Reference `app:classi' on page 39 undefined on input line 49.
+
+[39] [40] [41] [42] [43] [44] [45] [46]) (./capitoli/2_sequenze.tex [47]
+[48] [49] [50] [51] [52] [53] [54] [55] [56] [57] [58] [59] [60] [61] [62]
+[63] [64] [65]) (./capitoli/2_database.tex [66] [67] [68] [69] [70] [71]
+[72] [73] [74] [75] [76] [77])) (./capitoli/3_implementazione.tex [78]
+Capitolo 3.
+
+LaTeX Warning: Reference `app:classi' on page 79 undefined on input line 3.
+
+
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/listings/lstlang1.sty)
+
+LaTeX Warning: Reference `app:classi' on page 79 undefined on input line 31.
+
+
+LaTeX Warning: Reference `sec:impl-utenti-sql' on page 79 undefined on input li
+ne 49.
+
+[79]
+
+LaTeX Warning: Reference `lst:update-condizionale' on page 80 undefined on inpu
+t line 110.
+
+
+LaTeX Warning: Reference `sec:impl-prezzi' on page 80 undefined on input line 1
+14.
+
+[80]
+
+LaTeX Warning: Reference `sec:impl-vincoli' on page 81 undefined on input line 
+136.
+
+
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texmf/tex/latex/
+lm/ts1lmtt.fd) [81]
+
+LaTeX Warning: Reference `lst:contratto-observer' on page 82 undefined on input
+ line 213.
+
+
+LaTeX Warning: Reference `sec:impl-observer' on page 82 undefined on input line
+ 215.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 206--218
+$\T1/lmtt/m/n/12 VehicleCommitmentEvent$ \T1/lmr/m/n/12 è un re-cord che tra-sp
+or-ta il so-lo $\T1/lmtt/m/n/12 vehicleId$\T1/lmr/m/n/12 ;
+
+Underfull \hbox (badness 2368) in paragraph at lines 206--218
+\T1/lmr/m/n/12 l'im-pe-gno com-mer-cia-le per ven-di-ta com-ple-ta-ta o no-leg-
+gio; non con-tie-ne tar-ga,
+[82]
+Underfull \hbox (badness 2269) in paragraph at lines 266--271
+[]\T1/lmr/m/n/12 Le due call-back an-ni-da-te so-no ti-pi di-stin-ti: $\T1/lmtt
+/m/n/12 TransactionConsumer$ \T1/lmr/m/n/12 ser-ve a
+
+Overfull \hbox (10.8534pt too wide) in paragraph at lines 266--271
+\T1/lmtt/m/n/12 executeInTransaction$\T1/lmr/m/n/12 , $\T1/lmtt/m/n/12 Transact
+ionFunction<[]T>[]$ \T1/lmr/m/n/12 a $\T1/lmtt/m/n/12 executeInTransactionWithR
+esult$\T1/lmr/m/n/12 .
+[83]
+Overfull \hbox (68.8846pt too wide) in paragraph at lines 325--331
+$\T1/lmtt/m/n/12 AppContext$ \T1/lmr/m/n/12 co-strui-sce espli-ci-ta-men-te que
+-sti col-la-bo-ra-to-ri e re-gi-stra $\T1/lmtt/m/n/12 TestDriveCancellationObse
+rver$\T1/lmr/m/n/12 .
+
+LaTeX Warning: Reference `sec:impl-refresh' on page 84 undefined on input line 
+342.
+
+[84] [85] [86]
+Underfull \hbox (badness 1028) in paragraph at lines 504--510
+\T1/lmr/m/n/12 crea mar-che/modelli con fall-back né chia-ma sul cal-co-la-to-r
+e un me-to-do chia-ma-to
+[87]
+Underfull \hbox (badness 10000) in paragraph at lines 527--535
+[]$\T1/lmtt/m/n/12 approveSaleProposal$ \T1/lmr/m/n/12 ri-ce-ve ri-chie-sta e v
+en-di-to-re: il me-to-do co-mu-ne
+
+Underfull \hbox (badness 1184) in paragraph at lines 527--535
+\T1/lmtt/m/n/12 lockWaitingPurchaseRequest$ \T1/lmr/m/n/12 bloc-ca la ri-chie-s
+ta, ri-chie-de PUR-CHA-SE, bloc-ca il
+
+LaTeX Warning: Reference `sec:impl-prezzi' on page 88 undefined on input line 5
+41.
+
+[88]
+
+LaTeX Warning: Reference `tab:impl-importi' on page 89 undefined on input line 
+612.
+
+
+Underfull \hbox (badness 3568) in paragraph at lines 623--623
+[]|\T1/lmr/m/n/12 RentalService ri-leg-ge $\OML/cmm/m/it/12 P$ \T1/lmr/m/n/12 e
+ ap-pli-ca
+[89] [90] [91]
+Underfull \hbox (badness 10000) in paragraph at lines 763--767
+[]\T1/lmr/m/n/12 Al lo-gin $\T1/lmtt/m/n/12 showDashboardForUser$ \T1/lmr/m/n/1
+2 chia-ma $\T1/lmtt/m/n/12 user . openDashboard$ \T1/lmr/m/n/12 con un
+[92] [93] [94] [95] [96]
+
+LaTeX Warning: Reference `tab:impl-garanzie' on page 97 undefined on input line
+ 1106.
+
+
+Underfull \hbox (badness 6741) in paragraph at lines 1112--1112
+[]|\T1/lmr/m/n/12 Connection con-di-vi-sa, com-
+
+Underfull \hbox (badness 1661) in paragraph at lines 1112--1112
+\T1/lmr/m/n/12 mit/rollback e Ob-ser-ver con
+
+Underfull \hbox (badness 3547) in paragraph at lines 1112--1113
+[]|\T1/lmr/m/n/12 Escluse let-tu-re au-to-no-me,
+
+Underfull \hbox (badness 2096) in paragraph at lines 1117--1118
+[]|\T1/lmr/m/n/12 setState e ogni UP-DA-TE
+
+Underfull \hbox (badness 10000) in paragraph at lines 1118--1118
+[]|\T1/lmr/m/n/12 Totale/acconto per-si-sti-ti,
+[97] [98]
+
+LaTeX Warning: Reference `lst:observer' on page 99 undefined on input line 1193
+.
+
+
+LaTeX Warning: Reference `lst:base' on page 99 undefined on input line 1205.
+
+
+LaTeX Warning: Reference `tab:impl-importi' on page 99 undefined on input line 
+1206.
+
+[99]
+
+LaTeX Warning: Reference `lst:navigazione' on page 100 undefined on input line 
+1239.
+
+
+LaTeX Warning: Reference `lst:app-login' on page 100 undefined on input line 12
+39.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1237--1244
+\T1/lmr/m/n/12 Il pro-ble-ma del-la se-le-zio-ne del work-spa-ce è ri-sol-to da
+l dou-ble di-spatch:
+
+Underfull \hbox (badness 2846) in paragraph at lines 1237--1244
+\T1/lmr/m/n/12 User.openDashboard se-le-zio-na il me-to-do ti-piz-za-to, App fo
+r-ni-sce il na-vi-ga-tor e
+[100]
+
+LaTeX Warning: Reference `lst:async' on page 101 undefined on input line 1302.
+
+) (./capitoli/4_testing.tex [101]
+Capitolo 4.
+
+LaTeX Warning: Reference `app:verifiche' on page 102 undefined on input line 5.
+
+
+[102]
+
+LaTeX Warning: Reference `lst:test-accordo' on page 103 undefined on input line
+ 78.
+
+[103]
+
+LaTeX Warning: Reference `lst:test-rollback' on page 104 undefined on input lin
+e 162.
+
+[104]
+
+LaTeX Warning: Reference `lst:test-gara' on page 105 undefined on input line 19
+1.
+
+[105]
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/listings/lstlang1.sty)
+(/home/federico/dev/Drivehub/.ticket11-tools/texlive/usr/share/texlive/texmf-di
+st/tex/latex/listings/lstlang1.sty)
+
+LaTeX Warning: Reference `app:verifiche' on page 106 undefined on input line 30
+5.
+
+) (./capitoli/5_uso_ai.tex [106]
+Capitolo 5.
+[107]
+
+LaTeX Warning: Reference `app:verifiche' on page 108 undefined on input line 65
+.
+
+
+LaTeX Warning: Reference `ch:testing' on page 108 undefined on input line 95.
+
+
+LaTeX Warning: Reference `app:verifiche' on page 108 undefined on input line 95
+.
+
+[108]
+
+LaTeX Warning: Reference `app:classi' on page 109 undefined on input line 130.
+
+) (./appendici/appendici.tex [109]
+Appendice A.
+(./appendici/a_casi_uso.tex [110] [111] [112] [113] [114] [115] [116]) [117]
+Appendice B.
+(./appendici/b_classi.tex [118] [119] [120] [121] [122] [123] [124] [125]
+[126] [127] [128] [129] [130])
+Appendice C.
+(./appendici/c_verifiche.tex
+
+LaTeX Warning: Reference `app:casi-uso' on page 131 undefined on input line 9.
+
+[131] [132]
+ignored error: Infinite glue shrinkage found in box being split [133]
+ignored error: Infinite glue shrinkage found in box being split [134]
+ignored error: Infinite glue shrinkage found in box being split [135]
+ignored error: Infinite glue shrinkage found in box being split [136]
+ignored error: Infinite glue shrinkage found in box being split [137] [138]
+
+LaTeX Warning: Reference `sec:test-esecuzione' on page 139 undefined on input l
+ine 386.
+
+)) [139] (build/ticket11/main.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `main.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+ )
+(see the transcript file for additional information)
+Output written on build/ticket11/main.pdf (141 pages).
+Transcript written on build/ticket11/main.log.

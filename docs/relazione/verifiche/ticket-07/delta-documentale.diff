@@ -1,0 +1,294 @@
+--- prima/README.md
++++ docs/relazione/README.md
+@@ -1,13 +1,14 @@
+ # Relazione DriveHub
+ 
+-Sorgenti della nuova relazione di Ingegneria del Software. Il documento è una
+-**stesura progressiva**: i capitoli 1–4 e le appendici A–C sono completi
+-e proposti per revisione. Il capitolo 1 è conservato dal ticket 01;
+-nessuna di queste parti è considerata già approvata dagli autori.
+-Il capitolo 5 resta provvisorio. Non è ancora la
+-relazione finale da consegnare.
++Sorgenti della nuova relazione di Ingegneria del Software. **Capitoli 1–5 e
++appendici A–C completi e proposti agli autori per revisione**, non approvati.
++Il capitolo 1 è conservato dal ticket 01. Il PDF è completo nei contenuti
++concordati; la revisione degli autori precede la consegna al docente.
+ 
+ - [PDF compilato](relazione-drivehub.pdf)
++- [Capitolo 5 — Uso dell'AI](capitoli/5_uso_ai.tex) e [estratto per gli autori](verifiche/ticket-07/capitolo-5-per-revisione.pdf)
++- [Verifiche ticket 07](verifiche/ticket-07/README.md): dichiarazioni, matrice affermazioni→fonti, baseline, delta dei non tracciati, compilazione e controllo visivo
++- [Revisioni indipendenti Standards e Spec del ticket 07](verifiche/ticket-07/revisione.md)
+ - [Capitolo 4 — Testing](capitoli/4_testing.tex), [appendice C](appendici/c_verifiche.tex) e [estratto 4/C per gli autori](verifiche/ticket-06/ticket-06-per-revisione.pdf)
+ - [Verifiche ticket 06](verifiche/ticket-06/README.md): fonti, matrice, risultati storici, conservazione, PDF e revisioni indipendenti
+ - [Capitolo 3 — Implementazione](capitoli/3_implementazione.tex) e [PDF per gli autori](verifiche/ticket-05/capitolo-3-per-revisione.pdf)
+@@ -43,9 +44,9 @@
+ ```
+ 
+ La prima compilazione richiede Internet per scaricare le risorse LaTeX.
+-La compilazione del ticket 06 verifica e predispone Tectonic 0.17.0 GNU e
+-PyMuPDF disponibili nell'ambiente temporaneo; versioni, impronte e
+-comandi effettivi sono nelle [verifiche](verifiche/ticket-06/README.md).
++Il ticket 07 ricontrolla Tectonic 0.17.0 GNU e PyMuPDF già disponibili
++nell'ambiente temporaneo del ticket 06; versioni, impronte e
++comandi effettivi sono nelle [verifiche](verifiche/ticket-07/README.md).
+ Il pacchetto LaTeX `listings`, usato nei capitoli 3–4, è stato
+ recuperato nella cache. I frammenti sono incorporati nel LaTeX e
+ confrontati con gli intervalli dei Java correnti: la compilazione non
+@@ -66,9 +67,8 @@
+ 
+ `capitoli/` e `appendici/` contengono il testo; `main.tex` ne fissa l'ordine.
+ L'indice include tutte le sezioni concordate e le sottosezioni strutturali
+-di progettazione. Le sottosezioni di dettaglio dei capitoli ancora da scrivere
+-saranno riscontrate durante la rispettiva stesura, senza riproporre nomi di
+-classi o meccanismi rimossi.
++di progettazione. I contenuti sono stati riscontrati durante la rispettiva
++stesura, senza riproporre come correnti classi o meccanismi rimossi.
+ 
+ `verifiche/ticket-01/drawio/` contiene esclusivamente la prova tecnica di
+ esportazione: non è una figura della relazione e non è inclusa da LaTeX.
+@@ -98,10 +98,18 @@
+ Riusati i diagrammi esistenti, senza nuove tavole. Anche evidenze e manifest
+ 01–04 restano intatti: i loro stati provvisori fotografano la rispettiva
+ stesura e non vanno imposti al PDF aggiornato. Il capitolo 5
+-resta provvisorio; nessuna approvazione degli autori è presunta.
++restava allora provvisorio; nessuna approvazione degli autori è presunta.
+ 
+ Il ticket 06 completa il capitolo 4 e l’appendice C e li propone agli autori.
+ I risultati applicativi citati restano storici; sono nuove soltanto le verifiche
+ documentali, la compilazione e l’ispezione del PDF. Nessun software, test, SQL,
+ dato o manifest 01–05 modificato; in capitolo 3 aggiornata la sola frase di stato.
+-Il capitolo 5 rimane provvisorio e nessuna approvazione degli autori è presunta.
++Il capitolo 5 restava allora provvisorio e nessuna approvazione degli autori è presunta.
++
++Il ticket 07 completa il capitolo 5 distinguendo dichiarazioni degli autori,
++riscontri documentati e lacune sull'uso dell'AI. Riusati i diagrammi esistenti;
++nessuna nuova tavola. Capitoli 1–4 e appendici A–C conservati, con sola rimozione
++delle due frasi di stato sul capitolo 5 provvisorio in 3–4. Evidenze e manifest
++01–06 intatti, compresi i loro stati storici. Le nuove verifiche riguardano
++documentazione e PDF; nessuna nuova prova applicativa. Il capitolo è proposto
++agli autori, senza attribuirne l'approvazione.
+--- prima/capitoli/3_implementazione.tex
++++ docs/relazione/capitoli/3_implementazione.tex
+@@ -5,7 +5,7 @@
+ sezione~\ref{sec:database} restano i riferimenti d'insieme: qui interessa
+ capire dove sono applicate le regole e fin dove valgono.
+ Il capitolo è completo e proposto per revisione degli autori, non già
+-approvato. Il capitolo~5 resta provvisorio.
++approvato.
+ 
+ \begingroup
+ \emergencystretch=6em
+--- prima/capitoli/4_testing.tex
++++ docs/relazione/capitoli/4_testing.tex
+@@ -3,7 +3,7 @@
+ quale situazione viene preparata, quale comando viene invocato e quali
+ osservazioni potrebbero smentire il risultato atteso. Il capitolo e
+ l'appendice~\ref{app:verifiche} sono completi e proposti per la revisione
+-degli autori, senza attribuirne l'approvazione. Il capitolo~5 resta provvisorio.
++degli autori, senza attribuirne l'approvazione.
+ Il riscontro documentale è del 13 novembre 2026 sul commit \code{61ce18a};
+ non sono stati eseguiti test applicativi, harness o accessi al database.
+ 
+--- prima/capitoli/5_uso_ai.tex
++++ docs/relazione/capitoli/5_uso_ai.tex
+@@ -1,11 +1,148 @@
+ \chapter{Uso dell'AI}\label{ch:ai}
+-\provvisorio{Capitolo da sviluppare usando le dichiarazioni degli autori e le tracce disponibili, senza ricostruire dati mancanti.}
++Il capitolo distingue le dichiarazioni degli autori, le attività riscontrabili
++nei materiali conservati e ciò che tali materiali non permettono di stabilire.
++È completo e proposto agli autori per revisione, senza attribuirne
++l'approvazione. La matrice affermazioni--fonti e i controlli documentali sono
++in \code{docs/relazione/verifiche/ticket-07/}.
++
++\begingroup
++\emergencystretch=6em
++\def\UrlBreaks{\do\a\do\b\do\c\do\d\do\e\do\f\do\g\do\h\do\i\do\j\do\k\do\l\do\m\do\n\do\o\do\p\do\q\do\r\do\s\do\t\do\u\do\v\do\w\do\x\do\y\do\z\do\A\do\B\do\C\do\D\do\E\do\F\do\G\do\H\do\I\do\J\do\K\do\L\do\M\do\N\do\O\do\P\do\Q\do\R\do\S\do\T\do\U\do\V\do\W\do\X\do\Y\do\Z}
+ 
+ \section{Progettazione e sviluppo iniziale manuali}
+-\provvisorio{Documentare progettazione, struttura iniziale e prime classi secondo la dichiarazione degli autori.}
++% AI-01
++Secondo la dichiarazione degli autori registrata nel piano, la progettazione,
++la struttura iniziale del software e le prime classi sono state realizzate
++manualmente; tutta la revisione è stata svolta nelle sessioni con Codex.
++Questo è il significato attribuito allo \emph{scheletro} iniziale.
++Si tratta di una dichiarazione di provenienza, non di un'attribuzione
++ricavata autonomamente dal codice.\footnote{\raggedright \code{docs/relazione/piano.md},
++sezione \emph{Origine del lavoro e uso dell'AI}. Tutti i percorsi citati
++sono relativi alla radice del repository.}
++La cronologia Git conserva versioni e modifiche, ma non separa per ogni
++riga il lavoro manuale da quello assistito. Non si assegnano quindi singole
++classi all'uno o all'altro sulla sola base di nomi, stile o autore del commit.
++
+ \section{Revisione assistita da Codex}
+-\provvisorio{Ricostruire attività e parti interessate usando piano, ticket, audit ed evidenze.}
++% AI-02
++La fotografia dei registri conserva audit, piano e diciotto ticket della
++prima fase. L'audit del 30 ottobre 2026 individua rischi su denaro, stati,
++concorrenza e coerenza documentale; dichiara anche che PostgreSQL e display
++non erano disponibili. I controlli con DAO simulati di quella fase non
++dimostravano l'isolamento del database. Il piano trasforma i rilievi in
++decisioni, dipendenze e criteri verificabili; i ticket e le evidenze
++registrano implementazione, tentativi falliti e chiusure. L'attribuzione
++complessiva a Codex resta quella dichiarata dagli autori.\footnote{\raggedright 
++\code{docs/evidence/revision-records.zip}: \code{AUDIT_DRIVEHUB_2026-10-30.md},
++\emph{Verifiche svolte}; \code{PIANO_REVISIONI_DRIVEHUB.md},
++\emph{Decisioni raccolte} e \emph{Attività e dipendenze};
++\code{TRACKER_DRIVEHUB/revisioni/issues/}. Il manifest interno
++\code{SHA256.json} identifica la fotografia, non una trascrizione delle sessioni.}
++
++% AI-03
++Un esempio è il prezzo manuale. La proposta dell'audit di eliminarlo viene
++superata dalla decisione degli autori: mantenere una base scelta dal manager
++e applicarle la formula comune. La revisione raggiunge dominio, servizi,
++DAO e viste; una regressione documenta base 10.000 e sconto 10\% con risultato
++9.000. La review Spec rileva poi una differenza sui centesimi prima e dopo
++la persistenza, riprodotta e corretta con normalizzazione condivisa.
++Un intervento distinto fissa il totale all'acconto: 20.000, acconto 4.000,
++saldo 16.000 anche dopo cambi di listino. Sono esempi di requisito deciso,
++proposta tecnica, controprova e correzione, non prove dell'origine di ogni
++riga.\footnote{\raggedright \code{docs/adr/0001-base-manuale-e-prezzo-concordato.md};
++\code{docs/evidence/r03-prices/verification.md}, \emph{TDD e verifiche}
++e \emph{Revisione indipendente};
++\code{docs/evidence/r04-agreement/verification.md}, \emph{TDD e comandi}.}
++
++% AI-04
++Per le tabelle JavaFX, le tracce mostrano letture collettive e caricamenti
++asincroni, con controlli di rendering senza query, letture bloccate e risultati
++obsoleti. La pulizia successiva rimuove soltanto componenti senza chiamanti.
++La revisione comprende inoltre identità, rollback e gare sui flussi economici.
++Interventi successivi alla prima fase riallineano richieste e registro al
++punto di vista della concessionaria e uniformano gli enum PostgreSQL:
++i vecchi nomi e segni nelle prove rimangono riferiti alla loro versione,
++come precisato nell'appendice~\ref{app:verifiche}.\footnote{\raggedright 
++\code{docs/evidence/r08-tables/verification.md};
++\code{docs/evidence/r10-cleanup/verification.md};
++\code{docs/evidence/r11-integrated/acceptance-matrix.md};
++\code{docs/evidence/request-semantics-01/verification.md};
++\code{docs/evidence/sale-semantics-02/verification.md};
++\code{docs/evidence/postgres-enums-2026-11-09/verification.md}.}
++
+ \section{Verifica e controllo umano}
+-\provvisorio{Distinguere contributi dell'AI, decisioni degli autori e controlli attribuiti alle versioni verificate.}
++% AI-05
++Le decisioni umane documentate riguardano requisiti e perimetro: l'ADR~0001
++registra la scelta della base manuale e del totale concordato; l'ADR~0002
++registra la scelta degli enum nativi e le condizioni dell'aggiornamento
++locale, con backup e prova su copia. Sono decisioni registrate come
++confermate dall'utente; non dimostrano una lettura umana di ciascuna patch
++o l'approvazione di ogni risultato.\footnote{\raggedright ADR~0001 citato sopra;
++\code{docs/adr/0002-enumerazioni-native-postgresql.md}.
++Per gli esiti storici di conservazione e ripristino:
++\code{docs/evidence/db-consolidation-2026-11-09/verification.md}
++e \code{docs/evidence/postgres-enums-2026-11-09/verification.md}.
++Nessun backup privato è stato consultato per questo capitolo.}
++
++% AI-06
++Le verifiche tecniche sono un livello distinto. Log, XML, manifest e patch
++permettono di controllare risultati e versione esaminata. Ad esempio R11
++registra il 3 novembre 394 prove riuscite su JDK~21 e PostgreSQL~16 dedicato;
++il 9 novembre il log degli enum ne registra 423. Non si sommano sessioni
++diverse né si ricava da questi conteggi una percentuale di copertura.
++Il secondo risultato non dispone di manifest runtime o XML per metodo:
++il rapporto con il codice corrente è ricostruito tramite fonti e Git.
++Il capitolo~\ref{ch:testing} e l'appendice~\ref{app:verifiche} distinguono
++questi limiti e le prove JavaFX. Qui non sono stati rieseguiti test
++applicativi, harness o accessi al database.
++
++% AI-07
++Anche le review Standards e Spec conservate sono revisioni assistite,
++svolte da agenti in contesti separati: i loro esiti non sono approvazioni
++umane. Per la relazione, le verifiche 05--06 documentano correzioni,
++compilazione e ispezione del PDF; i capitoli sono stati proposti agli
++autori e restano da loro rivedere. L'eventuale approvazione non viene
++dedotta dal silenzio o dalla chiusura di un ticket.\footnote{\raggedright 
++\code{docs/evidence/r03-prices/verification.md}, \emph{Revisione indipendente};
++\code{docs/relazione/verifiche/ticket-05/revisione.md} e
++\code{docs/relazione/verifiche/ticket-06/revisione.md}.}
++
+ \section{Documentazione, diagrammi e limiti}
+-\provvisorio{Includere riscrittura della relazione e produzione dei diagrammi; esplicitare i limiti delle tracce senza inventare prompt, modelli, tempi o percentuali.}
++% AI-08
++Il supporto di Codex comprende la documentazione: il README lo cita
++esplicitamente per l'analisi dell'avvio, lo script Windows e le istruzioni.
++Le evidenze R09 registrano la revisione tecnica e teorica, distinguendo
++factory statiche da Factory Method e meccanismi DAO/DI dai pattern GoF.
++Registrano inoltre diagrammi PlantUML di quella fase, separati dagli
++artefatti storici.\footnote{\raggedright \code{README.md}, \emph{Uso dell'AI};
++\code{docs/evidence/r09-instructions/verification.md},
++\emph{Cambiamenti e motivazione};
++\code{docs/evidence/r09-diagrams/verification.md},
++\emph{Diagrammi correnti e storico}.}
++
++% AI-09
++Anche questa riscrittura della relazione è assistita da Codex: comprende
++sintesi dei sorgenti e delle evidenze, selezione dei frammenti, matrici di
++tracciabilità, composizione LaTeX e controllo del PDF. Le nuove tavole della
++relazione usano draw.io: sono viste selettive riscontrate su Java e schema,
++non un'esportazione UML automatica del codice. Sorgenti modificabili,
++esportazioni e verbali restano conservati. Questo capitolo riusa le tavole
++del capitolo~2 e dell'appendice~\ref{app:classi}, senza crearne altre.
++Le verifiche documentali 01--07 distinguono i controlli attuali dalle
++prove applicative pregresse.\footnote{\raggedright \code{docs/relazione/diagrammi/README.md};
++\code{docs/relazione/verifiche/ticket-03/matrice-copertura.md};
++\code{docs/relazione/verifiche/ticket-04/README.md};
++\code{docs/relazione/verifiche/ticket-05/README.md},
++\code{docs/relazione/verifiche/ticket-06/README.md}
++e \code{docs/relazione/verifiche/ticket-07/README.md}.}
++
++% AI-10
++Le tracce non sono una cronologia completa delle conversazioni. Non
++consentono di ricostruire prompt integrali, versioni dei modelli, tempi
++complessivi, percentuali di codice generato o una precisa modalità
++d'integrazione nell'IDE. I metadati dei commit e le impronte dei file
++identificano artefatti, non il loro autore intellettuale. I risultati
++storici restano tali; compilazione, ispezione del PDF e review documentali
++non certificano il software corrente e non sostituiscono il controllo
++degli autori.
++\endgroup
+--- prima/main.tex
++++ docs/relazione/main.tex
+@@ -16,7 +16,7 @@
+ \hypersetup{hidelinks,
+   pdftitle={DriveHub -- Relazione di Ingegneria del Software},
+   pdfauthor={Federico D'Amodio, Matteo Orlandi},
+-  pdfsubject={Stesura progressiva: capitoli 1--4 e appendici A--C per revisione},
++  pdfsubject={Relazione completa: capitoli 1--5 e appendici A--C proposti agli autori},
+   pdflang={it-IT}}
+ \setlist{itemsep=2pt,topsep=4pt}
+ \emergencystretch=2em
+@@ -51,8 +51,8 @@
+     Prof. Enrico Vicario
+   \end{minipage}
+   \vfill
+-  {\small Stesura progressiva -- Capitoli 1--4\par
+-  e appendici A--C per revisione\par}
++  {\small Relazione completa -- Capitoli 1--5 e appendici A--C\par
++  Proposta agli autori per revisione, non ancora approvata\par}
+   \vspace{.4cm}
+   {\large Anno Accademico 2025/2026\par}
+ \end{titlepage}
+--- prima/piano.md
++++ docs/relazione/piano.md
+@@ -133,8 +133,18 @@
+ - La [specifica](tracker/spec.md) è pubblicata nel tracker locale con stato
+   `ready-for-agent`.
+ 
++## Avanzamento documentale — 13 novembre 2026
++
++I ticket documentali 01–06 sono conclusi; capitoli 1–4 e appendici A–C sono
++completi e proposti agli autori, non approvati. Il ticket 07 completa il
++capitolo 5 nelle quattro sezioni dell'indice, sulla richiesta operativa
++ricevuta: [specifica e verifiche](verifiche/ticket-07/README.md).
++La dichiarazione sull'origine manuale e sulla revisione con Codex resta
++quella registrata sopra; la nuova ricostruzione non attribuisce le singole righe.
++Non sono stati eseguiti test applicativi, accessi DB, harness o commit.
++
+ ## Prossimo passaggio
+ 
+-Suddividere la specifica in ticket locali con criteri di accettazione e
+-dipendenze, quindi procedere con la stesura e la revisione di un capitolo
+-alla volta.
++Revisione degli autori sui capitoli 1–5 e sulle appendici A–C completi.
++La chiusura documentale e le review assistite non costituiscono approvazione
++umana né autorizzano invio al docente o pubblicazione.
+Binary files prima/relazione-drivehub.pdf and docs/relazione/relazione-drivehub.pdf differ

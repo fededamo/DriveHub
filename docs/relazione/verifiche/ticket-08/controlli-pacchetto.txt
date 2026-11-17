@@ -1,0 +1,1 @@
+107 pagine identiche nel testo e nei pixel a 96 dpi; 77 input locali; 89 risorse della toolchain; nessun avviso finale.

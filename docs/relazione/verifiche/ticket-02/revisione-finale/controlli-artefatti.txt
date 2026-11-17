@@ -1,0 +1,12 @@
+Revisione documentale: 2026-11-12T17:53:02+01:00
+Ambiente: Python Python 3.13.16; PyMuPDF ('2.1', '1.28.6', None)
+Comando: /tmp/drivehub-review-tools/venv/bin/python; controllo in sola lettura degli artefatti, nessuna compilazione LaTeX o esecuzione applicativa in questa revisione.
+Baseline di conservazione: 1973 file invariati.
+Manifest pre-revisione: 73 impronte valide.
+PDF corrente aperto: 45 pagine A4, 91 collegamenti interni risolti, 19 font incorporati; nessun riferimento ??.
+Capitolo 1: testo PDF identico all’estratto storico; sorgente e verifiche ticket01 invariati.
+Diagrammi: sei PDF su una pagina, XML incorporati corrispondenti ai sei sorgenti draw.io.
+Screenshot: 16 PNG presenti e impronte corrispondenti alle acquisizioni consegnate.
+PDF distribuito identico al risultato della compilazione conservato in build/.
+git diff --exit-code HEAD -- . :!docs/relazione: codice 0; nessun commit creato.
+SHA-256 PDF: 2294c523c6afe86efba750bb92d9f09c1fff8318e0f8d9cd486db01e22066ac2

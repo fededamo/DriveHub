@@ -1,0 +1,31 @@
+{
+  "course": "../Slides and notes - academic year 202526-20261020/NotesOnTheProjectWork_Jan2025.pdf",
+  "course_sha256": "ba3691a18ed2d8328bae4b4e374845cd38dc8eb127faf5beabf4c4893f09e06b",
+  "ddl_tables": 13,
+  "ddl_fk": 15,
+  "ddl_enums": [
+    "CREATE TYPE vehicle_state AS ENUM ('SALE', 'RENT', 'BLOCKED', 'WAITING', 'SOLD');",
+    "CREATE TYPE request_type AS ENUM ('PURCHASE', 'SALE');",
+    "CREATE TYPE price_mode AS ENUM ('AUTOMATIC', 'MANUAL');",
+    "CREATE TYPE sale_type AS ENUM ('SALE', 'PURCHASE', 'PENALTY');"
+  ],
+  "production_types_files": 65,
+  "production_packages": [
+    "it.unifi.drivehub",
+    "it.unifi.drivehub.dao",
+    "it.unifi.drivehub.dao.postgres",
+    "it.unifi.drivehub.domain.discount",
+    "it.unifi.drivehub.domain.operation",
+    "it.unifi.drivehub.domain.user",
+    "it.unifi.drivehub.domain.vehicle",
+    "it.unifi.drivehub.event",
+    "it.unifi.drivehub.presentation.view",
+    "it.unifi.drivehub.security",
+    "it.unifi.drivehub.service"
+  ],
+  "snippet_indices_reused": [
+    "../ticket-05/frammenti.json",
+    "../ticket-06/frammenti.json"
+  ],
+  "runtime_executed": false
+}

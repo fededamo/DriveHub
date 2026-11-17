@@ -1,0 +1,2366 @@
+[
+  {
+    "class": "it.unifi.drivehub.AuthServiceIntegrationTest",
+    "name": "wrongPasswordPreservesStoredIdentityAndLogin(String)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.AuthServiceIntegrationTest",
+    "name": "wrongPasswordPreservesStoredIdentityAndLogin(String)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.AuthServiceIntegrationTest",
+    "name": "wrongPasswordPreservesStoredIdentityAndLogin(String)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.AuthServiceIntegrationTest",
+    "name": "validEmailIsNormalizedPersistedAndUsedForLogin(String)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.AuthServiceIntegrationTest",
+    "name": "validEmailIsNormalizedPersistedAndUsedForLogin(String)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.AuthServiceIntegrationTest",
+    "name": "validEmailIsNormalizedPersistedAndUsedForLogin(String)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.AuthServiceIntegrationTest",
+    "name": "rejectedEmailPreservesStoredIdentityAndLogin(String)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.AuthServiceIntegrationTest",
+    "name": "rejectedEmailPreservesStoredIdentityAndLogin(String)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.AuthServiceIntegrationTest",
+    "name": "rejectedEmailPreservesStoredIdentityAndLogin(String)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.AuthServiceIntegrationTest",
+    "name": "malformedEmailPreservesStoredIdentityAndLogin(String)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.AuthServiceIntegrationTest",
+    "name": "malformedEmailPreservesStoredIdentityAndLogin(String)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.AuthServiceIntegrationTest",
+    "name": "malformedEmailPreservesStoredIdentityAndLogin(String)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.AuthServiceIntegrationTest",
+    "name": "malformedEmailPreservesStoredIdentityAndLogin(String)[4]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.AuthServiceIntegrationTest",
+    "name": "duplicateEmailPreservesBothIdentitiesAndLogins(String, String)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.AuthServiceIntegrationTest",
+    "name": "duplicateEmailPreservesBothIdentitiesAndLogins(String, String)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.AuthServiceIntegrationTest",
+    "name": "duplicateEmailPreservesBothIdentitiesAndLogins(String, String)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.AuthServiceIntegrationTest",
+    "name": "duplicateEmailPreservesBothIdentitiesAndLogins(String, String)[4]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.AuthServiceIntegrationTest",
+    "name": "duplicateEmailPreservesBothIdentitiesAndLogins(String, String)[5]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BalanceConcurrencyIntegrationTest",
+    "name": "unaffordableConcurrentPurchasesLeaveOnlyTheSuccessfulOperation",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BalanceConcurrencyIntegrationTest",
+    "name": "missingRefundAccountRollsBackEveryRefundAndCancellation",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BalanceConcurrencyIntegrationTest",
+    "name": "errorAfterDebitRollsBackBalanceVehicleAndRequest",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BalanceConcurrencyIntegrationTest",
+    "name": "concurrentPurchaseDepositsKeepBothDebits",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BalanceConcurrencyIntegrationTest",
+    "name": "errorAfterMultipleRefundsRollsBackAllAccountsAndCancellations",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BalanceConcurrencyIntegrationTest",
+    "name": "concurrentRefundsAcquireAccountsInClientOrder",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BalanceConcurrencyIntegrationTest",
+    "name": "everyMovementSharesTheAccountProtocol(String, String)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BalanceConcurrencyIntegrationTest",
+    "name": "everyMovementSharesTheAccountProtocol(String, String)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BalanceConcurrencyIntegrationTest",
+    "name": "everyMovementSharesTheAccountProtocol(String, String)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BalanceConcurrencyIntegrationTest",
+    "name": "everyMovementSharesTheAccountProtocol(String, String)[4]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BalanceConcurrencyIntegrationTest",
+    "name": "everyMovementSharesTheAccountProtocol(String, String)[5]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BalanceConcurrencyIntegrationTest",
+    "name": "everyMovementSharesTheAccountProtocol(String, String)[6]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BalanceConcurrencyIntegrationTest",
+    "name": "everyMovementSharesTheAccountProtocol(String, String)[7]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BalanceConcurrencyIntegrationTest",
+    "name": "everyMovementSharesTheAccountProtocol(String, String)[8]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BalanceConcurrencyIntegrationTest",
+    "name": "multipleRefundsToOneAccountKeepEveryCredit",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BalanceConcurrencyIntegrationTest",
+    "name": "accountLockRequiresAnActiveTransaction",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "databasePreservesTestDriveHoursAndVehicleTimestampUniqueness(String, String)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "databasePreservesTestDriveHoursAndVehicleTimestampUniqueness(String, String)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "databasePreservesTestDriveHoursAndVehicleTimestampUniqueness(String, String)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "pastDatesAndReversedRentalPeriodAreRejectedWithoutWrites",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "testDriveCommittedFirstIsCancelledAtomicallyByRental(boolean)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "testDriveCommittedFirstIsCancelledAtomicallyByRental(boolean)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "sameClientCannotExceedThreeTestDrivesAcrossDifferentVehicles",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "rentalUsesThePriceRereadAfterTheVehicleLock",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "failureAfterBookingInsertRollsBackActualWrites(boolean)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "failureAfterBookingInsertRollsBackActualWrites(boolean)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "concurrentRentalsOnAdjacentDaysCanBothBeConfirmed",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "clientLockIsCompatibleWithPurchaseForeignKeysAndTheAccountProtocol",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "rejectedBookingsExposeTheBusinessReasonAfterRollback(boolean)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "rejectedBookingsExposeTheBusinessReasonAfterRollback(boolean)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "insufficientBalanceDoesNotCreateRentalOrCancelTestDrives",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "bookingRereadsVehicleStateAfterWaitingForTheLock(boolean)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "bookingRereadsVehicleStateAfterWaitingForTheLock(boolean)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "rentalWinsAgainstATestDriveStartedBeforeItsCommit",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "databaseSerializesOverlapsEvenWhenWritersBypassServices(boolean)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "databaseSerializesOverlapsEvenWhenWritersBypassServices(boolean)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "overlappingRentalsFromDifferentClientsCannotBothBeConfirmed",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "testDriveDoesNotRequireABankAccount",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "testDriveCannotUseAnyDayOfARental(int)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "testDriveCannotUseAnyDayOfARental(int)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "testDriveCannotUseAnyDayOfARental(int)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "twoClientsCannotBookTheSameTestDriveSlot",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "rentalPeriodsAreInclusiveAndAdjacentDaysRemainBookable(int, int, boolean)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "rentalPeriodsAreInclusiveAndAdjacentDaysRemainBookable(int, int, boolean)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "rentalPeriodsAreInclusiveAndAdjacentDaysRemainBookable(int, int, boolean)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "rentalPeriodsAreInclusiveAndAdjacentDaysRemainBookable(int, int, boolean)[4]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "rentalPeriodsAreInclusiveAndAdjacentDaysRemainBookable(int, int, boolean)[5]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "rentalPeriodsAreInclusiveAndAdjacentDaysRemainBookable(int, int, boolean)[6]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "rentalPeriodsAreInclusiveAndAdjacentDaysRemainBookable(int, int, boolean)[7]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "purchaseCompletionAndRentalCannotDeadlockWithATestDriveOnTheBlockedVehicle",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "concurrentRentalsForSameClientOnDifferentVehiclesCannotOverdraw",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingConcurrencyIntegrationTest",
+    "name": "databaseRejectsInclusiveRentalOverlapWithoutServices",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingRulesTest",
+    "name": "rentalOverlapIncludesBothEndpoints",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.BookingRulesTest",
+    "name": "testDriveCannotStartAfterSixteenEvenByOneMicrosecond",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.CatalogListingIntegrationTest",
+    "name": "nextRefreshReadsNewModelBaseAndNameWithoutChangingManualBase",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.CatalogListingIntegrationTest",
+    "name": "stateFilteringEmptyResultsAndNewSessionRemainCorrect",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.CatalogListingIntegrationTest",
+    "name": "usedVehicleAndDailyRateKeepDepreciationAndMaximumDiscount",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.CatalogListingIntegrationTest",
+    "name": "automaticAndManualUseTheSameFormulaAfterRefresh",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.DatabaseConnectionIntegrationTest",
+    "name": "testRealDatabaseConnection",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.DatabaseIsolationIntegrationTest",
+    "name": "applicationSentinelSurvivesRejectedConfigurationAndTestResets",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.DemoSqlValidationTest",
+    "name": "schemaAndDemoCanBeReloadedWithoutChangingRowsOrSequences",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.DomainInvariantsTest",
+    "name": "testVehiclePlateCanBeRemovedWithZeroKilometers(String)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.DomainInvariantsTest",
+    "name": "testVehiclePlateCanBeRemovedWithZeroKilometers(String)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.DomainInvariantsTest",
+    "name": "testVehiclePlateCanBeRemovedWithZeroKilometers(String)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.DomainInvariantsTest",
+    "name": "testRentDates",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.DomainInvariantsTest",
+    "name": "testVehiclePlateAndKmInvariant",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.DomainInvariantsTest",
+    "name": "testYearRange",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.DomainInvariantsTest",
+    "name": "testTestDriveTimeSlot",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.DomainInvariantsTest",
+    "name": "testVehicleProductionYearAfterModelRelease",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.DomainInvariantsTest",
+    "name": "testEqualsAndHashCodeContracts",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.DomainInvariantsTest",
+    "name": "testRejectedVehiclePlateChangeLeavesVehicleUnchanged(String)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.DomainInvariantsTest",
+    "name": "testRejectedVehiclePlateChangeLeavesVehicleUnchanged(String)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.DomainInvariantsTest",
+    "name": "testRejectedVehiclePlateChangeLeavesVehicleUnchanged(String)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.DomainInvariantsTest",
+    "name": "testValidVehiclePlateChangeNormalizesPlate",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.DomainInvariantsTest",
+    "name": "testDiscountRange",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.DomainInvariantsTest",
+    "name": "testBankAccountInvariants",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.FullWorkflowIntegrationTest",
+    "name": "testSalesmanLoginAndDataLoading",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.FullWorkflowIntegrationTest",
+    "name": "testManagerLoginAndDataLoading",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.FullWorkflowIntegrationTest",
+    "name": "testClientLoginAndDataLoading",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.FullWorkflowIntegrationTest",
+    "name": "expirationUsesOnlyTheIsolatedFixture",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "purchaseApprovalCannotReferToADeletedSalesman(boolean)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "purchaseApprovalCannotReferToADeletedSalesman(boolean)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "saleCommittedWhileDeletionWaitsPreservesAttributionAndExplainsRefusal",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "identitiesWithoutOperationsRemainDeletableIncludingDemonstrationBalance(long, String, String)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "identitiesWithoutOperationsRemainDeletableIncludingDemonstrationBalance(long, String, String)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "identitiesWithoutOperationsRemainDeletableIncludingDemonstrationBalance(long, String, String)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "identitiesWithoutOperationsRemainDeletableIncludingDemonstrationBalance(long, String, String)[4]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "identitiesWithoutOperationsRemainDeletableIncludingDemonstrationBalance(long, String, String)[5]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "identitiesWithoutOperationsRemainDeletableIncludingDemonstrationBalance(long, String, String)[6]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "acquisitionInsertedBeforeDeletionEitherRetainsAttributionOrRollsBack(boolean)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "acquisitionInsertedBeforeDeletionEitherRetainsAttributionOrRollsBack(boolean)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "wrongPasswordCannotDeleteAnyRole(long, String)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "wrongPasswordCannotDeleteAnyRole(long, String)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "wrongPasswordCannotDeleteAnyRole(long, String)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "purchaseAlreadyWaitingOnBalanceCannotDeadlockWithIdentityDeletion",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "clientWithOnlyARequestCannotDeleteIdentity(String, String)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "clientWithOnlyARequestCannotDeleteIdentity(String, String)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "clientWithOnlyARequestCannotDeleteIdentity(String, String)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "clientWithOnlyARequestCannotDeleteIdentity(String, String)[4]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "acquisitionAfterActualSalesmanDeletionRollsBackItsCredit(boolean)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "acquisitionAfterActualSalesmanDeletionRollsBackItsCredit(boolean)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "databaseCannotEraseSalesmanAttributionEvenWithoutServices(String, int)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "databaseCannotEraseSalesmanAttributionEvenWithoutServices(String, int)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "databaseCannotEraseSalesmanAttributionEvenWithoutServices(String, int)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "errorAfterActualIdentityAndAccountDeletionRollsBackBoth",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "clientDeletionRollbackAllowsWaitingBooking(boolean)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "clientDeletionRollbackAllowsWaitingBooking(boolean)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "mismatchedRoleCannotReportADeletion(long, String)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "mismatchedRoleCannotReportADeletion(long, String)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "mismatchedRoleCannotReportADeletion(long, String)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "unrecognizedRoleCannotChangeAnyData(String)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "unrecognizedRoleCannotChangeAnyData(String)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "unrecognizedRoleCannotChangeAnyData(String)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "clientBookingAndDeletionAreCoherentInBothOrders(boolean, boolean)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "clientBookingAndDeletionAreCoherentInBothOrders(boolean, boolean)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "clientBookingAndDeletionAreCoherentInBothOrders(boolean, boolean)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "clientBookingAndDeletionAreCoherentInBothOrders(boolean, boolean)[4]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "newVehicleProposalAfterClientDeletionCommitsOnlyIfDeletionRollsBack(boolean)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "newVehicleProposalAfterClientDeletionCommitsOnlyIfDeletionRollsBack(boolean)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "clientOperationsAndHistoryRemainBinding(String, String, int)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "clientOperationsAndHistoryRemainBinding(String, String, int)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "clientOperationsAndHistoryRemainBinding(String, String, int)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "clientOperationsAndHistoryRemainBinding(String, String, int)[4]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "clientOperationsAndHistoryRemainBinding(String, String, int)[5]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "clientOperationsAndHistoryRemainBinding(String, String, int)[6]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "clientOperationsAndHistoryRemainBinding(String, String, int)[7]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "clientOperationsAndHistoryRemainBinding(String, String, int)[8]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "clientWithoutADemonstrationAccountIsStillDeletable",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "salesmanWithOnlyAnAssignedRequestCannotDelete(String, String)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "salesmanWithOnlyAnAssignedRequestCannotDelete(String, String)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "salesmanWithOnlyAnAssignedRequestCannotDelete(String, String)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "salesmanWithOnlyAnAssignedRequestCannotDelete(String, String)[4]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "skippedDeletionCannotReportSuccess",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "salesmanWithOnlyCompletedSalesRetainsIdentityAndAttribution(String, String, int)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "salesmanWithOnlyCompletedSalesRetainsIdentityAndAttribution(String, String, int)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "salesmanWithOnlyCompletedSalesRetainsIdentityAndAttribution(String, String, int)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "salesmanWithOnlyCompletedSalesRetainsIdentityAndAttribution(String, String, int)[4]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "salesmanWithOnlyCompletedSalesRetainsIdentityAndAttribution(String, String, int)[5]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "salesmanWithOnlyCompletedSalesRetainsIdentityAndAttribution(String, String, int)[6]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.IdentityDeletionIntegrationTest",
+    "name": "deletionAlreadyWaitingOnBalancePreventsPurchaseWithoutPartialVehicleChange",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PriceCalculatorServiceTest",
+    "name": "testYearAmortization",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PriceCalculatorServiceTest",
+    "name": "invalidManualBaseLeavesSelectionUnchangedAndZeroIsValid",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PriceCalculatorServiceTest",
+    "name": "testPromotionalDiscountMax",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PriceCalculatorServiceTest",
+    "name": "testMileageAmortization",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PriceCalculatorServiceTest",
+    "name": "testRentalCostFormula",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PriceCalculatorServiceTest",
+    "name": "manualBaseEqualToModelRemainsManualWhenModelChangesAndCanReturnToRecommended",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PriceCalculatorServiceTest",
+    "name": "fractionalCentManualBaseIsRoundedBeforeApplyingFormula",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PriceCalculatorServiceTest",
+    "name": "manualBasePreservesAllDepreciationsAndMaximumPromotion",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PriceCalculatorServiceTest",
+    "name": "testPurchaseDeposit",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PriceCalculatorServiceTest",
+    "name": "manualBaseReceivesPromotionOnce",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PriceCalculatorServiceTest",
+    "name": "testUsedVehicleDiscount",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PriceSelectionIntegrationTest",
+    "name": "existingCessionKeepsManagerBaseSeparateFromEstimate",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PriceSelectionIntegrationTest",
+    "name": "rentalUsesCatalogPriceWithGeometricFormulaAndInclusiveDays(BigDecimal, BigDecimal, BigDecimal)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PriceSelectionIntegrationTest",
+    "name": "rentalUsesCatalogPriceWithGeometricFormulaAndInclusiveDays(BigDecimal, BigDecimal, BigDecimal)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PriceSelectionIntegrationTest",
+    "name": "newCessionUsesRecommendedBaseAndKeepsEstimateInRequest",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PriceSelectionIntegrationTest",
+    "name": "fractionalCentBaseHasSameEffectivePriceBeforeAndAfterReload",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PriceSelectionIntegrationTest",
+    "name": "invalidBaseDoesNotChangePersistedSelection",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PriceSelectionIntegrationTest",
+    "name": "purchaseUsesCatalogPriceInBothModes(BigDecimal, BigDecimal, BigDecimal)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PriceSelectionIntegrationTest",
+    "name": "purchaseUsesCatalogPriceInBothModes(BigDecimal, BigDecimal, BigDecimal)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PriceSelectionIntegrationTest",
+    "name": "catalogPersistsManualBaseAndAppliesPromotionOnce",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PriceSelectionIntegrationTest",
+    "name": "equalManualBaseAndReturnToRecommendedSurviveReloadAndModelChange",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseAgreementIntegrationTest",
+    "name": "completionStillRequiresApprovalAndUnexpiredRequest",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseAgreementIntegrationTest",
+    "name": "insufficientRemainingFundsLeaveAgreementAndReservationUnchanged",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseAgreementIntegrationTest",
+    "name": "persistenceFailuresRollBackEveryStep(String, String, String, int)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseAgreementIntegrationTest",
+    "name": "persistenceFailuresRollBackEveryStep(String, String, String, int)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseAgreementIntegrationTest",
+    "name": "persistenceFailuresRollBackEveryStep(String, String, String, int)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseAgreementIntegrationTest",
+    "name": "persistenceFailuresRollBackEveryStep(String, String, String, int)[4]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseAgreementIntegrationTest",
+    "name": "agreementFromEarlierPricingYearDoesNotDepreciateAtCompletion(boolean)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseAgreementIntegrationTest",
+    "name": "agreementFromEarlierPricingYearDoesNotDepreciateAtCompletion(boolean)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseAgreementIntegrationTest",
+    "name": "insufficientDepositLeavesVehicleAccountAndOperationsUnchanged",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseAgreementIntegrationTest",
+    "name": "fractionalCentManualBaseKeepsRoundedAgreementAfterReload",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseAgreementIntegrationTest",
+    "name": "completionKeepsAgreementAfterPricingChangesAndNewSession(boolean)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseAgreementIntegrationTest",
+    "name": "completionKeepsAgreementAfterPricingChangesAndNewSession(boolean)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "completionAndExpirationRecheckTheLockedDeadline(boolean)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "completionAndExpirationRecheckTheLockedDeadline(boolean)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "staleExpirationCandidateCannotRefundACompletedOrExtendedRequest(boolean)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "staleExpirationCandidateCannotRefundACompletedOrExtendedRequest(boolean)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "competingPhasesConsumeTheRequestOnce(String, String, String, VehicleState, BigDecimal)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "competingPhasesConsumeTheRequestOnce(String, String, String, VehicleState, BigDecimal)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "competingPhasesConsumeTheRequestOnce(String, String, String, VehicleState, BigDecimal)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "competingPhasesConsumeTheRequestOnce(String, String, String, VehicleState, BigDecimal)[4]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "competingPhasesConsumeTheRequestOnce(String, String, String, VehicleState, BigDecimal)[5]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "competingPhasesConsumeTheRequestOnce(String, String, String, VehicleState, BigDecimal)[6]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "competingPhasesConsumeTheRequestOnce(String, String, String, VehicleState, BigDecimal)[7]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "competingPhasesConsumeTheRequestOnce(String, String, String, VehicleState, BigDecimal)[8]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "incompleteApprovalCannotEnableCompletionOrExpiration(String, String)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "incompleteApprovalCannotEnableCompletionOrExpiration(String, String)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "incompleteApprovalCannotEnableCompletionOrExpiration(String, String)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[4]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[5]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[6]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[7]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[8]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[9]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[10]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[11]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[12]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[13]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[14]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[15]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[16]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[17]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[18]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[19]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[20]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[21]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[22]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[23]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "failedOrSkippedWritesRollBackTheWholePhase(String, String, String, String, boolean)[24]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "inconsistentVehicleStateRollsBackTheWholePhase(String, VehicleState)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "inconsistentVehicleStateRollsBackTheWholePhase(String, VehicleState)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "inconsistentVehicleStateRollsBackTheWholePhase(String, VehicleState)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "inconsistentVehicleStateRollsBackTheWholePhase(String, VehicleState)[4]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "inconsistentVehicleStateRollsBackTheWholePhase(String, VehicleState)[5]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "inconsistentVehicleStateRollsBackTheWholePhase(String, VehicleState)[6]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "inconsistentVehicleStateRollsBackTheWholePhase(String, VehicleState)[7]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "inconsistentVehicleStateRollsBackTheWholePhase(String, VehicleState)[8]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "inconsistentVehicleStateRollsBackTheWholePhase(String, VehicleState)[9]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "inconsistentVehicleStateRollsBackTheWholePhase(String, VehicleState)[10]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "inconsistentVehicleStateRollsBackTheWholePhase(String, VehicleState)[11]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "inconsistentVehicleStateRollsBackTheWholePhase(String, VehicleState)[12]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "purchaseCommandsRejectSaleRequests(String)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "purchaseCommandsRejectSaleRequests(String)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "purchaseCommandsRejectSaleRequests(String)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "expirationUsesTheRefundActuallyWrittenInTheNotification",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "missingAccountPreventsEveryWrite(String)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "missingAccountPreventsEveryWrite(String)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "missingAccountPreventsEveryWrite(String)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "requestLockRequiresAnActiveTransaction",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.PurchaseConcurrencyIntegrationTest",
+    "name": "concurrentCompletionsChargeAndSellOnlyOnce",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.RequestAgreementTest",
+    "name": "agreementAndPaidDepositRemainFixedDuringApproval",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.RequestAgreementTest",
+    "name": "rejectsAmountsThatWouldChangeWhenStoredAsCents",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.RequestAgreementTest",
+    "name": "cessionKeepsItsEstimateWithoutPurchaseAmounts",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.RequestAgreementTest",
+    "name": "rejectsMissingOrInconsistentPurchaseAgreement(BigDecimal, BigDecimal)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.RequestAgreementTest",
+    "name": "rejectsMissingOrInconsistentPurchaseAgreement(BigDecimal, BigDecimal)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.RequestAgreementTest",
+    "name": "rejectsMissingOrInconsistentPurchaseAgreement(BigDecimal, BigDecimal)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.RequestAgreementTest",
+    "name": "rejectsMissingOrInconsistentPurchaseAgreement(BigDecimal, BigDecimal)[4]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "rejectionPreservesEveryKindOfHistoryAndRemovesOnlyANewVehicle(String)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "rejectionPreservesEveryKindOfHistoryAndRemovesOnlyANewVehicle(String)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "rejectionPreservesEveryKindOfHistoryAndRemovesOnlyANewVehicle(String)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "rejectionPreservesEveryKindOfHistoryAndRemovesOnlyANewVehicle(String)[4]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "rejectionPreservesEveryKindOfHistoryAndRemovesOnlyANewVehicle(String)[5]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "rejectionPreservesEveryKindOfHistoryAndRemovesOnlyANewVehicle(String)[6]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "onlyAWaitingVehicleCanReceiveAnOutcome(String, VehicleState)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "onlyAWaitingVehicleCanReceiveAnOutcome(String, VehicleState)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "onlyAWaitingVehicleCanReceiveAnOutcome(String, VehicleState)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "onlyAWaitingVehicleCanReceiveAnOutcome(String, VehicleState)[4]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "onlyAWaitingVehicleCanReceiveAnOutcome(String, VehicleState)[5]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "onlyAWaitingVehicleCanReceiveAnOutcome(String, VehicleState)[6]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "onlyAWaitingVehicleCanReceiveAnOutcome(String, VehicleState)[7]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "onlyAWaitingVehicleCanReceiveAnOutcome(String, VehicleState)[8]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "missingOrInvalidDataCannotLeaveAnyWrite(String)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "missingOrInvalidDataCannotLeaveAnyWrite(String)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "missingOrInvalidDataCannotLeaveAnyWrite(String)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "missingOrInvalidDataCannotLeaveAnyWrite(String)[4]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "missingOrInvalidDataCannotLeaveAnyWrite(String)[5]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "missingOrInvalidDataCannotLeaveAnyWrite(String)[6]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "approvalPaysTheClientAndRecordsOneDealershipExpense",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "typeAndStateAreCheckedAfterWaitingForTheirLocks(String, String)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "typeAndStateAreCheckedAfterWaitingForTheirLocks(String, String)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "typeAndStateAreCheckedAfterWaitingForTheirLocks(String, String)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "typeAndStateAreCheckedAfterWaitingForTheirLocks(String, String)[4]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "anObsoleteSessionUsesTheRequestRereadAfterTheLock(String)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "anObsoleteSessionUsesTheRequestRereadAfterTheLock(String)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "databaseRejectsAnAmountWhoseSignContradictsTheExplicitType(String, BigDecimal)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "databaseRejectsAnAmountWhoseSignContradictsTheExplicitType(String, BigDecimal)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "databaseRejectsAnAmountWhoseSignContradictsTheExplicitType(String, BigDecimal)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "aSkippedVehicleDeletionCannotConsumeTheRequest",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "zeroPaymentCannotConsumeTheProposalOrWriteAnAcquisition",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "approvalNeedsASalesmanBeforePaying",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "vehicleLockRequiresAnActiveTransaction",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "competingOutcomesHaveExactlyOnePaymentAndAvailabilityChange(String, String, boolean)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "competingOutcomesHaveExactlyOnePaymentAndAvailabilityChange(String, String, boolean)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "competingOutcomesHaveExactlyOnePaymentAndAvailabilityChange(String, String, boolean)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "competingOutcomesHaveExactlyOnePaymentAndAvailabilityChange(String, String, boolean)[4]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "competingOutcomesHaveExactlyOnePaymentAndAvailabilityChange(String, String, boolean)[5]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "competingOutcomesHaveExactlyOnePaymentAndAvailabilityChange(String, String, boolean)[6]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "competingOutcomesHaveExactlyOnePaymentAndAvailabilityChange(String, String, boolean)[7]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "competingOutcomesHaveExactlyOnePaymentAndAvailabilityChange(String, String, boolean)[8]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "failureAfterTheFinalWriteRollsBackEveryActualEffect(String)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "failureAfterTheFinalWriteRollsBackEveryActualEffect(String)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "failureAfterTheFinalWriteRollsBackEveryActualEffect(String)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "rejectionReadsHistoryWrittenInItsOwnTransaction",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[4]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[5]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[6]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[7]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[8]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[9]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[10]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[11]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[12]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[13]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleOutcomeIntegrationTest",
+    "name": "errorsAndSkippedWritesNeverLeaveAPartialOutcome(String, String, String, boolean, String, boolean)[14]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleProposalIntegrationTest",
+    "name": "dealershipVinIsRejectedWithoutAnyMutation",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleProposalIntegrationTest",
+    "name": "ownershipQueriesAndVehicleLockRequireATransaction",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleProposalIntegrationTest",
+    "name": "skippedVehicleUpdateCannotLeaveAnOpenRequest",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleProposalIntegrationTest",
+    "name": "anAcquisitionAloneDoesNotEstablishOwnershipButAZeroPriceSaleDoes",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleProposalIntegrationTest",
+    "name": "aKnownVinCannotUseAnotherModelOrYearForItsEstimate(boolean)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleProposalIntegrationTest",
+    "name": "aKnownVinCannotUseAnotherModelOrYearForItsEstimate(boolean)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleProposalIntegrationTest",
+    "name": "aPastSaleDoesNotAllowADealershipVehicle(String)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleProposalIntegrationTest",
+    "name": "aPastSaleDoesNotAllowADealershipVehicle(String)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleProposalIntegrationTest",
+    "name": "aPastSaleDoesNotAllowADealershipVehicle(String)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleProposalIntegrationTest",
+    "name": "aPastSaleDoesNotAllowADealershipVehicle(String)[4]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleProposalIntegrationTest",
+    "name": "soldVinWithoutAnEffectiveSaleIsRejected",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleProposalIntegrationTest",
+    "name": "databaseRejectsAnotherOpenRequestOfAnyType",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleProposalIntegrationTest",
+    "name": "everyOpenRequestBlocksTheProposal(String, boolean)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleProposalIntegrationTest",
+    "name": "everyOpenRequestBlocksTheProposal(String, boolean)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleProposalIntegrationTest",
+    "name": "everyOpenRequestBlocksTheProposal(String, boolean)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleProposalIntegrationTest",
+    "name": "newVinKeepsTheExistingEstimateAndRejectsSequentialDuplicates",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleProposalIntegrationTest",
+    "name": "rejectionMessageIsAvailableToTheExistingView",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleProposalIntegrationTest",
+    "name": "invalidNewProposalLeavesNoVehicleOrRequest",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleProposalIntegrationTest",
+    "name": "onlyTheLatestEffectiveBuyerCanProposeAndHistoryIsPreserved",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleProposalIntegrationTest",
+    "name": "competingProposalsKeepOnlyTheFirstCompleteVehicleAndRequest(boolean)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleProposalIntegrationTest",
+    "name": "competingProposalsKeepOnlyTheFirstCompleteVehicleAndRequest(boolean)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleProposalIntegrationTest",
+    "name": "requestFailureRollsBackNewAndKnownVehicles(boolean)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleProposalIntegrationTest",
+    "name": "requestFailureRollsBackNewAndKnownVehicles(boolean)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleTypeTest",
+    "name": "zeroHistoricalAmountsKeepTheirExplicitType",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleTypeTest",
+    "name": "reconstructionRejectsAmountsWithTheWrongEconomicSign(SaleType, BigDecimal)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleTypeTest",
+    "name": "reconstructionRejectsAmountsWithTheWrongEconomicSign(SaleType, BigDecimal)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleTypeTest",
+    "name": "reconstructionRejectsAmountsWithTheWrongEconomicSign(SaleType, BigDecimal)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.SaleTypeTest",
+    "name": "factoriesUseTheDealershipPerspectiveAndExplicitTypes",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.TestDatabaseConfigurationTest",
+    "name": "everySettingIsRequiredWithoutApplicationFallback",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.TestDatabaseConfigurationTest",
+    "name": "applicationJdbcOverridesCannotUseTheTestDatabaseOrRole",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.TestDatabaseConfigurationTest",
+    "name": "applicationTargetsAndAmbiguousJdbcUrlsAreRejectedBeforeConnecting",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.TestDatabaseConfigurationTest",
+    "name": "applicationAndPrivilegedRoleNamesAreRejectedBeforeConnecting",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.TestDatabaseConfigurationTest",
+    "name": "explicitDedicatedConfigurationIsAcceptedWithoutConnecting",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.TestDatabaseConfigurationTest",
+    "name": "applicationCannotBeConfiguredToUseTheTestDatabaseOrRole",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.TestDatabaseConfigurationTest",
+    "name": "rejectionDoesNotExposePasswords",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.TestDriveCancellationIntegrationTest",
+    "name": "cancellationFailureRollsBackTheCommercialOperation(boolean)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.TestDriveCancellationIntegrationTest",
+    "name": "cancellationFailureRollsBackTheCommercialOperation(boolean)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.TestDriveCancellationIntegrationTest",
+    "name": "onlyDatesStrictlyAfterTheOperationTransactionStartAreCancelled(boolean)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.TestDriveCancellationIntegrationTest",
+    "name": "onlyDatesStrictlyAfterTheOperationTransactionStartAreCancelled(boolean)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.TestDriveCancellationIntegrationTest",
+    "name": "confirmationCancelsEveryFutureAndPreservesHistoryAndOtherVehicles(boolean)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.TestDriveCancellationIntegrationTest",
+    "name": "confirmationCancelsEveryFutureAndPreservesHistoryAndOtherVehicles(boolean)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.TestDriveCancellationIntegrationTest",
+    "name": "confirmationAlsoSucceedsWithoutFutureTestDrives(boolean)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.TestDriveCancellationIntegrationTest",
+    "name": "confirmationAlsoSucceedsWithoutFutureTestDrives(boolean)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "skippedCancellationCannotCommitRefundsOrSale",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "futureRentalPreviewExcludesTodayAndHistory",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "destinationCommittedFirstRejectsConcurrentRentalWithoutChargingIt",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "futureRentalsAreFullyRefundedForEveryClientWhileHistoryAndOtherVehiclesRemain",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "onlyOppositeSaleAndRentStatesCanBeSelected(VehicleState, VehicleState)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "onlyOppositeSaleAndRentStatesCanBeSelected(VehicleState, VehicleState)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "onlyOppositeSaleAndRentStatesCanBeSelected(VehicleState, VehicleState)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "onlyOppositeSaleAndRentStatesCanBeSelected(VehicleState, VehicleState)[4]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "onlyOppositeSaleAndRentStatesCanBeSelected(VehicleState, VehicleState)[5]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "onlyOppositeSaleAndRentStatesCanBeSelected(VehicleState, VehicleState)[6]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "onlyOppositeSaleAndRentStatesCanBeSelected(VehicleState, VehicleState)[7]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "onlyOppositeSaleAndRentStatesCanBeSelected(VehicleState, VehicleState)[8]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "concurrentDestinationCommandsCannotRefundTwice(VehicleState)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "concurrentDestinationCommandsCannotRefundTwice(VehicleState)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "destinationRollbackReleasesVehicleForConcurrentRental",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "rentalCommittedFirstIsRereadUnderVehicleLock(int)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "rentalCommittedFirstIsRereadUnderVehicleLock(int)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "bothDirectionsWorkWithoutRentals(VehicleState)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "bothDirectionsWorkWithoutRentals(VehicleState)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "rentalIncludingTodayPreventsSaleAndAllRefunds(int, int)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "rentalIncludingTodayPreventsSaleAndAllRefunds(int, int)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "rentalIncludingTodayPreventsSaleAndAllRefunds(int, int)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "rentalIncludingTodayPreventsSaleAndAllRefunds(int, int)[4]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "nonDestinationTargetsAreRejected(VehicleState)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "nonDestinationTargetsAreRejected(VehicleState)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "nonDestinationTargetsAreRejected(VehicleState)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "nonDestinationTargetsAreRejected(VehicleState)[4]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "unknownVehicleCannotChangeDestination",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "refundOrStateFailureRollsBackActualCancellationsAndCredits(String, String)[1]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "refundOrStateFailureRollsBackActualCancellationsAndCredits(String, String)[2]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "refundOrStateFailureRollsBackActualCancellationsAndCredits(String, String)[3]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "refundOrStateFailureRollsBackActualCancellationsAndCredits(String, String)[4]",
+    "error": false,
+    "failure": false
+  },
+  {
+    "class": "it.unifi.drivehub.VehicleDestinationIntegrationTest",
+    "name": "missingSecondAccountRollsBackAnAlreadyWrittenFirstRefund",
+    "error": false,
+    "failure": false
+  }
+]

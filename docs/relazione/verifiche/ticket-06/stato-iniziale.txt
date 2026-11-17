@@ -1,0 +1,6 @@
+2026-11-13T17:54:30.863414+01:00
+61ce18ae1d4e0458b63e970b793b0b3a634a3adf
+?? .serena/
+?? docs/AGENTS.md
+?? docs/agents/
+?? docs/relazione/

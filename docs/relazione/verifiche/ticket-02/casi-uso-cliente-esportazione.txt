@@ -1,0 +1,4 @@
+/tmp/drivehub-relazione-tools/drawio/opt/drawio/drawio --disable-gpu --user-data-dir=/tmp/drivehub-ticket02-tools/drawio-profile -x -f pdf -e --crop -b 10 -o docs/relazione/diagrammi/casi-uso-cliente.drawio.pdf docs/relazione/diagrammi/casi-uso-cliente.drawio
+docs/relazione/diagrammi/casi-uso-cliente.drawio -> docs/relazione/diagrammi/casi-uso-cliente.drawio.pdf
+
+Exit code: 0

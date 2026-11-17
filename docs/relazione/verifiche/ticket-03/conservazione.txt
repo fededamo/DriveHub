@@ -1,0 +1,5 @@
+$ git diff --exit-code HEAD -- . :!docs/relazione
+Exit: 0
+
+Ulteriore riscontro SHA-256: 2046 file della baseline invariati; vedi controlli-documento.txt.
+Nessun commit creato. Le aggiunte non tracciate sono esaminate direttamente, non con il solo diff fra commit.

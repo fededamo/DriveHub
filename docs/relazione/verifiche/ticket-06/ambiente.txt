@@ -1,0 +1,27 @@
+$ uname -a
+Linux surface-di-fede 6.18.54.1-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Tue Oct  6 19:13:07 UTC 2026 x86_64 GNU/Linux
+
+exit 0
+$ /tmp/drivehub-ticket06-tools/tectonic --version
+Tectonic 0.17.0
+
+exit 0
+$ /tmp/drivehub-ticket06-tools/venv/bin/python -c import sys,pymupdf;print(sys.version);print(pymupdf.__doc__)
+3.14.4 (main, Aug 20 2026, 10:41:58) [GCC 15.2.0]
+PyMuPDF 2.1: Python bindings for the MuPDF 1.28.6 library.
+Python 3.14 running on linux (64-bit).
+
+
+exit 0
+$ git rev-parse HEAD
+61ce18ae1d4e0458b63e970b793b0b3a634a3adf
+
+exit 0
+$ git status --short
+?? .serena/
+?? docs/AGENTS.md
+?? docs/agents/
+?? docs/relazione/
+
+exit 0
+Nessun LaTeX/PDF renderer nel PATH iniziale; Tectonic e PyMuPDF predisposti in /tmp. Nessun grafo Graphify locale; nessun grafo generato.

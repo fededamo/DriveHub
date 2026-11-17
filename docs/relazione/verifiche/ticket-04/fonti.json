@@ -1,0 +1,142 @@
+[
+  {
+    "source": "src/main/java/it/unifi/drivehub/AppContext.java",
+    "sha256": "d2e677cac1836dae46951f5af4f0c21e2b3e18176e9085148e270045c4396667"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/service/PurchaseService.java",
+    "sha256": "438acae05cb1758976461e5ecfe0983deac2dc7d3732145be9cf8a826350cd8f"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/service/RentalService.java",
+    "sha256": "42263a9b0f92adca140e77d51c9d1003823f4a8b0aee82ea08e8cb24389a7eeb"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/service/SaleToDealershipService.java",
+    "sha256": "81e9ee97d7623974842655d784a61121cb31fff08f776dcce541f863f68506cf"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/service/PriceCalculatorService.java",
+    "sha256": "d155f4a7eeb9c6128eaa885cd62f975e20db8539f75baafadd223e567846598d"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/service/TestDriveCancellationObserver.java",
+    "sha256": "29f9f98fb4a76bd00f09e9ed1627ab83923c08b870b4e0d1c8d922cdb4540946"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/service/TestDriveService.java",
+    "sha256": "c43062b2a64b2b586990e0f4e72edd27cc2d81d1214399ac126907dff4af2131"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/service/AuthService.java",
+    "sha256": "ee97db9cb5296bc4b69233b3c6ff83cd37c2238b4e504ac5918fe4ba05d356ea"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/service/CatalogService.java",
+    "sha256": "d43633c5d2d19852cc90354fe44bd60b837520ed0259796262c3936ba6d3ea8b"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/event/VehicleEventPublisher.java",
+    "sha256": "724a6ae08558963fbd9a3167948c4e739312d153fc96dfaa797cbadeb68552be"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/event/VehicleCommitmentEvent.java",
+    "sha256": "b2e02f214c3fd203c66eff0db7087be5099fc17392c71edd78a4695819983eff"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/event/VehicleCommitmentObserver.java",
+    "sha256": "565197e5d72a4d9997142e53886599f30daa874682f90902d450af36b27ea9a7"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/dao/DatabaseManager.java",
+    "sha256": "b30cacdcbf306a405e624317989c84b9d7876e8499136627bb0006c9d155293e"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/dao/ModelDao.java",
+    "sha256": "29ca21ca2359d9646f321845351ae17d9aa397e343d2d063afa95fb07130da17"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/dao/DiscountDao.java",
+    "sha256": "7761a927c1ba3b17d1cb0848f8bf3f8a1793e76d2201362dd6b7edd95453f3e9"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/dao/postgres/PostgresVehicleDao.java",
+    "sha256": "cc62d1e14a8eaa3bd00f99865a9bfda32087c34bb6b52844b963d09022c61308"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/dao/postgres/PostgresModelDao.java",
+    "sha256": "7bc7bc2c6b221e02fe7b2c703cbc0782b48d9ad41e3433fe90524cac8ba54974"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/dao/postgres/PostgresDiscountDao.java",
+    "sha256": "85c233313837eb904b8d315b490dce090ea971030be2e1b3530e5f6bca82ecbd"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/dao/postgres/PostgresRequestDao.java",
+    "sha256": "d104e64cbc4b3a2d7bceb21c28b8e712181bb85579b9c485cb742147f4b99ce6"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/dao/postgres/PostgresBankAccountDao.java",
+    "sha256": "e229e4be24a1f7de13c2e798fb6982c5f4b362b79dc2feda23e4e66bbc79bb25"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/dao/postgres/PostgresSaleDao.java",
+    "sha256": "791d61988823a609b72d29d0198ebd72d5cdf0906d6ab5e3659688ec22057fa0"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/dao/postgres/PostgresRentDao.java",
+    "sha256": "5703a79e00de56f3352e550ac988e275134075cee054e710d2447a8a0b625222"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/dao/postgres/PostgresTestDriveDao.java",
+    "sha256": "930f977a4c0f0ade9c84f9bb03cbdb545174d1bc88594d49a7854a02e1e5488a"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/dao/postgres/PostgresUserDao.java",
+    "sha256": "e9b4a4ea84e3102aee9563498bc8a9da6fef29732c5d8f3589e21ba00cb81286"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/domain/operation/Request.java",
+    "sha256": "8b05b44fed241c568bbab4f2486ea53d1887b29801c14e98098ba0d61ad756c6"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/domain/operation/Sale.java",
+    "sha256": "c639f25af8e2f29a828b1ea93846dc45498d661aa35281cc08e313c4171146ac"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/domain/operation/Rent.java",
+    "sha256": "30a43ef1d128373e2550d5edf2b804c57f16e6b17eee5d0c946e5cf2f181d344"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/domain/operation/TestDrive.java",
+    "sha256": "9a62716e7ea4289ae092f606609dec9a41715f0fe50fd895adc4a8ee4611deeb"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/domain/user/BankAccount.java",
+    "sha256": "43d8315e92c56b8400a15c6d3eb35314fbe309286a33cc23d9ad110da65658b9"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java",
+    "sha256": "d032a48a49bd7b163537cd449ad88cc71e267e998b12954f77440d8907571aaa"
+  },
+  {
+    "source": "src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java",
+    "sha256": "2b06905e4eb0db0a917541f7a5f22d15127f3bc2eeb6f39a4263670175673698"
+  },
+  {
+    "source": "src/main/resources/db/schema.sql",
+    "sha256": "12c08063fcdf3bd88953ff4f89ef85e017c7fbfd8ef127a4906480aa365afc5e"
+  },
+  {
+    "source": "docs/architecture.md",
+    "sha256": "5280ffc9496c7fea1790df9f8b477f0b613614cadcd179f067ed870459fc6307"
+  },
+  {
+    "source": "docs/adr/0001-base-manuale-e-prezzo-concordato.md",
+    "sha256": "59c781d4a660e2850ad292ef6799592eb405c4193a6e6893479ac06b45bac5e6"
+  },
+  {
+    "source": "docs/adr/0002-enumerazioni-native-postgresql.md",
+    "sha256": "451d7cb10ebd1eadab564f01138de81f3bf6d529a0744c784bfcc6698571d16e"
+  }
+]

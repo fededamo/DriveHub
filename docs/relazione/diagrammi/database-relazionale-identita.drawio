@@ -1,0 +1,45 @@
+<mxGraphModel adaptiveColors="auto" grid="1" page="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+    <mxCell id="v2" value="REL-02 · Relazioni delle identità e vista user" style="text;strokeColor=none;fillColor=none;fontColor=#172b3a;fontSize=27;fontStyle=1;align=center;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="10" y="8" width="940" height="48" as="geometry" />
+    </mxCell>
+    <mxCell id="v3" value="PK = primaria; CK = candidata alternativa; FK → riferimento; ? = nullable; UQ = UNIQUE. Tutti gli altri attributi sono NOT NULL." style="text;strokeColor=none;fillColor=none;fontColor=#172b3a;fontSize=20;fontStyle=0;align=center;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="65" width="920" height="68" as="geometry" />
+    </mxCell>
+    <mxCell id="v4" value="client" style="rounded=0;strokeColor=#647a8c;fillColor=#dcebf5;fontSize=23;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="155" width="920" height="45" as="geometry" />
+    </mxCell>
+    <mxCell id="v5" value="id BIGINT PK DEFAULT nextval(&amp;#x27;user_id_seq&amp;#x27;)&lt;br&gt;name, surname VARCHAR(50) · email VARCHAR(50) CK · hash_password VARCHAR(255)&lt;br&gt;CHECK email LIKE &amp;#x27;%_@_%._%&amp;#x27; (forma minima, non verifica dell&amp;#x27;indirizzo)" style="text;strokeColor=none;fillColor=#f7f9fa;fontColor=#172b3a;fontSize=21;fontStyle=0;align=left;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="200" width="920" height="98" as="geometry" />
+    </mxCell>
+    <mxCell id="v6" value="salesman" style="rounded=0;strokeColor=#647a8c;fillColor=#dcebf5;fontSize=23;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="322" width="920" height="45" as="geometry" />
+    </mxCell>
+    <mxCell id="v7" value="id BIGINT PK DEFAULT nextval(&amp;#x27;user_id_seq&amp;#x27;)&lt;br&gt;name, surname VARCHAR(50) · email VARCHAR(50) CK · hash_password VARCHAR(255)&lt;br&gt;CHECK email LIKE &amp;#x27;%_@_%._%&amp;#x27;" style="text;strokeColor=none;fillColor=#f7f9fa;fontColor=#172b3a;fontSize=21;fontStyle=0;align=left;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="367" width="920" height="98" as="geometry" />
+    </mxCell>
+    <mxCell id="v8" value="manager" style="rounded=0;strokeColor=#647a8c;fillColor=#dcebf5;fontSize=23;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="489" width="920" height="45" as="geometry" />
+    </mxCell>
+    <mxCell id="v9" value="id BIGINT PK DEFAULT nextval(&amp;#x27;user_id_seq&amp;#x27;)&lt;br&gt;name, surname VARCHAR(50) · email VARCHAR(50) CK · hash_password VARCHAR(255)&lt;br&gt;CHECK email LIKE &amp;#x27;%_@_%._%&amp;#x27;" style="text;strokeColor=none;fillColor=#f7f9fa;fontColor=#172b3a;fontSize=21;fontStyle=0;align=left;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="534" width="920" height="98" as="geometry" />
+    </mxCell>
+    <mxCell id="v10" value="bank_account" style="rounded=0;strokeColor=#647a8c;fillColor=#dcebf5;fontSize=23;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="656" width="920" height="45" as="geometry" />
+    </mxCell>
+    <mxCell id="v11" value="iban VARCHAR(27) PK · client BIGINT CK/FK → client.id&lt;br&gt;balance DECIMAL(10,2) DEFAULT 0.00 · CHECK balance ≥ 0 · DELETE CASCADE" style="text;strokeColor=none;fillColor=#f7f9fa;fontColor=#172b3a;fontSize=21;fontStyle=0;align=left;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="701" width="920" height="67" as="geometry" />
+    </mxCell>
+    <mxCell id="v12" value="user — VISTA, non tabella" style="rounded=0;strokeColor=#647a8c;fillColor=#dcebf5;fontSize=23;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="792" width="920" height="45" as="geometry" />
+    </mxCell>
+    <mxCell id="v13" value="UNION ALL di client / salesman / manager: id, name, surname, email, hash_password&lt;br&gt;+ role costante CLIENT / SALESMAN / MANAGER, scelto dal ramo della vista" style="text;strokeColor=none;fillColor=#f7f9fa;fontColor=#172b3a;fontSize=21;fontStyle=0;align=left;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="837" width="920" height="67" as="geometry" />
+    </mxCell>
+    <mxCell id="v14" value="Trigger BEFORE INSERT / UPDATE OF email cercano l&amp;#x27;email esatta nelle altre tabelle, escludendo lo stesso id. Non c&amp;#x27;è UNIQUE globale né vincolo globale sugli id.&lt;br&gt;La sequenza comune alimenta gli inserimenti ordinari; i trigger non sono una prova di esclusione fra scritture concorrenti. I ruoli della vista sono ruoli applicativi, non PostgreSQL." style="text;strokeColor=none;fillColor=#fff7df;fontColor=#172b3a;fontSize=20;fontStyle=0;align=left;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="933" width="920" height="140" as="geometry" />
+    </mxCell>
+  </root>
+</mxGraphModel>

@@ -1,0 +1,377 @@
+\def\UrlBreaks{\do\a\do\b\do\c\do\d\do\e\do\f\do\g\do\h\do\i\do\j\do\k\do\l\do\m\do\n\do\o\do\p\do\q\do\r\do\s\do\t\do\u\do\v\do\w\do\x\do\y\do\z\do\A\do\B\do\C\do\D\do\E\do\F\do\G\do\H\do\I\do\J\do\K\do\L\do\M\do\N\do\O\do\P\do\Q\do\R\do\S\do\T\do\U\do\V\do\W\do\X\do\Y\do\Z}
+\section{Diagramma dei casi d'uso}\label{sec:casi-uso}
+La concessionaria offre tre percorsi: il cliente consulta l'offerta e avvia
+operazioni; il venditore decide gli esiti delle richieste e la destinazione
+dei veicoli; il manager mantiene catalogo, basi prezzo e sconti e legge il
+registro economico. Le figure~\ref{fig:uc-cliente}--\ref{fig:uc-manager}
+sono viste complementari dello stesso sistema. Le associazioni indicano
+partecipazione, non ordine temporale o chiamate tra servizi.
+
+Le ellissi azzurre rappresentano obiettivi applicativi (livello O).
+\textbf{UC-04} \`e una sottofunzione applicativa (livello F) della vendita
+al cliente UC-03: autorizza il successivo saldo, senza completare la vendita.
+Le ellissi grigie raccolgono il supporto all'interazione (livello S):
+registrazione, accesso, gestione dell'identit\`a e ricarica del conto demo.
+L'accesso \`e una precondizione degli obiettivi autenticati, non un
+\emph{include} da ripetere a ogni azione. La registrazione riguarda solo il cliente.
+
+Il diverso livello è dichiarato nelle schede della sezione~\ref{sec:template} e dell'appendice~\ref{app:casi-uso}.
+UC-03 e UC-05 attraversano sessioni e ruoli, mentre UC-01, UC-02 e UC-06
+hanno un obiettivo pi\`u circoscritto. Le viste non simulano un'unica scala
+di dettaglio: mantengono riconoscibili i casi principali e rendono esplicita
+la loro scomposizione. In particolare, UC-05 compare sia per il cliente che
+propone sia per il venditore che accetta o rifiuta.
+
+La figura~\ref{fig:uc-autori} riprende \emph{Users SWE}, la tavola degli
+autori, mantenendo attori, generalizzazioni, ellissi e disposizione d'insieme.
+La registrazione \`e associata al solo cliente; la consultazione delle
+prenotazioni del venditore, assente dall'interfaccia corrente, \`e rimossa.
+Le funzioni comuni sono ereditate da \emph{Utente}; l'addebito incluso nei
+due flussi \`e un comportamento interno, distinto dalla ricarica UC-S04.
+Le due partecipazioni a UC-05 e le due parti di UC-09 non sono casi nuovi.
+La tavola \`e su foglio A3 per conservarne la leggibilit\`a; le tre viste
+seguenti ne dettagliano gli obiettivi per ruolo.
+\tavolaautori{casi-uso-autori}{Casi d'uso: tavola degli autori corretta, con attori e struttura originali}{fig:uc-autori}
+
+\begin{figure}[!htbp]\centering
+\includegraphics[width=\linewidth,height=.72\textheight,keepaspectratio]{diagrammi/casi-uso-cliente.drawio.pdf}
+\caption{Cliente: obiettivi commerciali e consultazioni; in grigio le funzioni di supporto. UC-03 e UC-05 richiedono anche la partecipazione del venditore.}\label{fig:uc-cliente}
+\end{figure}
+\clearpage
+\begin{figure}[!htbp]\centering
+\includegraphics[width=.85\linewidth,height=.67\textheight,keepaspectratio]{diagrammi/casi-uso-venditore.drawio.pdf}
+\caption{Venditore: autorizzazione della vendita al cliente (UC-04), esito dell'acquisto dal cliente (UC-05) e destinazione dell'inventario (UC-08).}\label{fig:uc-venditore}
+\end{figure}
+\begin{figure}[!htbp]\centering
+\includegraphics[width=.85\linewidth,height=.67\textheight,keepaspectratio]{diagrammi/casi-uso-manager.drawio.pdf}
+\caption{Manager: manutenzione commerciale e consultazione del registro. Le identit\`a staff esistono gi\`a; non vi \`e una registrazione pubblica del personale.}\label{fig:uc-manager}
+\end{figure}
+\clearpage
+
+\section{Template dei casi principali}\label{sec:template}
+Le sei schede complete seguono il percorso originale: test drive, noleggio,
+vendita al cliente, cessione, autorizzazione e sconti. UC-05 precede UC-04
+nell'esposizione e conserva il proprio identificativo. Le nove schede
+aggiuntive sono nell'appendice~\ref{app:casi-uso}.
+\begingroup
+\small
+\setlist{itemsep=1pt,topsep=2pt}
+\input{capitoli/2_template}
+\endgroup
+\clearpage
+\noindent\textbf{Tracciabilit\`a verso interfaccia e servizi.}
+I nomi UI possono usare il punto di vista del cliente: \emph{Acquista Veicolo}
+avvia una vendita della concessionaria, mentre \emph{Vendi la tua Auto}
+avvia un acquisto dal cliente. Nelle richieste, \code{SALE} e \code{PURCHASE}
+mantengono questi significati. Il registro distingue inoltre \code{PENALTY};
+un importo positivo non basta da solo a stabilire la direzione economica.
+
+\begin{description}[style=nextline]\raggedright
+\item[UC-01, UC-02 e UC-03.]
+\code{ClientDashboardView} apre cataloghi, dialoghi e operazioni;
+\code{TestDriveService}, \code{RentalService} e \code{PurchaseService}
+eseguono i rispettivi comandi. La dashboard avvia il controllo delle
+scadenze all'accesso del cliente, senza un pianificatore periodico.
+\item[UC-04 e UC-05.]
+\code{SalesmanDashboardView} distingue i due tipi di richiesta.
+\code{PurchaseService} governa l'autorizzazione e il saldo della vendita;
+\code{SaleToDealershipService} governa proposta ed esito della cessione.
+\item[UC-06.]
+\code{ManagerDashboardView} usa \code{CatalogService} per gli sconti;
+\code{PriceCalculatorService} applica la formula. La base manuale
+sostituisce la base del modello nella stessa formula (ADR 0001).
+\end{description}
+
+Completano le viste UC-07 (catalogo, scheda~\ref{uc:UC-07}), UC-08
+(destinazione, scheda~\ref{uc:UC-08}), UC-09 (manutenzione catalogo e basi,
+scheda~\ref{uc:UC-09}), UC-10 (registro, scheda~\ref{uc:UC-10}) e UC-11
+(proprie operazioni, scheda~\ref{uc:UC-11}). Il supporto comprende UC-S01
+(registrazione, scheda~\ref{uc:UC-S01}), UC-S02 (accesso,
+scheda~\ref{uc:UC-S02}), UC-S03 (identit\`a, scheda~\ref{uc:UC-S03}) e
+UC-S04 (ricarica demo, scheda~\ref{uc:UC-S04}). Ogni identificativo conserva
+lo stesso significato nei diagrammi, nelle schede e nella navigazione.
+
+La separazione delle transazioni spiega gli stati intermedi: dopo l'acconto
+la vendita non \`e ancora conclusa; dopo una proposta di cessione il cliente
+non \`e ancora pagato. Gli esiti osservati nelle schermate illustrano il
+percorso, mentre le regole qui dichiarate derivano anche dal riscontro dei
+sorgenti. Non si attribuisce a questo ticket una nuova certificazione della
+concorrenza o dei rollback tramite test applicativi.
+\clearpage
+
+\section{Mockups}\label{sec:mockups}
+Il titolo concordato \`e mantenuto; le figure sono \textbf{screenshot
+dell'applicazione JavaFX realmente eseguita il 12 novembre 2026}, non
+ricostruzioni grafiche. L'avvio usa \code{App.start}, le viste e il tema
+correnti, con rendering software su Xvfb e PostgreSQL 16 dedicato.
+I nomi e gli importi provengono dalla fixture dimostrativa. Solo nel database
+temporaneo sono state spostate alcune date per mostrare operazioni ancora
+valide; schema, demo SQL e archivi operativi non sono stati modificati.
+Le immagini originali, a risoluzione piena, sono conservate in
+\code{docs/relazione/screenshot}; non sono prove di tutte le alternative.
+
+\newcommand{\schermata}[3]{%
+  \begin{figure}[!htbp]\centering
+  \includegraphics[width=\linewidth,height=.37\textheight,keepaspectratio]{screenshot/#1.png}
+  \caption{#2}\label{fig:#3}
+  \end{figure}}
+
+\subsection{Autenticazione}
+Accesso comune ai tre ruoli (UC-S02) e registrazione riservata al cliente
+(UC-S01); il ruolo deriva dall'identità autenticata.
+
+\subsubsection{Schermata iniziale}
+\code{App.start} apre direttamente \code{LoginView}. Non esiste una
+Welcome Page separata: \emph{Accedi} e \emph{Registrati} sono le due tab
+della stessa vista. All'ingresso non si mostrano cataloghi né si seleziona
+un ruolo. La figura~\ref{fig:ui-accesso} documenta anche questo punto del
+percorso originale, senza duplicare un'immagine o inventare una pagina.
+
+\subsubsection{Accesso}
+Il form raccoglie email e password; \emph{Accedi} invoca \code{AuthService}.
+Credenziali accettate aprono la dashboard del sottotipo utente, mentre
+un errore lascia la vista di accesso e mostra il messaggio. Non vi è una
+scelta pubblica del ruolo. Il logout da ogni dashboard ritorna qui.
+\schermata{01-accesso}{Accesso corrente, coincidente con la schermata iniziale: email e password.}{ui-accesso}
+
+\subsubsection{Registrazione}
+Il cliente inserisce nome, cognome, email e password.
+\emph{Crea Account Cliente} valida i dati, crea identità e conto demo a saldo zero nella
+stessa transazione e apre la dashboard cliente. Email già utilizzata o dati
+invalidi producono un errore; il form rimane disponibile per la correzione.
+Venditori e manager sono predisposti nel DB: il precedente selettore di ruolo
+non ha un equivalente corrente.
+\schermata{02-registrazione}{Registrazione del solo cliente e creazione congiunta del conto demo.}{ui-registrazione}
+\clearpage
+
+\subsection{Area Customer}
+Le etichette \emph{Customer} e \emph{Salesman} restano nei titoli concordati;
+nel testo si usano cliente e venditore. Le quattro tab sono \emph{Auto in
+Vendita}, \emph{Auto a Noleggio}, \emph{Vendi la tua Auto} e \emph{Le Mie Operazioni}.
+
+\subsubsection{Catalogo veicoli}
+I due cataloghi mostrano modello, anno, targa/usato, chilometri, base
+applicata, prezzo consigliato ed effettivo; per il noleggio si mostra anche
+la tariffa iniziale giornaliera. Il cliente seleziona una riga e avvia
+acconto, noleggio o test drive con i comandi della tab. \emph{Aggiorna}
+rilegge disponibilità e prezzi; il comando commerciale li ricontrolla alla
+conferma. Durante le letture asincrone i dati sono disabilitati; un errore
+espone \emph{Riprova}. La selezione mancante non avvia l'operazione.
+Non si attribuiscono alla vista i vecchi filtri testuali non presenti.
+\schermata{03-cliente-catalogo}{Catalogo vendita: selezione, acconto del 20\% e test drive.}{ui-cliente-catalogo}
+\schermata{05-cliente-noleggio}{Catalogo noleggio: tariffa iniziale e azioni sul veicolo selezionato.}{ui-cliente-noleggio}
+\clearpage
+
+\subsubsection{Vendite al cliente e richieste}
+\emph{Le Mie Operazioni} mostra le richieste del cliente con veicolo,
+totale concordato, acconto, residuo, autorizzazione e scadenza. Selezionare
+la richiesta e confermare il saldo completa UC-03 solo dopo UC-04 e nel
+termine. Il servizio usa l'accordo persistito, anche dopo variazioni di
+listino; fondi insufficienti lasciano valida la richiesta. Chiudere il
+dialogo non annulla l'acconto. Non esiste il vecchio comando del cliente
+per annullare autonomamente l'acquisto con penale: rifiuto e scadenza hanno
+i percorsi distinti descritti nella scheda. La vista non è un registro
+completo delle compravendite concluse; quel registro è del manager.
+\schermata{08-cliente-operazioni}{Le Mie Operazioni: richieste, noleggi e test drive del cliente; saldo e annullamento del test drive.}{ui-cliente-operazioni}
+
+\subsubsection{Noleggi e test drive}
+Le prenotazioni partono dal catalogo e aprono dialoghi, non una vecchia
+scheda unica di inserimento. Il test drive richiede data e ora; la UI
+propone ore intere 09:00--16:00. \emph{Conferma} salva senza addebito,
+se stato, fascia, limite di tre attivi e conflitti lo consentono.
+Il noleggio richiede inizio e fine, mostra un preventivo e addebita il
+100\% del costo ricalcolato alla conferma, con estremi inclusi.
+Annullare un dialogo non scrive dati. Prenotazioni e annullamento del solo
+test drive si trovano in \emph{Le Mie Operazioni}
+(figura~\ref{fig:ui-cliente-operazioni}); il cliente non può annullare da
+qui un noleggio. Un impegno commerciale cancella tutti i test drive futuri
+del veicolo, anche esterni al periodo noleggiato.
+\schermata{04-cliente-dialogo-test-drive}{Dialogo del test drive: data, ora iniziale, conferma o annullamento.}{ui-test-drive}
+\schermata{06-cliente-dialogo-noleggio}{Dialogo di noleggio: periodo e preventivo, ricalcolato al comando finale.}{ui-noleggio}
+\clearpage
+
+\subsubsection{Proposta di cessione del proprio veicolo}
+In \emph{Vendi la tua Auto} il cliente sceglie marchio e modello censiti e
+inserisce VIN, targa, chilometri e anno. \emph{Calcola Preventivo} mostra la
+stima; è facoltativo. \emph{Invia Proposta di Vendita} ricalcola e persiste
+la stima con veicolo \code{WAITING} e richiesta \code{PURCHASE}, senza
+accredito. Dati invalidi o VIN noto senza titolarità sono rifiutati.
+L'esito del venditore conclude UC-05: per la concessionaria è un acquisto
+dal cliente. Una stima nulla può essere proposta ma non accreditata.
+\schermata{07-cliente-cessione}{Proposta di cessione: dati del veicolo, preventivo e invio al venditore.}{ui-cessione}
+
+\subsubsection{Conto dimostrativo}
+Il saldo compare nell'header; il dialogo comune mostra anche IBAN e saldo attuale. \emph{Ricarica Saldo} apre la richiesta di un
+importo positivo e aggiorna il saldo dopo la scrittura; un valore invalido
+non produce una ricarica. La stessa funzione è una tab del dialogo
+\emph{Gestione Account} (figura~\ref{fig:ui-identita}). Non è una scheda
+bancaria dedicata: la UI corrente non offre il prelievo autonomo né una
+connessione bancaria reale. Il conto serve agli addebiti e accrediti
+delle operazioni dimostrative e non conserva un estratto di ogni movimento.
+
+\subsubsection{Profilo}
+\emph{Gestione Account} apre \code{AccountManagementDialog}, comune ai
+ruoli. Nuova email o nuova password richiedono la password corrente;
+il successo aggiorna l'identità e chiude il dialogo, un errore lo lascia
+aperto. L'eliminazione richiede password e conferma definitiva; se riesce
+ritorna all'accesso. Riferimenti storici possono impedirla; un conto
+positivo non è di per sé una protezione dalla cancellazione del cliente.
+\schermata{09-cliente-identita}{Dialogo comune di gestione identità: qui aperto dal cliente, con la tab aggiuntiva di ricarica.}{ui-identita}
+\clearpage
+
+\subsection{Area Salesman}
+Le sole tab sono \emph{Richieste in Sospeso} e \emph{Gestione Stato Inventario}.
+La tipologia della riga distingue UC-04 dall'esito di UC-05.
+
+\subsubsection{Proposte di cessione in attesa}
+Il venditore seleziona una richiesta \emph{Acquisto dal cliente}
+(\code{PURCHASE}) nella tabella comune, riconoscendola dalla tipologia;
+non c'è una tab separata né si deve presumere un filtro dedicato.
+\emph{Approva Richiesta} accredita la stima persistita, registra l'acquisto
+con il venditore e rende il veicolo \code{SALE}. \emph{Rifiuta Richiesta}
+non paga: elimina il veicolo nuovo o ripristina \code{SOLD} se ha storico.
+Nessuna selezione produce un messaggio; errori nel comando causano rollback.
+\schermata{10-venditore-richieste}{Tabella comune delle richieste SALE e PURCHASE, con importi e comandi di esito.}{ui-venditore-richieste}
+
+\subsubsection{Richieste di vendita al cliente}
+Nella stessa figura~\ref{fig:ui-venditore-richieste}, la riga \code{SALE}
+espone totale, acconto e residuo. \emph{Approva Richiesta} assegna venditore
+e termine di un mese; non incassa il saldo. \emph{Rifiuta Richiesta}
+rimborsa tutto l'acconto e libera il veicolo, senza penale. Non compare una
+conferma preventiva di approvazione/rifiuto. Il cliente completa poi UC-03
+nella propria area. La lista mostra le richieste in sospeso; il comando di
+approvazione non è una garanzia generale contro la riapprovazione diretta.
+
+\subsubsection{Stato dei veicoli}
+Il venditore seleziona nell'inventario un veicolo \code{SALE}/\code{RENT}
+e conferma il cambio destinazione. La UI avvisa dei noleggi futuri;
+il servizio rilegge sotto lock lo stato effettivo. Un noleggio in corso
+impedisce il passaggio a vendita; i futuri sono eliminati e rimborsati
+integralmente nella medesima transazione. Non è un editor di ogni stato
+del veicolo: riserve, proposte e vendite hanno i propri comandi.
+\schermata{11-venditore-inventario}{Inventario e cambio della sola destinazione vendita/noleggio.}{ui-venditore-inventario}
+
+\subsubsection{Panoramica prenotazioni: limite attuale}
+La vecchia panoramica di noleggi e test drive del venditore non ha un
+equivalente corrente. Le sue due tab non offrono questa consultazione;
+le prenotazioni personali sono del cliente. Si conserva il punto del
+percorso originale dichiarando il limite, senza una figura storica
+presentata come attuale o una nuova funzionalità implicita.
+
+\subsubsection{Profilo}
+Il pulsante \emph{Gestione Account} della dashboard apre lo stesso
+\code{AccountManagementDialog}: modifica email/password con password
+corrente ed eliminazione confermata, senza tab di ricarica. L'apertura
+è riscontrata in \code{SalesmanDashboardView.buildUi}; non è stata
+acquisita una nuova schermata staff. La figura~\ref{fig:ui-identita}
+illustra il dialogo comune nel contesto cliente e non certifica una tab
+Profilo separata del venditore. La coppia ID/ruolo indirizza le scritture;
+le FK dello storico possono impedire l'eliminazione.
+\clearpage
+
+\subsection{Area Manager}
+Le cinque tab sono \emph{Marchi}, \emph{Modelli}, \emph{Veicoli},
+\emph{Sconti} e \emph{Registro economico}. I form modificano la stessa
+vista, senza una pagina di dettaglio separata. L'esposizione segue
+parco veicoli, marche/modelli, registro e profilo come nell'originale.
+
+\subsubsection{Parco veicoli}
+La tab \emph{Veicoli} mostra catalogo e prezzi. Il form raccoglie modello,
+VIN, targa, chilometri, anno, destinazione iniziale \code{SALE}/\code{RENT} e scelta della base; una base manuale sostituisce
+quella del modello nella stessa formula (ADR 0001), non il prezzo finale.
+La selezione di un veicolo permette inoltre di scegliere modalità e base e usare \emph{Applica base alla selezione}. Inserimento e rimozione aggiornano l'elenco; dati invalidi o riferimenti
+incompatibili producono errori. Gli sconti individuali sono oggi nella tab
+\emph{Sconti}: ID veicolo e percentuale intera 0--50, con \emph{Salva} e
+\emph{Rimuovi}. La rimozione è diretta, senza conferma preventiva.
+Il massimo tra sconto veicolo e modello vale per nuovi calcoli; non cambia
+un totale già concordato. Una tab già caricata può richiedere \emph{Aggiorna}.
+\schermata{14-manager-veicoli}{Parco veicoli: basi applicate e scelta automatica/manuale.}{ui-manager-veicoli}
+\schermata{15-manager-sconti}{Tab Sconti: gestione distinta dello sconto sul modello e sul veicolo.}{ui-manager-sconti}
+\clearpage
+
+\subsubsection{Marche e modelli}
+Le anagrafiche occupano due tab. \emph{Marchi} riceve il nome e offre
+aggiunta e rimozione della riga selezionata. \emph{Modelli} richiede marchio,
+nome unico, base del modello e anno di rilascio. I comandi aggiornano le
+tabelle; selezioni mancanti, anni invalidi e dipendenze esistenti impediscono
+le operazioni incompatibili. Lo sconto di modello è gestito nell'altro
+riquadro della tab \emph{Sconti} (figura~\ref{fig:ui-manager-sconti}): si
+seleziona il modello e si salva o rimuove la percentuale 0--50. Non coincide
+con lo sconto sul singolo esemplare e non si somma a esso.
+\schermata{12-manager-marchi}{Anagrafica dei marchi: inserimento e rimozione.}{ui-manager-marchi}
+\schermata{13-manager-modelli}{Anagrafica dei modelli: marchio, base e anno di rilascio.}{ui-manager-modelli}
+\clearpage
+
+\subsubsection{Registro delle operazioni}
+La tab di sola consultazione legge le righe del registro: vendita al
+cliente \code{SALE}, acquisto dal cliente \code{PURCHASE}, penale
+\code{PENALTY}. Il tipo determina la direzione economica; gli importi sono
+non negativi, anche quando la concessionaria paga il cliente. Le richieste
+aperte non sono vendite concluse e i noleggi non diventano automaticamente
+righe di \code{Sale}. \emph{Aggiorna} rilegge i dati; durante il caricamento
+sono disabilitati e un errore espone \emph{Riprova}.
+\schermata{16-manager-registro}{Registro economico: vendite al cliente, acquisti dal cliente e penali.}{ui-manager-registro}
+
+\subsubsection{Profilo}
+\emph{Gestione Account} apre il dialogo condiviso anche dalla dashboard
+manager (\code{ManagerDashboardView.buildUi}). Le operazioni richiedono
+nuova email/password e password corrente, oppure la conferma definitiva
+dell'eliminazione; dopo quest'ultima si torna all'accesso. Non compare
+la ricarica riservata ai clienti. Si riusa come illustrazione del componente
+comune la figura~\ref{fig:ui-identita}, dichiarandone il contesto cliente:
+nessuna scheda Profilo o nuova acquisizione manager è presunta. I limiti
+dell'unicità trasversale delle identità sono discussi in 2.8.3.
+\clearpage
+
+\section{Page Navigation Diagram}\label{sec:navigazione}
+Le figure~\ref{fig:nav-cliente}--\ref{fig:nav-manager} descrivono una
+\emph{navigazione desktop}: \code{App} sostituisce la scena dopo l'accesso;
+la dashboard usa tab selezionabili liberamente. Le azioni aprono dialoghi
+modali oppure aggiornano la stessa scheda. Non sono percorsi URL o pagine web.
+Il blu identifica schermate/tab, il bianco i comandi, l'ocra dialoghi o
+risultati. Gli identificativi collegano il percorso alle schede in 2.2 e nell'appendice A.
+
+\emph{Disconnetti} torna all'accesso per ogni ruolo. \emph{Gestione Account}
+apre modifica email, modifica password ed eliminazione; per il cliente
+comprende anche la ricarica del conto demo, disponibile pure nell'header.
+Chiudere o annullare un dialogo conserva la schermata chiamante;
+l'eliminazione riuscita dell'identit\`a torna all'accesso.
+La relativa conferma definitiva non va confusa con le rimozioni dirette del catalogo.
+
+La figura~\ref{fig:nav-autori} riprende il \emph{Page Navigation Diagram}
+degli autori: conserva l'accesso, lo smistamento per ruolo e le tre diramazioni.
+\code{LoginView} sostituisce la precedente Welcome Page; i riquadri
+\emph{Accedi} e \emph{Registrati} sono schede della stessa vista, non
+schermate successive. La registrazione riuscita porta direttamente al cliente.
+Le dashboard espongono rispettivamente quattro, due e cinque schede;
+gestione account e ricarica sono comandi, indicati esplicitamente.
+Il foglio A3 conserva la struttura d'insieme; le tavole per ruolo dettagliano
+azioni e dialoghi.
+\tavolaautori{navigazione-autori}{Navigazione: tavola degli autori corretta, con le tre diramazioni originali}{fig:nav-autori}
+
+\begin{figure}[!htbp]\centering
+\includegraphics[width=\linewidth,height=.7\textheight,keepaspectratio]{diagrammi/navigazione-cliente.drawio.pdf}
+\caption{Navigazione cliente: quattro tab; dialoghi di prenotazione, acconto e saldo; proposta nella scheda; gestione identit\`a e conto. Riscontri visivi nelle figure~\ref{fig:ui-cliente-catalogo}--\ref{fig:ui-identita}.}\label{fig:nav-cliente}
+\end{figure}
+\clearpage
+\begin{figure}[!htbp]\centering
+\includegraphics[width=\linewidth,height=.72\textheight,keepaspectratio]{diagrammi/navigazione-venditore.drawio.pdf}
+\caption{Navigazione venditore: richieste ed inventario, corrispondenti alle figure~\ref{fig:ui-venditore-richieste} e~\ref{fig:ui-venditore-inventario}. L'approvazione non apre una conferma preventiva; il cambio destinazione s\`i.}\label{fig:nav-venditore}
+\end{figure}
+Le azioni \emph{Approva Richiesta} e \emph{Rifiuta Richiesta} hanno esiti diversi
+secondo il tipo della riga. Una richiesta di vendita al cliente approvata
+rimanda il completamento al cliente; l'accettazione di una cessione effettua
+subito accredito e acquisto. Il cambio destinazione mostra un avviso dei
+noleggi futuri, ma il servizio ne rilegge lo stato prima del commit.
+\clearpage
+\begin{figure}[!htbp]\centering
+\includegraphics[width=\linewidth,height=.76\textheight,keepaspectratio]{diagrammi/navigazione-manager.drawio.pdf}
+\caption{Navigazione manager: cinque tab e form nella stessa vista, corrispondenti alle figure~\ref{fig:ui-manager-marchi}--\ref{fig:ui-manager-registro}. Il registro \`e di sola consultazione.}\label{fig:nav-manager}
+\end{figure}
+Le rimozioni di catalogo e sconti sono azioni dirette; la vista non aggiunge
+una conferma preventiva. Durante le letture asincrone di cataloghi, inventario,
+sconti e registro i dati sono disabilitati; in caso di errore compare
+\emph{Riprova}. Questo comportamento non va esteso alle letture sincrone
+di richieste e operazioni personali. Le nuove tavole sono conservate con
+sorgenti \code{.drawio} ed esportazioni PDF in \code{docs/relazione/diagrammi}.
+\clearpage

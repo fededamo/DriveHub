@@ -1,0 +1,7 @@
+?? .serena/
+?? docs/AGENTS.md
+?? docs/agents/
+?? docs/relazione/
+
+HEAD: 61ce18ae1d4e0458b63e970b793b0b3a634a3adf
+PDF precedente SHA256: 568d76ead85fa06d6d3942c25ab0505722e10b1b4365aa5455fbbfa1a18e2d95

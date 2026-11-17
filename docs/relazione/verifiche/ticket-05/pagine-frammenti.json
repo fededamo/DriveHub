@@ -1,0 +1,119 @@
+[
+  {
+    "fragment": "3.1",
+    "page": 54,
+    "source": "src/main/java/it/unifi/drivehub/domain/vehicle/Vehicle.java",
+    "lines": [
+      59,
+      62
+    ]
+  },
+  {
+    "fragment": "3.2",
+    "page": 55,
+    "source": "src/main/java/it/unifi/drivehub/domain/operation/Request.java",
+    "lines": [
+      54,
+      65
+    ]
+  },
+  {
+    "fragment": "3.3",
+    "page": 56,
+    "source": "src/main/java/it/unifi/drivehub/domain/vehicle/Vehicle.java",
+    "lines": [
+      122,
+      124
+    ]
+  },
+  {
+    "fragment": "3.4",
+    "page": 56,
+    "source": "src/main/java/it/unifi/drivehub/service/PurchaseService.java",
+    "lines": [
+      74,
+      82
+    ]
+  },
+  {
+    "fragment": "3.5",
+    "page": 57,
+    "source": "src/main/java/it/unifi/drivehub/dao/DatabaseManager.java",
+    "lines": [
+      88,
+      106
+    ]
+  },
+  {
+    "fragment": "3.6",
+    "page": 58,
+    "source": "src/main/java/it/unifi/drivehub/event/VehicleEventPublisher.java",
+    "lines": [
+      28,
+      32
+    ]
+  },
+  {
+    "fragment": "3.7",
+    "page": 58,
+    "source": "src/main/java/it/unifi/drivehub/service/AuthService.java",
+    "lines": [
+      57,
+      64
+    ]
+  },
+  {
+    "fragment": "3.8",
+    "page": 59,
+    "source": "src/main/java/it/unifi/drivehub/domain/user/Client.java",
+    "lines": [
+      32,
+      35
+    ]
+  },
+  {
+    "fragment": "3.9",
+    "page": 60,
+    "source": "src/main/java/it/unifi/drivehub/presentation/view/AsyncLoad.java",
+    "lines": [
+      60,
+      73
+    ]
+  },
+  {
+    "fragment": "3.10",
+    "page": 61,
+    "source": "src/main/java/it/unifi/drivehub/dao/postgres/PostgresVehicleDao.java",
+    "lines": [
+      61,
+      72
+    ]
+  },
+  {
+    "fragment": "3.11",
+    "page": 61,
+    "source": "src/main/java/it/unifi/drivehub/dao/postgres/PostgresVehicleDao.java",
+    "lines": [
+      195,
+      205
+    ]
+  },
+  {
+    "fragment": "3.12",
+    "page": 62,
+    "source": "src/main/java/it/unifi/drivehub/dao/postgres/PostgresRequestDao.java",
+    "lines": [
+      214,
+      226
+    ]
+  },
+  {
+    "fragment": "3.13",
+    "page": 63,
+    "source": "src/main/java/it/unifi/drivehub/AppContext.java",
+    "lines": [
+      112,
+      117
+    ]
+  }
+]

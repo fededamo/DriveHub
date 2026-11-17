@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxGraphModel adaptiveColors="auto" grid="1" page="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+    <mxCell id="accesso" value="Accedi [UC-S02]&lt;br&gt;Registrati [UC-S01, solo cliente]" style="whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=18;fontColor=#172b4d;strokeColor=#53657a;fillColor=#ffffff;rounded=1;fillColor=#eeeeee;" vertex="1" parent="1">
+      <mxGeometry x="20" y="20" width="300" height="85" as="geometry" />
+    </mxCell>
+    <mxCell id="dashboard" value="Dashboard cliente&lt;br&gt;accesso riuscito" style="whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=18;fontColor=#172b4d;strokeColor=#53657a;fillColor=#ffffff;rounded=1;fillColor=#d9e8fa;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="405" y="20" width="300" height="85" as="geometry" />
+    </mxCell>
+    <mxCell id="comuni" value="Header: Gestione Account [UC-S03]&lt;br&gt;Ricarica Saldo [UC-S04]&lt;br&gt;Disconnetti → Accedi" style="whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=18;fontColor=#172b4d;strokeColor=#53657a;fillColor=#ffffff;rounded=1;fillColor=#eeeeee;fontSize=17;" vertex="1" parent="1">
+      <mxGeometry x="790" y="20" width="330" height="85" as="geometry" />
+    </mxCell>
+    <mxCell id="e-accesso-dashboard" source="accesso" target="dashboard" style="html=1;strokeColor=#53657a;edgeStyle=orthogonalEdgeStyle;rounded=1;endArrow=block;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e-dashboard-comuni" source="dashboard" target="comuni" style="html=1;strokeColor=#53657a;edgeStyle=orthogonalEdgeStyle;rounded=1;endArrow=block;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="schede" value="Schede della dashboard — selezione libera, nessuna finestra nuova" style="whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=18;fontColor=#172b4d;strokeColor=#53657a;fillColor=#ffffff;verticalAlign=top;spacingTop=12;fontStyle=1;fillColor=#f9fbfd;" vertex="1" parent="1">
+      <mxGeometry x="20" y="160" width="1100" height="620" as="geometry" />
+    </mxCell>
+    <mxCell id="e-dashboard-schede" source="dashboard" target="schede" style="html=1;strokeColor=#53657a;edgeStyle=orthogonalEdgeStyle;rounded=1;endArrow=block;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="tab0" value="Auto in Vendita" style="whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=18;fontColor=#172b4d;strokeColor=#53657a;fillColor=#ffffff;rounded=1;fillColor=#d9e8fa;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="40" y="215" width="220" height="95" as="geometry" />
+    </mxCell>
+    <mxCell id="azioni0" value="Seleziona veicolo&lt;br&gt;Acquista (acconto 20%) [UC-03]&lt;br&gt;Prenota Test Drive [UC-01]" style="whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=18;fontColor=#172b4d;strokeColor=#53657a;fillColor=#ffffff;rounded=1;fontSize=17;" vertex="1" parent="1">
+      <mxGeometry x="310" y="215" width="350" height="95" as="geometry" />
+    </mxCell>
+    <mxCell id="dialoghi0" value="Conferma Avvio Operazione&lt;br&gt;oppure Prenotazione Test Drive&lt;br&gt;OK / Annulla → esito" style="whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=18;fontColor=#172b4d;strokeColor=#53657a;fillColor=#ffffff;rounded=1;fillColor=#fff2d9;fontSize=17;" vertex="1" parent="1">
+      <mxGeometry x="710" y="215" width="390" height="95" as="geometry" />
+    </mxCell>
+    <mxCell id="e-tab0-azioni0" source="tab0" target="azioni0" style="html=1;strokeColor=#53657a;edgeStyle=orthogonalEdgeStyle;rounded=1;endArrow=block;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e-azioni0-dialoghi0" source="azioni0" target="dialoghi0" style="html=1;strokeColor=#53657a;edgeStyle=orthogonalEdgeStyle;rounded=1;endArrow=block;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="tab1" value="Auto a Noleggio" style="whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=18;fontColor=#172b4d;strokeColor=#53657a;fillColor=#ffffff;rounded=1;fillColor=#d9e8fa;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="40" y="355" width="220" height="95" as="geometry" />
+    </mxCell>
+    <mxCell id="azioni1" value="Seleziona veicolo&lt;br&gt;Prenota Noleggio [UC-02]&lt;br&gt;Prenota Test Drive [UC-01]" style="whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=18;fontColor=#172b4d;strokeColor=#53657a;fillColor=#ffffff;rounded=1;fontSize=17;" vertex="1" parent="1">
+      <mxGeometry x="310" y="355" width="350" height="95" as="geometry" />
+    </mxCell>
+    <mxCell id="dialoghi1" value="Prenotazione Noleggio: date e costo&lt;br&gt;oppure Prenotazione Test Drive: data e ora&lt;br&gt;OK / Annulla → esito" style="whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=18;fontColor=#172b4d;strokeColor=#53657a;fillColor=#ffffff;rounded=1;fillColor=#fff2d9;fontSize=17;" vertex="1" parent="1">
+      <mxGeometry x="710" y="355" width="390" height="95" as="geometry" />
+    </mxCell>
+    <mxCell id="e-tab1-azioni1" source="tab1" target="azioni1" style="html=1;strokeColor=#53657a;edgeStyle=orthogonalEdgeStyle;rounded=1;endArrow=block;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e-azioni1-dialoghi1" source="azioni1" target="dialoghi1" style="html=1;strokeColor=#53657a;edgeStyle=orthogonalEdgeStyle;rounded=1;endArrow=block;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="tab2" value="Vendi la tua Auto" style="whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=18;fontColor=#172b4d;strokeColor=#53657a;fillColor=#ffffff;rounded=1;fillColor=#d9e8fa;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="40" y="495" width="220" height="95" as="geometry" />
+    </mxCell>
+    <mxCell id="azioni2" value="Compila proposta [UC-05]&lt;br&gt;Calcola Preventivo&lt;br&gt;Invia Proposta di Vendita" style="whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=18;fontColor=#172b4d;strokeColor=#53657a;fillColor=#ffffff;rounded=1;fontSize=17;" vertex="1" parent="1">
+      <mxGeometry x="310" y="495" width="350" height="95" as="geometry" />
+    </mxCell>
+    <mxCell id="dialoghi2" value="Preventivo nella scheda&lt;br&gt;Proposta Inviata / errore&lt;br&gt;Ritorno alla stessa scheda" style="whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=18;fontColor=#172b4d;strokeColor=#53657a;fillColor=#ffffff;rounded=1;fillColor=#fff2d9;fontSize=17;" vertex="1" parent="1">
+      <mxGeometry x="710" y="495" width="390" height="95" as="geometry" />
+    </mxCell>
+    <mxCell id="e-tab2-azioni2" source="tab2" target="azioni2" style="html=1;strokeColor=#53657a;edgeStyle=orthogonalEdgeStyle;rounded=1;endArrow=block;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e-azioni2-dialoghi2" source="azioni2" target="dialoghi2" style="html=1;strokeColor=#53657a;edgeStyle=orthogonalEdgeStyle;rounded=1;endArrow=block;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="tab3" value="Le Mie Operazioni" style="whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=18;fontColor=#172b4d;strokeColor=#53657a;fillColor=#ffffff;rounded=1;fillColor=#d9e8fa;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="40" y="635" width="220" height="95" as="geometry" />
+    </mxCell>
+    <mxCell id="azioni3" value="Consulta richieste, noleggi, test drive [UC-11]&lt;br&gt;Paga saldo concordato [UC-03]&lt;br&gt;Annulla Test Drive Selezionato [UC-01]" style="whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=18;fontColor=#172b4d;strokeColor=#53657a;fillColor=#ffffff;rounded=1;fontSize=17;" vertex="1" parent="1">
+      <mxGeometry x="310" y="635" width="350" height="95" as="geometry" />
+    </mxCell>
+    <mxCell id="dialoghi3" value="Conferma Saldo Finale → esito&lt;br&gt;Annullamento test drive → esito&lt;br&gt;Ritorno e aggiornamento delle tabelle" style="whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=18;fontColor=#172b4d;strokeColor=#53657a;fillColor=#ffffff;rounded=1;fillColor=#fff2d9;fontSize=17;" vertex="1" parent="1">
+      <mxGeometry x="710" y="635" width="390" height="95" as="geometry" />
+    </mxCell>
+    <mxCell id="e-tab3-azioni3" source="tab3" target="azioni3" style="html=1;strokeColor=#53657a;edgeStyle=orthogonalEdgeStyle;rounded=1;endArrow=block;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e-azioni3-dialoghi3" source="azioni3" target="dialoghi3" style="html=1;strokeColor=#53657a;edgeStyle=orthogonalEdgeStyle;rounded=1;endArrow=block;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="legenda" value="Blu: schermate / tab. Bianco: azioni. Ocra: dialoghi o risultati nella stessa scheda.&lt;br&gt;Gestione Account: Modifica Email, Modifica Password, Elimina Identità, Ricarica Saldo (cliente).&lt;br&gt;Chiudi / Annulla: ritorno al chiamante. Errore: permanenza nel contesto; uscita o eliminazione riuscita: Accedi." style="whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=18;fontColor=#172b4d;strokeColor=#53657a;fillColor=#ffffff;strokeColor=none;fillColor=none;align=left;fontSize=17;" vertex="1" parent="1">
+      <mxGeometry x="20" y="800" width="1100" height="100" as="geometry" />
+    </mxCell>
+  </root>
+</mxGraphModel>

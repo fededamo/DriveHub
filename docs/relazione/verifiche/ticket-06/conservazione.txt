@@ -1,0 +1,14 @@
+$ git diff 61ce18ae1d4e0458b63e970b793b0b3a634a3adf...HEAD
+exit 0
+$ git log 61ce18ae1d4e0458b63e970b793b0b3a634a3adf..HEAD --oneline
+exit 0
+$ git diff --check
+exit 0
+$ git status --short
+?? .serena/
+?? docs/AGENTS.md
+?? docs/agents/
+?? docs/relazione/
+exit 0
+Diff Git vuoto: area documentale gia non tracciata. Delta reale in delta-documentale.diff e nuovi materiali06.
+2234 hash protetti invariati; un solo aggiornamento di stato in capitolo3 verificato contro copia iniziale completa.

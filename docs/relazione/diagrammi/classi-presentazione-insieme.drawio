@@ -1,0 +1,97 @@
+<mxfile host="Electron" version="32.6.10">
+  <diagram name="DriveHub — Presentation Layer" id="ticket10">
+    <mxGraphModel adaptiveColors="auto" page="1" pageScale="1" pageWidth="1200" pageHeight="850" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="DriveHub — Presentation Layer" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;text;align=center;fontSize=22;fontStyle=1;">
+          <mxGeometry x="20" y="8" width="1160" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="presentation" value="presentation.view" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;shape=folder;tabWidth=110;tabHeight=24;align=left;verticalAlign=top;spacingTop=3;spacingLeft=8;fillColor=#D5E8D4;">
+          <mxGeometry x="20" y="55" width="755" height="605" as="geometry" />
+        </mxCell>
+        <mxCell id="login" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;LoginView&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;AuthService; Consumer&amp;lt;User&amp;gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;tab Accedi / Registrati&lt;/div&gt;" vertex="1" parent="presentation" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="25" y="50" width="330" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="client" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;ClientDashboardView&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;Client; servizi; Runnable onLogout&lt;hr style=&quot;margin:2px 0&quot;&gt;cataloghi / operazioni / proposta&lt;/div&gt;" vertex="1" parent="presentation" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="400" y="50" width="330" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="salesman" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;SalesmanDashboardView&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;Salesman; servizi; Runnable onLogout&lt;hr style=&quot;margin:2px 0&quot;&gt;richieste / inventario&lt;/div&gt;" vertex="1" parent="presentation" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="25" y="225" width="330" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="manager" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;ManagerDashboardView&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;Manager; servizi; Runnable onLogout&lt;hr style=&quot;margin:2px 0&quot;&gt;marchi / modelli / veicoli / sconti / registro&lt;/div&gt;" vertex="1" parent="presentation" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="400" y="225" width="330" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="account" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;AccountManagementDialog&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;utility: metodi statici&lt;hr style=&quot;margin:2px 0&quot;&gt;+ show(owner,user,auth,callback,...)&lt;/div&gt;" vertex="1" parent="presentation" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="25" y="425" width="330" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="async" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;AsyncLoad&amp;lt;T&amp;gt; (package)&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;Task; worker virtuali&lt;hr style=&quot;margin:2px 0&quot;&gt;load / risultato corrente / dispose&lt;/div&gt;" vertex="1" parent="presentation" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="400" y="425" width="330" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="border" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;«JavaFX» BorderPane&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;/div&gt;" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="825" y="55" width="330" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1" source="login" target="border" value="" parent="1" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;endArrow=block;endFill=0;exitX=0.5;exitY=0;entryX=0;entryY=0.4;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="210" y="90" />
+              <mxPoint x="805" y="90" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge2" source="client" target="border" value="" parent="1" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;endArrow=block;endFill=0;exitX=0.5;exitY=0;entryX=0;entryY=0.2;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="585" y="80" />
+              <mxPoint x="805" y="80" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge3" source="salesman" target="border" value="" parent="1" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;endArrow=block;endFill=0;exitX=1;exitY=0.5;entryX=0;entryY=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="395" y="342" />
+              <mxPoint x="395" y="60" />
+              <mxPoint x="805" y="60" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge4" source="manager" target="border" value="" parent="1" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;endArrow=block;endFill=0;exitX=1;exitY=0.5;entryX=0;entryY=0.85;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="790" y="342" />
+              <mxPoint x="790" y="110" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="root" value="it.unifi.drivehub" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;shape=folder;tabWidth=110;tabHeight=24;align=left;verticalAlign=top;spacingTop=3;spacingLeft=8;fillColor=#D5E8D4;">
+          <mxGeometry x="810" y="180" width="370" height="225" as="geometry" />
+        </mxCell>
+        <mxCell id="app" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;App&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;Stage; AppContext&lt;hr style=&quot;margin:2px 0&quot;&gt;+ start(Stage)&lt;br&gt;showDashboardForUser(user)&lt;/div&gt;" vertex="1" parent="root" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="20" y="40" width="330" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="domain" value="domain.user" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;shape=folder;tabWidth=110;tabHeight=24;align=left;verticalAlign=top;spacingTop=3;spacingLeft=8;fillColor=#F8CECC;">
+          <mxGeometry x="810" y="435" width="370" height="215" as="geometry" />
+        </mxCell>
+        <mxCell id="nav" value="&lt;div style=&quot;text-align:center;font-size:14px&quot;&gt;&lt;b&gt;«interface» UserDashboardNavigator&lt;/b&gt;&lt;/div&gt;&lt;hr style=&quot;margin:2px 0&quot;&gt;&lt;div style=&quot;text-align:left;font-size:12px;line-height:1.1&quot;&gt;callback per Client / Salesman / Manager&lt;hr style=&quot;margin:2px 0&quot;&gt;+ showClientDashboard(client)&lt;br&gt;+ showSalesmanDashboard(salesman)&lt;br&gt;+ showManagerDashboard(manager)&lt;/div&gt;" vertex="1" parent="domain" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;rounded=0;fillColor=#ffffff;verticalAlign=top;spacing=5;">
+          <mxGeometry x="20" y="40" width="330" height="155" as="geometry" />
+        </mxCell>
+        <mxCell id="edge5" source="app" target="nav" value="crea implementazione anonima" parent="1" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;dashed=1;endArrow=open;endFill=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="svc" value="service / AppContext" vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;shape=folder;tabWidth=110;tabHeight=24;align=left;verticalAlign=top;spacingTop=3;spacingLeft=8;fillColor=#FFF2CC;">
+          <mxGeometry x="20" y="695" width="1160" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="services" value="Viste → servizi concreti iniettati; overload di comodo → AppContext.getInstance(). Nessun gateway intermedio." vertex="1" parent="svc" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;strokeColor=none;fillColor=none;">
+          <mxGeometry x="35" y="30" width="1120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="edge6" source="presentation" target="svc" value="invoca" parent="1" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontFamily=Arial;fontSize=13;labelBackgroundColor=#ffffff;strokeColor=#596579;dashed=1;endArrow=open;endFill=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="note" value="User.openDashboard(navigator) → callback specifica del ruolo → App costruisce la dashboard (double dispatch). App non realizza direttamente il navigator.&lt;br&gt;AccountManagementDialog costruisce uno Stage modale; non estende Dialog. AsyncLoad riguarda le letture, non tutte le scritture.&lt;br&gt;Nessun WelcomeController, FXML, Route, UiGateway o SessionContext. Freccia aperta tratteggiata: uso / costruzione. Dettagli CL-01/02/10." vertex="1" parent="1" style="html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=14;strokeColor=#596579;shape=note;fillColor=#FFFBE6;strokeColor=#D2B65A;align=left;spacing=8;fontSize=12;">
+          <mxGeometry x="20" y="780" width="1160" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

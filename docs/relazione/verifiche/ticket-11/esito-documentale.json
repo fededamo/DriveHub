@@ -1,0 +1,28 @@
+{
+  "baseline_files": 3277,
+  "preserved": 3270,
+  "changed": [
+    "docs/relazione/README.md",
+    "docs/relazione/allineamento.md",
+    "docs/relazione/capitoli/3_implementazione.tex",
+    "docs/relazione/indice.md",
+    "docs/relazione/piano.md",
+    "docs/relazione/relazione-drivehub.pdf",
+    "docs/relazione/tracker/issues/11-riallineamento-implementazione.md"
+  ],
+  "structural_entries": 35,
+  "original_fragments": 14,
+  "literal_excerpts": 27,
+  "resolved_refs": 79,
+  "internal_links": 224,
+  "embedded_fonts": 106,
+  "pdf_pages": 143,
+  "chapter3": [
+    83,
+    105
+  ],
+  "extract_pages": 23,
+  "tex_infinite_glue": 5,
+  "tex_overfull": 0,
+  "tex_underfull": 0
+}

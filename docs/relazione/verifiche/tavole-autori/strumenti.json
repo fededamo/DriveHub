@@ -1,0 +1,7 @@
+{
+  "renderer": "https://app.diagrams.net/js/viewer-static.min.js",
+  "renderer_sha256": "ee0280761d4cac34ddc9cf9f24c30f4ede71dbf9ccca948e9edc55c6ceb0845a",
+  "execution": "localhost 127.0.0.1:9864; CSP connect-src self; browser allowed-domains 127.0.0.1",
+  "chrome": "157.0.8103.78",
+  "latex": "XeTeX 0.999997 / TeX Live 2025; 2025.20260124-1"
+}

@@ -1,0 +1,11 @@
+{
+  "system": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.43",
+  "python": "3.14.4",
+  "tool_root": "/home/federico/dev/Drivehub/.ticket11-tools",
+  "executables": {
+    "xetex": "b457bea31831f6d1e2497a68b101cfec76aa5c47419fda1cb582dc414d52cd7d",
+    "xdvipdfmx": "8ac51bdd427674645a5de01240a7ec4e7d8032f5ceb002b358a9d93ad18882a2",
+    "kpsewhich": "77034e32f02c448c700fc9bdcf0fb0b9d080a2d3de15c09da448cc831ddb900d"
+  },
+  "temporary_caches": "/tmp/drivehub-ticket12-tex"
+}

@@ -1,0 +1,52 @@
+{
+  "pdf_sha256": "1fcc18bb426426cdc9809a69ac04993c3ffeb384a5014e515719a12643e71f4e",
+  "pages": 107,
+  "chapter_5_physical": [
+    69,
+    71
+  ],
+  "internal_links": 156,
+  "embedded_fonts": 86,
+  "rendered_pages": [
+    1,
+    2,
+    3,
+    54,
+    64,
+    68,
+    69,
+    70,
+    71,
+    72,
+    107
+  ],
+  "known_pdf_version_warnings": 96,
+  "baseline_files": 2291,
+  "baseline_unchanged": 2284,
+  "modified_baseline_files": [
+    "docs/relazione/README.md",
+    "docs/relazione/capitoli/3_implementazione.tex",
+    "docs/relazione/capitoli/4_testing.tex",
+    "docs/relazione/capitoli/5_uso_ai.tex",
+    "docs/relazione/main.tex",
+    "docs/relazione/piano.md",
+    "docs/relazione/relazione-drivehub.pdf"
+  ],
+  "previous_pdf_sections_equivalent": 7,
+  "historical_counts_only": {
+    "R11": [
+      394,
+      0,
+      0,
+      0
+    ],
+    "enum": [
+      423,
+      0,
+      0,
+      0
+    ]
+  },
+  "source_archive_files": 95
+}
+Exit 0: controlli documentali; i rendering richiedono osservazione separata. Nessuna approvazione umana attribuita.

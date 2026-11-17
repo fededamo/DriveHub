@@ -1,0 +1,311 @@
+\chapter{Testing}\label{ch:testing}
+Le prove sono lette come argomenti a sostegno di comportamenti precisi:
+quale situazione viene preparata, quale comando viene invocato e quali
+osservazioni potrebbero smentire il risultato atteso. Il capitolo e
+l'appendice~\ref{app:verifiche} sono completi e proposti per la revisione
+degli autori, senza attribuirne l'approvazione. Il capitolo~5 resta provvisorio.
+Il riscontro documentale è del 13 novembre 2026 sul commit \code{61ce18a};
+non sono stati eseguiti test applicativi, harness o accessi al database.
+
+\begingroup
+\def\UrlBreaks{\do\a\do\b\do\c\do\d\do\e\do\f\do\g\do\h\do\i\do\j\do\k\do\l\do\m\do\n\do\o\do\p\do\q\do\r\do\s\do\t\do\u\do\v\do\w\do\x\do\y\do\z\do\A\do\B\do\C\do\D\do\E\do\F\do\G\do\H\do\I\do\J\do\K\do\L\do\M\do\N\do\O\do\P\do\Q\do\R\do\S\do\T\do\U\do\V\do\W\do\X\do\Y\do\Z}
+\emergencystretch=6em
+\renewcommand{\lstlistingname}{Frammento}
+\lstset{language=Java,basicstyle=\ttfamily\footnotesize,
+  columns=fullflexible,keepspaces=true,showstringspaces=false,
+  breaklines=true,tabsize=4,gobble=4,upquote=true,
+  numbers=left,numberstyle=\tiny\color{black!60},numbersep=8pt,
+  frame=lines,rulecolor=\color{black!25},captionpos=b,
+  aboveskip=9pt,belowskip=9pt}
+
+\section{Strategia di verifica}\label{sec:test-strategia}
+Il rischio principale è confermare un'operazione economica lasciando saldo,
+richiesta, stato del veicolo o storico incoerenti. Per questo le verifiche
+procedono dalle regole locali ai flussi persistenti, fino alla presentazione.
+La classificazione dipende da ciò che il test esegue:
+\begin{itemize}
+\item I test unitari costruiscono entità e calcolatore in memoria.
+  \code{TestDatabaseConfigurationTest} costruisce configurazioni e verifica
+  rifiuti senza aprire connessioni: il riferimento a PostgreSQL non lo
+  rende un test d'integrazione.
+\item I test d'integrazione usano JDBC, \code{TestDatabase.reset} e un
+  \code{AppContext} nuovo sul PostgreSQL dedicato. Attraversano servizi,
+  dominio, DAO e vincoli; non sono test unitari dei soli DAO.
+\item Gli harness JavaFX sono programmi con \code{main}, controlli propri,
+  \code{Platform} e Robot. Quelli dei flussi commerciali e delle tabelle
+  usano PostgreSQL reale; AppStartup verifica il solo ingresso pubblico.
+  Risiedono in \code{docs/evidence}, fuori dalla selezione JUnit di Maven.
+\end{itemize}
+La suite è raccolta in \code{src/test/java/it/unifi/drivehub}: sei classi
+senza DB, diciassette con tag \code{postgres}, più il supporto
+\code{TestDatabase}. Il POM usa JUnit Jupiter 5.10.2 e Surefire 3.2.5;
+non configura Failsafe né JaCoCo. La proprietà \code{test.excludedGroups}
+esclude \code{postgres} in \code{mvn test}; il profilo
+\code{postgres-tests} la porta a \code{none}, includendo anche i test
+senza DB. Il nome \emph{IntegrationTest} non attiva un diverso ciclo Maven.
+
+Gli scenari sono funzionali quando confrontano un comportamento con una
+regola: per esempio due clienti non devono ottenere lo stesso periodo.
+La scelta di confini, trigger di guasto, rami di errore e contatori JDBC
+aggiunge verifiche guidate dalla struttura interna. Non è disponibile una
+misura strumentata di istruzioni o rami coperti: il numero delle invocazioni,
+che comprende i parametri JUnit, non è una percentuale di copertura.
+La matrice in appendice collega le prove alle schede di appendice~A e agli
+obiettivi della specifica; l'esistenza di una classe non certifica da sola
+un intero requisito.
+
+\section{Livello 1: Business Logic}\label{sec:test-business}
+\code{DomainInvariantsTest} verifica confini e conservazione dello stato.
+Tentare di togliere la targa a un veicolo con 100 km deve fallire lasciando
+invariati targa, chilometri e altri attributi. Ridurre prima i chilometri
+a zero rende invece possibile la rimozione. Sono controllati anche sconti
+0--50, anni ammessi, orari dei test drive e prelievo con fondi insufficienti.
+\code{BookingRulesTest} precisa due confini facilmente trascurati:
+un microsecondo dopo le 16 è già fuori fascia; i noleggi includono entrambi
+i giorni estremi. Questi oggetti in memoria non dimostrano vincoli SQL,
+prenotazioni concorrenti o identità persistite.
+
+Per i prezzi, \code{PriceCalculatorServiceTest} verifica base manuale
+10.000 con promozione 10\% uguale a 9.000; sconti modello e veicolo
+concorrono tramite il massimo e non si sommano. Altri casi combinano usato,
+anno e chilometri, riportano la modalità all'automatico e verificano che
+la base 10.000,005 sia arrotondata prima della formula, dando 9.000,01.
+Sono esempi discriminanti per ADR~0001, non una verifica numerica esaustiva
+di una formula che usa anche passaggi in \code{double}.
+
+\code{RequestAgreementTest} separa l'accordo dal listino: assegnare
+venditore e scadenza non deve cambiare totale o acconto. Nel
+frammento~\ref{lst:test-accordo} il residuo comprende anche i centesimi.
+Sono inoltre rifiutati totale assente, importi negativi, acconto maggiore
+del totale e frazioni che cambierebbero nella memorizzazione a centesimi.
+La richiesta di acquisto dal cliente ha invece stima non negativa e
+\code{agreedTotal} nullo; non possiede un saldo di vendita al cliente.
+
+% Fonte: src/test/java/it/unifi/drivehub/RequestAgreementTest.java:17-24
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=17,caption={\code{RequestAgreementTest.java}: estratto della prova.},label=lst:test-accordo]
+        Request request = Request.createNewSaleRequest(1L, 2L,
+                new BigDecimal("4000.01"), new BigDecimal("20000.03"));
+        assertEquals(RequestType.SALE, request.getType());
+        request.setSalesmanId(16L);
+        request.setExpDate(LocalDate.now().plusMonths(1));
+        assertEquals(new BigDecimal("20000.03"), request.getAgreedTotal());
+        assertEquals(new BigDecimal("4000.01"), request.getDeposit());
+        assertEquals(new BigDecimal("16000.02"), request.getRemainingAmount());
+\end{lstlisting}
+\end{minipage}
+
+Il dominio e \code{SaleTypeTest} conservano il tipo esplicito anche con
+importo zero: \code{SALE}, \code{PURCHASE} e \code{PENALTY} non si deducono
+dal segno. Ciò non dimostra il buon esito di un pagamento zero:
+\code{BankAccount.deposit/withdraw} lo rifiutano.
+La prova sul pagamento zero di \code{SaleOutcomeIntegrationTest}
+verifica proprio il rifiuto con stato conservato. È distinto dalla discrepanza
+funzionale già segnalata nei ticket documentali 04--05, non una prova che
+l'accettazione di una cessione a zero sia supportata.
+
+Le regole che coinvolgono più record richiedono il livello successivo:
+identità, conto, accordi persistiti e operazioni economiche non sono
+provati dal solo dominio. In particolare i test chiamati
+\code{FullWorkflowIntegrationTest} verificano login, letture dei tre ruoli
+e una scadenza predisposta; non percorrono da soli ogni operazione
+commerciale completa né la sua interfaccia.
+
+\section{Livello 2: Persistence Layer (DAO)}\label{sec:test-dao}
+\code{TestDatabase} richiede esplicitamente URL, utente e password di test.
+Prima della connessione rifiuta URL ambigui, parametri JDBC e destinazioni
+non dedicate; prima del reset controlla database e ruolo \code{drivehub_test},
+proprietario, schema \code{public}, assenza di privilegi amministrativi,
+appartenenze e altri database posseduti. I test non creano database o ruoli.
+Ogni scenario riparte da schema/demo, spesso aggiungendo fixture minime
+con date relative. Gli script interi sono eseguiti in una transazione,
+con tentativo di rollback su errore; il loader non divide i corpi SQL ai
+punti e virgola. Questo è isolamento per reset, non rollback automatico
+di tutte le operazioni di ogni test: i servizi possono eseguire veri commit.
+Due suite o harness sullo stesso DB interferirebbero.
+
+\code{DemoSqlValidationTest} confronta le righe delle tredici tabelle e i
+valori delle sequenze dopo due ricaricamenti demo e un nuovo reset.
+\code{DatabaseIsolationIntegrationTest} usa una seconda connessione in
+sola lettura, verso un DB sentinella distinto: rifiuta configurazioni
+incrociate e verifica che il marchio \code{R00_SENTINEL} sopravviva ai reset.
+L'asserzione JUnit controlla quel marchio, non tutte le righe del secondo
+archivio; i confronti esterni più estesi delle sessioni storiche sono
+attribuiti separatamente in appendice.
+
+La persistenza viene osservata tramite nuove letture, non solo tramite
+l'oggetto restituito dalla scrittura. \code{PriceSelectionIntegrationTest}
+verifica modalità e prezzo prima/dopo il caricamento; la prova dell'accordo
+modifica basi e sconti, ricostruisce il contesto e completa ancora
+20.000/4.000/16.000. Il registro salva e rilegge tutti i tipi con importi
+zero o positivi. Il mapping usa \code{BigDecimal}, date e timestamp;
+\code{getObject} prima di \code{getLong} mantiene nulli venditore e veicolo
+facoltativi. La scadenza può essere nulla e il totale deve esserlo nelle
+richieste \code{PURCHASE}. Alcune nullabilità sono asserite direttamente
+(per esempio le attribuzioni della penale), altre sono solo attraversate
+dai flussi: non si attribuisce una verifica dedicata a ogni colonna.
+
+\code{PostgresEnumIntegrationTest} legge tipo SQL e nome da
+\code{information_schema}, confronta etichette ordinate in \code{pg_enum}
+e attende SQLSTATE \code{22P02} assegnando un valore estraneo. Copre
+\code{vehicle_state}, \code{request_type}, \code{price_mode} e \code{sale_type}.
+I test dei flussi esercitano anche i cast JDBC; la sola prova SQL degli enum
+non dimostra ogni loro percorso di salvataggio e rilettura. Nullabilità,
+default e vincoli economici restano contratti distinti.
+
+\paragraph{Rollback dopo scritture effettive.}
+Le prove d'errore non si fermano al rifiuto di un input. Un trigger della
+prova dell'accordo osserva il saldo già addebitato e poi solleva un errore
+su richiesta, vendita, cancellazione o stato. Altri trigger osservano
+accredito e acquisizione, cancellazioni dei test drive o rimborsi multipli
+prima del guasto. Le riletture devono ritrovare lo stato precedente.
+Nel frammento~\ref{lst:test-rollback}, il trigger \emph{AFTER DELETE} ha già
+controllato che cliente e conto siano assenti e ha avanzato una sequenza
+diagnostica prima dell'errore. Il valore della sequenza, che non torna
+indietro col rollback, attesta il raggiungimento del punto di guasto;
+lo snapshot confronta invece i dati applicativi. Non implica una
+conservazione transazionale dei numeri delle sequenze.
+
+% Fonte: src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java:318-323
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=318,caption={\code{IdentityDeletionIntegrationTest.java}: estratto della prova.},label=lst:test-rollback]
+        var before = snapshot();
+        var failure = assertThrows(RuntimeException.class, () -> ctx.getAuthService().deleteAccount(1L, "Cliente", "password"));
+        assertTrue(rootCause(failure).getMessage().contains("ticket13_after_deletions"));
+        assertEquals(1, scalar("SELECT last_value FROM ticket13_writes"));
+        assertEquals(before, snapshot());
+        assertEquals(1L, new AppContext(db).getAuthService().login("mario.rossi@email.it", "password").getId());
+\end{lstlisting}
+\end{minipage}
+
+Le scritture saltate con \texttt{RETURN NULL} sono provate separatamente:
+una riga non modificata deve impedire il successo anche senza eccezione
+SQL. Funzioni e trigger di guasto sono rimossi nel cleanup. Queste prove
+non simulano ogni perdita di connessione o fallimento del rollback stesso.
+
+\paragraph{Conflitti concorrenti.}
+Nelle gare su saldi, richieste, prenotazioni, cessioni e identità, un gate
+SQL trattiene un lock mentre i worker usano nuovi contesti e connessioni
+distinte. La connessione osservatrice interroga \code{pg_stat_activity}
+e \code{pg_blocking_pids}, contando PID distinti prima di rilasciare il gate.
+Il frammento~\ref{lst:test-gara} mostra la partenza ordinata dei due
+contendenti, non una pausa usata per presumere il conflitto.
+Le attese, query di controllo e \code{Future.get} hanno limiti di dieci
+secondi; il cleanup rilascia il gate, cancella backend ancora bloccati
+e attende la terminazione dei worker. Non è un timeout globale di ogni
+possibile chiamata produttiva.
+
+% Fonte: src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java:301-308
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=301,caption={\code{PurchaseConcurrencyIntegrationTest.java}: estratto della prova.},label=lst:test-gara]
+            var a = workers.submit(outcome(first));
+            try {
+                awaitWaiters(observer, 1);
+                var b = workers.submit(outcome(second));
+                awaitWaiters(observer, 2);
+                if (commitGate) gate.commit();
+                else gate.rollback();
+                return Arrays.asList(a.get(10, TimeUnit.SECONDS), b.get(10, TimeUnit.SECONDS));
+\end{lstlisting}
+\end{minipage}
+
+Le asserzioni verificano una sola vendita e un solo addebito del saldo,
+rimborsi non duplicati, nessun noleggio sovrapposto e storico conservato
+nei conflitti selezionati. I test SQL diretti verificano anche il vincolo
+\code{EXCLUDE} sui periodi inclusivi. Gli esiti non certificano ogni
+interleaving, assenza universale di deadlock o snapshot comune del listino;
+i protocolli e le transazioni restano quelli delle sequenze già illustrate
+nella sezione~\ref{sec:sequenze}.
+
+\section{Verifiche funzionali e della presentazione}\label{sec:test-ui}
+Gli harness costruiscono le viste pubbliche con servizi reali, su display
+Xvfb isolato; gli helper \code{fx}, i latch, le proprietà JavaFX e i frame
+osservati coordinano le asserzioni. I gesti Robot riusati hanno anche
+pause per rendering: sono distinti dalla sincronizzazione delle gare DB.
+\code{AgreementUiCheck}, \code{SaleOutcomeUiCheck},
+\code{DestinationUiCheck} e \code{IdentityUiCheck} collegano dialoghi,
+conferme e tabelle a effetti persistenti specifici; dove previsto il seed
+e il controllo sono JVM distinte. Non fanno parte del conteggio Surefire.
+
+\code{TableLifecycleUiCheck} blocca davvero una lettura del catalogo
+con un lock PostgreSQL e ne osserva il PID: controlla stato di caricamento,
+dati disabilitati e cambio scheda da tastiera. Poi rinomina temporaneamente
+una tabella nel solo DB di test, attende l'errore visibile e prova il
+recupero con \emph{Riprova}, ripristinando la tabella in \code{finally}.
+Per risultati ed errori superati, un proxy diagnostico delega al driver
+reale, trattiene l'esito dopo la query e lo libera soltanto dopo un nuovo
+caricamento. La vecchia connessione deve chiudersi e il prezzo/stato più
+recente deve rimanere. Sono osservati anche aggiornamenti della lista sul
+thread FX, nuove basi e sconti e refresh nelle tre dashboard.
+
+\code{ReactiveTablesUiCheck.cells} confronta i contatori JDBC prima/dopo
+lettura delle celle, refresh e scorrimento, attendendo tre frame.
+L'assenza di nuove query in questa finestra è una verifica strutturale
+del rendering osservato, non un benchmark. \code{SlowModelsUiCheck}
+controlla che selezionare il marchio ritorni sul thread FX mentre la
+query modelli è bloccata; dopo una selezione cancellata, il risultato
+precedente non deve ripopolare la lista.
+
+Il ciclo di caricamento verificato comprende costruzione, sostituzione,
+errore e ripresa. Il listener di \code{AsyncLoad} che cancella il task
+quando il controllo perde la scena è un riscontro statico: gli harness
+qui citati non asseriscono direttamente distacco, logout e riapertura
+con una query ancora pendente. Cancellare un task non garantisce
+l'interruzione immediata di JDBC. Le tabelle sincrone delle operazioni
+cliente e le azioni economiche non acquistano reattività per analogia.
+Tastiera e testi accessibili negli scenari provati non certificano screen
+reader, ogni gesto, ogni display o accessibilità generale.
+
+\section{Esecuzione della suite e portata dei risultati}\label{sec:test-esecuzione}
+I comandi seguenti sono istruzioni di riproduzione dalla radice del
+repository, \textbf{non esecuzioni di questo ticket}. Servono JDK~21 e
+Maven~3.9 o superiore sullo stesso JDK; per l'integrazione PostgreSQL~16
+con \code{btree_gist}. JavaFX~21.0.2 e JDBC~42.7.3 sono nel POM. La prima
+risoluzione delle dipendenze richiede rete; \code{-o} è appropriato solo
+con una cache già completa.
+
+\begin{lstlisting}[language=bash,numbers=none,gobble=0]
+# Senza database
+mvn test
+mvn -Dtest=PriceCalculatorServiceTest,RequestAgreementTest test
+# Dopo la preparazione dei due DB e delle variabili esplicite
+mvn -Ppostgres-tests -Dtest=PurchaseAgreementIntegrationTest test
+mvn -Ppostgres-tests clean test
+\end{lstlisting}
+
+\code{docs/testing.md} descrive creazione separata di ruolo/DB sacrificabili,
+\code{DRIVEHUB_TEST_DB_URL}, \code{DRIVEHUB_TEST_DB_USER} e
+\code{DRIVEHUB_TEST_DB_PASSWORD}, più le tre corrispondenti
+\code{DRIVEHUB_SENTINEL_DB_*} per la prova d'isolamento. La sentinella
+va predisposta su una copia distinta già inizializzata. Le password non
+vanno inserite nei comandi Maven o nelle evidenze. Una configurazione
+mancante causa fallimento, non un test saltato.
+\code{docs/installation.md} distingue installazione e reset:
+\code{schema.sql} e \code{demo.sql} distruggono dati sul bersaglio e non
+vanno applicati a un archivio da conservare.
+
+Per le tabelle, dopo compilazione e fixture predisposte, usare ad esempio:
+\begin{lstlisting}[language=bash,numbers=none,gobble=0]
+# JDK 21, DISPLAY isolato e variabili DB di test gia' verificati
+DRIVEHUB_UI_CLASS=it.unifi.drivehub.TableLifecycleUiCheck \
+  python3 docs/evidence/r08-tables/run-ui.py
+\end{lstlisting}
+Il launcher richiede \code{JAVA_HOME}, dipendenze Linux nella cache Maven,
+\code{target/classes} e \code{target/test-classes};
+\code{DRIVEHUB_UI_DIR} permette un output distinto.
+Per i modelli selezionare \code{it.unifi.drivehub.SlowModelsUiCheck}.
+Non eseguire suite e harness insieme sullo stesso DB. I runner storici
+R11 hanno percorsi privati e adattamenti conservati: non sono procedure
+portabili senza ripreparare quell'ambiente.
+
+I log storici riportano \textbf{423 eseguiti senza failure, errori o salti}
+il 9 novembre (E1) e \textbf{394 senza failure, errori o salti} il
+3 novembre (E2). E1 è coerente con il tree corrente; E2 ha input e
+semantica poi modificati. Le prove GUI E3 appartengono alla prima fase
+del 3 novembre, non al giro E1. L'appendice~\ref{app:verifiche} precisa
+provenienza, ambiente, comandi, versioni, tentativi falliti e limiti.
+I conteggi restano separati e non misurano la copertura del codice.
+I difetti già segnalati nei ticket documentali 04--05 restano aperti:
+verificare un rifiuto corrente non soddisfa necessariamente l'intento
+di un requisito.
+\endgroup

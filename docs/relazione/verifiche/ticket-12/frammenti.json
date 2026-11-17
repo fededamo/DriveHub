@@ -1,0 +1,170 @@
+[
+  {
+    "label": "lst:test-auth",
+    "source": "src/test/java/it/unifi/drivehub/AuthServiceIntegrationTest.java",
+    "firstline": 61,
+    "lastline": 69,
+    "text": "        User before = auth.login(email, \"password\");\n        User owner = auth.login(duplicate, \"password\");\n\n        assertThrows(RuntimeException.class,\n                () -> auth.changeEmail(before.getId(), before.getRoleDisplayName(),\n                        \"  \" + duplicate.toUpperCase(java.util.Locale.ROOT) + \"  \", \"password\"));\n\n        assertIdentityUnchanged(before);\n        assertIdentityUnchanged(owner);\n",
+    "sha256": "3ef31db989c1f9b57557e9e42732cd8f833b99d43890182ca0bf9257ad0de62d",
+    "function": "duplicato ed effetti esclusi",
+    "omissions": "Omesse annotazioni e cinque coppie CSV (52–59), firma (60), helper (96–104); non è registrazione."
+  },
+  {
+    "label": "lst:test-pricing",
+    "source": "src/test/java/it/unifi/drivehub/PriceCalculatorServiceTest.java",
+    "firstline": 156,
+    "lastline": 166,
+    "text": "        BigDecimal carPrice = BigDecimal.valueOf(20000);\n        LocalDate start = LocalDate.of(2026, 11, 1);\n        LocalDate end = LocalDate.of(2026, 11, 3); // 3 giorni inclusi: 1, 2, 3\n\n        BigDecimal cost = calculator.calculateTotalRentalCost(carPrice, start, end);\n        // dailyRate = 20000 * 0.001 = 20.00\n        // giorno 1: 20.00\n        // giorno 2: 20.00 * 0.95 = 19.00\n        // giorno 3: 19.00 * 0.95 = 18.05\n        // Somma = 20 + 19 + 18.05 = 57.05\n        assertEquals(new BigDecimal(\"57.05\"), cost);\n",
+    "sha256": "379ce5a89da318084f36b7a30fcefec42a1034c3e936a271959363793d4dd367",
+    "function": "tariffa geometrica e centesimi",
+    "omissions": "Omessi annotazioni/firma e chiusura del metodo (153–155,167); nessuna esecuzione nel ticket."
+  },
+  {
+    "label": "lst:test-penale",
+    "source": "src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java",
+    "firstline": 173,
+    "lastline": 179,
+    "text": "        sql(\"UPDATE request SET deposit = 0.03, agreed_total = 0.15, exp_date = CURRENT_DATE - 1 WHERE id = 1001\");\n        var notices = ctx.getPurchaseService().checkAndHandleExpiredRequests(1L);\n        assertEquals(1, notices.size());\n        assertTrue(notices.getFirst().contains(\"€ 0.02.\"));\n        assertConsumed(\"46000.02\", VehicleState.SALE, new BigDecimal(\"0.01\"));\n        assertTrue(ctx.getPurchaseService().checkAndHandleExpiredRequests(1L).isEmpty());\n        assertConsumed(\"46000.02\", VehicleState.SALE, new BigDecimal(\"0.01\"));\n",
+    "sha256": "69f7905d4983b1dac5be79776c999639c40160a72878f1ba33b67d1ba1396530",
+    "function": "annullamento/scadenza con penale",
+    "omissions": "Omessi setup 35–48, firma 172 e helper assertConsumed 267–285; modifica SQL di fixture, non incoerenza creata dalla UI."
+  },
+  {
+    "label": "lst:test-rental",
+    "source": "src/test/java/it/unifi/drivehub/TestDriveCancellationIntegrationTest.java",
+    "firstline": 103,
+    "lastline": 109,
+    "text": "            var rents = ctx.getOperationQueryService().getClientRents(1L);\n            assertEquals(1, rents.size());\n            assertEquals(new BigDecimal(\"57.05\"), rents.getFirst().getAmount());\n            assertEquals(LocalDate.now().plusDays(5), rents.getFirst().getStartDate());\n            assertEquals(LocalDate.now().plusDays(7), rents.getFirst().getEndDate());\n            assertEquals(new BigDecimal(\"29942.95\"), ctx.getAuthService().getClientBankAccount(1L).getBalance());\n            assertTrue(ctx.getOperationQueryService().getAllSales().isEmpty());\n",
+    "sha256": "870af5bdef214ecbc7988e13ef35bd0703ed54bfdae0980060a8126571b5a4db",
+    "function": "addebito e registrazione del noleggio",
+    "omissions": "Solo interno del ramo rental (if a102); omessi preparazione85–94, confirm95, nuovo contesto96, assert97–101 e chiusura/else110. Conferma delegata a162–165."
+  },
+  {
+    "label": "lst:test-transazione",
+    "source": "src/main/java/it/unifi/drivehub/dao/DatabaseManager.java",
+    "firstline": 88,
+    "lastline": 106,
+    "text": "    public <T> T executeInTransactionWithResult(TransactionFunction<T> function) {\n        try (Connection conn = getConnection()) {\n            conn.setAutoCommit(false);\n            try {\n                T result = function.execute(conn);\n                conn.commit();\n                return result;\n            } catch (Exception e) {\n                try {\n                    conn.rollback();\n                } catch (SQLException rollbackEx) {\n                    e.addSuppressed(rollbackEx);\n                }\n                throw new RuntimeException(\"Transazione fallita: eseguito rollback.\", e);\n            }\n        } catch (SQLException e) {\n            throw new RuntimeException(\"Errore di connessione al database durante la transazione.\", e);\n        }\n    }\n",
+    "sha256": "d9eac9347074cdd5713983d4e2a4157504441b967b820921218e4984a6193300",
+    "function": "errore transazionale, causa, soppressa e ordine",
+    "omissions": "Metodo completo con risultato; omessi callback/getConnection e overload void66–83. Nessun errore commit/rollback iniettato in questo ticket."
+  },
+  {
+    "label": "lst:test-dao-roundtrip",
+    "source": "src/test/java/it/unifi/drivehub/PriceSelectionIntegrationTest.java",
+    "firstline": 62,
+    "lastline": 69,
+    "text": "        Vehicle saved = ctx.getCatalogService().addVehicle(model.getId(), \"T0500000000000001\", null, 0,\n                new BigDecimal(\"10000\"), year, VehicleState.SALE);\n        Vehicle reloaded = new AppContext(ctx.getDatabaseManager()).getCatalogService()\n                .getVehicleById(saved.getId()).orElseThrow();\n        assertEquals(new BigDecimal(\"9000.00\"), ctx.getCatalogService().getEffectiveVehiclePrice(reloaded));\n        assertEquals(PriceMode.MANUAL, saved.getPriceMode());\n        assertEquals(PriceMode.MANUAL, reloaded.getPriceMode());\n        assertEquals(0, new BigDecimal(\"10000\").compareTo(reloaded.getPrice()));\n",
+    "sha256": "f06e0a5dbb6811308eb0a6223593869a6cf68eb689049c5d8c635ed6fcda4820",
+    "function": "roundtrip DAO con nuova lettura",
+    "omissions": "Omessi setup25–30, firma61 e chiusura70; nessuna UnitOfWork corrente."
+  },
+  {
+    "label": "lst:test-demo",
+    "source": "src/test/java/it/unifi/drivehub/DemoSqlValidationTest.java",
+    "firstline": 17,
+    "lastline": 31,
+    "text": "        TestDatabase fixture = TestDatabase.fromEnvironment();\n        DatabaseManager db = fixture.reset();\n        var sales = new AppContext(db).getOperationQueryService().getAllSales();\n        assertEquals(32, sales.stream().filter(s -> s.getType() == it.unifi.drivehub.domain.operation.SaleType.SALE).count());\n        assertEquals(8, sales.stream().filter(s -> s.getType() == it.unifi.drivehub.domain.operation.SaleType.PENALTY).count());\n        assertTrue(sales.stream().allMatch(s -> s.getAmount().signum() >= 0));\n        List<String> expected = snapshot(db);\n        assertFalse(expected.isEmpty());\n\n        fixture.reloadDemo();\n        assertEquals(expected, snapshot(db), \"Secondo caricamento demo\");\n        fixture.reloadDemo();\n        assertEquals(expected, snapshot(db), \"Terzo caricamento demo\");\n        fixture.reset();\n        assertEquals(expected, snapshot(db), \"Secondo caricamento schema e demo\");\n",
+    "sha256": "5bb4a5d6796292f09b747ca62b4b1fd9b171e9fdf1d72f557d385e4f337a99d7",
+    "function": "schema/demo e conteggi",
+    "omissions": "Omessi firma16 e helper snapshot34–51 (tredici tabelle e sequenze); nessun bootstrap applicativo."
+  },
+  {
+    "label": "lst:test-checkout-blocked",
+    "source": "src/test/java/it/unifi/drivehub/PurchaseAgreementIntegrationTest.java",
+    "firstline": 43,
+    "lastline": 51,
+    "text": "        Request request = ctx.getPurchaseService().initiatePurchase(vehicle.getId(), 1L);\n        assertEquals(RequestType.SALE, request.getType());\n        assertEquals(new BigDecimal(\"4000.00\"), request.getDeposit());\n        assertEquals(new BigDecimal(\"20000.00\"), request.getAgreedTotal());\n        assertEquals(new BigDecimal(\"16000.00\"), request.getRemainingAmount());\n        assertEquals(VehicleState.BLOCKED, ctx.getCatalogService().getVehicleById(vehicle.getId()).orElseThrow().getState());\n        assertThrows(RuntimeException.class, () -> ctx.getPurchaseService().initiatePurchase(vehicle.getId(), 2L));\n        assertEquals(1, ctx.getOperationQueryService().getClientRequests(1L).size());\n        assertEquals(new BigDecimal(\"26000.00\"), ctx.getAuthService().getClientBankAccount(1L).getBalance());\n",
+    "sha256": "8278c58c8d65ec4a62fff7cbee57e558331a114e96c46a7008077f58e9fe19a4",
+    "function": "workflow BLOCKED",
+    "omissions": "Omessi setup26–32 e creazione modello/veicolo38–42; approvazione52 e variazioni54–61 spiegate nel testo."
+  },
+  {
+    "label": "lst:test-checkout-sold",
+    "source": "src/test/java/it/unifi/drivehub/PurchaseAgreementIntegrationTest.java",
+    "firstline": 70,
+    "lastline": 78,
+    "text": "        ctx.getPurchaseService().completePurchase(request.getId());\n        var sale = ctx.getOperationQueryService().getClientSales(1L).stream()\n                .filter(s -> s.getVehicleId().equals(vehicle.getId())).findFirst().orElseThrow();\n        assertEquals(it.unifi.drivehub.domain.operation.SaleType.SALE, sale.getType());\n        assertEquals(new BigDecimal(\"20000.00\"), sale.getAmount());\n        assertEquals(new BigDecimal(\"10000.00\"), ctx.getAuthService().getClientBankAccount(1L).getBalance());\n        assertEquals(VehicleState.SOLD, ctx.getCatalogService().getVehicleById(vehicle.getId()).orElseThrow().getState());\n        assertTrue(ctx.getOperationQueryService().getClientRequests(1L).stream()\n                .noneMatch(r -> r.getId().equals(request.getId())));\n",
+    "sha256": "d8009eeabe59beda5d7c390f555fe1727e2d43f158b8910684784101c20d493e",
+    "function": "workflow SOLD",
+    "omissions": "Omessi nuova sessione62 e assert rilettura65–69 (discussi in4.3.1), chiusura79. Nessun login/GUI nello scenario."
+  },
+  {
+    "label": "lst:test-comando-storico",
+    "source": "docs/evidence/postgres-enums-2026-11-09/verification.md",
+    "firstline": 43,
+    "lastline": 43,
+    "text": "mvn -o -B -Ppostgres-tests clean test\n",
+    "sha256": "394b41deed093d61273652f3c0728b8723f5aa8808c31ea8d8a8f02c8b9efdae",
+    "function": "comando Maven storico",
+    "omissions": "Solo riga43 del blocco40–46; gli altri comandi sono invocazioni separate. Non rieseguito nel ticket."
+  },
+  {
+    "label": "lst:test-accordo",
+    "source": "src/test/java/it/unifi/drivehub/RequestAgreementTest.java",
+    "firstline": 17,
+    "lastline": 24,
+    "text": "        Request request = Request.createNewSaleRequest(1L, 2L,\n                new BigDecimal(\"4000.01\"), new BigDecimal(\"20000.03\"));\n        assertEquals(RequestType.SALE, request.getType());\n        request.setSalesmanId(16L);\n        request.setExpDate(LocalDate.now().plusMonths(1));\n        assertEquals(new BigDecimal(\"20000.03\"), request.getAgreedTotal());\n        assertEquals(new BigDecimal(\"4000.01\"), request.getDeposit());\n        assertEquals(new BigDecimal(\"16000.02\"), request.getRemainingAmount());\n",
+    "sha256": "50eae494575081c7ee47040450755d3f02f9a1efd0967f292842eaefd384792e",
+    "function": "accordo in memoria",
+    "omissions": "Estratto iniziale conservato; setup, helper e parte esterna del metodo omessi e descritti nel testo."
+  },
+  {
+    "label": "lst:test-rollback",
+    "source": "src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java",
+    "firstline": 318,
+    "lastline": 323,
+    "text": "        var before = snapshot();\n        var failure = assertThrows(RuntimeException.class, () -> ctx.getAuthService().deleteAccount(1L, \"Cliente\", \"password\"));\n        assertTrue(rootCause(failure).getMessage().contains(\"ticket13_after_deletions\"));\n        assertEquals(1, scalar(\"SELECT last_value FROM ticket13_writes\"));\n        assertEquals(before, snapshot());\n        assertEquals(1L, new AppContext(db).getAuthService().login(\"mario.rossi@email.it\", \"password\").getId());\n",
+    "sha256": "4e78266cad970f1401c1a9ee3e66c8c74eb60ab22cfd47ee6fca37507ae839ff",
+    "function": "rollback dopo eliminazioni reali",
+    "omissions": "Estratto iniziale conservato; setup, helper e parte esterna del metodo omessi e descritti nel testo."
+  },
+  {
+    "label": "lst:test-gara",
+    "source": "src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java",
+    "firstline": 301,
+    "lastline": 308,
+    "text": "            var a = workers.submit(outcome(first));\n            try {\n                awaitWaiters(observer, 1);\n                var b = workers.submit(outcome(second));\n                awaitWaiters(observer, 2);\n                if (commitGate) gate.commit();\n                else gate.rollback();\n                return Arrays.asList(a.get(10, TimeUnit.SECONDS), b.get(10, TimeUnit.SECONDS));\n",
+    "sha256": "927fb414b6e6f306fcad795cc46c87c2332d92ce50c7ab3001e56d51feaf0c4b",
+    "function": "sincronizzazione dei backend concorrenti",
+    "omissions": "Estratto iniziale conservato; setup, helper e parte esterna del metodo omessi e descritti nel testo."
+  },
+  {
+    "label": "lst:test-comandi",
+    "source": "docs/testing.md",
+    "kind": "commands",
+    "commands": [
+      {
+        "text": "mvn test",
+        "line": 43
+      },
+      {
+        "text": "mvn -Dtest=RequestAgreementTest test",
+        "line": 255
+      },
+      {
+        "text": "mvn -Ppostgres-tests -Dtest=PurchaseAgreementIntegrationTest test",
+        "line": 256
+      },
+      {
+        "text": "mvn -Ppostgres-tests clean test",
+        "line": 17
+      }
+    ],
+    "function": "istruzioni correnti, non esiti storici",
+    "omissions": "Comandi selezionati da blocchi distinti; commenti redazionali, spezzatura shell con backslash solo impaginativa. Prerequisiti nel testo."
+  },
+  {
+    "label": "lst:test-comando-ui",
+    "source": "docs/testing.md",
+    "kind": "commands",
+    "commands": [
+      {
+        "text": "DRIVEHUB_UI_CLASS=it.unifi.drivehub.TableLifecycleUiCheck python3 docs/evidence/r08-tables/run-ui.py",
+        "line": 633
+      }
+    ],
+    "function": "istruzioni correnti, non esiti storici",
+    "omissions": "Comandi selezionati da blocchi distinti; commenti redazionali, spezzatura shell con backslash solo impaginativa. Prerequisiti nel testo."
+  }
+]

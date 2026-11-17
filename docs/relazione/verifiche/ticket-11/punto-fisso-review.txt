@@ -1,0 +1,6 @@
+Punto fisso richiesto: working tree iniziale in baseline.json e baseline-editoriale.tar.gz, inclusi non tracciati.
+HEAD iniziale: 61ce18ae1d4e0458b63e970b793b0b3a634a3adf
+git rev-parse 61ce18ae1d4e0458b63e970b793b0b3a634a3adf: 61ce18ae1d4e0458b63e970b793b0b3a634a3adf
+git diff 61ce18ae1d4e0458b63e970b793b0b3a634a3adf...HEAD: 0 byte
+git log 61ce18ae1d4e0458b63e970b793b0b3a634a3adf..HEAD --oneline: 0 byte
+Il diff Git vuoto non include i materiali già non tracciati. Il confronto effettivo è delta-documentale.diff e delta-files.json, più nuove evidenze del ticket 11.

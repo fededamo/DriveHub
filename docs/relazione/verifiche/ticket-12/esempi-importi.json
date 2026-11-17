@@ -1,0 +1,10 @@
+{
+  "values": {
+    "noleggio_3giorni": "57.05",
+    "deprezzamenti_combinati": "5212.84",
+    "centesimi_prima_formula": "9000.01",
+    "rimborso_acconto_4000": "3200.00",
+    "penale_acconto_4000": "800.00"
+  },
+  "scope": "Ricalcolo documentale Python delle formule, non esecuzione Java."
+}

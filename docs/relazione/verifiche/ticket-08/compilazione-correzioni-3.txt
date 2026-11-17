@@ -1,0 +1,172 @@
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025/Debian) (preloaded format=xelatex)
+entering extended mode
+(./main.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2026-01-19>
+
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/report.cls
+Document Class: report 2025/01/22 v1.4n Standard LaTeX document class
+
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/size12.clo))
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/fontenc.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texmf/tex/latex/lm/t1lmr.fd))
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+babel/babel.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+babel/xebabel.def)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+babel/locale/it/babel-italian.tex)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+babel-italian/italian.ldf))
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/et
+oolbox/etoolbox.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ge
+ometry/geometry.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/gr
+aphics/keyval.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+iftex/ifvtex.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+iftex/iftex.sty)))
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/gr
+aphics/graphicx.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/gr
+aphics/graphics.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/gr
+aphics/trig.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/gr
+aphics-cfg/graphics.cfg)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/gr
+aphics-def/xetex.def)))
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/en
+umitem/enumitem.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/xc
+olor/xcolor.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/gr
+aphics-cfg/color.cfg)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/gr
+aphics/mathcolor.ltx))
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/co
+lortbl/colortbl.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/to
+ols/array.sty))
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/li
+stings/listings.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/li
+stings/lstpatch.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/li
+stings/lstmisc.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/li
+stings/listings.cfg))
+==> First Aid for listings.sty no longer applied!
+    Expected:
+        2024/09/23 1.10c (Carsten Heinz)
+    but found:
+        2025/11/14 1.11b (Carsten Heinz)
+    so I'm assuming it got fixed.
+
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/to
+ols/longtable.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hy
+perref/hyperref.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/kv
+setkeys/kvsetkeys.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+kvdefinekeys/kvdefinekeys.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+pdfescape/pdfescape.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+ltxcmds/ltxcmds.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+pdftexcmds/pdftexcmds.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+infwarerr/infwarerr.sty)))
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hy
+color/hycolor.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hy
+perref/nameref.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/re
+fcount/refcount.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+gettitlestring/gettitlestring.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/kv
+options/kvoptions.sty)))
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+stringenc/stringenc.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hy
+perref/pd1enc.def)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+intcalc/intcalc.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hy
+perref/puenc.def)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ur
+l/url.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+bitset/bitset.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+bigintcalc/bigintcalc.sty)))
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hy
+perref/hxetex.def
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/re
+runfilecheck/rerunfilecheck.sty
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+uniquecounter/uniquecounter.sty)))
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/l3
+backend/l3backend-xetex.def)
+(/home/federico/dev/Drivehub/DriveHub/docs/relazione/build/ticket08/main.aux)
+*geometry* driver: auto-detecting
+*geometry* detected driver: xetex
+(/home/federico/dev/Drivehub/DriveHub/docs/relazione/build/ticket08/main.out)
+(/home/federico/dev/Drivehub/DriveHub/docs/relazione/build/ticket08/main.out)
+[1]
+(/home/federico/dev/Drivehub/DriveHub/docs/relazione/build/ticket08/main.toc
+[1]) [2] (./capitoli/1_introduzione.tex
+Capitolo 1.
+[1]
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texmf/tex/latex/lm/t1lmtt.fd)
+[2]) (./capitoli/2_progettazione.tex [3]
+Capitolo 2.
+(./capitoli/2_funzioni.tex [4] [5] [6] [7] [8] [9] [10] [11] [12] [13] [14]
+[15] [16] [17] [18] [19] [20] [21]) (./capitoli/2_architettura.tex [22]
+[23] [24] [25] [26] [27] [28]) (./capitoli/2_sequenze.tex [29] [30] [31]
+[32] [33] [34] [35] [36] [37] [38] [39] [40] [41]) (./capitoli/2_database.tex
+[42] [43] [44] [45] [46] [47] [48] [49])) (./capitoli/3_implementazione.tex
+[50]
+Capitolo 3.
+
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/li
+stings/lstlang1.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texmf/tex/latex/lm/ts1lmtt.fd)
+[51] [52] [53] [54] [55] [56] [57] [58] [59]) (./capitoli/4_testing.tex
+[60]
+Capitolo 4.
+[61] [62] [63] [64]
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/li
+stings/lstlang1.sty)
+(/tmp/drivehub-ticket08-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/li
+stings/lstlang1.sty)) (./capitoli/5_uso_ai.tex [65]
+Capitolo 5.
+[66] [67]) (./appendici/appendici.tex [68]
+Appendice A.
+(./appendici/a_casi_uso.tex [69] [70] [71] [72] [73] [74] [75] [76] [77]
+[78] [79] [80] [81]) [82]
+Appendice B.
+(./appendici/b_classi.tex [83] [84] [85] [86] [87] [88] [89] [90] [91] [92]
+[93] [94] [95])
+Appendice C.
+(./appendici/c_verifiche.tex [96] [97]
+ignored error: Infinite glue shrinkage found in box being split [98]
+ignored error: Infinite glue shrinkage found in box being split [99]
+ignored error: Infinite glue shrinkage found in box being split [100]
+ignored error: Infinite glue shrinkage found in box being split [101]
+ignored error: Infinite glue shrinkage found in box being split [102] [103]))
+[104]
+(/home/federico/dev/Drivehub/DriveHub/docs/relazione/build/ticket08/main.aux) )
+
+Output written on /home/federico/dev/Drivehub/DriveHub/docs/relazione/build/tic
+ket08/main.pdf (107 pages).
+Transcript written on /home/federico/dev/Drivehub/DriveHub/docs/relazione/build
+/ticket08/main.log.

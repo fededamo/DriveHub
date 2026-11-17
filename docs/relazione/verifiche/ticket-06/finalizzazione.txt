@@ -1,0 +1,44 @@
+Chiusura documentale 13 novembre 2026
+{
+  "pdf_sha256": "05aed422b71cf85a5532ff4fab49549d4605add90ad20fe8a397c6720ef844b2",
+  "pages": 105,
+  "chapter_4_physical": [
+    64,
+    68
+  ],
+  "appendix_C_physical": [
+    97,
+    105
+  ],
+  "rendered_pages": [
+    1,
+    2,
+    3,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    96,
+    97,
+    98,
+    99,
+    100,
+    101,
+    102,
+    103,
+    104,
+    105
+  ],
+  "internal_links": 144,
+  "embedded_fonts": 84,
+  "known_pdf_version_warnings": 96,
+  "baseline_unchanged": 2234,
+  "baseline_status_only": 1
+}
+2234 hash protetti identici; unica frase stato ch3 verificata; 94 fonti e19inputreview coerenti.
+Git HEAD/indice software invariati; nessun commit o nuova esecuzione applicativa.
+Conteggi RED storici riscontrati nei log: contratto4/2failure/0errori/0salti; DAO81/0failure/77errori/0salti. Non sommati ai GREEN e non nuove esecuzioni.
+Standards0rilievi; Spec0rilievi; autori non ancora approvato. Cap5provvisorio.

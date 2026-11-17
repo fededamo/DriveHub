@@ -1,0 +1,402 @@
+{
+  "full-suite.txt": {
+    "totals": {
+      "tests": 423,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "classes": [
+      [
+        "22",
+        "0",
+        "0",
+        "0",
+        "PurchaseAgreementIntegrationTest"
+      ],
+      [
+        "9",
+        "0",
+        "0",
+        "0",
+        "RequestAgreementTest"
+      ],
+      [
+        "8",
+        "0",
+        "0",
+        "0",
+        "TestDriveCancellationIntegrationTest"
+      ],
+      [
+        "67",
+        "0",
+        "0",
+        "0",
+        "SaleOutcomeIntegrationTest"
+      ],
+      [
+        "10",
+        "0",
+        "0",
+        "0",
+        "PriceSelectionIntegrationTest"
+      ],
+      [
+        "2",
+        "0",
+        "0",
+        "0",
+        "BookingRulesTest"
+      ],
+      [
+        "4",
+        "0",
+        "0",
+        "0",
+        "PostgresEnumIntegrationTest"
+      ],
+      [
+        "7",
+        "0",
+        "0",
+        "0",
+        "TestDatabaseConfigurationTest"
+      ],
+      [
+        "11",
+        "0",
+        "0",
+        "0",
+        "PriceCalculatorServiceTest"
+      ],
+      [
+        "36",
+        "0",
+        "0",
+        "0",
+        "BookingConcurrencyIntegrationTest"
+      ],
+      [
+        "60",
+        "0",
+        "0",
+        "0",
+        "PurchaseConcurrencyIntegrationTest"
+      ],
+      [
+        "1",
+        "0",
+        "0",
+        "0",
+        "DemoSqlValidationTest"
+      ],
+      [
+        "60",
+        "0",
+        "0",
+        "0",
+        "IdentityDeletionIntegrationTest"
+      ],
+      [
+        "16",
+        "0",
+        "0",
+        "0",
+        "BalanceConcurrencyIntegrationTest"
+      ],
+      [
+        "33",
+        "0",
+        "0",
+        "0",
+        "VehicleDestinationIntegrationTest"
+      ],
+      [
+        "11",
+        "0",
+        "0",
+        "0",
+        "SaleTypeTest"
+      ],
+      [
+        "1",
+        "0",
+        "0",
+        "0",
+        "DatabaseIsolationIntegrationTest"
+      ],
+      [
+        "23",
+        "0",
+        "0",
+        "0",
+        "SaleProposalIntegrationTest"
+      ],
+      [
+        "18",
+        "0",
+        "0",
+        "0",
+        "AuthServiceIntegrationTest"
+      ],
+      [
+        "4",
+        "0",
+        "0",
+        "0",
+        "CatalogListingIntegrationTest"
+      ],
+      [
+        "1",
+        "0",
+        "0",
+        "0",
+        "DatabaseConnectionIntegrationTest"
+      ],
+      [
+        "4",
+        "0",
+        "0",
+        "0",
+        "FullWorkflowIntegrationTest"
+      ],
+      [
+        "15",
+        "0",
+        "0",
+        "0",
+        "DomainInvariantsTest"
+      ]
+    ],
+    "finished": [
+      "2026-11-09T19:57:57+01:00"
+    ]
+  },
+  "targeted-green.txt": {
+    "totals": {
+      "tests": 82,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "classes": [
+      [
+        "67",
+        "0",
+        "0",
+        "0",
+        "SaleOutcomeIntegrationTest"
+      ],
+      [
+        "10",
+        "0",
+        "0",
+        "0",
+        "PriceSelectionIntegrationTest"
+      ],
+      [
+        "4",
+        "0",
+        "0",
+        "0",
+        "PostgresEnumIntegrationTest"
+      ],
+      [
+        "1",
+        "0",
+        "0",
+        "0",
+        "DemoSqlValidationTest"
+      ]
+    ],
+    "finished": [
+      "2026-11-09T19:54:07+01:00"
+    ]
+  },
+  "contract-red.txt": {
+    "totals": {
+      "tests": 4,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0
+    },
+    "classes": [
+      [
+        "4",
+        "2",
+        "0",
+        "0",
+        "PostgresEnumIntegrationTest"
+      ]
+    ],
+    "finished": [
+      "2026-11-09T19:49:50+01:00"
+    ]
+  },
+  "E1_groups": {
+    "without_db": 55,
+    "postgres": 368,
+    "note": "Derivati dalle classi del log; invocazioni, non percentuali."
+  },
+  "E1_red_archive_members": [
+    "dao-red.txt",
+    "price-green-sale-red.txt"
+  ],
+  "E1_dao_red": {
+    "tests": 81,
+    "failures": 0,
+    "errors": 77,
+    "skipped": 0
+  },
+  "E2_full": {
+    "classes": 22,
+    "invocations": 394,
+    "totals": {
+      "tests": 394,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "command": "COMMAND: mvn -B -Ppostgres-tests clean test"
+  },
+  "E2_targeted": {
+    "classes": 15,
+    "invocations": 363,
+    "totals": {
+      "tests": 363,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "command": "COMMAND: mvn -B -Ppostgres-tests -Dtest=TestDatabaseConfigurationTest,DatabaseIsolationIntegrationTest,DomainInvariantsTest,AuthServiceIntegrationTest,PriceSelectionIntegrationTest,PurchaseAgreementIntegrationTest,PurchaseConcurrencyIntegrationTest,BalanceConcurrencyIntegrationTest,SaleProposalIntegrationTest,SaleOutcomeIntegrationTest,BookingConcurrencyIntegrationTest,TestDriveCancellationIntegrationTest,VehicleDestinationIntegrationTest,IdentityDeletionIntegrationTest,CatalogListingIntegrationTest test"
+  },
+  "E2_targeted-attempt1": {
+    "classes": 15,
+    "invocations": 363,
+    "totals": {
+      "tests": 363,
+      "failures": 0,
+      "errors": 4,
+      "skipped": 0
+    },
+    "command": "COMMAND: mvn -B -Ppostgres-tests -Dtest=TestDatabaseConfigurationTest,DatabaseIsolationIntegrationTest,DomainInvariantsTest,AuthServiceIntegrationTest,PriceSelectionIntegrationTest,PurchaseAgreementIntegrationTest,PurchaseConcurrencyIntegrationTest,BalanceConcurrencyIntegrationTest,SaleProposalIntegrationTest,SaleOutcomeIntegrationTest,BookingConcurrencyIntegrationTest,TestDriveCancellationIntegrationTest,VehicleDestinationIntegrationTest,IdentityDeletionIntegrationTest,CatalogListingIntegrationTest test"
+  },
+  "E2_groups": {
+    "without_database": 47,
+    "postgresql": 347
+  },
+  "E2_external_sentinel": {
+    "tables": 13,
+    "sequences": 7,
+    "equal_before_after": true
+  },
+  "E2_different_inputs": [
+    "src/main/java/it/unifi/drivehub/dao/DatabaseManager.java",
+    "src/main/java/it/unifi/drivehub/dao/RequestDao.java",
+    "src/main/java/it/unifi/drivehub/dao/SaleDao.java",
+    "src/main/java/it/unifi/drivehub/dao/postgres/PostgresRequestDao.java",
+    "src/main/java/it/unifi/drivehub/dao/postgres/PostgresSaleDao.java",
+    "src/main/java/it/unifi/drivehub/dao/postgres/PostgresVehicleDao.java",
+    "src/main/java/it/unifi/drivehub/domain/operation/Request.java",
+    "src/main/java/it/unifi/drivehub/domain/operation/RequestType.java",
+    "src/main/java/it/unifi/drivehub/domain/operation/Sale.java",
+    "src/main/java/it/unifi/drivehub/domain/operation/SaleType.java",
+    "src/main/java/it/unifi/drivehub/presentation/view/ClientDashboardView.java",
+    "src/main/java/it/unifi/drivehub/presentation/view/ManagerDashboardView.java",
+    "src/main/java/it/unifi/drivehub/presentation/view/SalesmanDashboardView.java",
+    "src/main/java/it/unifi/drivehub/service/PurchaseService.java",
+    "src/main/java/it/unifi/drivehub/service/SaleToDealershipService.java",
+    "src/main/resources/application.properties",
+    "src/main/resources/db/demo.sql",
+    "src/main/resources/db/schema.sql",
+    "src/test/java/it/unifi/drivehub/BalanceConcurrencyIntegrationTest.java",
+    "src/test/java/it/unifi/drivehub/DemoSqlValidationTest.java",
+    "src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java",
+    "src/test/java/it/unifi/drivehub/PriceSelectionIntegrationTest.java",
+    "src/test/java/it/unifi/drivehub/PurchaseAgreementIntegrationTest.java",
+    "src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java",
+    "src/test/java/it/unifi/drivehub/RequestAgreementTest.java",
+    "src/test/java/it/unifi/drivehub/SaleOutcomeIntegrationTest.java",
+    "src/test/java/it/unifi/drivehub/SaleProposalIntegrationTest.java",
+    "src/test/java/it/unifi/drivehub/SaleTypeTest.java"
+  ],
+  "E1_tree_diff": "",
+  "E3": [
+    {
+      "harness": "AgreementUiCheck",
+      "marker": "UI CHECK SUCCESS",
+      "input_manifest": "docs/evidence/r11-integrated/AgreementUiCheck-inputs.json",
+      "adapted": [
+        "docs/evidence/r03-prices/PriceUiCheck.java",
+        "docs/evidence/r04-agreement/AgreementUiCheck.java"
+      ]
+    },
+    {
+      "harness": "SaleOutcomeUiCheck",
+      "marker": "UI CHECK SUCCESS",
+      "input_manifest": "docs/evidence/r11-integrated/SaleOutcomeUiCheck-inputs.json",
+      "adapted": [
+        "docs/evidence/r03-prices/PriceUiCheck.java",
+        "docs/evidence/r04-agreement/AgreementUiCheck.java",
+        "docs/evidence/r05-sale-outcome/SaleOutcomeUiCheck.java"
+      ]
+    },
+    {
+      "harness": "DestinationUiCheck",
+      "marker": "UI CHECK SUCCESS",
+      "input_manifest": "docs/evidence/r11-integrated/DestinationUiCheck-inputs.json",
+      "adapted": [
+        "docs/evidence/r03-prices/PriceUiCheck.java",
+        "docs/evidence/r04-agreement/AgreementUiCheck.java",
+        "docs/evidence/r05-sale-outcome/SaleOutcomeUiCheck.java",
+        "docs/evidence/r06-destination/DestinationUiCheck.java"
+      ]
+    },
+    {
+      "harness": "IdentityUiCheck",
+      "marker": "UI CHECK SUCCESS",
+      "input_manifest": "docs/evidence/r11-integrated/IdentityUiCheck-inputs.json",
+      "adapted": [
+        "docs/evidence/r03-prices/PriceUiCheck.java",
+        "docs/evidence/r04-agreement/AgreementUiCheck.java",
+        "docs/evidence/r05-sale-outcome/SaleOutcomeUiCheck.java",
+        "docs/evidence/r06-destination/DestinationUiCheck.java"
+      ]
+    },
+    {
+      "harness": "TableLifecycleUiCheck",
+      "marker": "UI CHECK SUCCESS",
+      "input_manifest": "docs/evidence/r11-integrated/TableLifecycleUiCheck-inputs.json",
+      "adapted": [
+        "docs/evidence/r03-prices/PriceUiCheck.java",
+        "docs/evidence/r04-agreement/AgreementUiCheck.java",
+        "docs/evidence/r05-sale-outcome/SaleOutcomeUiCheck.java",
+        "docs/evidence/r06-destination/DestinationUiCheck.java"
+      ]
+    },
+    {
+      "harness": "SlowModelsUiCheck",
+      "marker": "UI CHECK SUCCESS",
+      "input_manifest": "docs/evidence/r11-integrated/SlowModelsUiCheck-inputs.json",
+      "adapted": [
+        "docs/evidence/r03-prices/PriceUiCheck.java",
+        "docs/evidence/r04-agreement/AgreementUiCheck.java",
+        "docs/evidence/r05-sale-outcome/SaleOutcomeUiCheck.java",
+        "docs/evidence/r06-destination/DestinationUiCheck.java"
+      ]
+    },
+    {
+      "harness": "AppStartupUiCheck",
+      "marker": "APP STARTUP SUCCESS",
+      "input_manifest": "docs/evidence/r11-integrated/AppStartupUiCheck-inputs.json",
+      "adapted": [
+        "docs/evidence/r03-prices/PriceUiCheck.java",
+        "docs/evidence/r04-agreement/AgreementUiCheck.java",
+        "docs/evidence/r05-sale-outcome/SaleOutcomeUiCheck.java",
+        "docs/evidence/r06-destination/DestinationUiCheck.java"
+      ]
+    }
+  ],
+  "scope": "Solo lettura delle fonti storiche, nessuna nuova esecuzione applicativa."
+}

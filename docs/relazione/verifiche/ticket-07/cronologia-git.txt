@@ -1,0 +1,134 @@
+$ git log --all --format=%h %ad %s --date=iso-strict
+61ce18a 2026-11-09T21:16:18+01:00 feat: use native PostgreSQL enums consistently
+8d089bc 2026-11-09T13:56:10+01:00 docs: document manual application startup
+97fd892 2026-11-09T13:42:53+01:00 chore: consolidate local database and retire conversion script
+d31a1ce 2026-11-09T00:19:38+01:00 feat: convert legacy operation semantics atomically
+f4a7f0e 2026-11-08T22:16:00+01:00 fix: align sale register types and nonnegative amounts
+a260598 2026-11-08T21:42:10+01:00 fix: align request semantics with dealership operations
+841d4bc 2026-11-03T18:24:03+01:00 fix starter script
+7cf9f8d 2026-11-03T18:21:54+01:00 fix run.bat e modifiche README
+6bd8c69 2026-11-03T17:51:48+01:00 fix: complete DriveHub revisions and integrated verification
+c2a8112 2026-10-29T17:01:11+01:00 Refactoring e risoluzione problematiche di ingegneria del software (contratto equals/hashCode, DRY, gestione transazioni e thread-safety)
+416ddef 2026-10-29T11:47:22+01:00 Added gitignore
+aff0310 2026-10-29T11:43:00+01:00 First version
+124c363 2026-10-22T19:35:24+02:00 modifiche alla relazione
+a7d56ad 2026-10-21T19:05:25+02:00 Remove obsolete reference files
+59566e9 2026-10-21T19:03:13+02:00 Remove VS Code tasks and document manual startup
+ec1913d 2026-10-21T18:17:49+02:00 Initial DriveHub project
+exit 0
+$ git show --format=fuller --stat 6bd8c69 -- src pom.xml docs/evidence/revision-records.zip
+commit 6bd8c6958b33f0d762e3f3d91d5dbb16ae8b18b9
+Author:     Federico D'Amodio <184145907+fededamo@users.noreply.github.com>
+AuthorDate: Tue Nov 3 17:51:48 2026 +0100
+Commit:     Federico D'Amodio <184145907+fededamo@users.noreply.github.com>
+CommitDate: Tue Nov 3 17:51:48 2026 +0100
+
+    fix: complete DriveHub revisions and integrated verification
+    
+    Consolidate isolated PostgreSQL tests, atomic economic workflows, pricing agreements, booking concurrency and JavaFX tables. Include current diagrams, installation instructions, verification evidence and a ZIP snapshot of external revision records.
+    
+    Validated state: 394 tests passed, including 347 PostgreSQL tests, and seven JavaFX checks. Historical failures and limitations are preserved.
+
+ docs/evidence/revision-records.zip                 | Bin 0 -> 106707 bytes
+ pom.xml                                            |  24 +-
+ src/main/java/it/unifi/drivehub/AppContext.java    |  28 +-
+ .../java/it/unifi/drivehub/dao/BankAccountDao.java |   9 +-
+ .../java/it/unifi/drivehub/dao/DiscountDao.java    |   4 +
+ src/main/java/it/unifi/drivehub/dao/ModelDao.java  |   2 +
+ .../java/it/unifi/drivehub/dao/RequestDao.java     |   6 +
+ src/main/java/it/unifi/drivehub/dao/SaleDao.java   |   4 +-
+ .../java/it/unifi/drivehub/dao/TestDriveDao.java   |   1 +
+ src/main/java/it/unifi/drivehub/dao/UserDao.java   |   8 +-
+ .../java/it/unifi/drivehub/dao/VehicleDao.java     |  12 +
+ .../dao/postgres/PostgresBankAccountDao.java       |  16 +-
+ .../drivehub/dao/postgres/PostgresDiscountDao.java |  24 +-
+ .../drivehub/dao/postgres/PostgresModelDao.java    |  12 +-
+ .../drivehub/dao/postgres/PostgresRentDao.java     |  10 +-
+ .../drivehub/dao/postgres/PostgresRequestDao.java  |  49 +-
+ .../drivehub/dao/postgres/PostgresSaleDao.java     |  47 +-
+ .../drivehub/dao/postgres/PostgresUserDao.java     |  49 +-
+ .../drivehub/dao/postgres/PostgresVehicleDao.java  |  71 ++-
+ .../unifi/drivehub/domain/operation/Request.java   |  41 +-
+ .../it/unifi/drivehub/domain/operation/Sale.java   |  33 +-
+ .../unifi/drivehub/domain/operation/SaleType.java  |   6 +
+ .../unifi/drivehub/domain/operation/TestDrive.java |   2 +-
+ .../unifi/drivehub/domain/vehicle/PriceMode.java   |   6 +
+ .../it/unifi/drivehub/domain/vehicle/Vehicle.java  |  40 +-
+ .../drivehub/event/VehicleCommitmentEvent.java     |   4 +
+ .../drivehub/event/VehicleCommitmentObserver.java  |   8 +
+ .../drivehub/event/VehicleEventPublisher.java      |  20 +-
+ .../drivehub/event/VehicleStateChangeEvent.java    |  13 -
+ .../unifi/drivehub/event/VehicleStateObserver.java |  10 -
+ .../presentation/view/AccountManagementDialog.java |  16 +-
+ .../drivehub/presentation/view/AsyncLoad.java      |  75 +++
+ .../presentation/view/ClientDashboardView.java     | 117 +++--
+ .../presentation/view/ManagerDashboardView.java    | 167 ++++---
+ .../presentation/view/SalesmanDashboardView.java   |  67 ++-
+ .../it/unifi/drivehub/service/AuthService.java     |  27 +-
+ .../it/unifi/drivehub/service/CatalogService.java  |  80 +++-
+ .../drivehub/service/PriceCalculatorService.java   |  11 +-
+ .../it/unifi/drivehub/service/PurchaseService.java | 124 +++--
+ .../it/unifi/drivehub/service/RentalService.java   | 133 ++++--
+ .../drivehub/service/SaleToDealershipService.java  | 127 ++---
+ .../service/TestDriveCancellationObserver.java     |  34 +-
+ .../unifi/drivehub/service/TestDriveService.java   |  51 +-
+ src/main/resources/css/style.css                   |   4 +
+ src/main/resources/db/demo.sql                     | 116 ++---
+ src/main/resources/db/schema.sql                   |  24 +-
+ .../unifi/drivehub/AuthServiceIntegrationTest.java | 106 +++++
+ .../BalanceConcurrencyIntegrationTest.java         | 372 +++++++++++++++
+ .../BookingConcurrencyIntegrationTest.java         | 476 +++++++++++++++++++
+ .../java/it/unifi/drivehub/BookingRulesTest.java   |  30 ++
+ .../drivehub/CatalogListingIntegrationTest.java    |  76 +++
+ .../DatabaseConnectionIntegrationTest.java         |   6 +-
+ .../drivehub/DatabaseIsolationIntegrationTest.java |  56 +++
+ .../it/unifi/drivehub/DemoSqlValidationTest.java   |  74 ++-
+ .../it/unifi/drivehub/DomainInvariantsTest.java    |  58 +++
+ .../drivehub/FullWorkflowIntegrationTest.java      |  27 +-
+ .../drivehub/IdentityDeletionIntegrationTest.java  | 519 +++++++++++++++++++++
+ .../unifi/drivehub/PriceCalculatorServiceTest.java |  66 ++-
+ .../drivehub/PriceSelectionIntegrationTest.java    | 167 +++++++
+ .../drivehub/PurchaseAgreementIntegrationTest.java | 229 +++++++++
+ .../PurchaseConcurrencyIntegrationTest.java        | 365 +++++++++++++++
+ .../it/unifi/drivehub/RequestAgreementTest.java    |  50 ++
+ .../unifi/drivehub/SaleOutcomeIntegrationTest.java | 473 +++++++++++++++++++
+ .../drivehub/SaleProposalIntegrationTest.java      | 370 +++++++++++++++
+ src/test/java/it/unifi/drivehub/SaleTypeTest.java  |  45 ++
+ src/test/java/it/unifi/drivehub/TestDatabase.java  | 108 +++++
+ .../drivehub/TestDatabaseConfigurationTest.java    |  86 ++++
+ .../TestDriveCancellationIntegrationTest.java      | 183 ++++++++
+ .../VehicleDestinationIntegrationTest.java         | 406 ++++++++++++++++
+ 69 files changed, 5450 insertions(+), 630 deletions(-)
+exit 0
+$ git diff --stat 841d4bc HEAD -- src pom.xml
+ .../java/it/unifi/drivehub/dao/RequestDao.java     |  1 +
+ src/main/java/it/unifi/drivehub/dao/SaleDao.java   |  2 +-
+ .../drivehub/dao/postgres/PostgresRequestDao.java  |  2 +-
+ .../drivehub/dao/postgres/PostgresSaleDao.java     |  6 +-
+ .../drivehub/dao/postgres/PostgresVehicleDao.java  |  6 +-
+ .../unifi/drivehub/domain/operation/Request.java   | 22 +++---
+ .../drivehub/domain/operation/RequestType.java     |  6 +-
+ .../it/unifi/drivehub/domain/operation/Sale.java   | 21 +++--
+ .../unifi/drivehub/domain/operation/SaleType.java  |  2 +-
+ .../presentation/view/ClientDashboardView.java     |  2 +-
+ .../presentation/view/ManagerDashboardView.java    |  8 +-
+ .../presentation/view/SalesmanDashboardView.java   | 16 ++--
+ .../it/unifi/drivehub/service/PurchaseService.java | 12 +--
+ .../drivehub/service/SaleToDealershipService.java  | 21 +++--
+ src/main/resources/db/demo.sql                     | 92 +++++++++++-----------
+ src/main/resources/db/schema.sql                   | 18 ++---
+ .../BalanceConcurrencyIntegrationTest.java         |  4 +-
+ .../it/unifi/drivehub/DemoSqlValidationTest.java   |  4 +
+ .../drivehub/IdentityDeletionIntegrationTest.java  | 16 ++--
+ .../drivehub/PostgresEnumIntegrationTest.java      | 57 ++++++++++++++
+ .../drivehub/PriceSelectionIntegrationTest.java    |  9 ++-
+ .../drivehub/PurchaseAgreementIntegrationTest.java | 35 +++++++-
+ .../PurchaseConcurrencyIntegrationTest.java        |  8 +-
+ .../it/unifi/drivehub/RequestAgreementTest.java    | 35 ++++++--
+ .../unifi/drivehub/SaleOutcomeIntegrationTest.java | 65 +++++++++++----
+ .../drivehub/SaleProposalIntegrationTest.java      | 34 ++++----
+ src/test/java/it/unifi/drivehub/SaleTypeTest.java  | 40 ++++++++--
+ 27 files changed, 362 insertions(+), 182 deletions(-)
+exit 0
+$ git diff d4d82c1815e1fe2d107331fb4f2211b2bc3ca850 HEAD -- src pom.xml
+exit 0

@@ -1,0 +1,65 @@
+{
+  "pages": 151,
+  "ranges": {
+    "Introduzione": [
+      5,
+      7
+    ],
+    "Analisi dei requisiti e progettazione": [
+      8,
+      82
+    ],
+    "Implementazione": [
+      83,
+      105
+    ],
+    "Testing": [
+      106,
+      118
+    ],
+    "Uso dell'AI": [
+      119,
+      121
+    ],
+    "Schede aggiuntive dei casi d'uso": [
+      122,
+      129
+    ],
+    "Tavole delle classi": [
+      130,
+      142
+    ],
+    "Matrice delle verifiche": [
+      143,
+      151
+    ]
+  },
+  "visual_review_pages": [
+    2,
+    3,
+    4,
+    106,
+    107,
+    108,
+    109,
+    110,
+    111,
+    112,
+    113,
+    114,
+    115,
+    116,
+    117,
+    118,
+    143,
+    144,
+    145,
+    146,
+    147,
+    148,
+    149,
+    150,
+    151
+  ],
+  "extract_pages": 22
+}

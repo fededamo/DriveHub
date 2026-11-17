@@ -1,0 +1,15 @@
+[
+  "database-er-catalogo",
+  "database-er-identita",
+  "database-relazionale-catalogo",
+  "database-relazionale-identita",
+  "database-relazionale-operazioni",
+  "sequenza-cessione-esito",
+  "sequenza-cessione-proposta",
+  "sequenza-noleggio",
+  "sequenza-observer",
+  "sequenza-vendita-avvio",
+  "sequenza-vendita-esito",
+  "sequenza-vendita-saldo",
+  "sequenza-vendita-scadenza"
+]

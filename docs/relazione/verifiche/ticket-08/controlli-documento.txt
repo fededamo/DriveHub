@@ -1,0 +1,19 @@
+{
+  "baseline_files": 2333,
+  "changed": [
+    "docs/relazione/README.md",
+    "docs/relazione/appendici/a_casi_uso.tex",
+    "docs/relazione/capitoli/2_architettura.tex",
+    "docs/relazione/main.tex",
+    "docs/relazione/piano.md",
+    "docs/relazione/relazione-drivehub.pdf"
+  ],
+  "unchanged": 2327,
+  "snippets_exact": 16,
+  "drawio_pdf_exact": 32,
+  "pages": 107,
+  "internal_links": 158,
+  "embedded_fonts": 86,
+  "pdf_sha256": "e046f9efc5b3a7411354bfdde71b288e0d748f01ebea8c2aa7b3534c5a8990d4",
+  "zip_sha256": "9b450b53f3bf623b919f81edf63f7b288728bea92818f25b8da8011f6c93837c"
+}

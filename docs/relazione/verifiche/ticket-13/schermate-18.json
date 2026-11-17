@@ -1,0 +1,597 @@
+[
+  {
+    "id": "2.3.1.1",
+    "function": "Schermata iniziale",
+    "original": "Relazione_SWE/images/mockups/00-benvenuto.png",
+    "original_sha256": "ee9ee2876ee47d477f2ba801f52a7dad503ac81d149118e7f27a0c2075877e87",
+    "destination": {
+      "id": "2.3.1.1",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Schermata iniziale",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 123,
+      "offset": 510,
+      "content_sha256": "4fdaf4ea620728263463b97c8e2b6bcaae174c86df905e68519bb5edd3a85c7f",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 123,
+          "last": 129
+        }
+      ]
+    },
+    "current_images": [
+      {
+        "source": "docs/relazione/screenshot/01-accesso.png",
+        "sha256": "df3868253d558b29c2770dd8c316c9947b56b60a6ae86168878ecb69f328c5f7"
+      }
+    ],
+    "treatment": "**Adattare.** La vista iniziale è LoginView; dichiarare l'assenza di una Welcome Page separata e richiamare lo screenshot dell'accesso.",
+    "limit": "Welcome separata assente: ingresso e accesso sono LoginView.",
+    "provenance": "Immagini attuali acquisite il 12 novembre 2026 nel ticket documentale 02, PostgreSQL temporaneo/Xvfb, dati demo e date adattate; nessun nuovo avvio o screenshot nel ticket 13."
+  },
+  {
+    "id": "2.3.1.2",
+    "function": "Accesso",
+    "original": "Relazione_SWE/images/mockups/01-accesso.png",
+    "original_sha256": "bf61230ffab46f3611d3968d498f0604644836c95cd33aa314af360de9674d25",
+    "destination": {
+      "id": "2.3.1.2",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Accesso",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 130,
+      "offset": 517,
+      "content_sha256": "5540d036e10c9b3ddff1efba5eb230d7b288c960ef3805c37b0dbbcdacef24ff",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 130,
+          "last": 136
+        }
+      ]
+    },
+    "current_images": [
+      {
+        "source": "docs/relazione/screenshot/01-accesso.png",
+        "sha256": "df3868253d558b29c2770dd8c316c9947b56b60a6ae86168878ecb69f328c5f7"
+      }
+    ],
+    "treatment": "**Ripristinare.** Email, password, esito ed ingresso nella dashboard del ruolo; screenshot e gestione dell'errore, senza scelta pubblica del ruolo.",
+    "limit": "Credenziali e ruolo autenticato, nessun selettore pubblico.",
+    "provenance": "Immagini attuali acquisite il 12 novembre 2026 nel ticket documentale 02, PostgreSQL temporaneo/Xvfb, dati demo e date adattate; nessun nuovo avvio o screenshot nel ticket 13."
+  },
+  {
+    "id": "2.3.1.3",
+    "function": "Registrazione",
+    "original": "Relazione_SWE/images/mockups/02-registrazione.png",
+    "original_sha256": "726b4ae4f40719a30bfaaae35dfa50f9885c7d802a5b12c1ad1829ed063f9282",
+    "destination": {
+      "id": "2.3.1.3",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Registrazione",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 137,
+      "offset": 524,
+      "content_sha256": "b34ff63c85b3369992d58e8cb8a0277acd6da78b9bedb9a92d698b740fa0e941",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 137,
+          "last": 146
+        }
+      ]
+    },
+    "current_images": [
+      {
+        "source": "docs/relazione/screenshot/02-registrazione.png",
+        "sha256": "b50582cd1731ff36aa5ef16e20504b88889c9cb99ddfabc15bc4a9ae6ec027c0"
+      }
+    ],
+    "treatment": "**Ripristinare.** Anagrafica e credenziali del solo cliente, creazione del conto e risultato; personale già nel DB, senza simulare un form staff.",
+    "limit": "Solo cliente: personale predisposto, non registrabile dal form.",
+    "provenance": "Immagini attuali acquisite il 12 novembre 2026 nel ticket documentale 02, PostgreSQL temporaneo/Xvfb, dati demo e date adattate; nessun nuovo avvio o screenshot nel ticket 13."
+  },
+  {
+    "id": "2.3.2.1",
+    "function": "Catalogo veicoli",
+    "original": "Relazione_SWE/images/mockups/customer-catalogo.png",
+    "original_sha256": "960511b222ee0f64c40d82696d4cb98ff254976b8ba6d1a725d3cde3c64dcacb",
+    "destination": {
+      "id": "2.3.2.1",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Catalogo veicoli",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 152,
+      "offset": 539,
+      "content_sha256": "7cc0ca207e102910b0c13d031439135d798341eaab5728ce748ff994733890d1",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 152,
+          "last": 164
+        }
+      ]
+    },
+    "current_images": [
+      {
+        "source": "docs/relazione/screenshot/03-cliente-catalogo.png",
+        "sha256": "917adeb565b4d8478acdbc729483648ee2d51b235b6d3a60fb371cc22c5b5348"
+      },
+      {
+        "source": "docs/relazione/screenshot/05-cliente-noleggio.png",
+        "sha256": "7b81a91a625beb40a47166063b2839e57269f812c44f8b0cd2b356844456ce8d"
+      }
+    ],
+    "treatment": "**Ripristinare.** Cataloghi vendita/noleggio, dati mostrati, prezzi, selezione del veicolo e comandi disponibili.",
+    "limit": "Due cataloghi; filtri storici assenti, caricamento/Riprova selettivi.",
+    "provenance": "Immagini attuali acquisite il 12 novembre 2026 nel ticket documentale 02, PostgreSQL temporaneo/Xvfb, dati demo e date adattate; nessun nuovo avvio o screenshot nel ticket 13."
+  },
+  {
+    "id": "2.3.2.2",
+    "function": "Acquisti e richieste",
+    "original": "Relazione_SWE/images/mockups/customer-acquisti.png",
+    "original_sha256": "ac20b9084f0e9413c6a8ca9a0416d01dedeb2d64c2bbfd535c55bbbe5c028929",
+    "destination": {
+      "id": "2.3.2.2",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Vendite al cliente e richieste",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 165,
+      "offset": 552,
+      "content_sha256": "7fe4a42fe6c162fed4e07e6e40d1b944a112b58919ed465426c3ea190f082e43",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 165,
+          "last": 176
+        }
+      ]
+    },
+    "current_images": [
+      {
+        "source": "docs/relazione/screenshot/08-cliente-operazioni.png",
+        "sha256": "b2637a5844a8f103d9105d80b2454913177c2aeade66986e03a3ca9e15f2bc2e"
+      }
+    ],
+    "treatment": "**Ripristinare.** Richieste aperte, totale/acconto/residuo, saldo dopo autorizzazione e consultazione delle proprie operazioni; distinguere il registro economico.",
+    "limit": "Richieste e saldo; registro completo del manager distinto, annullamento autonomo assente.",
+    "provenance": "Immagini attuali acquisite il 12 novembre 2026 nel ticket documentale 02, PostgreSQL temporaneo/Xvfb, dati demo e date adattate; nessun nuovo avvio o screenshot nel ticket 13."
+  },
+  {
+    "id": "2.3.2.3",
+    "function": "Noleggi e test drive",
+    "original": "Relazione_SWE/images/mockups/customer-noleggi-test-drive.png",
+    "original_sha256": "89cbfd731c33c3dd618798eb90c72fe34ccb2ac11cf6f3cd9c98ac983ab11772",
+    "destination": {
+      "id": "2.3.2.3",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Noleggi e test drive",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 177,
+      "offset": 564,
+      "content_sha256": "9bed04a62259b6ec6579d2afd41b2c354ba21fe41a82fa7224f133e4684c1b85",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 177,
+          "last": 192
+        }
+      ]
+    },
+    "current_images": [
+      {
+        "source": "docs/relazione/screenshot/04-cliente-dialogo-test-drive.png",
+        "sha256": "fcf284c3ab5897ab55bc6a7451bb6d97144e4a312369959bdb0f2b14b6713b6d"
+      },
+      {
+        "source": "docs/relazione/screenshot/06-cliente-dialogo-noleggio.png",
+        "sha256": "f3b39cf0f900df009b15e8cd972d284f3fab1bd00ab215b2d3c1a2bdf5415be7"
+      },
+      {
+        "source": "docs/relazione/screenshot/08-cliente-operazioni.png",
+        "sha256": "b2637a5844a8f103d9105d80b2454913177c2aeade66986e03a3ca9e15f2bc2e"
+      }
+    ],
+    "treatment": "**Ripristinare.** Dialoghi di test drive e noleggio, data/ora o intervallo, costo, prenotazioni del cliente e annullamento del test drive.",
+    "limit": "Dialoghi e operazioni personali; annullamento del solo test drive, non del noleggio.",
+    "provenance": "Immagini attuali acquisite il 12 novembre 2026 nel ticket documentale 02, PostgreSQL temporaneo/Xvfb, dati demo e date adattate; nessun nuovo avvio o screenshot nel ticket 13."
+  },
+  {
+    "id": "2.3.2.4",
+    "function": "Proposta di vendita del proprio veicolo",
+    "original": "Relazione_SWE/images/mockups/customer-cessione.png",
+    "original_sha256": "a26c7dddd9f0e017f66d20a29ced27123658911551e99762677b0ea8b07e8a5a",
+    "destination": {
+      "id": "2.3.2.4",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Proposta di cessione del proprio veicolo",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 193,
+      "offset": 580,
+      "content_sha256": "74360958d615adaea0483ea43b36e652d63bac9d85ec8f4d0556f407483d18a3",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 193,
+          "last": 202
+        }
+      ]
+    },
+    "current_images": [
+      {
+        "source": "docs/relazione/screenshot/07-cliente-cessione.png",
+        "sha256": "ad1954388b6a03f8e14ae556b123e18899e852941c52207b78439792607e4619"
+      }
+    ],
+    "treatment": "**Ripristinare.** Form, valutazione e invio della proposta; la concessionaria acquista dal cliente e il venditore decide l'esito.",
+    "limit": "Preventivo facoltativo, stima persistita; invio senza accredito, zero non accreditabile.",
+    "provenance": "Immagini attuali acquisite il 12 novembre 2026 nel ticket documentale 02, PostgreSQL temporaneo/Xvfb, dati demo e date adattate; nessun nuovo avvio o screenshot nel ticket 13."
+  },
+  {
+    "id": "2.3.2.5",
+    "function": "Conto dimostrativo",
+    "original": "Relazione_SWE/images/mockups/customer-conto.png",
+    "original_sha256": "1d8baaf03bf892bf3f8cfeebc36a2869189d0e0b2288955f48509198c04e3414",
+    "destination": {
+      "id": "2.3.2.5",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Conto dimostrativo",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 203,
+      "offset": 590,
+      "content_sha256": "26bb3da8adfd60dd8a81288621e844130e343ba75548d7306189040d0c43d715",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 203,
+          "last": 211
+        }
+      ]
+    },
+    "current_images": [
+      {
+        "source": "docs/relazione/screenshot/09-cliente-identita.png",
+        "sha256": "f9a5cf9b6c44a974b59ac4dea1007d2df7df1a50a30ad3d1217fa844df1bbf9e"
+      }
+    ],
+    "treatment": "**Adattare.** Saldo e ricarica demo dal comando disponibile; non descrivere una scheda bancaria o un prelievo autonomo ereditati dalla vecchia UI.",
+    "limit": "Header e dialogo comune; prelievo autonomo e scheda bancaria separata assenti.",
+    "provenance": "Immagini attuali acquisite il 12 novembre 2026 nel ticket documentale 02, PostgreSQL temporaneo/Xvfb, dati demo e date adattate; nessun nuovo avvio o screenshot nel ticket 13."
+  },
+  {
+    "id": "2.3.2.6",
+    "function": "Profilo",
+    "original": "Relazione_SWE/images/mockups/customer-profilo.png",
+    "original_sha256": "44b4f5d16c723499cb8131870a1a0b4a10274a0403642787c952d31b0cd7eae6",
+    "destination": {
+      "id": "2.3.2.6",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Profilo",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 212,
+      "offset": 599,
+      "content_sha256": "9156ceff89865ca5ceb07f49374656b5994cf7abf2f344e3ece65560e855f683",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 212,
+          "last": 221
+        }
+      ]
+    },
+    "current_images": [
+      {
+        "source": "docs/relazione/screenshot/09-cliente-identita.png",
+        "sha256": "f9a5cf9b6c44a974b59ac4dea1007d2df7df1a50a30ad3d1217fa844df1bbf9e"
+      }
+    ],
+    "treatment": "**Adattare.** Gestione Account: email, password ed eliminazione con conferma; dialogo comune invece di una scheda Profilo separata.",
+    "limit": "Dialogo comune nel contesto cliente; riferimenti storici e saldo positivo non equivalgono a protezione totale.",
+    "provenance": "Immagini attuali acquisite il 12 novembre 2026 nel ticket documentale 02, PostgreSQL temporaneo/Xvfb, dati demo e date adattate; nessun nuovo avvio o screenshot nel ticket 13."
+  },
+  {
+    "id": "2.3.3.1",
+    "function": "Veicoli in attesa",
+    "original": "Relazione_SWE/images/mockups/salesman-proposte.png",
+    "original_sha256": "0c25ff3e0e44ceb337cd68fc732477b182954e97461ecac5b293cb3e0a098342",
+    "destination": {
+      "id": "2.3.3.1",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Proposte di cessione in attesa",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 226,
+      "offset": 613,
+      "content_sha256": "f441a929e5ce9587d000cd0a21ec3b357fd70c6f69da26c790d416fee21259d0",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 226,
+          "last": 235
+        }
+      ]
+    },
+    "current_images": [
+      {
+        "source": "docs/relazione/screenshot/10-venditore-richieste.png",
+        "sha256": "f3b5c5066aad0a8144fab8ab91afab0b4dd2f708992fc1ef8acfa8f716bc1b1b"
+      }
+    ],
+    "treatment": "**Adattare.** Le richieste PURCHASE sono nella stessa tabella delle SALE; mostrare filtro/tipologia e approvazione/rifiuto senza inventare una tab separata.",
+    "limit": "PURCHASE nella tabella comune, non tab o filtro dedicato.",
+    "provenance": "Immagini attuali acquisite il 12 novembre 2026 nel ticket documentale 02, PostgreSQL temporaneo/Xvfb, dati demo e date adattate; nessun nuovo avvio o screenshot nel ticket 13."
+  },
+  {
+    "id": "2.3.3.2",
+    "function": "Richieste di acquisto",
+    "original": "Relazione_SWE/images/mockups/salesman-richieste.png",
+    "original_sha256": "fc6dc54a631f6929cc2eb875eb4160d38812b6085e89c859d96d657a257a7127",
+    "destination": {
+      "id": "2.3.3.2",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Richieste di vendita al cliente",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 236,
+      "offset": 623,
+      "content_sha256": "5326a94448e2ee202896d1b53110652bec8c4025503d60e486e19b67795699d7",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 236,
+          "last": 244
+        }
+      ]
+    },
+    "current_images": [
+      {
+        "source": "docs/relazione/screenshot/10-venditore-richieste.png",
+        "sha256": "f3b5c5066aad0a8144fab8ab91afab0b4dd2f708992fc1ef8acfa8f716bc1b1b"
+      }
+    ],
+    "treatment": "**Adattare.** Autorizzazione/rifiuto delle SALE, dati economici e successivo saldo; richiamare la stessa figura delle richieste.",
+    "limit": "SALE nella stessa tabella; autorizzazione distinta da incasso del saldo.",
+    "provenance": "Immagini attuali acquisite il 12 novembre 2026 nel ticket documentale 02, PostgreSQL temporaneo/Xvfb, dati demo e date adattate; nessun nuovo avvio o screenshot nel ticket 13."
+  },
+  {
+    "id": "2.3.3.3",
+    "function": "Stato dei veicoli",
+    "original": "Relazione_SWE/images/mockups/salesman-stato-veicoli.png",
+    "original_sha256": "a9d30a03689fa4b9ed041195c503a40ad8e0200d110937b7f670391e9ea59819",
+    "destination": {
+      "id": "2.3.3.3",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Stato dei veicoli",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 245,
+      "offset": 632,
+      "content_sha256": "f51e4684854e87254c79c2cab6e3982d41c93f4d0d3b0cb98b3774c76990b32e",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 245,
+          "last": 253
+        }
+      ]
+    },
+    "current_images": [
+      {
+        "source": "docs/relazione/screenshot/11-venditore-inventario.png",
+        "sha256": "92d8d6a91fcc427c53ee2b09323498438dfd09a28d09a1dd59a94438d5c261c4"
+      }
+    ],
+    "treatment": "**Ripristinare.** Cambio SALE/RENT, rifiuto con noleggio in corso e rimborsi dei futuri; distinguere la destinazione dalle altre transizioni di stato.",
+    "limit": "Sola destinazione SALE/RENT; noleggio in corso impedisce il passaggio e futuri rimborsati.",
+    "provenance": "Immagini attuali acquisite il 12 novembre 2026 nel ticket documentale 02, PostgreSQL temporaneo/Xvfb, dati demo e date adattate; nessun nuovo avvio o screenshot nel ticket 13."
+  },
+  {
+    "id": "2.3.3.4",
+    "function": "Panoramica prenotazioni",
+    "original": "Relazione_SWE/images/mockups/salesman-panoramica.png",
+    "original_sha256": "fc09a8cb0a6aee54718612f944041e924a0fcb2b6b986e1597a96459dc103e77",
+    "destination": {
+      "id": "2.3.3.4",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Panoramica prenotazioni: limite attuale",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 254,
+      "offset": 641,
+      "content_sha256": "9acd2d03922fc6fb87f665a12ad1ad0c87d29dd62b957d26ad38edc5de3b1956",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 254,
+          "last": 260
+        }
+      ]
+    },
+    "current_images": [],
+    "treatment": "**Esplicitare limite.** Conservare il punto del percorso originale spiegando che il venditore non dispone della vecchia panoramica; niente screenshot storico o nuova funzionalità.",
+    "limit": "Panoramica prenotazioni venditore assente; nessuna schermata sostitutiva inventata.",
+    "provenance": "Immagini attuali acquisite il 12 novembre 2026 nel ticket documentale 02, PostgreSQL temporaneo/Xvfb, dati demo e date adattate; nessun nuovo avvio o screenshot nel ticket 13."
+  },
+  {
+    "id": "2.3.3.5",
+    "function": "Profilo",
+    "original": "Relazione_SWE/images/mockups/salesman-profilo.png",
+    "original_sha256": "4224517db8c1c5f13e60e8cadbe3c1c97f2af690f485caa3b654a5d37f208e3a",
+    "destination": {
+      "id": "2.3.3.5",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Profilo",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 261,
+      "offset": 648,
+      "content_sha256": "4afa396e1b79b9585056d545e01e3d38c7f5dd113fbbd9d138b7cb8b58f76b4d",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 261,
+          "last": 271
+        }
+      ]
+    },
+    "current_images": [
+      {
+        "source": "docs/relazione/screenshot/09-cliente-identita.png",
+        "sha256": "f9a5cf9b6c44a974b59ac4dea1007d2df7df1a50a30ad3d1217fa844df1bbf9e"
+      }
+    ],
+    "treatment": "**Adattare.** Descrivere il dialogo comune per il venditore e i vincoli dell'identità; riscontrare l'apertura dalla sua dashboard, senza presumere uno screenshot dedicato già disponibile.",
+    "limit": "Rinvio al dialogo acquisito dal cliente; apertura staff riscontrata staticamente, nessuna acquisizione dedicata.",
+    "provenance": "Immagini attuali acquisite il 12 novembre 2026 nel ticket documentale 02, PostgreSQL temporaneo/Xvfb, dati demo e date adattate; nessun nuovo avvio o screenshot nel ticket 13."
+  },
+  {
+    "id": "2.3.4.1",
+    "function": "Parco veicoli",
+    "original": "Relazione_SWE/images/mockups/manager-parco-veicoli.png",
+    "original_sha256": "ad1dced7d755bebe3960350d957ccb3df9a7aaf1b7dd6f0ed90ca1dad6a27027",
+    "destination": {
+      "id": "2.3.4.1",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Parco veicoli",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 278,
+      "offset": 665,
+      "content_sha256": "2a68286ec3edbb7398d92f891857583f243f9e0642e7243b9747a9814c70879a",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 278,
+          "last": 291
+        }
+      ]
+    },
+    "current_images": [
+      {
+        "source": "docs/relazione/screenshot/14-manager-veicoli.png",
+        "sha256": "a75ff25c398bc2fd9ef1d053f0c76f6f71bf99370e1ef13ef2b39fe63e787ae5"
+      },
+      {
+        "source": "docs/relazione/screenshot/15-manager-sconti.png",
+        "sha256": "2729e1ddc7adcd0404fc2790282a6545a8be2bb7aab8c032c6a2b81408f509e8"
+      }
+    ],
+    "treatment": "**Ripristinare.** Veicoli, base automatica/manuale, prezzi, inserimento/rimozione e sconto individuale con rinvio alla scheda Sconti.",
+    "limit": "Basi nella tab Veicoli, sconti nella tab Sconti; accordi fissati invariati.",
+    "provenance": "Immagini attuali acquisite il 12 novembre 2026 nel ticket documentale 02, PostgreSQL temporaneo/Xvfb, dati demo e date adattate; nessun nuovo avvio o screenshot nel ticket 13."
+  },
+  {
+    "id": "2.3.4.2",
+    "function": "Marche e modelli",
+    "original": "Relazione_SWE/images/mockups/manager-marche-modelli.png",
+    "original_sha256": "7bfa01f90d7da28e962048aad7bfc380fd0446ef4d6068cdc2e6ab3f4ce79a9a",
+    "destination": {
+      "id": "2.3.4.2",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Marche e modelli",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 292,
+      "offset": 679,
+      "content_sha256": "d1f81f0d2da59c4b9f396325bcb1982a783f8cf7c49b8a07b185cfaf940d8aa8",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 292,
+          "last": 304
+        }
+      ]
+    },
+    "current_images": [
+      {
+        "source": "docs/relazione/screenshot/12-manager-marchi.png",
+        "sha256": "ac074126252983f135b7ac7dc137a1a7f84e10e5828e101e6ab1deb67d0d506f"
+      },
+      {
+        "source": "docs/relazione/screenshot/13-manager-modelli.png",
+        "sha256": "03472c56e267118a331496be143c88416c50388ad030cfad654d21cc915e7e48"
+      },
+      {
+        "source": "docs/relazione/screenshot/15-manager-sconti.png",
+        "sha256": "2729e1ddc7adcd0404fc2790282a6545a8be2bb7aab8c032c6a2b81408f509e8"
+      }
+    ],
+    "treatment": "**Ripristinare.** Due tab attuali per marchi e modelli; base modello, anno, manutenzione e sconto modello, senza confonderli con lo sconto sul veicolo.",
+    "limit": "Marchi e Modelli in due tab, Sconti separata; massimo non cumulato.",
+    "provenance": "Immagini attuali acquisite il 12 novembre 2026 nel ticket documentale 02, PostgreSQL temporaneo/Xvfb, dati demo e date adattate; nessun nuovo avvio o screenshot nel ticket 13."
+  },
+  {
+    "id": "2.3.4.3",
+    "function": "Registro delle operazioni",
+    "original": "Relazione_SWE/images/mockups/manager-vendite.png",
+    "original_sha256": "f471870d389a8321e049bd24439b0600b1086e57d17bc640d729cb163233027e",
+    "destination": {
+      "id": "2.3.4.3",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Registro delle operazioni",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 305,
+      "offset": 692,
+      "content_sha256": "cd0c72db86a2320a352b96e749e647355ac2ad80efd99103c4b59578e281e8e8",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 305,
+          "last": 314
+        }
+      ]
+    },
+    "current_images": [
+      {
+        "source": "docs/relazione/screenshot/16-manager-registro.png",
+        "sha256": "626fc7a6ec7acc507abc24e7fa032880de7e2b806f0c5ea546b0c819ed62d84e"
+      }
+    ],
+    "treatment": "**Ripristinare.** SALE/PURCHASE/PENALTY con importi non negativi e punto di vista della concessionaria; i noleggi non sono automaticamente righe di Sale.",
+    "limit": "SALE/PURCHASE/PENALTY non negativi; noleggi non automaticamente righe di Sale.",
+    "provenance": "Immagini attuali acquisite il 12 novembre 2026 nel ticket documentale 02, PostgreSQL temporaneo/Xvfb, dati demo e date adattate; nessun nuovo avvio o screenshot nel ticket 13."
+  },
+  {
+    "id": "2.3.4.4",
+    "function": "Profilo",
+    "original": "Relazione_SWE/images/mockups/manager-profilo.png",
+    "original_sha256": "3c818a5cfa2c208e0fed3771fe5476a8cbb0669e4ceed1505f9abd3246e7bc37",
+    "destination": {
+      "id": "2.3.4.4",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Profilo",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 315,
+      "offset": 702,
+      "content_sha256": "247d516aa77adf58730691a677608fffa7b5acb58c7132be581399739dec2fcb",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 315,
+          "last": 325
+        }
+      ]
+    },
+    "current_images": [
+      {
+        "source": "docs/relazione/screenshot/09-cliente-identita.png",
+        "sha256": "f9a5cf9b6c44a974b59ac4dea1007d2df7df1a50a30ad3d1217fa844df1bbf9e"
+      }
+    ],
+    "treatment": "**Adattare.** Email, password ed eliminazione del manager nel dialogo condiviso; verificare la vista corrente e riusare le figure solo se rappresentative.",
+    "limit": "Rinvio al dialogo cliente; manager senza ricarica, nessuna schermata dedicata attestata.",
+    "provenance": "Immagini attuali acquisite il 12 novembre 2026 nel ticket documentale 02, PostgreSQL temporaneo/Xvfb, dati demo e date adattate; nessun nuovo avvio o screenshot nel ticket 13."
+  }
+]

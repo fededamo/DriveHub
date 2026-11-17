@@ -1,0 +1,337 @@
+\relax 
+\providecommand \babel@aux [2]{\global \let \babel@toc \@gobbletwo }
+\@nameuse{bbl@beforestart}
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand*\HyPL@Entry[1]{}
+\HyPL@Entry{0<</S/D>>}
+\babel@aux{italian}{}
+\babel@aux{italian}{}
+\HyPL@Entry{1<</S/r>>}
+\HyPL@Entry{3<</S/D>>}
+\@writefile{toc}{\contentsline {chapter}{\numberline {1}Introduzione}{1}{chapter.1}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:introduzione}{{1}{1}{Introduzione}{chapter.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.1}Descrizione}{1}{section.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {1.2}Stack tecnologico}{2}{section.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {1.3}Semplificazioni adottate}{3}{section.1.3}\protected@file@percent }
+\newlabel{sec:semplificazioni}{{1.3}{3}{Semplificazioni adottate}{section.1.3}{}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {2}Analisi dei requisiti e progettazione}{4}{chapter.2}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:progettazione}{{2}{4}{Analisi dei requisiti e progettazione}{chapter.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.1}Diagramma dei casi d'uso}{4}{section.2.1}\protected@file@percent }
+\newlabel{sec:casi-uso}{{2.1}{4}{Diagramma dei casi d'uso}{section.2.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces Casi d'uso: tavola degli autori corretta, con attori e struttura originali}}{5}{figure.2.1}\protected@file@percent }
+\newlabel{fig:uc-autori}{{2.1}{5}{Casi d'uso: tavola degli autori corretta, con attori e struttura originali}{figure.2.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces Cliente: obiettivi commerciali e consultazioni; in grigio le funzioni di supporto. UC-03 e UC-05 richiedono anche la partecipazione del venditore.}}{6}{figure.2.2}\protected@file@percent }
+\newlabel{fig:uc-cliente}{{2.2}{6}{Cliente: obiettivi commerciali e consultazioni; in grigio le funzioni di supporto. UC-03 e UC-05 richiedono anche la partecipazione del venditore}{figure.2.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.3}{\ignorespaces Venditore: autorizzazione della vendita al cliente (UC-04), esito dell'acquisto dal cliente (UC-05) e destinazione dell'inventario (UC-08).}}{7}{figure.2.3}\protected@file@percent }
+\newlabel{fig:uc-venditore}{{2.3}{7}{Venditore: autorizzazione della vendita al cliente (UC-04), esito dell'acquisto dal cliente (UC-05) e destinazione dell'inventario (UC-08)}{figure.2.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.4}{\ignorespaces Manager: manutenzione commerciale e consultazione del registro. Le identit\`a staff esistono gi\`a; non vi \`e una registrazione pubblica del personale.}}{8}{figure.2.4}\protected@file@percent }
+\newlabel{fig:uc-manager}{{2.4}{8}{Manager: manutenzione commerciale e consultazione del registro. Le identit\`a staff esistono gi\`a; non vi \`e una registrazione pubblica del personale}{figure.2.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.2}Template dei casi principali}{9}{section.2.2}\protected@file@percent }
+\newlabel{sec:template}{{2.2}{9}{Template dei casi principali}{section.2.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.3}Mockups}{11}{section.2.3}\protected@file@percent }
+\newlabel{sec:mockups}{{2.3}{11}{Mockups}{section.2.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.1}Autenticazione}{11}{subsection.2.3.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.5}{\ignorespaces Accesso corrente: email, password e ingresso al sistema.}}{11}{figure.2.5}\protected@file@percent }
+\newlabel{fig:ui-accesso}{{2.5}{11}{Accesso corrente: email, password e ingresso al sistema}{figure.2.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.6}{\ignorespaces Registrazione corrente di un cliente: creazione di identit\`a e conto demo inizialmente vuoto.}}{12}{figure.2.6}\protected@file@percent }
+\newlabel{fig:ui-registrazione}{{2.6}{12}{Registrazione corrente di un cliente: creazione di identit\`a e conto demo inizialmente vuoto}{figure.2.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.2}Area Customer}{13}{subsection.2.3.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.7}{\ignorespaces Cliente: catalogo vendita (UC-07), acconto (UC-03) e test drive (UC-01).}}{13}{figure.2.7}\protected@file@percent }
+\newlabel{fig:ui-cliente-catalogo}{{2.7}{13}{Cliente: catalogo vendita (UC-07), acconto (UC-03) e test drive (UC-01)}{figure.2.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.8}{\ignorespaces Cliente: richieste, noleggi e test drive (UC-11); saldo e annullamento del test drive.}}{13}{figure.2.8}\protected@file@percent }
+\newlabel{fig:ui-cliente-operazioni}{{2.8}{13}{Cliente: richieste, noleggi e test drive (UC-11); saldo e annullamento del test drive}{figure.2.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.9}{\ignorespaces Dialogo corrente del test drive: data e ora di partenza, conferma o annullamento (UC-01).}}{14}{figure.2.9}\protected@file@percent }
+\newlabel{fig:ui-test-drive}{{2.9}{14}{Dialogo corrente del test drive: data e ora di partenza, conferma o annullamento (UC-01)}{figure.2.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.10}{\ignorespaces Dialogo corrente di noleggio: periodo e costo interamente addebitato alla conferma (UC-02).}}{14}{figure.2.10}\protected@file@percent }
+\newlabel{fig:ui-noleggio}{{2.10}{14}{Dialogo corrente di noleggio: periodo e costo interamente addebitato alla conferma (UC-02)}{figure.2.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.11}{\ignorespaces Form corrente di proposta: \emph  {Vendi la tua Auto} avvia l'acquisto dal cliente della concessionaria (UC-05).}}{15}{figure.2.11}\protected@file@percent }
+\newlabel{fig:ui-cessione}{{2.11}{15}{Form corrente di proposta: \emph {Vendi la tua Auto} avvia l'acquisto dal cliente della concessionaria (UC-05)}{figure.2.11}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.12}{\ignorespaces Gestione Account del cliente: modifica email/password, ricarica demo ed eliminazione dell'identit\`a (UC-S03, UC-S04).}}{15}{figure.2.12}\protected@file@percent }
+\newlabel{fig:ui-identita}{{2.12}{15}{Gestione Account del cliente: modifica email/password, ricarica demo ed eliminazione dell'identit\`a (UC-S03, UC-S04)}{figure.2.12}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.3}Area Salesman}{16}{subsection.2.3.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.13}{\ignorespaces Venditore: richieste in sospeso, dati economici e comandi di approvazione/rifiuto.}}{16}{figure.2.13}\protected@file@percent }
+\newlabel{fig:ui-venditore-richieste}{{2.13}{16}{Venditore: richieste in sospeso, dati economici e comandi di approvazione/rifiuto}{figure.2.13}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.14}{\ignorespaces Venditore: inventario \code  {SALE}/\code  {RENT} e comando di cambio destinazione.}}{16}{figure.2.14}\protected@file@percent }
+\newlabel{fig:ui-venditore-inventario}{{2.14}{16}{Venditore: inventario \code {SALE}/\code {RENT} e comando di cambio destinazione}{figure.2.14}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.4}Area Manager}{17}{subsection.2.3.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.15}{\ignorespaces Manager: anagrafica marchi e inserimento/rimozione (UC-09).}}{17}{figure.2.15}\protected@file@percent }
+\newlabel{fig:ui-manager-marchi}{{2.15}{17}{Manager: anagrafica marchi e inserimento/rimozione (UC-09)}{figure.2.15}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.16}{\ignorespaces Manager: modelli, base del modello e anno di rilascio (UC-09).}}{17}{figure.2.16}\protected@file@percent }
+\newlabel{fig:ui-manager-modelli}{{2.16}{17}{Manager: modelli, base del modello e anno di rilascio (UC-09)}{figure.2.16}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.17}{\ignorespaces Manager: veicoli, modalit\`a automatica/manuale e basi applicate (UC-09).}}{18}{figure.2.17}\protected@file@percent }
+\newlabel{fig:ui-manager-veicoli}{{2.17}{18}{Manager: veicoli, modalit\`a automatica/manuale e basi applicate (UC-09)}{figure.2.17}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.18}{\ignorespaces Manager: sconti di modello e singolo veicolo, con comandi distinti (UC-06).}}{18}{figure.2.18}\protected@file@percent }
+\newlabel{fig:ui-manager-sconti}{{2.18}{18}{Manager: sconti di modello e singolo veicolo, con comandi distinti (UC-06)}{figure.2.18}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.19}{\ignorespaces Manager: registro economico con vendite al cliente, acquisti dal cliente e penali (UC-10).}}{19}{figure.2.19}\protected@file@percent }
+\newlabel{fig:ui-manager-registro}{{2.19}{19}{Manager: registro economico con vendite al cliente, acquisti dal cliente e penali (UC-10)}{figure.2.19}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.4}Page Navigation Diagram}{20}{section.2.4}\protected@file@percent }
+\newlabel{sec:navigazione}{{2.4}{20}{Page Navigation Diagram}{section.2.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.20}{\ignorespaces Navigazione: tavola degli autori corretta, con le tre diramazioni originali}}{21}{figure.2.20}\protected@file@percent }
+\newlabel{fig:nav-autori}{{2.20}{21}{Navigazione: tavola degli autori corretta, con le tre diramazioni originali}{figure.2.20}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.21}{\ignorespaces Navigazione cliente: quattro tab; dialoghi di prenotazione, acconto e saldo; proposta nella scheda; gestione identit\`a e conto. Riscontri visivi nelle figure~\ref {fig:ui-cliente-catalogo}--\ref {fig:ui-identita}.}}{22}{figure.2.21}\protected@file@percent }
+\newlabel{fig:nav-cliente}{{2.21}{22}{Navigazione cliente: quattro tab; dialoghi di prenotazione, acconto e saldo; proposta nella scheda; gestione identit\`a e conto. Riscontri visivi nelle figure~\ref {fig:ui-cliente-catalogo}--\ref {fig:ui-identita}}{figure.2.21}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.22}{\ignorespaces Navigazione venditore: richieste ed inventario, corrispondenti alle figure~\ref {fig:ui-venditore-richieste} e~\ref {fig:ui-venditore-inventario}. L'approvazione non apre una conferma preventiva; il cambio destinazione s\`i.}}{23}{figure.2.22}\protected@file@percent }
+\newlabel{fig:nav-venditore}{{2.22}{23}{Navigazione venditore: richieste ed inventario, corrispondenti alle figure~\ref {fig:ui-venditore-richieste} e~\ref {fig:ui-venditore-inventario}. L'approvazione non apre una conferma preventiva; il cambio destinazione s\`i}{figure.2.22}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.23}{\ignorespaces Navigazione manager: cinque tab e form nella stessa vista, corrispondenti alle figure~\ref {fig:ui-manager-marchi}--\ref {fig:ui-manager-registro}. Il registro \`e di sola consultazione.}}{24}{figure.2.23}\protected@file@percent }
+\newlabel{fig:nav-manager}{{2.23}{24}{Navigazione manager: cinque tab e form nella stessa vista, corrispondenti alle figure~\ref {fig:ui-manager-marchi}--\ref {fig:ui-manager-registro}. Il registro \`e di sola consultazione}{figure.2.23}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.5}Package Diagram}{25}{section.2.5}\protected@file@percent }
+\newlabel{sec:package}{{2.5}{25}{Package Diagram}{section.2.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.24}{\ignorespaces PKG --- Package correnti: dipendenze principali e legami trasversali esplicitati in calce.}}{26}{figure.2.24}\protected@file@percent }
+\newlabel{fig:pkg}{{2.24}{26}{PKG --- Package correnti: dipendenze principali e legami trasversali esplicitati in calce}{figure.2.24}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.6}Class Diagram}{27}{section.2.6}\protected@file@percent }
+\newlabel{sec:classi}{{2.6}{27}{Class Diagram}{section.2.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6.1}Domain Model}{27}{subsection.2.6.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.25}{\ignorespaces CL-03 --- Vista selezionata del catalogo; tavola ripresa in appendice B.}}{28}{figure.2.25}\protected@file@percent }
+\newlabel{fig:catalogo-corpo}{{2.25}{28}{CL-03 --- Vista selezionata del catalogo; tavola ripresa in appendice B}{figure.2.25}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6.2}Business Layer}{29}{subsection.2.6.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.26}{\ignorespaces CL-07 --- Collaborazione Observer nella transazione di vendita al cliente o noleggio.}}{30}{figure.2.26}\protected@file@percent }
+\newlabel{fig:eventi-corpo}{{2.26}{30}{CL-07 --- Collaborazione Observer nella transazione di vendita al cliente o noleggio}{figure.2.26}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6.3}DAO}{31}{subsection.2.6.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6.4}Presentation Layer}{31}{subsection.2.6.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2.7}Sequence Diagram}{32}{section.2.7}\protected@file@percent }
+\newlabel{sec:sequenze}{{2.7}{32}{Sequence Diagram}{section.2.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.7.1}Acquisto di un veicolo}{32}{subsection.2.7.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.27}{\ignorespaces SQ-01a --- Vendita al cliente: avvio, totale concordato e acconto.}}{33}{figure.2.27}\protected@file@percent }
+\newlabel{fig:sq01a}{{2.27}{33}{SQ-01a --- Vendita al cliente: avvio, totale concordato e acconto}{figure.2.27}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.28}{\ignorespaces SQ-01b --- UC-04: approvazione oppure rifiuto con rimborso.}}{35}{figure.2.28}\protected@file@percent }
+\newlabel{fig:sq01b}{{2.28}{35}{SQ-01b --- UC-04: approvazione oppure rifiuto con rimborso}{figure.2.28}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.29}{\ignorespaces SQ-01c --- Saldo sul totale persistito e registrazione della vendita al cliente.}}{36}{figure.2.29}\protected@file@percent }
+\newlabel{fig:sq01c}{{2.29}{36}{SQ-01c --- Saldo sul totale persistito e registrazione della vendita al cliente}{figure.2.29}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.30}{\ignorespaces SQ-01d --- Scadenze controllate all'apertura della dashboard, una transazione per candidato.}}{38}{figure.2.30}\protected@file@percent }
+\newlabel{fig:sq01d}{{2.30}{38}{SQ-01d --- Scadenze controllate all'apertura della dashboard, una transazione per candidato}{figure.2.30}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.7.2}Prenotazione di un noleggio}{39}{subsection.2.7.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.31}{\ignorespaces SQ-02 --- Noleggio: disponibilità, costo ricalcolato e addebito integrale.}}{40}{figure.2.31}\protected@file@percent }
+\newlabel{fig:sq02}{{2.31}{40}{SQ-02 --- Noleggio: disponibilità, costo ricalcolato e addebito integrale}{figure.2.31}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.32}{\ignorespaces SQ-OB --- Cancellazioni Observer condivise da SQ-01c e SQ-02, sincrone sulla connessione del chiamante.}}{41}{figure.2.32}\protected@file@percent }
+\newlabel{fig:sqob}{{2.32}{41}{SQ-OB --- Cancellazioni Observer condivise da SQ-01c e SQ-02, sincrone sulla connessione del chiamante}{figure.2.32}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.7.3}Acquisizione di un veicolo del Customer}{42}{subsection.2.7.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.33}{\ignorespaces SQ-03a --- Proposta di cessione: veicolo in attesa e stima persistita, senza pagamento.}}{43}{figure.2.33}\protected@file@percent }
+\newlabel{fig:sq03a}{{2.33}{43}{SQ-03a --- Proposta di cessione: veicolo in attesa e stima persistita, senza pagamento}{figure.2.33}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.34}{\ignorespaces SQ-03b --- Acquisto dal cliente: accettazione economica oppure rifiuto con conservazione dello storico.}}{44}{figure.2.34}\protected@file@percent }
+\newlabel{fig:sq03b}{{2.34}{44}{SQ-03b --- Acquisto dal cliente: accettazione economica oppure rifiuto con conservazione dello storico}{figure.2.34}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.8}Database}{45}{section.2.8}\protected@file@percent }
+\newlabel{sec:database}{{2.8}{45}{Database}{section.2.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.8.1}Schema ER}{45}{subsection.2.8.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.35}{\ignorespaces Schema ER: tavola degli autori corretta, con notazione e gerarchia concettuale originali}}{46}{figure.2.35}\protected@file@percent }
+\newlabel{fig:er-autori}{{2.35}{46}{Schema ER: tavola degli autori corretta, con notazione e gerarchia concettuale originali}{figure.2.35}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.36}{\ignorespaces ER-01 --- Catalogo e riferimenti dei veicoli nelle operazioni; cardinalità nei due versi.}}{49}{figure.2.36}\protected@file@percent }
+\newlabel{fig:er01}{{2.36}{49}{ER-01 --- Catalogo e riferimenti dei veicoli nelle operazioni; cardinalità nei due versi}{figure.2.36}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.37}{\ignorespaces ER-02 --- Identità, conto e attribuzioni; le operazioni riprendono ER-01.}}{50}{figure.2.37}\protected@file@percent }
+\newlabel{fig:er02}{{2.37}{50}{ER-02 --- Identità, conto e attribuzioni; le operazioni riprendono ER-01}{figure.2.37}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.8.2}Modello relazionale}{51}{subsection.2.8.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.38}{\ignorespaces REL-01 --- Attributi, chiavi e vincoli delle cinque tabelle del catalogo.}}{52}{figure.2.38}\protected@file@percent }
+\newlabel{fig:rel01}{{2.38}{52}{REL-01 --- Attributi, chiavi e vincoli delle cinque tabelle del catalogo}{figure.2.38}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.39}{\ignorespaces REL-02 --- Tre tabelle di ruolo, conto dimostrativo e vista delle identità.}}{53}{figure.2.39}\protected@file@percent }
+\newlabel{fig:rel02}{{2.39}{53}{REL-02 --- Tre tabelle di ruolo, conto dimostrativo e vista delle identità}{figure.2.39}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.40}{\ignorespaces REL-03 --- Richieste, test drive, noleggi e registro economico.}}{54}{figure.2.40}\protected@file@percent }
+\newlabel{fig:rel03}{{2.40}{54}{REL-03 --- Richieste, test drive, noleggi e registro economico}{figure.2.40}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.8.3}Utenti, vincoli e semplificazioni}{55}{subsection.2.8.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {3}Implementazione}{57}{chapter.3}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:implementazione}{{3}{57}{Implementazione}{chapter.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.1}Domain Model}{57}{section.3.1}\protected@file@percent }
+\newlabel{sec:impl-dominio}{{3.1}{57}{Domain Model}{section.3.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}Invarianti locali e stato mutabile}{57}{subsection.3.1.1}\protected@file@percent }
+\newlabel{lst:vehicle-invariante}{{3.1}{57}{\code {Vehicle.java}: normalizzazione della targa e coerenza con i chilometri}{lstlisting.3.1}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {3.1}\code  {Vehicle.java}: normalizzazione della targa e coerenza con i chilometri.}{57}{lstlisting.3.1}\protected@file@percent }
+\newlabel{lst:request-accordo}{{3.2}{58}{\code {Request.java}: forma dell'accordo e precisione degli importi}{lstlisting.3.2}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {3.2}\code  {Request.java}: forma dell'accordo e precisione degli importi.}{58}{lstlisting.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.2}Gerarchie, identità e riferimenti}{58}{subsection.3.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.2}Business Layer}{58}{section.3.2}\protected@file@percent }
+\newlabel{sec:impl-business}{{3.2}{58}{Business Layer}{section.3.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}Calcolo dei prezzi e accordo economico}{58}{subsection.3.2.1}\protected@file@percent }
+\newlabel{lst:base}{{3.3}{59}{\code {Vehicle.java}: selezione della base, prima della formula}{lstlisting.3.3}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {3.3}\code  {Vehicle.java}: selezione della base, prima della formula.}{59}{lstlisting.3.3}\protected@file@percent }
+\newlabel{lst:letture-prezzo}{{3.4}{59}{\code {PurchaseService.java}: prezzo corrente e acconto prima della persistenza dell'accordo}{lstlisting.3.4}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {3.4}\code  {PurchaseService.java}: prezzo corrente e acconto prima della persistenza dell'accordo.}{59}{lstlisting.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.2}Transazioni, lock e operazioni economiche}{59}{subsection.3.2.2}\protected@file@percent }
+\newlabel{lst:transazione}{{3.5}{60}{\code {DatabaseManager.java}: commit, tentativo di rollback e conservazione delle cause}{lstlisting.3.5}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {3.5}\code  {DatabaseManager.java}: commit, tentativo di rollback e conservazione delle cause.}{60}{lstlisting.3.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.3}Notifiche sincrone ed errori}{61}{subsection.3.2.3}\protected@file@percent }
+\newlabel{lst:observer}{{3.6}{61}{\code {VehicleEventPublisher.java}: gli osservatori ricevono la connessione del chiamante}{lstlisting.3.6}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {3.6}\code  {VehicleEventPublisher.java}: gli osservatori ricevono la connessione del chiamante.}{61}{lstlisting.3.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.4}Identità e conto dimostrativo}{61}{subsection.3.2.4}\protected@file@percent }
+\newlabel{lst:registrazione}{{3.7}{61}{\code {AuthService.java}: registrazione del cliente e conto iniziale nella stessa transazione}{lstlisting.3.7}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {3.7}\code  {AuthService.java}: registrazione del cliente e conto iniziale nella stessa transazione.}{61}{lstlisting.3.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.3}Presentation Layer}{62}{section.3.3}\protected@file@percent }
+\newlabel{sec:impl-presentazione}{{3.3}{62}{Presentation Layer}{section.3.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}Navigazione e responsabilità delle viste}{62}{subsection.3.3.1}\protected@file@percent }
+\newlabel{lst:navigazione}{{3.8}{62}{\code {Client.java}: selezione dell'overload del navigator con il tipo concreto}{lstlisting.3.8}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {3.8}\code  {Client.java}: selezione dell'overload del navigator con il tipo concreto.}{62}{lstlisting.3.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}Caricamenti, righe preparate e ciclo di vita}{62}{subsection.3.3.2}\protected@file@percent }
+\newlabel{lst:async}{{3.9}{63}{\code {AsyncLoad.java}: pubblicazione del risultato corrente e stato di errore}{lstlisting.3.9}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {3.9}\code  {AsyncLoad.java}: pubblicazione del risultato corrente e stato di errore.}{63}{lstlisting.3.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.3}Aggiornamenti ed esiti dei comandi}{63}{subsection.3.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.4}Persistenza: livello DAO e mapping oggetti/tabelle}{63}{section.3.4}\protected@file@percent }
+\newlabel{sec:impl-dao}{{3.4}{63}{Persistenza: livello DAO e mapping oggetti/tabelle}{section.3.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.1}Contratti JDBC e proprietà della connessione}{63}{subsection.3.4.1}\protected@file@percent }
+\newlabel{lst:dao-connection}{{3.10}{64}{\code {PostgresVehicleDao.java}: lettura autonoma e overload con connessione ricevuta}{lstlisting.3.10}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {3.10}\code  {PostgresVehicleDao.java}: lettura autonoma e overload con connessione ricevuta.}{64}{lstlisting.3.10}\protected@file@percent }
+\newlabel{lst:update-condizionale}{{3.11}{64}{\code {PostgresVehicleDao.java}: transizione condizionata e conteggio delle righe}{lstlisting.3.11}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {3.11}\code  {PostgresVehicleDao.java}: transizione condizionata e conteggio delle righe.}{64}{lstlisting.3.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.2}Tipi, nullabilità e ricostruzione}{65}{subsection.3.4.2}\protected@file@percent }
+\newlabel{lst:mapping}{{3.12}{65}{\code {PostgresRequestDao.java}: NULL preservati e factory anche in lettura}{lstlisting.3.12}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {3.12}\code  {PostgresRequestDao.java}: NULL preservati e factory anche in lettura.}{65}{lstlisting.3.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.5}Idiomi e Design Pattern}{66}{section.3.5}\protected@file@percent }
+\newlabel{sec:impl-pattern}{{3.5}{66}{Idiomi e Design Pattern}{section.3.5}{}}
+\@writefile{toc}{\contentsline {paragraph}{Factory statiche e idiomi.}{66}{section*.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Observer GoF.}{66}{section*.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Navigazione nello stile Visitor.}{66}{section*.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{DAO e dependency injection.}{66}{section*.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Singleton e composizione.}{66}{section*.6}\protected@file@percent }
+\newlabel{lst:singleton}{{3.13}{66}{\code {AppContext.java}: accesso Singleton sincronizzato al contesto predefinito}{lstlisting.3.13}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {3.13}\code  {AppContext.java}: accesso Singleton sincronizzato al contesto predefinito.}{66}{lstlisting.3.13}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}Testing}{67}{chapter.4}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:testing}{{4}{67}{Testing}{chapter.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}Strategia di verifica}{67}{section.4.1}\protected@file@percent }
+\newlabel{sec:test-strategia}{{4.1}{67}{Strategia di verifica}{section.4.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}Livello 1: Business Logic}{68}{section.4.2}\protected@file@percent }
+\newlabel{sec:test-business}{{4.2}{68}{Livello 1: Business Logic}{section.4.2}{}}
+\newlabel{lst:test-accordo}{{4.1}{68}{\code {RequestAgreementTest.java}: estratto della prova}{lstlisting.4.1}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.1}\code  {RequestAgreementTest.java}: estratto della prova.}{68}{lstlisting.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.3}Livello 2: Persistence Layer (DAO)}{68}{section.4.3}\protected@file@percent }
+\newlabel{sec:test-dao}{{4.3}{68}{Livello 2: Persistence Layer (DAO)}{section.4.3}{}}
+\@writefile{toc}{\contentsline {paragraph}{Rollback dopo scritture effettive.}{69}{section*.7}\protected@file@percent }
+\newlabel{lst:test-rollback}{{4.2}{69}{\code {IdentityDeletionIntegrationTest.java}: estratto della prova}{lstlisting.4.2}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.2}\code  {IdentityDeletionIntegrationTest.java}: estratto della prova.}{69}{lstlisting.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Conflitti concorrenti.}{70}{section*.8}\protected@file@percent }
+\newlabel{lst:test-gara}{{4.3}{70}{\code {PurchaseConcurrencyIntegrationTest.java}: estratto della prova}{lstlisting.4.3}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.3}\code  {PurchaseConcurrencyIntegrationTest.java}: estratto della prova.}{70}{lstlisting.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.4}Verifiche funzionali e della presentazione}{70}{section.4.4}\protected@file@percent }
+\newlabel{sec:test-ui}{{4.4}{70}{Verifiche funzionali e della presentazione}{section.4.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.5}Esecuzione della suite e portata dei risultati}{71}{section.4.5}\protected@file@percent }
+\newlabel{sec:test-esecuzione}{{4.5}{71}{Esecuzione della suite e portata dei risultati}{section.4.5}{}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Uso dell'AI}{72}{chapter.5}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:ai}{{5}{72}{Uso dell'AI}{chapter.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}Progettazione e sviluppo iniziale manuali}{72}{section.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}Revisione assistita da Codex}{72}{section.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.3}Verifica e controllo umano}{73}{section.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.4}Documentazione, diagrammi e limiti}{74}{section.5.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {A}Schede complete dei casi d'uso}{75}{appendix.Alph1}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{app:casi-uso}{{A}{75}{Schede complete dei casi d'uso}{appendix.Alph1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {A.1}\raggedright  UC-01 --- Prenotazione di un test drive}{76}{section.Alph1.1}\protected@file@percent }
+\newlabel{uc:UC-01}{{A.1}{76}{\texorpdfstring {\raggedright UC-01 --- Prenotazione di un test drive}{UC-01 --- Prenotazione di un test drive}}{section.Alph1.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{Flusso principale}{76}{section*.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Alternative}{76}{section*.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {A.2}\raggedright  UC-02 --- Prenotazione di un noleggio}{77}{section.Alph1.2}\protected@file@percent }
+\newlabel{uc:UC-02}{{A.2}{77}{\texorpdfstring {\raggedright UC-02 --- Prenotazione di un noleggio}{UC-02 --- Prenotazione di un noleggio}}{section.Alph1.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Flusso principale}{77}{section*.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Alternative}{77}{section*.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {A.3}\raggedright  UC-03 --- Vendita al cliente}{78}{section.Alph1.3}\protected@file@percent }
+\newlabel{uc:UC-03}{{A.3}{78}{\texorpdfstring {\raggedright UC-03 --- Vendita al cliente}{UC-03 --- Vendita al cliente}}{section.Alph1.3}{}}
+\@writefile{toc}{\contentsline {paragraph}{Flusso principale}{78}{section*.13}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Alternative}{78}{section*.14}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {A.4}\raggedright  UC-04 --- Autorizzazione del venditore}{79}{section.Alph1.4}\protected@file@percent }
+\newlabel{uc:UC-04}{{A.4}{79}{\texorpdfstring {\raggedright UC-04 --- Autorizzazione del venditore}{UC-04 --- Autorizzazione del venditore}}{section.Alph1.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{Flusso principale}{79}{section*.15}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Alternative}{79}{section*.16}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {A.5}\raggedright  UC-05 --- Acquisto dal cliente}{80}{section.Alph1.5}\protected@file@percent }
+\newlabel{uc:UC-05}{{A.5}{80}{\texorpdfstring {\raggedright UC-05 --- Acquisto dal cliente}{UC-05 --- Acquisto dal cliente}}{section.Alph1.5}{}}
+\@writefile{toc}{\contentsline {paragraph}{Flusso principale}{80}{section*.17}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Alternative}{80}{section*.18}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {A.6}\raggedright  UC-06 --- Gestione degli sconti}{81}{section.Alph1.6}\protected@file@percent }
+\newlabel{uc:UC-06}{{A.6}{81}{\texorpdfstring {\raggedright UC-06 --- Gestione degli sconti}{UC-06 --- Gestione degli sconti}}{section.Alph1.6}{}}
+\@writefile{toc}{\contentsline {paragraph}{Flusso principale}{81}{section*.19}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Alternative}{81}{section*.20}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {A.7}\raggedright  UC-07 --- Consultazione del catalogo}{82}{section.Alph1.7}\protected@file@percent }
+\newlabel{uc:UC-07}{{A.7}{82}{\texorpdfstring {\raggedright UC-07 --- Consultazione del catalogo}{UC-07 --- Consultazione del catalogo}}{section.Alph1.7}{}}
+\@writefile{toc}{\contentsline {paragraph}{Flusso principale}{82}{section*.21}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Alternative}{82}{section*.22}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {A.8}\raggedright  UC-08 --- Cambio di destinazione del veicolo}{82}{section.Alph1.8}\protected@file@percent }
+\newlabel{uc:UC-08}{{A.8}{82}{\texorpdfstring {\raggedright UC-08 --- Cambio di destinazione del veicolo}{UC-08 --- Cambio di destinazione del veicolo}}{section.Alph1.8}{}}
+\@writefile{toc}{\contentsline {paragraph}{Flusso principale}{82}{section*.23}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Alternative}{82}{section*.24}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {A.9}\raggedright  UC-09 --- Gestione del catalogo e delle basi prezzo}{83}{section.Alph1.9}\protected@file@percent }
+\newlabel{uc:UC-09}{{A.9}{83}{\texorpdfstring {\raggedright UC-09 --- Gestione del catalogo e delle basi prezzo}{UC-09 --- Gestione del catalogo e delle basi prezzo}}{section.Alph1.9}{}}
+\@writefile{toc}{\contentsline {paragraph}{Flusso principale}{83}{section*.25}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Alternative}{83}{section*.26}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {A.10}\raggedright  UC-10 --- Consultazione del registro economico}{84}{section.Alph1.10}\protected@file@percent }
+\newlabel{uc:UC-10}{{A.10}{84}{\texorpdfstring {\raggedright UC-10 --- Consultazione del registro economico}{UC-10 --- Consultazione del registro economico}}{section.Alph1.10}{}}
+\@writefile{toc}{\contentsline {paragraph}{Flusso principale}{84}{section*.27}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Alternative}{84}{section*.28}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {A.11}\raggedright  UC-11 --- Consultazione delle proprie operazioni}{85}{section.Alph1.11}\protected@file@percent }
+\newlabel{uc:UC-11}{{A.11}{85}{\texorpdfstring {\raggedright UC-11 --- Consultazione delle proprie operazioni}{UC-11 --- Consultazione delle proprie operazioni}}{section.Alph1.11}{}}
+\@writefile{toc}{\contentsline {paragraph}{Flusso principale}{85}{section*.29}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Alternative}{85}{section*.30}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {A.12}\raggedright  UC-S01 --- Registrazione del cliente}{85}{section.Alph1.12}\protected@file@percent }
+\newlabel{uc:UC-S01}{{A.12}{85}{\texorpdfstring {\raggedright UC-S01 --- Registrazione del cliente}{UC-S01 --- Registrazione del cliente}}{section.Alph1.12}{}}
+\@writefile{toc}{\contentsline {paragraph}{Flusso principale}{85}{section*.31}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Alternative}{85}{section*.32}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {A.13}\raggedright  UC-S02 --- Accesso al sistema}{86}{section.Alph1.13}\protected@file@percent }
+\newlabel{uc:UC-S02}{{A.13}{86}{\texorpdfstring {\raggedright UC-S02 --- Accesso al sistema}{UC-S02 --- Accesso al sistema}}{section.Alph1.13}{}}
+\@writefile{toc}{\contentsline {paragraph}{Flusso principale}{86}{section*.33}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Alternative}{86}{section*.34}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {A.14}\raggedright  UC-S03 --- Gestione dell'identit\`a}{87}{section.Alph1.14}\protected@file@percent }
+\newlabel{uc:UC-S03}{{A.14}{87}{\texorpdfstring {\raggedright UC-S03 --- Gestione dell'identit\`a}{UC-S03 --- Gestione dell'identit\`a}}{section.Alph1.14}{}}
+\@writefile{toc}{\contentsline {paragraph}{Flusso principale}{87}{section*.35}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Alternative}{87}{section*.36}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {A.15}\raggedright  UC-S04 --- Ricarica del conto demo}{88}{section.Alph1.15}\protected@file@percent }
+\newlabel{uc:UC-S04}{{A.15}{88}{\texorpdfstring {\raggedright UC-S04 --- Ricarica del conto demo}{UC-S04 --- Ricarica del conto demo}}{section.Alph1.15}{}}
+\@writefile{toc}{\contentsline {paragraph}{Flusso principale}{88}{section*.37}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Alternative}{88}{section*.38}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {B}Tavole delle classi}{89}{appendix.Alph2}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{app:classi}{{B}{89}{Tavole delle classi}{appendix.Alph2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {B.1}{\ignorespaces CL-01 --- Avvio e composizione, \code  {it.unifi.drivehub}.}}{90}{figure.Alph2.1}\protected@file@percent }
+\newlabel{fig:cl01}{{B.1}{90}{CL-01 --- Avvio e composizione, \code {it.unifi.drivehub}}{figure.Alph2.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {B.2}{\ignorespaces CL-02 --- Identità, ruoli e conto, \code  {domain.user}.}}{91}{figure.Alph2.2}\protected@file@percent }
+\newlabel{fig:cl02}{{B.2}{91}{CL-02 --- Identità, ruoli e conto, \code {domain.user}}{figure.Alph2.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {B.3}{\ignorespaces CL-03 --- Catalogo e scelta della base, \code  {domain.vehicle}.}}{92}{figure.Alph2.3}\protected@file@percent }
+\newlabel{fig:cl03}{{B.3}{92}{CL-03 --- Catalogo e scelta della base, \code {domain.vehicle}}{figure.Alph2.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {B.4}{\ignorespaces CL-04 --- Sconti per ID, \code  {domain.discount}.}}{93}{figure.Alph2.4}\protected@file@percent }
+\newlabel{fig:cl04}{{B.4}{93}{CL-04 --- Sconti per ID, \code {domain.discount}}{figure.Alph2.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {B.5}{\ignorespaces CL-05 --- Richieste, prenotazioni e registro, \code  {domain.operation}.}}{94}{figure.Alph2.5}\protected@file@percent }
+\newlabel{fig:cl05}{{B.5}{94}{CL-05 --- Richieste, prenotazioni e registro, \code {domain.operation}}{figure.Alph2.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {B.6}{\ignorespaces CL-06 --- Servizi e collaborazioni, \code  {service}.}}{95}{figure.Alph2.6}\protected@file@percent }
+\newlabel{fig:cl06}{{B.6}{95}{CL-06 --- Servizi e collaborazioni, \code {service}}{figure.Alph2.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {B.7}{\ignorespaces CL-07 --- Eventi e observer sincroni, \code  {event}.}}{96}{figure.Alph2.7}\protected@file@percent }
+\newlabel{fig:cl07}{{B.7}{96}{CL-07 --- Eventi e observer sincroni, \code {event}}{figure.Alph2.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {B.8}{\ignorespaces CL-08a --- Contratti per risorsa, \code  {dao}.}}{97}{figure.Alph2.8}\protected@file@percent }
+\newlabel{fig:cl08a}{{B.8}{97}{CL-08a --- Contratti per risorsa, \code {dao}}{figure.Alph2.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {B.9}{\ignorespaces CL-08b --- Gestore e callback transazionali, \code  {dao}.}}{98}{figure.Alph2.9}\protected@file@percent }
+\newlabel{fig:cl08b}{{B.9}{98}{CL-08b --- Gestore e callback transazionali, \code {dao}}{figure.Alph2.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {B.10}{\ignorespaces CL-09 --- Realizzazioni PostgreSQL, \code  {dao.postgres}.}}{99}{figure.Alph2.10}\protected@file@percent }
+\newlabel{fig:cl09}{{B.10}{99}{CL-09 --- Realizzazioni PostgreSQL, \code {dao.postgres}}{figure.Alph2.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {B.11}{\ignorespaces CL-10 --- Viste, dialoghi e caricamenti, \code  {presentation.view}.}}{100}{figure.Alph2.11}\protected@file@percent }
+\newlabel{fig:cl10}{{B.11}{100}{CL-10 --- Viste, dialoghi e caricamenti, \code {presentation.view}}{figure.Alph2.11}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {B.12}{\ignorespaces CL-11 --- Contratto e realizzazione per le password, \code  {security}.}}{101}{figure.Alph2.12}\protected@file@percent }
+\newlabel{fig:cl11}{{B.12}{101}{CL-11 --- Contratto e realizzazione per le password, \code {security}}{figure.Alph2.12}{}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {C}Matrice delle verifiche}{102}{appendix.Alph3}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{app:verifiche}{{C}{102}{Matrice delle verifiche}{appendix.Alph3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {C.1}Criterio di lettura e provenienza}{102}{section.Alph3.1}\protected@file@percent }
+\newlabel{sec:matrice-provenienza}{{C.1}{102}{Criterio di lettura e provenienza}{section.Alph3.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{E1 --- contratto corrente, 9 novembre 2026.}{102}{section*.39}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{E2 --- suite integrata, 3 novembre 2026.}{103}{section*.40}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{E3 --- JavaFX, prima fase del 3 novembre 2026.}{103}{section*.41}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {C.2}Requisiti, casi d'uso e asserzioni}{103}{section.Alph3.2}\protected@file@percent }
+\newlabel{sec:matrice-uc}{{C.2}{103}{Requisiti, casi d'uso e asserzioni}{section.Alph3.2}{}}
+\gdef \LT@i {\LT@entry 
+    {1}{69.75095pt}\LT@entry 
+    {1}{216.28247pt}\LT@entry 
+    {1}{159.37697pt}}
+\@writefile{lot}{\contentsline {table}{\numberline {C.1}{Matrice funzionale: scenario, prova osservabile e portata dell'associazione.}}{104}{table.C.1}\protected@file@percent }
+\newlabel{tab:test-matrice}{{C.1}{104}{Matrice funzionale: scenario, prova osservabile e portata dell'associazione}{table.C.1}{}}
+\gdef \LT@ii {\LT@entry 
+    {1}{69.75095pt}\LT@entry 
+    {1}{216.28247pt}\LT@entry 
+    {1}{159.37697pt}}
+\@writefile{toc}{\contentsline {section}{\numberline {C.3}Garanzie trasversali e limiti delle prove}{108}{section.Alph3.3}\protected@file@percent }
+\newlabel{sec:matrice-trasversali}{{C.3}{108}{Garanzie trasversali e limiti delle prove}{section.Alph3.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {C.2}{Controlli trasversali: proprietà effettivamente osservate.}}{108}{table.C.2}\protected@file@percent }
+\newlabel{tab:test-trasversali}{{C.2}{108}{Controlli trasversali: proprietà effettivamente osservate}{table.C.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {C.4}Riproduzione e riscontro documentale}{110}{section.Alph3.4}\protected@file@percent }
+\gdef \@abspage@last{113}

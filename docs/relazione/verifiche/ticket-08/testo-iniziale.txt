@@ -1,0 +1,4631 @@
+
+--- PAGINA FISICA 1 ---
+Università degli Studi di Firenze
+Scuola di Ingegneria
+Corso di Laurea in Ingegneria Informatica
+DriveHub
+Sistema informativo per la vendita e il noleggio di veicoli
+Candidati:
+Federico D’Amodio
+Matteo Orlandi
+Corso:
+Ingegneria del Software
+Docente:
+Prof. Enrico Vicario
+Relazione completa – Capitoli 1–5 e appendici A–C
+Proposta agli autori per revisione, non ancora approvata
+Anno Accademico 2025/2026
+
+
+--- PAGINA FISICA 2 ---
+Indice
+1
+Introduzione
+1
+1.1
+Descrizione
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1
+1.2
+Stack tecnologico . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2
+1.3
+Sempliﬁcazioni adottate
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+2
+Analisi dei requisiti e progettazione
+4
+2.1
+Diagramma dei casi d’uso
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+2.2
+Template dei casi principali
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+2.3
+Mockups . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+2.3.1
+Autenticazione
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+2.3.2
+Area Customer . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+2.3.3
+Area Salesman
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+2.3.4
+Area Manager . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.4
+Page Navigation Diagram
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+2.5
+Package Diagram . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+2.6
+Class Diagram . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+2.6.1
+Domain Model
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+2.6.2
+Business Layer
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+2.6.3
+DAO . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+2.6.4
+Presentation Layer . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+2.7
+Sequence Diagram
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+2.7.1
+Acquisto di un veicolo
+. . . . . . . . . . . . . . . . . . . . . . . . .
+29
+2.7.2
+Prenotazione di un noleggio . . . . . . . . . . . . . . . . . . . . . .
+36
+2.7.3
+Acquisizione di un veicolo del Customer
+. . . . . . . . . . . . . . .
+39
+2.8
+Database . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+2.8.1
+Schema ER . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+2.8.2
+Modello relazionale . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+2.8.3
+Utenti, vincoli e sempliﬁcazioni
+. . . . . . . . . . . . . . . . . . . .
+49
+3
+Implementazione
+51
+3.1
+Domain Model
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+3.1.1
+Invarianti locali e stato mutabile . . . . . . . . . . . . . . . . . . . .
+51
+3.1.2
+Gerarchie, identità e riferimenti . . . . . . . . . . . . . . . . . . . .
+52
+3.2
+Business Layer
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+3.2.1
+Calcolo dei prezzi e accordo economico . . . . . . . . . . . . . . . .
+52
+3.2.2
+Transazioni, lock e operazioni economiche
+. . . . . . . . . . . . . .
+53
+3.2.3
+Notiﬁche sincrone ed errori . . . . . . . . . . . . . . . . . . . . . . .
+55
+3.2.4
+Identità e conto dimostrativo
+. . . . . . . . . . . . . . . . . . . . .
+55
+i
+
+
+--- PAGINA FISICA 3 ---
+3.3
+Presentation Layer . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+56
+3.3.1
+Navigazione e responsabilità delle viste . . . . . . . . . . . . . . . .
+56
+3.3.2
+Caricamenti, righe preparate e ciclo di vita . . . . . . . . . . . . . .
+56
+3.3.3
+Aggiornamenti ed esiti dei comandi . . . . . . . . . . . . . . . . . .
+57
+3.4
+Persistenza: livello DAO e mapping oggetti/tabelle
+. . . . . . . . . . . . .
+57
+3.4.1
+Contratti JDBC e proprietà della connessione
+. . . . . . . . . . . .
+57
+3.4.2
+Tipi, nullabilità e ricostruzione
+. . . . . . . . . . . . . . . . . . . .
+59
+3.5
+Idiomi e Design Pattern
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+4
+Testing
+61
+4.1
+Strategia di veriﬁca . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+61
+4.2
+Livello 1: Business Logic . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+62
+4.3
+Livello 2: Persistence Layer (DAO) . . . . . . . . . . . . . . . . . . . . . .
+62
+4.4
+Veriﬁche funzionali e della presentazione
+. . . . . . . . . . . . . . . . . . .
+64
+4.5
+Esecuzione della suite e portata dei risultati
+. . . . . . . . . . . . . . . . .
+65
+5
+Uso dell’AI
+66
+5.1
+Progettazione e sviluppo iniziale manuali . . . . . . . . . . . . . . . . . . .
+66
+5.2
+Revisione assistita da Codex . . . . . . . . . . . . . . . . . . . . . . . . . .
+66
+5.3
+Veriﬁca e controllo umano . . . . . . . . . . . . . . . . . . . . . . . . . . .
+67
+5.4
+Documentazione, diagrammi e limiti
+. . . . . . . . . . . . . . . . . . . . .
+68
+A Schede complete dei casi d’uso
+69
+A.1 UC-01 — Prenotazione di un test drive . . . . . . . . . . . . . . . . . . . .
+70
+A.2 UC-02 — Prenotazione di un noleggio . . . . . . . . . . . . . . . . . . . . .
+71
+A.3 UC-03 — Vendita al cliente
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+72
+A.4 UC-04 — Autorizzazione del venditore
+. . . . . . . . . . . . . . . . . . . .
+73
+A.5 UC-05 — Acquisto dal cliente . . . . . . . . . . . . . . . . . . . . . . . . .
+74
+A.6 UC-06 — Gestione degli sconti . . . . . . . . . . . . . . . . . . . . . . . . .
+75
+A.7 UC-07 — Consultazione del catalogo . . . . . . . . . . . . . . . . . . . . .
+76
+A.8 UC-08 — Cambio di destinazione del veicolo . . . . . . . . . . . . . . . . .
+76
+A.9 UC-09 — Gestione del catalogo e delle basi prezzo . . . . . . . . . . . . . .
+77
+A.10 UC-10 — Consultazione del registro economico
+. . . . . . . . . . . . . . .
+78
+A.11 UC-11 — Consultazione delle proprie operazioni . . . . . . . . . . . . . . .
+79
+A.12 UC-S01 — Registrazione del cliente . . . . . . . . . . . . . . . . . . . . . .
+79
+A.13 UC-S02 — Accesso al sistema . . . . . . . . . . . . . . . . . . . . . . . . .
+80
+A.14 UC-S03 — Gestione dell’identità
+. . . . . . . . . . . . . . . . . . . . . . .
+81
+A.15 UC-S04 — Ricarica del conto demo . . . . . . . . . . . . . . . . . . . . . .
+82
+B Tavole delle classi
+83
+C Matrice delle veriﬁche
+96
+C.1 Criterio di lettura e provenienza . . . . . . . . . . . . . . . . . . . . . . . .
+96
+C.2 Requisiti, casi d’uso e asserzioni . . . . . . . . . . . . . . . . . . . . . . . .
+97
+C.3 Garanzie trasversali e limiti delle prove . . . . . . . . . . . . . . . . . . . . 102
+C.4 Riproduzione e riscontro documentale . . . . . . . . . . . . . . . . . . . . . 104
+ii
+
+
+--- PAGINA FISICA 4 ---
+Capitolo 1
+Introduzione
+1.1
+Descrizione
+DriveHub è un’applicazione desktop che riunisce le attività essenziali di una concessio-
+naria: consultazione del catalogo, vendita e noleggio di veicoli, prenotazione di test drive
+e valutazione dei veicoli proposti dai clienti. L’obiettivo è collegare queste attività alle
+stesse informazioni su veicoli, disponibilità e operazioni economiche, evitando di trattarle
+come registrazioni indipendenti.
+La terminologia segue il punto di vista della concessionaria. Una vendita al cliente
+trasferisce un veicolo dalla concessionaria al cliente; un acquisto dal cliente, detto anche
+cessione del cliente, riguarda invece un veicolo proposto dal cliente alla concessionaria. Le
+richieste in attesa di esito sono distinte dalle operazioni registrate nel registro economico.
+Il sistema prevede tre ruoli, con aree applicative dedicate:
+• Cliente: si registra, consulta i cataloghi dei veicoli in vendita e a noleggio, prenota
+test drive e noleggi e propone un proprio veicolo alla concessionaria. Per avviare una
+vendita al cliente versa un acconto; dopo l’approvazione del venditore può pagare il
+saldo. Consulta le proprie richieste e prenotazioni e gestisce il conto dimostrativo e
+il proﬁlo.
+• Venditore: esamina le richieste di vendita al cliente e le proposte di cessione,
+approvandole o riﬁutandole. Gestisce inoltre la destinazione dei veicoli tra vendita
+e noleggio.
+• Manager: gestisce marche, modelli e veicoli, sceglie la base del prezzo e applica
+sconti a modelli o singoli veicoli.
+Consulta il registro economico, che distingue
+vendite al cliente, acquisti dal cliente e penali.
+La disponibilità dipende dallo stato del veicolo e dalle operazioni che lo impegnano.
+Per esempio, il versamento dell’acconto blocca un veicolo in vendita; il completamento
+della vendita lo porta allo stato venduto. Noleggi e test drive richiedono anche controlli
+sui periodi di prenotazione. Le regole sono coordinate dai servizi applicativi e sostenute
+dai vincoli del database.
+1
+
+
+--- PAGINA FISICA 5 ---
+1.2
+Stack tecnologico
+Il progetto usa le seguenti tecnologie, riscontrate nelle dipendenze e nei sorgenti correnti:
+• Java 21: implementa dominio, servizi applicativi, accesso ai dati e presentazione.
+Il progetto Maven imposta a 21 sia la versione dei sorgenti sia quella di destinazione
+del compilatore.
+• JavaFX 21.0.2: realizza l’interfaccia desktop con controlli e layout costruiti diret-
+tamente in Java e uno stile CSS condiviso. Le viste invocano i servizi applicativi; le
+tabelle usano caricamenti asincroni per le letture previste, con aggiornamento dei
+controlli sul thread JavaFX.
+• JDBC e PostgreSQL 16: i DAO eseguono SQL e mappano i risultati negli oggetti
+di dominio, senza un ORM. Il driver PostgreSQL dichiarato è la versione 42.7.3. Il
+gestore delle connessioni oﬀre transazioni con commit e rollback; lo schema usa
+vincoli relazionali e tipi enumerati nativi per stati, tipi di richiesta, modalità del
+prezzo e tipi di registrazione economica.
+• Maven: gestisce dipendenze, compilazione, test e avvio tramite il plugin JavaFX.
+Gli script Windows forniscono un percorso di avvio con PostgreSQL 16 in Docker;
+è previsto anche l’uso di un server PostgreSQL installato separatamente.
+• JUnit 5: le dipendenze di test dichiarano la versione 5.10.2. Il progetto distingue i
+test senza database dalle prove di integrazione PostgreSQL, attivate con un proﬁlo
+dedicato e credenziali di test separate.
+La presentazione, i servizi, gli oggetti di dominio e i DAO hanno responsabilità distinte.
+AppContext costruisce e collega esplicitamente le dipendenze, mentre App avvia JavaFX e
+apre la dashboard del ruolo autenticato. Questa organizzazione non richiede un framework
+di dependency injection o un servizio web intermedio: l’applicazione desktop accede al
+database tramite JDBC.
+2
+
+
+--- PAGINA FISICA 6 ---
+1.3
+Sempliﬁcazioni adottate
+DriveHub è un progetto didattico: rappresenta i ﬂussi necessari a dimostrare le regole
+applicative, con i seguenti limiti di perimetro.
+• Conto dimostrativo. Il conto associato al cliente conserva il saldo nel database.
+Ricariche, addebiti, accrediti e rimborsi sono movimenti interni all’applicazione: non
+intervengono banche o circuiti di pagamento e l’IBAN generato non prova l’esistenza
+di un conto reale.
+• Registrazione e personale. La schermata pubblica e il servizio di registrazione
+creano soltanto clienti. Venditori e manager devono essere già presenti nel database;
+non è implementato un percorso applicativo per amministrare il personale. I dati
+dimostrativi comprendono utenti per i tre ruoli.
+• Regole economiche circoscritte. Prezzi e tariﬀe sono calcolati dalle regole del
+progetto. La base manuale scelta dal manager sostituisce quella del modello nel-
+la stessa formula, conservando gli eﬀetti di sconti e svalutazioni: non impone un
+prezzo ﬁnale ﬁsso. Il totale della vendita al cliente viene concordato al versamento
+dell’acconto del 20%; il saldo usa quel totale, anche se in seguito cambiano basi o
+sconti.
+• Processi aziendali ridotti. Il modello copre catalogo, richieste, prenotazioni e
+registrazioni economiche. Non modella una rete di sedi, fornitori, oﬃcina, consegna
+ﬁsica, gestione documentale dei contratti, fatturazione o assistenza successiva alla
+vendita.
+• Ambiente di esecuzione. La persistenza richiede un database PostgreSQL com-
+patibile, già predisposto. L’applicazione Java non crea lo schema né carica dati
+di esempio all’avvio e non dispone di un database alternativo in memoria. L’ini-
+zializzazione dello schema e dei dati dimostrativi è un’attività separata; lo script
+Windows la esegue soltanto nella prima conﬁgurazione del proprio database Docker.
+I dati persistenti non vengono ricreati a ogni avvio.
+Queste scelte delimitano ciò che il prototipo dimostra. Il conto e i dati di esempio ren-
+dono riproducibili i ﬂussi, ma non equivalgono a un’integrazione bancaria o a un sistema
+completo per l’esercizio di una concessionaria.
+3
+
+
+--- PAGINA FISICA 7 ---
+Capitolo 2
+Analisi dei requisiti e progettazione
+Il capitolo 2 e le appendici A–B sono completi e proposti per la revisione degli autori; non
+sono considerati già approvati.
+2.1
+Diagramma dei casi d’uso
+La concessionaria oﬀre tre percorsi: il cliente consulta l’oﬀerta e avvia operazioni; il
+venditore decide gli esiti delle richieste e la destinazione dei veicoli; il manager mantiene
+catalogo, basi prezzo e sconti e legge il registro economico. Le ﬁgure 2.1–2.3 sono viste
+complementari dello stesso sistema. Le associazioni indicano partecipazione, non ordine
+temporale o chiamate tra servizi.
+Le ellissi azzurre rappresentano obiettivi applicativi (livello O). UC-04 è una sot-
+tofunzione applicativa (livello F) della vendita al cliente UC-03: autorizza il successivo
+saldo, senza completare la vendita. Le ellissi grigie raccolgono il supporto all’interazione
+(livello S): registrazione, accesso, gestione dell’identità e ricarica del conto demo. L’ac-
+cesso è una precondizione degli obiettivi autenticati, non un include da ripetere a ogni
+azione. La registrazione riguarda solo il cliente.
+Il diverso livello è dichiarato anche nelle schede dell’appendice A. UC-03 e UC-05
+attraversano sessioni e ruoli, mentre UC-01, UC-02 e UC-06 hanno un obiettivo più cir-
+coscritto. Le viste non simulano un’unica scala di dettaglio: mantengono riconoscibili i
+casi principali e rendono esplicita la loro scomposizione. In particolare, UC-05 compare
+sia per il cliente che propone sia per il venditore che accetta o riﬁuta.
+4
+
+
+--- PAGINA FISICA 8 ---
+DriveHub
+Cliente
+Obiettivi applicativi
+UC-07
+Consultazione del catalogo
+UC-01
+Prenotazione di un test drive
+UC-02
+Prenotazione di un noleggio
+UC-03
+Vendita al cliente
+UC-05
+Acquisto dal cliente
+UC-11
+Consultazione delle proprie operazioni
+Supporto all'interazione (livello inferiore)
+UC-S01
+Registrazione del cliente
+UC-S02
+Accesso al sistema
+UC-S03
+Gestione dell'identità
+UC-S04
+Ricarica del conto demo
+Figura 2.1: Cliente: obiettivi commerciali e consultazioni; in grigio le funzioni di supporto.
+UC-03 e UC-05 richiedono anche la partecipazione del venditore.
+5
+
+
+--- PAGINA FISICA 9 ---
+DriveHub
+Venditore
+Obiettivi applicativi e sottofunzione UC-04
+UC-04
+Autorizzazione del venditore
+UC-05
+Acquisto dal cliente
+UC-08
+Cambio di destinazione del veicolo
+Supporto all'interazione (livello inferiore)
+UC-S02
+Accesso al sistema
+UC-S03
+Gestione dell'identità
+Figura 2.2: Venditore: autorizzazione della vendita al cliente (UC-04), esito dell’acquisto
+dal cliente (UC-05) e destinazione dell’inventario (UC-08).
+6
+
+
+--- PAGINA FISICA 10 ---
+DriveHub
+Manager
+Obiettivi applicativi
+UC-09
+Gestione del catalogo
+e delle basi prezzo
+UC-06
+Gestione degli sconti
+UC-10
+Consultazione del registro economico
+Supporto all'interazione (livello inferiore)
+UC-S02
+Accesso al sistema
+UC-S03
+Gestione dell'identità
+Figura 2.3: Manager: manutenzione commerciale e consultazione del registro. Le identità
+staﬀesistono già; non vi è una registrazione pubblica del personale.
+7
+
+
+--- PAGINA FISICA 11 ---
+2.2
+Template dei casi principali
+I sei casi della relazione precedente restano riconoscibili, ma condizioni ed esiti sono riscon-
+trati sui servizi e sulle viste attuali. Qui si espone la collaborazione; l’appendice A contiene
+le schede complete, con identiﬁcativo, titolo, descrizione, livello, attori, condizioni, ﬂusso
+principale e alternative n.a riferite al passo n.
+UC-01 — Prenotazione di un test drive (O). Il cliente sceglie un veicolo in vendita
+o a noleggio e prenota data e ora. Disponibilità e limite di tre test drive attivi sono
+veriﬁcati prima del salvataggio. Non vi sono addebiti. Un impegno commerciale
+successivo può cancellare i test drive futuri. Scheda A.1.
+UC-02 — Prenotazione di un noleggio (O). Il cliente sceglie un periodo con estre-
+mi inclusi e paga subito il costo intero ricalcolato alla conferma. Il noleggio can-
+cella tutti i test drive futuri del veicolo, anche esterni al periodo; le scritture sono
+atomiche. Scheda A.2.
+UC-03 — Vendita al cliente (O). L’acconto del 20% ﬁssa il totale e riserva il veicolo.
+Dopo UC-04 il cliente può pagare il residuo entro un mese. Solo il saldo registra
+la vendita completa; il riﬁuto rimborsa integralmente l’acconto, mentre la scadenza
+trattiene il 20% dell’acconto. Scheda A.3.
+UC-04 — Autorizzazione del venditore (F). Il venditore approva o riﬁuta la richie-
+sta SALE. L’approvazione assegna venditore e scadenza; non incassa il saldo e non
+abilita un nuovo account staﬀ. Scheda A.4.
+UC-05 — Acquisto dal cliente (O). Il cliente propone la cessione e il venditore de-
+cide. L’accettazione accredita la stima memorizzata, registra l’acquisto della con-
+cessionaria e rende il veicolo vendibile. Il riﬁuto conserva l’eventuale storico. Sche-
+da A.5.
+UC-06 — Gestione degli sconti (O). Il manager salva o rimuove percentuali da 0 a
+50 su modelli e veicoli. Il prezzo usa il massimo dei due sconti; i totali già concordati
+non cambiano. Scheda A.6.
+8
+
+
+--- PAGINA FISICA 12 ---
+Tracciabilità verso interfaccia e servizi. I nomi UI possono usare il punto di vista
+del cliente: Acquista Veicolo avvia una vendita della concessionaria, mentre Vendi la tua
+Auto avvia un acquisto dal cliente. Nelle richieste, SALE e PURCHASE mantengono questi
+signiﬁcati. Il registro distingue inoltre PENALTY; un importo positivo non basta da solo a
+stabilire la direzione economica.
+UC-01, UC-02 e UC-03.
+ClientDashboardView apre cataloghi, dialoghi e operazioni; TestDriveService,
+RentalService e PurchaseService eseguono i rispettivi comandi. La dashboard
+avvia il controllo delle scadenze all’accesso del cliente, senza un pianiﬁcatore
+periodico.
+UC-04 e UC-05.
+SalesmanDashboardView distingue i due tipi di richiesta. PurchaseService
+governa l’autorizzazione e il saldo della vendita; SaleToDealershipService
+governa proposta ed esito della cessione.
+UC-06.
+ManagerDashboardView usa CatalogService per gli sconti;
+PriceCalculatorService applica la formula. La base manuale sostituisce la base
+del modello nella stessa formula (ADR 0001).
+Completano le viste UC-07 (catalogo, scheda A.7), UC-08 (destinazione, scheda A.8),
+UC-09 (manutenzione catalogo e basi, scheda A.9), UC-10 (registro, scheda A.10) e UC-11
+(proprie operazioni, scheda A.11). Il supporto comprende UC-S01 (registrazione, sche-
+da A.12), UC-S02 (accesso, scheda A.13), UC-S03 (identità, scheda A.14) e UC-S04 (rica-
+rica demo, scheda A.15). Ogni identiﬁcativo conserva lo stesso signiﬁcato nei diagrammi,
+nelle schede e nella navigazione.
+La separazione delle transazioni spiega gli stati intermedi: dopo l’acconto la vendita
+non è ancora conclusa; dopo una proposta di cessione il cliente non è ancora pagato.
+Gli esiti osservati nelle schermate illustrano il percorso, mentre le regole qui dichiarate
+derivano anche dal riscontro dei sorgenti. Non si attribuisce a questo ticket una nuova
+certiﬁcazione della concorrenza o dei rollback tramite test applicativi.
+9
+
+
+--- PAGINA FISICA 13 ---
+2.3
+Mockups
+Il titolo concordato è mantenuto; le ﬁgure sono screenshot dell’applicazione JavaFX
+realmente eseguita il 12 novembre 2026, non ricostruzioni graﬁche. L’avvio usa
+App.start, le viste e il tema correnti, con rendering software su Xvfb e PostgreSQL 16
+dedicato. I nomi e gli importi provengono dalla ﬁxture dimostrativa. Solo nel database
+temporaneo sono state spostate alcune date per mostrare operazioni ancora valide; sche-
+ma, demo SQL e archivi operativi non sono stati modiﬁcati. Le immagini originali, a
+risoluzione piena, sono conservate in docs/relazione/screenshot; non sono prove di
+tutte le alternative.
+2.3.1
+Autenticazione
+Accesso comune ai tre ruoli (UC-S02) e registrazione riservata al cliente (UC-S01); il ruolo
+non si sceglie nel form, deriva dall’identità autenticata.
+Figura 2.4: Accesso corrente: email, password e ingresso al sistema.
+10
+
+
+--- PAGINA FISICA 14 ---
+Figura 2.5: Registrazione corrente di un cliente: creazione di identità e conto demo ini-
+zialmente vuoto.
+11
+
+
+--- PAGINA FISICA 15 ---
+2.3.2
+Area Customer
+Le etichette Customer e Salesman restano nei titoli concordati; nel testo si usano cliente
+e venditore. Il catalogo avvia UC-01 e UC-03; le operazioni mostrano totale concordato,
+acconto e residuo.
+Figura 2.6: Cliente: catalogo vendita (UC-07), acconto (UC-03) e test drive (UC-01).
+Figura 2.7: Cliente: richieste, noleggi e test drive (UC-11); saldo e annullamento del test
+drive.
+12
+
+
+--- PAGINA FISICA 16 ---
+Figura 2.8: Dialogo corrente del test drive: data e ora di partenza, conferma o annulla-
+mento (UC-01).
+Figura 2.9: Dialogo corrente di noleggio: periodo e costo interamente addebitato alla
+conferma (UC-02).
+13
+
+
+--- PAGINA FISICA 17 ---
+Figura 2.10: Form corrente di proposta: Vendi la tua Auto avvia l’acquisto dal cliente
+della concessionaria (UC-05).
+Figura 2.11: Gestione Account del cliente: modiﬁca email/password, ricarica demo ed
+eliminazione dell’identità (UC-S03, UC-S04).
+14
+
+
+--- PAGINA FISICA 18 ---
+2.3.3
+Area Salesman
+La tipologia della richiesta distingue l’autorizzazione alla vendita al cliente (UC-04) dal-
+l’accettazione di una cessione (UC-05). L’altra scheda governa esclusivamente la destina-
+zione vendita/noleggio (UC-08).
+Figura 2.12: Venditore: richieste in sospeso, dati economici e comandi di approvazione/-
+riﬁuto.
+Figura 2.13: Venditore: inventario SALE/RENT e comando di cambio destinazione.
+15
+
+
+--- PAGINA FISICA 19 ---
+2.3.4
+Area Manager
+Marchi e modelli precedono la gestione dei singoli veicoli (UC-09). Le modiﬁche avvengono
+nei form delle schede, senza una pagina di dettaglio separata.
+Figura 2.14: Manager: anagraﬁca marchi e inserimento/rimozione (UC-09).
+Figura 2.15: Manager: modelli, base del modello e anno di rilascio (UC-09).
+16
+
+
+--- PAGINA FISICA 20 ---
+Figura 2.16: Manager: veicoli, modalità automatica/manuale e basi applicate (UC-09).
+Figura 2.17: Manager: sconti di modello e singolo veicolo, con comandi distinti (UC-06).
+17
+
+
+--- PAGINA FISICA 21 ---
+Figura 2.18: Manager: registro economico con vendite al cliente, acquisti dal cliente e
+penali (UC-10).
+L’importo del registro è non negativo: l’etichetta della tipologia distingue l’incasso
+dall’esborso.
+I noleggi restano rappresentati nelle proprie operazioni e non diventano
+automaticamente righe di questo registro.
+18
+
+
+--- PAGINA FISICA 22 ---
+2.4
+Page Navigation Diagram
+Le ﬁgure 2.19–2.21 descrivono una navigazione desktop: App sostituisce la scena dopo
+l’accesso; la dashboard usa tab selezionabili liberamente. Le azioni aprono dialoghi modali
+oppure aggiornano la stessa scheda. Non sono percorsi URL o pagine web. Il blu identiﬁca
+schermate/tab, il bianco i comandi, l’ocra dialoghi o risultati. Gli identiﬁcativi collegano
+il percorso alle schede dell’appendice A.
+Disconnetti torna all’accesso per ogni ruolo. Gestione Account apre modiﬁca email,
+modiﬁca password ed eliminazione; per il cliente comprende anche la ricarica del conto
+demo, disponibile pure nell’header. Chiudere o annullare un dialogo conserva la schermata
+chiamante; l’eliminazione riuscita dell’identità torna all’accesso.
+La relativa conferma
+deﬁnitiva non va confusa con le rimozioni dirette del catalogo.
+Accedi [UC-S02]
+Registrati [UC-S01, solo cliente]
+Dashboard cliente
+accesso riuscito
+Header: Gestione Account [UC-S03]
+Ricarica Saldo [UC-S04]
+Disconnetti → Accedi
+Schede della dashboard — selezione libera, nessuna finestra nuova
+Auto in Vendita
+Seleziona veicolo
+Acquista (acconto 20%) [UC-03]
+Prenota Test Drive [UC-01]
+Conferma Avvio Operazione
+oppure Prenotazione Test Drive
+OK / Annulla → esito
+Auto a Noleggio
+Seleziona veicolo
+Prenota Noleggio [UC-02]
+Prenota Test Drive [UC-01]
+Prenotazione Noleggio: date e costo
+oppure Prenotazione Test Drive: data e ora
+OK / Annulla → esito
+Vendi la tua Auto
+Compila proposta [UC-05]
+Calcola Preventivo
+Invia Proposta di Vendita
+Preventivo nella scheda
+Proposta Inviata / errore
+Ritorno alla stessa scheda
+Le Mie Operazioni
+Consulta richieste, noleggi, test drive
+[UC-11]
+Paga saldo concordato [UC-03]
+Annulla Test Drive Selezionato [UC-01]
+Conferma Saldo Finale → esito
+Annullamento test drive → esito
+Ritorno e aggiornamento delle tabelle
+Blu: schermate / tab. Bianco: azioni. Ocra: dialoghi o risultati nella stessa scheda.
+Gestione Account: Modifica Email, Modifica Password, Elimina Identità, Ricarica Saldo (cliente).
+Chiudi / Annulla: ritorno al chiamante. Errore: permanenza nel contesto; uscita o eliminazione riuscita: Accedi.
+Figura 2.19: Navigazione cliente: quattro tab; dialoghi di prenotazione, acconto e saldo;
+proposta nella scheda; gestione identità e conto. Riscontri visivi nelle ﬁgure 2.6–2.11.
+19
+
+
+--- PAGINA FISICA 23 ---
+Accedi [UC-S02]
+Registrati [UC-S01, solo cliente]
+Dashboard venditore
+accesso riuscito
+Header: Gestione Account [UC-S03]
+Disconnetti → Accedi
+Schede della dashboard — selezione libera, nessuna finestra nuova
+Richieste in Sospeso
+Seleziona richiesta
+Approva Richiesta / Rifiuta Richiesta
+[UC-04 per SALE; UC-05 per PURCHASE]
+Esito / errore, senza conferma preventiva
+SALE approvata: cliente può saldare
+PURCHASE accettata: accredito e acquisto
+Gestione Stato
+Inventario
+(SALE / RENT)
+Seleziona veicolo
+Modifica Stato
+[UC-08]
+Conferma Cambio Stato
+Avviso rimborsi futuri per RENT → SALE
+Conferma / Annulla → esito
+Blu: schermate / tab. Bianco: azioni. Ocra: dialoghi o risultati nella stessa scheda.
+Gestione Account: Modifica Email, Modifica Password, Elimina Identità.
+Chiudi / Annulla: ritorno al chiamante. Errore: permanenza nel contesto; uscita o eliminazione riuscita: Accedi.
+Figura 2.20: Navigazione venditore: richieste ed inventario, corrispondenti alle ﬁgure 2.12
+e 2.13. L’approvazione non apre una conferma preventiva; il cambio destinazione sì.
+Le azioni Approva Richiesta e Riﬁuta Richiesta hanno esiti diversi secondo il tipo della
+riga. Una richiesta di vendita al cliente approvata rimanda il completamento al cliente;
+l’accettazione di una cessione eﬀettua subito accredito e acquisto. Il cambio destinazione
+mostra un avviso dei noleggi futuri, ma il servizio ne rilegge lo stato prima del commit.
+20
+
+
+--- PAGINA FISICA 24 ---
+Accedi [UC-S02]
+Registrati [UC-S01, solo cliente]
+Dashboard manager
+accesso riuscito
+Header: Gestione Account [UC-S03]
+Disconnetti → Accedi
+Schede della dashboard — selezione libera, nessuna finestra nuova
+Marchi
+Nome → Aggiungi Brand
+Selezione → Elimina Selezionato
+[UC-09]
+Aggiunta / eliminazione: esito o errore
+Nessuna conferma preventiva
+Vincoli sulle associazioni
+Modelli
+Marchio, nome, base, anno → Aggiungi
+Modello
+Selezione → Elimina Selezionato
+[UC-09]
+Aggiunta / eliminazione: esito o errore
+Nessuna conferma preventiva
+Vincoli sulle associazioni
+Veicoli
+Aggiungi Veicolo / Elimina Selezionato
+Automatico o base manuale
+Applica base alla selezione [UC-09]
+Form nella scheda, esito / errore
+Nessuna conferma preventiva al DELETE
+Base manuale: input nella scheda
+Sconti
+Modello oppure ID veicolo + % → Salva
+Selezione sconto → Rimuovi
+[UC-06]
+Salva: esito / errore
+Rimuovi: aggiornamento della tabella
+Nessun nuovo percorso di pagina
+Registro economico
+Consulta vendite al cliente,
+acquisti dal cliente e penali
+[UC-10]
+Tabella di sola consultazione
+Aggiorna / Riprova nel caricamento
+Nessun dialogo di modifica
+Blu: schermate / tab. Bianco: azioni. Ocra: dialoghi o risultati nella stessa scheda.
+Gestione Account: Modifica Email, Modifica Password, Elimina Identità.
+Chiudi / Annulla: ritorno al chiamante. Errore: permanenza nel contesto; uscita o eliminazione riuscita: Accedi.
+Figura 2.21: Navigazione manager: cinque tab e form nella stessa vista, corrispondenti
+alle ﬁgure 2.14–2.18. Il registro è di sola consultazione.
+Le rimozioni di catalogo e sconti sono azioni dirette; la vista non aggiunge una con-
+ferma preventiva. Durante le letture asincrone di cataloghi, inventario, sconti e registro
+i dati sono disabilitati; in caso di errore compare Riprova. Questo comportamento non
+va esteso alle letture sincrone di richieste e operazioni personali. Le nuove tavole sono
+conservate con sorgenti .drawio ed esportazioni PDF in docs/relazione/diagrammi.
+21
+
+
+--- PAGINA FISICA 25 ---
+2.5
+Package Diagram
+L’organizzazione corrente comprende undici package con tipi di produzione. La ﬁgura 2.22
+distingue la composizione dell’applicazione dai suoi collaboratori: le frecce indicano chi
+dipende da chi nel codice, non il verso di restituzione dei dati. I package intermedi domain
+e presentation non contengono tipi propri e non richiedono viste vuote.
+App avvia JavaFX e collega utente, servizi e callback alle viste; AppContext costruisce
+i DAO PostgreSQL, il gestore delle connessioni, l’hasher, il publisher con il suo observer
+e i servizi. Questa composizione manuale concentra le scelte concrete senza un container.
+Il contesto riceve un DatabaseManager, ma sceglie internamente le implementazioni: non
+rende quindi sostituibile ogni dipendenza dal solo costruttore.
+I servizi coordinano i casi d’uso delle sezioni precedenti. Dipendono dai contratti DAO
+e dal dominio; i servizi transazionali conoscono anche DatabaseManager e JDBC. I DAO
+deﬁniscono letture, scritture e lock per risorsa; dao.postgres ne realizza mapping e SQL.
+Il dominio non richiama i DAO e i suoi quattro package non importano gli altri package
+applicativi. Ciò non equivale a un isolamento completo dalle esigenze dell’interfaccia:
+domain.user contiene il contratto di navigazione per ruolo.
+22
+
+
+--- PAGINA FISICA 26 ---
+PKG — Package e dipendenze
+Prefisso comune: it.unifi.drivehub. Freccia tratteggiata: dipendenza del codice.
+it.unifi.drivehub
+App: avvio e viste
+AppContext: composizione
+presentation.view
+Viste JavaFX e dialoghi
+Input, tabelle e caricamenti
+service
+Casi d'uso, prezzi, transazioni
+Letture e politica di cancellazione
+event
+Contratto Observer e publisher
+Evento con vehicleId
+security
+Contratto hash/verify
+PBKDF2 e sale casuale
+dao
+Contratti per risorsa
+DatabaseManager e JDBC
+dao.postgres
+Mapping, SQL e lock
+Dieci realizzazioni dei DAO
+Dominio — quattro package distinti, senza dipendenze fra loro
+domain.user
+Ruoli, identità e conto
+Contratto di navigazione
+domain.vehicle
+Marca, modello, veicolo
+Stato e base del prezzo
+domain.discount
+Sconti modello / veicolo
+Percentuale intera 0–50
+domain.operation
+Richieste, registro, noleggi
+Test drive; riferimenti per ID
+Lettura della tavola
+Dipendenze trasversali effettive (→ indica il fornitore):
+it.unifi.drivehub → dao.postgres, dao, event, security, domain.user, oltre agli archi sopra.
+presentation.view → it.unifi.drivehub (overload globali) e i quattro package domain.
+service, dao e dao.postgres → ciascuno dei quattro package domain.
+Nessuna dipendenza del dominio da servizi/DAO/JavaFX; event usa java.sql.Connection.
+Figura 2.22: PKG — Package correnti: dipendenze principali e legami trasversali esplici-
+tati in calce.
+23
+
+
+--- PAGINA FISICA 27 ---
+Le dipendenze trasversali limitano una lettura rigidamente a strati. Le viste usano
+servizi concreti e tipi del dominio; gli overload di comodo richiamano il contesto globale,
+mentre App passa esplicitamente i servizi. service dipende da event, anche attraverso la
+realizzazione dell’observer, ma event non dipende da service: conosce solo il contratto
+degli osservatori. La connessione JDBC attraversa questa notiﬁca. security oﬀre hash
+e veriﬁca delle password a AuthService; non concentra l’autorizzazione di tutte le ope-
+razioni. Le note della tavola completano gli archi selezionati e rendono visibile anche la
+dipendenza reciproca tra package di avvio e presentazione.
+La separazione evita SQL nelle viste e concentra le formule nel calcolatore, ma lascia
+responsabilità ampie nelle dashboard e in AuthService, che tratta accesso, identità e
+conto dimostrativo. I contratti che espongono Connection facilitano la condivisione della
+transazione, al prezzo di legare anche i servizi a JDBC. Non si attribuisce al sistema
+un’architettura esagonale o una separazione ideale assente dai sorgenti.
+2.6
+Class Diagram
+Le viste selezionano responsabilità, invarianti e collaborazioni: non sono cataloghi di tutti
+i membri. L’appendice B raccoglie le tavole CL-01–CL-11, con due tavole CL-08a e CL-
+08b per il package DAO. Gli identiﬁcativi rimangono gli stessi nei rimandi e nei sorgenti
+draw.io.
+La legenda distingue generalizzazione (linea continua e triangolo vuoto), realizzazione
+(tratteggio e triangolo), dipendenza (tratteggio e freccia aperta) e associazione navigabile
+(linea continua e freccia aperta). Le molteplicità annotate si riferiscono al solo estremo
+bersaglio; l’altro estremo non impone un vincolo numerico. Non sono impiegati rombi di
+aggregazione o composizione: un campo o l’iniezione di un collaboratore non ne dimo-
+strano il ciclo di vita. Gli attributi marcati ID o chiave restano riferimenti scalari, non
+associazioni a oggetti.
+2.6.1
+Domain Model
+Il dominio separa identità, catalogo, sconti e operazioni. Nella gerarchia degli utenti,
+AbstractUser realizza User; Client, Salesman e Manager specializzano la parte comu-
+ne. Client può conservare un BankAccount oppure non averlo ancora caricato: CL-02
+mostra quindi una navigazione verso zero o un conto. Il conto conserva a sua volta sol-
+tanto clientId; non si disegna un collegamento inverso a Client. Il suo comportamento
+controlla importi e disponibilità nel modello dimostrativo, non integra una banca.
+La ﬁgura 2.23 mostra una distinzione utile anche per UC-03 e UC-09: un veicolo con-
+serva modelId, mentre riceve un oggetto Model quando deve scegliere la base del prezzo.
+Il primo è un riferimento per ID; il secondo giustiﬁca una dipendenza di metodo. Analo-
+gamente Model.brand è una stringa, non un oggetto Brand. Stato e modalità del prezzo
+sono invece attributi tipizzati dagli enum. La base manuale entra nella stessa formu-
+la della base modello, come stabilito dall’ADR 0001; il totale concordato è un concetto
+distinto.
+24
+
+
+--- PAGINA FISICA 28 ---
+CL-03 — Catalogo e scelta della base
+Package it.unifi.drivehub.domain.vehicle. I collegamenti per chiave restano attributi.
+Brand
+− name: String
++ create(name)
+Model
+− id: Long
+− brand: String {chiave}
+− releasePrice: BigDecimal
+− releaseYear: int
++ create(...)
+Vehicle
+− id: Long
+− modelId: Long {ID}
+− vin: String
+− licencePlate: String [0..1]
+− kilometers: int
+− price: BigDecimal {base}
++ getSelectedBasePrice(Model)
++ setPrice(amount)
+«enumeration»
+VehicleState
+SALE, RENT, BLOCKED
+WAITING, SOLD
+«enumeration»
+PriceMode
+AUTOMATIC
+MANUAL
+state [1]
+priceMode [1]
+getSelectedBasePrice
+Lettura della tavola
+modelId non è un oggetto Model; Model.brand è una stringa, non un oggetto Brand.
+La dipendenza Vehicle → Model deriva dal parametro del metodo di scelta della base.
+Vincoli locali: km ≥ 0; senza targa km = 0; base ≥ 0; anno fra 1900 e oggi.
+MANUAL sostituisce la base nella formula; non fissa il totale finale (ADR 0001).
+Figura 2.23: CL-03 — Vista selezionata del catalogo; tavola ripresa in appendice B.
+25
+
+
+--- PAGINA FISICA 29 ---
+CL-04 rende esplicita la sola generalizzazione degli sconti: il limite intero 0–50 ap-
+partiene alla base astratta, mentre le specializzazioni conservano l’ID del modello o del
+veicolo. La scelta dello sconto massimo è responsabilità del servizio di calcolo, non di
+una relazione tra entità. CL-05 distingue Request dal registro Sale e dalle prenotazioni
+Rent/TestDrive. Nessuna di queste classi contiene oggetti cliente o veicolo. Le richieste
+SALE conservano totale e acconto dell’accordo di UC-03; nelle PURCHASE, relative a UC-05,
+il campo deposit contiene la stima e il totale concordato è assente. Il tipo del registro
+distingue vendita al cliente, acquisto dal cliente e penale con importi non negativi, senza
+dedurre il signiﬁcato dal segno.
+2.6.2
+Business Layer
+CL-01 e CL-06 separano composizione e coordinamento. Il contesto conserva i collabora-
+tori e li passa ai costruttori. I tre servizi dei ﬂussi economici coordinano i DAO, mentre il
+calcolatore concentra le formule. CatalogService prepara anche righe con nomi e prezzi
+per le tabelle; il servizio di interrogazione espone le letture delle operazioni. I record
+annidati del catalogo sono dati di lettura, non nuove entità persistenti.
+L’observer di cancellazione appartiene a service, perché applica la priorità della ven-
+dita al cliente e del noleggio sui test drive di UC-01. Il contratto, il publisher e l’evento
+risiedono invece in event. La ﬁgura 2.24 mostra la notiﬁca sincrona sulla connessione del
+servizio prima del commit: un errore dell’observer deve impedirlo. La separazione consen-
+te altri osservatori, ma non oﬀre consegna asincrona, persistenza degli eventi o recupero
+tramite outbox.
+26
+
+
+--- PAGINA FISICA 30 ---
+CL-07 — Eventi nella transazione
+Package it.unifi.drivehub.event. Grigio: collaboratori del package service.
+VehicleEventPublisher
+− observers
++ attach(observer); detach(observer)
++ publishCommitment(event, conn)
+«interface»
+VehicleCommitmentObserver
++ onVehicleCommitted(event, conn)
+[0..*]
+«record»
+VehicleCommitmentEvent
+vehicleId: Long {ID}
+parametro
+«service»
+TestDriveCancellationObserver
+− testDriveDao: TestDriveDao
++ onVehicleCommitted(event, conn)
+event
+«service · selezione»
+PurchaseService / RentalService
+− eventPublisher: VehicleEventPublisher
+pubblicazione prima del commit
+eventPublisher [1]
+Lettura della tavola
+Observer e publisher ricevono la Connection JDBC del chiamante come parametro.
+La notifica è sincrona; l'errore si propaga e impedisce il commit del servizio.
+L'evento conserva solo vehicleId. L'observer cancella i test drive futuri del veicolo.
+AppContext registra l'observer; non sono previsti coda, outbox o eventi persistenti.
+Figura 2.24: CL-07 — Collaborazione Observer nella transazione di vendita al cliente o
+noleggio.
+27
+
+
+--- PAGINA FISICA 31 ---
+2.6.3
+DAO
+CL-08a raccoglie dieci contratti distinti per risorsa, senza un gestore comune da cui eredi-
+tare. La classe DatabaseManager apre connessioni ed esegue il corpo di una transazione
+mediante le due callback annidate di CL-08b, tentando commit oppure rollback in caso
+di eccezione. Non è un DAO base né un ORM. Le ﬁrme con Connection rendono visibile
+la partecipazione di più scritture alla stessa transazione. Alcuni overload di lettura dei
+contratti forniscono però un default che delega alla lettura senza connessione: la sola ﬁrma
+non basta a garantirne il riuso. I DAO PostgreSQL pertinenti rideﬁniscono tali percorsi.
+CL-09 rende riconoscibile ciascuna realizzazione del relativo contratto. Ogni DAO
+PostgreSQL conserva il gestore ricevuto dal costruttore: non si deduce una composizione
+UML da questo riferimento condiviso. Le letture autonome gestiscono la propria connes-
+sione; quelle transazionali e le scritture protette usano quella passata dal servizio. Il map-
+ping ricostruisce le entità e converte i domini enumerati in accordo con l’ADR 0002. Gli ID
+che legano i record persistenti non diventano per questo riferimenti a oggetti nel dominio.
+I dettagli SQL e i protocolli dei singoli ﬂussi sono rinviati al capitolo Implementazione
+ancora da redigere.
+2.6.4
+Presentation Layer
+CL-10 mostra le viste eﬀettive: accesso e tre dashboard estendono BorderPane; il dialogo
+di gestione dell’identità è una classe di utilità con metodi statici, non un sottotipo di
+Dialog. Le viste costruiscono controlli JavaFX direttamente, senza controller FXML.
+AsyncLoad, interno al package, usa Task e worker virtuali per le letture delle tabelle;
+pubblica solo il caricamento corrente sul thread graﬁco. Ciò non rende asincrone tutte
+le azioni economiche né interrompe immediatamente JDBC quando un caricamento è
+scartato.
+La navigazione delle sezioni 2.3–2.4 parte da User: il suo metodo openDashboard
+viene specializzato nei tre ruoli.
+Il sottotipo invoca il metodo speciﬁco del contratto
+UserDashboardNavigator. App crea un’implementazione anonima che costruisce la da-
+shboard appropriata. È un double dispatch nello stile Visitor: aggiungere un ruolo richiede
+di aggiornare anche il contratto e il collegamento delle viste. App non realizza direttamen-
+te quell’interfaccia. Il dominio resta privo di import JavaFX, ma conosce questa esigenza
+di navigazione.
+CL-11 mostra il conﬁne delle credenziali. Il contratto PasswordHasher è ricevuto da
+AuthService; la realizzazione PBKDF2 viene scelta nel contesto. Questo conﬁne riguar-
+da hash e veriﬁca della password. La scelta della dashboard per ruolo non equivale a un
+controllo autonomo dei permessi in ogni metodo dei servizi, che non ricevono tutti un’i-
+dentità autenticata. Non viene quindi attribuita al solo package security una garanzia
+generale di autorizzazione.
+28
+
+
+--- PAGINA FISICA 32 ---
+2.7
+Sequence Diagram
+Le tavole seguono UC-03/UC-04, UC-02 e UC-05, descritti nelle schede dell’appendice A.
+I titoli storici conservano il punto di vista del cliente; la spiegazione adotta quello della
+concessionaria: vendita al cliente e acquisto dal cliente, anche detto cessione del cliente.
+Non vengono riproposti gateway, unità di lavoro o strategie della versione precedente.
+Ogni tavola distingue l’azione dell’attore, l’handler JavaFX e la chiamata al servizio,
+quindi dettaglia le collaborazioni selezionate. I partecipanti DAO sono le implementazioni
+PostgreSQL dei contratti già presentati. Le frecce continue blu sono chiamate sincrone
+del percorso principale; quelle rosse evidenziano un’alternativa, i ritorni espliciti sono
+tratteggiati. I frammenti alt/else sono mutuamente alternativi; loop ripete un episodio
+e ref rinvia alla collaborazione comune SQ-OB. Le diciture «azione», «SQL», «sintesi» e
+«memoria» sono descrittive: non introducono metodi Java. Le note riassumono chiamate
+eﬀettive omesse dalle frecce per contenere il numero di linee di vita.
+I parametri vehicleId, clientId, requestId e salesmanId sono identiﬁcativi;
+Vehicle, Request, Model e BankAccount sono invece copie in memoria ottenute o
+costruite nel ﬂusso. La selezione nella vista non sostituisce una rilettura transazionale.
+Le sigle T1–T7 identiﬁcano episodi distinti; i nomi delle connessioni sono locali alla
+singola tavola.
+La lettera c indica la Connection eﬀettivamente passata ai DAO.
+DatabaseManager apre la connessione, disabilita autocommit, esegue la callback e
+tenta il commit. Su un’Exception nel corpo o nel commit tenta rollback, conserva un
+eventuale errore di rollback come eccezione soppressa e propaga una RuntimeException.
+Il ritorno normale alla vista segue il commit; errori di apertura, chiusura o comunicazione
+non consentono di promettere recupero da qualsiasi guasto o esito sempre conoscibile.
+2.7.1
+Acquisto di un veicolo
+La vendita al cliente si articola in sessioni e transazioni separate. SQ-01a (ﬁgura 2.25)
+copre l’avvio di UC-03: l’aggiornamento condizionale da SALE a BLOCKED precede il calcolo
+eﬀettivo. Il prezzo del dialogo è un’anteprima. Il servizio applica la formula con la base
+selezionata, automatica o manuale, e ﬁssa totale e acconto del 20% nella richiesta SALE,
+insieme all’addebito. Come nell’ADR 0001, la base manuale non è un prezzo ﬁnale impo-
+sto. Le letture del modello e degli sconti aprono però connessioni autonome: avvengono
+durante la callback, ma fuori dalla transazione di scrittura T1 e senza uno snapshot unico
+del listino. Non si attribuisce loro il lock ottenuto sul veicolo.
+29
+
+
+--- PAGINA FISICA 33 ---
+SQ-01a · Vendita al cliente: avvio e acconto
+Cliente:
+conferma
+ClientDashboardView
+handlePurchaseAction()
+PurchaseService
+«azione»
+«handler»
+initiatePurchase(vehicleId, clientId) · UC-03, passi 1–3 / 3.a
+Ingresso UI sopra; dettaglio selettivo sotto. ID scalari nei parametri; oggetti nelle note «memoria».
+Purchase
+Service
+Database
+Manager
+Postgres
+VehicleDao
+Postgres
+BankAccount
+Dao
+Postgres
+RequestDao
+PostgreSQL
+executeInTransactionWithResult(λ)
+T1 · DatabaseManager apre c1, setAutoCommit(false); esegue λ(c1). Nessuna
+transazione attraversa i successivi episodi UI.
+updateStateAtomically(id,
+SALE, BLOCKED, c1)
+«SQL c1» UPDATE condizionale;
+se zero righe: errore → rollback
+findById(vehicleId, c1)
+«sintesi fuori T1» PostgresModelDao.findById(modelId) apre a1;
+PostgresDiscountDao.findModelDiscount / findVehicleDiscount aprono a2 / a3. Nessun
+c1 passato.
+«memoria» PriceCalculatorService.calculateVehiclePrice(model, vehicle, mDisc, vDisc),
+poi calculatePurchaseDeposit(total): 20%. Il dialogo precedente era un'anteprima.
+findByClientIdForUpdate(clientId, c1)
+«SQL c1» SELECT conto FOR UPDATE
+«memoria» account.withdraw(deposit); poi
+PostgresBankAccountDao.updateBalance(iban, balance, c1) → UPDATE su c1. Conto
+assente/fondi insufficienti: errore.
+save(Request.createNewSaleRequest(
+vehicleId, clientId, deposit, total), c1)
+«SQL c1» INSERT request
+SALE, agreed_total, deposit
+T1 · λ restituisce Request; DatabaseManager: commit(c1), chiusura c1, ritorno alla vista.
+Importi fissati nella richiesta; nessuna riga sale all'acconto.
+Blu: percorso principale; rosso: alternativa che interrompe; tratteggio: ritorno/lifeline.
+«SQL», «sintesi», «memoria» sono descrizioni, non metodi Java.
+Qualsiasi Exception nel corpo/commit: tentativo di rollback c1 e RuntimeException alla
+vista; nessuna scrittura c1 parziale (salvo guasti di connessione/commit incerto).
+Figura 2.25: SQ-01a — Vendita al cliente: avvio, totale concordato e acconto.
+30
+
+
+--- PAGINA FISICA 34 ---
+SQ-01b (ﬁgura 2.26) rappresenta UC-04: l’approvazione assegna venditore e scadenza
+a un mese dalla data corrente, lasciando il veicolo riservato e il saldo ancora da versare.
+Il riﬁuto restituisce l’intero acconto, elimina la richiesta e ripristina SALE. Non crea una
+penale né una registrazione nel registro sale. La richiesta viene riletta con FOR UPDATE;
+la lista delle richieste in sospeso è selezionata dalla UI, mentre il comando non veriﬁca
+nuovamente che la richiesta non fosse già approvata. L’autorizzazione di UC-04 è l’esito
+della richiesta, non l’abilitazione di un account staﬀ.
+SQ-01c (ﬁgura 2.27) conclude UC-03. Il servizio rilegge la richiesta sotto lock, ne
+controlla tipo, approvazione e scadenza, quindi addebita totale concordato meno acconto,
+senza ricalcolare il listino. Il giorno della scadenza è ancora ammesso. Registra l’intero
+totale come Sale di tipo SALE, elimina la richiesta, porta il veicolo a SOLD e notiﬁca
+sincronicamente l’Observer prima del commit.
+Un errore lascia validi gli eﬀetti degli
+episodi precedenti, come l’acconto già confermato, e annulla le scritture del solo saldo. I
+lock coordinano gli accessi ai record coinvolti; i servizi di saldo ed esito ricevono ID, senza
+un’identità del chiamante con cui provare un controllo generale dei permessi.
+31
+
+
+--- PAGINA FISICA 35 ---
+SQ-01b · Vendita al cliente: autorizzazione o rifiuto
+Venditore:
+decide
+SalesmanDashboardView
+handleApproveRequest /
+handleRejectRequest
+PurchaseService
+«azione»
+«handler»
+approvePurchase(requestId, salesmanId) oppure rejectPurchase(requestId)
+· UC-04
+Ingresso UI sopra; dettaglio selettivo sotto. ID scalari nei parametri; oggetti nelle note «memoria».
+Purchase
+Service
+Database
+Manager
+Postgres
+RequestDao
+Postgres
+BankAccount
+Dao
+Postgres
+VehicleDao
+PostgreSQL
+executeInTransaction(λ)
+T2 · Nuova c2 con autocommit false; una sola decisione per invocazione. Nessun lock
+derivato dalla selezione UI.
+findByIdForUpdate(requestId, c2)
+«SQL c2» SELECT request FOR UPDATE
+«guardia comune» richiesta presente e type = SALE; altrimenti eccezione. Non è
+verificato qui che salesman fosse ancora nullo.
+alt [approvazione — principale] «memoria» request.setSalesmanId(salesmanId);
+setExpDate(oggi.plusMonths(1)). Nessun addebito né registro economico.
+update(request, c2)
+«SQL c2» UPDATE request
+else [rifiuto — UC-03 4.a / UC-04 3.a] «memoria» conto riletto sotto lock,
+account.deposit(request.getDeposit()). Rimborso integrale.
+findByClientIdForUpdate(clientId, c2);
+updateBalance(iban, balance, c2)
+updateStateAtomically(vehicleId,
+BLOCKED, SALE, c2)
+delete(requestId, c2)
+end alt · I DAO eseguono SELECT/UPDATE/DELETE su c2. DatabaseManager: commit e
+chiusura c2 prima del successo UI; su Exception tenta rollback e propaga
+RuntimeException.
+Le due branche sono invocazioni alternative, ciascuna con la propria transazione; non
+sono due azioni eseguite in sequenza.
+Il lock serializza il singolo ID richiesta; non è un controllo generale dei permessi del
+chiamante né un divieto applicativo di riapprovazione.
+Figura 2.26: SQ-01b — UC-04: approvazione oppure riﬁuto con rimborso.
+32
+
+
+--- PAGINA FISICA 36 ---
+SQ-01c · Vendita al cliente: saldo e registrazione
+Cliente:
+conferma saldo
+ClientDashboardView
+handleCompletePurchaseAction()
+PurchaseService
+«azione»
+«handler»
+completePurchase(requestId) · UC-03, passi 5–6 / 5.a / 6.a
+Ingresso UI sopra; dettaglio selettivo sotto. ID scalari nei parametri; oggetti nelle note «memoria».
+Purchase
+Service
+Postgres
+RequestDao
+Postgres
+BankAccount
+Dao
+Postgres
+SaleDao
+Postgres
+VehicleDao
+VehicleEvent
+Publisher
+PostgreSQL
+T3 · DatabaseManager.executeInTransaction(λ): apre c3, setAutoCommit(false), λ(c3).
+La vista passa l'ID della Request selezionata, non la sua copia come accordo autorevole.
+findByIdForUpdate(requestId, c3)
+«SQL c3» SELECT request FOR UPDATE
+«guardie» type SALE, salesmanId ed expDate presenti, !isExpired(). Oggi = scadenza è
+ammesso. Errore → rollback; la UI anticipa alcuni controlli sulla copia selezionata.
+«memoria» request.getAgreedTotal(); getRemainingAmount() = totale − acconto
+persistiti. Nessun ricalcolo di listino al saldo.
+findByClientIdForUpdate(clientId, c3)
+«memoria» account.withdraw(residuo); PostgresBankAccountDao.updateBalance(iban,
+balance, c3) → UPDATE su c3.
+save(Sale.createSaleRecord(
+vehicleId, salesmanId, clientId, totale),
+c3)
+«SQL c3» INSERT sale, type SALE
+delete(requestId, c3)
+updateStateAtomically(vehicleId,
+BLOCKED, SOLD, c3)
+publishCommitment(
+new VehicleCommitmentEvent(vehicleId), c3)
+ref SQ-OB · Notifica e cancellazioni test drive sincrone su c3; al ritorno
+DatabaseManager esegue commit e chiude c3. Soltanto dopo la vista mostra il
+successo.
+Ogni DAO usa c3; SQL descrittivo riassunto dove indicato. Qualsiasi errore, incluso
+l'Observer, risale al gestore: tentativo di rollback e RuntimeException alla vista.
+Il servizio usa il cliente memorizzato nella richiesta; non riceve l'identità del chiamante
+per un controllo generale di titolarità.
+Figura 2.27: SQ-01c — Saldo sul totale persistito e registrazione della vendita al cliente.
+33
+
+
+--- PAGINA FISICA 37 ---
+SQ-01d (ﬁgura 2.28) copre l’alternativa UC-03 6.b.
+Il costruttore della dashboard
+cliente programma il controllo con Platform.runLater: non è un processo periodico
+e il solo decorso del tempo non esegue movimenti.
+Una lettura autonoma raccoglie i
+candidati; ciascuno è poi riletto e valutato in una transazione propria. Per una richiesta
+approvata con data strettamente precedente a oggi, il servizio trattiene il 20% dell’acconto,
+arrotondato ai centesimi, restituisce il resto, registra PENALTY, elimina la richiesta e libera
+il veicolo. La penale non è il 20% del totale. Un candidato non più pertinente non produce
+eﬀetti; se un candidato fallisce, quelli già confermati restano trattati. L’errore risale alla
+vista, che in questo controllo scrive un avviso su stderr; i messaggi all’utente sono mostrati
+solo al ritorno normale della lista. Non si produce una notiﬁca Observer.
+34
+
+
+--- PAGINA FISICA 38 ---
+SQ-01d · Vendita al cliente: controllo delle scadenze
+Cliente: apre
+dashboard
+ClientDashboardView
+checkExpirationsOnStartup()
+PurchaseService
+«azione»
+«handler»
+checkAndHandleExpiredRequests(clientId) · UC-03 6.b / UC-S02
+Ingresso UI sopra; dettaglio selettivo sotto. ID scalari nei parametri; oggetti nelle note «memoria».
+Purchase
+Service
+Database
+Manager
+Postgres
+RequestDao
+Postgres
+BankAccount
+Dao
+Postgres
+SaleDao
+Postgres
+VehicleDao
+PostgreSQL
+«innesco» Il costruttore della vista programma checkExpirationsOnStartup con
+Platform.runLater. Non esiste qui un timer periodico né un intervento automatico alla
+data di scadenza.
+findByClientId(clientId)
+«SQL c0 autonoma» SELECT richieste;
+connessione poi chiusa
+loop [per ogni candidato, anche se poi non scaduto] T4i: nuova c,
+executeInTransactionWithResult(λ), autocommit false. Nessuna transazione comune
+all'intera lista.
+findByIdForUpdate(candidate.getId(), c)
+alt [assente / non SALE / altro cliente / non approvata / non scaduta] λ restituisce null;
+commit senza effetti e prossimo candidato.
+else [approvata e scaduta: expDate < oggi] «memoria» penale = 20% acconto,
+HALF_UP ai centesimi; rimborso = acconto − penale.
+findByClientIdForUpdate(clientId, c)
+«memoria» account.deposit(rimborso); PostgresBankAccountDao.updateBalance(iban,
+balance, c) → UPDATE su c.
+save(Sale.createPenaltyRecord(
+clientId, penale), c)
+delete(request.getId(), c)
+updateStateAtomically(vehicleId,
+BLOCKED, SALE, c)
+end alt · DatabaseManager: commit/chiusura c; aggiunge il messaggio solo dopo il
+ritorno. Fine loop: lista alla vista. Errore: rollback del solo candidato corrente e uscita dal
+metodo.
+La vista mostra i messaggi restituiti e aggiorna il saldo. Su Throwable scrive invece un
+avviso su stderr: non presenta lo stesso dialogo d'errore delle azioni manuali.
+Candidati già trattati in transazioni precedenti restano confermati anche se un
+candidato successivo fallisce. Nessuna notifica Observer in questo episodio.
+Figura 2.28: SQ-01d — Scadenze controllate all’apertura della dashboard, una transazione
+per candidato.
+35
+
+
+--- PAGINA FISICA 39 ---
+2.7.2
+Prenotazione di un noleggio
+SQ-02 (ﬁgura 2.29) realizza UC-02. Il preventivo del dialogo è calcolato in una chiamata
+distinta e non congela un accordo. Alla conferma, il servizio riﬁuta date passate o invertite,
+blocca il veicolo con FOR UPDATE, richiede RENT e blocca l’identità cliente con FOR NO KEY
+UPDATE. Rilegge quindi la disponibilità sul periodo incluso, ricalcola il costo e addebita il
+100% sotto lock del conto. Gli overload PostgreSQL delle letture di modello e sconti usati
+qui ricevono la stessa connessione: ciò non equivale a uno snapshot globale immutabile
+né a un lock dell’intero listino. Lo stato rimane RENT.
+Il controllo applicativo dei periodi è aﬃancato dal vincolo SQL EXCLUDE sui noleggi
+dello stesso veicolo. Dopo il salvataggio, la collaborazione SQ-OB (ﬁgura 2.30) cancella
+tutti i test drive futuri del veicolo, anche esterni al periodo noleggiato: è la priorità com-
+merciale condivisa con il saldo della vendita al cliente. Il publisher chiama direttamente
+l’Observer sullo stesso thread e sulla stessa connessione, prima del commit. Un errore
+della cancellazione risale al gestore e impedisce di confermare addebito e prenotazione
+separatamente. Non vi sono coda, outbox o consegna asincrona. Il servizio di noleggio
+riespone le cause applicative riconosciute, mentre gli altri errori rimangono avvolti; la vi-
+sta presenta il fallimento. Non si estende questa garanzia ad altre operazioni o a qualsiasi
+protocollo concorrente.
+36
+
+
+--- PAGINA FISICA 40 ---
+SQ-02 · Noleggio: prenotazione e addebito
+Cliente:
+conferma date
+ClientDashboardView
+handleRentAction(), callback del
+dialogo
+RentalService
+«azione»
+«handler»
+bookRental(vehicleId, clientId, start, end) · UC-02, passi 3–6 / 3.a–5.a
+Ingresso UI sopra; dettaglio selettivo sotto. ID scalari nei parametri; oggetti nelle note «memoria».
+Rental
+Service
+Postgres
+VehicleDao
+Postgres
+UserDao
+Postgres
+RentDao
+Postgres
+BankAccount
+Dao
+VehicleEvent
+Publisher
+PostgreSQL
+Prima di T5: rifiuta start < oggi o end < start. T5:
+DatabaseManager.executeInTransactionWithResult(λ), nuova c5, autocommit false.
+findByIdForUpdate(vehicleId, c5)
+«SQL c5» SELECT vehicle FOR UPDATE;
+servizio richiede stato RENT
+lockClient(clientId, c5)
+«SQL c5» SELECT client
+FOR NO KEY UPDATE
+isVehicleAvailableForRent(
+vehicleId, start, end, c5)
+«SQL c5» nessun rent con start ≤ fine richiesta ed end ≥ inizio richiesta. Se occupato:
+errore. EXCLUDE protegge inoltre gli intervalli inclusivi sullo stesso veicolo.
+«sintesi su c5» calculateRentalCost(vehicle, start, end, c5): PostgresModelDao.findById
+e PostgresDiscountDao.findModelDiscount / findVehicleDiscount con c5;
+PriceCalculatorService ricalcola costo del periodo incluso.
+findByClientIdForUpdate(clientId, c5)
+«memoria» account.withdraw(totalCost); PostgresBankAccountDao.updateBalance(iban,
+balance, c5) → UPDATE su c5. Addebito integrale, non un acconto.
+save(Rent.create(null, vehicleId,
+clientId, totalCost, start, end), c5)
+publishCommitment(
+new VehicleCommitmentEvent(vehicleId), c5)
+ref SQ-OB · Cancella tutti i test drive futuri del veicolo su c5, anche fuori periodo.
+Ritorno → commit/chiusura c5 → Rent alla vista; stato del veicolo resta RENT.
+Errore di dati, stato, conto, salvataggio o Observer: tentativo di rollback dell'intera T5.
+RentalService riespone la causa IllegalArgumentException/IllegalStateException se
+avvolta dal gestore, altrimenti rilancia il failure.
+Il preventivo calculateRentalCost(vehicleId, start, end) era una transazione distinta
+senza prenotazione né accordo congelato.
+Figura 2.29: SQ-02 — Noleggio: disponibilità, costo ricalcolato e addebito integrale.
+37
+
+
+--- PAGINA FISICA 41 ---
+SQ-OB · Collaborazione comune: cancellazioni sincrone
+Saldo / noleggio
+ref SQ-01c / SQ-02
+chiamata del servizio, non gesto
+UI
+VehicleEventPublisher
+«ref»
+«chiamata»
+publishCommitment(new VehicleCommitmentEvent(vehicleId), c) ·
+continuazione della T3 o T5
+Continuazione del servizio sopra; dettaglio sincrono sotto.
+VehicleEvent
+Publisher
+TestDrive
+Cancellation
+Observer
+Postgres
+TestDriveDao
+PostgreSQL
+La c è quella del chiamante, già in transazione. L'evento contiene solo vehicleId, non
+l'oggetto Vehicle né una Connection propria. AppContext registra questo observer nel
+publisher.
+onVehicleCommitted(event, c)
+deleteFutureByVehicleId(event.vehicleId(),
+c)
+«SQL c» DELETE FROM test_drive
+WHERE vehicle = ? AND date >
+CURRENT_TIMESTAMP
+conteggio cancellazioni
+int (non usato dall'observer)
+ritorno sincrono void
+Ritorno al servizio → ritorno della callback → DatabaseManager.commit(c). L'Observer
+non esegue commit e non apre una nuova transazione. Conserva test drive già
+trascorsi; elimina tutti i futuri, anche fuori dal noleggio.
+alt [SQLException nel DELETE] PostgresTestDriveDao la avvolge in RuntimeException;
+risale attraverso observer e publisher senza recupero locale; DatabaseManager tenta
+rollback della c del saldo/noleggio.
+Notifica sincrona prima del commit: nessuna freccia asincrona, coda, outbox o garanzia
+distribuita. Il publisher scorre gli osservatori registrati nello stesso thread.
+Se il rollback fallisce, DatabaseManager conserva la SQLException come soppressa sulla
+causa. Guasti di apertura/chiusura e commit incerto non diventano una garanzia di
+recupero totale.
+Figura 2.30: SQ-OB — Cancellazioni Observer condivise da SQ-01c e SQ-02, sincrone
+sulla connessione del chiamante.
+38
+
+
+--- PAGINA FISICA 42 ---
+2.7.3
+Acquisizione di un veicolo del Customer
+L’acquisto dal cliente di UC-05 ha due episodi distinti. SQ-03a (ﬁgura 2.31) registra la
+proposta e non eﬀettua pagamenti. Se il VIN è noto, il veicolo deve essere SOLD, l’ultima
+vendita al cliente deve attribuirlo al proponente e non devono esistere richieste aperte;
+modello e anno devono coincidere. Il lock FOR UPDATE riguarda una riga esistente, non
+un VIN assente. Per un VIN nuovo viene creato il veicolo; in entrambi i casi lo stato è
+WAITING. Il servizio ricalcola la stima e la salva in Request.deposit, di tipo PURCHASE,
+con agreed_total nullo. Le letture autonome del modello e dello sconto modello non
+appartengono a T6.
+La stima persistita, non il preventivo facoltativo della UI, ﬁssa
+l’importo dell’eventuale accettazione.
+SQ-03b (ﬁgura 2.32) rilegge e blocca richiesta e veicolo, richiedendo rispettivamente
+PURCHASE e WAITING. L’accettazione richiede il venditore, accredita la stima memorizzata,
+registra Sale di tipo PURCHASE, porta il veicolo a SALE ed elimina la richiesta nella stessa
+transazione. L’importo è non negativo ed esprime un esborso della concessionaria; non
+è un acconto seguito da un saldo. Il riﬁuto non movimenta il conto: elimina la richiesta
+e, secondo le operazioni associate, ripristina SOLD oppure elimina il veicolo senza storico.
+La presenza di storico non sostituisce il controllo dell’ultima vendita al proponente. Non
+interviene l’Observer. Un errore annulla l’esito corrente.
+Un limite applicativo riguarda gli importi pari a zero: le richieste e lo schema li
+ammettono, mentre il conto richiede movimenti strettamente positivi. Un accredito o
+addebito zero nei percorsi rappresentati fallisce e provoca rollback. Il limite del movimento
+non equivale quindi a un divieto di conservare valori zero nelle richieste e nel registro.
+39
+
+
+--- PAGINA FISICA 43 ---
+SQ-03a · Acquisto dal cliente: proposta
+Cliente: invia
+dati
+ClientDashboardView
+buildSellMyCarTab(), handler
+btnSubmit
+SaleToDealershipService
+«azione»
+«handler»
+submitSaleProposal(clientId, modelId, vin, licencePlate, km, year) · UC-05,
+passi 1–4 / 3.a
+Ingresso UI sopra; dettaglio selettivo sotto. ID scalari nei parametri; oggetti nelle note «memoria».
+SaleTo
+Dealership
+Service
+Database
+Manager
+Postgres
+VehicleDao
+Postgres
+SaleDao
+Postgres
+RequestDao
+PostgreSQL
+executeInTransactionWithResult(λ)
+T6 · Nuova c6, autocommit false; nessun accredito nella proposta. L'eventuale
+preventivo UI calculateEstimate era una chiamata separata e facoltativa.
+findByVinForUpdate(vin, c6)
+«SQL c6» SELECT per UPPER(vin)
+FOR UPDATE (solo righe esistenti)
+alt [VIN noto] richiede SOLD; findLatestSaleForVehicle e hasOpenRequestForVehicle
+sotto c6. La titolarità dipende dall'ultima SALE (date DESC, id DESC), non da qualsiasi
+storico.
+findLatestSaleForVehicle(vehicleId, c6)
+hasOpenRequestForVehicle(vehicleId, c6)
+«guardie» ultima SALE al proponente, nessuna richiesta, modelId/anno coincidenti.
+«memoria» aggiorna targa, km, WAITING; PostgresVehicleDao.update(vehicle, c6).
+else [VIN nuovo] PostgresModelDao.findById(modelId) apre c0 autonoma per la base;
+Vehicle.create(..., WAITING); PostgresVehicleDao.save(newVehicle, c6). Non c'è un lock
+di un VIN assente.
+end alt · «sintesi fuori T6» calculateEstimate(modelId, plate, km, year) rilegge modello e
+sconto modello su connessioni autonome; valida anno e usa
+PriceCalculatorService.estimateVehicleValue.
+save(Request.createNewPurchaseRequest(
+vehicle.getId(), clientId, estimatedPrice), c6)
+«SQL c6» INSERT request PURCHASE,
+deposit = stima; agreed_total = NULL
+λ restituisce Request; DatabaseManager commit/chiusura c6 → vista. VIN e
+request.vehicle UNIQUE possono rifiutare inserimenti concorrenti: non si promette uno
+snapshot del listino.
+Errore: tentativo di rollback c6, comprese creazione/aggiornamento del veicolo.
+submitSaleProposal riespone IllegalArgumentException/IllegalStateException avvolte,
+altrimenti rilancia il failure.
+La stima persistita fissa l'importo dell'eventuale esito positivo; non è ancora una
+registrazione economica.
+Figura 2.31: SQ-03a — Proposta di cessione: veicolo in attesa e stima persistita, senza
+pagamento.
+40
+
+
+--- PAGINA FISICA 44 ---
+SQ-03b · Acquisto dal cliente: esito
+Venditore:
+decide
+SalesmanDashboardView
+handleApproveRequest /
+handleRejectRequest
+SaleToDealershipService
+«azione»
+«handler»
+approveSaleProposal(requestId, salesmanId) oppure
+rejectSaleProposal(requestId) · UC-05, passi 5–6 / 5.a–6.a
+Ingresso UI sopra; dettaglio selettivo sotto. ID scalari nei parametri; oggetti nelle note «memoria».
+SaleTo
+Dealership
+Service
+Postgres
+RequestDao
+Postgres
+VehicleDao
+Postgres
+BankAccount
+Dao
+Postgres
+SaleDao
+PostgreSQL
+T7 · DatabaseManager.executeInTransaction(λ): nuova c7 con autocommit false.
+Approva e rifiuta sono invocazioni alternative; ciascuna rilegge i dati.
+findByIdForUpdate(requestId, c7)
+findByIdForUpdate(request.vehicleId, c7)
+«sintesi» lockWaitingPurchaseRequest richiede request.type PURCHASE e vehicle.state
+WAITING. SELECT FOR UPDATE su richiesta e veicolo. Errori → rollback.
+alt [accettazione — principale] salesmanId obbligatorio; payout = request.getDeposit(),
+senza ricalcolo della stima.
+findByClientIdForUpdate(clientId, c7)
+«memoria» account.deposit(payout); PostgresBankAccountDao.updateBalance(iban,
+balance, c7) → UPDATE su c7.
+save(Sale.createPurchaseRecord(
+vehicleId, salesmanId, clientId, payout), c7)
+updateStateAtomically(vehicleId,
+WAITING, SALE, c7)
+delete(requestId, c7)
+else [rifiuto] PostgresRequestDao.delete(requestId, c7), poi
+PostgresVehicleDao.hasAssociatedOperations(vehicleId, c7): controlla test_drive, rent e
+sale.
+alt [con storico] updateStateAtomically(vehicleId, WAITING, SOLD, c7); else [senza
+storico] PostgresVehicleDao.delete(vehicleId, c7). Nessun movimento sul conto né
+nuova riga sale.
+end alt · I DAO eseguono SQL su c7. DatabaseManager commit e chiusura prima del
+successo UI; su Exception tenta rollback e propaga RuntimeException alla vista. Nessun
+Observer in T7.
+Il registro type PURCHASE conserva un esborso della concessionaria con importo non
+negativo; l'accredito al cliente avviene solo qui, nella stessa transazione.
+Limite attuale: Request ammette stima zero ma BankAccount.deposit richiede > 0; in
+quel caso l'accettazione fallisce e torna in rollback (difetto separato, non corretto).
+Figura 2.32: SQ-03b — Acquisto dal cliente: accettazione economica oppure riﬁuto con
+conservazione dello storico.
+41
+
+
+--- PAGINA FISICA 45 ---
+2.8
+Database
+Il modello descrive il DDL PostgreSQL corrente di schema.sql, riscontrato con mapping
+DAO e dominio: comprende tredici tabelle, quindici chiavi esterne, una vista delle iden-
+tità e una sequenza comune agli utenti applicativi. Non è derivato dalle classi Java né
+ottenuto da un’esportazione automatica. Le tavole distinguono il modello delle relazioni
+dai controlli che richiedono la collaborazione dei servizi.
+2.8.1
+Schema ER
+Le viste ER-01 e ER-02 (ﬁgure 2.33 e 2.34) sono coordinate: i riquadri ripresi con lo stesso
+nome indicano la stessa entità. Ogni arco dichiara entrambi i versi con minimo e massimo,
+ricavati da nullabilità, unicità e FK, senza dedurli da riferimenti Java. La parte catalogo
+collega marca, modello, veicolo e sconti. Ogni modello ha una marca e ogni veicolo un
+modello; il padre può non avere ﬁgli. Uno sconto appartiene a un solo modello o veicolo;
+la chiave condivisa consente al padre zero o uno sconto.
+Una richiesta riguarda esattamente un cliente e un veicolo; l’unicità di request.
+vehicle limita a una la richiesta aperta per veicolo, indipendentemente dal tipo. Il ven-
+ditore è facoltativo. Test drive e noleggio hanno entrambi cliente e veicolo obbligatori, con
+più operazioni possibili nel tempo. Nel registro economico il cliente rimane obbligatorio,
+mentre veicolo e venditore sono opzionali: il primo può anche essere azzerato dalla cancel-
+lazione del veicolo. La penale prodotta dal servizio non riferisce né veicolo né venditore;
+lo schema non impone questa combinazione in funzione del tipo.
+La vista ER delle identità mantiene le tre tabelle eﬀettive, senza inventare una tabella
+padre user. Il manager non è bersaglio di FK applicative. Ogni conto appartiene a un
+cliente; UNIQUE(client) consente a ciascun cliente al massimo un conto, ma nessuna FK
+impone che ogni cliente ne possieda uno. La creazione congiunta è una scelta transazionale
+di AuthService, non una partecipazione minima SQL.
+42
+
+
+--- PAGINA FISICA 46 ---
+ER-01 · Catalogo e veicoli nelle operazioni
+Ogni riga è una relazione ER. Le entità ripetute sono le stesse, non copie persistenti.
+Il numero vicino a un'entità indica quante sue istanze corrispondono a una dell'altra.
+brand
+PK name
+classifica
+model
+PK id · CK name
+1
+0..*
+model
+PK id · CK name
+sconto
+modello
+model_discount
+PK/FK model
+1
+0..1
+model
+PK id · CK name
+identifica il
+modello
+vehicle
+PK id · CK vin
+1
+0..*
+vehicle
+PK id · CK vin
+sconto
+veicolo
+vehicle_discount
+PK/FK vehicle
+1
+0..1
+vehicle
+PK id · CK vin
+richiesta
+aperta
+request [ER-02]
+PK id · CK/FK vehicle
+1
+0..1
+vehicle
+PK id · CK vin
+giro di
+prova
+test_drive [ER-02]
+PK id · CK (vehicle,date)
+1
+0..*
+vehicle
+PK id · CK vin
+noleggio
+rent [ER-02]
+PK id
+1
+0..*
+vehicle
+PK id · CK vin
+riferimento
+nel registro
+sale [ER-02]
+PK id · vehicle nullable
+0..1
+0..*
+CK: chiave candidata alternativa alla PK. vehicle.licence_plate è UQ nullable, non CK.
+[ER-02] riprende le medesime operazioni per le relazioni con le identità.
+Cardinalità da FK/NOT NULL/UNIQUE; azioni di cancellazione e vincoli di valore in REL-01–
+03.
+Figura 2.33: ER-01 — Catalogo e riferimenti dei veicoli nelle operazioni; cardinalità nei
+due versi.
+43
+
+
+--- PAGINA FISICA 47 ---
+ER-02 · Identità, conto e attribuzioni
+Ogni riga è una relazione ER. Le entità ripetute sono le stesse, non copie persistenti.
+Il numero vicino a un'entità indica quante sue istanze corrispondono a una dell'altra.
+client
+PK id · CK email
+conto
+dimostrativo
+bank_account
+PK iban · CK/FK client
+1
+0..1
+client
+PK id · CK email
+richiedente
+request [ER-01]
+PK id
+1
+0..*
+client
+PK id · CK email
+cliente del
+registro
+sale [ER-01]
+PK id
+1
+0..*
+client
+PK id · CK email
+prenotante
+test_drive [ER-01]
+PK id
+1
+0..*
+client
+PK id · CK email
+noleggiante
+rent [ER-01]
+PK id
+1
+0..*
+salesman
+PK id · CK email
+autorizza
+request [ER-01]
+PK id · salesman
+nullable
+0..1
+0..*
+salesman
+PK id · CK email
+attribuzione
+nel registro
+sale [ER-01]
+PK id · salesman
+nullable
+0..1
+0..*
+manager: PK id, CK email; nessuna FK applicativa (entità isolata).
+user è una vista UNION ALL, non una tabella padre. user_id_seq non è una PK globale.
+13 tabelle complessive in ER-01/02. Il conto è opzionale nello schema; il servizio di
+registrazione lo crea insieme all'identità.
+Figura 2.34: ER-02 — Identità, conto e attribuzioni; le operazioni riprendono ER-01.
+44
+
+
+--- PAGINA FISICA 48 ---
+2.8.2
+Modello relazionale
+REL-01–REL-03 (ﬁgure 2.35–2.37) riportano tutti gli attributi, i tipi, le chiavi e i ri-
+ferimenti. PK indica la primaria; CK una candidata alternativa; FK un riferimento; ? la
+nullabilità. In assenza di ? l’attributo è obbligatorio, anche quando lo rende tale la prima-
+ria. Gli ID di catalogo e operazioni sono BIGINT GENERATED BY DEFAULT AS IDENTITY;
+marca e conto usano rispettivamente nome e IBAN. Gli sconti usano la FK come PK.
+Le candidate alternative sono model.name, vehicle.vin, le email all’interno di cia-
+scuna tabella di ruolo, bank_account.client, request.vehicle e la coppia (vehicle,
+date) del test drive: tutte sono uniche e non nulle. Il nome del modello è unico glo-
+balmente, non soltanto entro una marca. vehicle.licence_plate ha invece un vincolo
+UNIQUE ed è nullable: più valori nulli sono ammessi e non è una chiave candidata del-
+l’intera relazione. Le unicità testuali non implicano da sole normalizzazione o confronto
+senza distinzione fra maiuscole e minuscole.
+Le azioni ON DELETE sono speciﬁche. Gli sconti seguono in CASCADE il proprio modello
+o veicolo; il conto segue il cliente. sale.vehicle usa SET NULL, conservando la regi-
+strazione. Le altre undici FK usano RESTRICT: marca con modelli, modello con veicoli,
+riferimenti di richieste, test drive e noleggi, cliente e venditore del registro. Di conse-
+guenza un veicolo con un noleggio o un test drive non è eliminabile per il solo fatto che
+sale.vehicle consenta SET NULL. L’unico ON UPDATE CASCADE è model.brand; le altre
+FK mantengono il predeﬁnito NO ACTION. I servizi aggiungono controlli conservativi sullo
+storico, senza cambiare queste regole SQL.
+45
+
+
+--- PAGINA FISICA 49 ---
+REL-01 · Relazioni del catalogo
+PK = primaria; CK = candidata alternativa; FK → riferimento; ? = nullable; UQ = UNIQUE.
+Tutti gli altri attributi sono NOT NULL.
+brand
+name VARCHAR(50) PK
+model
+id BIGINT PK identity · brand VARCHAR(50) FK → brand.name
+name VARCHAR(50) CK · release_price DECIMAL(10,2) ≥ 0
+release_year SMALLINT ≥ 1900
+model_discount
+model BIGINT PK/FK → model.id · value SMALLINT fra 0 e 50
+vehicle
+id BIGINT PK identity · model BIGINT FK → model.id · vin VARCHAR(17) CK
+licence_plate VARCHAR(10) ? UQ · kilometers INT ≥ 0 · price DECIMAL(10,2) ≥ 0
+price_mode price_mode DEFAULT AUTOMATIC · year SMALLINT ≥ 1900
+state vehicle_state · CHECK: licence_plate IS NOT NULL OR kilometers = 0
+vehicle_discount
+vehicle BIGINT PK/FK → vehicle.id · value SMALLINT fra 0 e 50
+DELETE: model.brand e vehicle.model RESTRICT; model_discount.model e
+vehicle_discount.vehicle CASCADE.
+UPDATE: solo model.brand CASCADE; per tutte le altre FK dello schema vale NO ACTION
+predefinito.
+Trigger bidirezionali sui cambi anno/modello: vehicle.year ≥ model.release_year. price è
+una base commerciale, non il prezzo finale della formula.
+Figura 2.35: REL-01 — Attributi, chiavi e vincoli delle cinque tabelle del catalogo.
+46
+
+
+--- PAGINA FISICA 50 ---
+REL-02 · Relazioni delle identità e vista user
+PK = primaria; CK = candidata alternativa; FK → riferimento; ? = nullable; UQ = UNIQUE.
+Tutti gli altri attributi sono NOT NULL.
+client
+id BIGINT PK DEFAULT nextval('user_id_seq')
+name, surname VARCHAR(50) · email VARCHAR(50) CK · hash_password
+VARCHAR(255)
+CHECK email LIKE '%_@_%._%' (forma minima, non verifica dell'indirizzo)
+salesman
+id BIGINT PK DEFAULT nextval('user_id_seq')
+name, surname VARCHAR(50) · email VARCHAR(50) CK · hash_password
+VARCHAR(255)
+CHECK email LIKE '%_@_%._%'
+manager
+id BIGINT PK DEFAULT nextval('user_id_seq')
+name, surname VARCHAR(50) · email VARCHAR(50) CK · hash_password
+VARCHAR(255)
+CHECK email LIKE '%_@_%._%'
+bank_account
+iban VARCHAR(27) PK · client BIGINT CK/FK → client.id
+balance DECIMAL(10,2) DEFAULT 0.00 · CHECK balance ≥ 0 · DELETE CASCADE
+user — VISTA, non tabella
+UNION ALL di client / salesman / manager: id, name, surname, email, hash_password
++ role costante CLIENT / SALESMAN / MANAGER, scelto dal ramo della vista
+Trigger BEFORE INSERT / UPDATE OF email cercano l'email esatta nelle altre tabelle,
+escludendo lo stesso id. Non c'è UNIQUE globale né vincolo globale sugli id.
+La sequenza comune alimenta gli inserimenti ordinari; i trigger non sono una prova di
+esclusione fra scritture concorrenti. I ruoli della vista sono ruoli applicativi, non
+PostgreSQL.
+Figura 2.36: REL-02 — Tre tabelle di ruolo, conto dimostrativo e vista delle identità.
+47
+
+
+--- PAGINA FISICA 51 ---
+REL-03 · Richieste, prenotazioni e registro
+PK = primaria; CK = candidata alternativa; FK → riferimento; ? = nullable; UQ = UNIQUE.
+Tutti gli altri attributi sono NOT NULL.
+request
+id BIGINT PK identity · vehicle BIGINT CK/FK → vehicle.id
+client BIGINT FK → client.id · salesman BIGINT ? FK → salesman.id
+deposit DECIMAL(10,2) · agreed_total DECIMAL(10,2) ? · exp_date DATE ?
+type request_type · CHECK SALE: 0 ≤ deposit ≤ agreed_total, totale non nullo
+CHECK PURCHASE: deposit ≥ 0 e agreed_total IS NULL · tutte le FK DELETE RESTRICT
+test_drive
+id BIGINT PK identity · vehicle BIGINT FK → vehicle.id · client BIGINT FK → client.id
+date TIMESTAMP · CK (vehicle, date) · CHECK ora fra 09:00 e 16:00 inclusi
+FK DELETE RESTRICT · nessun CHECK SQL su futuro, minuti o massimo tre attivi
+rent
+id BIGINT PK identity · vehicle BIGINT FK → vehicle.id · client BIGINT FK → client.id
+amount DECIMAL(10,2) ≥ 0 · start DATE · end DATE · CHECK end ≥ start
+EXCLUDE USING gist (vehicle WITH =, daterange(start, end, '[]') WITH &&)
+FK DELETE RESTRICT · estremi inclusivi; btree_gist supporta l'esclusione per veicolo
+sale
+id BIGINT PK identity · vehicle BIGINT ? FK → vehicle.id DELETE SET NULL
+salesman BIGINT ? FK → salesman.id DELETE RESTRICT
+client BIGINT FK → client.id DELETE RESTRICT · amount DECIMAL(10,2) ≥ 0
+date TIMESTAMP · type sale_type · nessun CHECK SQL sui riferimenti per tipo
+identity = GENERATED BY DEFAULT AS IDENTITY. Tutte le FK non citate come CASCADE/SET
+NULL sono RESTRICT in DELETE; in UPDATE sono NO ACTION.
+Lo schema non collega sale a request: l'esito registra e poi elimina la richiesta. Nessun
+CHECK SQL impone il 20%, un mese, il futuro delle date o la coerenza fra stato e
+operazioni.
+Figura 2.37: REL-03 — Richieste, test drive, noleggi e registro economico.
+48
+
+
+--- PAGINA FISICA 52 ---
+L’ADR 0002 mantiene quattro tipi enumerati nativi PostgreSQL, ciascuno distinto.
+vehicle_state ammette SALE (destinato alla vendita al cliente), RENT (destinato al no-
+leggio), BLOCKED (riservato per la vendita al cliente), WAITING (proposta di cessione in
+valutazione) e SOLD (venduto al cliente). request_type ammette SALE per la richiesta
+di vendita al cliente e PURCHASE per quella di acquisto dal cliente. price_mode distingue
+AUTOMATIC, con base del modello, da MANUAL, con base del veicolo nella stessa formula.
+sale_type distingue SALE, PURCHASE e PENALTY: vendita al cliente, acquisto dal cliente
+e penale. Il tipo esplicito determina il signiﬁcato economico, anche a importo zero. Non
+sono ruoli né stati di una richiesta. I DAO eﬀettuano i cast JDBC verso gli enum SQL e
+ricostruiscono gli enum Java; la scelta non richiede qui nuove conversioni o migrazioni.
+Gli importi persistenti usano DECIMAL(10,2). I CHECK impongono prezzi di rilascio
+e basi del veicolo, saldo, importo del noleggio e importo del registro non negativi. Per
+request, ck_request_agreement distingue due forme: SALE richiede totale non nullo,
+acconto non negativo e non superiore al totale; PURCHASE richiede stima non negativa
+e totale nullo. Il database non impone acconto del 20%, immutabilità dell’accordo nel
+tempo, associazione con lo stato del veicolo o corrispondenza fra scadenza e venditore.
+Dominio e servizi ﬁssano e utilizzano l’accordo come mostrato in SQ-01a/SQ-01c.
+Il
+registro non ha una FK alla richiesta: conserva l’esito economico mentre la richiesta viene
+eliminata.
+Altri CHECK limitano sconti interi a 0–50, chilometri non negativi, anni almeno 1900
+e assenza di targa soltanto con chilometri zero. I trigger sull’inserimento o modiﬁca di
+anno/modello del veicolo e sulla modiﬁca dell’anno di rilascio del modello controllano
+che l’anno del veicolo non preceda quello di rilascio del modello. La presenza di questi
+controlli non prova un isolamento serializzabile di ogni modiﬁca concorrente fra tabelle.
+Per la disponibilità, rent impone ﬁne non precedente all’inizio e un EXCLUDE USING
+gist sul veicolo e sull’intersezione di daterange(start,end,’[]’), con estremi inclusi
+e supporto btree_gist. Due prenotazioni dello stesso veicolo non possono condividere
+neppure un giorno. Il test drive rende unica la coppia veicolo–timestamp e limita l’ora
+a 09:00–16:00 inclusi; non impone slot interi di un’ora. Date future, limite di tre test
+drive attivi, stato compatibile del veicolo e conﬂitto test drive–noleggio sono controlli di
+dominio, servizi e query DAO, non vincoli SQL trasversali. Le date del registro e dei test
+drive sono TIMESTAMP senza fuso; quelle di noleggio e scadenza sono DATE. Il DDL non
+vieta date nel passato né date future nel registro. Il mese per il saldo e l’innesco della
+gestione delle scadenze restano applicativi.
+2.8.3
+Utenti, vincoli e sempliﬁcazioni
+«Utenti» indica le identità applicative, non account PostgreSQL. client, salesman e
+manager ripetono gli attributi comuni; la vista user ne combina le righe con UNION ALL
+e aggiunge il ruolo costante del ramo. PostgresUserDao usa quel ruolo per costruire il
+sottotipo Java e indirizzare le scritture. La sequenza condivisa user_id_seq assegna nor-
+malmente ID distinti, ma le PK sono locali e il DDL consente ID espliciti: non esiste una
+primaria globale fra ruoli né una tabella padre che imponga da sola una generalizzazione
+totale ed esclusiva.
+Ogni tabella di ruolo ha email obbligatoria e unica e un controllo minimo di forma con
+LIKE. I trigger cercano email uguali nelle altre due tabelle durante inserimento e modiﬁca
+dell’email, escludendo righe con lo stesso ID. Sono controlli procedurali, non un indice
+unico globale: non dimostrano esclusione di scritture concorrenti e non impediscono il
+49
+
+
+--- PAGINA FISICA 53 ---
+caso di ID espliciti coincidenti. Il confronto SQL dei vincoli è testuale, mentre la ricerca
+di accesso usa LOWER(email); non si presenta quindi l’intero sistema come un’unicità
+globale senza distinzione di maiuscole. Questi limiti sono segnalati separatamente, senza
+introdurre uno schema alternativo.
+Le password sono rappresentate da hash, non da credenziali in chiaro nel modello
+documentato. La registrazione ordinaria crea solo un cliente e il relativo conto a saldo
+zero nella stessa transazione. Il conto ha IBAN come chiave, un solo cliente e saldo non
+negativo; è una simulazione locale, senza collegamento bancario, veriﬁca di titolarità reale
+o registro separato di tutti i movimenti. Il formato dell’IBAN è controllato dal dominio,
+mentre il DDL ne limita lunghezza e unicità. La cancellazione del cliente elimina il conto
+per CASCADE, anche se positivo, ma richieste e operazioni storiche possono impedirla con
+le loro FK. L’accesso JDBC usa la connessione conﬁgurata per l’applicazione: il DDL non
+crea un ruolo PostgreSQL per ogni cliente, venditore o manager e non deﬁnisce politiche
+per riga.
+Le scelte privilegiano un archivio didattico compatto, mapping JDBC esplicito e ri-
+ferimenti storici conservati. Non costituiscono una contabilità bancaria completa né una
+garanzia generale di autorizzazione o concorrenza. Schema corrente e quattro enum resta-
+no quelli consegnati, coerenti con gli ADR 0001 e 0002; nessuna migrazione o conversione
+è introdotta dalla relazione. Il capitolo 2 è ora completo e proposto, con le appendici
+A–B, per la revisione degli autori; tale revisione non è già approvata.
+50
+
+
+--- PAGINA FISICA 54 ---
+Capitolo 3
+Implementazione
+Il capitolo collega le scelte del progetto a porzioni selezionate dei sorgenti correnti. Le
+tavole delle classi in appendice B, le sequenze della sezione 2.7 e il modello dati della
+sezione 2.8 restano i riferimenti d’insieme: qui interessa capire dove sono applicate le
+regole e ﬁn dove valgono. Il capitolo è completo e proposto per revisione degli autori, non
+già approvato.
+3.1
+Domain Model
+3.1.1
+Invarianti locali e stato mutabile
+Vehicle è una classe ﬁnale con costruttore privato: la factory create controlla i dati
+prima di costruire l’oggetto. ID, modello, VIN e anno sono campi ﬁnali; targa, chilometri,
+base del prezzo, modalità e stato possono cambiare. Il frammento 3.1 mostra una regola
+che riguarda due attributi, anziché due controlli indipendenti.
+59
+String cleanPlate = (licencePlate != null && !licencePlate.trim().isEmpty()) ?
+licencePlate.trim().toUpperCase() : null;
+60
+if (cleanPlate == null && kilometers != 0) {
+61
+throw new IllegalArgumentException("Se un veicolo non ha targa,
+obbligatoriamente i chilometri devono essere 0.");
+62
+}
+Frammento 3.1: Vehicle.java: normalizzazione della targa e coerenza con i chilometri.
+La stessa coerenza è controllata dai mutatori: per rimuovere la targa occorre prima
+portare i chilometri a zero. La factory riﬁuta chilometri e prezzo negativi, anno fuori dal-
+l’intervallo 1900–anno corrente, modello o stato nulli. Il VIN viene ripulito e convertito
+in maiuscolo; il controllo eﬀettivo ammette da uno a diciassette caratteri dopo il trim,
+senza imporre diciassette caratteri esatti o veriﬁcarne l’alfabeto. L’unicità appartiene al
+database. Il confronto con l’anno del modello richiede validateProductionYear, invoca-
+to dal servizio di catalogo, ed è anche presidiato dai trigger SQL. Il solo setState riﬁuta
+null: non codiﬁca un automa di transizioni; sono i servizi a veriﬁcare gli stati ammessi
+nei singoli comandi.
+Request mantiene ﬁnali tipo, ID di richiesta, veicolo e cliente, acconto e totale; vendi-
+tore e scadenza sono aggiornabili. Le due interpretazioni economiche del campo deposit
+dipendono da RequestType: con SALE è l’acconto della vendita al cliente; con PURCHASE
+è la stima per l’acquisto dal cliente, senza totale concordato.
+51
+
+
+--- PAGINA FISICA 55 ---
+54
+if (type == RequestType.SALE) {
+55
+if (agreedTotal == null || agreedTotal.signum() < 0
+56
+|| deposit.compareTo(agreedTotal) > 0) {
+57
+throw new IllegalArgumentException("Totale concordato e acconto non validi
+per l'acquisto.");
+58
+}
+59
+// Gli importi dell'accordo devono essere già espressi in centesimi, come l'
+addebito.
+60
+agreedTotal = agreedTotal.setScale(2, RoundingMode.UNNECESSARY);
+61
+deposit = deposit.setScale(2, RoundingMode.UNNECESSARY);
+62
+} else if (agreedTotal != null) {
+63
+throw new IllegalArgumentException("Il totale concordato riguarda solo gli
+acquisti del cliente.");
+64
+}
+65
+return new Request(id, vehicleId, clientId, salesmanId, deposit, agreedTotal,
+expDate, type);
+Frammento 3.2: Request.java: forma dell’accordo e precisione degli importi.
+I controlli precedenti a questo estratto riﬁutano acconto/stima negativi e ID di veicolo
+o cliente nulli. UNNECESSARY accetta solo importi rappresentabili in centesimi senza arro-
+tondamento; non corregge un valore più preciso. getRemainingAmount sottrae l’acconto
+dal totale solo per SALE. La ricostruzione tramite create accetta una scadenza già passa-
+ta: serve a leggere richieste persistite da elaborare. È il mutatore setExpDate a riﬁutare
+una nuova scadenza passata; isExpired confronta la data con oggi, escluso oggi stesso.
+3.1.2
+Gerarchie, identità e riferimenti
+La gerarchia User/AbstractUser condivide identiﬁcativo, nome, cognome, email e hash
+della password; Client, Salesman e Manager specializzano ruolo e apertura della dash-
+board. Nome e cognome sono ﬁnali, email e hash aggiornabili con validazione. Client
+contiene un riferimento opzionale e sostituibile a BankAccount, caricato anche dopo l’au-
+tenticazione: non è una composizione UML deducibile dal solo campo. La gerarchia degli
+sconti riusa nel costruttore di Discount il controllo inclusivo 0–50; ModelDiscount e
+VehicleDiscount conservano l’ID del bersaglio e una percentuale ﬁnale.
+I legami persistenti rimangono prevalentemente scalari: Vehicle.modelId, gli ID in
+Request, Rent, Sale e TestDrive, e BankAccount.clientId non caricano automatica-
+mente gli oggetti collegati. Un ID nullo può indicare un’entità ancora da inserire; save
+restituisce un nuovo oggetto con l’ID assegnato. Non esistono un’identity map o il ri-
+levamento automatico delle modiﬁche: mutare una copia Java non aggiorna il database.
+Anche un record di lettura che contiene un Vehicle non rende immutabile quel veicolo. Le
+relazioni mostrate nelle tavole CL vanno lette con questa distinzione fra ID e riferimenti
+eﬀettivi.
+3.2
+Business Layer
+3.2.1
+Calcolo dei prezzi e accordo economico
+I servizi coordinano i casi d’uso e le scritture; il calcolatore non esegue SQL. Il catalogo e
+le modiﬁche commerciali competono a CatalogService; le consultazioni delle operazioni
+sono raccolte in OperationQueryService. I servizi economici separano vendita al cliente,
+52
+
+
+--- PAGINA FISICA 56 ---
+acquisto dal cliente e noleggio.
+Il calcolatore PriceCalculatorService centralizza le
+formule. Seguendo l’ADR 0001, la modalità manuale seleziona una base alternativa, non
+un totale ﬁnale imposto.
+122
+public BigDecimal getSelectedBasePrice(Model model) {
+123
+return priceMode == PriceMode.MANUAL ? price : model.getReleasePrice();
+124
+}
+Frammento 3.3: Vehicle.java: selezione della base, prima della formula.
+Il consigliato parte sempre da Model.releasePrice; l’eﬀettivo passa la base selezio-
+nata alla stessa formula.
+Lo sconto promozionale è il massimo fra modello e veicolo.
+Seguono, in cascata, fattore 0,80 per l’usato con targa, 0,95anni e 0,95km/20000, con anni
+non negativi rispetto all’anno corrente. La base manuale è arrotondata ai centesimi con
+HALF_UP. Il risultato della formula è anch’esso arrotondato ai centesimi, ma fattori e po-
+tenze usano double: BigDecimal non rende esatto ogni passaggio del calcolo. L’acconto
+è il 20% del prezzo; la tariﬀa iniziale giornaliera è lo 0,1%. Il costo del noleggio usa la
+somma geometrica con fattore 0,95, conteggio inclusivo dei giorni e arrotondamento ﬁnale:
+non è la tariﬀa giornaliera già arrotondata moltiplicata per i giorni.
+74
+Vehicle vehicle = vehicleDao.findById(vehicleId, conn)
+75
+.orElseThrow(() -> new IllegalStateException("Veicolo non trovato: " +
+vehicleId));
+76
+Model model = modelDao.findById(vehicle.getModelId())
+77
+.orElseThrow(() -> new IllegalStateException("Modello non trovato: " +
+vehicle.getModelId()));
+78
+79
+Integer mDisc = discountDao.findModelDiscount(model.getId()).map(ModelDiscount
+::getValue).orElse(0);
+80
+Integer vDisc = discountDao.findVehicleDiscount(vehicle.getId()).map(
+VehicleDiscount::getValue).orElse(0);
+81
+BigDecimal currentPrice = priceCalculator.calculateVehiclePrice(model, vehicle
+, mDisc, vDisc);
+82
+BigDecimal deposit = priceCalculator.calculatePurchaseDeposit(currentPrice);
+Frammento 3.4:
+PurchaseService.java:
+prezzo corrente e acconto prima della
+persistenza dell’accordo.
+Prima di questo estratto, un UPDATE condizionale porta il veicolo da SALE a BLOCKED;
+se nessuna riga cambia, l’avvio fallisce. Subito dopo, il servizio blocca il conto, addebita
+l’acconto e salva currentPrice come agreed_total. Il saldo rilegge la richiesta sotto
+lock, veriﬁca approvazione e scadenza e usa totale meno acconto, senza ricalcolare il listino.
+L’esempio 20.000/4.000/16.000 euro resta valido anche dopo una modiﬁca dei prezzi. Il
+parametro conn compare nella lettura del veicolo ma manca in quelle di modello e sconti:
+queste aprono connessioni autonome. La transazione protegge le scritture dell’accordo,
+senza oﬀrire uno snapshot comune dell’intero listino.
+3.2.2
+Transazioni, lock e operazioni economiche
+DatabaseManager apre una connessione per ogni esecuzione transazionale. Il frammen-
+to 3.5 mostra il percorso con risultato; quello senza risultato applica lo stesso schema.
+53
+
+
+--- PAGINA FISICA 57 ---
+88
+public <T> T executeInTransactionWithResult(TransactionFunction<T> function) {
+89
+try (Connection conn = getConnection()) {
+90
+conn.setAutoCommit(false);
+91
+try {
+92
+T result = function.execute(conn);
+93
+conn.commit();
+94
+return result;
+95
+} catch (Exception e) {
+96
+try {
+97
+conn.rollback();
+98
+} catch (SQLException rollbackEx) {
+99
+e.addSuppressed(rollbackEx);
+100
+}
+101
+throw new RuntimeException("Transazione fallita: eseguito rollback.", e);
+102
+}
+103
+} catch (SQLException e) {
+104
+throw new RuntimeException("Errore di connessione al database durante la
+transazione.", e);
+105
+}
+106
+}
+Frammento 3.5: DatabaseManager.java: commit, tentativo di rollback e conservazione
+delle cause.
+Il valore torna al chiamante dopo commit; il try-with-resources chiude la connessione.
+Le eccezioni del corpo o del commit raggiungono il ramo di rollback, poi sono incapsulate
+con la causa. Un errore del rollback è aggiunto come eccezione soppressa: il testo del
+messaggio non dimostra che il rollback sia riuscito. Il codice intercetta Exception, non
+ogni Error; un guasto di rete durante il commit non permette di dedurne sempre l’esito
+dal client. Non vi sono retry automatici o transazioni annidate implicite.
+La connessione ricevuta deve essere passata realmente ai DAO e alle callback. Avere
+lo stesso DatabaseManager non basta: ogni sua getConnection apre una connessione
+JDBC distinta. Nel noleggio, anche le letture di modello e sconti ricevono conn; ciò le
+fa partecipare alla transazione, senza impostare un isolamento serializzabile o congelare
+ogni lettura concorrente. Il servizio blocca veicolo, cliente e conto, rilegge la disponibilità,
+ricalcola il costo e addebita l’intero importo. I vincoli di esclusione sulle date completano
+questi protocolli speciﬁci; non sono una prova di assenza generale di deadlock.
+Il registro Sale conserva importi non negativi e tipo esplicito: SALE per la vendita
+al cliente, PURCHASE per l’acquisto dal cliente, PENALTY per la penale. È distinto dalla
+richiesta ancora aperta. Al saldo si registra il totale, si elimina la richiesta e il veicolo
+passa a SOLD. Il riﬁuto della vendita al cliente rimborsa l’acconto; la scadenza trattiene
+il 20% dell’acconto, non del totale, e restituisce il resto. I candidati scaduti sono cercati
+all’apertura della dashboard e riletti uno per transazione, senza un job periodico.
+Nell’acquisto dal cliente, la proposta salva veicolo WAITING e stima, senza pagamento.
+L’accettazione blocca richiesta, veicolo e conto, accredita la stima persistita e registra
+PURCHASE; il riﬁuto elimina il nuovo veicolo solo se privo di storico, altrimenti ripristina
+SOLD. Il controllo sul VIN noto richiede anche l’ultima vendita al proponente: avere una
+qualsiasi operazione associata non prova titolarità. Il cambio di destinazione ammette solo
+SALE/RENT; per uscire dal noleggio esclude un noleggio in corso e rimborsa i futuri, bloc-
+cando i conti per ID cliente crescente. Le sequenze SQ-01–03 documentano le alternative
+senza doverle ripetere qui.
+54
+
+
+--- PAGINA FISICA 58 ---
+3.2.3
+Notiﬁche sincrone ed errori
+28
+public void publishCommitment(VehicleCommitmentEvent event, Connection conn) {
+29
+for (VehicleCommitmentObserver observer : observers) {
+30
+observer.onVehicleCommitted(event, conn);
+31
+}
+32
+}
+Frammento 3.6: VehicleEventPublisher.java: gli osservatori ricevono la connessione
+del chiamante.
+AppContext registra TestDriveCancellationObserver. Vendita al cliente completa-
+ta e noleggio confermato pubblicano l’evento prima del commit. L’osservatore elimina i
+test drive con data e ora successive a CURRENT_TIMESTAMP per il veicolo dell’evento, anche
+fuori dal periodo noleggiato, usando la stessa connessione. Non c’è un thread degli eventi:
+una sua eccezione risale dal ciclo e impedisce di proseguire verso il commit, annullando
+anche addebito e registrazioni nel normale percorso di rollback. La ﬁgura 2.30 rende visi-
+bile questo conﬁne. Le chiamate successive agli altri osservatori non sono garantite dopo
+un errore; non ci sono coda persistente, outbox o consegna distribuita.
+I DAO traducono SQLException in eccezioni con causa; i servizi sollevano errori per
+stati incompatibili e dati mancanti. Alcuni, come RentalService, estraggono dal wrapper
+transazionale la causa di dominio per mostrarla alla vista; questa politica non è uniforme.
+Un limite concreto è l’importo zero: richieste e registro lo ammettono, ma BankAccount.
+deposit/withdraw richiedono un importo strettamente positivo. I servizi non saltano
+questi movimenti: una stima zero può essere proposta ma fallire all’accettazione.
+La
+discrepanza è segnalata separatamente nelle veriﬁche, senza correzioni al software.
+3.2.4
+Identità e conto dimostrativo
+L’autenticazione dipende dal contratto PasswordHasher. Il contesto sceglie PBKDF2-
+HMAC-SHA256; ogni hash usa un sale casuale e incorpora i parametri. Il confronto ﬁnale
+usa MessageDigest.isEqual. Viene persistito l’hash, senza conservare la password in
+chiaro. Il login legge l’identità dalla vista SQL uniﬁcata, veriﬁca l’hash e, per il cliente,
+carica il conto separatamente.
+57
+return db.executeInTransactionWithResult(conn -> {
+58
+Client savedClient = userDao.saveClient(clientToSave, conn);
+59
+String generatedIban = generateUniqueIban();
+60
+BankAccount initialAccount = BankAccount.createInitial(generatedIban,
+savedClient.getId());
+61
+bankAccountDao.save(initialAccount, conn);
+62
+savedClient.setBankAccount(initialAccount);
+63
+return savedClient;
+64
+});
+Frammento 3.7: AuthService.java: registrazione del cliente e conto iniziale nella stessa
+transazione.
+Il nome e l’hash sono validati prima del corpo mostrato. Il conto nasce con saldo
+zero; la ricarica positiva blocca e aggiorna la riga del conto.
+Il formato dell’IBAN è
+controllato sintatticamente: generazione casuale e vincolo UNIQUE non costituiscono un
+conto bancario reale né un controllo bancario della cifra di veriﬁca. Email e password
+richiedono conferma della password corrente, ma la veriﬁca precede la transazione di
+scrittura. La cancellazione blocca l’identità con FOR NO KEY UPDATE, blocca il conto del
+55
+
+
+--- PAGINA FISICA 59 ---
+cliente e veriﬁca richieste/storico prima di eliminare; le FK preservano le attribuzioni e il
+conto viene eliminato per CASCADE, anche con saldo positivo. Non è un trasferimento
+bancario.
+Dashboard separate e parametri ID/ruolo non equivalgono a un controllo generale
+dell’autorizzazione nei servizi. Inoltre la sequenza utenti condivisa assegna i nuovi ID,
+ma le PK restano locali alle tre tabelle; la ricerca per email ignora le maiuscole mentre
+UNIQUE e trigger SQL confrontano i valori esatti. Non si attribuiscono unicità globale
+o esclusione di ogni gara concorrente a questi soli controlli.
+3.3
+Presentation Layer
+3.3.1
+Navigazione e responsabilità delle viste
+App mantiene lo Stage e sostituisce la Scene per login e dashboard.
+Passa alle viste
+servizi, utente e callback di logout. Dopo il login, invoca user.openDashboard con un
+UserDashboardNavigator anonimo che costruisce le tre dashboard: la scelta è distribuita
+fra tipo dell’utente e overload del navigator.
+32
+@Override
+33
+public void openDashboard(UserDashboardNavigator navigator) {
+34
+navigator.showClientDashboard(this);
+35
+}
+Frammento 3.8: Client.java: selezione dell’overload del navigator con il tipo concreto.
+Le viste costruiscono controlli e dialoghi, raccolgono input e invocano i servizi.
+I
+diagrammi di navigazione della sezione 2.4 restano validi; questo frammento spiega il
+meccanismo che li realizza. Il logout richiama la costruzione del login, senza una sessione
+utente globale conservata nel contesto. Alcuni costruttori di comodo delle viste accedono
+però direttamente al Singleton: l’iniezione non è uniforme.
+3.3.2
+Caricamenti, righe preparate e ciclo di vita
+Le tabelle del catalogo ricevono CatalogService.VehicleRow: modello, base, consigliato,
+eﬀettivo e tariﬀa sono preparati dal servizio usando letture collettive e mappe per ID. Le
+celle di queste tabelle leggono le righe già preparate, senza query durante il rendering.
+Non è una cache persistente né uno snapshot transazionale comune; altre consultazioni,
+come le proprie operazioni e alcune descrizioni di veicolo, usano ancora letture sincrone.
+AsyncLoad associa al controllo una sorgente Supplier e una callback Consumer. Ogni
+load cancella il Task precedente, cattura la sorgente corrente, crea un nuovo Task e
+disabilita il controllo durante il caricamento. call esegue il Supplier sul thread virtuale
+avviato in fondo al frammento; i gestori di completamento di Task sono eseguiti sul thread
+JavaFX.
+56
+
+
+--- PAGINA FISICA 60 ---
+60
+task.setOnSucceeded(event -> {
+61
+if (current != task) return;
+62
+apply.accept(task.getValue());
+63
+progress.setVisible(false);
+64
+status.setText("Aggiornato");
+65
+target.setDisable(false);
+66
+});
+67
+task.setOnFailed(event -> {
+68
+if (current != task) return;
+69
+progress.setVisible(false);
+70
+status.setText("Caricamento non riuscito. Riprova.");
+71
+refresh.setText("Riprova");
+72
+});
+73
+Thread.ofVirtual().name("drivehub-table-load").start(task);
+Frammento 3.9: AsyncLoad.java: pubblicazione del risultato corrente e stato di errore.
+L’identità current!=task scarta una risposta superata dopo un nuovo caricamento.
+Il successo sostituisce le righe e riabilita il controllo; il fallimento mostra un messaggio
+generico e lascia disponibile Riprova, mantenendo il controllo destinazione disabilitato. Il
+listener sulla proprietà scene cancella il Task e azzera current quando il controllo viene
+staccato da una Scene. Questo presidia la sostituzione della vista, senza costituire un
+gestore generale del ciclo di vita di ogni dialogo. La cancellazione del Task non garantisce
+l’interruzione immediata di una chiamata JDBC già avviata.
+3.3.3
+Aggiornamenti ed esiti dei comandi
+Per esempio, handlePurchaseAction mostra un preventivo e chiede conferma; il servizio
+ricalcola poi l’accordo. Al ritorno aggiorna saldo, catalogo e richieste e mostra totale e
+acconto eﬀettivamente persistiti. Il saldo rilegge ancora la richiesta nel servizio, anche se
+i controlli preventivi della vista usano una copia precedente. Le scritture non dipendono
+quindi dall’attualità della riga selezionata nella tabella.
+Questi handler restano sincroni sul thread graﬁco: AsyncLoad non rende asincrono ogni
+gesto dell’applicazione. Anche Platform.runLater, usato per il controllo iniziale delle
+scadenze, rinvia lavoro sul thread JavaFX, senza spostarlo su un worker. Quel controllo
+stampa l’errore su stderr; non applica lo stato Riprova delle tabelle. I dialoghi intercettano
+gli errori dei comandi e li presentano con UiUtils. Il commit precede il successo mostrato,
+ma gli aggiornamenti UI non fanno parte della transazione: una lettura di aggiornamento
+fallita dopo il commit può produrre un messaggio di errore pur avendo già completato
+l’operazione economica.
+3.4
+Persistenza: livello DAO e mapping
+oggetti/tabelle
+3.4.1
+Contratti JDBC e proprietà della connessione
+Le interfacce DAO espongono operazioni sui tipi del dominio; le implementazioni
+Postgres*Dao contengono SQL e mapping espliciti. Non c’è un ORM: i contratti stessi
+conoscono java.sql.Connection. Il criterio per il riuso è veriﬁcabile nei corpi, non nel
+nome del DAO.
+57
+
+
+--- PAGINA FISICA 61 ---
+61
+public Optional<Vehicle> findById(Long id) {
+62
+try (Connection conn = db.getConnection()) {
+63
+return findById(id, conn);
+64
+} catch (SQLException e) {
+65
+throw new RuntimeException("Errore di connessione durante la ricerca del
+veicolo id: " + id, e);
+66
+}
+67
+}
+68
+69
+@Override
+70
+public Optional<Vehicle> findById(Long id, Connection conn) {
+71
+return findById(id, conn, false);
+72
+}
+Frammento 3.10:
+PostgresVehicleDao.java:
+lettura autonoma e overload con
+connessione ricevuta.
+Il primo overload apre e chiude la connessione; il secondo passa quella ricevuta al meto-
+do comune, che chiude solo statement e result set. La responsabilità di commit e chiusura
+resta al chiamante. Le varianti findByIdForUpdate aggiungono FOR UPDATE e riﬁutano
+autocommit attivo. Una lettura autonoma chiamata dentro una lambda transazionale
+non si unisce per questo alla connessione della lambda.
+195
+public boolean updateStateAtomically(Long vehicleId, VehicleState expectedOldState,
+VehicleState newState, Connection conn) {
+196
+String sql = "UPDATE vehicle SET state = ?::vehicle_state WHERE id = ? AND state =
+?::vehicle_state";
+197
+try (PreparedStatement ps = conn.prepareStatement(sql)) {
+198
+ps.setString(1, newState.name());
+199
+ps.setLong(2, vehicleId);
+200
+ps.setString(3, expectedOldState.name());
+201
+int affected = ps.executeUpdate();
+202
+return affected > 0;
+203
+} catch (SQLException e) {
+204
+throw new RuntimeException("Errore durante l'aggiornamento atomico dello stato
+del veicolo.", e);
+205
+}
+Frammento 3.11: PostgresVehicleDao.java: transizione condizionata e conteggio delle
+righe.
+I placeholder parametrizzano i valori; il servizio decide cosa fare del booleano restitui-
+to. Nel saldo e nell’avvio un risultato falso è un errore, non un aggiornamento da ignorare.
+Altri percorsi veriﬁcano un conteggio esattamente pari a uno, ad esempio eliminazione ri-
+chiesta e aggiornamento saldo; non ogni UPDATE del progetto applica lo stesso controllo.
+L’inserimento usa RETURNING id, veriﬁca che sia restituita una riga e costruisce l’entità
+identiﬁcata, anziché assegnare un ID al campo ﬁnale dell’oggetto originario.
+58
+
+
+--- PAGINA FISICA 62 ---
+3.4.2
+Tipi, nullabilità e ricostruzione
+214
+private static Request mapRow(ResultSet rs) throws SQLException {
+215
+Long salesman = rs.getObject("salesman") != null ? rs.getLong("salesman") : null;
+216
+Date expDate = rs.getDate("exp_date");
+217
+return Request.create(
+218
+rs.getLong("id"),
+219
+rs.getLong("vehicle"),
+220
+rs.getLong("client"),
+221
+salesman,
+222
+rs.getBigDecimal("deposit"),
+223
+rs.getBigDecimal("agreed_total"),
+224
+expDate != null ? expDate.toLocalDate() : null,
+225
+RequestType.valueOf(rs.getString("type_str"))
+226
+);
+Frammento 3.12:
+PostgresRequestDao.java:
+NULL preservati e factory anche in
+lettura.
+getLong da solo non distingue un NULL da zero: per il venditore opzionale il con-
+trollo su getObject conserva null. getBigDecimal conserva i valori decimali di deposit
+e agreed_total; getDate/toLocalDate ricostruiscono una data senza orario, preservan-
+done l’assenza.
+I campi obbligatori per FK sono letti come ID, senza caricare le en-
+tità collegate. La scrittura simmetrica usa setNull con Types.BIGINT o Types.DATE,
+Date.valueOf e setBigDecimal; per il totale opzionale passa il BigDecimal anche quan-
+do nullo. La ricostruzione attraverso la factory riapplica i controlli del dominio: un dato
+incompatibile può fallire durante la lettura, non viene silenziosamente sanato.
+I quattro domini chiusi sono enum Java e tipi PostgreSQL distinti, come stabilito
+dall’ADR 0002. I cast JDBC mantengono questa corrispondenza:
+Attributo
+Tipo Java
+Cast SQL in scrittura
+vehicle.state
+VehicleState
+?::vehicle_state
+request.type
+RequestType
+?::request_type
+vehicle.price_mode
+PriceMode
+?::price_mode
+sale.type
+SaleType
+?::sale_type
+I parametri sono impostati da enum.name(); in lettura i DAO convertono con valueOf,
+in alcuni SELECT dopo ::text e alias.
+I valori ammessi sono quelli già riportati in
+sezione 2.8: il cast non veriﬁca regole su importi, accordi o associazioni. Aggiungere o
+rinominare un valore richiede coerenza fra Java, SQL e dati; non c’è una conversione
+automatica nascosta.
+La gerarchia degli utenti è ricostruita dalla vista user, UNION ALL delle tabelle di
+ruolo, con uno switch che istanzia il sottotipo e lascia al servizio il caricamento del conto.
+Le scritture scelgono la tabella con resolveTable, un insieme chiuso di ruoli, mentre i
+valori restano parametri. Le ﬁgure 2.36 e 2.37 descrivono nullabilità e FK complete: il
+mapping non aggiunge una PK globale degli utenti o un vincolo di autorizzazione assente
+nel DDL. Il caso SQLSTATE 23503 nella cancellazione dell’identità è tradotto in errore
+di dominio; gli altri errori conservano la causa SQL. Non c’è una tassonomia uniforme di
+eccezioni applicative per tutti i DAO.
+59
+
+
+--- PAGINA FISICA 63 ---
+3.5
+Idiomi e Design Pattern
+La classiﬁcazione dipende dalle collaborazioni eﬀettive, riscontrabili nei frammenti e nella
+ﬁgura 2.22. Un’etichetta nei Javadoc non dimostra un pattern; il Mode #2 non richiede
+di raggiungerne un numero preﬁssato.
+Factory statiche e idiomi.
+Vehicle.create e le factory nominate di Request e Sale
+nascondono costruttori e riusano la validazione anche nei mapper. Manca però un Creator
+con metodo di creazione rideﬁnito dai sottotipi: non è Factory Method GoF. Campi ﬁnali,
+enum, record e try-with-resources sono idiomi Java. Una classe ﬁnale può essere mutabile;
+un enum di stati non realizza da solo State GoF.
+Observer GoF.
+Publisher, contratto, iscrizione/rimozione e notiﬁca degli osservatori
+realizzano la collaborazione GoF. Separano la cancellazione dei test drive dai servizi eco-
+nomici. Il frammento 3.6 mostra il limite: notiﬁca sincrona, errori propagati e connessione
+JDBC esplicita. Un eventuale osservatore con eﬀetti esterni non riceverebbe automatica-
+mente rollback per quegli eﬀetti. Non è una coda persistente né una notiﬁca UI dopo il
+commit.
+Navigazione nello stile Visitor.
+openDashboard seleziona l’overload per il tipo con-
+creto (frammento 3.8); App fornisce il navigator. Questo double dispatch separa dalle
+entità la costruzione delle dashboard. Il contratto enumera però i tre ruoli e User co-
+nosce la navigazione, pur senza importare JavaFX. Un nuovo ruolo modiﬁca navigator,
+App e mapper: non basta aggiungere una classe.
+Non è un Visitor per attraversare
+arbitrariamente il grafo del dominio.
+DAO e dependency injection.
+DAO è un pattern di accesso ai dati esterno al catalogo
+GoF: qui isola SQL e mapping ma espone Connection, senza indipendenza da JDBC o
+repository di aggregati DDD. La DI manuale è una tecnica di composizione, anch’essa
+esterna ai GoF: AppContext costruisce e passa i collaboratori. Riceve il gestore ma sceglie
+internamente PostgreSQL e PBKDF2; le viste ricevono servizi concreti. L’inversione delle
+dipendenze è quindi parziale.
+Singleton e composizione.
+Il frammento 3.13 realizza l’accesso Singleton GoF al con-
+testo predeﬁnito. Il costruttore pubblico con DatabaseManager consente però contesti
+separati: non impone un’unica istanza nel processo. La sincronizzazione protegge l’ini-
+zializzazione, non ogni entità o vista. Sempliﬁca l’avvio, mentre gli accessi globali negli
+overload di comodo rendono meno esplicite alcune dipendenze, diversamente dalla DI.
+112
+public static synchronized AppContext getInstance() {
+113
+if (instance == null) {
+114
+instance = new AppContext();
+115
+}
+116
+return instance;
+117
+}
+Frammento 3.13:
+AppContext.java:
+accesso Singleton sincronizzato al contesto
+predeﬁnito.
+60
+
+
+--- PAGINA FISICA 64 ---
+Capitolo 4
+Testing
+Le prove sono lette come argomenti a sostegno di comportamenti precisi: quale situazione
+viene preparata, quale comando viene invocato e quali osservazioni potrebbero smentire
+il risultato atteso. Il capitolo e l’appendice C sono completi e proposti per la revisione
+degli autori, senza attribuirne l’approvazione. Il riscontro documentale è del 13 novembre
+2026 sul commit 61ce18a; non sono stati eseguiti test applicativi, harness o accessi al
+database.
+4.1
+Strategia di veriﬁca
+Il rischio principale è confermare un’operazione economica lasciando saldo, richiesta, stato
+del veicolo o storico incoerenti. Per questo le veriﬁche procedono dalle regole locali ai ﬂussi
+persistenti, ﬁno alla presentazione. La classiﬁcazione dipende da ciò che il test esegue:
+• I test unitari costruiscono entità e calcolatore in memoria. TestDatabaseConfig
+urationTest costruisce conﬁgurazioni e veriﬁca riﬁuti senza aprire connessioni: il
+riferimento a PostgreSQL non lo rende un test d’integrazione.
+• I test d’integrazione usano JDBC, TestDatabase.reset e un AppContext nuovo sul
+PostgreSQL dedicato. Attraversano servizi, dominio, DAO e vincoli; non sono test
+unitari dei soli DAO.
+• Gli harness JavaFX sono programmi con main, controlli propri, Platform e Robot.
+Quelli dei ﬂussi commerciali e delle tabelle usano PostgreSQL reale; AppStartup
+veriﬁca il solo ingresso pubblico. Risiedono in docs/evidence, fuori dalla selezione
+JUnit di Maven.
+La suite è raccolta in src/test/java/it/unifi/drivehub: sei classi senza DB, diciassette
+con tag postgres, più il supporto TestDatabase. Il POM usa JUnit Jupiter 5.10.2 e
+Sureﬁre 3.2.5; non conﬁgura Failsafe né JaCoCo.
+La proprietà test.excludedGroups
+esclude postgres in mvntest; il proﬁlo postgres-tests la porta a none, includendo
+anche i test senza DB. Il nome IntegrationTest non attiva un diverso ciclo Maven.
+Gli scenari sono funzionali quando confrontano un comportamento con una regola:
+per esempio due clienti non devono ottenere lo stesso periodo. La scelta di conﬁni, trigger
+di guasto, rami di errore e contatori JDBC aggiunge veriﬁche guidate dalla struttura
+interna. Non è disponibile una misura strumentata di istruzioni o rami coperti: il numero
+delle invocazioni, che comprende i parametri JUnit, non è una percentuale di copertura.
+La matrice in appendice collega le prove alle schede di appendice A e agli obiettivi della
+speciﬁca; l’esistenza di una classe non certiﬁca da sola un intero requisito.
+61
+
+
+--- PAGINA FISICA 65 ---
+4.2
+Livello 1: Business Logic
+DomainInvariantsTest veriﬁca conﬁni e conservazione dello stato. Tentare di togliere
+la targa a un veicolo con 100 km deve fallire lasciando invariati targa, chilometri e altri
+attributi. Ridurre prima i chilometri a zero rende invece possibile la rimozione. Sono
+controllati anche sconti 0–50, anni ammessi, orari dei test drive e prelievo con fondi in-
+suﬃcienti. BookingRulesTest precisa due conﬁni facilmente trascurati: un microsecondo
+dopo le 16 è già fuori fascia; i noleggi includono entrambi i giorni estremi. Questi oggetti
+in memoria non dimostrano vincoli SQL, prenotazioni concorrenti o identità persistite.
+Per i prezzi, PriceCalculatorServiceTest veriﬁca base manuale 10.000 con promo-
+zione 10% uguale a 9.000; sconti modello e veicolo concorrono tramite il massimo e non
+si sommano. Altri casi combinano usato, anno e chilometri, riportano la modalità all’au-
+tomatico e veriﬁcano che la base 10.000,005 sia arrotondata prima della formula, dando
+9.000,01. Sono esempi discriminanti per ADR 0001, non una veriﬁca numerica esaustiva
+di una formula che usa anche passaggi in double.
+RequestAgreementTest separa l’accordo dal listino: assegnare venditore e scadenza
+non deve cambiare totale o acconto. Nel frammento 4.1 il residuo comprende anche i
+centesimi. Sono inoltre riﬁutati totale assente, importi negativi, acconto maggiore del
+totale e frazioni che cambierebbero nella memorizzazione a centesimi.
+La richiesta di
+acquisto dal cliente ha invece stima non negativa e agreedTotal nullo; non possiede un
+saldo di vendita al cliente.
+17
+Request request = Request.createNewSaleRequest(1L, 2L,
+18
+new BigDecimal("4000.01"), new BigDecimal("20000.03"));
+19
+assertEquals(RequestType.SALE, request.getType());
+20
+request.setSalesmanId(16L);
+21
+request.setExpDate(LocalDate.now().plusMonths(1));
+22
+assertEquals(new BigDecimal("20000.03"), request.getAgreedTotal());
+23
+assertEquals(new BigDecimal("4000.01"), request.getDeposit());
+24
+assertEquals(new BigDecimal("16000.02"), request.getRemainingAmount());
+Frammento 4.1: RequestAgreementTest.java: estratto della prova.
+Il dominio e SaleTypeTest conservano il tipo esplicito anche con importo zero: SALE,
+PURCHASE e PENALTY non si deducono dal segno. Ciò non dimostra il buon esito di un
+pagamento zero: BankAccount.deposit/withdraw lo riﬁutano. La prova sul pagamento
+zero di SaleOutcomeIntegrationTest veriﬁca proprio il riﬁuto con stato conservato. È
+distinto dalla discrepanza funzionale già segnalata nei ticket documentali 04–05, non una
+prova che l’accettazione di una cessione a zero sia supportata.
+Le regole che coinvolgono più record richiedono il livello successivo: identità, conto,
+accordi persistiti e operazioni economiche non sono provati dal solo dominio. In particolare
+i test chiamati FullWorkflowIntegrationTest veriﬁcano login, letture dei tre ruoli e una
+scadenza predisposta; non percorrono da soli ogni operazione commerciale completa né la
+sua interfaccia.
+4.3
+Livello 2: Persistence Layer (DAO)
+TestDatabase richiede esplicitamente URL, utente e password di test. Prima della con-
+nessione riﬁuta URL ambigui, parametri JDBC e destinazioni non dedicate; prima del
+reset controlla database e ruolo drivehub_test, proprietario, schema public, assenza
+di privilegi amministrativi, appartenenze e altri database posseduti. I test non creano
+62
+
+
+--- PAGINA FISICA 66 ---
+database o ruoli. Ogni scenario riparte da schema/demo, spesso aggiungendo ﬁxture mi-
+nime con date relative. Gli script interi sono eseguiti in una transazione, con tentativo di
+rollback su errore; il loader non divide i corpi SQL ai punti e virgola. Questo è isolamento
+per reset, non rollback automatico di tutte le operazioni di ogni test: i servizi possono
+eseguire veri commit. Due suite o harness sullo stesso DB interferirebbero.
+DemoSqlValidationTest confronta le righe delle tredici tabelle e i valori delle sequenze
+dopo due ricaricamenti demo e un nuovo reset. DatabaseIsolationIntegrationTest usa
+una seconda connessione in sola lettura, verso un DB sentinella distinto: riﬁuta conﬁgu-
+razioni incrociate e veriﬁca che il marchio R00_SENTINEL sopravviva ai reset. L’asserzione
+JUnit controlla quel marchio, non tutte le righe del secondo archivio; i confronti esterni
+più estesi delle sessioni storiche sono attribuiti separatamente in appendice.
+La persistenza viene osservata tramite nuove letture, non solo tramite l’oggetto re-
+stituito dalla scrittura.
+PriceSelectionIntegrationTest veriﬁca modalità e prezzo
+prima/dopo il caricamento; la prova dell’accordo modiﬁca basi e sconti, ricostruisce il
+contesto e completa ancora 20.000/4.000/16.000. Il registro salva e rilegge tutti i tipi con
+importi zero o positivi. Il mapping usa BigDecimal, date e timestamp; getObject prima
+di getLong mantiene nulli venditore e veicolo facoltativi. La scadenza può essere nulla e il
+totale deve esserlo nelle richieste PURCHASE. Alcune nullabilità sono asserite direttamente
+(per esempio le attribuzioni della penale), altre sono solo attraversate dai ﬂussi: non si
+attribuisce una veriﬁca dedicata a ogni colonna.
+PostgresEnumIntegrationTest legge tipo SQL e nome da information_schema,
+confronta etichette ordinate in pg_enum e attende SQLSTATE 22P02 assegnando un va-
+lore estraneo. Copre vehicle_state, request_type, price_mode e sale_type. I test
+dei ﬂussi esercitano anche i cast JDBC; la sola prova SQL degli enum non dimostra ogni
+loro percorso di salvataggio e rilettura. Nullabilità, default e vincoli economici restano
+contratti distinti.
+Rollback dopo scritture eﬀettive.
+Le prove d’errore non si fermano al riﬁuto di un
+input. Un trigger della prova dell’accordo osserva il saldo già addebitato e poi solleva
+un errore su richiesta, vendita, cancellazione o stato. Altri trigger osservano accredito e
+acquisizione, cancellazioni dei test drive o rimborsi multipli prima del guasto. Le riletture
+devono ritrovare lo stato precedente. Nel frammento 4.2, il trigger AFTER DELETE ha
+già controllato che cliente e conto siano assenti e ha avanzato una sequenza diagnostica
+prima dell’errore. Il valore della sequenza, che non torna indietro col rollback, attesta il
+raggiungimento del punto di guasto; lo snapshot confronta invece i dati applicativi. Non
+implica una conservazione transazionale dei numeri delle sequenze.
+318
+var before = snapshot();
+319
+var failure = assertThrows(RuntimeException.class, () -> ctx.getAuthService().
+deleteAccount(1L, "Cliente", "password"));
+320
+assertTrue(rootCause(failure).getMessage().contains("ticket13_after_deletions"));
+321
+assertEquals(1, scalar("SELECT last_value FROM ticket13_writes"));
+322
+assertEquals(before, snapshot());
+323
+assertEquals(1L, new AppContext(db).getAuthService().login("mario.rossi@email.it",
+"password").getId());
+Frammento 4.2: IdentityDeletionIntegrationTest.java: estratto della prova.
+Le scritture saltate con RETURN NULL sono provate separatamente: una riga non mo-
+diﬁcata deve impedire il successo anche senza eccezione SQL. Funzioni e trigger di gua-
+63
+
+
+--- PAGINA FISICA 67 ---
+sto sono rimossi nel cleanup. Queste prove non simulano ogni perdita di connessione o
+fallimento del rollback stesso.
+Conﬂitti concorrenti.
+Nelle gare su saldi, richieste, prenotazioni, cessioni e identità,
+un gate SQL trattiene un lock mentre i worker usano nuovi contesti e connessioni distinte.
+La connessione osservatrice interroga pg_stat_activity e pg_blocking_pids, contando
+PID distinti prima di rilasciare il gate. Il frammento 4.3 mostra la partenza ordinata
+dei due contendenti, non una pausa usata per presumere il conﬂitto. Le attese, query di
+controllo e Future.get hanno limiti di dieci secondi; il cleanup rilascia il gate, cancella
+backend ancora bloccati e attende la terminazione dei worker. Non è un timeout globale
+di ogni possibile chiamata produttiva.
+301
+var a = workers.submit(outcome(first));
+302
+try {
+303
+awaitWaiters(observer, 1);
+304
+var b = workers.submit(outcome(second));
+305
+awaitWaiters(observer, 2);
+306
+if (commitGate) gate.commit();
+307
+else gate.rollback();
+308
+return Arrays.asList(a.get(10, TimeUnit.SECONDS), b.get(10, TimeUnit.
+SECONDS));
+Frammento 4.3: PurchaseConcurrencyIntegrationTest.java: estratto della prova.
+Le asserzioni veriﬁcano una sola vendita e un solo addebito del saldo, rimborsi non
+duplicati, nessun noleggio sovrapposto e storico conservato nei conﬂitti selezionati.
+I
+test SQL diretti veriﬁcano anche il vincolo EXCLUDE sui periodi inclusivi. Gli esiti non
+certiﬁcano ogni interleaving, assenza universale di deadlock o snapshot comune del listino;
+i protocolli e le transazioni restano quelli delle sequenze già illustrate nella sezione 2.7.
+4.4
+Veriﬁche funzionali e della presentazione
+Gli harness costruiscono le viste pubbliche con servizi reali, su display Xvfb isolato; gli
+helper fx, i latch, le proprietà JavaFX e i frame osservati coordinano le asserzioni. I gesti
+Robot riusati hanno anche pause per rendering: sono distinti dalla sincronizzazione delle
+gare DB. AgreementUiCheck, SaleOutcomeUiCheck, DestinationUiCheck e Identity
+UiCheck collegano dialoghi, conferme e tabelle a eﬀetti persistenti speciﬁci; dove previsto
+il seed e il controllo sono JVM distinte. Non fanno parte del conteggio Sureﬁre.
+TableLifecycleUiCheck blocca davvero una lettura del catalogo con un lock Postgre-
+SQL e ne osserva il PID: controlla stato di caricamento, dati disabilitati e cambio scheda
+da tastiera.
+Poi rinomina temporaneamente una tabella nel solo DB di test, attende
+l’errore visibile e prova il recupero con Riprova, ripristinando la tabella in finally. Per
+risultati ed errori superati, un proxy diagnostico delega al driver reale, trattiene l’esito do-
+po la query e lo libera soltanto dopo un nuovo caricamento. La vecchia connessione deve
+chiudersi e il prezzo/stato più recente deve rimanere. Sono osservati anche aggiornamenti
+della lista sul thread FX, nuove basi e sconti e refresh nelle tre dashboard.
+ReactiveTablesUiCheck.cells confronta i contatori JDBC prima/dopo lettura delle
+celle, refresh e scorrimento, attendendo tre frame. L’assenza di nuove query in questa
+ﬁnestra è una veriﬁca strutturale del rendering osservato, non un benchmark. SlowModels
+UiCheck controlla che selezionare il marchio ritorni sul thread FX mentre la query modelli
+64
+
+
+--- PAGINA FISICA 68 ---
+è bloccata; dopo una selezione cancellata, il risultato precedente non deve ripopolare la
+lista.
+Il ciclo di caricamento veriﬁcato comprende costruzione, sostituzione, errore e ripre-
+sa. Il listener di AsyncLoad che cancella il task quando il controllo perde la scena è un
+riscontro statico: gli harness qui citati non asseriscono direttamente distacco, logout e ria-
+pertura con una query ancora pendente. Cancellare un task non garantisce l’interruzione
+immediata di JDBC. Le tabelle sincrone delle operazioni cliente e le azioni economiche
+non acquistano reattività per analogia. Tastiera e testi accessibili negli scenari provati
+non certiﬁcano screen reader, ogni gesto, ogni display o accessibilità generale.
+4.5
+Esecuzione della suite e portata dei risultati
+I comandi seguenti sono istruzioni di riproduzione dalla radice del repository, non ese-
+cuzioni di questo ticket. Servono JDK 21 e Maven 3.9 o superiore sullo stesso JDK;
+per l’integrazione PostgreSQL 16 con btree_gist. JavaFX 21.0.2 e JDBC 42.7.3 sono
+nel POM. La prima risoluzione delle dipendenze richiede rete; -o è appropriato solo con
+una cache già completa.
+# Senza database
+mvn test
+mvn -Dtest=PriceCalculatorServiceTest,RequestAgreementTest test
+# Dopo la preparazione dei due DB e delle variabili esplicite
+mvn -Ppostgres-tests -Dtest=PurchaseAgreementIntegrationTest test
+mvn -Ppostgres-tests clean test
+docs/testing.md descrive creazione separata di ruolo/DB sacriﬁcabili, DRIVEHUB_T
+EST_DB_URL, DRIVEHUB_TEST_DB_USER e DRIVEHUB_TEST_DB_PASSWORD, più le tre corri-
+spondenti DRIVEHUB_SENTINEL_DB_* per la prova d’isolamento. La sentinella va predispo-
+sta su una copia distinta già inizializzata. Le password non vanno inserite nei comandi
+Maven o nelle evidenze.
+Una conﬁgurazione mancante causa fallimento, non un test
+saltato. docs/installation.md distingue installazione e reset: schema.sql e demo.sql
+distruggono dati sul bersaglio e non vanno applicati a un archivio da conservare.
+Per le tabelle, dopo compilazione e ﬁxture predisposte, usare ad esempio:
+# JDK 21, DISPLAY isolato e variabili DB di test gia' verificati
+DRIVEHUB_UI_CLASS=it.unifi.drivehub.TableLifecycleUiCheck \
+python3 docs/evidence/r08-tables/run-ui.py
+Il launcher richiede JAVA_HOME, dipendenze Linux nella cache Maven, target/classes
+e target/test-classes; DRIVEHUB_UI_DIR permette un output distinto. Per i modelli
+selezionare it.unifi.drivehub.SlowModelsUiCheck. Non eseguire suite e harness insieme
+sullo stesso DB. I runner storici R11 hanno percorsi privati e adattamenti conservati: non
+sono procedure portabili senza ripreparare quell’ambiente.
+I log storici riportano 423 eseguiti senza failure, errori o salti il 9 novembre (E1)
+e 394 senza failure, errori o salti il 3 novembre (E2). E1 è coerente con il tree corrente;
+E2 ha input e semantica poi modiﬁcati. Le prove GUI E3 appartengono alla prima fase
+del 3 novembre, non al giro E1. L’appendice C precisa provenienza, ambiente, comandi,
+versioni, tentativi falliti e limiti. I conteggi restano separati e non misurano la copertura
+del codice. I difetti già segnalati nei ticket documentali 04–05 restano aperti: veriﬁcare
+un riﬁuto corrente non soddisfa necessariamente l’intento di un requisito.
+65
+
+
+--- PAGINA FISICA 69 ---
+Capitolo 5
+Uso dell’AI
+Il capitolo distingue le dichiarazioni degli autori, le attività riscontrabili nei materiali
+conservati e ciò che tali materiali non permettono di stabilire. È completo e proposto agli
+autori per revisione, senza attribuirne l’approvazione. La matrice aﬀermazioni–fonti e i
+controlli documentali sono in docs/relazione/verifiche/ticket-07/.
+5.1
+Progettazione e sviluppo iniziale manuali
+Secondo la dichiarazione degli autori registrata nel piano, la progettazione, la struttura
+iniziale del software e le prime classi sono state realizzate manualmente; tutta la revisione
+è stata svolta nelle sessioni con Codex. Questo è il signiﬁcato attribuito allo scheletro
+iniziale. Si tratta di una dichiarazione di provenienza, non di un’attribuzione ricavata
+autonomamente dal codice.1 La cronologia Git conserva versioni e modiﬁche, ma non
+separa per ogni riga il lavoro manuale da quello assistito. Non si assegnano quindi singole
+classi all’uno o all’altro sulla sola base di nomi, stile o autore del commit.
+5.2
+Revisione assistita da Codex
+La fotograﬁa dei registri conserva audit, piano e diciotto ticket della prima fase. L’audit
+del 30 ottobre 2026 individua rischi su denaro, stati, concorrenza e coerenza documentale;
+dichiara anche che PostgreSQL e display non erano disponibili.
+I controlli con DAO
+simulati di quella fase non dimostravano l’isolamento del database. Il piano trasforma
+i rilievi in decisioni, dipendenze e criteri veriﬁcabili; i ticket e le evidenze registrano
+implementazione, tentativi falliti e chiusure. L’attribuzione complessiva a Codex resta
+quella dichiarata dagli autori.2
+Un esempio è il prezzo manuale. La proposta dell’audit di eliminarlo viene superata
+dalla decisione degli autori: mantenere una base scelta dal manager e applicarle la formula
+comune. La revisione raggiunge dominio, servizi, DAO e viste; una regressione documenta
+base 10.000 e sconto 10% con risultato 9.000. La review Spec rileva poi una diﬀerenza sui
+centesimi prima e dopo la persistenza, riprodotta e corretta con normalizzazione condivisa.
+1docs/relazione/piano.md, sezione Origine del lavoro e uso dell’AI. Tutti i percorsi citati sono
+relativi alla radice del repository.
+2docs/evidence/revision-records.zip: AUDIT_DRIVEHUB_2026-10-30.md, Veriﬁche svolte;
+PIANO_REVISIONI_DRIVEHUB.md, Decisioni raccolte e Attività e dipendenze;
+TRACKER_DRIVEHUB/revisioni/issues/. Il manifest interno SHA256.json identiﬁca la fotograﬁa, non
+una trascrizione delle sessioni.
+66
+
+
+--- PAGINA FISICA 70 ---
+Un intervento distinto ﬁssa il totale all’acconto: 20.000, acconto 4.000, saldo 16.000 anche
+dopo cambi di listino. Sono esempi di requisito deciso, proposta tecnica, controprova e
+correzione, non prove dell’origine di ogni riga.3
+Per le tabelle JavaFX, le tracce mostrano letture collettive e caricamenti asincroni,
+con controlli di rendering senza query, letture bloccate e risultati obsoleti. La pulizia
+successiva rimuove soltanto componenti senza chiamanti. La revisione comprende inoltre
+identità, rollback e gare sui ﬂussi economici. Interventi successivi alla prima fase rial-
+lineano richieste e registro al punto di vista della concessionaria e uniformano gli enum
+PostgreSQL: i vecchi nomi e segni nelle prove rimangono riferiti alla loro versione, come
+precisato nell’appendice C.4
+5.3
+Veriﬁca e controllo umano
+Le decisioni umane documentate riguardano requisiti e perimetro: l’ADR 0001 registra
+la scelta della base manuale e del totale concordato; l’ADR 0002 registra la scelta degli
+enum nativi e le condizioni dell’aggiornamento locale, con backup e prova su copia. Sono
+decisioni registrate come confermate dall’utente; non dimostrano una lettura umana di
+ciascuna patch o l’approvazione di ogni risultato.5
+Le veriﬁche tecniche sono un livello distinto. Log, XML, manifest e patch permettono
+di controllare risultati e versione esaminata. Ad esempio R11 registra il 3 novembre 394
+prove riuscite su JDK 21 e PostgreSQL 16 dedicato; il 9 novembre il log degli enum
+ne registra 423.
+Non si sommano sessioni diverse né si ricava da questi conteggi una
+percentuale di copertura. Il secondo risultato non dispone di manifest runtime o XML
+per metodo: il rapporto con il codice corrente è ricostruito tramite fonti e Git. Il capitolo 4
+e l’appendice C distinguono questi limiti e le prove JavaFX. Qui non sono stati rieseguiti
+test applicativi, harness o accessi al database.
+Anche le review Standards e Spec conservate sono revisioni assistite, svolte da agenti in
+contesti separati: i loro esiti non sono approvazioni umane. Per la relazione, le veriﬁche
+05–06 documentano correzioni, compilazione e ispezione del PDF; i capitoli sono stati
+proposti agli autori e restano da loro rivedere. L’eventuale approvazione non viene dedotta
+dal silenzio o dalla chiusura di un ticket.6
+3docs/adr/0001-base-manuale-e-prezzo-concordato.md;
+docs/evidence/r03-prices/verification.md, TDD e veriﬁche e Revisione indipendente;
+docs/evidence/r04-agreement/verification.md, TDD e comandi.
+4docs/evidence/r08-tables/verification.md; docs/evidence/r10-cleanup/verification.md;
+docs/evidence/r11-integrated/acceptance-matrix.md;
+docs/evidence/request-semantics-01/verification.md;
+docs/evidence/sale-semantics-02/verification.md;
+docs/evidence/postgres-enums-2026-11-09/verification.md.
+5ADR 0001 citato sopra; docs/adr/0002-enumerazioni-native-postgresql.md. Per gli esiti storici
+di conservazione e ripristino: docs/evidence/db-consolidation-2026-11-09/verification.md e
+docs/evidence/postgres-enums-2026-11-09/verification.md. Nessun backup privato è stato
+consultato per questo capitolo.
+6docs/evidence/r03-prices/verification.md, Revisione indipendente;
+docs/relazione/verifiche/ticket-05/revisione.md e
+docs/relazione/verifiche/ticket-06/revisione.md.
+67
+
+
+--- PAGINA FISICA 71 ---
+5.4
+Documentazione, diagrammi e limiti
+Il supporto di Codex comprende la documentazione: il README lo cita esplicitamente
+per l’analisi dell’avvio, lo script Windows e le istruzioni. Le evidenze R09 registrano la
+revisione tecnica e teorica, distinguendo factory statiche da Factory Method e meccanismi
+DAO/DI dai pattern GoF. Registrano inoltre diagrammi PlantUML di quella fase, separati
+dagli artefatti storici.7
+Anche questa riscrittura della relazione è assistita da Codex: comprende sintesi dei
+sorgenti e delle evidenze, selezione dei frammenti, matrici di tracciabilità, composizione
+LaTeX e controllo del PDF. Le nuove tavole della relazione usano draw.io: sono viste
+selettive riscontrate su Java e schema, non un’esportazione UML automatica del codice.
+Sorgenti modiﬁcabili, esportazioni e verbali restano conservati. Questo capitolo riusa le
+tavole del capitolo 2 e dell’appendice B, senza crearne altre. Le veriﬁche documentali
+01–07 distinguono i controlli attuali dalle prove applicative pregresse.8
+Le tracce non sono una cronologia completa delle conversazioni.
+Non consentono
+di ricostruire prompt integrali, versioni dei modelli, tempi complessivi, percentuali di
+codice generato o una precisa modalità d’integrazione nell’IDE. I metadati dei commit
+e le impronte dei ﬁle identiﬁcano artefatti, non il loro autore intellettuale. I risultati
+storici restano tali; compilazione, ispezione del PDF e review documentali non certiﬁcano
+il software corrente e non sostituiscono il controllo degli autori.
+7README.md, Uso dell’AI; docs/evidence/r09-instructions/verification.md, Cambiamenti e
+motivazione; docs/evidence/r09-diagrams/verification.md, Diagrammi correnti e storico.
+8docs/relazione/diagrammi/README.md;
+docs/relazione/verifiche/ticket-03/matrice-copertura.md;
+docs/relazione/verifiche/ticket-04/README.md;
+docs/relazione/verifiche/ticket-05/README.md,
+docs/relazione/verifiche/ticket-06/README.md e
+docs/relazione/verifiche/ticket-07/README.md.
+68
+
+
+--- PAGINA FISICA 72 ---
+Appendice A
+Schede complete dei casi d’uso
+Ogni titolo riporta identiﬁcativo stabile e denominazione. Le alternative n.a, n.b si dira-
+mano dal passo n della stessa scheda; si indica se il caso riprende o termina. O indica
+un obiettivo applicativo, F una sottofunzione applicativa e S una funzione di supporto.
+Sono livelli descrittivi, non livelli di autorizzazione. Gli attori sono ruoli dell’interfaccia;
+non si assume un controllo dei permessi indipendente in ogni servizio. Le postcondizioni
+descrivono il successo; in caso di errore transazionale le scritture della singola operazio-
+ne vengono annullate. Un errore successivo nell’aggiornamento della vista non annulla
+un’operazione già confermata.
+69
+
+
+--- PAGINA FISICA 73 ---
+A.1
+UC-01 — Prenotazione di un test drive
+Descrizione: Il cliente riserva un giro di prova di un’ora su un veicolo della concessiona-
+ria.
+Livello: O — obiettivo applicativo.
+Attori: Cliente; indirettamente altri clienti con prenotazioni concorrenti.
+Precondizioni: Cliente autenticato; veicolo visibile nel catalogo vendita o noleggio.
+Postcondizioni: Prenotazione associata a cliente, veicolo e data/ora; nessun addebito.
+Flusso principale
+1. Il cliente seleziona un veicolo in Auto in Vendita o Auto a Noleggio.
+2. Apre Prenota Test Drive, sceglie data e ora iniziale e conferma. La UI propone ore
+intere dalle 09:00 alle 16:00.
+3. Il servizio rilegge il veicolo, ammette solo SALE/RENT, controlla che l’istante non sia
+passato, che il cliente abbia meno di tre test drive attivi e che slot e giorno non
+siano occupati da test drive o noleggi incompatibili.
+4. Il sistema salva la prenotazione nella transazione e aggiorna Le Mie Operazioni.
+5. Il cliente legge la conferma con data e ora del giro di prova.
+Alternative
+2.a Annullamento del dialogo: nessuna prenotazione; termina.
+3.a Data passata, stato cambiato, limite raggiunto o indisponibilità: errore, nessuna
+nuova prenotazione; il cliente può ripartire da 1 o 2.
+4.a Errore di persistenza: rollback della prenotazione; termina senza successo.
+5.a Successivamente il cliente seleziona un proprio test drive in Le Mie Operazioni e lo
+annulla: viene rimosso e la tabella aggiornata. Un identiﬁcativo non appartenente
+al cliente viene riﬁutato.
+5.b Un successivo noleggio o completamento di vendita sul veicolo cancella tutti i suoi test
+drive futuri, anche fuori dal periodo noleggiato. Lo storico rimane; la cancellazione
+partecipa alla transazione commerciale.
+Riscontro: TestDriveService, TestDriveCancellationObserver,
+ClientDashboardView. La durata è una convenzione del giro di prova; la UI seleziona
+ore intere, senza attribuire al servizio un vincolo generale sui minuti che il codice non
+applica per tutte le ore.
+70
+
+
+--- PAGINA FISICA 74 ---
+A.2
+UC-02 — Prenotazione di un noleggio
+Descrizione: La concessionaria prenota un proprio veicolo al cliente e incassa subito il
+costo del periodo.
+Livello: O — obiettivo applicativo.
+Attori: Cliente; clienti titolari di test drive futuri sul medesimo veicolo.
+Precondizioni: Cliente autenticato con conto demo; veicolo presente nel catalogo noleg-
+gio.
+Postcondizioni: Noleggio salvato e costo intero addebitato; test drive futuri del veicolo
+cancellati; il veicolo conserva la destinazione RENT.
+Flusso principale
+1. Il cliente seleziona un veicolo in Auto a Noleggio e apre Prenota Noleggio.
+2. Sceglie inizio e ﬁne; il dialogo mostra il costo del periodo con estremi inclusi.
+3. Conferma. Il servizio rilegge stato, disponibilità e prezzo: inizio non passato, ﬁne
+non precedente all’inizio, stato RENT, nessuna sovrapposizione.
+4. Il sistema veriﬁca il conto e addebita il 100% del costo ricalcolato.
+5. Salva il noleggio e cancella tutti i test drive futuri del veicolo, anche oltre il periodo
+prenotato, nella stessa transazione.
+6. Mostra la conferma e aggiorna saldo e operazioni del cliente.
+Alternative
+2.a Date incomplete o invertite: il preventivo non è valido; il cliente corregge il periodo
+al passo 2 oppure annulla senza eﬀetti.
+3.a Stato cambiato o periodo già occupato, anche per una prenotazione concorrente:
+riﬁuto senza addebito; ripartire da 1 o 2.
+4.a Conto assente o saldo insuﬃciente: nessun noleggio e nessun addebito; termina.
+5.a Errore nel salvataggio o nelle cancellazioni collegate: rollback anche dell’addebito;
+nessun successo parziale.
+6.a In seguito UC-08 destina il veicolo alla vendita: se non vi sono noleggi in corso,
+quelli con inizio futuro sono rimossi e rimborsati al 100%. Il cliente vede l’eﬀetto
+ricaricando le proprie operazioni.
+Riscontro: RentalService, PriceCalculatorService,
+TestDriveCancellationObserver. Il preventivo non è un accordo ﬁssato: il costo viene
+ricalcolato alla prenotazione. La UI non oﬀre una cancellazione autonoma del noleggio
+al cliente.
+71
+
+
+--- PAGINA FISICA 75 ---
+A.3
+UC-03 — Vendita al cliente
+Descrizione: La concessionaria vende un veicolo: acconto, autorizzazione del venditore
+e saldo del totale concordato.
+Livello: O — obiettivo applicativo articolato in più sessioni.
+Attori: Cliente principale; venditore per UC-04.
+Precondizioni: Cliente autenticato con conto demo; veicolo proposto in vendita.
+Postcondizioni: Nel successo completo: totale registrato come vendita al cliente, richie-
+sta rimossa, veicolo SOLD; test drive futuri cancellati. Dopo il solo acconto: richiesta SALE
+aperta, totale ﬁssato e veicolo BLOCKED.
+Flusso principale
+1. Il cliente seleziona il veicolo in Auto in Vendita e avvia l’acquisto.
+2. Legge prezzo indicativo e acconto del 20% nel dialogo e conferma.
+3. Il servizio riserva il veicolo solo se ancora SALE, ricalcola il prezzo, addebita l’acconto
+e salva la richiesta con totale concordato, senza venditore né scadenza.
+4. Il venditore approva la richiesta attraverso UC-04, ﬁssando il termine di un mese.
+5. Il cliente seleziona la richiesta approvata in Le Mie Operazioni, apre il pagamento
+del saldo e conferma il residuo del totale concordato.
+6. Il servizio veriﬁca autorizzazione e scadenza, addebita il residuo, registra l’intero
+totale nel registro, elimina la richiesta e porta il veicolo a SOLD. Cancella i test
+drive futuri nella stessa transazione del saldo.
+Alternative
+2.a Annullamento: il veicolo non viene riservato; termina.
+3.a Veicolo non più disponibile, conto assente o fondi insuﬃcienti: rollback di acconto,
+richiesta e stato; termina.
+4.a Riﬁuto del venditore: rimborso integrale dell’acconto, richiesta eliminata e veicolo di
+nuovo SALE; termina.
+5.a Richiesta non autorizzata o già scaduta: il saldo viene riﬁutato. Annullare il dialogo
+lascia invece aperta la richiesta.
+6.a Saldo insuﬃciente o errore transazionale: nessuna vendita completata; restano ac-
+conto e richiesta precedenti; il cliente può riprovare entro il termine.
+6.b Mancato saldo entro il termine: all’accesso successivo il controllo delle scadenze trat-
+tiene il 20% dell’acconto come penale, restituisce il resto, rimuove la richiesta e
+libera il veicolo per la vendita. Non è un processo periodico in background.
+Riscontro: PurchaseService, Request, ADR 0001. Acconto e saldo hanno transazioni
+distinte. Basi e sconti successivi non modiﬁcano il totale già concordato; la penale è il
+20% dell’acconto, non del totale.
+72
+
+
+--- PAGINA FISICA 76 ---
+A.4
+UC-04 — Autorizzazione del venditore
+Descrizione: Il venditore decide l’esito della richiesta con cui la concessionaria venderà
+un veicolo al cliente.
+Livello: F — sottofunzione applicativa di UC-03, svolta dal venditore.
+Attori: Venditore principale; cliente destinatario dell’esito.
+Precondizioni: Venditore autenticato; richiesta SALE in sospeso, con acconto già versato
+e veicolo riservato.
+Postcondizioni: Approvazione: richiesta attribuita al venditore e scadenza impostata a
+un mese da oggi; il saldo resta da pagare e il veicolo rimane BLOCKED.
+Flusso principale
+1. Il venditore apre Richieste in Sospeso.
+2. Seleziona una riga Vendita al cliente, veriﬁcando totale, acconto e residuo mostrati
+nella tabella.
+3. Aziona Approva Richiesta; non compare una conferma preventiva.
+4. Il servizio rilegge la richiesta, veriﬁca che sia SALE, assegna il venditore e la scadenza
+a un mese dalla data corrente.
+5. La UI mostra l’esito e ricarica richieste e inventario; il cliente potrà saldare in UC-03.
+Alternative
+2.a Nessuna riga selezionata: messaggio di selezione mancante; ritorno a 2.
+2.b Riga Acquisto dal cliente: non è questa autorizzazione; la stessa azione conclude la
+cessione secondo UC-05.
+3.a Riﬁuta Richiesta: il servizio restituisce l’intero acconto, elimina la richiesta e ripri-
+stina SALE nella stessa transazione. La vendita non prosegue; nessuna penale.
+4.a Richiesta rimossa o tipo non valido: errore, nessuna nuova autorizzazione; il venditore
+ricarica l’elenco.
+4.b Errore durante l’aggiornamento oppure durante il rimborso di 3.a: rollback della
+decisione; lo stato precedente rimane valido.
+Riscontro: SalesmanDashboardView, PurchaseService.approvePurchase,
+PurchaseService.rejectPurchase, OperationQueryService. Il caso non registra un
+nuovo venditore e non rappresenta l’abilitazione di un account staﬀ. La selezione delle
+richieste in sospeso è aﬃdata alla query della UI; non si attribuisce al comando un
+controllo aggiuntivo contro ogni possibile riapprovazione da un chiamante diverso.
+73
+
+
+--- PAGINA FISICA 77 ---
+A.5
+UC-05 — Acquisto dal cliente
+Descrizione: La concessionaria valuta e acquista il veicolo ceduto dal cliente; l’etichetta
+UI Vendi la tua Auto usa il punto di vista del cliente.
+Livello: O — obiettivo applicativo in due fasi, proposta ed esito.
+Attori: Cliente proponente; venditore che decide.
+Precondizioni: Cliente autenticato; modello già censito; dati del veicolo disponibili. Se
+il VIN è noto, stato SOLD, ultima vendita al proponente e nessuna richiesta aperta.
+Postcondizioni: Accettazione: stima accreditata al cliente, acquisto della concessionaria
+registrato, richiesta rimossa e veicolo SALE. Dopo la proposta: veicolo WAITING e richiesta
+PURCHASE.
+Flusso principale
+1. Il cliente apre Vendi la tua Auto e indica marchio, modello, VIN, targa, chilometri
+e anno.
+2. Può calcolare il preventivo, basato sul modello e sui dati inseriti.
+3. Invia la proposta. Il servizio valida i dati e l’eventuale titolarità del VIN noto; crea
+il veicolo oppure aggiorna quello già venduto al cliente.
+4. Salva il veicolo WAITING e la richiesta con stima ricalcolata, positiva o nulla, senza
+eﬀettuare pagamenti.
+5. Il venditore seleziona la proposta Acquisto dal cliente in Richieste in Sospeso e
+aziona Approva Richiesta.
+6. Il sistema accredita la stima memorizzata, registra l’acquisto dal cliente con vendi-
+tore, porta il veicolo a SALE ed elimina la richiesta, nella stessa transazione. La UI
+mostra l’esito.
+Alternative
+2.a Preventivo non richiesto: il cliente può passare direttamente a 3; il servizio ricalcola
+comunque la stima all’invio.
+3.a Dati invalidi, anno precedente al modello, VIN occupato o non appartenente al pro-
+ponente, richiesta già aperta: errore e nessuna nuova proposta; correggere al passo
+1.
+5.a Riﬁuto: nessun accredito; richiesta eliminata. Il veicolo senza operazioni associate
+viene eliminato; con storico torna SOLD.
+6.a Conto mancante, richiesta non più valida o errore di persistenza: rollback dell’intero
+esito, senza pagamento o acquisizione parziali.
+Riscontro: SaleToDealershipService, ClientDashboardView,
+SalesmanDashboardView. Il registro conserva un importo non negativo con tipo
+acquisto; il suo signiﬁcato è un esborso per la concessionaria. Non esiste un successivo
+pagamento a saldo per la cessione.
+74
+
+
+--- PAGINA FISICA 78 ---
+A.6
+UC-06 — Gestione degli sconti
+Descrizione: Il manager applica o rimuove una promozione di modello o di singolo
+veicolo.
+Livello: O — obiettivo applicativo di gestione commerciale.
+Attori: Manager; clienti interessati ai nuovi prezzi.
+Precondizioni: Manager autenticato; modello o veicolo destinatario già presente nel
+catalogo.
+Postcondizioni: Sconto salvato o rimosso e tabella aggiornata. I nuovi calcoli usano
+il massimo fra sconto modello e veicolo; i totali concordati nelle richieste aperte restano
+invariati.
+Flusso principale
+1. Il manager apre la scheda Sconti.
+2. Nel riquadro modello seleziona un modello; nel riquadro veicolo inserisce invece
+l’identiﬁcativo del veicolo.
+3. Inserisce una percentuale intera tra 0 e 50 e aziona Salva nel riquadro scelto.
+4. Il servizio valida la percentuale e persiste lo sconto; uno sconto già presente sullo
+stesso elemento viene aggiornato.
+5. La UI mostra la conferma e ricarica le due tabelle degli sconti.
+Alternative
+2.a Modello non selezionato o ID non numerico: errore prima del salvataggio; ritorno a
+2. Un ID veicolo inesistente viene riﬁutato dalla persistenza.
+3.a Percentuale non intera o esterna a 0–50: errore, nessuna modiﬁca; ritorno a 3.
+3.b Il manager seleziona uno sconto esistente e aziona Rimuovi: il servizio elimina lo
+sconto e la tabella viene ricaricata. Senza selezione l’azione non modiﬁca dati; non
+compare una conferma preventiva.
+4.a Errore transazionale: nessun nuovo sconto salvato; termina senza successo.
+5.a Un’altra tabella già aperta mostra ancora il vecchio prezzo: ricaricarla con Aggiorna
+oppure riaprire la vista. La UI non propaga automaticamente ogni modiﬁca a tutte
+le dashboard già aperte.
+Riscontro: CatalogService, Discount, PriceCalculatorService,
+ManagerDashboardView. Gli sconti non si sommano. La base manuale del veicolo
+sostituisce la base del modello nella stessa formula; non impone un prezzo ﬁnale
+sottratto agli sconti.
+75
+
+
+--- PAGINA FISICA 79 ---
+A.7
+UC-07 — Consultazione del catalogo
+Descrizione: Il cliente confronta i veicoli proposti in vendita o a noleggio.
+Livello: O — obiettivo applicativo di consultazione.
+Attori: Cliente.
+Precondizioni: Cliente autenticato.
+Postcondizioni: Dati consultati senza modiﬁche persistenti.
+Flusso principale
+1. Il cliente apre Auto in Vendita o Auto a Noleggio.
+2. Il sistema carica le righe per la destinazione scelta: modello, anno, targa/usato,
+chilometri e valori di prezzo.
+3. Il cliente seleziona un veicolo e può proseguire in UC-01, UC-02 o UC-03.
+Alternative
+2.a Nessun veicolo disponibile: tabella vuota, nessuna operazione selezionabile.
+2.b Lettura fallita: dati disabilitati e Riprova; il cliente ricarica dal passo 2.
+3.a Prezzo o disponibilità cambiano: Aggiorna rilegge il catalogo; i comandi commerciali
+conservano le proprie veriﬁche correnti.
+A.8
+UC-08 — Cambio di destinazione del veicolo
+Descrizione: Il venditore sposta un veicolo fra vendita e noleggio.
+Livello: O — obiettivo applicativo.
+Attori: Venditore; clienti con noleggi futuri.
+Precondizioni: Venditore autenticato; veicolo SALE o RENT selezionato.
+Postcondizioni: Destinazione invertita; per RENT verso SALE, noleggi con inizio futuro
+eliminati e importi interamente rimborsati.
+Flusso principale
+1. Il venditore seleziona un veicolo in Gestione Stato Inventario (SALE / RENT).
+2. Aziona Modiﬁca Stato e legge la conferma, con avviso dei rimborsi previsti.
+3. Conferma; il servizio rilegge stato e prenotazioni e riﬁuta il passaggio a vendita se
+un noleggio comprende oggi.
+4. Esegue eventuali rimborsi, cancellazioni e cambio di stato in una transazione; mostra
+l’esito.
+Alternative
+2.a Annullamento: nessun eﬀetto; termina.
+3.a Stato cambiato, destinazione invariata o noleggio in corso: errore, nessun cambio.
+4.a Conto mancante o errore: rollback anche dei rimborsi già eseguiti nella transazione.
+76
+
+
+--- PAGINA FISICA 80 ---
+A.9
+UC-09 — Gestione del catalogo e delle basi
+prezzo
+Descrizione: Il manager mantiene marchi, modelli e veicoli e sceglie la base di calcolo
+del prezzo.
+Livello: O — obiettivo applicativo gestionale, aggregato per area.
+Attori: Manager.
+Precondizioni: Manager autenticato; per gli inserimenti dipendenti esistono marchio o
+modello; per rimozione/base prezzo una riga è selezionata.
+Postcondizioni: Elemento creato o rimosso, oppure base prezzo aggiornata; tabella
+pertinente ricaricata.
+Flusso principale
+1. Il manager apre Marchi, Modelli o Veicoli.
+2. Compila il form nella scheda e aziona Aggiungi, speciﬁcando gli attributi richiesti
+dal tipo di elemento.
+3. Il servizio valida i dati, salva l’elemento e la vista ricarica la tabella.
+Alternative
+2.a Seleziona una riga e aziona Elimina Selezionato: rimozione diretta senza conferma
+preventiva, se non esistono associazioni che la impediscono. Marchi con modelli,
+modelli con veicoli e veicoli con operazioni vengono riﬁutati.
+2.b In Veicoli seleziona una riga, sceglie modalità automatica o base manuale e aziona
+Applica base alla selezione: viene salvata la scelta; il prezzo risultante usa comunque
+sconti e svalutazioni.
+3.a Input invalido, VIN/targa duplicati o errore: nessun successo dichiarato; il manager
+corregge e riparte da 2.
+77
+
+
+--- PAGINA FISICA 81 ---
+A.10
+UC-10 — Consultazione del registro
+economico
+Descrizione: Il manager legge vendite al cliente, acquisti dal cliente e penali.
+Livello: O — obiettivo applicativo di consultazione.
+Attori: Manager.
+Precondizioni: Manager autenticato.
+Postcondizioni: Registro visualizzato senza modiﬁcare operazioni o conti.
+Flusso principale
+1. Il manager apre Registro economico.
+2. Il sistema carica tipo, data, cliente, eventuali venditore/veicolo e importo.
+3. Il manager interpreta l’importo non negativo secondo il tipo: incasso per vendita o
+penale, esborso per acquisto dal cliente.
+Alternative
+2.a Nessuna operazione: tabella vuota; termina.
+2.b Errore di lettura: dati disabilitati e Riprova; riprendere da 2.
+3.a Operazioni cambiate dopo il caricamento: Aggiorna rilegge il registro.
+78
+
+
+--- PAGINA FISICA 82 ---
+A.11
+UC-11 — Consultazione delle proprie
+operazioni
+Descrizione: Il cliente segue richieste, noleggi e test drive associati alla propria identità.
+Livello: O — obiettivo applicativo di consultazione.
+Attori: Cliente.
+Precondizioni: Cliente autenticato.
+Postcondizioni: Dati consultati; eventuali comandi sono descritti in UC-01 e UC-03.
+Flusso principale
+1. Il cliente apre Le Mie Operazioni.
+2. Il sistema mostra richieste con totale, acconto, residuo, venditore/scadenza, noleggi
+con importo e periodo, test drive con data/ora.
+3. Il cliente consulta le righe oppure prosegue al saldo di UC-03 o all’annullamento di
+un proprio test drive in UC-01.
+Alternative
+2.a Un elenco non ha operazioni: la relativa tabella resta vuota.
+2.b Le letture di questa area sono sincrone: un errore non va interpretato come assenza
+di operazioni; non si presume un controllo Riprova per queste tre tabelle.
+3.a Nessuna richiesta approvata selezionata: il comando di saldo segnala l’impedimento.
+A.12
+UC-S01 — Registrazione del cliente
+Descrizione: Crea un’identità cliente e il relativo conto dimostrativo.
+Livello: S — supporto all’interazione, preliminare agli obiettivi commerciali.
+Attori: Visitatore che diventerà cliente.
+Precondizioni: Schermata pubblica disponibile; email non già usata.
+Postcondizioni: Cliente e conto creati, saldo iniziale zero; dopo la conferma si apre
+l’area cliente.
+Flusso principale
+1. Il visitatore apre Registrati e compila nome, cognome, email e password.
+2. Aziona Crea Account Cliente; il servizio valida i dati e crea identità e conto.
+3. Il sistema mostra il riepilogo e poi accede alla dashboard cliente.
+Alternative
+2.a Dati invalidi o email in uso: errore; correggere dal passo 1.
+2.b Errore di persistenza: rollback della registrazione; nessun account parziale.
+3.a Dashboard non caricabile: errore di caricamento; l’identità già creata può essere usata
+per un accesso successivo.
+La registrazione pubblica non crea venditori o manager.
+79
+
+
+--- PAGINA FISICA 83 ---
+A.13
+UC-S02 — Accesso al sistema
+Descrizione: Veriﬁca le credenziali e apre la dashboard del ruolo associato all’identità.
+Livello: S — supporto all’interazione.
+Attori: Cliente, venditore o manager.
+Precondizioni: Identità già esistente; schermata Accedi.
+Postcondizioni: Dashboard del ruolo aperta.
+Per il cliente viene eseguito anche il
+controllo delle richieste scadute di UC-03.
+Flusso principale
+1. L’utente inserisce email e password e aziona Accedi al Sistema.
+2. Il servizio ricerca l’identità e veriﬁca la password.
+3. L’applicazione costruisce la dashboard corrispondente al ruolo.
+Alternative
+2.a Credenziali mancanti o non valide, oppure lettura fallita: errore e permanenza su
+accesso.
+3.a Dashboard non caricabile: messaggio distinto di caricamento; nessun successo UI
+dichiarato.
+3.b Il cliente ha richieste approvate scadute: elaborazione e avviso di rimborso/penale;
+poi prosegue nella dashboard.
+3.c Successivamente Disconnetti riporta ad Accedi.
+80
+
+
+--- PAGINA FISICA 84 ---
+A.14
+UC-S03 — Gestione dell’identità
+Descrizione: L’utente modiﬁca email o password, oppure chiede l’eliminazione della
+propria identità.
+Livello: S — supporto all’interazione.
+Attori: Cliente, venditore o manager.
+Precondizioni: Utente nella propria dashboard; password attuale disponibile.
+Postcondizioni: Credenziale aggiornata; oppure identità eliminata e ritorno all’accesso.
+L’eliminazione del cliente rimuove anche il conto demo.
+Flusso principale
+1. L’utente apre Gestione Account e sceglie Modiﬁca Email o Modiﬁca Password.
+2. Inserisce il nuovo valore e la password attuale, poi conferma il comando.
+3. Il servizio veriﬁca credenziali e dati, salva e mostra l’esito.
+Alternative
+1.a Chiude il dialogo: ritorna alla dashboard senza modiﬁche.
+2.a Sceglie Elimina Identità, inserisce la password e conferma l’avviso deﬁnitivo: il servi-
+zio elimina solo in assenza di richieste e storico associati. Annullamento o password
+errata non eliminano nulla.
+3.a Dati invalidi, associazioni presenti o errore: riﬁuto/rollback; identità conservata. Il
+solo conto, anche positivo, non blocca l’eliminazione.
+81
+
+
+--- PAGINA FISICA 85 ---
+A.15
+UC-S04 — Ricarica del conto demo
+Descrizione: Il cliente aumenta la disponibilità del conto interno, senza un pagamento
+bancario reale.
+Livello: S — supporto agli obiettivi economici.
+Attori: Cliente.
+Precondizioni: Cliente autenticato con conto demo.
+Postcondizioni: Importo positivo accreditato e saldo visualizzato aggiornato.
+Flusso principale
+1. Il cliente apre Ricarica Saldo nell’header oppure la scheda omonima di Gestione
+Account.
+2. Inserisce l’importo e conferma la ricarica.
+3. Il servizio valida e accredita l’importo; la UI aggiorna il saldo e mostra l’esito.
+Alternative
+2.a Chiude o annulla: nessun accredito; termina.
+2.b Importo non numerico o non positivo: errore; ritorno a 2.
+3.a Conto assente o errore di aggiornamento: nessun accredito confermato; rollback.
+Le schede di consultazione e supporto sono riscontrate su CatalogService,
+OperationQueryService, AuthService, AccountManagementDialog e sulle dashboard
+correnti. Le regole dichiarate non costituiscono una nuova esecuzione dei test applicativi;
+fonti puntuali, ambiente e osservazioni sono conservati nelle veriﬁche del ticket 02.
+82
+
+
+--- PAGINA FISICA 86 ---
+Appendice B
+Tavole delle classi
+Le tavole estendono le viste selezionate nella sezione 2.6. Ogni titolo riporta l’identiﬁcativo
+stabile e il package descritto; i tipi esterni servono soltanto a leggere una collaborazione
+e sono riconoscibili dalle qualiﬁche. Il grigio identiﬁca il contesto esterno nelle tavole che
+lo dichiarano; in CL-08a e CL-09 distingue invece la persistenza, come indicato nel titolo.
+Il colore non sostituisce mai nome, stereotipo o notazione dell’arco.
+I membri sono selezionati: +, -, # e ~ indicano rispettivamente visibilità pubblica,
+privata, protetta e di package; abstract, interface, enumeration e record qualiﬁcano
+la natura del tipo. Le ﬁrme abbreviate mantengono i nomi dei metodi, omettendo para-
+metri o tipi non necessari alla lettura. I valori tra parentesi quadre indicano opzionalità o
+molteplicità; ID e chiave segnalano riferimenti scalari. Le note e i vincoli esplicativi non
+sono nuovi membri Java.
+Una freccia continua aperta indica un riferimento navigabile; una freccia tratteggiata
+aperta indica uso, parametro o costruzione. Il triangolo vuoto distingue generalizzazione
+e realizzazione mediante linea continua o tratteggiata.
+Le molteplicità sono annotate
+al bersaglio e non dichiarano una proprietà esclusiva del collaboratore. Nessun rombo
+implica un ciclo di vita non dimostrato. Gli attributi che nominano tipi esterni esplicitano
+ulteriori collaborazioni senza ripetere tutti gli archi.
+CL-01 copre avvio e composizione; CL-02–CL-05 i quattro package del dominio; CL-
+06 servizi e record di lettura; CL-07 eventi e observer; CL-08a–CL-08b contratti DAO e
+gestore transazionale; CL-09 le dieci implementazioni PostgreSQL; CL-10 presentazione;
+CL-11 credenziali. Le undici viste di package coprono tutti i 65 tipi principali correnti,
+senza richiedere package intermedi vuoti. La selettività riguarda soprattutto i membri,
+gli archi ripetuti e i tipi annidati: i record di lettura del catalogo sono richiamati in nota
+e le callback transazionali sono esplicite. La matrice package–tavola–tipi–sorgenti e il
+controllo delle relazioni sono conservati nelle veriﬁche documentali del ticket 03.
+83
+
+
+--- PAGINA FISICA 87 ---
+CL-01 — Avvio e composizione
+Package it.unifi.drivehub. Tipi grigi: contesto esterno alla vista.
+«JavaFX»
+Application
+App
+− ctx: AppContext
++ start(Stage)
+− showDashboardForUser(User)
+AppContext
+− instance: AppContext {static}
+− databaseManager: DatabaseManager
++ AppContext(DatabaseManager)
++ getInstance(): AppContext {static}
++ getPurchaseService(): PurchaseService
+ctx [1]
+«interface · domain.user»
+UserDashboardNavigator
+showClientDashboard(Client)
+showSalesmanDashboard(Salesman)
+showManagerDashboard(Manager)
+«nota»
+Collaboratori costruiti
+Postgres*Dao → contratti DAO
+Pbkdf2PasswordHasher → PasswordHasher
+VehicleEventPublisher + observer
+Otto servizi applicativi / di calcolo
+crea implementazione anonima
+costruisce e collega
+Lettura della tavola
+App estende Application, non implementa UserDashboardNavigator.
+L'implementazione del navigator è anonima in showDashboardForUser.
+ctx è valorizzato da start; [1] descrive l'applicazione avviata. Nessuna composizione UML.
+Figura B.1: CL-01 — Avvio e composizione, it.unifi.drivehub.
+84
+
+
+--- PAGINA FISICA 88 ---
+CL-02 — Identità e ruoli
+Package it.unifi.drivehub.domain.user. Il conto è un riferimento opzionale in memoria.
+«interface»
+User
++ openDashboard(navigator)
++ updateEmail(newEmail)
++ updateHashPassword(hash)
+«interface»
+UserDashboardNavigator
++ showClientDashboard(Client)
++ showSalesmanDashboard(Salesman)
++ showManagerDashboard(Manager)
+parametro
+«abstract»
+AbstractUser
+# id: Long
+# email: String
+# hashPassword: String
+# validateAttributes(...)
+Client
++ createWithoutAccount(...)
++ openDashboard(navigator)
+Salesman
++ openDashboard(navigator)
+Manager
++ openDashboard(navigator)
+BankAccount
+− clientId: Long {ID}
+− balance: BigDecimal
++ deposit(amount)
++ withdraw(amount)
+bankAccount [0..1]
+Lettura della tavola
+Triangolo vuoto: generalizzazione; tratteggio + triangolo: realizzazione.
+Freccia continua: navigazione del riferimento; cardinalità solo al bersaglio.
+BankAccount conserva clientId, non un riferimento Client. Nessun rombo di composizione.
+UserDashboardNavigator riceve i tre sottotipi e viene invocato da openDashboard.
+Figura B.2: CL-02 — Identità, ruoli e conto, domain.user.
+85
+
+
+--- PAGINA FISICA 89 ---
+CL-03 — Catalogo e scelta della base
+Package it.unifi.drivehub.domain.vehicle. I collegamenti per chiave restano attributi.
+Brand
+− name: String
++ create(name)
+Model
+− id: Long
+− brand: String {chiave}
+− releasePrice: BigDecimal
+− releaseYear: int
++ create(...)
+Vehicle
+− id: Long
+− modelId: Long {ID}
+− vin: String
+− licencePlate: String [0..1]
+− kilometers: int
+− price: BigDecimal {base}
++ getSelectedBasePrice(Model)
++ setPrice(amount)
+«enumeration»
+VehicleState
+SALE, RENT, BLOCKED
+WAITING, SOLD
+«enumeration»
+PriceMode
+AUTOMATIC
+MANUAL
+state [1]
+priceMode [1]
+getSelectedBasePrice
+Lettura della tavola
+modelId non è un oggetto Model; Model.brand è una stringa, non un oggetto Brand.
+La dipendenza Vehicle → Model deriva dal parametro del metodo di scelta della base.
+Vincoli locali: km ≥ 0; senza targa km = 0; base ≥ 0; anno fra 1900 e oggi.
+MANUAL sostituisce la base nella formula; non fissa il totale finale (ADR 0001).
+Figura B.3: CL-03 — Catalogo e scelta della base, domain.vehicle.
+86
+
+
+--- PAGINA FISICA 90 ---
+CL-04 — Sconti selettivi
+Package it.unifi.drivehub.domain.discount.
+«abstract»
+Discount
+# value: int {0..50}
+# Discount(value)
+ModelDiscount
+− modelId: Long {ID}
++ create(modelId, value)
+VehicleDiscount
+− vehicleId: Long {ID}
++ create(vehicleId, value)
+Lettura della tavola
+Discount centralizza il limite della percentuale; le factory richiedono l'ID non nullo.
+Non esistono campi Model o Vehicle negli sconti: nessuna associazione UML a tali entità.
+La scelta del massimo fra sconto modello e veicolo appartiene al calcolatore dei prezzi.
+Figura B.4: CL-04 — Sconti per ID, domain.discount.
+87
+
+
+--- PAGINA FISICA 91 ---
+CL-05 — Richieste, prenotazioni e registro
+Package it.unifi.drivehub.domain.operation. I nomi SALE/PURCHASE seguono la concessionaria.
+Request
+− vehicleId, clientId: Long {ID}
+− salesmanId: Long [0..1] {ID}
+− deposit: BigDecimal
+− agreedTotal: BigDecimal [0..1]
+− expDate: LocalDate [0..1]
++ createNewSaleRequest(...)
++ createNewPurchaseRequest(...)
++ getRemainingAmount()
+«enumeration»
+RequestType
+SALE: vendita al cliente
+PURCHASE: acquisto dal cliente
+type [1]
+Sale
+− vehicleId, salesmanId: Long [0..1] {ID}
+− clientId: Long {ID}
+− amount: BigDecimal {≥ 0}
+− date: LocalDateTime
++ createSaleRecord(...)
++ createPurchaseRecord(...)
++ createPenaltyRecord(...)
+«enumeration»
+SaleType
+SALE, PURCHASE, PENALTY
+type [1]
+Rent
+− vehicleId, clientId: Long {ID}
+− amount: BigDecimal {≥ 0}
+− startDate, endDate: LocalDate
++ overlapsWith(start, end)
+TestDrive
+− vehicleId, clientId: Long {ID}
+− date: LocalDateTime
++ isFuture()
+Lettura della tavola
+Nessun riferimento a oggetti Client, Vehicle o Salesman: solo identificativi.
+Request.SALE: 0 ≤ deposit ≤ agreedTotal; saldo = totale − acconto.
+Request.PURCHASE: deposit è la stima; agreedTotal è nullo. Sale è il registro economico.
+Il 20% è una regola del servizio; gli stati commerciali appartengono a Vehicle.
+Figura B.5: CL-05 — Richieste, prenotazioni e registro, domain.operation.
+88
+
+
+--- PAGINA FISICA 92 ---
+CL-06 — Servizi e collaborazioni
+Package it.unifi.drivehub.service. I tipi esterni restano attributi o riferimenti qualificati.
+AuthService
+− userDao: UserDao
+− bankAccountDao: BankAccountDao
+− hasher: PasswordHasher
++ login(email, password)
++ registerClient(...)
+TestDriveService
+− testDriveDao: TestDriveDao
+− vehicleDao: VehicleDao
+− userDao: UserDao
++ bookTestDrive(...)
++ cancelTestDrive(...)
+PurchaseService
+− priceCalculator: PriceCalculatorService
++ initiatePurchase(...)
++ approvePurchase(...)
++ completePurchase(...)
+SaleToDealershipService
+− priceCalculator: PriceCalculatorService
++ submitSaleProposal(...)
++ approveSaleProposal(...)
+RentalService
+− priceCalculator: PriceCalculatorService
++ bookRental(...)
++ changeVehicleRentalState(...)
+PriceCalculatorService
++ calculateVehiclePrice(...)
++ calculatePurchaseDeposit(...)
++ calculateTotalRentalCost(...)
+CatalogService
+− priceCalculator: PriceCalculatorService
++ getVehicleRows(state)
++ updateVehiclePricing(...)
+OperationQueryService
+− requestDao: RequestDao
+− testDriveDao: TestDriveDao
+− rentDao: RentDao; saleDao: SaleDao
++ getClientRequests(clientId)
+TestDriveCancellationObserver
+− testDriveDao: TestDriveDao
++ onVehicleCommitted(event, conn)
+«nota»
+Record annidati di CatalogService
+VehicleRow(Vehicle, nomi e prezzi)
+ModelDiscountRow(ModelDiscount, nome)
+Lettura della tavola
+DatabaseManager è un campo di tutti i servizi sopra, salvo calcolatore, query e observer.
+Purchase, cessione e noleggio usano DAO veicoli, modelli, sconti, conti e operazioni.
+Purchase e Rental conservano anche eventPublisher: VehicleEventPublisher.
+Observer realizza event.VehicleCommitmentObserver (CL-07).
+I campi priceCalculator mostrano riferimenti condivisi, senza composizione UML.
+Figura B.6: CL-06 — Servizi e collaborazioni, service.
+89
+
+
+--- PAGINA FISICA 93 ---
+CL-07 — Eventi nella transazione
+Package it.unifi.drivehub.event. Grigio: collaboratori del package service.
+VehicleEventPublisher
+− observers
++ attach(observer); detach(observer)
++ publishCommitment(event, conn)
+«interface»
+VehicleCommitmentObserver
++ onVehicleCommitted(event, conn)
+[0..*]
+«record»
+VehicleCommitmentEvent
+vehicleId: Long {ID}
+parametro
+«service»
+TestDriveCancellationObserver
+− testDriveDao: TestDriveDao
++ onVehicleCommitted(event, conn)
+event
+«service · selezione»
+PurchaseService / RentalService
+− eventPublisher: VehicleEventPublisher
+pubblicazione prima del commit
+eventPublisher [1]
+Lettura della tavola
+Observer e publisher ricevono la Connection JDBC del chiamante come parametro.
+La notifica è sincrona; l'errore si propaga e impedisce il commit del servizio.
+L'evento conserva solo vehicleId. L'observer cancella i test drive futuri del veicolo.
+AppContext registra l'observer; non sono previsti coda, outbox o eventi persistenti.
+Figura B.7: CL-07 — Eventi e observer sincroni, event.
+90
+
+
+--- PAGINA FISICA 94 ---
+CL-08a — Contratti DAO
+Package it.unifi.drivehub.dao. conn: java.sql.Connection; firme abbreviate con i parametri rilevanti.
+«interface»
+UserDao
+findByEmail(email): Optional<User>
+lockUser(id, role, conn)
+saveClient(client, conn)
+«interface»
+BankAccountDao
+findByClientIdForUpdate(id, conn)
+updateBalance(iban, balance, conn)
+«interface»
+BrandDao
+findAll(): List<Brand>
+save(brand, conn)
+«interface»
+ModelDao
+findById(id, conn): Optional<Model>
+save(model, conn)
+«interface»
+VehicleDao
+findByIdForUpdate(id, conn)
+updateStateAtomically(..., conn)
+updatePricing(vehicle, conn)
+«interface»
+DiscountDao
+findModelDiscount(id, conn)
+saveVehicleDiscount(discount, conn)
+«interface»
+RequestDao
+findByIdForUpdate(id, conn)
+save(request, conn); update(...)
+«interface»
+RentDao
+isVehicleAvailableForRent(..., conn)
+deleteFutureByVehicleId(id, conn)
+«interface»
+TestDriveDao
+countActiveByClientId(id, conn)
+deleteFutureByVehicleId(id, conn)
+«interface»
+SaleDao
+findLatestSaleForVehicle(id, conn)
+save(sale, conn)
+Lettura della tavola
+I contratti restituiscono entità, Optional e liste; non sono un ORM.
+Le firme selezionano letture, lock e scritture, senza elencare ogni operazione CRUD.
+DatabaseManager e le callback transazionali sono nella tavola CL-08b dello stesso package.
+Figura B.8: CL-08a — Contratti per risorsa, dao.
+91
+
+
+--- PAGINA FISICA 95 ---
+CL-08b — Gestione delle transazioni
+Package it.unifi.drivehub.dao. Tipi annidati qualificati con DatabaseManager.
+DatabaseManager
++ getConnection(): Connection
++ executeInTransaction(TransactionConsumer)
++ executeInTransactionWithResult(TransactionFunction<T>): T
+«interface»
+DatabaseManager.
+TransactionConsumer
++ execute(conn): void throws Exception
+«interface»
+DatabaseManager.
+TransactionFunction<T>
++ execute(conn): T throws Exception
+parametro
+parametro
+Lettura della tavola
+I DAO non estendono DatabaseManager: i contratti espongono entità e JDBC.
+Le due interfacce annidate sono callback del corpo transazionale, non DAO aggiuntivi.
+Non tutti gli overload conn dei contratti garantiscono da soli il riuso: alcuni default
+delegano alla lettura senza conn; le implementazioni PostgreSQL pertinenti li ridefiniscono.
+Il gestore apre la connessione, disabilita autocommit e tenta commit o rollback.
+Figura B.9: CL-08b — Gestore e callback transazionali, dao.
+92
+
+
+--- PAGINA FISICA 96 ---
+CL-09 — Realizzazioni PostgreSQL
+Package it.unifi.drivehub.dao.postgres. A destra i contratti esterni del package dao.
+PostgresUserDao
+− db: DatabaseManager
+«interface · dao»
+UserDao
+PostgresBankAccountDao
+− db: DatabaseManager
+«interface · dao»
+BankAccountDao
+PostgresBrandDao
+− db: DatabaseManager
+«interface · dao»
+BrandDao
+PostgresModelDao
+− db: DatabaseManager
+«interface · dao»
+ModelDao
+PostgresVehicleDao
+− db: DatabaseManager
+«interface · dao»
+VehicleDao
+PostgresDiscountDao
+− db: DatabaseManager
+«interface · dao»
+DiscountDao
+PostgresRequestDao
+− db: DatabaseManager
+«interface · dao»
+RequestDao
+PostgresRentDao
+− db: DatabaseManager
+«interface · dao»
+RentDao
+PostgresTestDriveDao
+− db: DatabaseManager
+«interface · dao»
+TestDriveDao
+PostgresSaleDao
+− db: DatabaseManager
+«interface · dao»
+SaleDao
+Lettura della tavola
+Ogni implementazione conserva un riferimento db: DatabaseManager ricevuto dal costruttore.
+Le letture autonome aprono/chiudono connessioni; i percorsi transazionali usano conn.
+PreparedStatement e mapping ResultSet → entità; lock nei metodi ForUpdate.
+Vehicle, Request e Sale convertono esplicitamente gli enum PostgreSQL (ADR 0002).
+Sono omessi metodi ripetuti di mapping/CRUD; nessuna ereditarietà fra i dieci DAO.
+Figura B.10: CL-09 — Realizzazioni PostgreSQL, dao.postgres.
+93
+
+
+--- PAGINA FISICA 97 ---
+CL-10 — Viste e caricamenti
+Package it.unifi.drivehub.presentation.view. Grigio: classi JavaFX esterne.
+«JavaFX»
+BorderPane
+LoginView
+− authService: AuthService
+− onLoginSuccess: Consumer<User>
+ClientDashboardView
+− client: Client; onLogout: Runnable
+− purchaseService: PurchaseService
+− rentalService: RentalService
+SalesmanDashboardView
+− salesman: Salesman
+− saleToDealershipService: SaleToDealershipService
+− operationQueryService: OperationQueryService
+ManagerDashboardView
+− manager: Manager
+− catalogService: CatalogService
+− operationQueryService: OperationQueryService
+«package-private»
+AsyncLoad<T>
+− source: Supplier<T>
+− current: Task<T> [0..1]
+~ load()
+«JavaFX»
+HBox
+AccountManagementDialog
++ show(..., authService, ...) {static}
+UiUtils
++ formatCurrency(amount) {static}
++ showError(owner, title, message) {static}
+Lettura della tavola
+Le tre dashboard usano AsyncLoad, AccountManagementDialog e UiUtils (archi omessi).
+Login e dashboard estendono BorderPane; AccountManagementDialog non estende Dialog.
+Gli overload di comodo ricorrono ad AppContext.getInstance; App inietta i servizi.
+AsyncLoad usa Task e worker virtuali; solo il caricamento corrente pubblica il risultato.
+Nessun controller/FXML; restano azioni economiche sincrone negli handler.
+Figura B.11: CL-10 — Viste, dialoghi e caricamenti, presentation.view.
+94
+
+
+--- PAGINA FISICA 98 ---
+CL-11 — Credenziali
+Package it.unifi.drivehub.security. Contratto ristretto al trattamento delle password.
+«interface»
+PasswordHasher
++ hash(rawPassword): String
++ verify(rawPassword, encodedHash): boolean
+Pbkdf2PasswordHasher
+− iterations: int
+− saltBytes: int
+− keyBits: int
+− random: SecureRandom
++ hash(rawPassword): String
++ verify(rawPassword, encodedHash): boolean
+Lettura della tavola
+AuthService conserva PasswordHasher; AppContext sceglie Pbkdf2PasswordHasher.
+PBKDF2WithHmacSHA256, sale casuale e parametri memorizzati nella stringa codificata.
+Questa astrazione non è un sistema di autorizzazione: la navigazione per ruolo è in User/App.
+I servizi non ricevono tutti un'identità autenticata da verificare a ogni invocazione.
+Figura B.12: CL-11 — Contratto e realizzazione per le password, security.
+95
+
+
+--- PAGINA FISICA 99 ---
+Appendice C
+Matrice delle veriﬁche
+C.1
+Criterio di lettura e provenienza
+La matrice usa le schede UC dell’appendice A, comprese le alternative numerate, e i
+punti delle User Stories nella speciﬁca docs/relazione/tracker/spec.md, indicati con
+S e numero del punto. S24–34 riguardano prezzi, accordi, economia, identità, persistenza
+e UI; S35–39 chiedono livelli, tracciabilità, casi critici, provenienza e limiti. Questi rinvii
+non introducono nuovi requisiti funzionali o una seconda numerazione dei casi d’uso. I
+numeri nelle vecchie evidenze R appartengono invece ai ticket applicativi, distinti dai
+ticket documentali 01–06.
+S0 indica il solo riscontro statico del 13 novembre 2026, HEAD 61ce18ae1d4e0458b
+63e970b793b0b3a634a3adf. Non è un esito di test. E1–E3 identiﬁcano registrazioni
+storiche, descritte sotto. Nella matrice una copertura è parziale se sono provati alcuni
+comportamenti della scheda: nessuna riga vale come approvazione dell’intero requisito.
+Le lacune riguardano l’insieme di prove esaminato, non una dimostrazione che il software
+sia privo di quella funzionalità.
+E1 — contratto corrente, 9 novembre 2026.
+Directory docs/evidence/postg
+res-enums-2026-11-09/: verification.md, full-suite.txt, targeted-green.txt e
+review.md. Ambiente dichiarato: Linux/WSL, OpenJDK 21.0.12.1, Maven 3.9.16 e Post-
+greSQL 16.15 su Docker temporaneo, porta 55441, ruolo/DB test e sentinella distinti. Il
+comando completo della suite è mvn -o -B -Ppostgres-tests clean test; il log termi-
+na il 9 novembre alle 19:57:57 +01:00 con 423 eseguiti, 0 failure, 0 errori, 0 saltati,
+BUILD SUCCESS. Le 23 righe di classe sommano separatamente a quel totale; 55 invo-
+cazioni senza DB e 368 PostgreSQL sono una classiﬁcazione ricavata da quelle righe e dai
+sorgenti.
+La baseline dichiarata è 8d089bc; la review ﬁssa il tree d4d82c1815e1fe2d107331f
+b4f2211b2bc3ca850, precedente al commit ﬁnale 61ce18a. Il confronto locale non trova
+diﬀerenze in src e POM fra quel tree e HEAD corrente. Il log conservato espone conteggi
+per classe, non XML per singolo metodo né un manifest dei ﬁle runtime: la coerenza con
+la versione corrente è ricostruita da fonti e storia, non attestata da impronte dei byte
+eﬀettivamente eseguiti. Non si attribuisce al 423/423 una nuova veriﬁca GUI.
+Il mirato separato registra 82/82, 0 failure/errori/salti: contratto enum, prezzi,
+registro e demo. I passaggi RED sono altre esecuzioni: contratto 4 con 2 failure; schema
+nuovo e DAO precedenti con 77 errori su 81. Sono conservati in contract-red.txt e
+tdd-failures.zip; non si sommano ai successi e non descrivono lo stato ﬁnale. Le prove
+96
+
+
+--- PAGINA FISICA 100 ---
+private di conversione/backup non sono necessarie alle associazioni della matrice e non
+vengono rieseguite.
+E2 — suite integrata, 3 novembre 2026.
+Directory docs/evidence/r11-integra
+ted/: full.log, full-surefire/, full-summary.json, full-groups.json, executed-t
+ests.json e manifest full-inputs.sha256.json. HEAD iniziale c2a8112 più ﬁle locali
+modiﬁcati/non tracciati: il solo commit non identiﬁca la versione. Fase ﬁnale dopo la per-
+dita di /tmp: OpenJDK 21.0.12.1, Maven 3.9.16, PostgreSQL server/client 16.15, cluster
+nuovo 127.0.0.1:55436.
+mvn -B -Ppostgres-tests clean test termina alle 17:36:37
++01:00: 394 eseguiti, 0 failure, 0 errori, 0 saltati, dei quali 47 senza DB e 347
+PostgreSQL. Gli XML permettono di identiﬁcare metodi e parametri di quella versione.
+Il primo mirato ebbe 363 invocazioni, 0 failure, 4 errori, 0 salti; il secondo, identico,
+363/363 senza errori. I timeout di ﬁxture/connessione del primo non hanno causa dimo-
+strata. I due mirati e la suite ﬁnale non sono un unico campione e non si sommano. La
+sentinella ﬁnale ha un confronto esterno di tredici tabelle e sette sequenze prima/dopo
+suite, oltre alla prova JUnit. Rispetto al manifest E2 oggi diﬀeriscono 28 input, inclusa
+la conﬁgurazione privata; mancava inoltre PostgresEnumIntegrationTest. Richieste e
+registro avevano semantica precedente, oggi modiﬁcata, così come DAO, viste e alcuni
+test. Il dettaglio delle diﬀerenze è in verifiche/ticket-06/riscontro-storico.json:
+E2 non certiﬁca il contratto corrente per analogia di nomi.
+E3 — JavaFX, prima fase del 3 novembre 2026.
+Nella stessa directory R11, i log Ag
+reementUiCheck.log, SaleOutcomeUiCheck.log, DestinationUiCheck.log, IdentityUi
+Check.log, TableLifecycleUiCheck.log e SlowModelsUiCheck.log riportano ciascuno
+UI CHECK SUCCESS. AppStartupUiCheck.log riporta APP STARTUP SUCCESS. Non
+sono casi Sureﬁre e non esiste un numero JUnit di riusciti/falliti/ saltati da aggiungere
+a E2. Ambiente fase 1: JDK/Maven come sopra, PostgreSQL 16.15 sul cluster isolato
+55436, Xvfb :90, 1440 per 1000, rendering software. I comandi Java/javac sono nei log; il
+launcher storico è run-ui.py, invocato per nome dell’harness in commands.md.
+I manifest *-inputs.json distinguono originali e copie eseguite; le patch conservano
+percorsi di output adattati, stampa anticipata dell’errore in SaleOutcome e cast Vehicl
+eRow in Destination. Un primo SaleOutcome ﬁnì con exit 2 nel loop modale e un primo
+Destination con ClassCastException dell’harness: non sono successi. La sentinella esterna
+dopo tutti gli harness non fu veriﬁcabile dopo la perdita dell’ambiente; il confronto ﬁnale
+E2 non colma tale lacuna. Nessuna GUI fu ripetuta in fase 2 o in E1.
+Gli originali sono in docs/evidence/r04-agreement/, r05-sale-outcome/, r06-d
+estination/, r07-identity/, r08-tables/ e r10-cleanup/. SaleOutcome usa ancora
+SaleType.ACQUISITION e importi negativi: è incompatibile con l’enum attuale, non una
+veriﬁca riproducibile tale e quale sul codice corrente.
+Le altre viste produttive sono
+anch’esse cambiate rispetto a E3. Gli screenshot della relazione (ticket documentale 02)
+illustrano le viste correnti, ma non sostituiscono queste asserzioni o una nuova suite GUI.
+C.2
+Requisiti, casi d’uso e asserzioni
+I ﬁle JUnit indicati sono sotto src/test/java/it/unifi/drivehub/, con suﬃsso .java;
+il nome della classe è anche il nome del ﬁle. I metodi identiﬁcano la prova da leggere, non
+un catalogo esaustivo. Per E1 l’esito riportato è quello della classe nel log: non è una
+97
+
+
+--- PAGINA FISICA 101 ---
+nuova esecuzione del metodo. Tutte le classi E1 citate hanno zero failure, errori e salti; il
+conteggio non si aggiunge quando la classe ricorre in più righe. Le associazioni e i limiti
+sono valutati in S0.
+Tabella C.1: Matrice funzionale: scenario, prova osservabile
+e portata dell’associazione.
+Requisito
+/ caso
+File, metodo e asserzione pertinente
+Risultato disponibile e
+lacune
+S29, S37;
+UC-01
+BookingRulesTest.testDriveCannotStar
+tAfterSixteenEvenByOneMicrosecond
+riﬁuta 16:00:00.000001.
+BookingConcurrencyIntegrationTest.s
+ameClientCannotExceedThreeTestDriv
+esAcrossDifferentVehicles lascia tre
+prenotazioni, una sola nuova conferma.
+Nella stessa classe failureAfterBookingI
+nsertRollsBackActualWrites osserva
+l’INSERT prima dell’errore e poi nessuna
+prenotazione residua.
+E1: classi 2 e 36 casi.
+Copertura parziale dei passi
+3–4 e alternative 3.a/4.a. Per
+5.b, cancellazione automatica,
+vedere riga S29/Observer.
+Annullamento dialogo 2.a,
+conferma graﬁca 5 e
+annullamento proprio/altrui
+5.a non hanno qui una prova
+dedicata individuata.
+S29, S31;
+UC-02
+PriceSelectionIntegrationTest.renta
+lUsesCatalogPriceWithGeometricForm
+ulaAndInclusiveDays confronta uno e tre
+giorni, basi manuale/automatica.
+BookingConcurrencyIntegrationTest.o
+verlappingRentalsFromDifferentClie
+ntsCannotBothBeConfirmed attende
+riﬁuto del secondo, un solo noleggio e
+conto perdente invariato;
+insufficientBalanceDoesNotCreateRe
+ntalOrCancelTestDrives controlla il
+riﬁuto senza eﬀetti collegati.
+E1: classi 10 e 36 casi. Passi
+3–5, alternative 3.a/4.a; per
+5.a/6.a vedere Observer e
+UC-08. pastDatesAndRevers
+edRentalPeriodAreRejecte
+dWithoutWrites copre parte
+di 2.a nel servizio, non l’intero
+dialogo o la sua anteprima.
+Nessuna nuova prova UI del
+successo 6.
+S25, S27,
+S31; UC-03
+PurchaseAgreementIntegrationTest.com
+pletionKeepsAgreementAfterPricingC
+hangesAndNewSession:
+20.000/4.000/16.000, nuove basi/sconti,
+altro contesto, vendita 20.000, saldo 10.000
+su iniziali 30.000, richiesta rimossa e
+SOLD. persistenceFailuresRollBackE
+veryStep controlla errore dopo addebito e
+rilettura dello stato precedente.
+E1: classe 22 casi; copertura
+parziale dei passi 3–6 e di
+3.a/5.a/6.a. completionStil
+lRequiresApprovalAndUnex
+piredRequest distingue non
+approvata e scaduta. E3
+Agreement prova importi nei
+dialoghi e saldo nella versione
+storica; l’annullamento 2.a non
+è così dimostrato.
+Segue nella pagina successiva
+98
+
+
+--- PAGINA FISICA 102 ---
+Matrice funzionale — continua
+Requisito
+/ caso
+File, metodo e asserzione pertinente
+Risultato disponibile e
+lacune
+S25, S31,
+S37; UC-03
+4.a/6.b,
+UC-04
+PurchaseConcurrencyIntegrationTest.c
+ompetingPhasesConsumeTheRequestOnce
+veriﬁca gare saldo/riﬁuto/scadenza, saldo
+e registro ﬁnali;
+staleExpirationCandidateCannotRefu
+ndACompletedOrExtendedRequest non
+rimborsa una richiesta consumata o
+prorogata. failedOrSkippedWritesRollB
+ackTheWholePhase riﬁuta errori e scritture
+saltate senza alterare accordo/stato.
+E1: classe 60 casi. Copre
+riﬁuto e scadenza una volta
+sola, anche ripetuti; 4.000
+comporta penale 800 e
+rimborso 3.200. E3 Agreement
+esercita approvazione con
+scadenza, storicamente. UC-04
+2.a (nessuna selezione), ogni
+riapprovazione da chiamanti
+diversi e tutte le notiﬁche
+graﬁche non risultano
+certiﬁcati.
+S26, S28;
+UC-05
+proposta
+SaleProposalIntegrationTest.onlyThe
+LatestEffectiveBuyerCanProposeAndH
+istoryIsPreserved confronta titolarità e
+storico; competingProposalsKeepOnlyTh
+eFirstCompleteVehicleAndRequest
+lascia solo proposta/veicolo del vincitore
+per VIN nuovo o noto; requestFailureRo
+llsBackNewAndKnownVehicles osserva
+WAITING prima del guasto e confronta lo
+snapshot precedente.
+E1: classe 23 casi. Passi 3–4 e
+alternativa 3.a parzialmente
+coperti, compresi VIN,
+modello/anno e richiesta
+esistente. Per 2.a, invio senza
+preventivo, i test chiamano il
+servizio: non provano
+l’interazione completa. Il
+preventivo UI non certiﬁca la
+titolarità.
+S26, S28,
+S31; UC-05
+esito
+SaleOutcomeIntegrationTest.approvalP
+aysTheClientAndRecordsOneDealershi
+pExpense controlla accredito 16.000 e
+PURCHASE;
+rejectionPreservesEveryKindOfHisto
+ryAndRemovesOnlyANewVehicle varia il
+tipo di storico. failureAfterTheFinalWr
+iteRollsBackEveryActualEffect
+controlla tutti gli eﬀetti prima del guasto e
+poi snapshot invariato.
+E1: classe 67 casi, include esiti
+concorrenti e sessioni obsolete.
+Passi 5–6 e 5.a/6.a
+parzialmente coperti. zeroPa
+ymentCannotConsumeThePro
+posalOrWriteAnAcquisition
+prova il riﬁuto dello zero: non
+soddisfa l’intento di accettare
+ogni stima non negativa. E3
+SaleOutcome usa la semantica
+precedente.
+S24–25;
+UC-06
+DomainInvariantsTest.testDiscountRan
+ge veriﬁca limiti 0 e 50 e riﬁuti.
+PriceCalculatorServiceTest.testPromo
+tionalDiscountMax confronta massimo
+modello/veicolo; CatalogListingIntegr
+ationTest.automaticAndManualUseTheS
+ameFormulaAfterRefresh salva e rimuove
+sconti, confrontando i prezzi delle nuove
+righe.
+E1: classi 15, 11 e 4 casi. Passi
+3–4, rimozione 3.b e refresh 5.a
+parzialmente coperti; E3
+TableLifecycle modiﬁca sconto
+dalla UI e osserva nuovi prezzi.
+Non dimostrati tutti i
+parsing/UI 2.a/3.a, ID
+inesistente e rollback 4.a con
+prova dedicata di questo
+comando.
+Segue nella pagina successiva
+99
+
+
+--- PAGINA FISICA 103 ---
+Matrice funzionale — continua
+Requisito
+/ caso
+File, metodo e asserzione pertinente
+Risultato disponibile e
+lacune
+S24, S33;
+UC-07
+CatalogListingIntegrationTest.state
+FilteringEmptyResultsAndNewSession
+RemainCorrect veriﬁca ﬁltro/esclusione
+del veicolo della ﬁxture e nuova sessione;
+nextRefreshReadsNewModelBaseAndNam
+eWithoutChangingManualBase confronta
+nuove righe e conserva quelle precedenti.
+E3 TableLifecycleUiCheck.main osserva
+caricamento, errore e riprova,
+risultato/errore superato, tastiera durante
+lock e prezzi ricaricati.
+E1: classe 4 casi. E3: UI
+CHECK SUCCESS storico.
+Passo 2 e alternative 2.b/3.a
+parzialmente coperti. Il nome
+del metodo JUnit non basta:
+non svuota l’intero catalogo
+per asserire la tabella
+completamente vuota di 2.a.
+Nessuna veriﬁca GUI corrente
+per equivalenza.
+S29, S31;
+UC-08
+VehicleDestinationIntegrationTest.r
+entalIncludingTodayPreventsSaleAnd
+AllRefunds include un noleggio iniziato
+ieri; futureRentalsAreFullyRefundedFor
+EveryClientWhileHistoryAndOtherVeh
+iclesRemain confronta rimborsi e
+conservazione; missingSecondAccountRo
+llsBackAnAlreadyWrittenFirstRefund
+veriﬁca sequenza diagnostica chiamata,
+primo accredito già scritto e poi rollback.
+E1: classe 33 casi;
+concurrentDestinationCom
+mandsCannotRefundTwice
+limita doppio rimborso. Passi
+3–4 e 3.a/4.a coperti negli
+scenari scelti. E3 Destination
+prova conferma e riﬁuti su
+copia adattata a VehicleRow.
+Annullamento 2.a e ogni
+concorrenza fra anteprima e
+conferma non provati.
+S24, S34;
+UC-09
+PriceSelectionIntegrationTest.equal
+ManualBaseAndReturnToRecommendedSu
+rviveReloadAndModelChange veriﬁca la
+modalità esplicita anche con basi uguali;
+invalidBaseDoesNotChangePersistedS
+election riﬁuta negativi e conserva la
+selezione. DomainInvariantsTest.testR
+ejectedVehiclePlateChangeLeavesVeh
+icleUnchanged controlla l’invariante dopo
+mutazione riﬁutata.
+E1: classi 10 e 15 casi; E3
+TableLifecycle usa il controllo
+della base manuale e il ritorno
+all’automatico. Copertura di
+2.b e parte di 3.a. Non
+dimostrati l’intero CRUD
+marchi/modelli/veicoli, tutte
+le cancellazioni con
+associazioni di 2.a o ogni
+vincolo VIN/targa.
+S26, S34;
+UC-10
+SaleOutcomeIntegrationTest.nonNegati
+veRegisterAmountsKeepTheirExplicit
+TypeAfterReload salva/rilegge via DAO
+SALE/PURCHASE/PENALTY con 0 e
+123,45, confrontando tipo, importo e
+lettura cliente.
+SaleTypeTest.factoriesUseTheDealersh
+ipPerspectiveAndExplicitTypes veriﬁca
+anche attribuzioni nulle della penale in
+memoria.
+E1: classi 67 e 11 casi. È prova
+del contratto persistito e di
+dominio, non dell’intero
+registro manager. E3
+SaleOutcome controlla celle e
+navigazione con vecchi
+tipi/segni; non dimostra le
+etichette attuali. Vuoto 2.a,
+errore/riprova 2.b e refresh 3.a
+del registro non asseriti
+speciﬁcamente da quelle prove.
+Segue nella pagina successiva
+100
+
+
+--- PAGINA FISICA 104 ---
+Matrice funzionale — continua
+Requisito
+/ caso
+File, metodo e asserzione pertinente
+Risultato disponibile e
+lacune
+S25, S33;
+UC-11
+FullWorkflowIntegrationTest.testCli
+entLoginAndDataLoading veriﬁca assenza
+di eccezioni nelle letture cliente, non i
+contenuti di ogni riga. E3
+AgreementUiCheck.amounts/checkDialog
+confronta totale/acconto/residuo e
+selezione della richiesta approvata;
+PurchaseAgreementIntegrationTest
+veriﬁca il successivo saldo.
+E1: FullWorkﬂow 4 casi,
+accordo 22. Copertura parziale
+dei passi 2–3. Tabelle vuote
+2.a, errore delle letture
+sincrone 2.b e comando senza
+selezione 3.a non sono
+dimostrati dal solo
+login/lettura. Nessun controllo
+Riprova va dedotto per queste
+tre tabelle.
+S34;
+UC-S01
+Nei ﬁle JUnit esaminati non è individuata
+una prova dedicata di registrazione
+pubblica completa o del suo rollback dopo
+creazione identità/conto. Il riscontro di
+AuthService.registerClient è statico;
+non sostituisce un’asserzione eseguita.
+Associazione non dimostrata:
+passi 1–3 e alternative
+2.a/2.b/3.a. Test di modiﬁca
+email, login e ﬁxture già
+registrate non certiﬁcano
+registrazione o creazione
+atomica del conto.
+S34, S37;
+UC-S02
+FullWorkflowIntegrationTest.testCli
+entLoginAndDataLoading,
+testSalesmanLoginAndDataLoading,
+testManagerLoginAndDataLoading
+asseriscono sottotipo e dati caricati. expi
+rationUsesOnlyTheIsolatedFixture
+predispone una scadenza relativa e ne
+osserva la rimozione. E3
+AppStartupUiCheck.main chiama
+App.start e controlla ﬁnestra, tema e focus
+raggiungibile con Tab.
+E1: classe 4 casi; E3 ingresso:
+APP STARTUP SUCCESS.
+Copertura di
+autenticazione/letture e parte
+di 3.b. Non è prova completa
+della navigazione
+login–dashboard, dell’errore
+lettura o dashboard 2.a/3.a, né
+della disconnessione 3.c.
+L’ingresso pubblico da solo non
+prova una connessione DB.
+S34, S37;
+UC-S03
+AuthServiceIntegrationTest.validEmai
+lIsNormalizedPersistedAndUsedForLo
+gin e duplicateEmailPreservesBothIde
+ntitiesAndLogins veriﬁcano email e
+accesso.
+IdentityDeletionIntegrationTest.ide
+ntitiesWithoutOperationsRemainDele
+tableIncludingDemonstrationBalance
+asserisce login riﬁutato dopo eliminazione
+e conto rimosso; errorAfterActualIden
+tityAndAccountDeletionRollsBackBoth
+confronta snapshot e nuovo login dopo
+guasto.
+E1: classi 18 e 60 casi. E3
+Identity: annullamento,
+password errata,
+richieste/storico, tre ruoli
+eliminabili e callback solo su
+successo. Alternative 2.a/3.a
+parzialmente coperte. Non
+dimostrati modiﬁca password
+completa, unicità email
+globale/concorrenza o ogni
+dialogo di errore.
+Segue nella pagina successiva
+101
+
+
+--- PAGINA FISICA 105 ---
+Matrice funzionale — continua
+Requisito
+/ caso
+File, metodo e asserzione pertinente
+Risultato disponibile e
+lacune
+S34, S37;
+UC-S04
+BalanceConcurrencyIntegrationTest.e
+veryMovementSharesTheAccountProtoc
+ol esegue anche ricarica insieme a un altro
+movimento e confronta il saldo;
+DomainInvariantsTest.testBankAccount
+Invariants veriﬁca deposito, prelievo e
+fondi insuﬃcienti in memoria.
+E1: classi 16 e 15 casi.
+Copertura del movimento
+valido, non dell’intero ﬂusso
+graﬁco: annullamento 2.a,
+parsing/importi 2.b, conto
+assente e guasto speciﬁco 3.a
+non sono provati da questa
+sola associazione. Nessuna
+integrazione bancaria reale è
+prevista.
+C.3
+Garanzie trasversali e limiti delle prove
+Tabella C.2: Controlli trasversali: proprietà eﬀettivamente
+osservate.
+Obiettivo
+Prova / asserzione
+Esito e conﬁne
+S29, S31;
+UC-01 5.b,
+UC-02 5.a,
+UC-03 6
+TestDriveCancellationIntegrationTe
+st.cancellationFailureRollsBackTheCo
+mmercialOperation fa fallire un trigger
+AFTER DELETE solo dopo addebito,
+operazione e cancellazioni. Rilegge saldo,
+richiesta/stato e i due test drive.
+onlyDatesStrictlyAfterTheOperation
+TransactionStartAreCancelled
+predispone date a meno/uguale/più un
+microsecondo e conserva le prime due.
+E1: classe 8 casi. Stessa
+transazione dell’Observer per
+vendita e noleggio, non
+consegna distribuita o ogni
+errore possibile. Futuri anche
+oltre il periodo noleggiato;
+nessuna reattività UI dedotta
+dall’evento.
+S31, S37;
+conto
+BalanceConcurrencyIntegrationTest.c
+oncurrentPurchaseDepositsKeepBothD
+ebits controlla entrambi gli acconti;
+concurrentRefundsAcquireAccountsIn
+ClientOrder varia i veicoli e osserva
+attese prima del rilascio.
+PurchaseConcurrencyIntegrationTest.r
+ace/awaitWaiters conta PID distinti
+prima di raccogliere i Future.
+E1: classi 16 e 60 casi. Gate,
+query e attese hanno timeout;
+connessioni reali distinte. Le
+asserzioni hanno portata su
+quelle gare/ﬁxture, non tutti i
+carichi o l’assenza globale di
+deadlock.
+Segue nella pagina successiva
+102
+
+
+--- PAGINA FISICA 106 ---
+Controlli trasversali — continua
+Obiettivo
+Prova / asserzione
+Esito e conﬁne
+S34, S37;
+mapping e
+null
+PostgresRequestDao.mapRow legge
+salesman/data/BigDecimal e tipo;
+PostgresSaleDao.mapRow conserva
+vehicle/salesman nulli. PurchaseConcurre
+ncyIntegrationTest.assertConsumed
+asserisce nulli entrambi per la penale; la
+prova dell’accordo rilegge totale e acconto.
+SaleProposalIntegrationTest.newVinK
+eepsTheExistingEstimateAndRejectsS
+equentialDuplicates asserisce totale
+nullo sull’oggetto restituito, non sul
+reloadedRequest.
+E1: classi pertinenti 60, 22 e
+23 casi. Distinti null letto e
+null asserito: nessuna prova
+autonoma di tutte le
+combinazioni nullable, della
+precisione di ogni timestamp o
+di ogni attributo DAO. Le
+chiamate mapRow sono S0,
+non test aggiuntivi.
+S34–35;
+quattro
+enum
+PostgresEnumIntegrationTest.closedD
+omainsUseNativeEnumsAndRejectUnkno
+wnValues parametrizza i quattro attributi,
+confronta USER-DEFINED/nome tipo,
+lista ordinata etichette e SQLSTATE
+22P02 su valore estraneo. Prezzi e registro
+hanno anche prove DAO della matrice
+funzionale.
+E1: 4 casi, 0
+failure/errori/salti. Non
+asserisce direttamente default
+AUTOMATIC o ogni NOT
+NULL, né ricostruisce la
+conversione di un archivio
+popolato. Il test SQL e il
+mapping JDBC sono evidenze
+diverse.
+S35,
+S38–39;
+ﬁxture e
+sentinella
+TestDatabaseConfigurationTest.appli
+cationTargetsAndAmbiguousJdbcUrlsA
+reRejectedBeforeConnecting riﬁuta
+conﬁgurazioni prima della connessione.
+DemoSqlValidationTest.schemaAndDemo
+CanBeReloadedWithoutChangingRowsOr
+Sequences confronta snapshot ordinati;
+DatabaseIsolationIntegrationTest.app
+licationSentinelSurvivesRejectedCo
+nfigurationAndTestResets asserisce la
+presenza del marchio sul DB distinto.
+E1: 7, 1 e 1 casi. Non è una
+misura di copertura né prova
+di conservazione di qualsiasi
+DB. E2 ha inoltre ﬁngerprint
+esterno prima/dopo suite; E3
+manca del confronto esterno
+ﬁnale. Le destinazioni vanno
+sempre ricontrollate prima di
+riprodurre prove distruttive.
+S33, S35; UI
+e struttura
+E3 ReactiveTablesUiCheck.cells
+confronta contatori di query/connessioni
+prima/dopo celle, refresh e scroll, dopo tre
+frame; TableLifecycleUiCheck.main
+controlla caricamento/riprova e risultati
+superati; SlowModelsUiCheck.main
+controlla il clear modelli durante query
+bloccata.
+Successi storici con log e
+manifest E3. Non benchmark
+o prova di ogni rendering.
+Distacco scena in AsyncLoad:
+solo S0, nessun assert diretto
+di logout/riapertura con query
+pendente. Nessuna copertura
+screen reader o accessibilità
+universale dimostrata.
+Il POM non produce un rapporto di copertura strutturale. Le scelte guidate dal codi-
+ce (rami di errore, conﬁni temporali, scritture saltate e contatori) raﬀorzano le veriﬁche
+funzionali, ma non autorizzano percentuali di linee, rami o requisiti coperti. I dati ag-
+gregati indicano esiti delle invocazioni delimitate, non completezza delle associazioni qui
+dichiarate parziali.
+Restano distinte le segnalazioni applicative nei rapporti difetti-applicativi.md dei ticket
+103
+
+
+--- PAGINA FISICA 107 ---
+documentali 04–05: importi zero, vincoli email non equivalenti all’unicità globale e letture
+UI dopo commit nello stesso try. Il ticket 06 non le corregge né le dichiara risolte grazie ai
+test. L’incompatibilità dell’harness storico SaleOutcome con l’enum corrente è registrata
+separatamente nelle nuove veriﬁche, come limite di riproducibilità degli strumenti, senza
+cambiare gli originali.
+C.4
+Riproduzione e riscontro documentale
+I comandi applicativi e i prerequisiti sono nella sezione 4.5; la procedura completa è in
+docs/testing.md e docs/installation.md. R11 conserva i comandi storici e le patch,
+non garantisce l’esistenza dei percorsi privati /tmp. La riproduzione di E3 con la sua
+semantica richiede la fotograﬁa storica identiﬁcata dai manifest; un checkout del solo
+HEAD iniziale non è suﬃciente. Per il contratto attuale, i vecchi harness incompatibili
+richiederebbero una revisione separata.
+Il pacchetto docs/relazione/verifiche/ticket-06/ conserva speciﬁca ricevuta,
+matrice aﬀermazioni/frammenti–fonti con impronte, riscontro dei risultati storici, base-
+line iniziale, delta documentale, comandi eﬀettivi, log di compilazione PDF, controlli e
+verbale visivo. Questi ultimi sono veriﬁche del documento; non appartengono ai conteggi
+JUnit e non costituiscono una nuova prova dell’applicazione.
+104

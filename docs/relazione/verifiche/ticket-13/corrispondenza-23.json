@@ -1,0 +1,487 @@
+[
+  {
+    "originale": "Relazione_SWE/capitoli/3a_domain_model.tex",
+    "intervallo_originale": [
+      24,
+      40
+    ],
+    "destinazione": "3.1.2",
+    "estratti": [
+      "lst:vehicle-invariante",
+      "lst:update-condizionale"
+    ],
+    "adattamento": "Recuperata funzione di transizione: invariante locale distinta dal controllo atomico nel DAO; approve/block rimossi.",
+    "original_interval": [
+      24,
+      40
+    ],
+    "original_excerpt": "\\begin{lstlisting}[language=Java,caption={Transizioni controllate dello stato di Vehicle.}]\npublic void approve() {\n    if (state != VehicleState.WAITING) {\n        throw new DomainRuleViolationException(\n                \"Cannot approve vehicle not in WAITING state\");\n    }\n    this.state = VehicleState.SALE;\n}\n\npublic void block() {\n    if (state != VehicleState.SALE) {\n        throw new DomainRuleViolationException(\n                \"Cannot block vehicle not in SALE state\");\n    }\n    this.state = VehicleState.BLOCKED;\n}\n\\end{lstlisting}",
+    "original_sha256_13": "fec5d14833a0758576af4a1f4dc7cc0061fef221bee139bc499e50fd789f4624",
+    "source_manifest": "docs/relazione/verifiche/ticket-11/frammenti.json",
+    "limit": "Il vecchio meccanismo non è ripristinato; interpretare gli estratti con preparazione, chiamate e riletture del corpo e con il limite dichiarato."
+  },
+  {
+    "originale": "Relazione_SWE/capitoli/3a_domain_model.tex",
+    "intervallo_originale": [
+      50,
+      69
+    ],
+    "destinazione": "3.1.4",
+    "estratti": [
+      "lst:request-accordo",
+      "lst:request-factory"
+    ],
+    "adattamento": "Due factory con RequestType esplicito, totale/acconto in centesimi; nessuna stima negativa.",
+    "original_interval": [
+      50,
+      69
+    ],
+    "original_excerpt": "\\begin{lstlisting}[language=Java,caption={Factory method di Request per i due tipi di pratica.},label={lst:request}]\npublic static Request createPurchase(long vehicleId, long clientId,\n                                     BigDecimal deposit) {\n    if (deposit.compareTo(BigDecimal.ZERO) <= 0) {\n        throw new IllegalArgumentException(\n                \"Purchase deposit must be strictly positive\");\n    }\n    return new Request(null, vehicleId, clientId, null, deposit, null);\n}\n\npublic static Request createSaleProposal(long vehicleId, long clientId,\n                                         BigDecimal estimatedValue) {\n    if (estimatedValue.compareTo(BigDecimal.ZERO) <= 0) {\n        throw new IllegalArgumentException(\n                \"Estimated value must be strictly positive\");\n    }\n    return new Request(null, vehicleId, clientId, null,\n                       estimatedValue.negate(), null);\n}\n\\end{lstlisting}",
+    "original_sha256_13": "b6f312c686763468dbaaef76e0b1c09492c1bb259aeb8970568f8890b5ab9582",
+    "source_manifest": "docs/relazione/verifiche/ticket-11/frammenti.json",
+    "limit": "Il vecchio meccanismo non è ripristinato; interpretare gli estratti con preparazione, chiamate e riletture del corpo e con il limite dichiarato."
+  },
+  {
+    "originale": "Relazione_SWE/capitoli/3b_business_layer.tex",
+    "intervallo_originale": [
+      17,
+      32
+    ],
+    "destinazione": "3.2.1",
+    "estratti": [
+      "lst:transazione",
+      "lst:callback"
+    ],
+    "adattamento": "DatabaseManager e due callback reali sostituiscono TransactionRunner/UnitOfWork, con causa e rollback tentato.",
+    "original_interval": [
+      17,
+      32
+    ],
+    "original_excerpt": "\\begin{lstlisting}[language=Java,caption={Nucleo di TransactionRunner.execute, dal sorgente corrente.},label={lst:transaction-runner}]\ntry (UnitOfWork unit = daoFactory.begin()) {\n    try {\n        T result = work.apply(unit);\n        unit.commit();\n        return result;\n    } catch (RuntimeException | Error failure) {\n        try {\n            unit.rollback();\n        } catch (RuntimeException rollbackFailure) {\n            failure.addSuppressed(rollbackFailure);\n        }\n        throw failure;\n    }\n}\n\\end{lstlisting}",
+    "original_sha256_13": "bc430f14631a3a43d32e24cb9b5050091d4329bf78048b16a1fb8a5de290311a",
+    "source_manifest": "docs/relazione/verifiche/ticket-11/frammenti.json",
+    "limit": "Il vecchio meccanismo non è ripristinato; interpretare gli estratti con preparazione, chiamate e riletture del corpo e con il limite dichiarato."
+  },
+  {
+    "originale": "Relazione_SWE/capitoli/3b_flussi.tex",
+    "intervallo_originale": [
+      10,
+      19
+    ],
+    "destinazione": "3.2.3.1",
+    "estratti": [
+      "lst:test-drive"
+    ],
+    "adattamento": "Lock, conteggio, disponibilità, factory e save effettivi; fascia non troncata, messaggi letterali.",
+    "original_interval": [
+      10,
+      19
+    ],
+    "original_excerpt": "\\begin{lstlisting}[language=Java,caption={Controlli sequenziali di disponibilità nel test drive, estratto da \\code{TestDriveService.book}.},label={lst:test-drive-book}]\nif (unit.rentals().isVehicleRentedOnDate(vehicleId, date)) {\n    throw new ConflictException(\"Il veicolo e noleggiato per il giorno selezionato\");\n}\nif (unit.testDrives().hasConflictingTestDrive(vehicleId, dateTime)) {\n    throw new ConflictException(\"La fascia oraria e gia occupata\");\n}\nTestDrive testDrive = TestDrive.create(vehicleId, clientId, dateTime);\nreturn unit.testDrives().save(testDrive);\n\\end{lstlisting}",
+    "original_sha256_13": "fdeaf46913aa7069a84176119d48b78e647f3281ad59b4a1390f477ec8ee210f",
+    "source_manifest": "docs/relazione/verifiche/ticket-11/frammenti.json",
+    "limit": "Il vecchio meccanismo non è ripristinato; interpretare gli estratti con preparazione, chiamate e riletture del corpo e con il limite dichiarato."
+  },
+  {
+    "originale": "Relazione_SWE/capitoli/3b_flussi.tex",
+    "intervallo_originale": [
+      27,
+      31
+    ],
+    "destinazione": "3.2.3.2 e 3.4.4",
+    "estratti": [
+      "lst:overlap",
+      "lst:vincolo-rent"
+    ],
+    "adattamento": "Predicato inclusivo e ordine dei parametri del DAO, insieme al vincolo EXCLUDE corrente.",
+    "original_interval": [
+      27,
+      31
+    ],
+    "original_excerpt": "\\begin{lstlisting}[language=SQL,caption={Predicato di overlap da \\code{PostgresRentalDao.hasOverlappingRentals}.},label={lst:overlap}]\nSELECT 1 FROM \"rent\"\nWHERE vehicle = ? AND NOT (\"end\" < ? OR start > ?)\nLIMIT 1\n\\end{lstlisting}",
+    "original_sha256_13": "6ef3b1a7a7edde3faf64c8310ec31ee1ebd6a6332a96905412322af187aa33fd",
+    "source_manifest": "docs/relazione/verifiche/ticket-11/frammenti.json",
+    "limit": "Il vecchio meccanismo non è ripristinato; interpretare gli estratti con preparazione, chiamate e riletture del corpo e con il limite dichiarato."
+  },
+  {
+    "originale": "Relazione_SWE/capitoli/3a_presentazione_dominio.tex",
+    "intervallo_originale": [
+      19,
+      26
+    ],
+    "destinazione": "3.3.2",
+    "estratti": [
+      "lst:app-login",
+      "lst:navigazione"
+    ],
+    "adattamento": "Costruzione Java con servizi/callback e dispatch sostituiscono FXMLLoader/ContextAware.",
+    "original_interval": [
+      19,
+      26
+    ],
+    "original_excerpt": "\\begin{lstlisting}[language=Java,caption={Passaggio del contesto dopo il caricamento della vista.},label={lst:context-aware}]\nFXMLLoader loader = new FXMLLoader(resource);\nParent root = loader.load();\nObject controller = loader.getController();\nif (controller instanceof ContextAware aware) {\n    aware.setApplicationContext(context);\n}\n\\end{lstlisting}",
+    "original_sha256_13": "56d46277c205fbbf8c3f9464cdac752639e4d50509f81f17d32efd03b7fd9777",
+    "source_manifest": "docs/relazione/verifiche/ticket-11/frammenti.json",
+    "limit": "Il vecchio meccanismo non è ripristinato; interpretare gli estratti con preparazione, chiamate e riletture del corpo e con il limite dichiarato."
+  },
+  {
+    "originale": "Relazione_SWE/capitoli/3d_dao.tex",
+    "intervallo_originale": [
+      7,
+      13
+    ],
+    "destinazione": "3.4.1",
+    "estratti": [
+      "lst:user-dao-letture",
+      "lst:user-dao-comandi"
+    ],
+    "adattamento": "Due intervalli esplicitamente selezionati dal contratto UserDao, incluso ruolo e connessione nelle scritture.",
+    "original_interval": [
+      7,
+      13
+    ],
+    "original_excerpt": "\\begin{lstlisting}[language=Java,caption={Operazioni di lettura e controllo dichiarate da UserDao.},label={lst:user-dao}]\nOptional<User> findById(long id);\nOptional<User> findByEmail(String normalizedEmail);\nList<User> findByRole(Role role);\nList<User> findAll();\nboolean hasOperations(long userId, Role role);\n\\end{lstlisting}",
+    "original_sha256_13": "d0ee912e23f93bf19a731bbef150e23046bd536dc64727486768f2bb908fa87e",
+    "source_manifest": "docs/relazione/verifiche/ticket-11/frammenti.json",
+    "limit": "Il vecchio meccanismo non è ripristinato; interpretare gli estratti con preparazione, chiamate e riletture del corpo e con il limite dichiarato."
+  },
+  {
+    "originale": "Relazione_SWE/capitoli/3d_dao.tex",
+    "intervallo_originale": [
+      20,
+      30
+    ],
+    "destinazione": "3.4.2",
+    "estratti": [
+      "lst:user-mapping"
+    ],
+    "adattamento": "Switch sui tre sottotipi reali dopo lettura dalla vista; conto caricato separatamente.",
+    "original_interval": [
+      20,
+      30
+    ],
+    "original_excerpt": "\\begin{lstlisting}[language=Java,caption={Ricostruzione di User da una riga della vista user.},label={lst:user-mapping}]\nreturn load(\"SELECT id, name, surname, email, \"\n        + \"hash_password, role FROM \\\"user\\\" WHERE id = ?\", id,\n        row -> new User(\n                row.getLong(\"id\"),\n                row.getString(\"name\"),\n                row.getString(\"surname\"),\n                row.getString(\"email\"),\n                row.getString(\"hash_password\"),\n                Role.fromString(row.getString(\"role\"))));\n\\end{lstlisting}",
+    "original_sha256_13": "fd8f9a4a0c55229f2f5486307ee03be3c545b6871db783258cc34e886f8ad3d3",
+    "source_manifest": "docs/relazione/verifiche/ticket-11/frammenti.json",
+    "limit": "Il vecchio meccanismo non è ripristinato; interpretare gli estratti con preparazione, chiamate e riletture del corpo e con il limite dichiarato."
+  },
+  {
+    "originale": "Relazione_SWE/capitoli/3d_dao.tex",
+    "intervallo_originale": [
+      37,
+      40
+    ],
+    "destinazione": "3.4.3",
+    "estratti": [
+      "lst:sale-mapping",
+      "lst:mapping"
+    ],
+    "adattamento": "Mapper Sale completo e Request con getObject, date e BigDecimal: NULL non diventa zero.",
+    "original_interval": [
+      37,
+      40
+    ],
+    "original_excerpt": "\\begin{lstlisting}[language=Java,caption={Lettura delle due chiavi opzionali nel mapping di Sale.},label={lst:sale-mapping}]\nJdbcSupport.nullableLong(row, \"vehicle\"),\nJdbcSupport.nullableLong(row, \"salesman\"),\n\\end{lstlisting}",
+    "original_sha256_13": "828fa67ece7cd680396ed77505ba38f49270abd8a01db879ac042a96bf724c6f",
+    "source_manifest": "docs/relazione/verifiche/ticket-11/frammenti.json",
+    "limit": "Il vecchio meccanismo non è ripristinato; interpretare gli estratti con preparazione, chiamate e riletture del corpo e con il limite dichiarato."
+  },
+  {
+    "originale": "Relazione_SWE/capitoli/3d_dao.tex",
+    "intervallo_originale": [
+      47,
+      51
+    ],
+    "destinazione": "3.4.4",
+    "estratti": [
+      "lst:vincolo-vin",
+      "lst:vincolo-saldo",
+      "lst:vincolo-rent"
+    ],
+    "adattamento": "Tre intervalli distinti di schema.sql sostituiscono init.sql: UNIQUE, CHECK, EXCLUDE; enum/cast spiegati accanto.",
+    "original_interval": [
+      47,
+      51
+    ],
+    "original_excerpt": "\\begin{lstlisting}[caption={Vincoli fisici presenti in init.sql.},label={lst:vincoli-sql}]\nCONSTRAINT \"uq_vehicle_vin\" UNIQUE (\"vin\"),\nCONSTRAINT \"chk_bank_account_balance\" CHECK (\"balance\" >= 0),\nCONSTRAINT \"chk_rent_dates\" CHECK (\"end\" >= \"start\")\n\\end{lstlisting}",
+    "original_sha256_13": "e0151b45b47867320a72446354a737d934932781131be62020cc583bda9b3f51",
+    "source_manifest": "docs/relazione/verifiche/ticket-11/frammenti.json",
+    "limit": "Il vecchio meccanismo non è ripristinato; interpretare gli estratti con preparazione, chiamate e riletture del corpo e con il limite dichiarato."
+  },
+  {
+    "originale": "Relazione_SWE/capitoli/3e_pattern.tex",
+    "intervallo_originale": [
+      7,
+      12
+    ],
+    "destinazione": "3.5.1 (contratto introdotto in 3.1.5, effetto in 3.2.6)",
+    "estratti": [
+      "lst:contratto-observer",
+      "lst:observer"
+    ],
+    "adattamento": "Contratto corrente con Connection; errori propagati invece di ignorati.",
+    "original_interval": [
+      7,
+      12
+    ],
+    "original_excerpt": "\\begin{lstlisting}[language=Java,caption={Contratto dell'osservatore dell'inventario.},label={lst:pattern-observer}]\n@FunctionalInterface\npublic interface InventoryObserver {\n    void onInventoryEvent(InventoryEvent event);\n}\n\\end{lstlisting}",
+    "original_sha256_13": "2282fe78853e8a8ef2f9ce1b74241814c0dea8a166622e9808511cf331cd5a9e",
+    "source_manifest": "docs/relazione/verifiche/ticket-11/frammenti.json",
+    "limit": "Il vecchio meccanismo non è ripristinato; interpretare gli estratti con preparazione, chiamate e riletture del corpo e con il limite dichiarato."
+  },
+  {
+    "originale": "Relazione_SWE/capitoli/3e_pattern.tex",
+    "intervallo_originale": [
+      19,
+      28
+    ],
+    "destinazione": "3.5.2 con formule in 3.2.4",
+    "estratti": [
+      "lst:base"
+    ],
+    "adattamento": "Adattamento motivato: scelta della base nello stesso calcolatore concreto; PricingStrategy non esiste.",
+    "original_interval": [
+      19,
+      28
+    ],
+    "original_excerpt": "\\begin{lstlisting}[language=Java,caption={Strategia di prezzo scelta di default e iniettata nel servizio.},label={lst:pattern-strategy}]\npublic PricingService(DaoFactory daoFactory) {\n    this(daoFactory, new StandardPricingStrategy());\n}\n\npublic PricingService(DaoFactory daoFactory, PricingStrategy pricingStrategy) {\n    this.transactions = new TransactionRunner(daoFactory);\n    this.pricingStrategy = Objects.requireNonNull(pricingStrategy, \"pricingStrategy\");\n}\n\\end{lstlisting}",
+    "original_sha256_13": "fe1bfe54e388d4563f431ccaa1d1cf7a834998dbf2fc5d4ce47ec6f4be6fdfc3",
+    "source_manifest": "docs/relazione/verifiche/ticket-11/frammenti.json",
+    "limit": "Il vecchio meccanismo non è ripristinato; interpretare gli estratti con preparazione, chiamate e riletture del corpo e con il limite dichiarato."
+  },
+  {
+    "originale": "Relazione_SWE/capitoli/3e_pattern.tex",
+    "intervallo_originale": [
+      35,
+      42
+    ],
+    "destinazione": "3.5.3",
+    "estratti": [
+      "lst:vehicle-factory"
+    ],
+    "adattamento": "Overload corrente completo, ID passato dal chiamante e nuova istanza dopo INSERT; costruttore privato e nessun assignId.",
+    "original_interval": [
+      35,
+      42
+    ],
+    "original_excerpt": "\\begin{lstlisting}[language=Java,caption={Creazione di un veicolo nuovo con ID da assegnare.},label={lst:pattern-factory}]\npublic static Vehicle create(long modelId, String vin, String licencePlate,\n                             int kilometers, BigDecimal price, int year,\n                             VehicleState state) {\n    return new Vehicle(null, modelId, vin, licencePlate,\n                       kilometers, price, year, state);\n}\n\\end{lstlisting}",
+    "original_sha256_13": "1dfa5265fdeda76f1ca34290ba84316b8d9f65d99eb8c22e8104804090bd287a",
+    "source_manifest": "docs/relazione/verifiche/ticket-11/frammenti.json",
+    "limit": "Il vecchio meccanismo non è ripristinato; interpretare gli estratti con preparazione, chiamate e riletture del corpo e con il limite dichiarato."
+  },
+  {
+    "originale": "Relazione_SWE/capitoli/3e_pattern.tex",
+    "intervallo_originale": [
+      49,
+      55
+    ],
+    "destinazione": "3.5.4 con costruzione in 3.3.2",
+    "estratti": [
+      "lst:singleton",
+      "lst:navigazione",
+      "lst:app-login"
+    ],
+    "adattamento": "Contesto predefinito sincronizzato e double dispatch sostituiscono NavigationManager globale; costruttore alternativo esplicito.",
+    "original_interval": [
+      49,
+      55
+    ],
+    "original_excerpt": "\\begin{lstlisting}[language=Java,caption={Inizializzazione del gestore di navigazione.},label={lst:pattern-navigation}]\nprivate static NavigationManager instance;\n\npublic static void initialize(Stage stage, ApplicationContext context) {\n    instance = new NavigationManager(stage, context);\n}\n\\end{lstlisting}",
+    "original_sha256_13": "c13e8a838e0ded05cdea5e748737f12378e3987be1711f04aa4fa971b3ab24fc",
+    "source_manifest": "docs/relazione/verifiche/ticket-11/frammenti.json",
+    "limit": "Il vecchio meccanismo non è ripristinato; interpretare gli estratti con preparazione, chiamate e riletture del corpo e con il limite dichiarato."
+  },
+  {
+    "id": 1,
+    "originale": "Relazione_SWE/capitoli/4_testing.tex",
+    "firstline": 29,
+    "lastline": 33,
+    "estratti": [
+      "lst:test-auth"
+    ],
+    "destinazione": "4.2.2",
+    "funzione": "Registrazione duplicata ed effetti esclusi",
+    "adattamento": "Modifica email PostgreSQL e nuove letture di identità/login: non prova registrazione atomica né assenza chiamate hash/save. Equivalente unitario assente.",
+    "original_sha256": "67bd408d8f93ef69457290f743c8bd8f7c570da73c0b3beefb3cb1d9d6770d71",
+    "original_interval": [
+      29,
+      33
+    ],
+    "original_excerpt": "\\begin{lstlisting}[language=Java,caption={Effetti esclusi dal test di registrazione duplicata.},label={lst:test-auth}]\nverify(hasher, never()).hash(any());\nverify(users, never()).save(any());\nverify(unit).rollback();\n\\end{lstlisting}",
+    "original_sha256_13": "67bd408d8f93ef69457290f743c8bd8f7c570da73c0b3beefb3cb1d9d6770d71",
+    "source_manifest": "docs/relazione/verifiche/ticket-12/frammenti.json",
+    "limit": "Il vecchio meccanismo non è ripristinato; interpretare gli estratti con preparazione, chiamate e riletture del corpo e con il limite dichiarato."
+  },
+  {
+    "id": 2,
+    "originale": "Relazione_SWE/capitoli/4_testing.tex",
+    "firstline": 38,
+    "lastline": 43,
+    "estratti": [
+      "lst:test-pricing"
+    ],
+    "destinazione": "4.2.3",
+    "funzione": "Assert tariffa noleggio",
+    "adattamento": "Tre giorni inclusi e formula corrente: 57,05 su20.000; non riprodotti40/76/108,30/137,18 della vecchia Strategy.",
+    "original_sha256": "7f80c3e9a1a7af08585561fbeb1e46d9678c6ff08960b02920082d671e099b74",
+    "original_interval": [
+      38,
+      43
+    ],
+    "original_excerpt": "\\begin{lstlisting}[language=Java,caption={Estratto degli assert sulla tariffa di noleggio.},label={lst:test-pricing}]\nassertEquals(new BigDecimal(\"40.00\"), strategy.rentalPrice(target, 1));\nassertEquals(new BigDecimal(\"76.00\"), strategy.rentalPrice(target, 2));\nassertEquals(new BigDecimal(\"108.30\"), strategy.rentalPrice(target, 3));\nassertEquals(new BigDecimal(\"137.18\"), strategy.rentalPrice(target, 4));\n\\end{lstlisting}",
+    "original_sha256_13": "7f80c3e9a1a7af08585561fbeb1e46d9678c6ff08960b02920082d671e099b74",
+    "source_manifest": "docs/relazione/verifiche/ticket-12/frammenti.json",
+    "limit": "Il vecchio meccanismo non è ripristinato; interpretare gli estratti con preparazione, chiamate e riletture del corpo e con il limite dichiarato."
+  },
+  {
+    "id": 3,
+    "originale": "Relazione_SWE/capitoli/4_testing.tex",
+    "firstline": 50,
+    "lastline": 57,
+    "estratti": [
+      "lst:test-penale"
+    ],
+    "destinazione": "4.2.4",
+    "funzione": "Annullamento/scadenza con penale",
+    "adattamento": "Scadenza corrente, non rifiuto:20% acconto trattenuto,80% rimborsato; rifiuto integrale spiegato separatamente. Fixture centesimi e riletture/helper espliciti.",
+    "original_sha256": "3cce21eaed7c72e83e68b796ede0a33357d6e49102582c833664aaa07774e3bf",
+    "original_interval": [
+      50,
+      57
+    ],
+    "original_excerpt": "\\begin{lstlisting}[language=Java,caption={Oracoli del test di annullamento con penale.},label={lst:test-sales-penalty}]\nverify(vehicles).updateState(1L, VehicleState.SALE);\nassertEquals(new BigDecimal(\"5800.00\"), account.balance());\nverify(requests).delete(50L);\nverify(sales).save(argThat(sale ->\n        sale.vehicleId() == null && sale.salesmanId() == null &&\n        sale.amount().compareTo(new BigDecimal(\"200.00\")) == 0));\n\\end{lstlisting}",
+    "original_sha256_13": "3cce21eaed7c72e83e68b796ede0a33357d6e49102582c833664aaa07774e3bf",
+    "source_manifest": "docs/relazione/verifiche/ticket-12/frammenti.json",
+    "limit": "Il vecchio meccanismo non è ripristinato; interpretare gli estratti con preparazione, chiamate e riletture del corpo e con il limite dichiarato."
+  },
+  {
+    "id": 4,
+    "originale": "Relazione_SWE/capitoli/4_testing.tex",
+    "firstline": 64,
+    "lastline": 71,
+    "estratti": [
+      "lst:test-rental"
+    ],
+    "destinazione": "4.2.5",
+    "funzione": "Addebito e registrazione noleggio",
+    "adattamento": "Ramo rental PostgreSQL: date e importo Rent, saldo riletto da nuovo contesto dopo confirm; preparazione e chiamata descritte, nessun verify su mock.",
+    "original_sha256": "50476b7b35e07d878f24429a248139ee509c16ffa0a861d7df059f6d138577fc",
+    "original_interval": [
+      64,
+      71
+    ],
+    "original_excerpt": "\\begin{lstlisting}[language=Java,caption={Effetti economici verificati nel test del noleggio.},label={lst:test-rental}]\nRent rent = service.bookRental(1L, 30L, start, end);\nassertNotNull(rent);\nassertEquals(new BigDecimal(\"400.00\"), account.balance());\nverify(bankAccounts).updateBalance(account.iban(), account.balance());\nverify(rentals).save(any(Rent.class));\nverify(unit).commit();\n\\end{lstlisting}",
+    "original_sha256_13": "50476b7b35e07d878f24429a248139ee509c16ffa0a861d7df059f6d138577fc",
+    "source_manifest": "docs/relazione/verifiche/ticket-12/frammenti.json",
+    "limit": "Il vecchio meccanismo non è ripristinato; interpretare gli estratti con preparazione, chiamate e riletture del corpo e con il limite dichiarato."
+  },
+  {
+    "id": 5,
+    "originale": "Relazione_SWE/capitoli/4_testing.tex",
+    "firstline": 76,
+    "lastline": 82,
+    "estratti": [
+      "lst:test-transazione",
+      "lst:test-rollback"
+    ],
+    "destinazione": "4.2.6 /4.3.2",
+    "funzione": "Errore transazionale, causa, soppressa, ordine",
+    "adattamento": "Metodo reale DatabaseManager classificato S0; test dopo eliminazioni reali conservato. Nessuna prova dedicata di errore commit/rollback equivalente al vecchio mock.",
+    "original_sha256": "2ae3cfd4337f3cce78860c575016a8df4e8ff9cd6eb16fbaae7e3e7b2d109a2a",
+    "original_interval": [
+      76,
+      82
+    ],
+    "original_excerpt": "\\begin{lstlisting}[language=Java,caption={Ordine delle operazioni nel test dell'errore transazionale.},label={lst:test-rollback}]\nassertArrayEquals(new Throwable[]{rollback}, original.getSuppressed());\nvar order = inOrder(unit);\norder.verify(unit).commit();\norder.verify(unit).rollback();\norder.verify(unit).close();\n\\end{lstlisting}",
+    "original_sha256_13": "2ae3cfd4337f3cce78860c575016a8df4e8ff9cd6eb16fbaae7e3e7b2d109a2a",
+    "source_manifest": "docs/relazione/verifiche/ticket-12/frammenti.json",
+    "limit": "Il vecchio meccanismo non è ripristinato; interpretare gli estratti con preparazione, chiamate e riletture del corpo e con il limite dichiarato."
+  },
+  {
+    "id": 6,
+    "originale": "Relazione_SWE/capitoli/4_testing.tex",
+    "firstline": 92,
+    "lastline": 98,
+    "estratti": [
+      "lst:test-dao-roundtrip"
+    ],
+    "destinazione": "4.3.1",
+    "funzione": "Roundtrip con nuova lettura",
+    "adattamento": "Base/modalità veicolo attraverso CatalogService/PostgresVehicleDao, nuovo AppContext e nuova Connection dopo commit; assente UnitOfWork.",
+    "original_sha256": "0ed6b4d09ebb35e011039e28f1824f4bf387d97ebe582c807af585bbd7296b5b",
+    "original_interval": [
+      92,
+      98
+    ],
+    "original_excerpt": "\\begin{lstlisting}[language=Java,caption={Verifica di lettura in una nuova Unit of Work.},label={lst:test-dao-roundtrip}]\ntry (var work = daoFactory.begin()) {\n    assertEquals(1, work.rentals().findByClientId(clientId).size());\n    assertEquals(1, work.testDrives().findByClientId(clientId).size());\n    work.commit();\n}\n\\end{lstlisting}",
+    "original_sha256_13": "0ed6b4d09ebb35e011039e28f1824f4bf387d97ebe582c807af585bbd7296b5b",
+    "source_manifest": "docs/relazione/verifiche/ticket-12/frammenti.json",
+    "limit": "Il vecchio meccanismo non è ripristinato; interpretare gli estratti con preparazione, chiamate e riletture del corpo e con il limite dichiarato."
+  },
+  {
+    "id": 7,
+    "originale": "Relazione_SWE/capitoli/4_testing.tex",
+    "firstline": 105,
+    "lastline": 112,
+    "estratti": [
+      "lst:test-demo"
+    ],
+    "destinazione": "4.3.2",
+    "funzione": "Schema/demo e conteggi",
+    "adattamento": "DemoSqlValidationTest:32SALE/8PENALTY, importi e snapshot di13tabelle/sequenze dopo reload/reset; assente bootstrap/migration Java.",
+    "original_sha256": "be37d49d10fde2e646144d036d531fe6e9d5ac31e1d51e630cd7e95c8efb621d",
+    "original_interval": [
+      105,
+      112
+    ],
+    "original_excerpt": "\\begin{lstlisting}[language=Java,caption={Conteggi controllati dopo il caricamento dei dati dimostrativi.},label={lst:test-bootstrap}]\nassertEquals(56, scalarLong(connection,\n        \"SELECT COUNT(*) FROM \\\"vehicle\\\"\"));\nassertEquals(40, scalarLong(connection,\n        \"SELECT COUNT(*) FROM \\\"sale\\\"\"));\nassertEquals(8, scalarLong(connection,\n        \"SELECT COUNT(*) FROM \\\"sale\\\" WHERE \\\"vehicle\\\" IS NULL AND \\\"salesman\\\" IS NULL\"));\n\\end{lstlisting}",
+    "original_sha256_13": "be37d49d10fde2e646144d036d531fe6e9d5ac31e1d51e630cd7e95c8efb621d",
+    "source_manifest": "docs/relazione/verifiche/ticket-12/frammenti.json",
+    "limit": "Il vecchio meccanismo non è ripristinato; interpretare gli estratti con preparazione, chiamate e riletture del corpo e con il limite dichiarato."
+  },
+  {
+    "id": 8,
+    "originale": "Relazione_SWE/capitoli/4_testing.tex",
+    "firstline": 117,
+    "lastline": 125,
+    "estratti": [
+      "lst:test-checkout-blocked",
+      "lst:test-checkout-sold"
+    ],
+    "destinazione": "4.4",
+    "funzione": "Workflow BLOCKED/SOLD",
+    "adattamento": "Due intervalli del medesimo scenario PurchaseAgreement, con approvazione/cambio listino/nuova sessione descritti fra essi; FullWorkflow non esteso a tutti i flussi.",
+    "original_sha256": "78d62b9e1f042f30aa1aae5aef3d822f471cf740a4967bcf8373c2905e65f552",
+    "original_interval": [
+      117,
+      125
+    ],
+    "original_excerpt": "\\begin{lstlisting}[language=Java,caption={Due stati osservati nel test funzionale di acquisto.},label={lst:test-checkout}]\nVehicle blocked = transactions.execute(u ->\n        u.vehicles().findById(saleVehicle.requireId()).orElseThrow());\nassertEquals(VehicleState.BLOCKED, blocked.state());\n\nVehicle sold = transactions.execute(u ->\n        u.vehicles().findById(saleVehicle.requireId()).orElseThrow());\nassertEquals(VehicleState.SOLD, sold.state());\n\\end{lstlisting}",
+    "original_sha256_13": "78d62b9e1f042f30aa1aae5aef3d822f471cf740a4967bcf8373c2905e65f552",
+    "source_manifest": "docs/relazione/verifiche/ticket-12/frammenti.json",
+    "limit": "Il vecchio meccanismo non è ripristinato; interpretare gli estratti con preparazione, chiamate e riletture del corpo e con il limite dichiarato."
+  },
+  {
+    "id": 9,
+    "originale": "Relazione_SWE/capitoli/4_testing.tex",
+    "firstline": 131,
+    "lastline": 133,
+    "estratti": [
+      "lst:test-comando-storico",
+      "lst:test-comandi",
+      "lst:test-comando-ui"
+    ],
+    "destinazione": "4.5",
+    "funzione": "Comando Maven ed esito storico",
+    "adattamento": "Comando E1letterale dal verbale, conteggi dal log9novembre; attuali istruzioni separate e harness esterno.57storico non trasferito; esecuzioni non sommate.",
+    "original_sha256": "b183538a39deca895eeca5fed7872568db5e4fa1e871360f9b7ae64fcc0aa1a4",
+    "original_interval": [
+      131,
+      133
+    ],
+    "original_excerpt": "\\begin{lstlisting}\nmvn -B -ntp -Dmaven.repo.local=C:/DEV/.m2/repository test\n\\end{lstlisting}",
+    "original_sha256_13": "b183538a39deca895eeca5fed7872568db5e4fa1e871360f9b7ae64fcc0aa1a4",
+    "source_manifest": "docs/relazione/verifiche/ticket-12/frammenti.json",
+    "limit": "Il vecchio meccanismo non è ripristinato; interpretare gli estratti con preparazione, chiamate e riletture del corpo e con il limite dichiarato."
+  }
+]

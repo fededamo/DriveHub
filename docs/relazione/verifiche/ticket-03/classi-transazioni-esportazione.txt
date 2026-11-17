@@ -1,0 +1,3 @@
+Comando: /tmp/drivehub-ticket03-tools/drawio/opt/drawio/drawio --disable-gpu --user-data-dir=/tmp/drivehub-ticket03-tools/profile -x -f pdf -e --crop -b 10 -o /home/federico/dev/Drivehub/DriveHub/docs/relazione/diagrammi/classi-transazioni.drawio.pdf /home/federico/dev/Drivehub/DriveHub/docs/relazione/diagrammi/classi-transazioni.drawio
+Codice: 0
+/home/federico/dev/Drivehub/DriveHub/docs/relazione/diagrammi/classi-transazioni.drawio -> /home/federico/dev/Drivehub/DriveHub/docs/relazione/diagrammi/classi-transazioni.drawio.pdf

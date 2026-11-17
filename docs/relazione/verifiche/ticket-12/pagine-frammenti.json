@@ -1,0 +1,47 @@
+{
+  "lst:test-auth": [
+    108
+  ],
+  "lst:test-pricing": [
+    109
+  ],
+  "lst:test-penale": [
+    110
+  ],
+  "lst:test-rental": [
+    111
+  ],
+  "lst:test-transazione": [
+    111
+  ],
+  "lst:test-dao-roundtrip": [
+    112
+  ],
+  "lst:test-demo": [
+    114
+  ],
+  "lst:test-checkout-blocked": [
+    116
+  ],
+  "lst:test-checkout-sold": [
+    116
+  ],
+  "lst:test-comando-storico": [
+    118
+  ],
+  "lst:test-accordo": [
+    109
+  ],
+  "lst:test-rollback": [
+    114
+  ],
+  "lst:test-gara": [
+    115
+  ],
+  "lst:test-comandi": [
+    117
+  ],
+  "lst:test-comando-ui": [
+    117
+  ]
+}

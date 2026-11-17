@@ -1,0 +1,41 @@
+\chapter{Introduzione}\label{ch:introduzione}
+
+\section{Descrizione}
+\textbf{DriveHub} è un'applicazione desktop che riunisce le attività essenziali di una concessionaria: consultazione del catalogo, vendita e noleggio di veicoli, prenotazione di test drive e valutazione dei veicoli proposti dai clienti. L'obiettivo è collegare queste attività alle stesse informazioni su veicoli, disponibilità e operazioni economiche, evitando di trattarle come registrazioni indipendenti.
+
+La terminologia segue il punto di vista della concessionaria. Una \emph{vendita al cliente} trasferisce un veicolo dalla concessionaria al cliente; un \emph{acquisto dal cliente}, detto anche \emph{cessione del cliente}, riguarda invece un veicolo proposto dal cliente alla concessionaria. Le richieste in attesa di esito sono distinte dalle operazioni registrate nel registro economico.
+
+Il sistema prevede tre ruoli, con aree applicative dedicate:
+\begin{itemize}
+  \item \textbf{Cliente:} si registra, consulta i cataloghi dei veicoli in vendita e a noleggio, prenota test drive e noleggi e propone un proprio veicolo alla concessionaria. Per avviare una vendita al cliente versa un acconto; dopo l'approvazione del venditore può pagare il saldo. Consulta le proprie richieste e prenotazioni e gestisce il conto dimostrativo e il profilo.
+  \item \textbf{Venditore:} esamina le richieste di vendita al cliente e le proposte di cessione, approvandole o rifiutandole. Gestisce inoltre la destinazione dei veicoli tra vendita e noleggio.
+  \item \textbf{Manager:} gestisce marche, modelli e veicoli, sceglie la base del prezzo e applica sconti a modelli o singoli veicoli. Consulta il registro economico, che distingue vendite al cliente, acquisti dal cliente e penali.
+\end{itemize}
+
+La disponibilità dipende dallo stato del veicolo e dalle operazioni che lo impegnano. Per esempio, il versamento dell'acconto blocca un veicolo in vendita; il completamento della vendita lo porta allo stato venduto. Noleggi e test drive richiedono anche controlli sui periodi di prenotazione. Le regole sono coordinate dai servizi applicativi e sostenute dai vincoli del database.
+
+\clearpage
+\section{Stack tecnologico}
+Il progetto usa le seguenti tecnologie, riscontrate nelle dipendenze e nei sorgenti correnti:
+\begin{itemize}
+  \item \textbf{Java 21:} implementa dominio, servizi applicativi, accesso ai dati e presentazione. Il progetto Maven imposta a 21 sia la versione dei sorgenti sia quella di destinazione del compilatore.
+  \item \textbf{JavaFX 21.0.2:} realizza l'interfaccia desktop con controlli e layout costruiti direttamente in Java e uno stile CSS condiviso. Le viste invocano i servizi applicativi; le tabelle usano caricamenti asincroni per le letture previste, con aggiornamento dei controlli sul thread JavaFX.
+  \item \textbf{JDBC e PostgreSQL 16:} i DAO eseguono SQL e mappano i risultati negli oggetti di dominio, senza un ORM. Il driver PostgreSQL dichiarato è la versione 42.7.3. Il gestore delle connessioni offre transazioni con commit e rollback; lo schema usa vincoli relazionali e tipi enumerati nativi per stati, tipi di richiesta, modalità del prezzo e tipi di registrazione economica.
+  \item \textbf{Maven:} gestisce dipendenze, compilazione, test e avvio tramite il plugin JavaFX. Gli script Windows forniscono un percorso di avvio con PostgreSQL 16 in Docker; è previsto anche l'uso di un server PostgreSQL installato separatamente.
+  \item \textbf{JUnit 5:} le dipendenze di test dichiarano la versione 5.10.2. Il progetto distingue i test senza database dalle prove di integrazione PostgreSQL, attivate con un profilo dedicato e credenziali di test separate.
+\end{itemize}
+
+La presentazione, i servizi, gli oggetti di dominio e i DAO hanno responsabilità distinte. \code{AppContext} costruisce e collega esplicitamente le dipendenze, mentre \code{App} avvia JavaFX e apre la dashboard del ruolo autenticato. Questa organizzazione non richiede un framework di dependency injection o un servizio web intermedio: l'applicazione desktop accede al database tramite JDBC.
+
+\clearpage
+\section{Semplificazioni adottate}\label{sec:semplificazioni}
+DriveHub è un progetto didattico: rappresenta i flussi necessari a dimostrare le regole applicative, con i seguenti limiti di perimetro.
+\begin{itemize}
+  \item \textbf{Conto dimostrativo.} Il conto associato al cliente conserva il saldo nel database. Ricariche, addebiti, accrediti e rimborsi sono movimenti interni all'applicazione: non intervengono banche o circuiti di pagamento e l'IBAN generato non prova l'esistenza di un conto reale.
+  \item \textbf{Registrazione e personale.} La schermata pubblica e il servizio di registrazione creano soltanto clienti. Venditori e manager devono essere già presenti nel database; non è implementato un percorso applicativo per amministrare il personale. I dati dimostrativi comprendono utenti per i tre ruoli.
+  \item \textbf{Regole economiche circoscritte.} Prezzi e tariffe sono calcolati dalle regole del progetto. La base manuale scelta dal manager sostituisce quella del modello nella stessa formula, conservando gli effetti di sconti e svalutazioni: non impone un prezzo finale fisso. Il totale della vendita al cliente viene concordato al versamento dell'acconto del 20\%; il saldo usa quel totale, anche se in seguito cambiano basi o sconti.
+  \item \textbf{Ambiente di esecuzione.} La persistenza richiede un database PostgreSQL compatibile, già predisposto. L'applicazione Java non crea lo schema né carica dati di esempio all'avvio e non dispone di un database alternativo in memoria. L'inizializzazione dello schema e dei dati dimostrativi è un'attività separata; lo script Windows la esegue soltanto nella prima configurazione del proprio database Docker. I dati persistenti non vengono ricreati a ogni avvio.
+  \item \textbf{Processi aziendali ridotti.} Il modello copre catalogo, richieste, prenotazioni e registrazioni economiche. Non modella una rete di sedi, fornitori, officina, consegna fisica, gestione documentale dei contratti, fatturazione o assistenza successiva alla vendita.
+\end{itemize}
+
+Queste scelte delimitano ciò che il prototipo dimostra. Il conto e i dati di esempio rendono riproducibili i flussi, ma non equivalgono a un'integrazione bancaria o a un sistema completo per l'esercizio di una concessionaria.

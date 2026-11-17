@@ -1,0 +1,77 @@
+\documentclass[12pt,a4paper]{report}
+\ifdefined\pdfminorversion
+  \pdfminorversion=7
+  \usepackage[utf8]{inputenc}
+\fi
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage{enumitem}
+\usepackage[table]{xcolor}
+\usepackage{listings}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{hyperref}
+\hypersetup{hidelinks,
+  pdftitle={DriveHub -- Relazione di Ingegneria del Software},
+  pdfauthor={Federico D'Amodio, Matteo Orlandi},
+  pdfsubject={Relazione completa: capitoli 1--5 e appendici A--C proposti agli autori},
+  pdflang={it-IT}}
+\setlist{itemsep=2pt,topsep=4pt}
+\emergencystretch=2em
+\setcounter{tocdepth}{2}
+\DeclareRobustCommand{\code}[1]{\nolinkurl{#1}}
+\newcommand{\tavolaautori}[3]{%
+  \includepdf[pages=-,fitpaper=true,pagecommand={\thispagestyle{empty}%
+    \AddToShipoutPictureFG*{\AtPageLowerLeft{\put(34,14){%
+      \parbox{\dimexpr\paperwidth-24mm\relax}{\small
+        \figurename~\ref{#3}: #2.\hfill\thepage}}}}},
+    addtolist={1,figure,{#2},#3}]{diagrammi/#1.drawio.pdf}}
+
+\begin{document}
+\special{pdf:majorversion 1}
+\special{pdf:minorversion 7}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+  \centering
+  {\Large\textsc{Università degli Studi di Firenze}\par}
+  {\large Scuola di Ingegneria\par}
+  {\large Corso di Laurea in Ingegneria Informatica\par}
+  \vspace{2cm}
+  \rule{\linewidth}{.5pt}\par\vspace{.8cm}
+  {\Huge\bfseries\color{blue!55!black} DriveHub\par}\vspace{.35cm}
+  {\Large\itshape Sistema informativo per la vendita e il noleggio di veicoli\par}
+  \vspace{.8cm}\rule{\linewidth}{.5pt}\par
+  \vspace{1.7cm}
+  \begin{minipage}[t]{.48\linewidth}\raggedright
+    \textbf{Candidati:}\\[.3cm]
+    Federico D'Amodio\\
+    Matteo Orlandi
+  \end{minipage}\hfill
+  \begin{minipage}[t]{.48\linewidth}\raggedleft
+    \textbf{Corso:}\\
+    Ingegneria del Software\\[.35cm]
+    \textbf{Docente:}\\
+    Prof. Enrico Vicario
+  \end{minipage}
+  \vfill
+  {\small Relazione completa -- Capitoli 1--5 e appendici A--C\par
+  Proposta agli autori per revisione, non ancora approvata\par}
+  \vspace{.4cm}
+  {\large Anno Accademico 2025/2026\par}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+\input{capitoli/1_introduzione}
+\input{capitoli/2_progettazione}
+\input{capitoli/3_implementazione}
+\input{capitoli/4_testing}
+\input{capitoli/5_uso_ai}
+\appendix
+\input{appendici/appendici}
+\end{document}

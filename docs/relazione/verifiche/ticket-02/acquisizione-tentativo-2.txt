@@ -1,0 +1,13 @@
+PASS Destinazione demo dedicata
+PASS JavaFX avviato
+PASS App.start mostra LoginView
+SCREENSHOT 01-accesso
+SCREENSHOT 02-registrazione
+PASS Dati demo caricati in ClientDashboardView
+LOGIN ClientDashboardView
+SCREENSHOT 03-cliente-catalogo
+PASS Catalogo non vuoto prima del dialogo
+java.lang.AssertionError: Dialogo corrente Prenotazione Test Drive
+	at it.unifi.drivehub.PriceUiCheck.check(PriceUiCheck.java:33)
+	at it.unifi.drivehub.CaptureTicket02.dialog(CaptureTicket02.java:62)
+	at it.unifi.drivehub.CaptureTicket02.main(CaptureTicket02.java:89)

@@ -1,0 +1,8 @@
+PDF: 93 pagine A4, 133 link interni risolti, 81 font incorporati.
+Capitolo 3: pagine fisiche 54–63; cinque sezioni e indice in ordine.
+13 frammenti: identità esatta con sorgenti e snapshot; testo PDF equivalente senza whitespace/legature; ogni frammento e didascalia su una pagina.
+Conservazione: 2199 file intatti; 55 fonti improntate; capitoli 1–2 e A–B equivalenti anche nel testo PDF, esclusi piè di pagina e sillabazione a fine riga.
+Capitoli 1–3/A–B proposti per revisione; 4–5/C provvisori; nessun riferimento irrisolto, carattere mancante o box difettoso nel log finale.
+96 avvisi noti di versione PDF nelle figure; output effettivo PDF 1.7.
+Tutte le pagine renderizzate. Il controllo visivo è un verbale distinto, non dedotto dagli assert.
+SHA-256 PDF: 2713ae306c1bc3f748ecddbfbdc0771e0b401119a8cd41af005ebd7856b742bb

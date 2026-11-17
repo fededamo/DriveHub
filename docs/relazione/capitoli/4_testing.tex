@@ -1,0 +1,739 @@
+\chapter{Testing}\label{ch:testing}
+Le prove sono lette come argomenti a sostegno di comportamenti precisi:
+quale situazione viene preparata, quale comando viene invocato e quali
+osservazioni potrebbero smentire il risultato atteso. Il capitolo e
+l'appendice~\ref{app:verifiche} sono completi e proposti per la revisione
+degli autori, senza attribuirne l'approvazione.
+Il riallineamento documentale è del 17 novembre 2026 sul commit \code{61ce18a};
+non sono stati eseguiti test applicativi, harness o accessi al database.
+
+\begingroup
+\def\UrlBreaks{\do\a\do\b\do\c\do\d\do\e\do\f\do\g\do\h\do\i\do\j\do\k\do\l\do\m\do\n\do\o\do\p\do\q\do\r\do\s\do\t\do\u\do\v\do\w\do\x\do\y\do\z\do\A\do\B\do\C\do\D\do\E\do\F\do\G\do\H\do\I\do\J\do\K\do\L\do\M\do\N\do\O\do\P\do\Q\do\R\do\S\do\T\do\U\do\V\do\W\do\X\do\Y\do\Z}
+\emergencystretch=6em
+\renewcommand{\lstlistingname}{Frammento}
+\lstset{language=Java,basicstyle=\ttfamily\footnotesize,
+  columns=fullflexible,keepspaces=true,showstringspaces=false,
+  breaklines=true,tabsize=4,gobble=4,upquote=true,
+  numbers=left,numberstyle=\tiny\color{black!60},numbersep=8pt,
+  frame=lines,rulecolor=\color{black!25},captionpos=b,
+  aboveskip=9pt,belowskip=9pt}
+
+\section{Strategia di verifica}\label{sec:test-strategia}
+Il rischio principale è confermare un'operazione economica lasciando saldo,
+richiesta, stato del veicolo o storico incoerenti. Per questo le verifiche
+procedono dalle regole locali ai flussi persistenti, fino alla presentazione.
+La classificazione dipende da ciò che il test esegue:
+\begin{itemize}
+\item I test unitari costruiscono entità e calcolatore in memoria.
+  \code{TestDatabaseConfigurationTest} costruisce configurazioni e verifica
+  rifiuti senza aprire connessioni: il riferimento a PostgreSQL non lo
+  rende un test d'integrazione.
+\item I test d'integrazione usano JDBC, \code{TestDatabase.reset} e un
+  \code{AppContext} nuovo sul PostgreSQL dedicato. Attraversano servizi,
+  dominio, DAO e vincoli; non sono test unitari dei soli DAO.
+\item Gli harness JavaFX sono programmi con \code{main}, controlli propri,
+  \code{Platform} e Robot. Quelli dei flussi commerciali e delle tabelle
+  usano PostgreSQL reale; AppStartup verifica il solo ingresso pubblico.
+  Risiedono in \code{docs/evidence}, fuori dalla selezione JUnit di Maven.
+\end{itemize}
+
+Gli scenari sono funzionali quando confrontano un comportamento con una
+regola: per esempio due clienti non devono ottenere lo stesso periodo.
+La scelta di confini, trigger di guasto, rami di errore e contatori JDBC
+aggiunge verifiche guidate dalla struttura interna. Non è disponibile una
+misura strumentata di istruzioni o rami coperti: il numero delle invocazioni,
+che comprende i parametri JUnit, non è una percentuale di copertura.
+La matrice in appendice collega le prove alle schede in 2.2 e in appendice~A e agli
+obiettivi della specifica; l'esistenza di una classe non certifica da sola
+un intero requisito.
+
+\subsection{Tecnologie e strumenti}\label{sec:test-strumenti}
+La suite è raccolta in \code{src/test/java/it/unifi/drivehub}: sei classi
+senza DB, diciassette con tag \code{postgres}, più il supporto
+\code{TestDatabase}. Il POM usa JUnit Jupiter 5.10.2 e Surefire 3.2.5;
+non configura Failsafe né JaCoCo. La proprietà \code{test.excludedGroups}
+esclude \code{postgres} in \code{mvn test}; il profilo
+\code{postgres-tests} la porta a \code{none}, includendo anche i test
+senza DB. Il nome \emph{IntegrationTest} non attiva un diverso ciclo Maven.
+
+JUnit fornisce \code{@Test}, \code{@ParameterizedTest}, gli assert e
+\code{@BeforeEach}; le invocazioni parametrizzate sono casi eseguiti,
+non classi o nuovi scenari indipendenti per ogni assert. Il POM dichiara
+API, engine e params Jupiter e il launcher Platform 1.10.2. Maven compila
+con target Java~21; l'heap della JVM Surefire ha un massimo di 192 MB.
+Non sono dipendenze correnti H2 o Mockito: i DAO delle prove persistenti
+sono quelli PostgreSQL costruiti da AppContext. Non esiste più il
+bootstrap Java dello schema. \code{TestDatabase} è un supporto dei test,
+non una risorsa caricata automaticamente dall'applicazione. Preparazione,
+reset e isolamento sono descritti in~\ref{sec:test-schema}.
+Gli harness richiedono anche display e librerie JavaFX; un loro successo
+non viene raccolto automaticamente da Surefire.
+
+\section{Livello 1: Business Logic}\label{sec:test-business}
+Il livello raccoglie prima regole e calcoli esercitabili in memoria.
+I temi originali di identità e transazioni restano visibili, ma le prove
+PostgreSQL richiamate nelle relative sottosezioni conservano la loro
+classificazione d'integrazione.
+
+\subsection{Invarianti del dominio}\label{sec:test-invarianti}
+Una validazione della vista non protegge chi costruisce le entità da un
+altro chiamante: per questo la preparazione usa oggetti reali e l'azione
+invoca direttamente factory e mutatori.
+\code{DomainInvariantsTest} verifica confini e conservazione dello stato.
+Tentare di togliere la targa a un veicolo con 100 km deve fallire lasciando
+invariati targa, chilometri e altri attributi. Ridurre prima i chilometri
+a zero rende invece possibile la rimozione. Sono controllati anche sconti
+0--50, anni ammessi, orari dei test drive e prelievo con fondi insufficienti.
+\code{BookingRulesTest} precisa due confini facilmente trascurati:
+un microsecondo dopo le 16 è già fuori fascia; i noleggi includono entrambi
+i giorni estremi. Questi oggetti in memoria non dimostrano vincoli SQL,
+prenotazioni concorrenti o identità persistite.
+
+Il test del conto parte da zero, deposita 500, preleva 300 e osserva
+200 prima di rifiutare un prelievo di 250: non contiene un successivo assert
+sul saldo dopo quel rifiuto. Lo stato dopo input rifiutati è invece
+osservato esplicitamente nei test targa/chilometri. Gli sconti modello
+accettano 0 e 50 e rifiutano -1 e 51; per lo sconto veicolo sono provati
+25 e il rifiuto di 60. Gli anni modello comprendono 1900 e l'anno corrente,
+escludono 1899 e l'anno successivo; la produzione del veicolo è confrontata
+col rilascio del modello. Le date del noleggio ammettono un solo giorno e
+rifiutano fine precedente all'inizio. La fascia test drive include 09:00
+e 16:00, esclude 08:59 e 16:01; la prova al microsecondo precisa il limite
+superiore reale, senza estenderlo a tutta l'ora delle 16.
+Gli oracoli sono eccezioni, attributi e sovrapposizioni inclusive; non
+simulano il trascorrere del tempo né dimostrano prenotazioni persistenti.
+
+\subsection{Autenticazione e identità}\label{sec:test-identita}
+La vecchia \code{AuthServiceTest} isolava registrazione, email duplicata
+e chiamate escluse ai mock. Non esiste un equivalente unitario corrente:
+\code{AuthServiceIntegrationTest} prepara invece schema/demo a ogni
+prova, effettua login e tenta la modifica dell'email su PostgreSQL.
+Il frammento seguente adatta la funzione dell'esempio originale: dopo
+il rifiuto di un duplicato, entrambe le identità devono restare leggibili
+e utilizzabili per l'accesso. È integrazione, anche se discussa qui per
+mantenere l'argomento originale.
+
+% Fonte: src/test/java/it/unifi/drivehub/AuthServiceIntegrationTest.java:61-69
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=61,caption={Email duplicata: rifiuto e conservazione delle due identità (PostgreSQL).},label=lst:test-auth]
+        User before = auth.login(email, "password");
+        User owner = auth.login(duplicate, "password");
+
+        assertThrows(RuntimeException.class,
+                () -> auth.changeEmail(before.getId(), before.getRoleDisplayName(),
+                        "  " + duplicate.toUpperCase(java.util.Locale.ROOT) + "  ", "password"));
+
+        assertIdentityUnchanged(before);
+        assertIdentityUnchanged(owner);
+\end{lstlisting}
+\end{minipage}
+
+
+Le cinque coppie parametrizzate includono ruoli uguali e differenti.
+\code{assertIdentityUnchanged} rilegge con \code{login} e confronta ID,
+nome, cognome, email, hash e ruolo; non osserva quante volte sia stato
+invocato l'hasher. Altri casi normalizzano l'email e verificano che il
+vecchio accesso fallisca, oppure rifiutano formato o password errati.
+Il codice di \code{registerClient} calcola l'hash prima del callback che
+salva cliente e conto sulla stessa Connection: non equivale alla vecchia
+asserzione «nessun hash/save» per registrazione duplicata.
+Manca una prova dedicata della registrazione pubblica completa e del suo
+rollback dopo la creazione di identità/conto. Login su fixture e modifica
+email non la dimostrano. Per cancellazione, dati storici e rollback si
+vedano~\ref{sec:test-transazioni} e la matrice UC-S01--03 in C; nessuna
+prova selettiva certifica l'unicità globale/concorrenziale delle email.
+
+\subsection{Prezzi e sicurezza}\label{sec:test-prezzi}
+Per i prezzi, \code{PriceCalculatorServiceTest} verifica base manuale
+10.000 con promozione 10\% uguale a 9.000; sconti modello e veicolo
+concorrono tramite il massimo e non si sommano. Altri casi combinano usato,
+anno e chilometri, riportano la modalità all'automatico e verificano che
+la base 10.000,005 sia arrotondata prima della formula, dando 9.000,01.
+Sono esempi discriminanti per ADR~0001, non una verifica numerica esaustiva
+di una formula che usa anche passaggi in \code{double}.
+
+Per discriminare le regole si preparano veicoli dell'anno corrente,
+con o senza targa, e si varia un fattore alla volta. Il massimo tra 10\%
+e 20\% su 20.000 dà 16.000, non 14.000; targa senza altre riduzioni dà
+ancora 16.000. Due anni senza targa danno 18.050; targa e 40.000 km
+nell'anno corrente danno 14.440. Il caso combinato su base manuale
+10.000, targa, due anni, 40.000 km e massimo 20\% attende 5.212,84:
+$10.000\cdot0,8\cdot0,8\cdot0,95^2\cdot0,95^2$, arrotondato alla fine.
+Il test che mantiene MANUAL con base uguale a quella del modello distingue
+18.000 da 27.000 dopo il cambio del modello a 30.000 e il ritorno ad
+AUTOMATIC. L'acconto su 15.000 è 3.000.
+
+Il noleggio usa i giorni inclusi e la somma geometrica
+$P\cdot0,001\cdot(1-0,95^n)/0,05$. La vecchia sequenza
+40/76/108,30/137,18 non è l'oracolo corrente: su 20.000, dal primo al
+3 novembre, i contributi sono 20, 19 e 18,05, per 57,05.
+
+% Fonte: src/test/java/it/unifi/drivehub/PriceCalculatorServiceTest.java:156-166
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=156,caption={Formula di noleggio: preparazione, chiamata e assert corrente.},label=lst:test-pricing]
+        BigDecimal carPrice = BigDecimal.valueOf(20000);
+        LocalDate start = LocalDate.of(2026, 11, 1);
+        LocalDate end = LocalDate.of(2026, 11, 3); // 3 giorni inclusi: 1, 2, 3
+
+        BigDecimal cost = calculator.calculateTotalRentalCost(carPrice, start, end);
+        // dailyRate = 20000 * 0.001 = 20.00
+        // giorno 1: 20.00
+        // giorno 2: 20.00 * 0.95 = 19.00
+        // giorno 3: 19.00 * 0.95 = 18.05
+        // Somma = 20 + 19 + 18.05 = 57.05
+        assertEquals(new BigDecimal("57.05"), cost);
+\end{lstlisting}
+\end{minipage}
+
+
+Il caso isolato sopra verifica tre giorni; i confronti di uno/tre giorni
+in modalità automatica/manuale sono anche in
+\code{PriceSelectionIntegrationTest}, su PostgreSQL. Il calcolatore usa
+fattori e potenze in double e arrotondamento HALF\_UP: gli assert numerici
+selezionati non costituiscono una dimostrazione per ogni importo/periodo.
+
+Per la sicurezza non esiste più il vecchio \code{pbkdf2RoundTrip}:
+non è individuata una prova JUnit isolata di hash distinti per sale casuale,
+password errata e codifica malformata. Staticamente AppContext sceglie
+\code{Pbkdf2PasswordHasher}: PBKDF2-HMAC-SHA256, 210.000 iterazioni,
+sale di 16 byte e chiave di 256 bit predefiniti. Login delle fixture e
+rifiuto della password errata prima del cambio email esercitano la verifica
+nel servizio; non misurano robustezza dei parametri, casualità o gestione
+di ogni hash malformato. Le vecchie prove a parametri ridotti non diventano
+risultati del codice corrente.
+
+\subsection{Richieste, vendite e accordo economico}\label{sec:test-vendite}
+\code{RequestAgreementTest} separa l'accordo dal listino: assegnare
+venditore e scadenza non deve cambiare totale o acconto. Nel
+frammento~\ref{lst:test-accordo} il residuo comprende anche i centesimi.
+Sono inoltre rifiutati totale assente, importi negativi, acconto maggiore
+del totale e frazioni che cambierebbero nella memorizzazione a centesimi.
+La richiesta di acquisto dal cliente ha invece stima non negativa e
+\code{agreedTotal} nullo; non possiede un saldo di vendita al cliente.
+
+% Fonte: src/test/java/it/unifi/drivehub/RequestAgreementTest.java:17-24
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=17,caption={\code{RequestAgreementTest.java}: estratto della prova.},label=lst:test-accordo]
+        Request request = Request.createNewSaleRequest(1L, 2L,
+                new BigDecimal("4000.01"), new BigDecimal("20000.03"));
+        assertEquals(RequestType.SALE, request.getType());
+        request.setSalesmanId(16L);
+        request.setExpDate(LocalDate.now().plusMonths(1));
+        assertEquals(new BigDecimal("20000.03"), request.getAgreedTotal());
+        assertEquals(new BigDecimal("4000.01"), request.getDeposit());
+        assertEquals(new BigDecimal("16000.02"), request.getRemainingAmount());
+\end{lstlisting}
+\end{minipage}
+
+Il dominio e \code{SaleTypeTest} conservano il tipo esplicito anche con
+importo zero: \code{SALE}, \code{PURCHASE} e \code{PENALTY} non si deducono
+dal segno. Ciò non dimostra il buon esito di un pagamento zero:
+\code{BankAccount.deposit/withdraw} lo rifiutano.
+La prova sul pagamento zero di \code{SaleOutcomeIntegrationTest}
+verifica proprio il rifiuto con stato conservato. È distinto dalla discrepanza
+funzionale già segnalata nei ticket documentali 04--05, non una prova che
+l'accettazione di una cessione a zero sia supportata.
+
+Le prove d'integrazione completano questo oracolo locale:
+\code{PurchaseAgreementIntegrationTest} parte da 30.000 di saldo, salva
+20.000/4.000/16.000, cambia listino e sconti e completa da nuovo contesto
+con vendita 20.000 e saldo 10.000. \code{SaleProposalIntegrationTest}
+prepara VIN nuovo o una precedente vendita al proponente, invia la cessione
+e controlla stima, duplicati, titolarità e storia. Non sono i vecchi servizi
+simulati. \code{SaleOutcomeIntegrationTest} parte invece da 1.000,
+approva una cessione stimata 16.000 e rilegge 17.000, una PURCHASE di
+16.000, attribuzioni e richiesta rimossa; il rifiuto conserva lo storico
+o elimina soltanto il veicolo nuovo senza storia.
+
+Il rifiuto della vendita al cliente restituisce tutto l'acconto; la
+scadenza trattiene il 20\% dell'acconto, restituisce l'80\% e registra
+PENALTY senza veicolo/venditore. Le gare in
+\code{PurchaseConcurrencyIntegrationTest} partono da 50.000 prima di
+4.000 di acconto: rifiuto riporta a 50.000 senza vendita, scadenza a
+49.200 con penale 800 e rimborso 3.200. Un secondo trattamento non deve
+ripetere il movimento. Il frammento al centesimo adatta l'originale
+annullamento: predispone deliberatamente una scadenza, non un comando di
+rifiuto, e osserva anche l'importo effettivo della notifica.
+
+% Fonte: src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java:173-179
+% Il font OpenType Latin Modern conserva il simbolo euro nel listato.
+\font\testmonoeuro="[lmmono10-regular.otf]" at 10pt
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[basicstyle=\testmonoeuro,firstnumber=173,caption={Scadenza con penale: fixture a centesimi e idempotenza osservata.},label=lst:test-penale]
+        sql("UPDATE request SET deposit = 0.03, agreed_total = 0.15, exp_date = CURRENT_DATE - 1 WHERE id = 1001");
+        var notices = ctx.getPurchaseService().checkAndHandleExpiredRequests(1L);
+        assertEquals(1, notices.size());
+        assertTrue(notices.getFirst().contains("€ 0.02."));
+        assertConsumed("46000.02", VehicleState.SALE, new BigDecimal("0.01"));
+        assertTrue(ctx.getPurchaseService().checkAndHandleExpiredRequests(1L).isEmpty());
+        assertConsumed("46000.02", VehicleState.SALE, new BigDecimal("0.01"));
+\end{lstlisting}
+\end{minipage}
+
+
+La fixture sostituisce l'acconto con 0,03 e il totale con 0,15, ma non
+riscrive il saldo già a 46.000: 0,01 di penale e 0,02 di rimborso danno
+46.000,02. \code{assertConsumed} costruisce un nuovo AppContext e
+rilegge saldo, stato SALE, assenza richiesta, tipo/importo e attribuzioni
+nulle della penale. È un oracolo persistente selezionato, non il precedente
+\code{verify} su mock o una prova di tutte le operazioni a zero.
+
+\subsection{Noleggio e conto dimostrativo}\label{sec:test-noleggio}
+Le regole locali sono quelle di \code{BookingRulesTest} e
+\code{DomainInvariantsTest}: periodo, sovrapposizione inclusiva e fondi
+insufficienti sull'oggetto. Addebito, registrazione del Rent e conflitti
+richiedono PostgreSQL. Non esistono i vecchi test isolati
+\code{RentalServiceTest} e \code{BankAccountServiceTest}.
+
+Un esempio significativo è il ramo rental di
+\code{TestDriveCancellationIntegrationTest.confirmationCancelsEveryFutureAndPreservesHistoryAndOtherVehicles}:
+reset, saldo 30.000, modello/veicolo corrente da 20.000 e test drive
+passati/futuri del mezzo e di un altro mezzo. \code{confirm(true)} chiama
+bookRental per i giorni da oggi+5 a oggi+7; dopo il ritorno viene creato
+un nuovo contesto e vengono rilette le operazioni.
+
+% Fonte: src/test/java/it/unifi/drivehub/TestDriveCancellationIntegrationTest.java:103-109
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=103,caption={Rilettura del Rent, delle date incluse e del saldo dopo il noleggio.},label=lst:test-rental]
+            var rents = ctx.getOperationQueryService().getClientRents(1L);
+            assertEquals(1, rents.size());
+            assertEquals(new BigDecimal("57.05"), rents.getFirst().getAmount());
+            assertEquals(LocalDate.now().plusDays(5), rents.getFirst().getStartDate());
+            assertEquals(LocalDate.now().plusDays(7), rents.getFirst().getEndDate());
+            assertEquals(new BigDecimal("29942.95"), ctx.getAuthService().getClientBankAccount(1L).getBalance());
+            assertTrue(ctx.getOperationQueryService().getAllSales().isEmpty());
+\end{lstlisting}
+\end{minipage}
+
+
+I 57,05 del calcolo isolato diventano importo persistito e saldo 29.942,95;
+nessuna Sale è creata per il noleggio. Le asserzioni contigue conservano
+il test drive storico e quello dell'altro mezzo, cancellando tutti i futuri
+del mezzo impegnato anche oltre il periodo noleggiato. Non si deduce questo
+esito dal solo Rent restituito.
+\code{BookingConcurrencyIntegrationTest} rilegge noleggi e conti dopo gare
+su uno stesso veicolo o sullo stesso conto; con 25 e due addebiti da 20,
+uno solo riesce, lasciando un Rent e saldo 5. \code{BalanceConcurrencyIntegrationTest}
+comprende ricariche e altri movimenti; \code{VehicleDestinationIntegrationTest}
+separa un noleggio che include oggi (cambio rifiutato) dai futuri da rimborsare
+integralmente, con rollback se manca un secondo conto. Nessuna prova
+costituisce integrazione bancaria o un prelievo autonomo della UI.
+
+\subsection{Transazioni e Observer}\label{sec:test-transazioni}
+La vecchia \code{TransactionAndObserverTest} programmava commit e rollback
+falliti e verificava causa, soppressa e ordine commit/rollback/close su mock.
+Non esiste una prova corrente equivalente. Il contratto implementato è
+spiegato in~\ref{sec:impl-transazioni}: callback sulla Connection,
+commit soltanto dopo il ritorno, tentativo di rollback sull'eccezione,
+errore di rollback aggiunto alla causa originale e chiusura tramite
+try-with-resources. L'estratto è codice di produzione, quindi S0 e non
+un test che abbia provocato il fallimento del commit.
+
+% Fonte: src/main/java/it/unifi/drivehub/dao/DatabaseManager.java:88-106
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=88,caption={Contratto transazionale corrente: ordine e conservazione delle eccezioni.},label=lst:test-transazione]
+    public <T> T executeInTransactionWithResult(TransactionFunction<T> function) {
+        try (Connection conn = getConnection()) {
+            conn.setAutoCommit(false);
+            try {
+                T result = function.execute(conn);
+                conn.commit();
+                return result;
+            } catch (Exception e) {
+                try {
+                    conn.rollback();
+                } catch (SQLException rollbackEx) {
+                    e.addSuppressed(rollbackEx);
+                }
+                throw new RuntimeException("Transazione fallita: eseguito rollback.", e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore di connessione al database durante la transazione.", e);
+        }
+    }
+\end{lstlisting}
+\end{minipage}
+
+
+La prova \code{cancellationFailureRollsBackTheCommercialOperation} di
+\code{TestDriveCancellationIntegrationTest} prepara test drive futuri e
+un trigger AFTER DELETE. Prima di sollevare
+l'errore, il trigger controlla saldo già addebitato, Rent oppure Sale con
+richiesta rimossa/stato SOLD, e cancellazioni già avvenute. La rilettura da
+nuovo contesto deve ripristinare saldo, operazioni, richiesta e test drive.
+Il caso positivo e il confine temporale al microsecondo osservano invece
+la cancellazione corretta sulla stessa transazione dell'Observer.
+La notifica è sincrona prima del commit; un suo errore propaga al gestore.
+Non è una prova di consegna dopo riavvio o di eventi persistenti.
+Il rollback dopo eliminazioni effettive è mostrato anche nel
+frammento~\ref{lst:test-rollback}. Un guasto SQL nel callback non dimostra
+il guasto del commit né del rollback: causa/soppressa e quell'ordine restano
+un riscontro del codice senza il vecchio oracolo dedicato.
+
+\section{Livello 2: Persistence Layer (DAO)}\label{sec:test-dao}
+Queste prove usano PostgreSQL reale: selezionano attraversamenti di
+servizi e DAO, non una copertura sistematica di tutte le dieci porte DAO.
+
+\subsection{DAO e mapping su PostgreSQL}\label{sec:test-mapping}
+La persistenza viene osservata tramite nuove letture, non solo tramite
+l'oggetto restituito dalla scrittura. \code{PriceSelectionIntegrationTest}
+verifica modalità e prezzo prima/dopo il caricamento; la prova dell'accordo
+modifica basi e sconti, ricostruisce il contesto e completa ancora
+20.000/4.000/16.000. Il registro salva e rilegge tutti i tipi con importi
+zero o positivi. Il mapping usa \code{BigDecimal}, date e timestamp;
+\code{getObject} prima di \code{getLong} mantiene nulli venditore e veicolo
+facoltativi. La scadenza può essere nulla e il totale deve esserlo nelle
+richieste \code{PURCHASE}. Alcune nullabilità sono asserite direttamente
+(per esempio le attribuzioni della penale), altre sono solo attraversate
+dai flussi: non si attribuisce una verifica dedicata a ogni colonna.
+
+Il roundtrip di \code{PriceSelectionIntegrationTest.catalogPersistsManualBaseAndAppliesPromotionOnce}
+prepara modello da 20.000 e sconto modello 10\%, salva una base manuale
+10.000 e poi legge il veicolo con un nuovo AppContext. Il salvataggio nel
+CatalogService usa \code{PostgresVehicleDao.save} nella callback con commit;
+la successiva \code{findById} apre una nuova connessione del medesimo
+DatabaseManager. Il frammento conserva la funzione della vecchia nuova
+UnitOfWork senza attribuire al progetto una classe rimossa.
+
+% Fonte: src/test/java/it/unifi/drivehub/PriceSelectionIntegrationTest.java:62-69
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=62,caption={Base, modalità e prezzo osservati dopo una nuova lettura DAO.},label=lst:test-dao-roundtrip]
+        Vehicle saved = ctx.getCatalogService().addVehicle(model.getId(), "T0500000000000001", null, 0,
+                new BigDecimal("10000"), year, VehicleState.SALE);
+        Vehicle reloaded = new AppContext(ctx.getDatabaseManager()).getCatalogService()
+                .getVehicleById(saved.getId()).orElseThrow();
+        assertEquals(new BigDecimal("9000.00"), ctx.getCatalogService().getEffectiveVehiclePrice(reloaded));
+        assertEquals(PriceMode.MANUAL, saved.getPriceMode());
+        assertEquals(PriceMode.MANUAL, reloaded.getPriceMode());
+        assertEquals(0, new BigDecimal("10000").compareTo(reloaded.getPrice()));
+\end{lstlisting}
+\end{minipage}
+
+
+Per Request, la rilettura dell'accordo dopo cambio listino attraversa
+\code{PostgresRequestDao.findByClientId}; dopo il saldo,
+\code{PostgresSaleDao.findByClientId} ricostruisce il registro. Queste
+letture autonome avvengono dopo i commit dei singoli comandi, non dentro
+una transazione unica per tutto il workflow. I mapper descritti in 3.4
+sono il riscontro statico per getBigDecimal, getDate/toLocalDate,
+getTimestamp/toLocalDateTime, enum e NULL; un timestamp attraversato
+non è necessariamente confrontato per precisione da un assert.
+\code{SaleOutcomeIntegrationTest.nonNegativeRegisterAmountsKeepTheirExplicitTypeAfterReload}
+usa direttamente PostgresSaleDao: save con Connection nella transazione,
+poi findById fuori dal callback e lettura cliente. Confronta tipo e importo
+per SALE/PURCHASE/PENALTY a 0 e 123,45. Per le richieste,
+\code{databaseEnforcesDealershipRequestAmounts} usa INSERT SQL diretto,
+rilegge importi/tipo/NULL e attende SQLSTATE23514 sui CHECK violati;
+non è una prova di tutti i percorsi di scrittura DAO.
+
+\code{PostgresEnumIntegrationTest} legge tipo SQL e nome da
+\code{information_schema}, confronta etichette ordinate in \code{pg_enum}
+e attende SQLSTATE \code{22P02} assegnando un valore estraneo. Copre
+\code{vehicle_state}, \code{request_type}, \code{price_mode} e \code{sale_type}.
+I test dei flussi esercitano anche i cast JDBC; la sola prova SQL degli enum
+non dimostra ogni loro percorso di salvataggio e rilettura. Nullabilità,
+default e vincoli economici restano contratti distinti.
+
+\subsection{Schema e dati dimostrativi}\label{sec:test-schema}
+\code{TestDatabase} richiede esplicitamente URL, utente e password di test.
+Prima della connessione rifiuta URL ambigui, parametri JDBC e destinazioni
+non dedicate; prima del reset controlla database e ruolo \code{drivehub_test},
+proprietario, schema \code{public}, assenza di privilegi amministrativi,
+appartenenze e altri database posseduti. I test non creano database o ruoli.
+Ogni scenario riparte da schema/demo, spesso aggiungendo fixture minime
+con date relative. Gli script interi sono eseguiti in una transazione,
+con tentativo di rollback su errore; il loader non divide i corpi SQL ai
+punti e virgola. Questo è isolamento per reset, non rollback automatico
+di tutte le operazioni di ogni test: i servizi possono eseguire veri commit.
+Due suite o harness sullo stesso DB interferirebbero.
+
+\code{DemoSqlValidationTest} confronta le righe delle tredici tabelle e i
+valori delle sequenze dopo due ricaricamenti demo e un nuovo reset.
+\code{DatabaseIsolationIntegrationTest} usa una seconda connessione in
+sola lettura, verso un DB sentinella distinto: rifiuta configurazioni
+incrociate e verifica che il marchio \code{R00_SENTINEL} sopravviva ai reset.
+L'asserzione JUnit controlla quel marchio, non tutte le righe del secondo
+archivio; i confronti esterni più estesi delle sessioni storiche sono
+attribuiti separatamente in appendice.
+
+Il vecchio \code{DatabaseBootstrapIntegrationTest} verificava migration e
+bootstrap automatico. Oggi i prerequisiti vengono predisposti separatamente:
+il launcher dimostrativo Windows può inizializzare la propria nuova istanza,
+ma l'avvio Java ordinario non carica schema/demo. Non esiste un registro Java
+delle migration verificato da questi test.
+\code{DemoSqlValidationTest} legge inizialmente 32 SALE e 8 PENALTY,
+con importi tutti non negativi. Lo snapshot percorre esattamente tredici
+tabelle, raccoglie ogni riga in JSON ordinato e nomi/last\_value delle
+sequenze pubbliche: l'uguaglianza dopo due reload e reset controlla più
+dei vecchi conteggi isolati di veicoli e vendite.
+
+% Fonte: src/test/java/it/unifi/drivehub/DemoSqlValidationTest.java:17-31
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=17,caption={Fixture demo: tipi/importi e stabilità dopo ricaricamenti e reset.},label=lst:test-demo]
+        TestDatabase fixture = TestDatabase.fromEnvironment();
+        DatabaseManager db = fixture.reset();
+        var sales = new AppContext(db).getOperationQueryService().getAllSales();
+        assertEquals(32, sales.stream().filter(s -> s.getType() == it.unifi.drivehub.domain.operation.SaleType.SALE).count());
+        assertEquals(8, sales.stream().filter(s -> s.getType() == it.unifi.drivehub.domain.operation.SaleType.PENALTY).count());
+        assertTrue(sales.stream().allMatch(s -> s.getAmount().signum() >= 0));
+        List<String> expected = snapshot(db);
+        assertFalse(expected.isEmpty());
+
+        fixture.reloadDemo();
+        assertEquals(expected, snapshot(db), "Secondo caricamento demo");
+        fixture.reloadDemo();
+        assertEquals(expected, snapshot(db), "Terzo caricamento demo");
+        fixture.reset();
+        assertEquals(expected, snapshot(db), "Secondo caricamento schema e demo");
+\end{lstlisting}
+\end{minipage}
+
+
+Le tredici tabelle comprendono il catalogo (brand, model, vehicle e i due
+sconti), identità e conto (client, salesman, manager, bank\_account) e
+operazioni (request, test\_drive, rent, sale).
+Questi confronti riguardano la fixture ricreabile; non dimostrano una
+migrazione o la conservazione di qualsiasi installazione popolata.
+
+\paragraph{Rollback dopo scritture effettive.}
+Le prove d'errore non si fermano al rifiuto di un input. Un trigger della
+prova dell'accordo osserva il saldo già addebitato e poi solleva un errore
+su richiesta, vendita, cancellazione o stato. Altri trigger osservano
+accredito e acquisizione, cancellazioni dei test drive o rimborsi multipli
+prima del guasto. Le riletture devono ritrovare lo stato precedente.
+Nel frammento~\ref{lst:test-rollback}, il trigger \emph{AFTER DELETE} ha già
+controllato che cliente e conto siano assenti e ha avanzato una sequenza
+diagnostica prima dell'errore. Il valore della sequenza, che non torna
+indietro col rollback, attesta il raggiungimento del punto di guasto;
+lo snapshot confronta invece i dati applicativi. Non implica una
+conservazione transazionale dei numeri delle sequenze.
+
+% Fonte: src/test/java/it/unifi/drivehub/IdentityDeletionIntegrationTest.java:318-323
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=318,caption={\code{IdentityDeletionIntegrationTest.java}: estratto della prova.},label=lst:test-rollback]
+        var before = snapshot();
+        var failure = assertThrows(RuntimeException.class, () -> ctx.getAuthService().deleteAccount(1L, "Cliente", "password"));
+        assertTrue(rootCause(failure).getMessage().contains("ticket13_after_deletions"));
+        assertEquals(1, scalar("SELECT last_value FROM ticket13_writes"));
+        assertEquals(before, snapshot());
+        assertEquals(1L, new AppContext(db).getAuthService().login("mario.rossi@email.it", "password").getId());
+\end{lstlisting}
+\end{minipage}
+
+Le scritture saltate con \texttt{RETURN NULL} sono provate separatamente:
+una riga non modificata deve impedire il successo anche senza eccezione
+SQL. Funzioni e trigger di guasto sono rimossi nel cleanup. Queste prove
+non simulano ogni perdita di connessione o fallimento del rollback stesso.
+
+\paragraph{Conflitti concorrenti.}
+Nelle gare su saldi, richieste, prenotazioni, cessioni e identità, un gate
+SQL trattiene un lock mentre i worker usano nuovi contesti e connessioni
+distinte. La connessione osservatrice interroga \code{pg_stat_activity}
+e \code{pg_blocking_pids}, contando PID distinti prima di rilasciare il gate.
+Il frammento~\ref{lst:test-gara} mostra la partenza ordinata dei due
+contendenti, non una pausa usata per presumere il conflitto.
+Le attese, query di controllo e \code{Future.get} hanno limiti di dieci
+secondi; il cleanup rilascia il gate, cancella backend ancora bloccati
+e attende la terminazione dei worker. Non è un timeout globale di ogni
+possibile chiamata produttiva.
+
+% Fonte: src/test/java/it/unifi/drivehub/PurchaseConcurrencyIntegrationTest.java:301-308
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=301,caption={\code{PurchaseConcurrencyIntegrationTest.java}: estratto della prova.},label=lst:test-gara]
+            var a = workers.submit(outcome(first));
+            try {
+                awaitWaiters(observer, 1);
+                var b = workers.submit(outcome(second));
+                awaitWaiters(observer, 2);
+                if (commitGate) gate.commit();
+                else gate.rollback();
+                return Arrays.asList(a.get(10, TimeUnit.SECONDS), b.get(10, TimeUnit.SECONDS));
+\end{lstlisting}
+\end{minipage}
+
+Le asserzioni verificano una sola vendita e un solo addebito del saldo,
+rimborsi non duplicati, nessun noleggio sovrapposto e storico conservato
+nei conflitti selezionati. I test SQL diretti verificano anche il vincolo
+\code{EXCLUDE} sui periodi inclusivi. Gli esiti non certificano ogni
+interleaving, assenza universale di deadlock o snapshot comune del listino;
+i protocolli e le transazioni restano quelli delle sequenze già illustrate
+nella sezione~\ref{sec:sequenze}.
+
+\section{Verifiche funzionali e della presentazione}\label{sec:test-ui}
+La prova funzionale segue un obiettivo attraverso più livelli e confronta
+effetti osservabili con le schede UC. Registrazione/accesso vanno distinti:
+login delle fixture dei tre ruoli è asserito, la registrazione pubblica
+cliente/conto resta una lacuna dedicata. Il catalogo e gli sconti sono
+riscontrati da \code{CatalogListingIntegrationTest}: righe e prezzi in
+modalità automatica/manuale, massimo sconto, rimozione, nuovo modello e
+contesto, senza dimostrare ogni campo, dialogo o cancellazione CRUD.
+Le prove strutturali del rendering non equivalgono ai vecchi
+\code{LayeringTest} e \code{FxmlContractTest}, assenti; le viste correnti
+sono Java e non sei file FXML.
+
+\code{FullWorkflowIntegrationTest} verifica login, sottotipi e letture dei
+tre ruoli e una scadenza predisposta. Per alcune liste asserisce solo
+assenza di eccezioni o non nullità: il nome non prova tutti i workflow
+commerciali completi, né l'interazione grafica. La vendita al cliente
+è invece osservata dalla prova dell'accordo: nella fixture da 30.000,
+il primo comando salva l'acconto e rilegge BLOCKED.
+
+% Fonte: src/test/java/it/unifi/drivehub/PurchaseAgreementIntegrationTest.java:43-51
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=43,caption={Workflow di vendita: acconto e BLOCKED riletti dopo il primo comando.},label=lst:test-checkout-blocked]
+        Request request = ctx.getPurchaseService().initiatePurchase(vehicle.getId(), 1L);
+        assertEquals(RequestType.SALE, request.getType());
+        assertEquals(new BigDecimal("4000.00"), request.getDeposit());
+        assertEquals(new BigDecimal("20000.00"), request.getAgreedTotal());
+        assertEquals(new BigDecimal("16000.00"), request.getRemainingAmount());
+        assertEquals(VehicleState.BLOCKED, ctx.getCatalogService().getVehicleById(vehicle.getId()).orElseThrow().getState());
+        assertThrows(RuntimeException.class, () -> ctx.getPurchaseService().initiatePurchase(vehicle.getId(), 2L));
+        assertEquals(1, ctx.getOperationQueryService().getClientRequests(1L).size());
+        assertEquals(new BigDecimal("26000.00"), ctx.getAuthService().getClientBankAccount(1L).getBalance());
+\end{lstlisting}
+\end{minipage}
+
+
+Seguono approvazione, cambio base modello/modalità/sconti e ricostruzione
+del contesto (4.3.1); totale/acconto/residuo riletti restano fissati.
+L'estratto conclusivo osserva vendita, saldo, SOLD e richiesta consumata.
+
+% Fonte: src/test/java/it/unifi/drivehub/PurchaseAgreementIntegrationTest.java:70-78
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[firstnumber=70,caption={Workflow di vendita: saldo sul totale concordato e SOLD riletto.},label=lst:test-checkout-sold]
+        ctx.getPurchaseService().completePurchase(request.getId());
+        var sale = ctx.getOperationQueryService().getClientSales(1L).stream()
+                .filter(s -> s.getVehicleId().equals(vehicle.getId())).findFirst().orElseThrow();
+        assertEquals(it.unifi.drivehub.domain.operation.SaleType.SALE, sale.getType());
+        assertEquals(new BigDecimal("20000.00"), sale.getAmount());
+        assertEquals(new BigDecimal("10000.00"), ctx.getAuthService().getClientBankAccount(1L).getBalance());
+        assertEquals(VehicleState.SOLD, ctx.getCatalogService().getVehicleById(vehicle.getId()).orElseThrow().getState());
+        assertTrue(ctx.getOperationQueryService().getClientRequests(1L).stream()
+                .noneMatch(r -> r.getId().equals(request.getId())));
+\end{lstlisting}
+\end{minipage}
+
+
+Noleggio, proposta ed esito di cessione, rifiuti e scadenze hanno prove
+specifiche descritte sopra: non vengono sommati come un unico end-to-end.
+I casi principali restano in 2.2 e quelli aggiuntivi in A; C collega passi,
+alternative, metodi/assert e lacune. Le sequenze già valide mantengono i
+loro identificativi e completano la lettura dei confini transazionali.
+
+Gli harness costruiscono le viste pubbliche con servizi reali, su display
+Xvfb isolato; gli helper \code{fx}, i latch, le proprietà JavaFX e i frame
+osservati coordinano le asserzioni. I gesti Robot riusati hanno anche
+pause per rendering: sono distinti dalla sincronizzazione delle gare DB.
+\code{AgreementUiCheck}, \code{SaleOutcomeUiCheck},
+\code{DestinationUiCheck} e \code{IdentityUiCheck} collegano dialoghi,
+conferme e tabelle a effetti persistenti specifici; dove previsto il seed
+e il controllo sono JVM distinte. Non fanno parte del conteggio Surefire.
+
+Questi risultati sono E3 storici, con manifest delle copie adattate e
+log distinti. L'originale SaleOutcome conserva ACQUISITION/importi negativi:
+è incompatibile col contratto attuale. Il launcher R11 compila anche quel
+file; non è proposto come runner pronto sul checkout corrente e gli
+originali non vengono corretti per farlo funzionare. I cambi produttivi
+dopo E3 escludono una certificazione automatica della UI corrente.
+\code{AppStartupUiCheck} osserva solo ingresso, tema e focus Tab: non
+esegue login, non dimostra connessione DB o tutte le dashboard. Il vecchio
+smoke JavaFX con tag gui non è una classe della suite attuale.
+
+\code{TableLifecycleUiCheck} blocca davvero una lettura del catalogo
+con un lock PostgreSQL e ne osserva il PID: controlla stato di caricamento,
+dati disabilitati e cambio scheda da tastiera. Poi rinomina temporaneamente
+una tabella nel solo DB di test, attende l'errore visibile e prova il
+recupero con \emph{Riprova}, ripristinando la tabella in \code{finally}.
+Per risultati ed errori superati, un proxy diagnostico delega al driver
+reale, trattiene l'esito dopo la query e lo libera soltanto dopo un nuovo
+caricamento. La vecchia connessione deve chiudersi e il prezzo/stato più
+recente deve rimanere. Sono osservati anche aggiornamenti della lista sul
+thread FX, nuove basi e sconti e refresh nelle tre dashboard.
+
+\code{ReactiveTablesUiCheck.cells} confronta i contatori JDBC prima/dopo
+lettura delle celle, refresh e scorrimento, attendendo tre frame.
+L'assenza di nuove query in questa finestra è una verifica strutturale
+del rendering osservato, non un benchmark. \code{SlowModelsUiCheck}
+controlla che selezionare il marchio ritorni sul thread FX mentre la
+query modelli è bloccata; dopo una selezione cancellata, il risultato
+precedente non deve ripopolare la lista.
+
+Il ciclo di caricamento verificato comprende costruzione, sostituzione,
+errore e ripresa. Il listener di \code{AsyncLoad} che cancella il task
+quando il controllo perde la scena è un riscontro statico: gli harness
+qui citati non asseriscono direttamente distacco, logout e riapertura
+con una query ancora pendente. Cancellare un task non garantisce
+l'interruzione immediata di JDBC. Le tabelle sincrone delle operazioni
+cliente e le azioni economiche non acquistano reattività per analogia.
+Tastiera e testi accessibili negli scenari provati non certificano screen
+reader, ogni gesto, ogni display o accessibilità generale.
+
+\section{Esecuzione della suite e portata dei risultati}\label{sec:test-esecuzione}
+I comandi seguenti sono istruzioni di riproduzione dalla radice del
+repository, \textbf{non esecuzioni di questo ticket}. Servono JDK~21 e
+Maven~3.9 o superiore sullo stesso JDK; per l'integrazione PostgreSQL~16
+con \code{btree_gist}. JavaFX~21.0.2 e JDBC~42.7.3 sono nel POM. La prima
+risoluzione delle dipendenze richiede rete; \code{-o} è appropriato solo
+con una cache già completa.
+
+\begin{lstlisting}[language=bash,numbers=none,gobble=0,caption={Comandi attualmente documentati: selezioni distinte, non eseguite qui.},label=lst:test-comandi]
+mvn test
+mvn -Dtest=RequestAgreementTest test
+mvn -Ppostgres-tests -Dtest=PurchaseAgreementIntegrationTest test
+mvn -Ppostgres-tests clean test
+\end{lstlisting}
+
+\code{docs/testing.md} descrive creazione separata di ruolo/DB sacrificabili,
+\code{DRIVEHUB_TEST_DB_URL}, \code{DRIVEHUB_TEST_DB_USER} e
+\code{DRIVEHUB_TEST_DB_PASSWORD}, più le tre corrispondenti
+\code{DRIVEHUB_SENTINEL_DB_*} per la prova d'isolamento. La sentinella
+va predisposta su una copia distinta già inizializzata. Le password non
+vanno inserite nei comandi Maven o nelle evidenze. Una configurazione
+mancante causa fallimento, non un test saltato.
+\code{docs/installation.md} distingue installazione e reset:
+\code{schema.sql} e \code{demo.sql} distruggono dati sul bersaglio e non
+vanno applicati a un archivio da conservare.
+
+Per le tabelle, dopo compilazione e fixture predisposte, usare ad esempio:
+\begin{lstlisting}[language=bash,numbers=none,gobble=0,caption={Selezione documentata dell'harness tabelle, esterno a Surefire.},label=lst:test-comando-ui]
+# JDK 21, DISPLAY isolato e variabili DB di test gia' verificati
+DRIVEHUB_UI_CLASS=it.unifi.drivehub.TableLifecycleUiCheck \
+  python3 docs/evidence/r08-tables/run-ui.py
+\end{lstlisting}
+Il launcher richiede \code{JAVA_HOME}, dipendenze Linux nella cache Maven,
+\code{target/classes} e \code{target/test-classes};
+\code{DRIVEHUB_UI_DIR} permette un output distinto.
+Per i modelli selezionare \code{it.unifi.drivehub.SlowModelsUiCheck}.
+Non eseguire suite e harness insieme sullo stesso DB. I runner storici
+R11 hanno percorsi privati e adattamenti conservati: non sono procedure
+portabili senza ripreparare quell'ambiente.
+
+Il frammento storico che sostituisce la vecchia invocazione Windows del
+21 ottobre è tratto dal verbale E1 del 9 novembre (verification.md:43):
+
+% Fonte: docs/evidence/postgres-enums-2026-11-09/verification.md:43-43
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash,firstnumber=43,gobble=0,caption={Comando storico E1, eseguito allora con cache e PostgreSQL dedicato.},label=lst:test-comando-storico]
+mvn -o -B -Ppostgres-tests clean test
+\end{lstlisting}
+\end{minipage}
+
+
+Il log E1 \code{full-suite.txt} termina con 423 invocazioni, zero failure,
+errori e salti e BUILD SUCCESS, alle 19:57:57 +01:00. Le sue 23 classi
+comprendono anche ripetizioni parametrizzate: 423 non significa 423
+workflow o una percentuale di coverage. Il vecchio capitolo dichiarava
+57 casi il 21 ottobre: qui non se ne ricostruiscono gli input runtime
+né si trasferisce quell'esito alla suite attuale.
+
+I log storici riportano \textbf{423 eseguiti senza failure, errori o salti}
+il 9 novembre (E1) e \textbf{394 senza failure, errori o salti} il
+3 novembre (E2). E1 è coerente con il tree corrente; E2 ha input e
+semantica poi modificati. Le prove GUI E3 appartengono alla prima fase
+del 3 novembre, non al giro E1. L'appendice~\ref{app:verifiche} precisa
+provenienza, ambiente, comandi, versioni, tentativi falliti e limiti.
+I conteggi restano separati e non misurano la copertura del codice.
+I difetti già segnalati nei ticket documentali 04--05 restano aperti:
+verificare un rifiuto corrente non soddisfa necessariamente l'intento
+di un requisito.
+\endgroup

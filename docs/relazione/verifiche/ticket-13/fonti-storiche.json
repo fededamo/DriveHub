@@ -1,0 +1,314 @@
+[
+  {
+    "source": "docs/evidence/postgres-enums-2026-11-09/contract-red.txt",
+    "sha256": "45279a1f31a44f63dd929461c1a0d27bcd89b69ecc33a81ce421c1b42d1421dc"
+  },
+  {
+    "source": "docs/evidence/postgres-enums-2026-11-09/full-suite.txt",
+    "sha256": "554c1adfbc8b73bc48492ad4cdb79ab217a9ddcdd285aac044a31566a044d24a"
+  },
+  {
+    "source": "docs/evidence/postgres-enums-2026-11-09/targeted-green.txt",
+    "sha256": "d9e60075f723a7b3813c11eb55059d8801d77fde1757d8dcb75e2683d2739ddb"
+  },
+  {
+    "source": "docs/evidence/postgres-enums-2026-11-09/tdd-failures.zip",
+    "sha256": "8bbed64eb591ecbfd99d4b7004606f797f8c102e663062f742f7eb601f5966af"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/AgreementUiCheck-inputs.json",
+    "sha256": "4b38ed0b8ca4019038933077035415798cb67ebf66a94d35a5ae761920b6664a"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/AgreementUiCheck.log",
+    "sha256": "591ffb273d3c7c5eb69752b6ef432aab9d45020d9165625c7828b196bbeb6c26"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/AppStartupUiCheck-inputs.json",
+    "sha256": "b8c5ec84fb21057bb53eee72a29ff4a84a3533fc38c8689d983a3502eb669f1a"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/AppStartupUiCheck.log",
+    "sha256": "196b6842687e2e18afb09ada9292976a0f712a439d624793b8fe9503bf857c09"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/DestinationUiCheck-inputs.json",
+    "sha256": "f947e9fa9be03ff1e00ef7c9f48e96dfc3f491281799780d0ecfce92522f45c0"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/DestinationUiCheck.log",
+    "sha256": "9e76270f5dfd98fdf5e51b50f90a5ba83808cb367b2a39168e112340b5a8b760"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/IdentityUiCheck-inputs.json",
+    "sha256": "f5ae55911d3136ee8046aaae61f88fa0cf3728d8cbf864a12881dd32f082c320"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/IdentityUiCheck.log",
+    "sha256": "2338e8cf1e475afcd44bef29c210b26146c5426cfc28dadef1f99bf9bb7db265"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/SaleOutcomeUiCheck-inputs.json",
+    "sha256": "081a5697490dffafad2085a9da1f77bd945ce648e0f4f60c56766deb30033bc8"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/SaleOutcomeUiCheck.log",
+    "sha256": "86b58bdf10dee55e9d1d8726a2c456676c268754be57a849e3b243392a17a0ff"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/SlowModelsUiCheck-inputs.json",
+    "sha256": "57c641697abdc762548af03f03d981fbd3b4a82eb2cc1343c501023e1784c172"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/SlowModelsUiCheck.log",
+    "sha256": "8f83c16ef2b0ab95d24db952658612461d0db8b5906f9c5c8bbc504329a55d74"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/TableLifecycleUiCheck-inputs.json",
+    "sha256": "a11394682e691449506df116f159bcabc421c79abbdd43699c0a4eaddc665bcf"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/TableLifecycleUiCheck.log",
+    "sha256": "6238acb720225a0f430b702ac76366cb4d68bad132a125bfc18e1f916a7e5589"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/after-suite-application.sha256.json",
+    "sha256": "1b17a00631fc1efc59cbdd3874319e0f5a8eff17446644f1a27e827a5eca2979"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/before-suite-application.sha256.json",
+    "sha256": "1b17a00631fc1efc59cbdd3874319e0f5a8eff17446644f1a27e827a5eca2979"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/commands.md",
+    "sha256": "91d0fbd8f291be5bf577077d1f3ffc607c0d7799297efc6c2561e5ae543eae5f"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/full-inputs.sha256.json",
+    "sha256": "5235ea984286e4b3c43d18c750c9864cf9883afe2b9cac18d187afa7deb13844"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/full-surefire/TEST-it.unifi.drivehub.AuthServiceIntegrationTest.xml",
+    "sha256": "52e975cbb7801535f5436dcc73dbd761cc8a33c33ecc2fee4fb120b52366762b"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/full-surefire/TEST-it.unifi.drivehub.BalanceConcurrencyIntegrationTest.xml",
+    "sha256": "dd5abd9a3764ee87bad1c0ff48c26db4dbf1767ede2b608f49ee3d01fd6e7067"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/full-surefire/TEST-it.unifi.drivehub.BookingConcurrencyIntegrationTest.xml",
+    "sha256": "c96f2c597f8ab2c7df76a647c597d8a803f506d529a2d54fb78b50d5d9882c08"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/full-surefire/TEST-it.unifi.drivehub.BookingRulesTest.xml",
+    "sha256": "620a0169e4f8a1cfd8d65199e376e9417fa3dc3da2b0cd227c3dcdf759ffd890"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/full-surefire/TEST-it.unifi.drivehub.CatalogListingIntegrationTest.xml",
+    "sha256": "bd0fee821bfcfe86a5043d2b6523a89ec5640d1cc849980e5e738b90a99f87f3"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/full-surefire/TEST-it.unifi.drivehub.DatabaseConnectionIntegrationTest.xml",
+    "sha256": "caf67692803b60eae6975e5c9f12083843d986e3462875bc4760daefb0334f20"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/full-surefire/TEST-it.unifi.drivehub.DatabaseIsolationIntegrationTest.xml",
+    "sha256": "b023b4dbdeceb8fb8b7603c74d580c61b5ecceffad7b86f693cc99751499cd01"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/full-surefire/TEST-it.unifi.drivehub.DemoSqlValidationTest.xml",
+    "sha256": "9a4fbe7e85d3a043676f8bccf2101b1b832e91cb59ab3499a1ba12cb6aff999a"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/full-surefire/TEST-it.unifi.drivehub.DomainInvariantsTest.xml",
+    "sha256": "7a9ff75338bd5ae4630604a37a03a5cae12476f938e7ff71cd02dc0599d45737"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/full-surefire/TEST-it.unifi.drivehub.FullWorkflowIntegrationTest.xml",
+    "sha256": "33c148c2dcac960d3a0928f39bb728ec8a06852d94d8f67153f89d62b4e03948"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/full-surefire/TEST-it.unifi.drivehub.IdentityDeletionIntegrationTest.xml",
+    "sha256": "15b00d681026f522ed0f0d09e4360b941675b86121ef86b316d6241f998e0ed6"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/full-surefire/TEST-it.unifi.drivehub.PriceCalculatorServiceTest.xml",
+    "sha256": "3d02d7e1fd5247f646714b699b3c66907504a2e57191cfed881b55ae4d9a1e47"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/full-surefire/TEST-it.unifi.drivehub.PriceSelectionIntegrationTest.xml",
+    "sha256": "c232dc0d32268de3b2c090e353606a4de79cc2006e1f47e2fadb3ff482194ca3"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/full-surefire/TEST-it.unifi.drivehub.PurchaseAgreementIntegrationTest.xml",
+    "sha256": "1fc5556950b0c20e4da90e580e7819219526826d0a1a38601e11b2fee3191b20"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/full-surefire/TEST-it.unifi.drivehub.PurchaseConcurrencyIntegrationTest.xml",
+    "sha256": "913ad7e3506d56b2f184d45d0c8ddf63594065a6b42f2a39d780706c7c1729b0"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/full-surefire/TEST-it.unifi.drivehub.RequestAgreementTest.xml",
+    "sha256": "e19b6d32739bd4abc8c3a4639c8431c19859fc3146809ab4ce4392b2d2b018df"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/full-surefire/TEST-it.unifi.drivehub.SaleOutcomeIntegrationTest.xml",
+    "sha256": "9eea8c1dc1df7a5efb236caf2774306f86591661e26c9db5e0023b755eb05bef"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/full-surefire/TEST-it.unifi.drivehub.SaleProposalIntegrationTest.xml",
+    "sha256": "cc8484368f1f4422766d648248f5f5e3dace498aeef20abbc961dab3e37a6323"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/full-surefire/TEST-it.unifi.drivehub.SaleTypeTest.xml",
+    "sha256": "6bf466b98d9ef19d11b7229adb5502765305af02f55763d5bbb773ff64e0d66a"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/full-surefire/TEST-it.unifi.drivehub.TestDatabaseConfigurationTest.xml",
+    "sha256": "69a065da365bd241a230bcd3c4c0e5da8f7c4d9ecafb836b734706fb06bb4a8f"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/full-surefire/TEST-it.unifi.drivehub.TestDriveCancellationIntegrationTest.xml",
+    "sha256": "2f3a2be336aed5225a343f5fc005fae510efbdd33e0e9a5240bdc92c3847b96d"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/full-surefire/TEST-it.unifi.drivehub.VehicleDestinationIntegrationTest.xml",
+    "sha256": "45e25705585952a46589451c0bc32a20d676a4d2527c7386b097645b44a86b0c"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/full.log",
+    "sha256": "8eb9090acbec26693a4b68add7b9bfcdebfc4569c5ef191cb962e766e633bb08"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-attempt1-surefire/TEST-it.unifi.drivehub.AuthServiceIntegrationTest.xml",
+    "sha256": "ffd11c62635e790e0ae63608f6c707c5fcc8bca31d2bbf83854ef16a353c4f0e"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-attempt1-surefire/TEST-it.unifi.drivehub.BalanceConcurrencyIntegrationTest.xml",
+    "sha256": "7243a1600a3c0e79500f00fbdd97e213d703d4bd3584e1cdf95314b1282733f9"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-attempt1-surefire/TEST-it.unifi.drivehub.BookingConcurrencyIntegrationTest.xml",
+    "sha256": "396746ad2b06bc4477d4c5325e1125c18cb92614e52ee06a2f452a192b9c0e44"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-attempt1-surefire/TEST-it.unifi.drivehub.CatalogListingIntegrationTest.xml",
+    "sha256": "b223c012cbb3073333810e4db042620c6d0d297d80c48aa689af3a95eafff9ea"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-attempt1-surefire/TEST-it.unifi.drivehub.DatabaseIsolationIntegrationTest.xml",
+    "sha256": "b0da3cee978d9f57c5e6bece05533c99409bf113e6e7cf9537819bf83d299868"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-attempt1-surefire/TEST-it.unifi.drivehub.DomainInvariantsTest.xml",
+    "sha256": "53af9373e84ad5d5375bd4165f1139f09f2081af2dc300af297116b801e0b9d0"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-attempt1-surefire/TEST-it.unifi.drivehub.IdentityDeletionIntegrationTest.xml",
+    "sha256": "aa8f025c9f2c31d530b115f038539a976f085fe7efafab5663a34c7d9294ab17"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-attempt1-surefire/TEST-it.unifi.drivehub.PriceSelectionIntegrationTest.xml",
+    "sha256": "b13f0b750231045afda33339908cd7e4cbc210735c2ecca19cac7abc9c8b1305"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-attempt1-surefire/TEST-it.unifi.drivehub.PurchaseAgreementIntegrationTest.xml",
+    "sha256": "1dfc8e54958c495f0ed48fdb436fb704a91e12903b80ae871dfc32e231a09cc0"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-attempt1-surefire/TEST-it.unifi.drivehub.PurchaseConcurrencyIntegrationTest.xml",
+    "sha256": "dbf0b12f3d603e40e2565cfec672061455240f10dba5bf519dc0986cc8105797"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-attempt1-surefire/TEST-it.unifi.drivehub.SaleOutcomeIntegrationTest.xml",
+    "sha256": "20207323428960aecaaeef4990f3371f54e744d74ab5c99ab532587562c3468c"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-attempt1-surefire/TEST-it.unifi.drivehub.SaleProposalIntegrationTest.xml",
+    "sha256": "3bee463489bdfae66642f5c1d7a223089bb29a1960050b8ce1f6f8972056acec"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-attempt1-surefire/TEST-it.unifi.drivehub.TestDatabaseConfigurationTest.xml",
+    "sha256": "54756e8016f33d2218cd7f112fd0166332bb691bd3fc4b37afa0d7c06cfacc89"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-attempt1-surefire/TEST-it.unifi.drivehub.TestDriveCancellationIntegrationTest.xml",
+    "sha256": "cae40a852a1648d7d41cb528b79cdfb8d073444290fb22bd6fbfe68c3011716d"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-attempt1-surefire/TEST-it.unifi.drivehub.VehicleDestinationIntegrationTest.xml",
+    "sha256": "ab5f51f36831cb91edc445159cb984075f511fe9085d3fb1b9a755a1e16a4073"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-attempt1.log",
+    "sha256": "4306f936d9a7c96cb740bc4a27618220cc8e1a31aeead9a203d0929fc9481df0"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-surefire/TEST-it.unifi.drivehub.AuthServiceIntegrationTest.xml",
+    "sha256": "f83464cc4c715d401cfffa90678c327602ec2429ddb6dec9c98f6b432c38d5cd"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-surefire/TEST-it.unifi.drivehub.BalanceConcurrencyIntegrationTest.xml",
+    "sha256": "8aaa15c0ae47f4db859c35b651cedb061b42011a43e1d98f0ec3eb89c58326fb"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-surefire/TEST-it.unifi.drivehub.BookingConcurrencyIntegrationTest.xml",
+    "sha256": "d19c37fbc1b55c627965644404a939e85d8525e3cc6af833b54dfbdc25c7e81e"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-surefire/TEST-it.unifi.drivehub.CatalogListingIntegrationTest.xml",
+    "sha256": "c61313f0ec00bec871ab0ffb46df09933c9ec64cf905c8c3231d99662478cc8e"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-surefire/TEST-it.unifi.drivehub.DatabaseIsolationIntegrationTest.xml",
+    "sha256": "3377d26f6412c0e765e0149af55c92c43e72a9c05717ac30c4e34235c377c938"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-surefire/TEST-it.unifi.drivehub.DomainInvariantsTest.xml",
+    "sha256": "8e3c3c7eff7853cc5f16ef5152d1e87e779fcffc2c2658a25b01eadb3dd30439"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-surefire/TEST-it.unifi.drivehub.IdentityDeletionIntegrationTest.xml",
+    "sha256": "189cb03016e6111ffb6e7248e0fbf4c5ce74d2ed977fa064b2af06c3795a9516"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-surefire/TEST-it.unifi.drivehub.PriceSelectionIntegrationTest.xml",
+    "sha256": "0ade285e5026ce5dde0c88bafa06d7052e043028857dd679eba4b61100638957"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-surefire/TEST-it.unifi.drivehub.PurchaseAgreementIntegrationTest.xml",
+    "sha256": "dcbbe1f9c29de564df64a08cde3ec638e5520fcf3d23580df07efcc78b8ba7e7"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-surefire/TEST-it.unifi.drivehub.PurchaseConcurrencyIntegrationTest.xml",
+    "sha256": "2b93f8f0cc7c1b6bee5e415f3a15f8b78e043c760dd2946988ec3d3ae9486d1d"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-surefire/TEST-it.unifi.drivehub.SaleOutcomeIntegrationTest.xml",
+    "sha256": "4b103919e82eb4d35dc0f430de63a983a8e64d13fbdb7e962e8e42fe8b925bda"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-surefire/TEST-it.unifi.drivehub.SaleProposalIntegrationTest.xml",
+    "sha256": "590c6a18f395657378347f138d298af80437a0d5ac661a5dfb3704f7e9f85f7c"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-surefire/TEST-it.unifi.drivehub.TestDatabaseConfigurationTest.xml",
+    "sha256": "4896a4bf09f2caa93d3f8e79110009c98ffe4d1d4498c782fd56c2a32d781805"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-surefire/TEST-it.unifi.drivehub.TestDriveCancellationIntegrationTest.xml",
+    "sha256": "b3795382b4f5e05361dc7e14192026694568bd50d65f1a3b3178218a9ad53040"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted-surefire/TEST-it.unifi.drivehub.VehicleDestinationIntegrationTest.xml",
+    "sha256": "8d798f4b7489cf84fb9a98284dde9fc0a38139bf352634e8193049e200ab755d"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/targeted.log",
+    "sha256": "9d5e7a0b82f8c2a3571fb5574a1c757da528195dd8f0add2a3d2d85ec6380379"
+  },
+  {
+    "source": "docs/evidence/r11-integrated/verification.md",
+    "sha256": "3e946c10b1720f1bee7dac7b6dcabd48eda8cf8f8a71273a6001a708fa551ee2"
+  }
+]

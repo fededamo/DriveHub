@@ -1,0 +1,28 @@
+Ripresa e verifica statica finale — 15 novembre 2026
+Python: 3.13.16 (main, Oct 14 2026, 01:04:01) [Clang 23.1.3 ]
+PyMuPDF: 2.1
+Congelamento iniziale della review: 152 impronte tutte invariate alla ripresa.
+Comando: /tmp/drivehub-ticket08-review-tools/venv/bin/python docs/relazione/verifiche/ticket-08/controlla-finale.py
+Exit: 0
+{
+  "baseline_files": 2333,
+  "changed": [
+    "docs/relazione/README.md",
+    "docs/relazione/appendici/a_casi_uso.tex",
+    "docs/relazione/capitoli/2_architettura.tex",
+    "docs/relazione/main.tex",
+    "docs/relazione/piano.md",
+    "docs/relazione/relazione-drivehub.pdf"
+  ],
+  "unchanged": 2327,
+  "snippets_exact": 16,
+  "drawio_pdf_exact": 32,
+  "pages": 107,
+  "internal_links": 158,
+  "embedded_fonts": 86,
+  "pdf_sha256": "e046f9efc5b3a7411354bfdde71b288e0d748f01ebea8c2aa7b3534c5a8990d4",
+  "zip_sha256": "9b450b53f3bf623b919f81edf63f7b288728bea92818f25b8da8011f6c93837c"
+}
+
+
+HEAD invariato: 61ce18ae1d4e0458b63e970b793b0b3a634a3adf

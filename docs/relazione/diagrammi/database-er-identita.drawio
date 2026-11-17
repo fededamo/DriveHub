@@ -1,0 +1,123 @@
+<mxGraphModel adaptiveColors="auto" grid="1" page="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+    <mxCell id="v2" value="ER-02 · Identità, conto e attribuzioni" style="text;strokeColor=none;fillColor=none;fontColor=#172b3a;fontSize=27;fontStyle=1;align=center;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="10" y="8" width="940" height="48" as="geometry" />
+    </mxCell>
+    <mxCell id="v3" value="Ogni riga è una relazione ER. Le entità ripetute sono le stesse, non copie persistenti." style="text;strokeColor=none;fillColor=none;fontColor=#172b3a;fontSize=20;fontStyle=0;align=center;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="65" width="920" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="v4" value="Il numero vicino a un&amp;#x27;entità indica quante sue istanze corrispondono a una dell&amp;#x27;altra." style="text;strokeColor=none;fillColor=none;fontColor=#172b3a;fontSize=20;fontStyle=0;align=center;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="117" width="920" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="v5" value="client&lt;br&gt;PK id · CK email" style="rounded=0;strokeColor=#647a8c;fillColor=#edf4f8;fontSize=21;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="15" y="195" width="270" height="88" as="geometry" />
+    </mxCell>
+    <mxCell id="v6" value="conto&#10;dimostrativo" style="rhombus;strokeColor=#647a8c;fillColor=#ffffff;fontSize=18;;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="390" y="204" width="180" height="70" as="geometry" />
+    </mxCell>
+    <mxCell id="v7" value="bank_account&lt;br&gt;PK iban · CK/FK client" style="rounded=0;strokeColor=#647a8c;fillColor=#edf4f8;fontSize=21;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="675" y="195" width="270" height="88" as="geometry" />
+    </mxCell>
+    <mxCell id="e8" value="1" edge="1" parent="1" source="v5" target="v6" style="html=1;edgeStyle=none;endArrow=none;startArrow=none;strokeColor=#175b88;strokeWidth=1.6;fontSize=22;labelBackgroundColor=#ffffff;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e9" value="0..1" edge="1" parent="1" source="v6" target="v7" style="html=1;edgeStyle=none;endArrow=none;startArrow=none;strokeColor=#175b88;strokeWidth=1.6;fontSize=22;labelBackgroundColor=#ffffff;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="v10" value="client&lt;br&gt;PK id · CK email" style="rounded=0;strokeColor=#647a8c;fillColor=#edf4f8;fontSize=21;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="15" y="318" width="270" height="88" as="geometry" />
+    </mxCell>
+    <mxCell id="v11" value="richiedente" style="rhombus;strokeColor=#647a8c;fillColor=#ffffff;fontSize=18;;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="390" y="327" width="180" height="70" as="geometry" />
+    </mxCell>
+    <mxCell id="v12" value="request [ER-01]&lt;br&gt;PK id" style="rounded=0;strokeColor=#647a8c;fillColor=#edf4f8;fontSize=21;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="675" y="318" width="270" height="88" as="geometry" />
+    </mxCell>
+    <mxCell id="e13" value="1" edge="1" parent="1" source="v10" target="v11" style="html=1;edgeStyle=none;endArrow=none;startArrow=none;strokeColor=#175b88;strokeWidth=1.6;fontSize=22;labelBackgroundColor=#ffffff;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e14" value="0..*" edge="1" parent="1" source="v11" target="v12" style="html=1;edgeStyle=none;endArrow=none;startArrow=none;strokeColor=#175b88;strokeWidth=1.6;fontSize=22;labelBackgroundColor=#ffffff;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="v15" value="client&lt;br&gt;PK id · CK email" style="rounded=0;strokeColor=#647a8c;fillColor=#edf4f8;fontSize=21;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="15" y="441" width="270" height="88" as="geometry" />
+    </mxCell>
+    <mxCell id="v16" value="cliente del&#10;registro" style="rhombus;strokeColor=#647a8c;fillColor=#ffffff;fontSize=18;;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="390" y="450" width="180" height="70" as="geometry" />
+    </mxCell>
+    <mxCell id="v17" value="sale [ER-01]&lt;br&gt;PK id" style="rounded=0;strokeColor=#647a8c;fillColor=#edf4f8;fontSize=21;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="675" y="441" width="270" height="88" as="geometry" />
+    </mxCell>
+    <mxCell id="e18" value="1" edge="1" parent="1" source="v15" target="v16" style="html=1;edgeStyle=none;endArrow=none;startArrow=none;strokeColor=#175b88;strokeWidth=1.6;fontSize=22;labelBackgroundColor=#ffffff;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e19" value="0..*" edge="1" parent="1" source="v16" target="v17" style="html=1;edgeStyle=none;endArrow=none;startArrow=none;strokeColor=#175b88;strokeWidth=1.6;fontSize=22;labelBackgroundColor=#ffffff;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="v20" value="client&lt;br&gt;PK id · CK email" style="rounded=0;strokeColor=#647a8c;fillColor=#edf4f8;fontSize=21;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="15" y="564" width="270" height="88" as="geometry" />
+    </mxCell>
+    <mxCell id="v21" value="prenotante" style="rhombus;strokeColor=#647a8c;fillColor=#ffffff;fontSize=18;;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="390" y="573" width="180" height="70" as="geometry" />
+    </mxCell>
+    <mxCell id="v22" value="test_drive [ER-01]&lt;br&gt;PK id" style="rounded=0;strokeColor=#647a8c;fillColor=#edf4f8;fontSize=21;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="675" y="564" width="270" height="88" as="geometry" />
+    </mxCell>
+    <mxCell id="e23" value="1" edge="1" parent="1" source="v20" target="v21" style="html=1;edgeStyle=none;endArrow=none;startArrow=none;strokeColor=#175b88;strokeWidth=1.6;fontSize=22;labelBackgroundColor=#ffffff;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e24" value="0..*" edge="1" parent="1" source="v21" target="v22" style="html=1;edgeStyle=none;endArrow=none;startArrow=none;strokeColor=#175b88;strokeWidth=1.6;fontSize=22;labelBackgroundColor=#ffffff;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="v25" value="client&lt;br&gt;PK id · CK email" style="rounded=0;strokeColor=#647a8c;fillColor=#edf4f8;fontSize=21;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="15" y="687" width="270" height="88" as="geometry" />
+    </mxCell>
+    <mxCell id="v26" value="noleggiante" style="rhombus;strokeColor=#647a8c;fillColor=#ffffff;fontSize=18;;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="390" y="696" width="180" height="70" as="geometry" />
+    </mxCell>
+    <mxCell id="v27" value="rent [ER-01]&lt;br&gt;PK id" style="rounded=0;strokeColor=#647a8c;fillColor=#edf4f8;fontSize=21;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="675" y="687" width="270" height="88" as="geometry" />
+    </mxCell>
+    <mxCell id="e28" value="1" edge="1" parent="1" source="v25" target="v26" style="html=1;edgeStyle=none;endArrow=none;startArrow=none;strokeColor=#175b88;strokeWidth=1.6;fontSize=22;labelBackgroundColor=#ffffff;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e29" value="0..*" edge="1" parent="1" source="v26" target="v27" style="html=1;edgeStyle=none;endArrow=none;startArrow=none;strokeColor=#175b88;strokeWidth=1.6;fontSize=22;labelBackgroundColor=#ffffff;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="v30" value="salesman&lt;br&gt;PK id · CK email" style="rounded=0;strokeColor=#647a8c;fillColor=#edf4f8;fontSize=21;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="15" y="810" width="270" height="88" as="geometry" />
+    </mxCell>
+    <mxCell id="v31" value="autorizza" style="rhombus;strokeColor=#647a8c;fillColor=#ffffff;fontSize=18;;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="390" y="819" width="180" height="70" as="geometry" />
+    </mxCell>
+    <mxCell id="v32" value="request [ER-01]&lt;br&gt;PK id · salesman nullable" style="rounded=0;strokeColor=#647a8c;fillColor=#edf4f8;fontSize=21;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="675" y="810" width="270" height="88" as="geometry" />
+    </mxCell>
+    <mxCell id="e33" value="0..1" edge="1" parent="1" source="v30" target="v31" style="html=1;edgeStyle=none;endArrow=none;startArrow=none;strokeColor=#175b88;strokeWidth=1.6;fontSize=22;labelBackgroundColor=#ffffff;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e34" value="0..*" edge="1" parent="1" source="v31" target="v32" style="html=1;edgeStyle=none;endArrow=none;startArrow=none;strokeColor=#175b88;strokeWidth=1.6;fontSize=22;labelBackgroundColor=#ffffff;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="v35" value="salesman&lt;br&gt;PK id · CK email" style="rounded=0;strokeColor=#647a8c;fillColor=#edf4f8;fontSize=21;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="15" y="933" width="270" height="88" as="geometry" />
+    </mxCell>
+    <mxCell id="v36" value="attribuzione&#10;nel registro" style="rhombus;strokeColor=#647a8c;fillColor=#ffffff;fontSize=18;;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="390" y="942" width="180" height="70" as="geometry" />
+    </mxCell>
+    <mxCell id="v37" value="sale [ER-01]&lt;br&gt;PK id · salesman nullable" style="rounded=0;strokeColor=#647a8c;fillColor=#edf4f8;fontSize=21;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="675" y="933" width="270" height="88" as="geometry" />
+    </mxCell>
+    <mxCell id="e38" value="0..1" edge="1" parent="1" source="v35" target="v36" style="html=1;edgeStyle=none;endArrow=none;startArrow=none;strokeColor=#175b88;strokeWidth=1.6;fontSize=22;labelBackgroundColor=#ffffff;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e39" value="0..*" edge="1" parent="1" source="v36" target="v37" style="html=1;edgeStyle=none;endArrow=none;startArrow=none;strokeColor=#175b88;strokeWidth=1.6;fontSize=22;labelBackgroundColor=#ffffff;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="v40" value="manager: PK id, CK email; nessuna FK applicativa (entità isolata).&lt;br&gt;user è una vista UNION ALL, non una tabella padre. user_id_seq non è una PK globale.&lt;br&gt;13 tabelle complessive in ER-01/02. Il conto è opzionale nello schema; il servizio di registrazione lo crea insieme all&amp;#x27;identità." style="text;strokeColor=none;fillColor=#f0f3f5;fontColor=#172b3a;fontSize=20;fontStyle=0;align=left;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="15" y="1066" width="930" height="140" as="geometry" />
+    </mxCell>
+  </root>
+</mxGraphModel>

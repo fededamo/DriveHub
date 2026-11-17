@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/home/federico/dev/Drivehub/DriveHub/docs/relazione/verifiche/ticket-06/controlla-documento.py", line 66, in <module>
+    assert paths and any(re.search(r'\b'+method+r'\s*\(', p.read_text()) for p in paths), (cls, method)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('Future', 'get')

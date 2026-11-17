@@ -1,0 +1,3 @@
+Punto fisso: working tree iniziale in baseline.json e archivio editoriale, inclusi non tracciati e storici.
+HEAD 61ce18ae1d4e0458b63e970b793b0b3a634a3adf
+Diff e log tra commit da soli non rappresentano questo lavoro. Nessun commit autorizzato.

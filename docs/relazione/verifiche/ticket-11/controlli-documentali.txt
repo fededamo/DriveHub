@@ -1,0 +1,4 @@
+PASS: 35 voci, 14 corrispondenze, 27 estratti esatti anche nel PDF; 143 pagine.
+Capitolo 3: 83–105; 79 rinvii risolti; capitoli 1 e 2 identici a testo e pixel.
+Conservati 3270 file iniziali; nessuna cancellazione.
+Cinque messaggi Infinite glue preesistenti in C; nessun Overfull/Underfull.

@@ -1,0 +1,25 @@
+Finalizzazione ticket 13 — 17 novembre 2026
+PASS HEAD invariato, nessuna modifica tracciata o commit, git diff --check
+PASS PDF, ZIP, PDF ricompilato, capitolo 5 e LEGGIMI immutati dalla review tecnica
+PASS ZIP effettivo finale: CRC, 118 membri e byte correnti identici a quelli estratti/ricompilati; 73 input editoriali interni
+PASS specifica/ticket13 done, dieci criteri spuntati, dipendenze done, due review e due ricontrolli separati con hash conclusivi
+PASS sintassi cinque checker, 281 fonti aggiornate e collegamenti locali dei documenti conclusivi
+PASS baseline: 2.899 file presenti, sole dieci modifiche documentali dichiarate, altri 2.889 conservati; originali e storici intatti
+PASS: 151 pagine, 12 A3, 82 rinvii, 238 link, 107 font; conservazione e 42 blocchi verificati.
+PASS: 281 fonti; 28 intervalli; 24 membri dei registri originali.
+PASS: E1 423/82 e fallimenti separati; E2 394/363/363 con 4 errori nel primo mirato; 28 input diversi; sette marcatori E3.
+PASS: ZIP 4264917500906131dabb95b21f402b89c339636e70fb74dd53c02c017b0658ff; 118 membri; 73 input editoriali interni; 151 pagine identiche a testo e pixel a 96 dpi.
+Estrazione pulita: /tmp/drivehub-ticket13-consegna-kapcb71i
+PASS: 24 input originali, 102 voci/livelli/ordine, 23 funzioni originali, 42 blocchi correnti, 43 coppie native/export.
+PASS sha256sum --quiet --check: 723 file. SHA256SUMS esclude sé stesso e questo verbale per evitare cicli.
+SHA256SUMS SHA256 5bfdea77288ea235f43ac93332388968e97166d8fd8528bed37cad08ba8d974f
+79536e7bd909b03e433d16c5b2fccd0f18269e432436463e30e75cb40a954b5e  docs/relazione/relazione-drivehub.pdf
+4264917500906131dabb95b21f402b89c339636e70fb74dd53c02c017b0658ff  docs/relazione/verifiche/ticket-13/sorgenti-relazione.zip
+8e97404c1885f720d6e60baf66b6139a2ce24ec65719e707bd75b5e9ba14f7d0  docs/relazione/verifiche/ticket-13/ricompilato-da-zip.pdf
+0b19d27fbed0ded1a4857dc704247b95148e295ae684597c0c3028d678bf8621  docs/relazione/verifiche/ticket-13/baseline-editoriale.tar.gz
+ff6a596c7ceda7fa01013341ad38d734e48db0f8ae98f8bbf3526df9c45cc5b5  docs/relazione/verifiche/ticket-13/manifest-pacchetto.json
+Review Standards: 0 rilievi; ricontrollo stati: PASS.
+Review Spec: 0 rilievi; ricontrollo stati: PASS.
+Limiti: cinque messaggi TeX preesistenti a pagine fisiche 145–149, osservate senza difetto visivo rilevato; nessuna approvazione degli autori.
+Nessuna build Java/Maven, JUnit, harness, avvio UI, accesso DB, modifica al software/schema/dati, commit, invio o pubblicazione.
+PDF e ZIP proposti agli autori per revisione; chiusura esclusivamente tecnica.

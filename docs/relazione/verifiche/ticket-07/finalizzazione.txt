@@ -1,0 +1,16 @@
+Chiusura documentale — 13 novembre 2026
+HEAD 61ce18ae1d4e0458b63e970b793b0b3a634a3adf, invariato; indice Git senza staging.
+Baseline iniziale: 2291 file, 2284 intatti, sette modifiche documentali autorizzate, zero eliminazioni.
+Sette copie iniziali ancora corrispondenti alle impronte originali.
+Software/test/SQL/dati, vecchia relazione, evidenze/manifest01–06 intatti.
+22 input di review ancora identici; 43 fonti con hash corrispondenti.
+PDF SHA256 1fcc18bb426426cdc9809a69ac04993c3ffeb384a5014e515719a12643e71f4e
+107 pagine; estratto di tre pagine testualmente identico alle69–71.
+156 link interni risolti; 86 font incorporati; 96 avvisi noti sulle figure.
+Tutti i link locali della consegna presenti.
+Standards conforme: zero violazioni / zero smell azionabili. Spec conforme: zero rilievi aperti.
+Status ticket07: done. Capitoli1–5/A–C proposti agli autori, non approvati.
+Delta finale: sette preesistenti modificati e 42 nuovi file documentali, inclusi non tracciati.
+Manifest SHA256SUMS finale verificato riga per riga, escluso sé stesso; input esterni nel file input-review.json.
+Nessun nuovo test applicativo, Java, DB, harness, diagramma, commit/staging/push.
+Exit 0.

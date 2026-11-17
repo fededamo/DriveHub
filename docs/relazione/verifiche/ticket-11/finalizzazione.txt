@@ -1,0 +1,12 @@
+17 novembre 2026 — chiusura documentale ticket11.
+Baseline: 3277 file iniziali presenti; 3270 invariati, 7 modificati autorizzati, zero cancellazioni.
+Modificati: capitolo3, PDF e soli stati README/piano/indice/matrice/ticket11.
+Software, schema, dati, capitoli1/2, altre parti, diagrammi e storici intatti.
+9/9 criteri ticket verificati; Standards conforme e Spec PASS dopo due correzioni ricontrollate.
+35 voci, 14 corrispondenze originali, 27 estratti esatti, 79 rinvii risolti.
+PDF 143 pagine; estratto23 pagine83–105; impronte identiche ai due ricontrolli.
+Capitoli1/2:78 pagine identiche a testo e pixel. Altre parti:38 pagine identiche nel testo salvo numero finale.
+Cinque messaggi TeX preesistenti inC, zero Overfull/Underfull o rinvii irrisolti.
+Collegamenti locali controllati; HEAD invariato, nessun commit. Nessun test applicativo, UI o DB.
+Approvazione autori e ticket12/13 restano separati.
+Controlli amministrativi Standards/Spec conclusi, zero aperti; rapporti e verbale aggregato inclusi nelle impronte finali.

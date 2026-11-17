@@ -1,0 +1,4469 @@
+[
+  {
+    "id": "1",
+    "original": {
+      "id": "1",
+      "level": "chapter",
+      "star": false,
+      "title": "Introduzione",
+      "source": "Relazione_SWE/capitoli/1_introduzione.tex",
+      "line": 1,
+      "offset": 58,
+      "content_sha256": "cd5df93992f1be0aa5e1a9577c3cdb5e340ddbfba4867b6cfee6b34182c4e0cc",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/1_introduzione.tex",
+          "first": 1,
+          "last": 29
+        }
+      ]
+    },
+    "current": {
+      "id": "1",
+      "level": "chapter",
+      "star": false,
+      "title": "Introduzione",
+      "source": "docs/relazione/capitoli/1_introduzione.tex",
+      "line": 1,
+      "offset": 69,
+      "content_sha256": "ead9bb8c9c95b4d2e47a2ba1665cd277974de4a67dcaf70a835167a713843884",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/1_introduzione.tex",
+          "first": 1,
+          "last": 41
+        }
+      ]
+    },
+    "treatment": "**Mantenere.** Contesto, obiettivi e tre ruoli; introduzione autonoma, senza anticipare la discussione tecnica dei capitoli successivi.",
+    "verification": "docs/relazione/verifiche/ticket-09/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-09/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "1.1",
+    "original": {
+      "id": "1.1",
+      "level": "section",
+      "star": false,
+      "title": "Descrizione",
+      "source": "Relazione_SWE/capitoli/1_introduzione.tex",
+      "line": 3,
+      "offset": 60,
+      "content_sha256": "883492b58dc5d9ab4de80491819ed5ff5b7abfafd4968592f221d656b5dba6c9",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/1_introduzione.tex",
+          "first": 3,
+          "last": 14
+        }
+      ]
+    },
+    "current": {
+      "id": "1.1",
+      "level": "section",
+      "star": false,
+      "title": "Descrizione",
+      "source": "docs/relazione/capitoli/1_introduzione.tex",
+      "line": 3,
+      "offset": 71,
+      "content_sha256": "3ab81ae88af36593557cab6a2ad4ae86d2371e266f1c677947350d6fe40a3898",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/1_introduzione.tex",
+          "first": 3,
+          "last": 17
+        }
+      ]
+    },
+    "treatment": "**Mantenere.** Catalogo comune, responsabilità di cliente, venditore e manager, distinzione fra richieste e operazioni concluse.",
+    "verification": "docs/relazione/verifiche/ticket-09/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-09/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "1.2",
+    "original": {
+      "id": "1.2",
+      "level": "section",
+      "star": false,
+      "title": "Stack tecnologico",
+      "source": "Relazione_SWE/capitoli/1_introduzione.tex",
+      "line": 15,
+      "offset": 72,
+      "content_sha256": "bcdae253eb857919b1ea657dd138e11aa1fe3a06c46d24aaadc2de1b76288fe2",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/1_introduzione.tex",
+          "first": 15,
+          "last": 21
+        }
+      ]
+    },
+    "current": {
+      "id": "1.2",
+      "level": "section",
+      "star": false,
+      "title": "Stack tecnologico",
+      "source": "docs/relazione/capitoli/1_introduzione.tex",
+      "line": 18,
+      "offset": 86,
+      "content_sha256": "e3d06dc00f9a9c5abde456ec850a340b3a04718dc5f0561f61f00d95b2cff421",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/1_introduzione.tex",
+          "first": 18,
+          "last": 30
+        }
+      ]
+    },
+    "treatment": "**Adattare.** Java 21, JavaFX costruito in Java, CSS, JDBC, PostgreSQL e Maven; strumenti di verifica reali, senza FXML, H2, Mockito o JaCoCo non più presenti.",
+    "verification": "docs/relazione/verifiche/ticket-09/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-09/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "1.3",
+    "original": {
+      "id": "1.3",
+      "level": "section",
+      "star": false,
+      "title": "Semplificazioni adottate",
+      "source": "Relazione_SWE/capitoli/1_introduzione.tex",
+      "line": 22,
+      "offset": 79,
+      "content_sha256": "85c5e32352b9cb0b223caf361d1af1f685de5588832bf14dcd9b6044f5d786f6",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/1_introduzione.tex",
+          "first": 22,
+          "last": 29
+        }
+      ]
+    },
+    "current": {
+      "id": "1.3",
+      "level": "section",
+      "star": false,
+      "title": "Semplificazioni adottate",
+      "source": "docs/relazione/capitoli/1_introduzione.tex",
+      "line": 31,
+      "offset": 99,
+      "content_sha256": "56a70d1897368217a01e835c1504732942f1b70bd7f6c97407a1ddf1063c8b75",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/1_introduzione.tex",
+          "first": 31,
+          "last": 41
+        }
+      ]
+    },
+    "treatment": "**Adattare.** Conto simulato, registrazione dei soli clienti, personale predisposto, processi aziendali ridotti e inizializzazione esterna del DB; preservare i limiti attuali.",
+    "verification": "docs/relazione/verifiche/ticket-09/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-09/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2",
+    "original": {
+      "id": "2",
+      "level": "chapter",
+      "star": false,
+      "title": "Analisi dei requisiti e progettazione",
+      "source": "Relazione_SWE/capitoli/2_progettazione.tex",
+      "line": 1,
+      "offset": 87,
+      "content_sha256": "050f5bb4ef1e9e0f29f8158f89ad469f75a86d3b08ef58ef3b163703e5443b8d",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2_progettazione.tex",
+          "first": 1,
+          "last": 2
+        },
+        {
+          "source": "Relazione_SWE/capitoli/2a_casi_uso.tex",
+          "first": 1,
+          "last": 31
+        },
+        {
+          "source": "Relazione_SWE/templates/test_drive.tex",
+          "first": 1,
+          "last": 35
+        },
+        {
+          "source": "Relazione_SWE/templates/noleggio.tex",
+          "first": 1,
+          "last": 36
+        },
+        {
+          "source": "Relazione_SWE/templates/acquisto.tex",
+          "first": 1,
+          "last": 37
+        },
+        {
+          "source": "Relazione_SWE/templates/cessione.tex",
+          "first": 1,
+          "last": 36
+        },
+        {
+          "source": "Relazione_SWE/templates/autorizzazione_acquisto.tex",
+          "first": 1,
+          "last": 34
+        },
+        {
+          "source": "Relazione_SWE/templates/sconto_veicolo.tex",
+          "first": 1,
+          "last": 35
+        },
+        {
+          "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+          "first": 1,
+          "last": 144
+        },
+        {
+          "source": "Relazione_SWE/capitoli/2c_package_diagram.tex",
+          "first": 1,
+          "last": 16
+        },
+        {
+          "source": "Relazione_SWE/capitoli/2c_class_diagram.tex",
+          "first": 1,
+          "last": 47
+        },
+        {
+          "source": "Relazione_SWE/capitoli/2c_sequence_diagram.tex",
+          "first": 1,
+          "last": 35
+        },
+        {
+          "source": "Relazione_SWE/capitoli/2c_database.tex",
+          "first": 1,
+          "last": 102
+        }
+      ]
+    },
+    "current": {
+      "id": "2",
+      "level": "chapter",
+      "star": false,
+      "title": "Analisi dei requisiti e progettazione",
+      "source": "docs/relazione/capitoli/2_progettazione.tex",
+      "line": 1,
+      "offset": 110,
+      "content_sha256": "d07b6a5c18edb2791a610c93884fe50fb4fb1c7eab06e7dc9dff09bc7883f5ae",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_progettazione.tex",
+          "first": 1,
+          "last": 21
+        },
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 1,
+          "last": 377
+        },
+        {
+          "source": "docs/relazione/capitoli/2_template.tex",
+          "first": 2,
+          "last": 274
+        },
+        {
+          "source": "docs/relazione/capitoli/2_architettura.tex",
+          "first": 1,
+          "last": 171
+        },
+        {
+          "source": "docs/relazione/capitoli/2_sequenze.tex",
+          "first": 1,
+          "last": 201
+        },
+        {
+          "source": "docs/relazione/capitoli/2_database.tex",
+          "first": 1,
+          "last": 253
+        }
+      ]
+    },
+    "treatment": "**Riorganizzare.** Stesse otto sezioni e stesso percorso dall'obiettivo utente a interfaccia, progetto e dati; riportare nel corpo il contenuto principale oggi in appendice.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.1",
+    "original": {
+      "id": "2.1",
+      "level": "section",
+      "star": false,
+      "title": "Diagramma dei casi d'uso",
+      "source": "Relazione_SWE/capitoli/2a_casi_uso.tex",
+      "line": 1,
+      "offset": 89,
+      "content_sha256": "7b836c65a00425e9b7a4bc2ee1f7e15986c8711856e963b8347cd939ca997c16",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2a_casi_uso.tex",
+          "first": 1,
+          "last": 9
+        }
+      ]
+    },
+    "current": {
+      "id": "2.1",
+      "level": "section",
+      "star": false,
+      "title": "Diagramma dei casi d'uso",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 2,
+      "offset": 117,
+      "content_sha256": "5a5c463165bdb98f43255136894e9932976aa70b5baf8808ab69effb3e855c48",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 2,
+          "last": 50
+        }
+      ]
+    },
+    "treatment": "**Mantenere.** Tavola degli autori corretta e dettagli per ruolo; attori, obiettivi e supporto, registrazione del solo cliente e assenza della panoramica prenotazioni del venditore.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.2",
+    "original": {
+      "id": "2.2",
+      "level": "section",
+      "star": false,
+      "title": "Template dei casi principali",
+      "source": "Relazione_SWE/capitoli/2a_casi_uso.tex",
+      "line": 10,
+      "offset": 98,
+      "content_sha256": "aebd22697cca2845df07c942437e19444bec183cb8d9308afbfa881cd9b9730b",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2a_casi_uso.tex",
+          "first": 10,
+          "last": 31
+        },
+        {
+          "source": "Relazione_SWE/templates/test_drive.tex",
+          "first": 1,
+          "last": 35
+        },
+        {
+          "source": "Relazione_SWE/templates/noleggio.tex",
+          "first": 1,
+          "last": 36
+        },
+        {
+          "source": "Relazione_SWE/templates/acquisto.tex",
+          "first": 1,
+          "last": 37
+        },
+        {
+          "source": "Relazione_SWE/templates/cessione.tex",
+          "first": 1,
+          "last": 36
+        },
+        {
+          "source": "Relazione_SWE/templates/autorizzazione_acquisto.tex",
+          "first": 1,
+          "last": 34
+        },
+        {
+          "source": "Relazione_SWE/templates/sconto_veicolo.tex",
+          "first": 1,
+          "last": 35
+        },
+        {
+          "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+          "first": 1,
+          "last": 1
+        }
+      ]
+    },
+    "current": {
+      "id": "2.2",
+      "level": "section",
+      "star": false,
+      "title": "Template dei casi principali",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 51,
+      "offset": 166,
+      "content_sha256": "5fc7c200b717ac53d8dbfecaf6593818da51c6c00e363a63158174ae402bd113",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 51,
+          "last": 101
+        },
+        {
+          "source": "docs/relazione/capitoli/2_template.tex",
+          "first": 2,
+          "last": 274
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Sei sottosezioni con schede complete nel corpo, nello stesso ordine originale; campi, flusso numerato, alternative e riscontri delle prove. Le schede aggiuntive restano in A.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.2.1",
+    "original": {
+      "id": "2.2.1",
+      "level": "subsection",
+      "star": false,
+      "title": "Prenotare un test drive",
+      "source": "Relazione_SWE/templates/test_drive.tex",
+      "line": 1,
+      "offset": 101,
+      "content_sha256": "73702e20a4948f5923e3b0b50748f4c325de59adca6d2a96587ac2ad716b71da",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/templates/test_drive.tex",
+          "first": 1,
+          "last": 35
+        },
+        {
+          "source": "Relazione_SWE/capitoli/2a_casi_uso.tex",
+          "first": 14,
+          "last": 15
+        }
+      ]
+    },
+    "current": {
+      "id": "2.2.1",
+      "level": "subsection",
+      "star": false,
+      "title": "UC-01 --- Prenotare un test drive",
+      "source": "docs/relazione/capitoli/2_template.tex",
+      "line": 32,
+      "offset": 204,
+      "content_sha256": "25140c2d9881272e4c84739379d6e5f8936cbc0ff5a1b21863cb583cab897d8f",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_template.tex",
+          "first": 32,
+          "last": 69
+        }
+      ]
+    },
+    "treatment": "**Ricollocare.** Scheda completa del test drive: attore, condizioni, fascia oraria effettiva, limite di tre prenotazioni, conflitti, cancellazione e prove pertinenti.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.2.2",
+    "original": {
+      "id": "2.2.2",
+      "level": "subsection",
+      "star": false,
+      "title": "Noleggiare un veicolo",
+      "source": "Relazione_SWE/templates/noleggio.tex",
+      "line": 1,
+      "offset": 138,
+      "content_sha256": "b9de808b34b1210701774871e1021591989921ac24eb6b517675965d002476d0",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/templates/noleggio.tex",
+          "first": 1,
+          "last": 36
+        },
+        {
+          "source": "Relazione_SWE/capitoli/2a_casi_uso.tex",
+          "first": 17,
+          "last": 19
+        }
+      ]
+    },
+    "current": {
+      "id": "2.2.2",
+      "level": "subsection",
+      "star": false,
+      "title": "UC-02 --- Noleggiare un veicolo",
+      "source": "docs/relazione/capitoli/2_template.tex",
+      "line": 70,
+      "offset": 242,
+      "content_sha256": "18b58d59641c741bd32e1baa8f2776f5eef19ebc398f565ac6536d8cc47de7da",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_template.tex",
+          "first": 70,
+          "last": 108
+        }
+      ]
+    },
+    "treatment": "**Ricollocare.** Scheda completa del noleggio: estremi inclusi, costo ricalcolato, saldo, conflitti, annullamento dei test drive futuri e rollback.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.2.3",
+    "original": {
+      "id": "2.2.3",
+      "level": "subsection",
+      "star": false,
+      "title": "Richiedere e completare un acquisto",
+      "source": "Relazione_SWE/templates/acquisto.tex",
+      "line": 1,
+      "offset": 177,
+      "content_sha256": "72662158322d96c7c66394d1269e3fe2ede65de18a0a16bc0355fae551478a73",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/templates/acquisto.tex",
+          "first": 1,
+          "last": 37
+        },
+        {
+          "source": "Relazione_SWE/capitoli/2a_casi_uso.tex",
+          "first": 21,
+          "last": 22
+        }
+      ]
+    },
+    "current": {
+      "id": "2.2.3",
+      "level": "subsection",
+      "star": false,
+      "title": "UC-03 --- Richiedere e completare una vendita al cliente",
+      "source": "docs/relazione/capitoli/2_template.tex",
+      "line": 109,
+      "offset": 281,
+      "content_sha256": "743d7da27f06e8a6a91f7f419b23a49cd70ea47802da01b8a07270f21929e89a",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_template.tex",
+          "first": 109,
+          "last": 151
+        }
+      ]
+    },
+    "treatment": "**Ricollocare.** UC-03: acconto del 20%, totale fissato, autorizzazione, saldo, rifiuto e scadenza con penale; sostituire le vecchie anomalie di prezzo con il comportamento corretto attuale.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.2.4",
+    "original": {
+      "id": "2.2.4",
+      "level": "subsection",
+      "star": false,
+      "title": "Proporre un veicolo al concessionario",
+      "source": "Relazione_SWE/templates/cessione.tex",
+      "line": 1,
+      "offset": 216,
+      "content_sha256": "4ee4a25f4669af909f229fe47fca78e60a04ae319b5b6d524e39850960fd0d7e",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/templates/cessione.tex",
+          "first": 1,
+          "last": 36
+        },
+        {
+          "source": "Relazione_SWE/capitoli/2a_casi_uso.tex",
+          "first": 24,
+          "last": 26
+        }
+      ]
+    },
+    "current": {
+      "id": "2.2.4",
+      "level": "subsection",
+      "star": false,
+      "title": "UC-05 --- Proporre un veicolo alla concessionaria",
+      "source": "docs/relazione/capitoli/2_template.tex",
+      "line": 152,
+      "offset": 324,
+      "content_sha256": "de6aab9433dddf732f5ab8addafbc7190aea5ff68be5cc57dec87ddf78d4e372",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_template.tex",
+          "first": 152,
+          "last": 196
+        }
+      ]
+    },
+    "treatment": "**Ricollocare.** UC-05 prima di UC-04 nell'esposizione, conservando gli identificativi: proposta, stima persistita, esito del venditore, storico e limite dell'accredito zero.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.2.5",
+    "original": {
+      "id": "2.2.5",
+      "level": "subsection",
+      "star": false,
+      "title": "Autorizzare una richiesta di acquisto",
+      "source": "Relazione_SWE/templates/autorizzazione_acquisto.tex",
+      "line": 1,
+      "offset": 255,
+      "content_sha256": "d12833cebaa4b35850cffb6c0631745a71d77818e470cf8629f5c07ccefd7df3",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/templates/autorizzazione_acquisto.tex",
+          "first": 1,
+          "last": 34
+        },
+        {
+          "source": "Relazione_SWE/capitoli/2a_casi_uso.tex",
+          "first": 28,
+          "last": 29
+        }
+      ]
+    },
+    "current": {
+      "id": "2.2.5",
+      "level": "subsection",
+      "star": false,
+      "title": "UC-04 --- Autorizzare una richiesta di vendita al cliente",
+      "source": "docs/relazione/capitoli/2_template.tex",
+      "line": 197,
+      "offset": 369,
+      "content_sha256": "ea1e98af9bfb853c8baa89b61be76cf8db6b225a90b8419ad51d6055b3774e7f",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_template.tex",
+          "first": 197,
+          "last": 237
+        }
+      ]
+    },
+    "treatment": "**Ricollocare.** UC-04: approvazione o rifiuto del venditore, scadenza e rimborso; distinguere autorizzazione e saldo senza rinumerare il caso d'uso.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.2.6",
+    "original": {
+      "id": "2.2.6",
+      "level": "subsection",
+      "star": false,
+      "title": "Gestire lo sconto su un veicolo",
+      "source": "Relazione_SWE/templates/sconto_veicolo.tex",
+      "line": 1,
+      "offset": 291,
+      "content_sha256": "cd8d6f559d58c65e351d711996f354fce3dc28328ac5dcf66dd9a2d283770fa8",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/templates/sconto_veicolo.tex",
+          "first": 1,
+          "last": 35
+        },
+        {
+          "source": "Relazione_SWE/capitoli/2a_casi_uso.tex",
+          "first": 31,
+          "last": 31
+        },
+        {
+          "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+          "first": 1,
+          "last": 1
+        }
+      ]
+    },
+    "current": {
+      "id": "2.2.6",
+      "level": "subsection",
+      "star": false,
+      "title": "UC-06 --- Gestire lo sconto su un veicolo",
+      "source": "docs/relazione/capitoli/2_template.tex",
+      "line": 238,
+      "offset": 410,
+      "content_sha256": "fb8863ab12a44f5880316bfdb96ffe9019c061583d3e7b5262113e3fff9ad5a6",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_template.tex",
+          "first": 238,
+          "last": 274
+        },
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 60,
+          "last": 101
+        }
+      ]
+    },
+    "treatment": "**Ricollocare.** Scheda UC-06: sconti su modello e veicolo, intervallo 0–50, massimo non cumulato, inserimento/rimozione e accordi già fissati.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.3",
+    "original": {
+      "id": "2.3",
+      "level": "section",
+      "star": false,
+      "title": "Mockups",
+      "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+      "line": 2,
+      "offset": 328,
+      "content_sha256": "e1b644efb16a2a3504185b5cc0031d20a6cbfa30ffa334d2c0e5b387341f1ba3",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+          "first": 2,
+          "last": 137
+        }
+      ]
+    },
+    "current": {
+      "id": "2.3",
+      "level": "section",
+      "star": false,
+      "title": "Mockups",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 102,
+      "offset": 489,
+      "content_sha256": "2e3271af4544fb3f9a422e11bbbc2fa2bb15f354daa18066d4b6058083b4d083",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 102,
+          "last": 325
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Stessi quattro gruppi e dettagli per funzione; screenshot correnti con spiegazione di input, azione, risultato e limiti, evitando immagini storiche presentate come attuali.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.3.1",
+    "original": {
+      "id": "2.3.1",
+      "level": "subsection",
+      "star": false,
+      "title": "Autenticazione",
+      "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+      "line": 18,
+      "offset": 344,
+      "content_sha256": "137c31f8d656c19eed4bd03344e0a14ec5401e45dc6c9c631adda8d771baf46e",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+          "first": 18,
+          "last": 38
+        }
+      ]
+    },
+    "current": {
+      "id": "2.3.1",
+      "level": "subsection",
+      "star": false,
+      "title": "Autenticazione",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 119,
+      "offset": 506,
+      "content_sha256": "be85646ecf0f4da069e84225fbdafb4e1e632b567f9770ba159eee1bbe581b0d",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 119,
+          "last": 146
+        }
+      ]
+    },
+    "treatment": "**Riorganizzare.** Distinguere ingresso, accesso e registrazione pur condividendo LoginView; riusare le immagini 01–02 senza duplicazioni inutili.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.3.1.1",
+    "original": {
+      "id": "2.3.1.1",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Schermata iniziale",
+      "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+      "line": 21,
+      "offset": 347,
+      "content_sha256": "2a46ad6bbd70892247b610fd446834d45ef204168a8b2081d750253265181f25",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+          "first": 21,
+          "last": 26
+        }
+      ]
+    },
+    "current": {
+      "id": "2.3.1.1",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Schermata iniziale",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 123,
+      "offset": 510,
+      "content_sha256": "4fdaf4ea620728263463b97c8e2b6bcaae174c86df905e68519bb5edd3a85c7f",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 123,
+          "last": 129
+        }
+      ]
+    },
+    "treatment": "**Adattare.** La vista iniziale è LoginView; dichiarare l'assenza di una Welcome Page separata e richiamare lo screenshot dell'accesso.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.3.1.2",
+    "original": {
+      "id": "2.3.1.2",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Accesso",
+      "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+      "line": 27,
+      "offset": 353,
+      "content_sha256": "0e87edd196a686cee70acd075720d66715bfc5148f280ae96a0a25f6478c20ff",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+          "first": 27,
+          "last": 32
+        }
+      ]
+    },
+    "current": {
+      "id": "2.3.1.2",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Accesso",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 130,
+      "offset": 517,
+      "content_sha256": "5540d036e10c9b3ddff1efba5eb230d7b288c960ef3805c37b0dbbcdacef24ff",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 130,
+          "last": 136
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Email, password, esito ed ingresso nella dashboard del ruolo; screenshot e gestione dell'errore, senza scelta pubblica del ruolo.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.3.1.3",
+    "original": {
+      "id": "2.3.1.3",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Registrazione",
+      "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+      "line": 33,
+      "offset": 359,
+      "content_sha256": "d4161b45da0baef07504b9f3c9e6c5f6e1b77064b44762c8f305f02db7159af4",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+          "first": 33,
+          "last": 38
+        }
+      ]
+    },
+    "current": {
+      "id": "2.3.1.3",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Registrazione",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 137,
+      "offset": 524,
+      "content_sha256": "b34ff63c85b3369992d58e8cb8a0277acd6da78b9bedb9a92d698b740fa0e941",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 137,
+          "last": 146
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Anagrafica e credenziali del solo cliente, creazione del conto e risultato; personale già nel DB, senza simulare un form staff.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.3.2",
+    "original": {
+      "id": "2.3.2",
+      "level": "subsection",
+      "star": false,
+      "title": "Area Customer",
+      "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+      "line": 39,
+      "offset": 365,
+      "content_sha256": "53a8bca2fb16f9f7466dc903aec1a34542e7470f778c0d73836ef5910a9eef81",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+          "first": 39,
+          "last": 77
+        }
+      ]
+    },
+    "current": {
+      "id": "2.3.2",
+      "level": "subsection",
+      "star": false,
+      "title": "Area Customer",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 147,
+      "offset": 534,
+      "content_sha256": "e8fe7d3f877227d8a1fb49ef32b29956c4c147fbe7ef9cff18caf9311c0e7282",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 147,
+          "last": 221
+        }
+      ]
+    },
+    "treatment": "**Riorganizzare.** Separare le sei funzioni originali, descrivendo tab e dialoghi attuali; la stessa schermata può essere richiamata da più argomenti.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.3.2.1",
+    "original": {
+      "id": "2.3.2.1",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Catalogo veicoli",
+      "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+      "line": 42,
+      "offset": 368,
+      "content_sha256": "c9927a77047c5103b592fbf1681e57439dedef266822bc1bcf1c3968b5d869c6",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+          "first": 42,
+          "last": 47
+        }
+      ]
+    },
+    "current": {
+      "id": "2.3.2.1",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Catalogo veicoli",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 152,
+      "offset": 539,
+      "content_sha256": "7cc0ca207e102910b0c13d031439135d798341eaab5728ce748ff994733890d1",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 152,
+          "last": 164
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Cataloghi vendita/noleggio, dati mostrati, prezzi, selezione del veicolo e comandi disponibili.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.3.2.2",
+    "original": {
+      "id": "2.3.2.2",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Acquisti e richieste",
+      "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+      "line": 48,
+      "offset": 374,
+      "content_sha256": "5a14bd433f6fece03c79221e7844da6bd7da1822af26cb446832dc8f916b8d39",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+          "first": 48,
+          "last": 53
+        }
+      ]
+    },
+    "current": {
+      "id": "2.3.2.2",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Vendite al cliente e richieste",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 165,
+      "offset": 552,
+      "content_sha256": "7fe4a42fe6c162fed4e07e6e40d1b944a112b58919ed465426c3ea190f082e43",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 165,
+          "last": 176
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Richieste aperte, totale/acconto/residuo, saldo dopo autorizzazione e consultazione delle proprie operazioni; distinguere il registro economico.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.3.2.3",
+    "original": {
+      "id": "2.3.2.3",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Noleggi e test drive",
+      "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+      "line": 54,
+      "offset": 380,
+      "content_sha256": "f07c887476774aa533286516de21c536a876bb3c825931704f8f0f1be7e60661",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+          "first": 54,
+          "last": 59
+        }
+      ]
+    },
+    "current": {
+      "id": "2.3.2.3",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Noleggi e test drive",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 177,
+      "offset": 564,
+      "content_sha256": "9bed04a62259b6ec6579d2afd41b2c354ba21fe41a82fa7224f133e4684c1b85",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 177,
+          "last": 192
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Dialoghi di test drive e noleggio, data/ora o intervallo, costo, prenotazioni del cliente e annullamento del test drive.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.3.2.4",
+    "original": {
+      "id": "2.3.2.4",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Proposta di vendita del proprio veicolo",
+      "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+      "line": 60,
+      "offset": 386,
+      "content_sha256": "951e3ffa147cc24ad4fac0e01d75e9a6d92f2fc21c39ec6b5d284322783e34be",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+          "first": 60,
+          "last": 65
+        }
+      ]
+    },
+    "current": {
+      "id": "2.3.2.4",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Proposta di cessione del proprio veicolo",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 193,
+      "offset": 580,
+      "content_sha256": "74360958d615adaea0483ea43b36e652d63bac9d85ec8f4d0556f407483d18a3",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 193,
+          "last": 202
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Form, valutazione e invio della proposta; la concessionaria acquista dal cliente e il venditore decide l'esito.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.3.2.5",
+    "original": {
+      "id": "2.3.2.5",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Conto dimostrativo",
+      "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+      "line": 66,
+      "offset": 392,
+      "content_sha256": "d729dc1b1bdee1993d74459363df4d439dcba52588d8ca0f7c2c6563303667de",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+          "first": 66,
+          "last": 71
+        }
+      ]
+    },
+    "current": {
+      "id": "2.3.2.5",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Conto dimostrativo",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 203,
+      "offset": 590,
+      "content_sha256": "26bb3da8adfd60dd8a81288621e844130e343ba75548d7306189040d0c43d715",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 203,
+          "last": 211
+        }
+      ]
+    },
+    "treatment": "**Adattare.** Saldo e ricarica demo dal comando disponibile; non descrivere una scheda bancaria o un prelievo autonomo ereditati dalla vecchia UI.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.3.2.6",
+    "original": {
+      "id": "2.3.2.6",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Profilo",
+      "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+      "line": 72,
+      "offset": 398,
+      "content_sha256": "c47bb6075753039d62cccac5cbee31d92be577b79b7671d525ec0f9ffddc98c8",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+          "first": 72,
+          "last": 77
+        }
+      ]
+    },
+    "current": {
+      "id": "2.3.2.6",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Profilo",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 212,
+      "offset": 599,
+      "content_sha256": "9156ceff89865ca5ceb07f49374656b5994cf7abf2f344e3ece65560e855f683",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 212,
+          "last": 221
+        }
+      ]
+    },
+    "treatment": "**Adattare.** Gestione Account: email, password ed eliminazione con conferma; dialogo comune invece di una scheda Profilo separata.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.3.3",
+    "original": {
+      "id": "2.3.3",
+      "level": "subsection",
+      "star": false,
+      "title": "Area Salesman",
+      "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+      "line": 78,
+      "offset": 404,
+      "content_sha256": "f667bc5b54d88fbf42cba8a6b0a2cab652125ec2b3dd1b7e470f7d8f45feba6a",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+          "first": 78,
+          "last": 110
+        }
+      ]
+    },
+    "current": {
+      "id": "2.3.3",
+      "level": "subsection",
+      "star": false,
+      "title": "Area Salesman",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 222,
+      "offset": 609,
+      "content_sha256": "15c7a775cfb08695df10f127e10f5c059f222421edcaabcd4dc6e98e9fc9474f",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 222,
+          "last": 271
+        }
+      ]
+    },
+    "treatment": "**Riorganizzare.** Riprendere le cinque funzioni originali distinguendo richieste, inventario, gestione account e consultazione non implementata.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.3.3.1",
+    "original": {
+      "id": "2.3.3.1",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Veicoli in attesa",
+      "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+      "line": 81,
+      "offset": 407,
+      "content_sha256": "82ba0b20eff9253f8b2edc8d450c15f1b027b564802ed6a9c4cb6bccdd7def61",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+          "first": 81,
+          "last": 86
+        }
+      ]
+    },
+    "current": {
+      "id": "2.3.3.1",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Proposte di cessione in attesa",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 226,
+      "offset": 613,
+      "content_sha256": "f441a929e5ce9587d000cd0a21ec3b357fd70c6f69da26c790d416fee21259d0",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 226,
+          "last": 235
+        }
+      ]
+    },
+    "treatment": "**Adattare.** Le richieste PURCHASE sono nella stessa tabella delle SALE; mostrare filtro/tipologia e approvazione/rifiuto senza inventare una tab separata.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.3.3.2",
+    "original": {
+      "id": "2.3.3.2",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Richieste di acquisto",
+      "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+      "line": 87,
+      "offset": 413,
+      "content_sha256": "340953102b9c1cf2605390bb135b08214deb263ab0f22c6c5ba727b735be5703",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+          "first": 87,
+          "last": 92
+        }
+      ]
+    },
+    "current": {
+      "id": "2.3.3.2",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Richieste di vendita al cliente",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 236,
+      "offset": 623,
+      "content_sha256": "5326a94448e2ee202896d1b53110652bec8c4025503d60e486e19b67795699d7",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 236,
+          "last": 244
+        }
+      ]
+    },
+    "treatment": "**Adattare.** Autorizzazione/rifiuto delle SALE, dati economici e successivo saldo; richiamare la stessa figura delle richieste.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.3.3.3",
+    "original": {
+      "id": "2.3.3.3",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Stato dei veicoli",
+      "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+      "line": 93,
+      "offset": 419,
+      "content_sha256": "b23195e7f77eb241e482983eeac4a874e748fa4259f32b8d1d8c1116ff9cb957",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+          "first": 93,
+          "last": 98
+        }
+      ]
+    },
+    "current": {
+      "id": "2.3.3.3",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Stato dei veicoli",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 245,
+      "offset": 632,
+      "content_sha256": "f51e4684854e87254c79c2cab6e3982d41c93f4d0d3b0cb98b3774c76990b32e",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 245,
+          "last": 253
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Cambio SALE/RENT, rifiuto con noleggio in corso e rimborsi dei futuri; distinguere la destinazione dalle altre transizioni di stato.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.3.3.4",
+    "original": {
+      "id": "2.3.3.4",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Panoramica prenotazioni",
+      "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+      "line": 99,
+      "offset": 425,
+      "content_sha256": "d7750546f92c1f3e1d1b5c8b4df6f5f49e617fd742b07a8f3d066444a3004d9f",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+          "first": 99,
+          "last": 104
+        }
+      ]
+    },
+    "current": {
+      "id": "2.3.3.4",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Panoramica prenotazioni: limite attuale",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 254,
+      "offset": 641,
+      "content_sha256": "9acd2d03922fc6fb87f665a12ad1ad0c87d29dd62b957d26ad38edc5de3b1956",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 254,
+          "last": 260
+        }
+      ]
+    },
+    "treatment": "**Esplicitare limite.** Conservare il punto del percorso originale spiegando che il venditore non dispone della vecchia panoramica; niente screenshot storico o nuova funzionalità.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.3.3.5",
+    "original": {
+      "id": "2.3.3.5",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Profilo",
+      "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+      "line": 105,
+      "offset": 431,
+      "content_sha256": "43da9be7c08d4c9411726ba85cb0c330d35041df3a4a287a8ca6655703bcee43",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+          "first": 105,
+          "last": 110
+        }
+      ]
+    },
+    "current": {
+      "id": "2.3.3.5",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Profilo",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 261,
+      "offset": 648,
+      "content_sha256": "4afa396e1b79b9585056d545e01e3d38c7f5dd113fbbd9d138b7cb8b58f76b4d",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 261,
+          "last": 271
+        }
+      ]
+    },
+    "treatment": "**Adattare.** Descrivere il dialogo comune per il venditore e i vincoli dell'identità; riscontrare l'apertura dalla sua dashboard, senza presumere uno screenshot dedicato già disponibile.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.3.4",
+    "original": {
+      "id": "2.3.4",
+      "level": "subsection",
+      "star": false,
+      "title": "Area Manager",
+      "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+      "line": 111,
+      "offset": 437,
+      "content_sha256": "ca7f299601bf51422f6b845d23f4566417164692cd43877b09a7f0f192811dee",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+          "first": 111,
+          "last": 137
+        }
+      ]
+    },
+    "current": {
+      "id": "2.3.4",
+      "level": "subsection",
+      "star": false,
+      "title": "Area Manager",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 272,
+      "offset": 659,
+      "content_sha256": "e82ddbf0b909af3c2200268f38d0fc0882f810215894e149c87bca96de9b7794",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 272,
+          "last": 325
+        }
+      ]
+    },
+    "treatment": "**Riorganizzare.** Riprendere parco veicoli, marche/modelli, registro e profilo; gli sconti della UI attuale sono una scheda distinta ma restano spiegati presso le rispettive funzioni.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.3.4.1",
+    "original": {
+      "id": "2.3.4.1",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Parco veicoli",
+      "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+      "line": 114,
+      "offset": 440,
+      "content_sha256": "c0003f0b701717189bacef6f845d26f2824618e4917ce35fa5497fd951e16c63",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+          "first": 114,
+          "last": 119
+        }
+      ]
+    },
+    "current": {
+      "id": "2.3.4.1",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Parco veicoli",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 278,
+      "offset": 665,
+      "content_sha256": "2a68286ec3edbb7398d92f891857583f243f9e0642e7243b9747a9814c70879a",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 278,
+          "last": 291
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Veicoli, base automatica/manuale, prezzi, inserimento/rimozione e sconto individuale con rinvio alla scheda Sconti.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.3.4.2",
+    "original": {
+      "id": "2.3.4.2",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Marche e modelli",
+      "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+      "line": 120,
+      "offset": 446,
+      "content_sha256": "9671cb5add3b121b2923aa092ed4344c3ec533fdd9cac0387613948ea607d3b2",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+          "first": 120,
+          "last": 125
+        }
+      ]
+    },
+    "current": {
+      "id": "2.3.4.2",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Marche e modelli",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 292,
+      "offset": 679,
+      "content_sha256": "d1f81f0d2da59c4b9f396325bcb1982a783f8cf7c49b8a07b185cfaf940d8aa8",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 292,
+          "last": 304
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Due tab attuali per marchi e modelli; base modello, anno, manutenzione e sconto modello, senza confonderli con lo sconto sul veicolo.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.3.4.3",
+    "original": {
+      "id": "2.3.4.3",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Registro delle operazioni",
+      "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+      "line": 126,
+      "offset": 452,
+      "content_sha256": "14a8f6e28d3bd9995705ae4c60aea34483ea0afc2ac974eb9c3211650ddf46a2",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+          "first": 126,
+          "last": 131
+        }
+      ]
+    },
+    "current": {
+      "id": "2.3.4.3",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Registro delle operazioni",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 305,
+      "offset": 692,
+      "content_sha256": "cd0c72db86a2320a352b96e749e647355ac2ad80efd99103c4b59578e281e8e8",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 305,
+          "last": 314
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** SALE/PURCHASE/PENALTY con importi non negativi e punto di vista della concessionaria; i noleggi non sono automaticamente righe di Sale.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.3.4.4",
+    "original": {
+      "id": "2.3.4.4",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Profilo",
+      "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+      "line": 132,
+      "offset": 458,
+      "content_sha256": "086698dc58cd816998f910844ef3a3d19a770e791ee3d86f5a506c8dda7fbe38",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+          "first": 132,
+          "last": 137
+        }
+      ]
+    },
+    "current": {
+      "id": "2.3.4.4",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Profilo",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 315,
+      "offset": 702,
+      "content_sha256": "247d516aa77adf58730691a677608fffa7b5acb58c7132be581399739dec2fcb",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 315,
+          "last": 325
+        }
+      ]
+    },
+    "treatment": "**Adattare.** Email, password ed eliminazione del manager nel dialogo condiviso; verificare la vista corrente e riusare le figure solo se rappresentative.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.4",
+    "original": {
+      "id": "2.4",
+      "level": "section",
+      "star": false,
+      "title": "Page Navigation Diagram",
+      "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+      "line": 138,
+      "offset": 464,
+      "content_sha256": "68e84b31ecf7176696d7721c4e222157cda7bb37c6d63d965b7e1d88656dcb24",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2b_interfaccia.tex",
+          "first": 138,
+          "last": 144
+        },
+        {
+          "source": "Relazione_SWE/capitoli/2c_package_diagram.tex",
+          "first": 1,
+          "last": 1
+        }
+      ]
+    },
+    "current": {
+      "id": "2.4",
+      "level": "section",
+      "star": false,
+      "title": "Page Navigation Diagram",
+      "source": "docs/relazione/capitoli/2_funzioni.tex",
+      "line": 326,
+      "offset": 713,
+      "content_sha256": "424d6fd8a9879fb2281ae098da6aa1f86d22bc259e540e5348c0df97c1df6efe",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_funzioni.tex",
+          "first": 326,
+          "last": 377
+        },
+        {
+          "source": "docs/relazione/capitoli/2_progettazione.tex",
+          "first": 8,
+          "last": 11
+        },
+        {
+          "source": "docs/relazione/capitoli/2_architettura.tex",
+          "first": 1,
+          "last": 1
+        }
+      ]
+    },
+    "treatment": "**Mantenere.** Tavola degli autori corretta e percorsi dei tre ruoli; distinguere Scene, tab, dialoghi, annullamento, logout e rientro dopo eliminazione dell'identità.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.5",
+    "original": {
+      "id": "2.5",
+      "level": "section",
+      "star": false,
+      "title": "Package Diagram",
+      "source": "Relazione_SWE/capitoli/2c_package_diagram.tex",
+      "line": 2,
+      "offset": 472,
+      "content_sha256": "d8adba627c6c11ee51d915ffd22747780c891f1ed25d89021b2bea82e5142960",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2c_package_diagram.tex",
+          "first": 2,
+          "last": 16
+        },
+        {
+          "source": "Relazione_SWE/capitoli/2c_class_diagram.tex",
+          "first": 1,
+          "last": 1
+        }
+      ]
+    },
+    "current": {
+      "id": "2.5",
+      "level": "section",
+      "star": false,
+      "title": "Package Diagram",
+      "source": "docs/relazione/capitoli/2_architettura.tex",
+      "line": 2,
+      "offset": 770,
+      "content_sha256": "cd60ba1d1862ac2589c27be197acdcaed104cac28c8bbce966ea39ea01cf54c8",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_architettura.tex",
+          "first": 2,
+          "last": 46
+        }
+      ]
+    },
+    "treatment": "**Mantenere.** Undici package di produzione, composizione e dipendenze reali; motivazione dei confini e limiti della separazione, con tavola PKG nel corpo.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.5.a",
+    "original": {
+      "id": "2.5.a",
+      "level": "subsection",
+      "star": true,
+      "title": "Il dominio non dipende dagli altri livelli",
+      "source": "Relazione_SWE/capitoli/2c_package_diagram.tex",
+      "line": 12,
+      "offset": 482,
+      "content_sha256": "c09af538584ea6329ceb8b9075861cf822040578d3d352904f8ce853839ac75a",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2c_package_diagram.tex",
+          "first": 12,
+          "last": 16
+        },
+        {
+          "source": "Relazione_SWE/capitoli/2c_class_diagram.tex",
+          "first": 1,
+          "last": 1
+        }
+      ]
+    },
+    "current": {
+      "id": "2.5.a",
+      "level": "subsection",
+      "star": true,
+      "title": "Il dominio non dipende dagli altri livelli",
+      "source": "docs/relazione/capitoli/2_architettura.tex",
+      "line": 16,
+      "offset": 784,
+      "content_sha256": "2dcdcd0d81cfbad3832713ac361c16a06ec46453b7738e471468f9833fa91c6a",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_architettura.tex",
+          "first": 16,
+          "last": 46
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Riprendere la sottosezione non numerata: nessun import verso gli altri livelli applicativi, ma contratto di navigazione degli utenti; non attribuire indipendenza concettuale assoluta.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.6",
+    "original": {
+      "id": "2.6",
+      "level": "section",
+      "star": false,
+      "title": "Class Diagram",
+      "source": "Relazione_SWE/capitoli/2c_class_diagram.tex",
+      "line": 2,
+      "offset": 488,
+      "content_sha256": "ec884aa31f2a2c18cf305230d390980e5a292fe05f50d620b5464e65b399da27",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2c_class_diagram.tex",
+          "first": 2,
+          "last": 47
+        }
+      ]
+    },
+    "current": {
+      "id": "2.6",
+      "level": "section",
+      "star": false,
+      "title": "Class Diagram",
+      "source": "docs/relazione/capitoli/2_architettura.tex",
+      "line": 47,
+      "offset": 815,
+      "content_sha256": "78caeff5d4ba402ed1d30b4b618d84ad610a1f4cb23f8adb2f5ab09c365f4b09",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_architettura.tex",
+          "first": 47,
+          "last": 171
+        },
+        {
+          "source": "docs/relazione/capitoli/2_progettazione.tex",
+          "first": 13,
+          "last": 16
+        },
+        {
+          "source": "docs/relazione/capitoli/2_sequenze.tex",
+          "first": 1,
+          "last": 1
+        }
+      ]
+    },
+    "treatment": "**Riorganizzare.** Mantenere i quattro gruppi originali; i quattro diagrammi originali rifatti/riadattati nel corpo, uno per gruppo e tutte le tavole di dettaglio in B, coprendo gli undici package.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.6.1",
+    "original": {
+      "id": "2.6.1",
+      "level": "subsection",
+      "star": false,
+      "title": "Domain Model",
+      "source": "Relazione_SWE/capitoli/2c_class_diagram.tex",
+      "line": 6,
+      "offset": 492,
+      "content_sha256": "3a3b352f6337f9b057ceae749e34c8f0d0c92b0811c62083c903011a6e6f77bd",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2c_class_diagram.tex",
+          "first": 6,
+          "last": 16
+        }
+      ]
+    },
+    "current": {
+      "id": "2.6.1",
+      "level": "subsection",
+      "star": false,
+      "title": "Domain Model",
+      "source": "docs/relazione/capitoli/2_architettura.tex",
+      "line": 62,
+      "offset": 830,
+      "content_sha256": "72a1c6880b221821112cb5041af9539c1b6515dff9ac67d1e2b9fcd52315e104",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_architettura.tex",
+          "first": 62,
+          "last": 95
+        }
+      ]
+    },
+    "treatment": "**Riorganizzare.** Gerarchia utenti, conto, catalogo, sconti e operazioni; relazioni per ID distinte da riferimenti reali e invarianti spiegate.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.6.2",
+    "original": {
+      "id": "2.6.2",
+      "level": "subsection",
+      "star": false,
+      "title": "Business Layer",
+      "source": "Relazione_SWE/capitoli/2c_class_diagram.tex",
+      "line": 17,
+      "offset": 503,
+      "content_sha256": "b87a2d9f4cec20a970262ad2a8ab05be222b175837acb445cf34edfd079856ec",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2c_class_diagram.tex",
+          "first": 17,
+          "last": 27
+        }
+      ]
+    },
+    "current": {
+      "id": "2.6.2",
+      "level": "subsection",
+      "star": false,
+      "title": "Business Layer",
+      "source": "docs/relazione/capitoli/2_architettura.tex",
+      "line": 96,
+      "offset": 864,
+      "content_sha256": "50287c692b6505e85cab7829f56b0029a3763eaaf477e8431ed0cd3762988c69",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_architettura.tex",
+          "first": 96,
+          "last": 114
+        }
+      ]
+    },
+    "treatment": "**Riorganizzare.** Servizi, composizione, prezzi, sicurezza ed eventi; rifare/riadattare la tavola originale dei servizi nel corpo oltre ai dettagli dell'Observer.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.6.3",
+    "original": {
+      "id": "2.6.3",
+      "level": "subsection",
+      "star": false,
+      "title": "DAO",
+      "source": "Relazione_SWE/capitoli/2c_class_diagram.tex",
+      "line": 28,
+      "offset": 514,
+      "content_sha256": "5c26d44fa6775ed6dad3b1ea888a5e68d35406f0e06b04f6c2a205b1c389b74c",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2c_class_diagram.tex",
+          "first": 28,
+          "last": 38
+        }
+      ]
+    },
+    "current": {
+      "id": "2.6.3",
+      "level": "subsection",
+      "star": false,
+      "title": "DAO",
+      "source": "docs/relazione/capitoli/2_architettura.tex",
+      "line": 115,
+      "offset": 883,
+      "content_sha256": "9264a48269ec49011fceafc09d77df96065a5e0b0c38c3631e4572332c8799c0",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_architettura.tex",
+          "first": 115,
+          "last": 139
+        }
+      ]
+    },
+    "treatment": "**Ricollocare.** Contratti DAO, implementazioni e DatabaseManager; tavola originale rifatta/riadattata nel corpo, connessione esplicita e assenza delle vecchie factory/UnitOfWork.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.6.4",
+    "original": {
+      "id": "2.6.4",
+      "level": "subsection",
+      "star": false,
+      "title": "Presentation Layer",
+      "source": "Relazione_SWE/capitoli/2c_class_diagram.tex",
+      "line": 39,
+      "offset": 525,
+      "content_sha256": "8da78e8a78871688d6e874c47c6ef4df56d37f0efd83e1f3312c7bff08a95004",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2c_class_diagram.tex",
+          "first": 39,
+          "last": 47
+        }
+      ]
+    },
+    "current": {
+      "id": "2.6.4",
+      "level": "subsection",
+      "star": false,
+      "title": "Presentation Layer",
+      "source": "docs/relazione/capitoli/2_architettura.tex",
+      "line": 140,
+      "offset": 908,
+      "content_sha256": "5d5427c2a42f054f4d33f5e4bc9250958990b81eaa580c61ecf951a6043d9475",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_architettura.tex",
+          "first": 140,
+          "last": 171
+        },
+        {
+          "source": "docs/relazione/capitoli/2_progettazione.tex",
+          "first": 13,
+          "last": 16
+        },
+        {
+          "source": "docs/relazione/capitoli/2_sequenze.tex",
+          "first": 1,
+          "last": 1
+        }
+      ]
+    },
+    "treatment": "**Ricollocare.** Viste JavaFX, dialoghi, AsyncLoad e collegamento con App; tavola corrente nel corpo al posto dei controller FXML.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.7",
+    "original": {
+      "id": "2.7",
+      "level": "section",
+      "star": false,
+      "title": "Sequence Diagram",
+      "source": "Relazione_SWE/capitoli/2c_sequence_diagram.tex",
+      "line": 1,
+      "offset": 534,
+      "content_sha256": "e0d8f077f13cc7a6f70ad0cabd72b10aafcdf18bd0dd284b16306b2e1dcd8eaa",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2c_sequence_diagram.tex",
+          "first": 1,
+          "last": 35
+        },
+        {
+          "source": "Relazione_SWE/capitoli/2c_database.tex",
+          "first": 1,
+          "last": 1
+        }
+      ]
+    },
+    "current": {
+      "id": "2.7",
+      "level": "section",
+      "star": false,
+      "title": "Sequence Diagram",
+      "source": "docs/relazione/capitoli/2_sequenze.tex",
+      "line": 2,
+      "offset": 945,
+      "content_sha256": "07a9a1fd57850e2b1085f28e81887c720d094a20d26b4e953b433efdde3faae8",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_sequenze.tex",
+          "first": 2,
+          "last": 201
+        }
+      ]
+    },
+    "treatment": "**Mantenere.** Stessi tre flussi originali; rifare/riadattare le tre sequenze originali con la skill draw.io, usando i dettagli correnti come approfondimento, spiegando transazioni e alternative senza moltiplicare i casi principali.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.7.1",
+    "original": {
+      "id": "2.7.1",
+      "level": "subsection",
+      "star": false,
+      "title": "Acquisto di un veicolo",
+      "source": "Relazione_SWE/capitoli/2c_sequence_diagram.tex",
+      "line": 5,
+      "offset": 538,
+      "content_sha256": "6e48cfa1e86496bb98df55e4df70f029e443ebde46ab1980135c292ba1258d56",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2c_sequence_diagram.tex",
+          "first": 5,
+          "last": 15
+        }
+      ]
+    },
+    "current": {
+      "id": "2.7.1",
+      "level": "subsection",
+      "star": false,
+      "title": "Vendita di un veicolo al cliente",
+      "source": "docs/relazione/capitoli/2_sequenze.tex",
+      "line": 35,
+      "offset": 978,
+      "content_sha256": "1d12f0849b1f2bb410a07410848f199ccfa7e92354065422d9efde6b9ec58063",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_sequenze.tex",
+          "first": 35,
+          "last": 112
+        }
+      ]
+    },
+    "treatment": "**Adattare.** Acconto, esito, saldo e scadenza; totale persistito, ruoli e lock attuali, senza ripetere le vecchie anomalie come comportamento corrente.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.7.2",
+    "original": {
+      "id": "2.7.2",
+      "level": "subsection",
+      "star": false,
+      "title": "Prenotazione di un noleggio",
+      "source": "Relazione_SWE/capitoli/2c_sequence_diagram.tex",
+      "line": 16,
+      "offset": 549,
+      "content_sha256": "2070701d508663d74ea82b7ba26f9ebe13a8cb23627e21d08a396b586e343f66",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2c_sequence_diagram.tex",
+          "first": 16,
+          "last": 26
+        }
+      ]
+    },
+    "current": {
+      "id": "2.7.2",
+      "level": "subsection",
+      "star": false,
+      "title": "Prenotazione di un noleggio",
+      "source": "docs/relazione/capitoli/2_sequenze.tex",
+      "line": 113,
+      "offset": 1056,
+      "content_sha256": "fa5eeb273b472d8c81325d12bcd06a4ca7dcacfd2ad729e8fcb01a7ecdc44605",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_sequenze.tex",
+          "first": 113,
+          "last": 153
+        }
+      ]
+    },
+    "treatment": "**Mantenere.** Disponibilità, periodo incluso, costo, saldo, cancellazione Observer e confine transazionale del noleggio.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.7.3",
+    "original": {
+      "id": "2.7.3",
+      "level": "subsection",
+      "star": false,
+      "title": "Acquisizione di un veicolo del Customer",
+      "source": "Relazione_SWE/capitoli/2c_sequence_diagram.tex",
+      "line": 27,
+      "offset": 560,
+      "content_sha256": "279a832aeb95d81c2d8f81155c5f603a5ffa9a6652e3fcfa416d9d60349a8e8c",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2c_sequence_diagram.tex",
+          "first": 27,
+          "last": 35
+        },
+        {
+          "source": "Relazione_SWE/capitoli/2c_database.tex",
+          "first": 1,
+          "last": 1
+        }
+      ]
+    },
+    "current": {
+      "id": "2.7.3",
+      "level": "subsection",
+      "star": false,
+      "title": "Acquisto di un veicolo dal cliente",
+      "source": "docs/relazione/capitoli/2_sequenze.tex",
+      "line": 154,
+      "offset": 1097,
+      "content_sha256": "261e747830585f406664a625397a6c80b1361ac7abce59123244e8fd5f41d274",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_sequenze.tex",
+          "first": 154,
+          "last": 201
+        }
+      ]
+    },
+    "treatment": "**Adattare.** Proposta e decisione del venditore, stima persistita e storico, attribuzione corretta senza vecchia UnitOfWork annidata o venditore costante.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.8",
+    "original": {
+      "id": "2.8",
+      "level": "section",
+      "star": false,
+      "title": "Database",
+      "source": "Relazione_SWE/capitoli/2c_database.tex",
+      "line": 2,
+      "offset": 570,
+      "content_sha256": "7d049fde5d3b6efbc26e4438bbe05ae0b946a7aed8c02399517f3075c38bc6b3",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2c_database.tex",
+          "first": 2,
+          "last": 102
+        }
+      ]
+    },
+    "current": {
+      "id": "2.8",
+      "level": "section",
+      "star": false,
+      "title": "Database",
+      "source": "docs/relazione/capitoli/2_database.tex",
+      "line": 1,
+      "offset": 1145,
+      "content_sha256": "c586e0fefc4c5ef4396ed62380735fb14e108a7100d2e8651bfc2284eb3d8ea6",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_database.tex",
+          "first": 1,
+          "last": 253
+        },
+        {
+          "source": "docs/relazione/capitoli/2_progettazione.tex",
+          "first": 19,
+          "last": 21
+        }
+      ]
+    },
+    "treatment": "**Mantenere.** Conservare ER, modello relazionale e utenti/vincoli; mantenere distinta la spiegazione del dato dal mapping implementativo di 3.4.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.8.1",
+    "original": {
+      "id": "2.8.1",
+      "level": "subsection",
+      "star": false,
+      "title": "Schema ER",
+      "source": "Relazione_SWE/capitoli/2c_database.tex",
+      "line": 4,
+      "offset": 572,
+      "content_sha256": "68d63940b3d1c0046fe1d6fd62970cf1539872d4b3453a07c0a52903ab011bd3",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2c_database.tex",
+          "first": 4,
+          "last": 16
+        }
+      ]
+    },
+    "current": {
+      "id": "2.8.1",
+      "level": "subsection",
+      "star": false,
+      "title": "Schema ER",
+      "source": "docs/relazione/capitoli/2_database.tex",
+      "line": 9,
+      "offset": 1153,
+      "content_sha256": "68826fad5d8beec9efdc30b29d18dcf778b98f4c60a8ffd228169c822cf6856f",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_database.tex",
+          "first": 9,
+          "last": 59
+        }
+      ]
+    },
+    "treatment": "**Mantenere.** Tavola degli autori corretta, entità e cardinalità nei due versi, generalizzazione concettuale User distinta dal DDL.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.8.2",
+    "original": {
+      "id": "2.8.2",
+      "level": "subsection",
+      "star": false,
+      "title": "Modello relazionale",
+      "source": "Relazione_SWE/capitoli/2c_database.tex",
+      "line": 17,
+      "offset": 585,
+      "content_sha256": "97a138f45817d99cac8d450e595a74bb4cd5672a569847d4a81a6d598488be19",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2c_database.tex",
+          "first": 17,
+          "last": 95
+        }
+      ]
+    },
+    "current": {
+      "id": "2.8.2",
+      "level": "subsection",
+      "star": false,
+      "title": "Modello relazionale",
+      "source": "docs/relazione/capitoli/2_database.tex",
+      "line": 60,
+      "offset": 1204,
+      "content_sha256": "a2a1c9078cd5a8885830744d7868772c8e19fff0c0841dbdf7d5ebc95ad4d890",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_database.tex",
+          "first": 60,
+          "last": 210
+        }
+      ]
+    },
+    "treatment": "**Riorganizzare.** Tredici relazioni e tutti gli attributi, PK/FK, unicità, nullabilità e legenda; recuperare una lettura testuale dello schema accanto alle tavole correnti.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "2.8.3",
+    "original": {
+      "id": "2.8.3",
+      "level": "subsection",
+      "star": false,
+      "title": "Utenti, vincoli e semplificazioni",
+      "source": "Relazione_SWE/capitoli/2c_database.tex",
+      "line": 96,
+      "offset": 664,
+      "content_sha256": "236943947c3e6720d6c36bfbadff3c05cd1df85642867fdbdd2f33304df318c6",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/2c_database.tex",
+          "first": 96,
+          "last": 102
+        }
+      ]
+    },
+    "current": {
+      "id": "2.8.3",
+      "level": "subsection",
+      "star": false,
+      "title": "Utenti, vincoli e semplificazioni",
+      "source": "docs/relazione/capitoli/2_database.tex",
+      "line": 211,
+      "offset": 1355,
+      "content_sha256": "06ce6230b08354b6e1235726c9194953333a7d7ab0f3e73a03c307c3a8d673db",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/2_database.tex",
+          "first": 211,
+          "last": 253
+        },
+        {
+          "source": "docs/relazione/capitoli/2_progettazione.tex",
+          "first": 19,
+          "last": 21
+        }
+      ]
+    },
+    "treatment": "**Adattare.** Tre tabelle e vista user, sequenza condivisa con PK locali, enum nativi, vincoli temporali/economici, limiti email e predisposizione separata del DB.",
+    "verification": "docs/relazione/verifiche/ticket-10/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-10/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3",
+    "original": {
+      "id": "3",
+      "level": "chapter",
+      "star": false,
+      "title": "Implementazione",
+      "source": "Relazione_SWE/capitoli/3_implementazione.tex",
+      "line": 1,
+      "offset": 671,
+      "content_sha256": "587dd1a51f265148aaf4dd87c29445aabd7d4db4c0d52c17b1791bbcbb73940f",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3_implementazione.tex",
+          "first": 1,
+          "last": 3
+        },
+        {
+          "source": "Relazione_SWE/capitoli/3a_domain_model.tex",
+          "first": 1,
+          "last": 77
+        },
+        {
+          "source": "Relazione_SWE/capitoli/3b_business_layer.tex",
+          "first": 1,
+          "last": 39
+        },
+        {
+          "source": "Relazione_SWE/capitoli/3b_flussi.tex",
+          "first": 1,
+          "last": 47
+        },
+        {
+          "source": "Relazione_SWE/capitoli/3c_prezzi_sicurezza.tex",
+          "first": 1,
+          "last": 49
+        },
+        {
+          "source": "Relazione_SWE/capitoli/3a_presentazione_dominio.tex",
+          "first": 1,
+          "last": 35
+        },
+        {
+          "source": "Relazione_SWE/capitoli/3d_dao.tex",
+          "first": 1,
+          "last": 71
+        },
+        {
+          "source": "Relazione_SWE/capitoli/3e_pattern.tex",
+          "first": 1,
+          "last": 65
+        }
+      ]
+    },
+    "current": {
+      "id": "3",
+      "level": "chapter",
+      "star": false,
+      "title": "Implementazione",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 1,
+      "offset": 1401,
+      "content_sha256": "54fe904e8f44f78028c3087a5061430ca32ed4cb631a54fbcf14f7ee630a500e",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 1,
+          "last": 1345
+        }
+      ]
+    },
+    "treatment": "**Riorganizzare.** Stesse cinque sezioni e stessa progressione interna; riusare gli estratti validi e recuperare spiegazioni e frammenti significativi oggi accorpati.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.1",
+    "original": {
+      "id": "3.1",
+      "level": "section",
+      "star": false,
+      "title": "Domain Model",
+      "source": "Relazione_SWE/capitoli/3a_domain_model.tex",
+      "line": 1,
+      "offset": 674,
+      "content_sha256": "35e103aa624fb5a07f568fdf73f316f7f6c24ca67eaa3b95a1426d59bf486c7b",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3a_domain_model.tex",
+          "first": 1,
+          "last": 77
+        }
+      ]
+    },
+    "current": {
+      "id": "3.1",
+      "level": "section",
+      "star": false,
+      "title": "Domain Model",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 26,
+      "offset": 1426,
+      "content_sha256": "1df5828b5e8f0beac6b5212517f180f14934fc67c8f422159c91bb61966445ce",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 26,
+          "last": 226
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Passare dall'organizzazione per invarianti/gerarchie ai cinque argomenti originali; invarianti e identità si spiegano nelle entità cui appartengono.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.1.1",
+    "original": {
+      "id": "3.1.1",
+      "level": "subsection",
+      "star": false,
+      "title": "Users",
+      "source": "Relazione_SWE/capitoli/3a_domain_model.tex",
+      "line": 13,
+      "offset": 686,
+      "content_sha256": "a025ddfd9386d90874427f8ff764245e7db2b51e7c5e02c1ab27e101d3a5e930",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3a_domain_model.tex",
+          "first": 13,
+          "last": 19
+        }
+      ]
+    },
+    "current": {
+      "id": "3.1.1",
+      "level": "subsection",
+      "star": false,
+      "title": "Users",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 36,
+      "offset": 1436,
+      "content_sha256": "4db7499ce48abbb7048c9691f0662c6ff5c5f8f2aa7a6fba85d1a887ec6a3454",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 36,
+          "last": 65
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** User, AbstractUser, Client/Salesman/Manager e BankAccount: gerarchia reale, conto opzionalmente caricato, invarianti e identità per ID/ruolo.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.1.2",
+    "original": {
+      "id": "3.1.2",
+      "level": "subsection",
+      "star": false,
+      "title": "Vehicles",
+      "source": "Relazione_SWE/capitoli/3a_domain_model.tex",
+      "line": 20,
+      "offset": 693,
+      "content_sha256": "e5c7fb2202c8d1aa636dbea4a3fac7f56b98ffb93f73262c4d66d6b3a82116a8",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3a_domain_model.tex",
+          "first": 20,
+          "last": 42
+        }
+      ]
+    },
+    "current": {
+      "id": "3.1.2",
+      "level": "subsection",
+      "star": false,
+      "title": "Vehicles",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 66,
+      "offset": 1466,
+      "content_sha256": "bf8e7dfe7e8bfae13038b1aea3da99f8fcd0ff9d588977e7592532b4455fc33f",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 66,
+          "last": 121
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Brand, Model, Vehicle, PriceMode/VehicleState e gerarchia Discount; validazione prima della mutazione, ID e dati modificabili, stato locale distinto dai controlli concorrenti.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.1.3",
+    "original": {
+      "id": "3.1.3",
+      "level": "subsection",
+      "star": false,
+      "title": "Rentals",
+      "source": "Relazione_SWE/capitoli/3a_domain_model.tex",
+      "line": 43,
+      "offset": 716,
+      "content_sha256": "05cec9afa81d5aeb0ebca66e8489c142a01207d260923647a556ada6669ebf30",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3a_domain_model.tex",
+          "first": 43,
+          "last": 47
+        }
+      ]
+    },
+    "current": {
+      "id": "3.1.3",
+      "level": "subsection",
+      "star": false,
+      "title": "Rentals",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 122,
+      "offset": 1521,
+      "content_sha256": "5a1c34669fba0211339428289325dfa6201c7cf04bec0a051e4b7669eee904d6",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 122,
+          "last": 144
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Rent e TestDrive nel package operation: date, importi e fascia oraria effettiva; nessuna pretesa che le sole entità impediscano conflitti persistenti.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.1.4",
+    "original": {
+      "id": "3.1.4",
+      "level": "subsection",
+      "star": false,
+      "title": "Sales",
+      "source": "Relazione_SWE/capitoli/3a_domain_model.tex",
+      "line": 48,
+      "offset": 721,
+      "content_sha256": "cbc60d056cea820c44af0cad89f1fc15c0739bca3b5bb8613f1196da34085db4",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3a_domain_model.tex",
+          "first": 48,
+          "last": 73
+        }
+      ]
+    },
+    "current": {
+      "id": "3.1.4",
+      "level": "subsection",
+      "star": false,
+      "title": "Sales",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 145,
+      "offset": 1544,
+      "content_sha256": "28611f3302cab5f5f83a572dfcdd946a030fceac7a212c0179e90be53cfa1ee5",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 145,
+          "last": 211
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Request/RequestType e Sale/SaleType: accordo totale/acconto, stima, attribuzioni opzionali e importi non negativi; le tipologie non dipendono più dal segno.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.1.5",
+    "original": {
+      "id": "3.1.5",
+      "level": "subsection",
+      "star": false,
+      "title": "Observer",
+      "source": "Relazione_SWE/capitoli/3a_domain_model.tex",
+      "line": 74,
+      "offset": 747,
+      "content_sha256": "b2130973eb01439b278500a613de92fa676e8b9235af5d66e8550c52801f5cda",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3a_domain_model.tex",
+          "first": 74,
+          "last": 77
+        }
+      ]
+    },
+    "current": {
+      "id": "3.1.5",
+      "level": "subsection",
+      "star": false,
+      "title": "Eventi e contratto Observer",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 212,
+      "offset": 1609,
+      "content_sha256": "8039b02bdc8ef6f5e2c5eb75db02402facd06fc312964b30b8ce865121429576",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 212,
+          "last": 226
+        }
+      ]
+    },
+    "treatment": "**Ricollocare.** Presentare evento, observer e publisher nel package event, senza dichiararli parte di domain; l'effetto concreto e la transazione si approfondiscono in 3.2.6.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.2",
+    "original": {
+      "id": "3.2",
+      "level": "section",
+      "star": false,
+      "title": "Business Layer",
+      "source": "Relazione_SWE/capitoli/3b_business_layer.tex",
+      "line": 1,
+      "offset": 751,
+      "content_sha256": "cb0827c385aed8d2ac1cc1b1011e0a02765b4bd1b09879e4baf5011055dcd025",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3b_business_layer.tex",
+          "first": 1,
+          "last": 39
+        },
+        {
+          "source": "Relazione_SWE/capitoli/3b_flussi.tex",
+          "first": 1,
+          "last": 47
+        },
+        {
+          "source": "Relazione_SWE/capitoli/3c_prezzi_sicurezza.tex",
+          "first": 1,
+          "last": 49
+        }
+      ]
+    },
+    "current": {
+      "id": "3.2",
+      "level": "section",
+      "star": false,
+      "title": "Business Layer",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 227,
+      "offset": 1624,
+      "content_sha256": "360e90d5bd4659e12a666e71c3821801b66160c569362e66c72fdc2e281bc822",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 227,
+          "last": 742
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Ordine originale: coordinamento transazionale, responsabilità, quattro flussi, prezzi, identità/conto e Observer; estratti legati al caso spiegato.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.2.1",
+    "original": {
+      "id": "3.2.1",
+      "level": "subsection",
+      "star": false,
+      "title": "Core: unità di lavoro e transazioni",
+      "source": "Relazione_SWE/capitoli/3b_business_layer.tex",
+      "line": 14,
+      "offset": 764,
+      "content_sha256": "9582287bcc9a565d33edb01b486a1c188cc06545f5f80ec81759d9b9a0b1c6a7",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3b_business_layer.tex",
+          "first": 14,
+          "last": 35
+        }
+      ]
+    },
+    "current": {
+      "id": "3.2.1",
+      "level": "subsection",
+      "star": false,
+      "title": "Coordinamento e transazioni",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 233,
+      "offset": 1630,
+      "content_sha256": "8929445b090f4fdf6d33d8088957ea559497d1ada3b8d334d38a3e40c7974065",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 233,
+          "last": 312
+        }
+      ]
+    },
+    "treatment": "**Adattare.** DatabaseManager e callback Connection: commit, rollback, causa ed eccezioni soppresse; niente TransactionRunner o contratto UnitOfWork assenti.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.2.2",
+    "original": {
+      "id": "3.2.2",
+      "level": "subsection",
+      "star": false,
+      "title": "Services: responsabilità",
+      "source": "Relazione_SWE/capitoli/3b_business_layer.tex",
+      "line": 36,
+      "offset": 786,
+      "content_sha256": "71fac98ffbdef8524263fe1b55fbd8002449a2e6850f4e711a895e128eb02f51",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3b_business_layer.tex",
+          "first": 36,
+          "last": 39
+        }
+      ]
+    },
+    "current": {
+      "id": "3.2.2",
+      "level": "subsection",
+      "star": false,
+      "title": "Services: responsabilità",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 313,
+      "offset": 1708,
+      "content_sha256": "060f064e672279b90f6d6757ff9acda83223a693115efc47b0aec342e635019d",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 313,
+          "last": 343
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Responsabilità di Auth, Catalog, OperationQuery, PriceCalculator, Purchase, Rental, SaleToDealership e TestDrive; composizione esplicita e dipendenze reali.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.2.3",
+    "original": {
+      "id": "3.2.3",
+      "level": "subsection",
+      "star": false,
+      "title": "Services: flussi applicativi",
+      "source": "Relazione_SWE/capitoli/3b_flussi.tex",
+      "line": 1,
+      "offset": 790,
+      "content_sha256": "5eedcb1d8ece29aedef029dac13d9589287a456ac57f3ce956e5fa52db073f04",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3b_flussi.tex",
+          "first": 1,
+          "last": 47
+        }
+      ]
+    },
+    "current": {
+      "id": "3.2.3",
+      "level": "subsection",
+      "star": false,
+      "title": "Services: flussi applicativi",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 344,
+      "offset": 1739,
+      "content_sha256": "d7f8945314aed0e293240c103c81f08cd9e54833e8afe6b45cad79f81ab5d2cb",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 344,
+          "last": 560
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Quattro sottosottosezioni con sequenza applicativa, controlli, scritture, alternative ed esito; i rinvii ai diagrammi completano la spiegazione e non la sostituiscono.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.2.3.1",
+    "original": {
+      "id": "3.2.3.1",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Catalogo e test drive",
+      "source": "Relazione_SWE/capitoli/3b_flussi.tex",
+      "line": 4,
+      "offset": 793,
+      "content_sha256": "527b2dd9aaa14f27a73f0d457940980549a876130b7a0af8e3f567e1fef06db8",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3b_flussi.tex",
+          "first": 4,
+          "last": 22
+        }
+      ]
+    },
+    "current": {
+      "id": "3.2.3.1",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Catalogo e test drive",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 349,
+      "offset": 1744,
+      "content_sha256": "e4d5df4ddfce2152cb22a972c5237f45a011b1763f54d5bf16b5be0cf9c1a926",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 349,
+          "last": 405
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Letture catalogo e dati preparati; prenotazione test drive con fascia reale, limite attivi, idoneità e conflitti. Recuperare un frammento corrente del controllo significativo.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.2.3.2",
+    "original": {
+      "id": "3.2.3.2",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Noleggio con saldo del conto",
+      "source": "Relazione_SWE/capitoli/3b_flussi.tex",
+      "line": 23,
+      "offset": 812,
+      "content_sha256": "d2237bc70fa522af5ee34980edcd6017a7cc65b9985d14957f5ff75bd1639766",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3b_flussi.tex",
+          "first": 23,
+          "last": 34
+        }
+      ]
+    },
+    "current": {
+      "id": "3.2.3.2",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Noleggio con saldo del conto",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 406,
+      "offset": 1800,
+      "content_sha256": "8e5df86d428cdbc918faaef611fc37318a425d0783d8d1cef8856fa6057bac0b",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 406,
+          "last": 453
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Costo geometrico sui giorni inclusi, lock veicolo/cliente/conto, conflitti, addebito, salvataggio e Observer; distinguere prenotazione e cambio destinazione con rimborsi.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.2.3.3",
+    "original": {
+      "id": "3.2.3.3",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Richiesta di acquisto, saldo e penale",
+      "source": "Relazione_SWE/capitoli/3b_flussi.tex",
+      "line": 35,
+      "offset": 824,
+      "content_sha256": "7f25596517e32e4deff7b6652ecaf51bd414b65b2ed81dfcd04caa2a4bbf724e",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3b_flussi.tex",
+          "first": 35,
+          "last": 41
+        }
+      ]
+    },
+    "current": {
+      "id": "3.2.3.3",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Richiesta di vendita al cliente, saldo e penale",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 454,
+      "offset": 1847,
+      "content_sha256": "c8c4281691a9a9e8402b5decd69338c05e4eebcfb2b4aa1bfcea23a92f1e0c60",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 454,
+          "last": 515
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Acconto del 20%, totale fissato, approvazione, saldo, rifiuto con rimborso e scadenza con penale del 20% dell'acconto; controlli nel servizio e limiti delle letture.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.2.3.4",
+    "original": {
+      "id": "3.2.3.4",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Proposta di cessione del veicolo",
+      "source": "Relazione_SWE/capitoli/3b_flussi.tex",
+      "line": 42,
+      "offset": 831,
+      "content_sha256": "ef44f7a0fa3ec2e682d504e56703d082f64cbbc7b9982dcc4356295ee8f36018",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3b_flussi.tex",
+          "first": 42,
+          "last": 47
+        }
+      ]
+    },
+    "current": {
+      "id": "3.2.3.4",
+      "level": "subsubsection",
+      "star": false,
+      "title": "Proposta di cessione del veicolo",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 516,
+      "offset": 1908,
+      "content_sha256": "fddbcccc6afd7e06493b7426e0533daf60d1680eed20cbdf316c402cf127c46e",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 516,
+          "last": 560
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Proposta, preventivo/stima salvata, verifica VIN e ultima vendita al proponente, accettazione o rifiuto, accredito e storico; dichiarare il limite degli importi zero.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.2.4",
+    "original": {
+      "id": "3.2.4",
+      "level": "subsection",
+      "star": false,
+      "title": "Strategies: prezzi e sconti",
+      "source": "Relazione_SWE/capitoli/3c_prezzi_sicurezza.tex",
+      "line": 1,
+      "offset": 837,
+      "content_sha256": "30db1e192070f1d76f7346a3734461227553fb38161e63b1db05506e125325a1",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3c_prezzi_sicurezza.tex",
+          "first": 1,
+          "last": 32
+        }
+      ]
+    },
+    "current": {
+      "id": "3.2.4",
+      "level": "subsection",
+      "star": false,
+      "title": "Calcolo dei prezzi e sconti",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 561,
+      "offset": 1953,
+      "content_sha256": "4dd8573beb988aca124d5a04cb6136e017ddcbd1791003f01f47fbaa944d4d09",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 561,
+          "last": 658
+        }
+      ]
+    },
+    "treatment": "**Adattare.** PriceCalculatorService concreto; base automatica/manuale, massimo sconti, deprezzamenti, acconto, noleggio e stima con formule/esempi attuali. Nessuna strategia intercambiabile inventata.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.2.5",
+    "original": {
+      "id": "3.2.5",
+      "level": "subsection",
+      "star": false,
+      "title": "Security e Banking: autenticazione e conto",
+      "source": "Relazione_SWE/capitoli/3c_prezzi_sicurezza.tex",
+      "line": 33,
+      "offset": 869,
+      "content_sha256": "c17f787d488b92291df8a1c2d38909131d1345a4368b9f68a4180a5d2fd2e978",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3c_prezzi_sicurezza.tex",
+          "first": 33,
+          "last": 45
+        }
+      ]
+    },
+    "current": {
+      "id": "3.2.5",
+      "level": "subsection",
+      "star": false,
+      "title": "Autenticazione e conto dimostrativo",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 659,
+      "offset": 2050,
+      "content_sha256": "9ee81fd143317bc057019c765cd76923fce0a4056a3b957333c6c117bfa929c7",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 659,
+          "last": 710
+        }
+      ]
+    },
+    "treatment": "**Adattare.** AuthService e PasswordHasher/PBKDF2, registrazione del cliente e conto, ricarica e gestione dell'identità; saldo protetto e limiti dei controlli autorizzativi.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.2.6",
+    "original": {
+      "id": "3.2.6",
+      "level": "subsection",
+      "star": false,
+      "title": "Observer e gestione dell'inventario",
+      "source": "Relazione_SWE/capitoli/3c_prezzi_sicurezza.tex",
+      "line": 46,
+      "offset": 882,
+      "content_sha256": "8d896ea72b7e94968eb357468fc693043a7a19fd7fc85de6950f84a72702c4f1",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3c_prezzi_sicurezza.tex",
+          "first": 46,
+          "last": 49
+        }
+      ]
+    },
+    "current": {
+      "id": "3.2.6",
+      "level": "subsection",
+      "star": false,
+      "title": "Observer e gestione dell'inventario",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 711,
+      "offset": 2101,
+      "content_sha256": "8474604e3390f4f7839ff39d3099bc0f237698a546d262c81494b0694de89408",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 711,
+          "last": 742
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** TestDriveCancellationObserver sulla stessa Connection prima del commit: cancella tutti i test drive futuri, propaga errori e può causare rollback; differenza dal vecchio listener che ignorava eccezioni.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.3",
+    "original": {
+      "id": "3.3",
+      "level": "section",
+      "star": false,
+      "title": "Presentation Layer",
+      "source": "Relazione_SWE/capitoli/3a_presentazione_dominio.tex",
+      "line": 1,
+      "offset": 886,
+      "content_sha256": "01f82bdac60b79630aad8ad294c88c0af441c534a94cdeb064c611110fc1c36a",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3a_presentazione_dominio.tex",
+          "first": 1,
+          "last": 35
+        }
+      ]
+    },
+    "current": {
+      "id": "3.3",
+      "level": "section",
+      "star": false,
+      "title": "Presentation Layer",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 743,
+      "offset": 2132,
+      "content_sha256": "3d020174b26f0da8ffa315d8fb7b6678d3726dd7300866b9ec5a2a59ace0d1a4",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 743,
+          "last": 883
+        }
+      ]
+    },
+    "treatment": "**Riorganizzare.** Stesse tre responsabilità narrative, aggiornate dalle classi FXML/gateway a viste Java, servizi diretti e AsyncLoad.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.3.1",
+    "original": {
+      "id": "3.3.1",
+      "level": "subsection",
+      "star": false,
+      "title": "Controller e aree applicative",
+      "source": "Relazione_SWE/capitoli/3a_presentazione_dominio.tex",
+      "line": 4,
+      "offset": 889,
+      "content_sha256": "f1bed88f7d9b269bbcc296645837d1995499f3629968a560145718807166cd10",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3a_presentazione_dominio.tex",
+          "first": 4,
+          "last": 15
+        }
+      ]
+    },
+    "current": {
+      "id": "3.3.1",
+      "level": "subsection",
+      "star": false,
+      "title": "Viste e aree applicative",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 749,
+      "offset": 2138,
+      "content_sha256": "551bd7810713c255f6c06655f2ec24e81e85534d95fc0142e63ba2fa32d15299",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 749,
+          "last": 771
+        }
+      ]
+    },
+    "treatment": "**Adattare.** LoginView e tre dashboard, AccountManagementDialog e UiUtils; raccolta input, controlli e comandi per ruolo, senza AbstractController o FXML.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.3.2",
+    "original": {
+      "id": "3.3.2",
+      "level": "subsection",
+      "star": false,
+      "title": "Creazione dei controller e navigazione",
+      "source": "Relazione_SWE/capitoli/3a_presentazione_dominio.tex",
+      "line": 16,
+      "offset": 901,
+      "content_sha256": "03b4d2490680ed591fc290de1cf09abb68b3e4933851b20eab3c4eb4ecee099e",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3a_presentazione_dominio.tex",
+          "first": 16,
+          "last": 29
+        }
+      ]
+    },
+    "current": {
+      "id": "3.3.2",
+      "level": "subsection",
+      "star": false,
+      "title": "Creazione delle viste e navigazione",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 772,
+      "offset": 2161,
+      "content_sha256": "441c26cd05de1da7036e68fdfaa5e4ef1bc5cb8be399bbbbf6ae868be69b9f3c",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 772,
+          "last": 816
+        }
+      ]
+    },
+    "treatment": "**Adattare.** App e AppContext passano collaboratori e logout; openDashboard/UserDashboardNavigator selezionano il ruolo con double dispatch, senza Route o sessione globale.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.3.3",
+    "original": {
+      "id": "3.3.3",
+      "level": "subsection",
+      "star": false,
+      "title": "Gateway, dati della UI e aggiornamento",
+      "source": "Relazione_SWE/capitoli/3a_presentazione_dominio.tex",
+      "line": 30,
+      "offset": 915,
+      "content_sha256": "4d361e05f756a86c5db948998d68664b0c38b738f92a9184b2d087696217175c",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3a_presentazione_dominio.tex",
+          "first": 30,
+          "last": 35
+        }
+      ]
+    },
+    "current": {
+      "id": "3.3.3",
+      "level": "subsection",
+      "star": false,
+      "title": "Servizi, dati della UI e aggiornamento",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 817,
+      "offset": 2204,
+      "content_sha256": "52852fc1fa335a8bf067fd69a568ce6470eee6571c31cebafe63750da25a3114",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 817,
+          "last": 883
+        }
+      ]
+    },
+    "treatment": "**Adattare.** Invocazioni dirette, VehicleRow e letture collettive; AsyncLoad, risposta superata, uscita dalla Scene, errore/Riprova, scritture ancora sincrone e refresh dopo commit.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.4",
+    "original": {
+      "id": "3.4",
+      "level": "section",
+      "star": false,
+      "title": "Persistenza: livello DAO e mapping oggetti/tabelle",
+      "source": "Relazione_SWE/capitoli/3d_dao.tex",
+      "line": 1,
+      "offset": 921,
+      "content_sha256": "53bb6b29e01a81fef004e79186a467ab7b69bfe7daa30824417c6ca1a8e77823",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3d_dao.tex",
+          "first": 1,
+          "last": 71
+        }
+      ]
+    },
+    "current": {
+      "id": "3.4",
+      "level": "section",
+      "star": false,
+      "title": "Persistenza: livello DAO e mapping oggetti/tabelle",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 884,
+      "offset": 2270,
+      "content_sha256": "5713d6a776052e2018cf0feeb695b814cce89a03acf456321059e0194657d353",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 884,
+          "last": 1207
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Recuperare cinque sottosezioni: porte, utenti, operazioni, vincoli e connessione; riusare gli estratti JDBC e aggiungere spiegazioni mirate dove mancanti.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.4.1",
+    "original": {
+      "id": "3.4.1",
+      "level": "subsection",
+      "star": false,
+      "title": "Porte DAO e implementazioni JDBC",
+      "source": "Relazione_SWE/capitoli/3d_dao.tex",
+      "line": 4,
+      "offset": 924,
+      "content_sha256": "b82e7996dd7381fcc38ea7f8f56f2ca2baca6bea1344e395ee4448e9b1a8a5ce",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3d_dao.tex",
+          "first": 4,
+          "last": 16
+        }
+      ]
+    },
+    "current": {
+      "id": "3.4.1",
+      "level": "subsection",
+      "star": false,
+      "title": "Porte DAO e implementazioni JDBC",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 891,
+      "offset": 2277,
+      "content_sha256": "cd4724dfd86a15acc3995853e27653bb2d8e8e907b2b4059a6c7555daee50167",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 891,
+          "last": 963
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Dieci contratti DAO e Postgres*Dao, PreparedStatement, overload con/senza Connection, ritorni e numero di righe modificate; esempio attuale di contratto.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.4.2",
+    "original": {
+      "id": "3.4.2",
+      "level": "subsection",
+      "star": false,
+      "title": "Mapping degli utenti e vista unificata",
+      "source": "Relazione_SWE/capitoli/3d_dao.tex",
+      "line": 17,
+      "offset": 937,
+      "content_sha256": "f5cf85fd95098d2d69b1dddd524825ad4c55bc8d7b776e7779680588b32629da",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3d_dao.tex",
+          "first": 17,
+          "last": 33
+        }
+      ]
+    },
+    "current": {
+      "id": "3.4.2",
+      "level": "subsection",
+      "star": false,
+      "title": "Mapping degli utenti e vista unificata",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 964,
+      "offset": 2347,
+      "content_sha256": "fd9fa9b151ed25dfa8da5b2146cc6bd07dd6a63712d1ca98c697bf6476e1e3c0",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 964,
+          "last": 1007
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Vista UNION ALL, ricostruzione del sottotipo, selezione chiusa della tabella di ruolo, ID condivisi per sequenza e limiti delle PK/email.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.4.3",
+    "original": {
+      "id": "3.4.3",
+      "level": "subsection",
+      "star": false,
+      "title": "Mapping delle operazioni e valori opzionali",
+      "source": "Relazione_SWE/capitoli/3d_dao.tex",
+      "line": 34,
+      "offset": 954,
+      "content_sha256": "3669beac8e42c77085c0ef631abe87ffe61a41c9b298ce482b2bf8f8114aaa1a",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3d_dao.tex",
+          "first": 34,
+          "last": 43
+        }
+      ]
+    },
+    "current": {
+      "id": "3.4.3",
+      "level": "subsection",
+      "star": false,
+      "title": "Mapping delle operazioni e valori opzionali",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 1008,
+      "offset": 2390,
+      "content_sha256": "b8ebd3c9c101f295b2b533ba72ee1b29a53601bfea22ee561da3d2805704b0ed",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 1008,
+          "last": 1097
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Request e Sale: tipi espliciti, agreed_total, BigDecimal, date/timestamp e FK nullable; letture e scritture simmetriche, senza codifica economica tramite segno.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.4.4",
+    "original": {
+      "id": "3.4.4",
+      "level": "subsection",
+      "star": false,
+      "title": "Vincoli SQL e controlli dei servizi",
+      "source": "Relazione_SWE/capitoli/3d_dao.tex",
+      "line": 44,
+      "offset": 964,
+      "content_sha256": "8d07cc3d08402b1c3909baa45bddad8c887d2379b87a2913d1becf7f74f7c146",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3d_dao.tex",
+          "first": 44,
+          "last": 54
+        }
+      ]
+    },
+    "current": {
+      "id": "3.4.4",
+      "level": "subsection",
+      "star": false,
+      "title": "Vincoli SQL e controlli dei servizi",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 1098,
+      "offset": 2478,
+      "content_sha256": "f09474b301f4894eb267f4c845295112ced752454fdc0b832bbf8353f8b7edbe",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 1098,
+          "last": 1158
+        }
+      ]
+    },
+    "treatment": "**Ricollocare.** Estratti SQL attuali di unicità, CHECK, EXCLUDE e enum/cast; distinguere regole SQL da stato, titolarità, accordo e autorizzazione nei servizi.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.4.5",
+    "original": {
+      "id": "3.4.5",
+      "level": "subsection",
+      "star": false,
+      "title": "Connessione condivisa e Unit of Work",
+      "source": "Relazione_SWE/capitoli/3d_dao.tex",
+      "line": 55,
+      "offset": 975,
+      "content_sha256": "9df77a6bdbab4f62d5d72e7fdce4b91a1201bd6111177e7d40fa6db0d6bbf9cc",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3d_dao.tex",
+          "first": 55,
+          "last": 71
+        }
+      ]
+    },
+    "current": {
+      "id": "3.4.5",
+      "level": "subsection",
+      "star": false,
+      "title": "Connessione condivisa e confine transazionale",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 1159,
+      "offset": 2536,
+      "content_sha256": "75740cec394bfd7fd2c0637f7c261eea45ceb15e5deaa6aad97a41cbe38bde50",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 1159,
+          "last": 1207
+        }
+      ]
+    },
+    "treatment": "**Adattare.** Overload che usano realmente Connection, proprietà di commit/close e letture autonome; nessuna identity map o UnitOfWork del vecchio progetto.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.5",
+    "original": {
+      "id": "3.5",
+      "level": "section",
+      "star": false,
+      "title": "Idiomi e Design Pattern",
+      "source": "Relazione_SWE/capitoli/3e_pattern.tex",
+      "line": 1,
+      "offset": 992,
+      "content_sha256": "f4c5ac90a26d14afee1b201f9a0510c69a7cbe4577123cf1934afe8194197ee7",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3e_pattern.tex",
+          "first": 1,
+          "last": 65
+        }
+      ]
+    },
+    "current": {
+      "id": "3.5",
+      "level": "section",
+      "star": false,
+      "title": "Idiomi e Design Pattern",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 1208,
+      "offset": 2584,
+      "content_sha256": "ddcda30e1c07b813437a475f68cff561e131a47ca3336abf02ba8cfa70d277c7",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 1208,
+          "last": 1345
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Sei sottosezioni nello stesso ordine, con problema, collaboratori, frammento/rinvio significativo e limite; distinguere GoF, idiomi e tecniche.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.5.1",
+    "original": {
+      "id": "3.5.1",
+      "level": "subsection",
+      "star": false,
+      "title": "Observer",
+      "source": "Relazione_SWE/capitoli/3e_pattern.tex",
+      "line": 4,
+      "offset": 995,
+      "content_sha256": "2bc6d854188b3660e0c9c46ab08ff42b3c54764d2e78f4e2e93e2b25cbd6a682",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3e_pattern.tex",
+          "first": 4,
+          "last": 15
+        }
+      ]
+    },
+    "current": {
+      "id": "3.5.1",
+      "level": "subsection",
+      "star": false,
+      "title": "Observer",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 1213,
+      "offset": 2589,
+      "content_sha256": "aa08de6fb77a869c25b7d708a0c96e50083a34d6dc47136e021407770a27ff6a",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 1213,
+          "last": 1236
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Publisher, contratto e observer concreto; notifica sincrona e condivisione della Connection, errori e assenza di consegna persistente.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.5.2",
+    "original": {
+      "id": "3.5.2",
+      "level": "subsection",
+      "star": false,
+      "title": "Strategy",
+      "source": "Relazione_SWE/capitoli/3e_pattern.tex",
+      "line": 16,
+      "offset": 1007,
+      "content_sha256": "f366a5c4787c6a096ee4690a52f452ea4bc0a4d5e900068878439568cc0edf97",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3e_pattern.tex",
+          "first": 16,
+          "last": 31
+        }
+      ]
+    },
+    "current": {
+      "id": "3.5.2",
+      "level": "subsection",
+      "star": false,
+      "title": "Calcolo centralizzato e assenza di Strategy",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 1237,
+      "offset": 2612,
+      "content_sha256": "9ec40c5353520da6924a5a96d53e6493eeb73f89b4ae54bf6da076be83ab24bf",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 1237,
+          "last": 1248
+        }
+      ]
+    },
+    "treatment": "**Adattare.** Preservare la discussione della variabilità degli algoritmi: oggi un calcolatore concreto, senza interfaccia PricingStrategy né selezione intercambiabile. Non attribuire GoF Strategy.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.5.3",
+    "original": {
+      "id": "3.5.3",
+      "level": "subsection",
+      "star": false,
+      "title": "Metodi statici di creazione",
+      "source": "Relazione_SWE/capitoli/3e_pattern.tex",
+      "line": 32,
+      "offset": 1023,
+      "content_sha256": "dc79d2910bb4ae8d28ab403ccf7962d618c94f54670313d7750488967f83c1f6",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3e_pattern.tex",
+          "first": 32,
+          "last": 45
+        }
+      ]
+    },
+    "current": {
+      "id": "3.5.3",
+      "level": "subsection",
+      "star": false,
+      "title": "Metodi statici di creazione",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 1249,
+      "offset": 2624,
+      "content_sha256": "ef60d40801d59214dda5d46faf2e7fb159ce45be8a918dc8773d4d651d3beaff",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 1249,
+          "last": 1273
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Factory di Vehicle, Request e Sale, validazione e ricostruzione; costruttori effettivi e distinzione da Factory Method GoF.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.5.4",
+    "original": {
+      "id": "3.5.4",
+      "level": "subsection",
+      "star": false,
+      "title": "Istanza centrale per la navigazione",
+      "source": "Relazione_SWE/capitoli/3e_pattern.tex",
+      "line": 46,
+      "offset": 1037,
+      "content_sha256": "af7294d1e2835f7fe1a3dac3ab65c00356b2bc824bda3f914bf8688bdf882357",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3e_pattern.tex",
+          "first": 46,
+          "last": 58
+        }
+      ]
+    },
+    "current": {
+      "id": "3.5.4",
+      "level": "subsection",
+      "star": false,
+      "title": "Navigazione e contesto applicativo",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 1274,
+      "offset": 2648,
+      "content_sha256": "043c8277e12ffd272dc976585fc03a4590432a7134ee00bc2a2c47e29ec1e967",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 1274,
+          "last": 1306
+        }
+      ]
+    },
+    "treatment": "**Adattare.** Double dispatch nello stile Visitor per il ruolo e Singleton predefinito AppContext con costruttore alternativo; non ripristinare NavigationManager globale.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.5.5",
+    "original": {
+      "id": "3.5.5",
+      "level": "subsection",
+      "star": false,
+      "title": "DAO e Unit of Work",
+      "source": "Relazione_SWE/capitoli/3e_pattern.tex",
+      "line": 59,
+      "offset": 1050,
+      "content_sha256": "ef652dcd063cabacb87bbd366e2f20631dfd05a8a771534a8a3fd7c44018afb5",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3e_pattern.tex",
+          "first": 59,
+          "last": 63
+        }
+      ]
+    },
+    "current": {
+      "id": "3.5.5",
+      "level": "subsection",
+      "star": false,
+      "title": "DAO e coordinamento transazionale",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 1307,
+      "offset": 2680,
+      "content_sha256": "01b76b8ef19de2792a6dcf0af494f7707edcf26bb8631d18b7e7512fff111868",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 1307,
+          "last": 1322
+        }
+      ]
+    },
+    "treatment": "**Adattare.** Porte SQL e callback DatabaseManager sulla stessa connessione, DI manuale e dipendenze JDBC; spiegare che il vecchio contratto UnitOfWork non c'è più.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "3.5.6",
+    "original": {
+      "id": "3.5.6",
+      "level": "subsection",
+      "star": false,
+      "title": "Idiomi Java usati nei confini tra livelli",
+      "source": "Relazione_SWE/capitoli/3e_pattern.tex",
+      "line": 64,
+      "offset": 1055,
+      "content_sha256": "86f37296d46e579a4f3dd4c9882bbc2f7a3b490214ab6e9f3df03114b9f2429f",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/3e_pattern.tex",
+          "first": 64,
+          "last": 65
+        }
+      ]
+    },
+    "current": {
+      "id": "3.5.6",
+      "level": "subsection",
+      "star": false,
+      "title": "Idiomi Java usati nei confini tra livelli",
+      "source": "docs/relazione/capitoli/3_implementazione.tex",
+      "line": 1323,
+      "offset": 2696,
+      "content_sha256": "d2275e197f84b2ac2ee17529605157c7e09a4b40ddf11357eb8e6fadfffc0362",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/3_implementazione.tex",
+          "first": 1323,
+          "last": 1345
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** Optional dove realmente usato, record di lettura, enum, campi finali, lambda/callback, try-with-resources e Task; niente UiModels o RegistrationRequest rimossi.",
+    "verification": "docs/relazione/verifiche/ticket-11/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-11/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "4",
+    "original": {
+      "id": "4",
+      "level": "chapter",
+      "star": false,
+      "title": "Testing",
+      "source": "Relazione_SWE/capitoli/4_testing.tex",
+      "line": 1,
+      "offset": 1057,
+      "content_sha256": "ae585ba2f5edd3dc47f02fdb56d5ec849ee3591fea7d4c471bd7b02096c3cab3",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/4_testing.tex",
+          "first": 1,
+          "last": 136
+        },
+        {
+          "source": "Relazione_SWE/main.tex",
+          "first": 63,
+          "last": 63
+        }
+      ]
+    },
+    "current": {
+      "id": "4",
+      "level": "chapter",
+      "star": false,
+      "title": "Testing",
+      "source": "docs/relazione/capitoli/4_testing.tex",
+      "line": 1,
+      "offset": 2719,
+      "content_sha256": "35693533a0a6ad9d11868790380161c421b2c485375aaf2c38751bef48607f44",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/4_testing.tex",
+          "first": 1,
+          "last": 739
+        }
+      ]
+    },
+    "treatment": "**Riorganizzare.** Stesse cinque sezioni e stessi argomenti interni, con classi e prove attuali; motivazione, preparazione, comando, oracolo, estratto e limite per i casi significativi.",
+    "verification": "docs/relazione/verifiche/ticket-12/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-12/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "4.1",
+    "original": {
+      "id": "4.1",
+      "level": "section",
+      "star": false,
+      "title": "Strategia di verifica",
+      "source": "Relazione_SWE/capitoli/4_testing.tex",
+      "line": 3,
+      "offset": 1059,
+      "content_sha256": "83b439653034e2ac66ac0f0d2043633f4d9e9253a26c09650b76d65f301ea864",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/4_testing.tex",
+          "first": 3,
+          "last": 20
+        }
+      ]
+    },
+    "current": {
+      "id": "4.1",
+      "level": "section",
+      "star": false,
+      "title": "Strategia di verifica",
+      "source": "docs/relazione/capitoli/4_testing.tex",
+      "line": 21,
+      "offset": 2739,
+      "content_sha256": "18622f3d7fa1ac1c9b3b2c15ef6fc608f9d64187f54dd7d43b73c762f49ee86a",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/4_testing.tex",
+          "first": 21,
+          "last": 71
+        }
+      ]
+    },
+    "treatment": "**Mantenere.** Rischi economici, livelli, test funzionali e guidati dalla struttura, oracoli e attribuzione dei risultati; separare test, harness e controlli documentali.",
+    "verification": "docs/relazione/verifiche/ticket-12/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-12/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "4.1.1",
+    "original": {
+      "id": "4.1.1",
+      "level": "subsection",
+      "star": false,
+      "title": "Tecnologie e strumenti",
+      "source": "Relazione_SWE/capitoli/4_testing.tex",
+      "line": 13,
+      "offset": 1069,
+      "content_sha256": "dcc505a2b565abeaabe26971e69208d0e3d099829cc6f22d6617aeed7f863e5b",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/4_testing.tex",
+          "first": 13,
+          "last": 20
+        }
+      ]
+    },
+    "current": {
+      "id": "4.1.1",
+      "level": "subsection",
+      "star": false,
+      "title": "Tecnologie e strumenti",
+      "source": "docs/relazione/capitoli/4_testing.tex",
+      "line": 50,
+      "offset": 2768,
+      "content_sha256": "7d62f48f98ec70a49c978ba041d0df5dd5a6395fe8c70f74fefb4c4a0699a68d",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/4_testing.tex",
+          "first": 50,
+          "last": 71
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** JUnit, Surefire, Maven, PostgreSQL dedicato e supporto TestDatabase; profilo postgres-tests, harness JavaFX esterni alla suite, niente H2/Mockito/JaCoCo presunti.",
+    "verification": "docs/relazione/verifiche/ticket-12/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-12/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "4.2",
+    "original": {
+      "id": "4.2",
+      "level": "section",
+      "star": false,
+      "title": "Livello 1: Business Logic",
+      "source": "Relazione_SWE/capitoli/4_testing.tex",
+      "line": 21,
+      "offset": 1077,
+      "content_sha256": "51e52dfb2f220aafb2c6338e448a9cdb5ae1a8c19b82859a59427ef46132638f",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/4_testing.tex",
+          "first": 21,
+          "last": 85
+        }
+      ]
+    },
+    "current": {
+      "id": "4.2",
+      "level": "section",
+      "star": false,
+      "title": "Livello 1: Business Logic",
+      "source": "docs/relazione/capitoli/4_testing.tex",
+      "line": 72,
+      "offset": 2790,
+      "content_sha256": "b202c7555c5a59cfb355bc164f8a0421e818db5a93be9ec915889e6c852bffbe",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/4_testing.tex",
+          "first": 72,
+          "last": 372
+        }
+      ]
+    },
+    "treatment": "**Riorganizzare.** Recuperare i sei argomenti originali senza classificare come unitari i test PostgreSQL; dove manca un test isolato, indicarlo e rinviare alla prova di integrazione.",
+    "verification": "docs/relazione/verifiche/ticket-12/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-12/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "4.2.1",
+    "original": {
+      "id": "4.2.1",
+      "level": "subsection",
+      "star": false,
+      "title": "Invarianti del dominio",
+      "source": "Relazione_SWE/capitoli/4_testing.tex",
+      "line": 23,
+      "offset": 1079,
+      "content_sha256": "9af5a2bda50dc42bb19baf34b012d7fbca96c65a8d5d7f951e043766188ecb32",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/4_testing.tex",
+          "first": 23,
+          "last": 25
+        }
+      ]
+    },
+    "current": {
+      "id": "4.2.1",
+      "level": "subsection",
+      "star": false,
+      "title": "Invarianti del dominio",
+      "source": "docs/relazione/capitoli/4_testing.tex",
+      "line": 78,
+      "offset": 2796,
+      "content_sha256": "59cbbaec66c047a4d9104243ed2c655411a5e0bafcf1487d4a92d6627d36461f",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/4_testing.tex",
+          "first": 78,
+          "last": 105
+        }
+      ]
+    },
+    "treatment": "**Ripristinare.** DomainInvariantsTest e BookingRulesTest: confini, stato invariato dopo input rifiutato, conto, sconti, anni, date e fascia oraria.",
+    "verification": "docs/relazione/verifiche/ticket-12/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-12/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "4.2.2",
+    "original": {
+      "id": "4.2.2",
+      "level": "subsection",
+      "star": false,
+      "title": "AuthServiceTest",
+      "source": "Relazione_SWE/capitoli/4_testing.tex",
+      "line": 26,
+      "offset": 1082,
+      "content_sha256": "06472cdc7955b9abb18c80fb42b2bf5e18a6b8a010fed421a19685ccb585c884",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/4_testing.tex",
+          "first": 26,
+          "last": 34
+        }
+      ]
+    },
+    "current": {
+      "id": "4.2.2",
+      "level": "subsection",
+      "star": false,
+      "title": "Autenticazione e identità",
+      "source": "docs/relazione/capitoli/4_testing.tex",
+      "line": 106,
+      "offset": 2824,
+      "content_sha256": "4846ba853e44431c49ea4af547666133ac229f7c2a123a054cad16f3819bc156",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/4_testing.tex",
+          "first": 106,
+          "last": 145
+        }
+      ]
+    },
+    "treatment": "**Adattare.** Conservare l'argomento della vecchia AuthServiceTest; non esiste un equivalente unitario dedicato. Spiegare il confine e rinviare ai test PostgreSQL di email, credenziali e cancellazione.",
+    "verification": "docs/relazione/verifiche/ticket-12/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-12/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "4.2.3",
+    "original": {
+      "id": "4.2.3",
+      "level": "subsection",
+      "star": false,
+      "title": "PricingAndSecurityTest",
+      "source": "Relazione_SWE/capitoli/4_testing.tex",
+      "line": 35,
+      "offset": 1091,
+      "content_sha256": "2539981ead7e115abdd5203d98a959f8c8c41092dad4d506caefb7bd7bb63a76",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/4_testing.tex",
+          "first": 35,
+          "last": 46
+        }
+      ]
+    },
+    "current": {
+      "id": "4.2.3",
+      "level": "subsection",
+      "star": false,
+      "title": "Prezzi e sicurezza",
+      "source": "docs/relazione/capitoli/4_testing.tex",
+      "line": 146,
+      "offset": 2863,
+      "content_sha256": "4cfd3b4e3a70d1a25b24ccbca04eef1f19c6845187dc29b34aba3ad600861c1a",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/4_testing.tex",
+          "first": 146,
+          "last": 204
+        }
+      ]
+    },
+    "treatment": "**Adattare.** Estratti discriminanti su formula/base/sconti/centesimi; per password e identità indicare le prove effettive e l'eventuale assenza di un test isolato PBKDF2, senza ricreare PricingAndSecurityTest.",
+    "verification": "docs/relazione/verifiche/ticket-12/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-12/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "4.2.4",
+    "original": {
+      "id": "4.2.4",
+      "level": "subsection",
+      "star": false,
+      "title": "SalesServiceTest",
+      "source": "Relazione_SWE/capitoli/4_testing.tex",
+      "line": 47,
+      "offset": 1103,
+      "content_sha256": "f6a32127f2048f4db694198ea5d3030b7c560a5f3fe10e0f64b179b466fd00ff",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/4_testing.tex",
+          "first": 47,
+          "last": 60
+        }
+      ]
+    },
+    "current": {
+      "id": "4.2.4",
+      "level": "subsection",
+      "star": false,
+      "title": "Richieste, vendite e accordo economico",
+      "source": "docs/relazione/capitoli/4_testing.tex",
+      "line": 205,
+      "offset": 2921,
+      "content_sha256": "dae4b4ac5caa49baedb3b3f48bb471f380d41f2e9211db2f42b204c0066973da",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/4_testing.tex",
+          "first": 205,
+          "last": 280
+        }
+      ]
+    },
+    "treatment": "**Adattare.** RequestAgreementTest e SaleTypeTest per il dominio; PurchaseAgreement/SaleOutcome/SaleProposalIntegrationTest per scritture ed esiti, chiaramente classificati nel livello successivo.",
+    "verification": "docs/relazione/verifiche/ticket-12/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-12/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "4.2.5",
+    "original": {
+      "id": "4.2.5",
+      "level": "subsection",
+      "star": false,
+      "title": "RentalServiceTest e BankAccountServiceTest",
+      "source": "Relazione_SWE/capitoli/4_testing.tex",
+      "line": 61,
+      "offset": 1117,
+      "content_sha256": "db0d4faccd2796ddf3ed74d75451039617b467f09e3b955a4bb247a2d9002bf2",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/4_testing.tex",
+          "first": 61,
+          "last": 72
+        }
+      ]
+    },
+    "current": {
+      "id": "4.2.5",
+      "level": "subsection",
+      "star": false,
+      "title": "Noleggio e conto dimostrativo",
+      "source": "docs/relazione/capitoli/4_testing.tex",
+      "line": 281,
+      "offset": 2994,
+      "content_sha256": "240990d92bb796f5b2d9a44d5d46db3a3092022be907d6723a36d7046ebb009b",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/4_testing.tex",
+          "first": 281,
+          "last": 321
+        }
+      ]
+    },
+    "treatment": "**Adattare.** BookingRulesTest e DomainInvariantsTest per regole locali; BookingConcurrency, BalanceConcurrency e VehicleDestinationIntegrationTest per integrazione, conflitti e rimborsi.",
+    "verification": "docs/relazione/verifiche/ticket-12/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-12/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "4.2.6",
+    "original": {
+      "id": "4.2.6",
+      "level": "subsection",
+      "star": false,
+      "title": "TransactionAndObserverTest",
+      "source": "Relazione_SWE/capitoli/4_testing.tex",
+      "line": 73,
+      "offset": 1129,
+      "content_sha256": "4bf4b90c1e98ee6267e06398343054fa8fac5a9706e9df5c1b56ba624c8b9aca",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/4_testing.tex",
+          "first": 73,
+          "last": 85
+        }
+      ]
+    },
+    "current": {
+      "id": "4.2.6",
+      "level": "subsection",
+      "star": false,
+      "title": "Transazioni e Observer",
+      "source": "docs/relazione/capitoli/4_testing.tex",
+      "line": 322,
+      "offset": 3034,
+      "content_sha256": "aa3d56c471c0d72e26159f147dcf5160a3226de2b4d56b0a5d3334818a6a7e9f",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/4_testing.tex",
+          "first": 322,
+          "last": 372
+        }
+      ]
+    },
+    "treatment": "**Adattare.** Dichiarare l'assenza della vecchia TransactionAndObserverTest; mostrare il contratto e rinviare alle riletture PostgreSQL di TestDriveCancellationIntegrationTest e ai guasti dopo scritture effettive.",
+    "verification": "docs/relazione/verifiche/ticket-12/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-12/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "4.3",
+    "original": {
+      "id": "4.3",
+      "level": "section",
+      "star": false,
+      "title": "Livello 2: Persistence Layer (DAO)",
+      "source": "Relazione_SWE/capitoli/4_testing.tex",
+      "line": 86,
+      "offset": 1142,
+      "content_sha256": "0a7246fe55d003c9516138c79416b52faec1bd8b081f2532db2ab83615ecebad",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/4_testing.tex",
+          "first": 86,
+          "last": 113
+        }
+      ]
+    },
+    "current": {
+      "id": "4.3",
+      "level": "section",
+      "star": false,
+      "title": "Livello 2: Persistence Layer (DAO)",
+      "source": "docs/relazione/capitoli/4_testing.tex",
+      "line": 373,
+      "offset": 3084,
+      "content_sha256": "930018683331a37edad9421db25ecfc7fef47bed6681d4a2bdeff785962c516d",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/4_testing.tex",
+          "first": 373,
+          "last": 561
+        }
+      ]
+    },
+    "treatment": "**Riorganizzare.** Restituire visibilità a mapping/DAO e preparazione schema/demo, mantenendo il contenuto aggiuntivo su rollback, concorrenza e isolamento del DB di test.",
+    "verification": "docs/relazione/verifiche/ticket-12/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-12/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "4.3.1",
+    "original": {
+      "id": "4.3.1",
+      "level": "subsection",
+      "star": false,
+      "title": "PostgresDaoIntegrationTest",
+      "source": "Relazione_SWE/capitoli/4_testing.tex",
+      "line": 89,
+      "offset": 1145,
+      "content_sha256": "1af5a6101716cf2955e50f800dc0bbb33a6b30402ccb087b5e56e1349dd1fd13",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/4_testing.tex",
+          "first": 89,
+          "last": 101
+        }
+      ]
+    },
+    "current": {
+      "id": "4.3.1",
+      "level": "subsection",
+      "star": false,
+      "title": "DAO e mapping su PostgreSQL",
+      "source": "docs/relazione/capitoli/4_testing.tex",
+      "line": 377,
+      "offset": 3088,
+      "content_sha256": "d5a3c313b2799286416f319fdbbb8fc94495db219699bb472688da7b7c84431d",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/4_testing.tex",
+          "first": 377,
+          "last": 436
+        }
+      ]
+    },
+    "treatment": "**Adattare.** PriceSelection, PurchaseAgreement, SaleOutcome e PostgresEnumIntegrationTest: salvataggio e rilettura, tipi e null; non descrivere la vecchia PostgresDaoIntegrationTest su H2.",
+    "verification": "docs/relazione/verifiche/ticket-12/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-12/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "4.3.2",
+    "original": {
+      "id": "4.3.2",
+      "level": "subsection",
+      "star": false,
+      "title": "DatabaseBootstrapIntegrationTest",
+      "source": "Relazione_SWE/capitoli/4_testing.tex",
+      "line": 102,
+      "offset": 1158,
+      "content_sha256": "dd56fa0a7806e311b72bdef23d1ecbeb0814b65656345b90b97d5367ee68d781",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/4_testing.tex",
+          "first": 102,
+          "last": 113
+        }
+      ]
+    },
+    "current": {
+      "id": "4.3.2",
+      "level": "subsection",
+      "star": false,
+      "title": "Schema e dati dimostrativi",
+      "source": "docs/relazione/capitoli/4_testing.tex",
+      "line": 437,
+      "offset": 3147,
+      "content_sha256": "153c976ed76715438a79ed5c433ab21aa91cbe22e75c1ac1ce797bfa0127a400",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/4_testing.tex",
+          "first": 437,
+          "last": 561
+        }
+      ]
+    },
+    "treatment": "**Adattare.** DemoSqlValidationTest e TestDatabase: tredici tabelle, righe e sequenze dopo ricaricamenti; DatabaseIsolationIntegrationTest e configurazione dedicata. Nessun bootstrap automatico dell'applicazione.",
+    "verification": "docs/relazione/verifiche/ticket-12/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-12/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "4.4",
+    "original": {
+      "id": "4.4",
+      "level": "section",
+      "star": false,
+      "title": "Verifiche funzionali e della presentazione",
+      "source": "Relazione_SWE/capitoli/4_testing.tex",
+      "line": 114,
+      "offset": 1170,
+      "content_sha256": "5c8a93a27b747f37558cf86c22b9bc303cd1c4b533435d9442e7b1722c711310",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/4_testing.tex",
+          "first": 114,
+          "last": 128
+        }
+      ]
+    },
+    "current": {
+      "id": "4.4",
+      "level": "section",
+      "star": false,
+      "title": "Verifiche funzionali e della presentazione",
+      "source": "docs/relazione/capitoli/4_testing.tex",
+      "line": 562,
+      "offset": 3269,
+      "content_sha256": "946089a594952ec76855cfbf74df107079d291bc5f02299d5ba509f58949c09b",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/4_testing.tex",
+          "first": 562,
+          "last": 670
+        }
+      ]
+    },
+    "treatment": "**Riorganizzare.** Esplicitare scenari di registrazione/accesso, catalogo/sconti, flussi commerciali, GUI e tabelle; estratto funzionale attuale e fonti degli harness. Non rinominare FullWorkflow come prova di ogni workflow.",
+    "verification": "docs/relazione/verifiche/ticket-12/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-12/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  },
+  {
+    "id": "4.5",
+    "original": {
+      "id": "4.5",
+      "level": "section",
+      "star": false,
+      "title": "Esecuzione della suite e portata dei risultati",
+      "source": "Relazione_SWE/capitoli/4_testing.tex",
+      "line": 129,
+      "offset": 1185,
+      "content_sha256": "7442116de6813c2b472e50339ef142bb57253dd8266be7dafb79de7b1427f86b",
+      "intervals": [
+        {
+          "source": "Relazione_SWE/capitoli/4_testing.tex",
+          "first": 129,
+          "last": 136
+        },
+        {
+          "source": "Relazione_SWE/main.tex",
+          "first": 63,
+          "last": 63
+        }
+      ]
+    },
+    "current": {
+      "id": "4.5",
+      "level": "section",
+      "star": false,
+      "title": "Esecuzione della suite e portata dei risultati",
+      "source": "docs/relazione/capitoli/4_testing.tex",
+      "line": 671,
+      "offset": 3376,
+      "content_sha256": "6a608668097715f65bd8c2987f8b246e9bff39fc927b968fbab5fea17368598d",
+      "intervals": [
+        {
+          "source": "docs/relazione/capitoli/4_testing.tex",
+          "first": 671,
+          "last": 739
+        }
+      ]
+    },
+    "treatment": "**Mantenere.** Comandi e ambienti correnti, risultati storici con versione/data, suite standard distinta dal profilo PostgreSQL e dagli harness; nessuna percentuale di coverage o nuova esecuzione dedotta dalla riscrittura.",
+    "verification": "docs/relazione/verifiche/ticket-12/confronto.md",
+    "technical_sources": "docs/relazione/verifiche/ticket-12/fonti.json",
+    "limit": "Riscontro statico S0 e conservazione dei contenuti verificati; gli esiti applicativi restano storici E1/E2/E3. Adattamenti e assenze motivati nella trattazione e nel confronto indicato."
+  }
+]

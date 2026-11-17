@@ -1,0 +1,2 @@
+Compilazione PriceUiCheck.java e CaptureTicket02.java, JavaFX 21.0.2, classpath produzione corrente + target/test-classes.
+Exit code: 0

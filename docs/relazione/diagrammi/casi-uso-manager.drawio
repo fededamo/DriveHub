@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxGraphModel adaptiveColors="auto" grid="1" page="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+    <mxCell id="sistema" value="DriveHub" style="whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=18;fontColor=#172b4d;strokeColor=#53657a;fillColor=#ffffff;verticalAlign=top;align=left;spacing=12;fontStyle=1;fillColor=#f9fbfd;" vertex="1" parent="1">
+      <mxGeometry x="180" y="0" width="520" height="510" as="geometry" />
+    </mxCell>
+    <mxCell id="attore" value="Manager" style="whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=18;fontColor=#172b4d;strokeColor=#53657a;fillColor=#ffffff;shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;fillColor=none;" vertex="1" parent="1">
+      <mxGeometry x="30" y="185.0" width="90" height="120" as="geometry" />
+    </mxCell>
+    <mxCell id="livello" value="Obiettivi applicativi" style="whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=18;fontColor=#172b4d;strokeColor=#53657a;fillColor=#ffffff;strokeColor=none;fillColor=none;fontSize=17;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="195" y="40" width="490" height="30" as="geometry" />
+    </mxCell>
+    <mxCell id="UC-09" value="UC-09&lt;br&gt;Gestione del catalogo&lt;br&gt;e delle basi prezzo" style="whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=18;fontColor=#172b4d;strokeColor=#53657a;fillColor=#ffffff;ellipse;fillColor=#e5effa;fontSize=17;" vertex="1" parent="1">
+      <mxGeometry x="235" y="82" width="410" height="64" as="geometry" />
+    </mxCell>
+    <mxCell id="e-attore-UC-09" source="attore" target="UC-09" style="html=1;strokeColor=#53657a;edgeStyle=sideToSideEdgeStyle;rounded=0;endArrow=none;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="UC-06" value="UC-06&lt;br&gt;Gestione degli sconti" style="whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=18;fontColor=#172b4d;strokeColor=#53657a;fillColor=#ffffff;ellipse;fillColor=#e5effa;fontSize=17;" vertex="1" parent="1">
+      <mxGeometry x="235" y="158" width="410" height="64" as="geometry" />
+    </mxCell>
+    <mxCell id="e-attore-UC-06" source="attore" target="UC-06" style="html=1;strokeColor=#53657a;edgeStyle=sideToSideEdgeStyle;rounded=0;endArrow=none;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="UC-10" value="UC-10&lt;br&gt;Consultazione del registro economico" style="whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=18;fontColor=#172b4d;strokeColor=#53657a;fillColor=#ffffff;ellipse;fillColor=#e5effa;fontSize=17;" vertex="1" parent="1">
+      <mxGeometry x="235" y="234" width="410" height="64" as="geometry" />
+    </mxCell>
+    <mxCell id="e-attore-UC-10" source="attore" target="UC-10" style="html=1;strokeColor=#53657a;edgeStyle=sideToSideEdgeStyle;rounded=0;endArrow=none;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="livello-supporto" value="Supporto all'interazione (livello inferiore)" style="whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=18;fontColor=#172b4d;strokeColor=#53657a;fillColor=#ffffff;strokeColor=none;fillColor=none;fontSize=17;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="195" y="310" width="490" height="30" as="geometry" />
+    </mxCell>
+    <mxCell id="UC-S02" value="UC-S02&lt;br&gt;Accesso al sistema" style="whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=18;fontColor=#172b4d;strokeColor=#53657a;fillColor=#ffffff;ellipse;fillColor=#eeeeee;" vertex="1" parent="1">
+      <mxGeometry x="235" y="352" width="410" height="58" as="geometry" />
+    </mxCell>
+    <mxCell id="e-attore-UC-S02" source="attore" target="UC-S02" style="html=1;strokeColor=#53657a;edgeStyle=sideToSideEdgeStyle;rounded=0;endArrow=none;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="UC-S03" value="UC-S03&lt;br&gt;Gestione dell'identità" style="whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=18;fontColor=#172b4d;strokeColor=#53657a;fillColor=#ffffff;ellipse;fillColor=#eeeeee;" vertex="1" parent="1">
+      <mxGeometry x="235" y="428" width="410" height="58" as="geometry" />
+    </mxCell>
+    <mxCell id="e-attore-UC-S03" source="attore" target="UC-S03" style="html=1;strokeColor=#53657a;edgeStyle=sideToSideEdgeStyle;rounded=0;endArrow=none;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+  </root>
+</mxGraphModel>

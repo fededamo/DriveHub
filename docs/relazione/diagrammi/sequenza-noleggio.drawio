@@ -1,0 +1,195 @@
+<mxGraphModel adaptiveColors="auto" grid="1" page="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+    <mxCell id="v2" value="SQ-02 · Noleggio: prenotazione e addebito" style="text;strokeColor=none;fillColor=none;fontColor=#172b3a;fontSize=27;fontStyle=1;align=center;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="10" y="8" width="940" height="48" as="geometry" />
+    </mxCell>
+    <mxCell id="v3" value="Cliente: conferma date" style="rounded=0;strokeColor=#647a8c;fillColor=#f4f4f4;fontSize=18;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="70" width="160" height="70" as="geometry" />
+    </mxCell>
+    <mxCell id="v4" value="ClientDashboardView&lt;br&gt;handleRentAction(), callback del dialogo" style="rounded=0;strokeColor=#647a8c;fillColor=#edf4f8;fontSize=18;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="230" y="70" width="320" height="70" as="geometry" />
+    </mxCell>
+    <mxCell id="v5" value="RentalService" style="rounded=0;strokeColor=#647a8c;fillColor=#edf4f8;fontSize=18;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="670" y="70" width="265" height="70" as="geometry" />
+    </mxCell>
+    <mxCell id="e6" edge="1" parent="1" style="html=1;strokeColor=#175b88;strokeWidth=1.6;dashed=0;endArrow=open;endFill=0;">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint x="180" y="95" as="sourcePoint" />
+        <mxPoint x="230" y="95" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="e7" edge="1" parent="1" style="html=1;strokeColor=#175b88;strokeWidth=1.6;dashed=0;endArrow=open;endFill=0;">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint x="550" y="95" as="sourcePoint" />
+        <mxPoint x="670" y="95" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="v8" value="«azione»" style="text;strokeColor=none;fillColor=none;fontColor=#172b3a;fontSize=16;fontStyle=0;align=center;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="175" y="54" width="100" height="28" as="geometry" />
+    </mxCell>
+    <mxCell id="v9" value="«handler»" style="text;strokeColor=none;fillColor=none;fontColor=#172b3a;fontSize=16;fontStyle=0;align=center;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="550" y="54" width="120" height="28" as="geometry" />
+    </mxCell>
+    <mxCell id="v10" value="bookRental(vehicleId, clientId, start, end) · UC-02, passi 3–6 / 3.a–5.a" style="text;strokeColor=none;fillColor=none;fontColor=#172b3a;fontSize=21;fontStyle=1;align=center;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="151" width="915" height="57" as="geometry" />
+    </mxCell>
+    <mxCell id="v11" value="Ingresso UI sopra; dettaglio selettivo sotto. ID scalari nei parametri; oggetti nelle note «memoria»." style="text;strokeColor=none;fillColor=none;fontColor=#172b3a;fontSize=18;fontStyle=0;align=center;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="20" y="213" width="915" height="48" as="geometry" />
+    </mxCell>
+    <mxCell id="v12" value="Rental&lt;br&gt;Service" style="rounded=0;strokeColor=#647a8c;fillColor=#edf4f8;fontSize=20;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="16.0" y="275" width="128" height="90" as="geometry" />
+    </mxCell>
+    <mxCell id="e13" edge="1" parent="1" style="html=1;strokeColor=#52616b;strokeWidth=1.6;dashed=1;endArrow=none;endFill=0;">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint x="80.0" y="365" as="sourcePoint" />
+        <mxPoint x="80.0" y="1423" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="v14" value="Postgres&lt;br&gt;VehicleDao" style="rounded=0;strokeColor=#647a8c;fillColor=#edf4f8;fontSize=20;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="149.33333333333334" y="275" width="128" height="90" as="geometry" />
+    </mxCell>
+    <mxCell id="e15" edge="1" parent="1" style="html=1;strokeColor=#52616b;strokeWidth=1.6;dashed=1;endArrow=none;endFill=0;">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint x="213.33333333333334" y="365" as="sourcePoint" />
+        <mxPoint x="213.33333333333334" y="1423" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="v16" value="Postgres&lt;br&gt;UserDao" style="rounded=0;strokeColor=#647a8c;fillColor=#edf4f8;fontSize=20;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="282.6666666666667" y="275" width="128" height="90" as="geometry" />
+    </mxCell>
+    <mxCell id="e17" edge="1" parent="1" style="html=1;strokeColor=#52616b;strokeWidth=1.6;dashed=1;endArrow=none;endFill=0;">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint x="346.6666666666667" y="365" as="sourcePoint" />
+        <mxPoint x="346.6666666666667" y="1423" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="v18" value="Postgres&lt;br&gt;RentDao" style="rounded=0;strokeColor=#647a8c;fillColor=#edf4f8;fontSize=20;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="416.0" y="275" width="128" height="90" as="geometry" />
+    </mxCell>
+    <mxCell id="e19" edge="1" parent="1" style="html=1;strokeColor=#52616b;strokeWidth=1.6;dashed=1;endArrow=none;endFill=0;">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint x="480.0" y="365" as="sourcePoint" />
+        <mxPoint x="480.0" y="1423" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="v20" value="Postgres&lt;br&gt;BankAccount&lt;br&gt;Dao" style="rounded=0;strokeColor=#647a8c;fillColor=#edf4f8;fontSize=20;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="549.3333333333334" y="275" width="128" height="90" as="geometry" />
+    </mxCell>
+    <mxCell id="e21" edge="1" parent="1" style="html=1;strokeColor=#52616b;strokeWidth=1.6;dashed=1;endArrow=none;endFill=0;">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint x="613.3333333333334" y="365" as="sourcePoint" />
+        <mxPoint x="613.3333333333334" y="1423" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="v22" value="VehicleEvent&lt;br&gt;Publisher" style="rounded=0;strokeColor=#647a8c;fillColor=#edf4f8;fontSize=20;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="682.6666666666667" y="275" width="128" height="90" as="geometry" />
+    </mxCell>
+    <mxCell id="e23" edge="1" parent="1" style="html=1;strokeColor=#52616b;strokeWidth=1.6;dashed=1;endArrow=none;endFill=0;">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint x="746.6666666666667" y="365" as="sourcePoint" />
+        <mxPoint x="746.6666666666667" y="1423" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="v24" value="PostgreSQL" style="rounded=0;strokeColor=#647a8c;fillColor=#edf4f8;fontSize=20;spacing=8;align=center;verticalAlign=middle;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="816.0" y="275" width="128" height="90" as="geometry" />
+    </mxCell>
+    <mxCell id="e25" edge="1" parent="1" style="html=1;strokeColor=#52616b;strokeWidth=1.6;dashed=1;endArrow=none;endFill=0;">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint x="880.0" y="365" as="sourcePoint" />
+        <mxPoint x="880.0" y="1423" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="v26" value="Prima di T5: rifiuta start &amp;lt; oggi o end &amp;lt; start. T5: DatabaseManager.executeInTransactionWithResult(λ), nuova c5, autocommit false." style="text;strokeColor=none;fillColor=#fff7df;fontColor=#172b3a;fontSize=21;fontStyle=0;align=left;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="8" y="381" width="940" height="70" as="geometry" />
+    </mxCell>
+    <mxCell id="v27" value="findByIdForUpdate(vehicleId, c5)" style="text;strokeColor=none;fillColor=#ffffff;fontColor=#175b88;fontSize=21;fontStyle=0;align=center;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="4" y="455" width="440" height="58" as="geometry" />
+    </mxCell>
+    <mxCell id="e28" edge="1" parent="1" style="html=1;strokeColor=#175b88;strokeWidth=1.6;dashed=0;endArrow=open;endFill=0;">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint x="80.0" y="516" as="sourcePoint" />
+        <mxPoint x="213.33333333333334" y="516" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="v29" value="«SQL c5» SELECT vehicle FOR UPDATE;&lt;br&gt;servizio richiede stato RENT" style="text;strokeColor=none;fillColor=#ffffff;fontColor=#175b88;fontSize=21;fontStyle=0;align=center;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="217.33333333333331" y="533" width="658.6666666666666" height="58" as="geometry" />
+    </mxCell>
+    <mxCell id="e30" edge="1" parent="1" style="html=1;strokeColor=#175b88;strokeWidth=1.6;dashed=0;endArrow=open;endFill=0;">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint x="213.33333333333334" y="594" as="sourcePoint" />
+        <mxPoint x="880.0" y="594" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="v31" value="lockClient(clientId, c5)" style="text;strokeColor=none;fillColor=#ffffff;fontColor=#175b88;fontSize=21;fontStyle=0;align=center;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="4" y="611" width="440" height="58" as="geometry" />
+    </mxCell>
+    <mxCell id="e32" edge="1" parent="1" style="html=1;strokeColor=#175b88;strokeWidth=1.6;dashed=0;endArrow=open;endFill=0;">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint x="80.0" y="672" as="sourcePoint" />
+        <mxPoint x="346.6666666666667" y="672" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="v33" value="«SQL c5» SELECT client&lt;br&gt;FOR NO KEY UPDATE" style="text;strokeColor=none;fillColor=#ffffff;fontColor=#175b88;fontSize=21;fontStyle=0;align=center;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="350.66666666666674" y="689" width="525.3333333333333" height="58" as="geometry" />
+    </mxCell>
+    <mxCell id="e34" edge="1" parent="1" style="html=1;strokeColor=#175b88;strokeWidth=1.6;dashed=0;endArrow=open;endFill=0;">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint x="346.6666666666667" y="750" as="sourcePoint" />
+        <mxPoint x="880.0" y="750" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="v35" value="isVehicleAvailableForRent(&lt;br&gt;vehicleId, start, end, c5)" style="text;strokeColor=none;fillColor=#ffffff;fontColor=#175b88;fontSize=21;fontStyle=0;align=center;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="60.0" y="767" width="440" height="58" as="geometry" />
+    </mxCell>
+    <mxCell id="e36" edge="1" parent="1" style="html=1;strokeColor=#175b88;strokeWidth=1.6;dashed=0;endArrow=open;endFill=0;">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint x="80.0" y="828" as="sourcePoint" />
+        <mxPoint x="480.0" y="828" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="v37" value="«SQL c5» nessun rent con start ≤ fine richiesta ed end ≥ inizio richiesta. Se occupato: errore. EXCLUDE protegge inoltre gli intervalli inclusivi sullo stesso veicolo." style="text;strokeColor=none;fillColor=#fff7df;fontColor=#172b3a;fontSize=21;fontStyle=0;align=left;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="8" y="849" width="940" height="70" as="geometry" />
+    </mxCell>
+    <mxCell id="v38" value="«sintesi su c5» calculateRentalCost(vehicle, start, end, c5): PostgresModelDao.findById e PostgresDiscountDao.findModelDiscount / findVehicleDiscount con c5; PriceCalculatorService ricalcola costo del periodo incluso." style="text;strokeColor=none;fillColor=#fff7df;fontColor=#172b3a;fontSize=21;fontStyle=0;align=left;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="8" y="927" width="940" height="84" as="geometry" />
+    </mxCell>
+    <mxCell id="v39" value="findByClientIdForUpdate(clientId, c5)" style="text;strokeColor=none;fillColor=#ffffff;fontColor=#175b88;fontSize=21;fontStyle=0;align=center;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="84.0" y="1015" width="525.3333333333334" height="58" as="geometry" />
+    </mxCell>
+    <mxCell id="e40" edge="1" parent="1" style="html=1;strokeColor=#175b88;strokeWidth=1.6;dashed=0;endArrow=open;endFill=0;">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint x="80.0" y="1076" as="sourcePoint" />
+        <mxPoint x="613.3333333333334" y="1076" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="v41" value="«memoria» account.withdraw(totalCost); PostgresBankAccountDao.updateBalance(iban, balance, c5) → UPDATE su c5. Addebito integrale, non un acconto." style="text;strokeColor=none;fillColor=#fff7df;fontColor=#172b3a;fontSize=21;fontStyle=0;align=left;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="8" y="1097" width="940" height="70" as="geometry" />
+    </mxCell>
+    <mxCell id="v42" value="save(Rent.create(null, vehicleId,&lt;br&gt;clientId, totalCost, start, end), c5)" style="text;strokeColor=none;fillColor=#ffffff;fontColor=#175b88;fontSize=21;fontStyle=0;align=center;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="60.0" y="1171" width="440" height="58" as="geometry" />
+    </mxCell>
+    <mxCell id="e43" edge="1" parent="1" style="html=1;strokeColor=#175b88;strokeWidth=1.6;dashed=0;endArrow=open;endFill=0;">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint x="80.0" y="1232" as="sourcePoint" />
+        <mxPoint x="480.0" y="1232" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="v44" value="publishCommitment(&lt;br&gt;new VehicleCommitmentEvent(vehicleId), c5)" style="text;strokeColor=none;fillColor=#ffffff;fontColor=#175b88;fontSize=21;fontStyle=0;align=center;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="84.0" y="1249" width="658.6666666666667" height="58" as="geometry" />
+    </mxCell>
+    <mxCell id="e45" edge="1" parent="1" style="html=1;strokeColor=#175b88;strokeWidth=1.6;dashed=0;endArrow=open;endFill=0;">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint x="80.0" y="1310" as="sourcePoint" />
+        <mxPoint x="746.6666666666667" y="1310" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="v46" value="ref SQ-OB · Cancella tutti i test drive futuri del veicolo su c5, anche fuori periodo. Ritorno → commit/chiusura c5 → Rent alla vista; stato del veicolo resta RENT." style="text;strokeColor=none;fillColor=#fff7df;fontColor=#172b3a;fontSize=21;fontStyle=0;align=left;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="8" y="1331" width="940" height="70" as="geometry" />
+    </mxCell>
+    <mxCell id="v47" value="Errore di dati, stato, conto, salvataggio o Observer: tentativo di rollback dell&amp;#x27;intera T5. RentalService riespone la causa IllegalArgumentException/IllegalStateException se avvolta dal gestore, altrimenti rilancia il failure.&lt;br&gt;Il preventivo calculateRentalCost(vehicleId, start, end) era una transazione distinta senza prenotazione né accordo congelato." style="text;strokeColor=none;fillColor=#f0f3f5;fontColor=#172b3a;fontSize=21;fontStyle=0;align=left;verticalAlign=middle;spacing=4;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+      <mxGeometry x="10" y="1443" width="940" height="150" as="geometry" />
+    </mxCell>
+  </root>
+</mxGraphModel>

@@ -1,0 +1,14 @@
+Controllo perimetro — 2026-11-13T12:07:23.190514+00:00
+HEAD: 61ce18ae1d4e0458b63e970b793b0b3a634a3adf
+$ git diff --exit-code -- . :(exclude)docs/relazione
+
+exit: 0
+$ git diff 61ce18ae1d4e0458b63e970b793b0b3a634a3adf...HEAD
+
+exit: 0
+$ git log 61ce18ae1d4e0458b63e970b793b0b3a634a3adf..HEAD --oneline
+
+exit: 0
+Baseline: 2116 file; 0 alterati.
+Diff/log commit vuoti perché nessun commit creato. Il delta documentale reale è verificato con prima/ e nuove aggiunte.
+I percorsi untracked .serena/, docs/AGENTS.md e docs/agents/ erano già presenti nello stato iniziale e restano fuori dal perimetro delle modifiche del ticket.

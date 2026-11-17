@@ -1,0 +1,54 @@
+[
+  {
+    "tavola": "classi-avvio",
+    "exit": 0
+  },
+  {
+    "tavola": "classi-catalogo",
+    "exit": 0
+  },
+  {
+    "tavola": "classi-dao",
+    "exit": 0
+  },
+  {
+    "tavola": "classi-eventi",
+    "exit": 0
+  },
+  {
+    "tavola": "classi-operazioni",
+    "exit": 0
+  },
+  {
+    "tavola": "classi-postgres",
+    "exit": 0
+  },
+  {
+    "tavola": "classi-presentazione",
+    "exit": 0
+  },
+  {
+    "tavola": "classi-sconti",
+    "exit": 0
+  },
+  {
+    "tavola": "classi-servizi",
+    "exit": 0
+  },
+  {
+    "tavola": "classi-sicurezza",
+    "exit": 0
+  },
+  {
+    "tavola": "classi-transazioni",
+    "exit": 0
+  },
+  {
+    "tavola": "classi-utenti",
+    "exit": 0
+  },
+  {
+    "tavola": "package-architettura",
+    "exit": 0
+  }
+]

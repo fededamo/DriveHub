@@ -1,0 +1,155 @@
+--- baseline/docs/relazione/README.md
++++ finale/docs/relazione/README.md
+@@ -1,13 +1,19 @@
+ # Relazione DriveHub
+ 
+-**16 novembre 2026 — riallineamento pianificato.** Gli autori chiedono maggiore
+-fedeltà a struttura interna e contenuti di `Relazione_SWE`. Sono pronti la
+-[matrice completa](allineamento.md), l'[indice dettagliato](indice.md) e la
+-[specifica aggiornata](tracker/spec.md), con ticket 09–13. La pianificazione
+-copre tutte le 102 voci e i 23 frammenti originali; la riscrittura dei LaTeX
+-non è ancora iniziata. [Controlli della pianificazione](verifiche/allineamento-2026-11-16/verifica.md).
+-Il PDF e gli ZIP collegati sotto restano la prima stesura, da riallineare;
+-le verifiche storiche non attestano la nuova struttura proposta.
++**16 novembre 2026 — riallineamento in corso, ticket 09 concluso tecnicamente.**
++Il capitolo 1 conserva il testo valido della prima stesura: riordinati soltanto
++ambiente di esecuzione e processi aziendali per seguire l'originale.
++[Confronto di ogni blocco e fonti](verifiche/ticket-09/confronto.md),
++[verifiche del ticket 09](verifiche/ticket-09/README.md),
++[review Standards e Spec senza rilievi](verifiche/ticket-09/revisione.md) ed
++[estratto del capitolo 1 per gli autori](verifiche/ticket-09/capitolo-1-per-revisione.pdf).
++Il [PDF](relazione-drivehub.pdf) è ricompilato; i capitoli 2–4 restano da
++riallineare nei ticket 10–12 e l'integrazione è affidata al 13.
++La [matrice](allineamento.md), l'[indice](indice.md) e la
++[specifica](tracker/spec.md) mantengono il percorso concordato.
++Gli ZIP collegati sotto restano quelli del 15 novembre, conservati come
++storico; nessun nuovo pacchetto è attestato dal ticket 09. Le verifiche
++01–08 e delle tavole degli autori restano riferite alle rispettive versioni.
+ 
+ Precisati i [vincoli sui diagrammi](allineamento.md#diagrammi-vincoli-operativi):
+ rifare/riadattare tutte le tavole originali con la skill `drawio:drawio`,
+@@ -16,8 +22,9 @@
+ 
+ Sorgenti della nuova relazione di Ingegneria del Software. **Capitoli 1–5 e
+ appendici A–C completi e proposti agli autori per revisione**, non approvati.
+-Il capitolo 1 è conservato dal ticket 01. Il PDF è completo nei contenuti
+-concordati; la revisione degli autori precede la consegna al docente.
++Il capitolo 1 proviene dal ticket 01 ed è riscontrato nel ticket 09.
++La prima stesura completa resta la base dei riallineamenti successivi;
++la revisione degli autori precede la consegna al docente.
+ 
+ Il ticket 08 è concluso tecnicamente il 15 novembre 2026: documento unitario
+ verificato e pacchetto pronto, con [review Standards e Spec](verifiche/ticket-08/revisione.md)
+@@ -26,7 +33,7 @@
+ Completamento tecnico e review assistite restano distinti dalla revisione
+ degli autori ancora da svolgere; nessun invio o pubblicazione.
+ 
+-- [Pacchetto sorgenti autonomo aggiornato](verifiche/tavole-autori/sorgenti-relazione.zip) e [istruzioni incluse](LEGGIMI-consegna.md)
++- [Pacchetto sorgenti autonomo del 15 novembre (storico)](verifiche/tavole-autori/sorgenti-relazione.zip) e [istruzioni incluse](LEGGIMI-consegna.md)
+ - [Verifiche finali 08](verifiche/ticket-08/README.md), con matrice finale, osservazione di tutte le pagine e prova di compilazione dello ZIP estratto
+ 
+ - [PDF compilato](relazione-drivehub.pdf)
+--- baseline/docs/relazione/allineamento.md
++++ finale/docs/relazione/allineamento.md
+@@ -1,6 +1,6 @@
+ # Allineamento alla relazione di riferimento
+ 
+-Data: 16 novembre 2026. Stato: confronto documentale completo e proposta di riallineamento; testi LaTeX e PDF non ancora modificati.
++Data: 16 novembre 2026. Stato: matrice completa; ticket 09 concluso tecnicamente sul capitolo 1, con riordino dei due ultimi punti di 1.3 e PDF ricompilato. [Confronto, fonti ed evidenze 09](verifiche/ticket-09/README.md). I ticket 10–13 restano da eseguire.
+ 
+ Gli autori chiedono di rifare la relazione vecchia mantenendone tutti i contenuti, la struttura e l'ordine, riadattati esattamente all'implementazione attuale. La relazione di riferimento è quella effettivamente composta da [Relazione_SWE/main.tex](../../Relazione_SWE/main.tex). Ogni spiegazione, scheda, esempio, frammento, figura e tabella deve avere un corrispondente attuale: il riallineamento non si esaurisce nella coincidenza dei titoli o in una sintesi degli argomenti. Il riferimento tecnico resta il codice corrente.
+ 
+--- baseline/docs/relazione/capitoli/1_introduzione.tex
++++ finale/docs/relazione/capitoli/1_introduzione.tex
+@@ -34,8 +34,8 @@
+   \item \textbf{Conto dimostrativo.} Il conto associato al cliente conserva il saldo nel database. Ricariche, addebiti, accrediti e rimborsi sono movimenti interni all'applicazione: non intervengono banche o circuiti di pagamento e l'IBAN generato non prova l'esistenza di un conto reale.
+   \item \textbf{Registrazione e personale.} La schermata pubblica e il servizio di registrazione creano soltanto clienti. Venditori e manager devono essere già presenti nel database; non è implementato un percorso applicativo per amministrare il personale. I dati dimostrativi comprendono utenti per i tre ruoli.
+   \item \textbf{Regole economiche circoscritte.} Prezzi e tariffe sono calcolati dalle regole del progetto. La base manuale scelta dal manager sostituisce quella del modello nella stessa formula, conservando gli effetti di sconti e svalutazioni: non impone un prezzo finale fisso. Il totale della vendita al cliente viene concordato al versamento dell'acconto del 20\%; il saldo usa quel totale, anche se in seguito cambiano basi o sconti.
++  \item \textbf{Ambiente di esecuzione.} La persistenza richiede un database PostgreSQL compatibile, già predisposto. L'applicazione Java non crea lo schema né carica dati di esempio all'avvio e non dispone di un database alternativo in memoria. L'inizializzazione dello schema e dei dati dimostrativi è un'attività separata; lo script Windows la esegue soltanto nella prima configurazione del proprio database Docker. I dati persistenti non vengono ricreati a ogni avvio.
+   \item \textbf{Processi aziendali ridotti.} Il modello copre catalogo, richieste, prenotazioni e registrazioni economiche. Non modella una rete di sedi, fornitori, officina, consegna fisica, gestione documentale dei contratti, fatturazione o assistenza successiva alla vendita.
+-  \item \textbf{Ambiente di esecuzione.} La persistenza richiede un database PostgreSQL compatibile, già predisposto. L'applicazione Java non crea lo schema né carica dati di esempio all'avvio e non dispone di un database alternativo in memoria. L'inizializzazione dello schema e dei dati dimostrativi è un'attività separata; lo script Windows la esegue soltanto nella prima configurazione del proprio database Docker. I dati persistenti non vengono ricreati a ogni avvio.
+ \end{itemize}
+ 
+ Queste scelte delimitano ciò che il prototipo dimostra. Il conto e i dati di esempio rendono riproducibili i flussi, ma non equivalgono a un'integrazione bancaria o a un sistema completo per l'esercizio di una concessionaria.
+--- baseline/docs/relazione/indice.md
++++ finale/docs/relazione/indice.md
+@@ -1,6 +1,6 @@
+ # Indice dettagliato del riallineamento
+ 
+-Proposta operativa del 16 novembre 2026, successiva alla prima stesura completa. Il PDF attuale non adotta ancora questa struttura interna. Gli autori chiedono di rifare la relazione vecchia mantenendo tutti i contenuti e la loro scansione, riadattati esattamente all'implementazione attuale: spiegazioni, schede, esempi, frammenti, figure e tabelle, oltre a capitoli e titoli.
++Proposta operativa del 16 novembre 2026, successiva alla prima stesura completa. Il ticket 09 ha verificato il capitolo 1 con il solo riordino dei due ultimi punti di 1.3; gli altri capitoli del PDF restano da riallineare. [Confronto e verifiche 09](verifiche/ticket-09/README.md). Gli autori chiedono di rifare la relazione vecchia mantenendo tutti i contenuti e la loro scansione, riadattati esattamente all'implementazione attuale: spiegazioni, schede, esempi, frammenti, figure e tabelle, oltre a capitoli e titoli.
+ 
+ La [matrice di corrispondenza](allineamento.md) collega tutte le 102 voci originali alle fonti attuali, alle destinazioni e agli adattamenti. L’ordine resta quello degli input di `Relazione_SWE/main.tex`; un titolo cambia solo per descrivere correttamente l’implementazione attuale. Il capitolo 5 resta l’aggiunta sull’AI.
+ 
+--- baseline/docs/relazione/piano.md
++++ finale/docs/relazione/piano.md
+@@ -155,8 +155,10 @@
+ 
+ Riallineamento secondo la matrice e l'indice dettagliato del 16 novembre 2026:
+ ticket 09–12 sui capitoli 1–4, poi ticket 13 di integrazione, compilazione e
+-verifica completa. La prima consegna di questa fase è la pianificazione
+-concreta da rivedere; la riscrittura dei LaTeX non è ancora iniziata.
++verifica completa. Il ticket 09 è concluso tecnicamente, con review Standards e Spec senza rilievi: mantiene il testo del capitolo 1 e
++riporta il punto sull’ambiente prima dei processi esclusi, come nell’originale.
++[Confronto e nuove verifiche](verifiche/ticket-09/README.md). I ticket 10–13
++restano da eseguire; la chiusura del 09 non ne attesta il completamento.
+ La revisione degli autori resta distinta dalla chiusura tecnica e dalle
+ review assistite; nessun invio al docente o pubblicazione è autorizzato.
+ 
+--- baseline/docs/relazione/tracker/issues/09-riallineamento-introduzione.md
++++ finale/docs/relazione/tracker/issues/09-riallineamento-introduzione.md
+@@ -1,6 +1,6 @@
+ # 09 — Riallineamento dell'introduzione
+ 
+-Status: ready-for-agent
++Status: done
+ 
+ Blocked by: None.
+ 
+@@ -16,18 +16,18 @@
+ 
+ ## Acceptance criteria
+ 
+-- [ ] Tutte le voci 1–1.3 e i loro argomenti hanno un riscontro esplicito:
++- [x] Tutte le voci 1–1.3 e i loro argomenti hanno un riscontro esplicito:
+   contesto, tre ruoli, catalogo comune, tecnologie e limiti del prototipo.
+-- [ ] Le descrizioni di UI, PostgreSQL, avvio e registrazione corrispondono
++- [x] Le descrizioni di UI, PostgreSQL, avvio e registrazione corrispondono
+   alle fonti attuali; nessun ripristino di H2, FXML o registrazione staff.
+-- [ ] Conservati punto di vista della concessionaria e contenuti validi;
++- [x] Conservati punto di vista della concessionaria e contenuti validi;
+   eventuali differenze dall'originale sono motivate per la relativa voce.
+-- [ ] Conservata prima delle modifiche una baseline del materiale coinvolto,
++- [x] Conservata prima delle modifiche una baseline del materiale coinvolto,
+   compresi i file non tracciati; vecchia relazione e verifiche restano intatte.
+-- [ ] Verificati sorgenti, rinvii e compilazione reale; controllate visivamente
++- [x] Verificati sorgenti, rinvii e compilazione reale; controllate visivamente
+   le pagine del capitolo e registrati esiti, data e limiti. Anche se il testo
+   non richiede cambiamenti, il confronto deve dimostrarlo.
+-- [ ] Aggiornati i soli stati documentali pertinenti e proposto il capitolo
++- [x] Aggiornati i soli stati documentali pertinenti e proposto il capitolo
+   agli autori, senza attribuire approvazione umana o nuove prove applicative.
+ 
+ ## Comments
+@@ -35,3 +35,21 @@
+ 16 novembre 2026: ticket della nuova fase autorizzata dagli autori. Primo
+ nell'ordine di lavorazione; il completamento tecnico non blocca gli altri
+ capitoli per una dipendenza inesistente. Nessun commit o invio previsto.
++
++16 novembre 2026 — conclusione tecnica del ticket 09. Confrontati tutti i
++17 blocchi dell'originale e riscontrate 29 fonti attuali; conservato il testo
++valido, con il solo riordino di ambiente e processi aziendali in 1.3.
++Baseline di 2.430 file, inclusi i non tracciati, e 217 copie editoriali
++acquisite prima delle modifiche; originali ed evidenze precedenti intatti.
++
++Compilazione integrale XeLaTeX in tre passaggi finali riusciti, PDF di 113
++pagine ed estratto di tre pagine. Osservati capitolo 1, indice e pagine dei
++cinque messaggi TeX residui, preesistenti in appendice C; 62 riferimenti
++risolti. Solo la pagina fisica 6 cambia rispetto alla baseline.
++[Confronto, fonti, comandi e limiti](../../verifiche/ticket-09/README.md).
++
++[Review indipendenti Standards e Spec](../../verifiche/ticket-09/revisione.md)
++concluse con zero rilievi. Capitolo proposto agli autori per revisione:
++nessuna loro approvazione attribuita. I ticket 10–13 e il rifacimento degli
++undici diagrammi restano da eseguire. Nessun test applicativo, modifica di
++software/schema/dati, commit, invio o pubblicazione.

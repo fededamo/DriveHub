@@ -1,0 +1,389 @@
+[
+  {
+    "native": "docs/relazione/diagrammi/casi-uso-autori.drawio",
+    "source_sha256": "a04a6e7604921790cc717eeb82d2abd5de8af6446cd85df23efc7b66f311f4b3",
+    "export": "docs/relazione/diagrammi/casi-uso-autori.drawio.pdf",
+    "export_sha256": "8d89b62a5301119bf43c603ed271a7c5d432a97072b3782315b87043304c1ffe",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "allegato nativo"
+  },
+  {
+    "native": "docs/relazione/diagrammi/casi-uso-cliente.drawio",
+    "source_sha256": "782b75620dc55a8d17c0c22cef51eb4bac19492a61dc9d39aa0d905752c0df27",
+    "export": "docs/relazione/diagrammi/casi-uso-cliente.drawio.pdf",
+    "export_sha256": "7521aa7ec216274f2569e65f849bfd83c6c944eacb952411be25da9be0660d63",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/casi-uso-manager.drawio",
+    "source_sha256": "0d52f6cc0667fe460ace833b404b4688f4fd33a5f6e30f733cbafdbfc8967a9d",
+    "export": "docs/relazione/diagrammi/casi-uso-manager.drawio.pdf",
+    "export_sha256": "bb41849688b190f19569206d739218e6bb860903db9f2e16c04e7d87eecd1fd7",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/casi-uso-venditore.drawio",
+    "source_sha256": "ce2b029d8c3be64555be21420e77e0ef5fd31e38b0b65c9fb618b403c4ef799c",
+    "export": "docs/relazione/diagrammi/casi-uso-venditore.drawio.pdf",
+    "export_sha256": "41d10e9c4e442bf4e4d3f7a3cd3707ee51aa7e828bdd8bdeee79b08fe870b9aa",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/classi-avvio.drawio",
+    "source_sha256": "23dbd627f7013438a5bb98bda122df9593ed20d9cd83d6543c6db025c33027a5",
+    "export": "docs/relazione/diagrammi/classi-avvio.drawio.pdf",
+    "export_sha256": "6f7b268646422abd8b43805e702265a06396828f365bf555402b3cba46b760a3",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/classi-business-insieme.drawio",
+    "source_sha256": "f8f0beee1d37d1aff4cda730d739d9da1d85124122eb3824642cf6b6d5d7619a",
+    "export": "docs/relazione/diagrammi/classi-business-insieme.drawio.pdf",
+    "export_sha256": "38ea22cea120c45481fc675f9247656ef5e16641cc74a5af9f20c76760091673",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "allegato nativo"
+  },
+  {
+    "native": "docs/relazione/diagrammi/classi-catalogo.drawio",
+    "source_sha256": "5cb9473939ea3dc3a270175ce1d7ee47670dd1cd8463f781d3b8a465a6804b2f",
+    "export": "docs/relazione/diagrammi/classi-catalogo.drawio.pdf",
+    "export_sha256": "756caba88cef5b54249aabffb09abf2e7f6e9523c940a7240935028d10c4107a",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/classi-dao-insieme.drawio",
+    "source_sha256": "622f0d68ee24aab06495fff3b0da1c44b21ea5d5823c0f2acaeb0d61ed4d30dd",
+    "export": "docs/relazione/diagrammi/classi-dao-insieme.drawio.pdf",
+    "export_sha256": "1d2e6f0a852ca64500f325a9000bd7060bfd3084add88712b7a430a928ce59a2",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "allegato nativo"
+  },
+  {
+    "native": "docs/relazione/diagrammi/classi-dao.drawio",
+    "source_sha256": "31c6855ae3ba5f5741c468c8d8f84363f2da92e6da3f1d3fa01dfb977a327e61",
+    "export": "docs/relazione/diagrammi/classi-dao.drawio.pdf",
+    "export_sha256": "4f45c5df8290a00ce83122bc29750e5d5bf05e43dbb3693d5aac8ce5dcfd6827",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/classi-dominio-insieme.drawio",
+    "source_sha256": "28e11bb9def9f586c766c348a3896be044cae364c845731dc18ad122f10fe908",
+    "export": "docs/relazione/diagrammi/classi-dominio-insieme.drawio.pdf",
+    "export_sha256": "485def3c83bae6748827967815ca4af64794148cff9de7c247a0a33cfef40258",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "allegato nativo"
+  },
+  {
+    "native": "docs/relazione/diagrammi/classi-eventi.drawio",
+    "source_sha256": "1183a22e443c31a64569b719848f08af17c4b6cd326ee48628d957c2f44b54a7",
+    "export": "docs/relazione/diagrammi/classi-eventi.drawio.pdf",
+    "export_sha256": "5b7b5b5092d1460b38327fd2f5e59cdadc9359afff03df8e23fec2a0a4cd9080",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/classi-operazioni.drawio",
+    "source_sha256": "c037224651dbeab7146087307c1bbbbda0282f36c17b00c5b83e306f01d4bc5b",
+    "export": "docs/relazione/diagrammi/classi-operazioni.drawio.pdf",
+    "export_sha256": "ddc9b6e7856a375526df4f9c79cdf180e0bbd76a485977e0a9efea1b766d31f2",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/classi-postgres.drawio",
+    "source_sha256": "f295332a591e01d497e365bc012a41017860df7611c63d303fcb00f70ed36609",
+    "export": "docs/relazione/diagrammi/classi-postgres.drawio.pdf",
+    "export_sha256": "970ea55c9d823e31be12c519628f796006ad5e3b702708aabcae9afa5de0b696",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/classi-presentazione-insieme.drawio",
+    "source_sha256": "fda0f7d2506d27f4bf59595d44a75015244db1ce4ff3b1a1b68398e2797f2b80",
+    "export": "docs/relazione/diagrammi/classi-presentazione-insieme.drawio.pdf",
+    "export_sha256": "78d270e6da2647d2b205be8b96abd5404113f2077ae4d051faca5edcfdec3c9a",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "allegato nativo"
+  },
+  {
+    "native": "docs/relazione/diagrammi/classi-presentazione.drawio",
+    "source_sha256": "30b2dc0249493c368fd454d2068e1024ff486aaea55f79f016d8109d841bbe08",
+    "export": "docs/relazione/diagrammi/classi-presentazione.drawio.pdf",
+    "export_sha256": "f54e70ccddc3269fef30ed60a701b0d0d4f470b634187900389171c6547a9be7",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/classi-sconti.drawio",
+    "source_sha256": "0187d81d7bfee8721df8f85bd6c2d681c92ef11d36a02fe90c2a21fd23e720e2",
+    "export": "docs/relazione/diagrammi/classi-sconti.drawio.pdf",
+    "export_sha256": "62e17c4b0b4efc156db74b8474516473d848fdaa60b06532acf0577bba1b4a34",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/classi-servizi.drawio",
+    "source_sha256": "b480fa2e612b9b5aa17a691d030e1551d274e518d77964f03e22cf44a6792b1e",
+    "export": "docs/relazione/diagrammi/classi-servizi.drawio.pdf",
+    "export_sha256": "f4760f9ac82c81234ca445c75e6e7fb0186e4de723f0afde855826652b9faaf4",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/classi-sicurezza.drawio",
+    "source_sha256": "1162e7a11901a3e1440db3c6ab831f6fc71502a7c33d1ec1e7f4cb92b94b08d1",
+    "export": "docs/relazione/diagrammi/classi-sicurezza.drawio.pdf",
+    "export_sha256": "c6e6352469db1d931f8058315a24192f558290a63c6a7f99366d1d1851e44d9f",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/classi-transazioni.drawio",
+    "source_sha256": "8931725361e42f286da2624fcf8ab3b6615306a7152b20d9b0d063d525a4bd09",
+    "export": "docs/relazione/diagrammi/classi-transazioni.drawio.pdf",
+    "export_sha256": "862bb5f02728a640a4d9b69bdc497e7c3adfb37962beafcb26fdc7002eb882be",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/classi-utenti.drawio",
+    "source_sha256": "a40075bbbb5df4815332bcd312dad2a086cd309556f65dd0e1372c48f84052ec",
+    "export": "docs/relazione/diagrammi/classi-utenti.drawio.pdf",
+    "export_sha256": "34162d20fd567be4b9a206dde30d9a17d51882cb97b19f745d1861876ab85d78",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/database-er-autori.drawio",
+    "source_sha256": "cb3c38e07118297eef7ddd458d91f12760c564865f10fc18529a0c32f49cc49b",
+    "export": "docs/relazione/diagrammi/database-er-autori.drawio.pdf",
+    "export_sha256": "421c927ed6be33f6d299b2af74efb5c4f2d04920834576b9d57edc341c4d79c2",
+    "pages": 2,
+    "native_matches_export": true,
+    "embedding": "allegato nativo"
+  },
+  {
+    "native": "docs/relazione/diagrammi/database-er-catalogo.drawio",
+    "source_sha256": "623bc39b7e6a8f1e6ed29bfe055015983556d0029b0d4b1f820a326f300b60aa",
+    "export": "docs/relazione/diagrammi/database-er-catalogo.drawio.pdf",
+    "export_sha256": "45d0453c70a980ddc2a0cc36c57e3d81a0c68d301221afdbbb00c4e917bc344d",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/database-er-identita.drawio",
+    "source_sha256": "6e5053f2d5718b79b80b10c96a9aea9c1781517918110aba5c8ed63c4c85661d",
+    "export": "docs/relazione/diagrammi/database-er-identita.drawio.pdf",
+    "export_sha256": "b43cd9107baaa8a18a76c2595fc8c914ce32a16dd3e5bbacd98b0a9142d53b3f",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/database-relazionale-catalogo.drawio",
+    "source_sha256": "2c7c9487a3d5c4a51eddb157d7f46b2bd2aff2ff8788b7d9c523575ef37aa1d1",
+    "export": "docs/relazione/diagrammi/database-relazionale-catalogo.drawio.pdf",
+    "export_sha256": "a9bbf25fc193436aab81837949171c886629847d0a5da651009419e9dce34ef3",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/database-relazionale-identita.drawio",
+    "source_sha256": "a29438bc777ba7d0ed2fb930afe3a804f91cee18ad2136e2540c61a6767a7797",
+    "export": "docs/relazione/diagrammi/database-relazionale-identita.drawio.pdf",
+    "export_sha256": "fa52784b602872246e7b737529ba143af2d42e3481a3876749873efb6e3cd6ac",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/database-relazionale-operazioni.drawio",
+    "source_sha256": "0e2f0a3add338a269bcff8fd35c5e4471bbd88b2df4e7af160d651f8fedd1704",
+    "export": "docs/relazione/diagrammi/database-relazionale-operazioni.drawio.pdf",
+    "export_sha256": "3cd557b3e5c75f6231bd7abcd25a56e4c41060c65dd38e19119872409a9bd0d2",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/navigazione-autori.drawio",
+    "source_sha256": "766d052ebe8834f1c2288ee8c83dd65d5eff4162777fe1c56ceff88aa0a440d1",
+    "export": "docs/relazione/diagrammi/navigazione-autori.drawio.pdf",
+    "export_sha256": "d7d463c5d40eba2b4af82bcf373ee2c94d4ee32ec190cddb0aa23e4f6e264355",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "allegato nativo"
+  },
+  {
+    "native": "docs/relazione/diagrammi/navigazione-cliente.drawio",
+    "source_sha256": "89dcc3cd349f26b233eacab7036c50d0d2a1a7f80352c24058a4e640425d7f09",
+    "export": "docs/relazione/diagrammi/navigazione-cliente.drawio.pdf",
+    "export_sha256": "7834db9db911d17e3cddb46b2c6ba44568ae9c3eabbf9208e856bd64c6beccd3",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/navigazione-manager.drawio",
+    "source_sha256": "827beac96aa830605b52456aad1518fea47167559d2d46ddee632f3e0a3c4084",
+    "export": "docs/relazione/diagrammi/navigazione-manager.drawio.pdf",
+    "export_sha256": "6e112881289c0ea91526308281aa540f1fe44a486461b6735ae15be1f47aa46a",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/navigazione-venditore.drawio",
+    "source_sha256": "96ef71ff2ee3d21aeed9964e6879a444451b7746850f2bb32a5f76ea0ca26899",
+    "export": "docs/relazione/diagrammi/navigazione-venditore.drawio.pdf",
+    "export_sha256": "95114a87a5b966ff5f488002889300b1fc2cf4063f9682f2d53554cb00d73649",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/package-architettura.drawio",
+    "source_sha256": "613beef07414cb63f8b0afee472fd5da6f7912815fc31d67555728040e6a24da",
+    "export": "docs/relazione/diagrammi/package-architettura.drawio.pdf",
+    "export_sha256": "ab2da01ae3594ba23fdb7fbd7d9fc34e1c47cc92a9282f39a86baa872ff73d6e",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/package-autori.drawio",
+    "source_sha256": "094a026be043fc5395c1671922f0277db3c29a2410c779155f342012f4e3be0a",
+    "export": "docs/relazione/diagrammi/package-autori.drawio.pdf",
+    "export_sha256": "41084cfa926c1c20cb1a893fbd8db0dc52f8c5823bfa339eed0eaeaeeda33661",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "allegato nativo"
+  },
+  {
+    "native": "docs/relazione/diagrammi/sequenza-cessione-esito.drawio",
+    "source_sha256": "e670bad3b4ca5ad22e29f14b7228f8b1c9277a2b958c9accf6665ac3fba3b5fa",
+    "export": "docs/relazione/diagrammi/sequenza-cessione-esito.drawio.pdf",
+    "export_sha256": "f87eebe8fa711d16cfe09d6fff3738e826ac2ffd52774e8a96d2d0c99c74b6e7",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/sequenza-cessione-insieme.drawio",
+    "source_sha256": "60887e395be621dbd4dfbb4cad5dca08c4fdb5404a0dca240bbd67c7e1cd6c35",
+    "export": "docs/relazione/diagrammi/sequenza-cessione-insieme.drawio.pdf",
+    "export_sha256": "417a4aca504cdb691019589579605fe73a4b49e61b3a2313d825630e97f01562",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "allegato nativo"
+  },
+  {
+    "native": "docs/relazione/diagrammi/sequenza-cessione-proposta.drawio",
+    "source_sha256": "8a1dcf7719a7f3572efc21a7fe7b050a4aaba585216dfe2dfec8d4a72057ca14",
+    "export": "docs/relazione/diagrammi/sequenza-cessione-proposta.drawio.pdf",
+    "export_sha256": "967728942343025460a0cbdafbffe16c90f8d02b64c5720e3705327ce8921847",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/sequenza-noleggio-insieme.drawio",
+    "source_sha256": "a2a9d7a7058d857cbec8d13ee82230692d45777f6fcd818a945eff1028c78d1c",
+    "export": "docs/relazione/diagrammi/sequenza-noleggio-insieme.drawio.pdf",
+    "export_sha256": "4bcd8cee95ab9bd3dace119a5242d85c21de3baca74b4638dc2f8f67be911d4f",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "allegato nativo"
+  },
+  {
+    "native": "docs/relazione/diagrammi/sequenza-noleggio.drawio",
+    "source_sha256": "b17c3f4c226132ecf927788a0ee19f2b6595a036bbd221df985ad5e2eec64a2f",
+    "export": "docs/relazione/diagrammi/sequenza-noleggio.drawio.pdf",
+    "export_sha256": "ba897c5f99c29f0acc9a0dfcdb77403bd600a2e85c4202bcedfd68582efae5d6",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/sequenza-observer.drawio",
+    "source_sha256": "1427819bef7cdfd7a36c2f8c09aba4a04c0afc8abff3fe3a0a6b0c66a368af91",
+    "export": "docs/relazione/diagrammi/sequenza-observer.drawio.pdf",
+    "export_sha256": "1718dcd1d734bc8a023eba97384c149d72c2f30f658c8435d71400c1f272a827",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/sequenza-vendita-avvio.drawio",
+    "source_sha256": "bc015ac283617c83fb37a53fc2c532957ce57ef0851ad1030e1b2ee4ecd2e0cf",
+    "export": "docs/relazione/diagrammi/sequenza-vendita-avvio.drawio.pdf",
+    "export_sha256": "f30fb1d3c7484bb735e8d800b53ffe17167a6ca079232a9e8bc03c0394fa182c",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/sequenza-vendita-esito.drawio",
+    "source_sha256": "5274020e9825e8f2b2c65fae02b4073b681c0a6d67b5e9216b133f5a1298406b",
+    "export": "docs/relazione/diagrammi/sequenza-vendita-esito.drawio.pdf",
+    "export_sha256": "25119bcf9551885a7d1790c0460a115354ec6906f6331ddb2fe78b054e5d82c4",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/sequenza-vendita-insieme.drawio",
+    "source_sha256": "dcae75d6aa96602dd45e87c826014159c73c1463e198506db9ff9ccd08e667b8",
+    "export": "docs/relazione/diagrammi/sequenza-vendita-insieme.drawio.pdf",
+    "export_sha256": "200937c6dbae667c08803ebe28cd54d8bc28b6770f0514a6c0ca618e30d182fe",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "allegato nativo"
+  },
+  {
+    "native": "docs/relazione/diagrammi/sequenza-vendita-saldo.drawio",
+    "source_sha256": "b4afd53046561ce1f57d819481e3ce215495d60c229388f921f599aca9c0393c",
+    "export": "docs/relazione/diagrammi/sequenza-vendita-saldo.drawio.pdf",
+    "export_sha256": "a7af2d9f6de0c875fa43a69409322e9741584e4cad729bba420b1460f298e704",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  },
+  {
+    "native": "docs/relazione/diagrammi/sequenza-vendita-scadenza.drawio",
+    "source_sha256": "8bd4df318ba92417f178196aa0b76d191ba96017232dfadc07e99d69a92494f7",
+    "export": "docs/relazione/diagrammi/sequenza-vendita-scadenza.drawio.pdf",
+    "export_sha256": "36c4ed2a7ae6f8dd8ff2275463b96ac8f916c3a1be4843bbacf607dd574ce320",
+    "pages": 1,
+    "native_matches_export": true,
+    "embedding": "Subject XML URL-encoded"
+  }
+]

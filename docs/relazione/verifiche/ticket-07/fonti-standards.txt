@@ -1,0 +1,2 @@
+docs/AGENTS.md
+Nessun CODING_STANDARDS.md o CONTRIBUTING.md individuato.

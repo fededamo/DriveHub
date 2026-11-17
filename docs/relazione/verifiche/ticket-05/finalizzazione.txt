@@ -1,0 +1,10 @@
+2026-11-13 12:51:13.242699+00:00
+Controlli di chiusura documentale: exit 0.
+Nessuna nuova compilazione dopo le revisioni: PDF invariato, uguale a build/main.pdf.
+HEAD invariato; nessuna modifica tracciata e nessun commit.
+2199 file protetti intatti, comprese evidenze/manifest 01–04.
+55 fonti intatte, 13 estratti esatti; rapporti indipendenti conclusi sullo stesso PDF.
+Standards: 0 aperti. Spec: 1 rilievo minore risolto, 0 aperti.
+La correzione D1 è solo nella matrice e non modifica il PDF.
+Stato done: capitolo 3 proposto agli autori, approvazione non attribuita; 4–5/C provvisori.
+SHA-256 PDF: 2713ae306c1bc3f748ecddbfbdc0771e0b401119a8cd41af005ebd7856b742bb

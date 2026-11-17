@@ -1,0 +1,235 @@
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025/Debian) (preloaded format=xelatex)
+entering extended mode
+(./main.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2026-01-19>
+
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/report.cls
+Document Class: report 2025/01/22 v1.4n Standard LaTeX document class
+
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/size12.clo))
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/fontenc.sty
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texmf/tex/latex/lm/t1lmr.fd))
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+babel/babel.sty
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+babel/xebabel.def)
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+babel/locale/it/babel-italian.tex)
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+babel-italian/italian.ldf))
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/et
+oolbox/etoolbox.sty)
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ge
+ometry/geometry.sty
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/gr
+aphics/keyval.sty)
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+iftex/ifvtex.sty
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+iftex/iftex.sty)))
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/gr
+aphics/graphicx.sty
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/gr
+aphics/graphics.sty
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/gr
+aphics/trig.sty)
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/gr
+aphics-cfg/graphics.cfg)
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/gr
+aphics-def/xetex.def)))
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/pd
+fpages/pdfpages.sty
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ba
+se/ifthen.sty)
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/to
+ols/calc.sty)
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/es
+o-pic/eso-pic.sty
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/xc
+olor/xcolor.sty
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/gr
+aphics-cfg/color.cfg)
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/gr
+aphics/mathcolor.ltx)))
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/pd
+fpages/ppxetex.def))
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/en
+umitem/enumitem.sty)
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/co
+lortbl/colortbl.sty
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/to
+ols/array.sty))
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/li
+stings/listings.sty
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/li
+stings/lstpatch.sty)
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/li
+stings/lstmisc.sty)
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/li
+stings/listings.cfg))
+==> First Aid for listings.sty no longer applied!
+    Expected:
+        2024/09/23 1.10c (Carsten Heinz)
+    but found:
+        2025/11/14 1.11b (Carsten Heinz)
+    so I'm assuming it got fixed.
+
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/to
+ols/longtable.sty)
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hy
+perref/hyperref.sty
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/kv
+setkeys/kvsetkeys.sty)
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+kvdefinekeys/kvdefinekeys.sty)
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+pdfescape/pdfescape.sty
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+ltxcmds/ltxcmds.sty)
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+pdftexcmds/pdftexcmds.sty
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+infwarerr/infwarerr.sty)))
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hy
+color/hycolor.sty)
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hy
+perref/nameref.sty
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/re
+fcount/refcount.sty)
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+gettitlestring/gettitlestring.sty
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/kv
+options/kvoptions.sty)))
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+stringenc/stringenc.sty)
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hy
+perref/pd1enc.def)
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+intcalc/intcalc.sty)
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hy
+perref/puenc.def)
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/ur
+l/url.sty)
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+bitset/bitset.sty
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+bigintcalc/bigintcalc.sty)))
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hy
+perref/hxetex.def
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/re
+runfilecheck/rerunfilecheck.sty
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/
+uniquecounter/uniquecounter.sty)))
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/l3
+backend/l3backend-xetex.def) (build/ticket10/main.aux)
+*geometry* driver: auto-detecting
+*geometry* detected driver: xetex
+
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/pd
+flscape/pdflscape.sty
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/pd
+flscape/pdflscape-nometadata.sty
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/gr
+aphics/lscape.sty))) (build/ticket10/main.out) (build/ticket10/main.out)
+[1] (build/ticket10/main.toc) [1] (./capitoli/1_introduzione.tex
+Capitolo 1.
+[1]
+(/tmp/drivehub-ticket09-tools/texlive/usr/share/texmf/tex/latex/lm/t1lmtt.fd)
+[2]) (./capitoli/2_progettazione.tex [3]
+Capitolo 2.
+(./capitoli/2_funzioni.tex
+
+LaTeX Warning: Reference `fig:uc-cliente' on page 4 undefined on input line 6.
+
+
+LaTeX Warning: Reference `fig:uc-manager' on page 4 undefined on input line 6.
+
+
+LaTeX Warning: Reference `sec:template' on page 4 undefined on input line 18.
+
+
+LaTeX Warning: Reference `app:casi-uso' on page 4 undefined on input line 18.
+
+
+LaTeX Warning: Reference `fig:uc-autori' on page 4 undefined on input line 25.
+
+[4]
+
+LaTeX Warning: Reference `fig:uc-autori' on page 5 undefined on input line 34.
+
+[5] [6] [7] [8]
+
+LaTeX Warning: Reference `app:casi-uso' on page 9 undefined on input line 55.
+
+(./capitoli/2_template.tex [9] [10] [11] [12]
+
+LaTeX Warning: Reference `sec:sequenze' on page 13 undefined on input line 192.
+
+
+[13] [14]) [15]
+
+LaTeX Warning: Reference `uc:UC-07' on page 16 undefined on input line 85.
+
+
+LaTeX Warning: Reference `uc:UC-08' on page 16 undefined on input line 86.
+
+
+LaTeX Warning: Reference `uc:UC-09' on page 16 undefined on input line 87.
+
+
+LaTeX Warning: Reference `uc:UC-10' on page 16 undefined on input line 87.
+
+
+LaTeX Warning: Reference `uc:UC-11' on page 16 undefined on input line 88.
+
+
+LaTeX Warning: Reference `uc:UC-S01' on page 16 undefined on input line 89.
+
+
+LaTeX Warning: Reference `uc:UC-S02' on page 16 undefined on input line 90.
+
+
+LaTeX Warning: Reference `uc:UC-S03' on page 16 undefined on input line 90.
+
+
+LaTeX Warning: Reference `uc:UC-S04' on page 16 undefined on input line 91.
+
+[16]
+
+LaTeX Warning: Reference `fig:ui-accesso' on page 17 undefined on input line 12
+7.
+
+[17] [18] [19] [20]
+
+LaTeX Warning: Reference `fig:ui-cliente-operazioni' on page 21 undefined on in
+put line 186.
+
+[21] [22]
+
+LaTeX Warning: Reference `fig:ui-identita' on page 23 undefined on input line 2
+07.
+
+[23] [24]
+
+LaTeX Warning: Reference `fig:ui-venditore-richieste' on page 25 undefined on i
+nput line 237.
+
+[25]
+
+LaTeX Warning: Reference `fig:ui-identita' on page 26 undefined on input line 2
+66.
+
+[26] [27] [28]
+
+LaTeX Warning: Reference `fig:ui-manager-sconti' on page 29 undefined on input 
+line 298.
+
+[29] [30
+xdvipdfmx:fatal: Cannot proceed without .vf or "physical" font for PDF output...
+
+No output PDF file written.
+xelatex: fwrite: Broken pipe

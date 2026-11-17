@@ -1,0 +1,228 @@
+% Schede riscontrate sul codice corrente; non costituiscono esiti di test.
+\newcommand{\scheda}[7]{%
+  \section{\texorpdfstring{\raggedright #1 --- #2}{#1 --- #2}}\label{uc:#1}
+  \noindent\textbf{Descrizione:} #3\par
+  \noindent\textbf{Livello:} #4\par
+  \noindent\textbf{Attori:} #5\par
+  \noindent\textbf{Precondizioni:} #6\par
+  \noindent\textbf{Postcondizioni:} #7\par
+}
+\newcommand{\principale}{\paragraph{Flusso principale}}
+\newcommand{\alternative}{\paragraph{Alternative}}
+
+Ogni titolo riporta identificativo stabile e denominazione. Le alternative
+\emph{n.a}, \emph{n.b} si diramano dal passo \emph{n} della stessa scheda;
+si indica se il caso riprende o termina. O indica un obiettivo applicativo,
+F una sottofunzione applicativa e S una funzione di supporto. Sono livelli
+descrittivi, non livelli di autorizzazione. Gli attori sono ruoli dell'interfaccia;
+non si assume un controllo dei permessi indipendente in ogni servizio.
+Le postcondizioni descrivono il successo; in caso di errore transazionale
+le scritture della singola operazione vengono annullate. Un errore successivo
+nell'aggiornamento della vista non annulla un'operazione gi\`a confermata.
+
+\clearpage
+\scheda{UC-07}{Consultazione del catalogo}
+{Il cliente confronta i veicoli proposti in vendita o a noleggio.}
+{O --- obiettivo applicativo di consultazione.}
+{Cliente.}
+{Cliente autenticato.}
+{Dati consultati senza modifiche persistenti.}
+\principale
+\begin{enumerate}
+\item Il cliente apre \emph{Auto in Vendita} o \emph{Auto a Noleggio}.
+\item Il sistema carica le righe per la destinazione scelta: modello,
+  anno, targa/usato, chilometri e valori di prezzo.
+\item Il cliente seleziona un veicolo e pu\`o proseguire in UC-01, UC-02 o UC-03.
+\end{enumerate}
+\alternative
+\begin{description}
+\item[2.a] Nessun veicolo disponibile: tabella vuota, nessuna operazione selezionabile.
+\item[2.b] Lettura fallita: dati disabilitati e \emph{Riprova}; il cliente ricarica dal passo 2.
+\item[3.a] Prezzo o disponibilit\`a cambiano: \emph{Aggiorna} rilegge il catalogo;
+  i comandi commerciali conservano le proprie verifiche correnti.
+\end{description}
+
+\scheda{UC-08}{Cambio di destinazione del veicolo}
+{Il venditore sposta un veicolo fra vendita e noleggio.}
+{O --- obiettivo applicativo.}
+{Venditore; clienti con noleggi futuri.}
+{Venditore autenticato; veicolo \code{SALE} o \code{RENT} selezionato.}
+{Destinazione invertita; per \code{RENT} verso \code{SALE}, noleggi con inizio
+futuro eliminati e importi interamente rimborsati.}
+\principale
+\begin{enumerate}
+\item Il venditore seleziona un veicolo in \emph{Gestione Stato Inventario (SALE / RENT)}.
+\item Aziona \emph{Modifica Stato} e legge la conferma, con avviso dei rimborsi previsti.
+\item Conferma; il servizio rilegge stato e prenotazioni e rifiuta il passaggio a vendita se un noleggio comprende oggi.
+\item Esegue eventuali rimborsi, cancellazioni e cambio di stato in una transazione; mostra l'esito.
+\end{enumerate}
+\alternative
+\begin{description}
+\item[2.a] Annullamento: nessun effetto; termina.
+\item[3.a] Stato cambiato, destinazione invariata o noleggio in corso: errore, nessun cambio.
+\item[4.a] Conto mancante o errore: rollback anche dei rimborsi gi\`a eseguiti nella transazione.
+\end{description}
+
+\clearpage
+\scheda{UC-09}{Gestione del catalogo e delle basi prezzo}
+{Il manager mantiene marchi, modelli e veicoli e sceglie la base di calcolo del prezzo.}
+{O --- obiettivo applicativo gestionale, aggregato per area.}
+{Manager.}
+{Manager autenticato; per gli inserimenti dipendenti esistono marchio o modello;
+per rimozione/base prezzo una riga \`e selezionata.}
+{Elemento creato o rimosso, oppure base prezzo aggiornata; tabella pertinente ricaricata.}
+\principale
+\begin{enumerate}
+\item Il manager apre \emph{Marchi}, \emph{Modelli} o \emph{Veicoli}.
+\item Compila il form nella scheda e aziona \emph{Aggiungi}, specificando
+  gli attributi richiesti dal tipo di elemento.
+\item Il servizio valida i dati, salva l'elemento e la vista ricarica la tabella.
+\end{enumerate}
+\alternative
+\begin{description}
+\item[2.a] Seleziona una riga e aziona \emph{Elimina Selezionato}:
+  rimozione diretta senza conferma preventiva, se non esistono associazioni che la impediscono.
+  Marchi con modelli, modelli con veicoli e veicoli con operazioni vengono rifiutati.
+\item[2.b] In \emph{Veicoli} seleziona una riga, sceglie modalit\`a automatica
+  o base manuale e aziona \emph{Applica base alla selezione}: viene salvata
+  la scelta; il prezzo risultante usa comunque sconti e svalutazioni.
+\item[3.a] Input invalido, VIN/targa duplicati o errore: nessun successo dichiarato;
+  il manager corregge e riparte da 2.
+\end{description}
+
+\clearpage
+\scheda{UC-10}{Consultazione del registro economico}
+{Il manager legge vendite al cliente, acquisti dal cliente e penali.}
+{O --- obiettivo applicativo di consultazione.}
+{Manager.}
+{Manager autenticato.}
+{Registro visualizzato senza modificare operazioni o conti.}
+\principale
+\begin{enumerate}
+\item Il manager apre \emph{Registro economico}.
+\item Il sistema carica tipo, data, cliente, eventuali venditore/veicolo e importo.
+\item Il manager interpreta l'importo non negativo secondo il tipo:
+  incasso per vendita o penale, esborso per acquisto dal cliente.
+\end{enumerate}
+\alternative
+\begin{description}
+\item[2.a] Nessuna operazione: tabella vuota; termina.
+\item[2.b] Errore di lettura: dati disabilitati e \emph{Riprova}; riprendere da 2.
+\item[3.a] Operazioni cambiate dopo il caricamento: \emph{Aggiorna} rilegge il registro.
+\end{description}
+
+\clearpage
+\scheda{UC-11}{Consultazione delle proprie operazioni}
+{Il cliente segue richieste, noleggi e test drive associati alla propria identit\`a.}
+{O --- obiettivo applicativo di consultazione.}
+{Cliente.}
+{Cliente autenticato.}
+{Dati consultati; eventuali comandi sono descritti in UC-01 e UC-03.}
+\principale
+\begin{enumerate}
+\item Il cliente apre \emph{Le Mie Operazioni}.
+\item Il sistema mostra richieste con totale, acconto, residuo, venditore/scadenza,
+  noleggi con importo e periodo, test drive con data/ora.
+\item Il cliente consulta le righe oppure prosegue al saldo di UC-03
+  o all'annullamento di un proprio test drive in UC-01.
+\end{enumerate}
+\alternative
+\begin{description}
+\item[2.a] Un elenco non ha operazioni: la relativa tabella resta vuota.
+\item[2.b] Le letture di questa area sono sincrone: un errore non va interpretato
+  come assenza di operazioni; non si presume un controllo \emph{Riprova} per queste tre tabelle.
+\item[3.a] Nessuna richiesta approvata selezionata: il comando di saldo segnala l'impedimento.
+\end{description}
+
+\scheda{UC-S01}{Registrazione del cliente}
+{Crea un'identit\`a cliente e il relativo conto dimostrativo.}
+{S --- supporto all'interazione, preliminare agli obiettivi commerciali.}
+{Visitatore che diventer\`a cliente.}
+{Schermata pubblica disponibile; email non gi\`a usata.}
+{Cliente e conto creati, saldo iniziale zero; dopo la conferma si apre l'area cliente.}
+\principale
+\begin{enumerate}
+\item Il visitatore apre \emph{Registrati} e compila nome, cognome, email e password.
+\item Aziona \emph{Crea Account Cliente}; il servizio valida i dati e crea identit\`a e conto.
+\item Il sistema mostra il riepilogo e poi accede alla dashboard cliente.
+\end{enumerate}
+\alternative
+\begin{description}
+\item[2.a] Dati invalidi o email in uso: errore; correggere dal passo 1.
+\item[2.b] Errore di persistenza: rollback della registrazione; nessun account parziale.
+\item[3.a] Dashboard non caricabile: errore di caricamento;
+  l'identit\`a gi\`a creata pu\`o essere usata per un accesso successivo.
+\end{description}
+\noindent La registrazione pubblica non crea venditori o manager.
+
+\clearpage
+\scheda{UC-S02}{Accesso al sistema}
+{Verifica le credenziali e apre la dashboard del ruolo associato all'identit\`a.}
+{S --- supporto all'interazione.}
+{Cliente, venditore o manager.}
+{Identit\`a gi\`a esistente; schermata \emph{Accedi}.}
+{Dashboard del ruolo aperta. Per il cliente viene eseguito anche il controllo delle richieste scadute di UC-03.}
+\principale
+\begin{enumerate}
+\item L'utente inserisce email e password e aziona \emph{Accedi al Sistema}.
+\item Il servizio ricerca l'identit\`a e verifica la password.
+\item L'applicazione costruisce la dashboard corrispondente al ruolo.
+\end{enumerate}
+\alternative
+\begin{description}
+\item[2.a] Credenziali mancanti o non valide, oppure lettura fallita: errore e permanenza su accesso.
+\item[3.a] Dashboard non caricabile: messaggio distinto di caricamento; nessun successo UI dichiarato.
+\item[3.b] Il cliente ha richieste approvate scadute: elaborazione e avviso di rimborso/penale;
+  poi prosegue nella dashboard.
+\item[3.c] Successivamente \emph{Disconnetti} riporta ad \emph{Accedi}.
+\end{description}
+
+\clearpage
+\scheda{UC-S03}{Gestione dell'identit\`a}
+{L'utente modifica email o password, oppure chiede l'eliminazione della propria identit\`a.}
+{S --- supporto all'interazione.}
+{Cliente, venditore o manager.}
+{Utente nella propria dashboard; password attuale disponibile.}
+{Credenziale aggiornata; oppure identit\`a eliminata e ritorno all'accesso.
+L'eliminazione del cliente rimuove anche il conto demo.}
+\principale
+\begin{enumerate}
+\item L'utente apre \emph{Gestione Account} e sceglie \emph{Modifica Email} o \emph{Modifica Password}.
+\item Inserisce il nuovo valore e la password attuale, poi conferma il comando.
+\item Il servizio verifica credenziali e dati, salva e mostra l'esito.
+\end{enumerate}
+\alternative
+\begin{description}
+\item[1.a] Chiude il dialogo: ritorna alla dashboard senza modifiche.
+\item[2.a] Sceglie \emph{Elimina Identit\`a}, inserisce la password e conferma
+  l'avviso definitivo: il servizio elimina solo in assenza di richieste e storico associati.
+  Annullamento o password errata non eliminano nulla.
+\item[3.a] Dati invalidi, associazioni presenti o errore: rifiuto/rollback;
+  identit\`a conservata. Il solo conto, anche positivo, non blocca l'eliminazione.
+\end{description}
+
+\clearpage
+\scheda{UC-S04}{Ricarica del conto demo}
+{Il cliente aumenta la disponibilit\`a del conto interno, senza un pagamento bancario reale.}
+{S --- supporto agli obiettivi economici.}
+{Cliente.}
+{Cliente autenticato con conto demo.}
+{Importo positivo accreditato e saldo visualizzato aggiornato.}
+\principale
+\begin{enumerate}
+\item Il cliente apre \emph{Ricarica Saldo} nell'header oppure la scheda
+  omonima di \emph{Gestione Account}.
+\item Inserisce l'importo e conferma la ricarica.
+\item Il servizio valida e accredita l'importo; la UI aggiorna il saldo e mostra l'esito.
+\end{enumerate}
+\alternative
+\begin{description}
+\item[2.a] Chiude o annulla: nessun accredito; termina.
+\item[2.b] Importo non numerico o non positivo: errore; ritorno a 2.
+\item[3.a] Conto assente o errore di aggiornamento: nessun accredito confermato; rollback.
+\end{description}
+\begin{flushleft}Le schede di consultazione e supporto sono riscontrate su
+\code{CatalogService}, \code{OperationQueryService}, \code{AuthService},
+\code{AccountManagementDialog} e sulle dashboard correnti. Le regole dichiarate
+non costituiscono una nuova esecuzione dei test applicativi; fonti puntuali,
+ambiente e osservazioni sono conservati nelle verifiche del ticket 02.\end{flushleft}

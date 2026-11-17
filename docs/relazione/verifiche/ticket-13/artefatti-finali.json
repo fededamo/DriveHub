@@ -1,0 +1,528 @@
+{
+  "status": "PASS",
+  "date": "2026-11-17",
+  "head": "61ce18ae1d4e0458b63e970b793b0b3a634a3adf",
+  "scope": "Solo documentazione ticket 13; nessun commit o attività applicativa",
+  "artifacts": [
+    {
+      "path": "docs/relazione/relazione-drivehub.pdf",
+      "bytes": 2940087,
+      "sha256": "79536e7bd909b03e433d16c5b2fccd0f18269e432436463e30e75cb40a954b5e"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-13/sorgenti-relazione.zip",
+      "bytes": 2830322,
+      "sha256": "4264917500906131dabb95b21f402b89c339636e70fb74dd53c02c017b0658ff"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-13/ricompilato-da-zip.pdf",
+      "bytes": 2940085,
+      "sha256": "8e97404c1885f720d6e60baf66b6139a2ce24ec65719e707bd75b5e9ba14f7d0"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-13/baseline-editoriale.tar.gz",
+      "bytes": 8279785,
+      "sha256": "0b19d27fbed0ded1a4857dc704247b95148e295ae684597c0c3028d678bf8621"
+    },
+    {
+      "path": "docs/relazione/verifiche/ticket-13/manifest-pacchetto.json",
+      "bytes": 19318,
+      "sha256": "ff6a596c7ceda7fa01013341ad38d734e48db0f8ae98f8bbf3526df9c45cc5b5"
+    }
+  ],
+  "distributed_editorial": [
+    {
+      "path": "docs/relazione/LEGGIMI-consegna.md",
+      "sha256": "e60236b48ce0a5800e180988d19ff5a065d390c886fe0e3f5c49ef3445ea2553"
+    },
+    {
+      "path": "docs/relazione/appendici/a_casi_uso.tex",
+      "sha256": "1037e575a1200f94e0fcb5269c298c896bd1e8e1daf6e162c06bb885186c5c5b"
+    },
+    {
+      "path": "docs/relazione/appendici/appendici.tex",
+      "sha256": "30cc015d7c35c2bcf053ab8b3ce98ee7255f723d971811c714c7b7ada0b7e5f1"
+    },
+    {
+      "path": "docs/relazione/appendici/b_classi.tex",
+      "sha256": "7a95c1e6853a673e529e548c3a383a7cee73d0aec507e5d62c1aeb145d32cc5d"
+    },
+    {
+      "path": "docs/relazione/appendici/c_verifiche.tex",
+      "sha256": "bf7093a386bfa9d0c444fe33732b8684499f34674f266e45d2d8eae45ea5eeab"
+    },
+    {
+      "path": "docs/relazione/capitoli/1_introduzione.tex",
+      "sha256": "6b37e2c36ce2175949caec357b69ac9cb3b0529658b72775f232bf8a6edae020"
+    },
+    {
+      "path": "docs/relazione/capitoli/2_architettura.tex",
+      "sha256": "7cbb21c11ebd610a07f79033c0dd68c0c094ccc9818b4de452fee3a4a75a80e4"
+    },
+    {
+      "path": "docs/relazione/capitoli/2_database.tex",
+      "sha256": "d66c374ad99ec6811e97b7d93ac7d0a38f5a456b65130f6bf15e69ce75d8354e"
+    },
+    {
+      "path": "docs/relazione/capitoli/2_funzioni.tex",
+      "sha256": "b4304776b3da46a6e4287e88b61ca67fa22638fa7eba894e6fc27194d1693832"
+    },
+    {
+      "path": "docs/relazione/capitoli/2_progettazione.tex",
+      "sha256": "f40f33318861696ca66c9a225c48b65b610d2b3c6ff0fbb96c07928ee7cf3d85"
+    },
+    {
+      "path": "docs/relazione/capitoli/2_sequenze.tex",
+      "sha256": "19a7eff040599abfaba3310167154c514ee2f65c5b19a173d19c84f422cacccb"
+    },
+    {
+      "path": "docs/relazione/capitoli/2_template.tex",
+      "sha256": "978b909b5806b8614b070da8d259f8c2661c74bb28f7a8711bcdf78d753219db"
+    },
+    {
+      "path": "docs/relazione/capitoli/3_implementazione.tex",
+      "sha256": "6b6a947f0aa4c2581c44aa44baacedea8b52f8321c030f54c28fedeecd072302"
+    },
+    {
+      "path": "docs/relazione/capitoli/4_testing.tex",
+      "sha256": "169b4f4430f6403abf8b8641583e7b9cade285de7db8a22c7edb6d3bab005f71"
+    },
+    {
+      "path": "docs/relazione/capitoli/5_uso_ai.tex",
+      "sha256": "3a6341e5972953c974f0f987aa5210ce379304780f7b86faa86b2b5edb996977"
+    },
+    {
+      "path": "docs/relazione/diagrammi/casi-uso-autori.drawio",
+      "sha256": "a04a6e7604921790cc717eeb82d2abd5de8af6446cd85df23efc7b66f311f4b3"
+    },
+    {
+      "path": "docs/relazione/diagrammi/casi-uso-autori.drawio.pdf",
+      "sha256": "8d89b62a5301119bf43c603ed271a7c5d432a97072b3782315b87043304c1ffe"
+    },
+    {
+      "path": "docs/relazione/diagrammi/casi-uso-cliente.drawio",
+      "sha256": "782b75620dc55a8d17c0c22cef51eb4bac19492a61dc9d39aa0d905752c0df27"
+    },
+    {
+      "path": "docs/relazione/diagrammi/casi-uso-cliente.drawio.pdf",
+      "sha256": "7521aa7ec216274f2569e65f849bfd83c6c944eacb952411be25da9be0660d63"
+    },
+    {
+      "path": "docs/relazione/diagrammi/casi-uso-manager.drawio",
+      "sha256": "0d52f6cc0667fe460ace833b404b4688f4fd33a5f6e30f733cbafdbfc8967a9d"
+    },
+    {
+      "path": "docs/relazione/diagrammi/casi-uso-manager.drawio.pdf",
+      "sha256": "bb41849688b190f19569206d739218e6bb860903db9f2e16c04e7d87eecd1fd7"
+    },
+    {
+      "path": "docs/relazione/diagrammi/casi-uso-venditore.drawio",
+      "sha256": "ce2b029d8c3be64555be21420e77e0ef5fd31e38b0b65c9fb618b403c4ef799c"
+    },
+    {
+      "path": "docs/relazione/diagrammi/casi-uso-venditore.drawio.pdf",
+      "sha256": "41d10e9c4e442bf4e4d3f7a3cd3707ee51aa7e828bdd8bdeee79b08fe870b9aa"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-avvio.drawio",
+      "sha256": "23dbd627f7013438a5bb98bda122df9593ed20d9cd83d6543c6db025c33027a5"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-avvio.drawio.pdf",
+      "sha256": "6f7b268646422abd8b43805e702265a06396828f365bf555402b3cba46b760a3"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-business-insieme.drawio",
+      "sha256": "f8f0beee1d37d1aff4cda730d739d9da1d85124122eb3824642cf6b6d5d7619a"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-business-insieme.drawio.pdf",
+      "sha256": "38ea22cea120c45481fc675f9247656ef5e16641cc74a5af9f20c76760091673"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-catalogo.drawio",
+      "sha256": "5cb9473939ea3dc3a270175ce1d7ee47670dd1cd8463f781d3b8a465a6804b2f"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-catalogo.drawio.pdf",
+      "sha256": "756caba88cef5b54249aabffb09abf2e7f6e9523c940a7240935028d10c4107a"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-dao-insieme.drawio",
+      "sha256": "622f0d68ee24aab06495fff3b0da1c44b21ea5d5823c0f2acaeb0d61ed4d30dd"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-dao-insieme.drawio.pdf",
+      "sha256": "1d2e6f0a852ca64500f325a9000bd7060bfd3084add88712b7a430a928ce59a2"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-dao.drawio",
+      "sha256": "31c6855ae3ba5f5741c468c8d8f84363f2da92e6da3f1d3fa01dfb977a327e61"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-dao.drawio.pdf",
+      "sha256": "4f45c5df8290a00ce83122bc29750e5d5bf05e43dbb3693d5aac8ce5dcfd6827"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-dominio-insieme.drawio",
+      "sha256": "28e11bb9def9f586c766c348a3896be044cae364c845731dc18ad122f10fe908"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-dominio-insieme.drawio.pdf",
+      "sha256": "485def3c83bae6748827967815ca4af64794148cff9de7c247a0a33cfef40258"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-eventi.drawio",
+      "sha256": "1183a22e443c31a64569b719848f08af17c4b6cd326ee48628d957c2f44b54a7"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-eventi.drawio.pdf",
+      "sha256": "5b7b5b5092d1460b38327fd2f5e59cdadc9359afff03df8e23fec2a0a4cd9080"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-operazioni.drawio",
+      "sha256": "c037224651dbeab7146087307c1bbbbda0282f36c17b00c5b83e306f01d4bc5b"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-operazioni.drawio.pdf",
+      "sha256": "ddc9b6e7856a375526df4f9c79cdf180e0bbd76a485977e0a9efea1b766d31f2"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-postgres.drawio",
+      "sha256": "f295332a591e01d497e365bc012a41017860df7611c63d303fcb00f70ed36609"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-postgres.drawio.pdf",
+      "sha256": "970ea55c9d823e31be12c519628f796006ad5e3b702708aabcae9afa5de0b696"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-presentazione-insieme.drawio",
+      "sha256": "fda0f7d2506d27f4bf59595d44a75015244db1ce4ff3b1a1b68398e2797f2b80"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-presentazione-insieme.drawio.pdf",
+      "sha256": "78d270e6da2647d2b205be8b96abd5404113f2077ae4d051faca5edcfdec3c9a"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-presentazione.drawio",
+      "sha256": "30b2dc0249493c368fd454d2068e1024ff486aaea55f79f016d8109d841bbe08"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-presentazione.drawio.pdf",
+      "sha256": "f54e70ccddc3269fef30ed60a701b0d0d4f470b634187900389171c6547a9be7"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-sconti.drawio",
+      "sha256": "0187d81d7bfee8721df8f85bd6c2d681c92ef11d36a02fe90c2a21fd23e720e2"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-sconti.drawio.pdf",
+      "sha256": "62e17c4b0b4efc156db74b8474516473d848fdaa60b06532acf0577bba1b4a34"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-servizi.drawio",
+      "sha256": "b480fa2e612b9b5aa17a691d030e1551d274e518d77964f03e22cf44a6792b1e"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-servizi.drawio.pdf",
+      "sha256": "f4760f9ac82c81234ca445c75e6e7fb0186e4de723f0afde855826652b9faaf4"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-sicurezza.drawio",
+      "sha256": "1162e7a11901a3e1440db3c6ab831f6fc71502a7c33d1ec1e7f4cb92b94b08d1"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-sicurezza.drawio.pdf",
+      "sha256": "c6e6352469db1d931f8058315a24192f558290a63c6a7f99366d1d1851e44d9f"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-transazioni.drawio",
+      "sha256": "8931725361e42f286da2624fcf8ab3b6615306a7152b20d9b0d063d525a4bd09"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-transazioni.drawio.pdf",
+      "sha256": "862bb5f02728a640a4d9b69bdc497e7c3adfb37962beafcb26fdc7002eb882be"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-utenti.drawio",
+      "sha256": "a40075bbbb5df4815332bcd312dad2a086cd309556f65dd0e1372c48f84052ec"
+    },
+    {
+      "path": "docs/relazione/diagrammi/classi-utenti.drawio.pdf",
+      "sha256": "34162d20fd567be4b9a206dde30d9a17d51882cb97b19f745d1861876ab85d78"
+    },
+    {
+      "path": "docs/relazione/diagrammi/database-er-autori.drawio",
+      "sha256": "cb3c38e07118297eef7ddd458d91f12760c564865f10fc18529a0c32f49cc49b"
+    },
+    {
+      "path": "docs/relazione/diagrammi/database-er-autori.drawio.pdf",
+      "sha256": "421c927ed6be33f6d299b2af74efb5c4f2d04920834576b9d57edc341c4d79c2"
+    },
+    {
+      "path": "docs/relazione/diagrammi/database-er-catalogo.drawio",
+      "sha256": "623bc39b7e6a8f1e6ed29bfe055015983556d0029b0d4b1f820a326f300b60aa"
+    },
+    {
+      "path": "docs/relazione/diagrammi/database-er-catalogo.drawio.pdf",
+      "sha256": "45d0453c70a980ddc2a0cc36c57e3d81a0c68d301221afdbbb00c4e917bc344d"
+    },
+    {
+      "path": "docs/relazione/diagrammi/database-er-identita.drawio",
+      "sha256": "6e5053f2d5718b79b80b10c96a9aea9c1781517918110aba5c8ed63c4c85661d"
+    },
+    {
+      "path": "docs/relazione/diagrammi/database-er-identita.drawio.pdf",
+      "sha256": "b43cd9107baaa8a18a76c2595fc8c914ce32a16dd3e5bbacd98b0a9142d53b3f"
+    },
+    {
+      "path": "docs/relazione/diagrammi/database-relazionale-catalogo.drawio",
+      "sha256": "2c7c9487a3d5c4a51eddb157d7f46b2bd2aff2ff8788b7d9c523575ef37aa1d1"
+    },
+    {
+      "path": "docs/relazione/diagrammi/database-relazionale-catalogo.drawio.pdf",
+      "sha256": "a9bbf25fc193436aab81837949171c886629847d0a5da651009419e9dce34ef3"
+    },
+    {
+      "path": "docs/relazione/diagrammi/database-relazionale-identita.drawio",
+      "sha256": "a29438bc777ba7d0ed2fb930afe3a804f91cee18ad2136e2540c61a6767a7797"
+    },
+    {
+      "path": "docs/relazione/diagrammi/database-relazionale-identita.drawio.pdf",
+      "sha256": "fa52784b602872246e7b737529ba143af2d42e3481a3876749873efb6e3cd6ac"
+    },
+    {
+      "path": "docs/relazione/diagrammi/database-relazionale-operazioni.drawio",
+      "sha256": "0e2f0a3add338a269bcff8fd35c5e4471bbd88b2df4e7af160d651f8fedd1704"
+    },
+    {
+      "path": "docs/relazione/diagrammi/database-relazionale-operazioni.drawio.pdf",
+      "sha256": "3cd557b3e5c75f6231bd7abcd25a56e4c41060c65dd38e19119872409a9bd0d2"
+    },
+    {
+      "path": "docs/relazione/diagrammi/navigazione-autori.drawio",
+      "sha256": "766d052ebe8834f1c2288ee8c83dd65d5eff4162777fe1c56ceff88aa0a440d1"
+    },
+    {
+      "path": "docs/relazione/diagrammi/navigazione-autori.drawio.pdf",
+      "sha256": "d7d463c5d40eba2b4af82bcf373ee2c94d4ee32ec190cddb0aa23e4f6e264355"
+    },
+    {
+      "path": "docs/relazione/diagrammi/navigazione-cliente.drawio",
+      "sha256": "89dcc3cd349f26b233eacab7036c50d0d2a1a7f80352c24058a4e640425d7f09"
+    },
+    {
+      "path": "docs/relazione/diagrammi/navigazione-cliente.drawio.pdf",
+      "sha256": "7834db9db911d17e3cddb46b2c6ba44568ae9c3eabbf9208e856bd64c6beccd3"
+    },
+    {
+      "path": "docs/relazione/diagrammi/navigazione-manager.drawio",
+      "sha256": "827beac96aa830605b52456aad1518fea47167559d2d46ddee632f3e0a3c4084"
+    },
+    {
+      "path": "docs/relazione/diagrammi/navigazione-manager.drawio.pdf",
+      "sha256": "6e112881289c0ea91526308281aa540f1fe44a486461b6735ae15be1f47aa46a"
+    },
+    {
+      "path": "docs/relazione/diagrammi/navigazione-venditore.drawio",
+      "sha256": "96ef71ff2ee3d21aeed9964e6879a444451b7746850f2bb32a5f76ea0ca26899"
+    },
+    {
+      "path": "docs/relazione/diagrammi/navigazione-venditore.drawio.pdf",
+      "sha256": "95114a87a5b966ff5f488002889300b1fc2cf4063f9682f2d53554cb00d73649"
+    },
+    {
+      "path": "docs/relazione/diagrammi/package-architettura.drawio",
+      "sha256": "613beef07414cb63f8b0afee472fd5da6f7912815fc31d67555728040e6a24da"
+    },
+    {
+      "path": "docs/relazione/diagrammi/package-architettura.drawio.pdf",
+      "sha256": "ab2da01ae3594ba23fdb7fbd7d9fc34e1c47cc92a9282f39a86baa872ff73d6e"
+    },
+    {
+      "path": "docs/relazione/diagrammi/package-autori.drawio",
+      "sha256": "094a026be043fc5395c1671922f0277db3c29a2410c779155f342012f4e3be0a"
+    },
+    {
+      "path": "docs/relazione/diagrammi/package-autori.drawio.pdf",
+      "sha256": "41084cfa926c1c20cb1a893fbd8db0dc52f8c5823bfa339eed0eaeaeeda33661"
+    },
+    {
+      "path": "docs/relazione/diagrammi/sequenza-cessione-esito.drawio",
+      "sha256": "e670bad3b4ca5ad22e29f14b7228f8b1c9277a2b958c9accf6665ac3fba3b5fa"
+    },
+    {
+      "path": "docs/relazione/diagrammi/sequenza-cessione-esito.drawio.pdf",
+      "sha256": "f87eebe8fa711d16cfe09d6fff3738e826ac2ffd52774e8a96d2d0c99c74b6e7"
+    },
+    {
+      "path": "docs/relazione/diagrammi/sequenza-cessione-insieme.drawio",
+      "sha256": "60887e395be621dbd4dfbb4cad5dca08c4fdb5404a0dca240bbd67c7e1cd6c35"
+    },
+    {
+      "path": "docs/relazione/diagrammi/sequenza-cessione-insieme.drawio.pdf",
+      "sha256": "417a4aca504cdb691019589579605fe73a4b49e61b3a2313d825630e97f01562"
+    },
+    {
+      "path": "docs/relazione/diagrammi/sequenza-cessione-proposta.drawio",
+      "sha256": "8a1dcf7719a7f3572efc21a7fe7b050a4aaba585216dfe2dfec8d4a72057ca14"
+    },
+    {
+      "path": "docs/relazione/diagrammi/sequenza-cessione-proposta.drawio.pdf",
+      "sha256": "967728942343025460a0cbdafbffe16c90f8d02b64c5720e3705327ce8921847"
+    },
+    {
+      "path": "docs/relazione/diagrammi/sequenza-noleggio-insieme.drawio",
+      "sha256": "a2a9d7a7058d857cbec8d13ee82230692d45777f6fcd818a945eff1028c78d1c"
+    },
+    {
+      "path": "docs/relazione/diagrammi/sequenza-noleggio-insieme.drawio.pdf",
+      "sha256": "4bcd8cee95ab9bd3dace119a5242d85c21de3baca74b4638dc2f8f67be911d4f"
+    },
+    {
+      "path": "docs/relazione/diagrammi/sequenza-noleggio.drawio",
+      "sha256": "b17c3f4c226132ecf927788a0ee19f2b6595a036bbd221df985ad5e2eec64a2f"
+    },
+    {
+      "path": "docs/relazione/diagrammi/sequenza-noleggio.drawio.pdf",
+      "sha256": "ba897c5f99c29f0acc9a0dfcdb77403bd600a2e85c4202bcedfd68582efae5d6"
+    },
+    {
+      "path": "docs/relazione/diagrammi/sequenza-observer.drawio",
+      "sha256": "1427819bef7cdfd7a36c2f8c09aba4a04c0afc8abff3fe3a0a6b0c66a368af91"
+    },
+    {
+      "path": "docs/relazione/diagrammi/sequenza-observer.drawio.pdf",
+      "sha256": "1718dcd1d734bc8a023eba97384c149d72c2f30f658c8435d71400c1f272a827"
+    },
+    {
+      "path": "docs/relazione/diagrammi/sequenza-vendita-avvio.drawio",
+      "sha256": "bc015ac283617c83fb37a53fc2c532957ce57ef0851ad1030e1b2ee4ecd2e0cf"
+    },
+    {
+      "path": "docs/relazione/diagrammi/sequenza-vendita-avvio.drawio.pdf",
+      "sha256": "f30fb1d3c7484bb735e8d800b53ffe17167a6ca079232a9e8bc03c0394fa182c"
+    },
+    {
+      "path": "docs/relazione/diagrammi/sequenza-vendita-esito.drawio",
+      "sha256": "5274020e9825e8f2b2c65fae02b4073b681c0a6d67b5e9216b133f5a1298406b"
+    },
+    {
+      "path": "docs/relazione/diagrammi/sequenza-vendita-esito.drawio.pdf",
+      "sha256": "25119bcf9551885a7d1790c0460a115354ec6906f6331ddb2fe78b054e5d82c4"
+    },
+    {
+      "path": "docs/relazione/diagrammi/sequenza-vendita-insieme.drawio",
+      "sha256": "dcae75d6aa96602dd45e87c826014159c73c1463e198506db9ff9ccd08e667b8"
+    },
+    {
+      "path": "docs/relazione/diagrammi/sequenza-vendita-insieme.drawio.pdf",
+      "sha256": "200937c6dbae667c08803ebe28cd54d8bc28b6770f0514a6c0ca618e30d182fe"
+    },
+    {
+      "path": "docs/relazione/diagrammi/sequenza-vendita-saldo.drawio",
+      "sha256": "b4afd53046561ce1f57d819481e3ce215495d60c229388f921f599aca9c0393c"
+    },
+    {
+      "path": "docs/relazione/diagrammi/sequenza-vendita-saldo.drawio.pdf",
+      "sha256": "a7af2d9f6de0c875fa43a69409322e9741584e4cad729bba420b1460f298e704"
+    },
+    {
+      "path": "docs/relazione/diagrammi/sequenza-vendita-scadenza.drawio",
+      "sha256": "8bd4df318ba92417f178196aa0b76d191ba96017232dfadc07e99d69a92494f7"
+    },
+    {
+      "path": "docs/relazione/diagrammi/sequenza-vendita-scadenza.drawio.pdf",
+      "sha256": "36c4ed2a7ae6f8dd8ff2275463b96ac8f916c3a1be4843bbacf607dd574ce320"
+    },
+    {
+      "path": "docs/relazione/main.tex",
+      "sha256": "d8b8d74e8b00425653660dbddebd84b50f93ecc41a6e113411a1040334b112f8"
+    },
+    {
+      "path": "docs/relazione/screenshot/01-accesso.png",
+      "sha256": "df3868253d558b29c2770dd8c316c9947b56b60a6ae86168878ecb69f328c5f7"
+    },
+    {
+      "path": "docs/relazione/screenshot/02-registrazione.png",
+      "sha256": "b50582cd1731ff36aa5ef16e20504b88889c9cb99ddfabc15bc4a9ae6ec027c0"
+    },
+    {
+      "path": "docs/relazione/screenshot/03-cliente-catalogo.png",
+      "sha256": "917adeb565b4d8478acdbc729483648ee2d51b235b6d3a60fb371cc22c5b5348"
+    },
+    {
+      "path": "docs/relazione/screenshot/04-cliente-dialogo-test-drive.png",
+      "sha256": "fcf284c3ab5897ab55bc6a7451bb6d97144e4a312369959bdb0f2b14b6713b6d"
+    },
+    {
+      "path": "docs/relazione/screenshot/05-cliente-noleggio.png",
+      "sha256": "7b81a91a625beb40a47166063b2839e57269f812c44f8b0cd2b356844456ce8d"
+    },
+    {
+      "path": "docs/relazione/screenshot/06-cliente-dialogo-noleggio.png",
+      "sha256": "f3b39cf0f900df009b15e8cd972d284f3fab1bd00ab215b2d3c1a2bdf5415be7"
+    },
+    {
+      "path": "docs/relazione/screenshot/07-cliente-cessione.png",
+      "sha256": "ad1954388b6a03f8e14ae556b123e18899e852941c52207b78439792607e4619"
+    },
+    {
+      "path": "docs/relazione/screenshot/08-cliente-operazioni.png",
+      "sha256": "b2637a5844a8f103d9105d80b2454913177c2aeade66986e03a3ca9e15f2bc2e"
+    },
+    {
+      "path": "docs/relazione/screenshot/09-cliente-identita.png",
+      "sha256": "f9a5cf9b6c44a974b59ac4dea1007d2df7df1a50a30ad3d1217fa844df1bbf9e"
+    },
+    {
+      "path": "docs/relazione/screenshot/10-venditore-richieste.png",
+      "sha256": "f3b5c5066aad0a8144fab8ab91afab0b4dd2f708992fc1ef8acfa8f716bc1b1b"
+    },
+    {
+      "path": "docs/relazione/screenshot/11-venditore-inventario.png",
+      "sha256": "92d8d6a91fcc427c53ee2b09323498438dfd09a28d09a1dd59a94438d5c261c4"
+    },
+    {
+      "path": "docs/relazione/screenshot/12-manager-marchi.png",
+      "sha256": "ac074126252983f135b7ac7dc137a1a7f84e10e5828e101e6ab1deb67d0d506f"
+    },
+    {
+      "path": "docs/relazione/screenshot/13-manager-modelli.png",
+      "sha256": "03472c56e267118a331496be143c88416c50388ad030cfad654d21cc915e7e48"
+    },
+    {
+      "path": "docs/relazione/screenshot/14-manager-veicoli.png",
+      "sha256": "a75ff25c398bc2fd9ef1d053f0c76f6f71bf99370e1ef13ef2b39fe63e787ae5"
+    },
+    {
+      "path": "docs/relazione/screenshot/15-manager-sconti.png",
+      "sha256": "2729e1ddc7adcd0404fc2790282a6545a8be2bb7aab8c032c6a2b81408f509e8"
+    },
+    {
+      "path": "docs/relazione/screenshot/16-manager-registro.png",
+      "sha256": "626fc7a6ec7acc507abc24e7fa032880de7e2b806f0c5ea546b0c819ed62d84e"
+    }
+  ],
+  "baseline_pdf_sha256": "be80f25106eafe5c7a05a7f428b3c805d75b5d67d908daed05c490a3d16ba239",
+  "final_pages": 151,
+  "changed_content_pages": [
+    119,
+    120,
+    121
+  ],
+  "unchanged_other_pages": 148,
+  "ZIP_members": 118,
+  "ZIP_editorial_inputs": 73,
+  "ZIP_final_still_equals_compiled_archive": true,
+  "candidate_editorial_unchanged": true,
+  "technical_reviews": {
+    "Standards": "Conforme, 0 rilievi",
+    "Spec": "Conforme, 0 rilievi"
+  },
+  "limits": [
+    "Cinque messaggi TeX preesistenti, pagine fisiche145–149, senza difetto visivo rilevato",
+    "Nessuna nuova prova applicativa",
+    "Revisione degli autori da svolgere"
+  ]
+}

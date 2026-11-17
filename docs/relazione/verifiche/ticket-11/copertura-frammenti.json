@@ -1,0 +1,182 @@
+[
+  {
+    "originale": "Relazione_SWE/capitoli/3a_domain_model.tex",
+    "intervallo_originale": [
+      24,
+      40
+    ],
+    "destinazione": "3.1.2",
+    "estratti": [
+      "lst:vehicle-invariante",
+      "lst:update-condizionale"
+    ],
+    "adattamento": "Recuperata funzione di transizione: invariante locale distinta dal controllo atomico nel DAO; approve/block rimossi."
+  },
+  {
+    "originale": "Relazione_SWE/capitoli/3a_domain_model.tex",
+    "intervallo_originale": [
+      50,
+      69
+    ],
+    "destinazione": "3.1.4",
+    "estratti": [
+      "lst:request-accordo",
+      "lst:request-factory"
+    ],
+    "adattamento": "Due factory con RequestType esplicito, totale/acconto in centesimi; nessuna stima negativa."
+  },
+  {
+    "originale": "Relazione_SWE/capitoli/3b_business_layer.tex",
+    "intervallo_originale": [
+      17,
+      32
+    ],
+    "destinazione": "3.2.1",
+    "estratti": [
+      "lst:transazione",
+      "lst:callback"
+    ],
+    "adattamento": "DatabaseManager e due callback reali sostituiscono TransactionRunner/UnitOfWork, con causa e rollback tentato."
+  },
+  {
+    "originale": "Relazione_SWE/capitoli/3b_flussi.tex",
+    "intervallo_originale": [
+      10,
+      19
+    ],
+    "destinazione": "3.2.3.1",
+    "estratti": [
+      "lst:test-drive"
+    ],
+    "adattamento": "Lock, conteggio, disponibilità, factory e save effettivi; fascia non troncata, messaggi letterali."
+  },
+  {
+    "originale": "Relazione_SWE/capitoli/3b_flussi.tex",
+    "intervallo_originale": [
+      27,
+      31
+    ],
+    "destinazione": "3.2.3.2 e 3.4.4",
+    "estratti": [
+      "lst:overlap",
+      "lst:vincolo-rent"
+    ],
+    "adattamento": "Predicato inclusivo e ordine dei parametri del DAO, insieme al vincolo EXCLUDE corrente."
+  },
+  {
+    "originale": "Relazione_SWE/capitoli/3a_presentazione_dominio.tex",
+    "intervallo_originale": [
+      19,
+      26
+    ],
+    "destinazione": "3.3.2",
+    "estratti": [
+      "lst:app-login",
+      "lst:navigazione"
+    ],
+    "adattamento": "Costruzione Java con servizi/callback e dispatch sostituiscono FXMLLoader/ContextAware."
+  },
+  {
+    "originale": "Relazione_SWE/capitoli/3d_dao.tex",
+    "intervallo_originale": [
+      7,
+      13
+    ],
+    "destinazione": "3.4.1",
+    "estratti": [
+      "lst:user-dao-letture",
+      "lst:user-dao-comandi"
+    ],
+    "adattamento": "Due intervalli esplicitamente selezionati dal contratto UserDao, incluso ruolo e connessione nelle scritture."
+  },
+  {
+    "originale": "Relazione_SWE/capitoli/3d_dao.tex",
+    "intervallo_originale": [
+      20,
+      30
+    ],
+    "destinazione": "3.4.2",
+    "estratti": [
+      "lst:user-mapping"
+    ],
+    "adattamento": "Switch sui tre sottotipi reali dopo lettura dalla vista; conto caricato separatamente."
+  },
+  {
+    "originale": "Relazione_SWE/capitoli/3d_dao.tex",
+    "intervallo_originale": [
+      37,
+      40
+    ],
+    "destinazione": "3.4.3",
+    "estratti": [
+      "lst:sale-mapping",
+      "lst:mapping"
+    ],
+    "adattamento": "Mapper Sale completo e Request con getObject, date e BigDecimal: NULL non diventa zero."
+  },
+  {
+    "originale": "Relazione_SWE/capitoli/3d_dao.tex",
+    "intervallo_originale": [
+      47,
+      51
+    ],
+    "destinazione": "3.4.4",
+    "estratti": [
+      "lst:vincolo-vin",
+      "lst:vincolo-saldo",
+      "lst:vincolo-rent"
+    ],
+    "adattamento": "Tre intervalli distinti di schema.sql sostituiscono init.sql: UNIQUE, CHECK, EXCLUDE; enum/cast spiegati accanto."
+  },
+  {
+    "originale": "Relazione_SWE/capitoli/3e_pattern.tex",
+    "intervallo_originale": [
+      7,
+      12
+    ],
+    "destinazione": "3.5.1 (contratto introdotto in 3.1.5, effetto in 3.2.6)",
+    "estratti": [
+      "lst:contratto-observer",
+      "lst:observer"
+    ],
+    "adattamento": "Contratto corrente con Connection; errori propagati invece di ignorati."
+  },
+  {
+    "originale": "Relazione_SWE/capitoli/3e_pattern.tex",
+    "intervallo_originale": [
+      19,
+      28
+    ],
+    "destinazione": "3.5.2 con formule in 3.2.4",
+    "estratti": [
+      "lst:base"
+    ],
+    "adattamento": "Adattamento motivato: scelta della base nello stesso calcolatore concreto; PricingStrategy non esiste."
+  },
+  {
+    "originale": "Relazione_SWE/capitoli/3e_pattern.tex",
+    "intervallo_originale": [
+      35,
+      42
+    ],
+    "destinazione": "3.5.3",
+    "estratti": [
+      "lst:vehicle-factory"
+    ],
+    "adattamento": "Overload corrente completo, ID passato dal chiamante e nuova istanza dopo INSERT; costruttore privato e nessun assignId."
+  },
+  {
+    "originale": "Relazione_SWE/capitoli/3e_pattern.tex",
+    "intervallo_originale": [
+      49,
+      55
+    ],
+    "destinazione": "3.5.4 con costruzione in 3.3.2",
+    "estratti": [
+      "lst:singleton",
+      "lst:navigazione",
+      "lst:app-login"
+    ],
+    "adattamento": "Contesto predefinito sincronizzato e double dispatch sostituiscono NavigationManager globale; costruttore alternativo esplicito."
+  }
+]

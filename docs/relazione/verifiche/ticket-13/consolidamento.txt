@@ -1,0 +1,1 @@
+PASS: 24 input originali, 102 voci/livelli/ordine, 23 funzioni originali, 42 blocchi correnti, 43 coppie native/export.

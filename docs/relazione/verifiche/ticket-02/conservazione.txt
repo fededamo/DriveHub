@@ -1,0 +1,4 @@
+git diff --exit-code HEAD -- . ':!docs/relazione'
+Exit code: 0
+HEAD: 61ce18ae1d4e0458b63e970b793b0b3a634a3adf
+Baseline 1973 file verificata dallo script controlla_documento.py.

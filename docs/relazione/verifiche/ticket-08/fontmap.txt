@@ -1,0 +1,71 @@
+updmap will read the following updmap.cfg files (in precedence order):
+  /tmp/drivehub-ticket08-tools/var/web2c/updmap.cfg
+updmap may write changes to the following updmap.cfg file:
+  /tmp/drivehub-ticket08-tools/var/web2c/updmap.cfg
+dvips output dir: "/tmp/drivehub-ticket08-tools/var/fonts/map/dvips/updmap"
+pdftex output dir: "/tmp/drivehub-ticket08-tools/var/fonts/map/pdftex/updmap"
+dvipdfmx output dir: "/tmp/drivehub-ticket08-tools/var/fonts/map/dvipdfmx/updmap"
+
+updmap is creating new map files
+using the following configuration:
+  LW35 font names                  : URWkb (/tmp/drivehub-ticket08-tools/var/web2c/updmap.cfg)
+  prefer outlines                  : true (/tmp/drivehub-ticket08-tools/var/web2c/updmap.cfg)
+  texhash enabled                  : false
+  download standard fonts (dvips)  : true (/tmp/drivehub-ticket08-tools/var/web2c/updmap.cfg)
+  download standard fonts (pdftex) : true (/tmp/drivehub-ticket08-tools/var/web2c/updmap.cfg)
+  jaEmbed replacement string       : haranoaji (/tmp/drivehub-ticket08-tools/var/web2c/updmap.cfg)
+  jaVariant replacement string     : -04 (/tmp/drivehub-ticket08-tools/var/web2c/updmap.cfg)
+  scEmbed replacement string       : arphic (/tmp/drivehub-ticket08-tools/var/web2c/updmap.cfg)
+  tcEmbed replacement string       : arphic (/tmp/drivehub-ticket08-tools/var/web2c/updmap.cfg)
+  koEmbed replacement string       : baekmuk (/tmp/drivehub-ticket08-tools/var/web2c/updmap.cfg)
+  create a mapfile for pxdvi       : false (default)
+
+Scanning for LW35 support files  [  3 files]
+Scanning for MixedMap entries    [ 12 files]
+Scanning for KanjiMap entries    [  0 files]
+Scanning for Map entries         [ 24 files]
+
+Generating output for dvipdfmx...
+Generating output for ps2pk...
+Generating output for dvips...
+Generating output for pdftex...
+
+Files generated:
+  /tmp/drivehub-ticket08-tools/var/fonts/map/dvips/updmap:
+       15794 2026-11-14 00:14:22 builtin35.map
+       21267 2026-11-14 00:14:22 download35.map
+       78704 2026-11-14 00:14:22 psfonts_pk.map
+       83379 2026-11-14 00:14:22 psfonts_t1.map
+       83374 2026-11-14 00:14:22 ps2pk.map
+       83379 2026-11-14 00:14:22 psfonts.map = psfonts_t1.map
+  /tmp/drivehub-ticket08-tools/var/fonts/map/pdftex/updmap:
+       83381 2026-11-14 00:14:22 pdftex_dl14.map
+       81716 2026-11-14 00:14:22 pdftex_ndl14.map
+       83381 2026-11-14 00:14:22 pdftex.map = pdftex_dl14.map
+  /tmp/drivehub-ticket08-tools/var/fonts/map/dvipdfmx/updmap:
+         317 2026-11-14 00:14:22 kanjix.map
+
+*************************************************************
+*                                                           *
+* WARNING: you are switching to updmap's per-user mappings. *
+*         Please read the following warnings!               *
+*                                                           *
+*************************************************************
+
+You have run updmap-user (as opposed to updmap-sys) for the first time;
+this has created configuration files which are local to your personal account.
+
+From now on, any changes in system map files will *not* be automatically
+reflected in your files; furthermore, running updmap-sys (as is done
+automatically) will no longer have any effect for you.
+
+As a consequence, you yourself have to rerun updmap-user yourself after
+any change in the *system* directories! For example, if a new font
+package is added or existing mappings change, which happens frequently.
+See https://tug.org/texlive/scripts-sys-user.html for details.
+
+If you want to undo this, remove the files mentioned above.
+
+(Run updmap --help for full documentation of updmap.)
+
+Transcript written on: /tmp/drivehub-ticket08-tools/var/web2c/updmap.log

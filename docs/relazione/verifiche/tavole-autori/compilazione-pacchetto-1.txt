@@ -1,0 +1,534 @@
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025/Debian) (preloaded format=xelatex)
+entering extended mode
+(./main.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2026-01-19>
+
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/base
+/report.cls
+Document Class: report 2025/01/22 v1.4n Standard LaTeX document class
+
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/base
+/size12.clo))
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/base
+/fontenc.sty
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texmf/tex/latex/lm/t1lmr.fd))
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/ba
+bel/babel.sty
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/ba
+bel/xebabel.def)
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/ba
+bel/locale/it/babel-italian.tex)
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/ba
+bel-italian/italian.ldf))
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/etoo
+lbox/etoolbox.sty)
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/geom
+etry/geometry.sty
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/grap
+hics/keyval.sty)
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/if
+tex/ifvtex.sty
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/if
+tex/iftex.sty)))
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/grap
+hics/graphicx.sty
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/grap
+hics/graphics.sty
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/grap
+hics/trig.sty)
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/grap
+hics-cfg/graphics.cfg)
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/grap
+hics-def/xetex.def)))
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/pdfp
+ages/pdfpages.sty
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/base
+/ifthen.sty)
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/tool
+s/calc.sty)
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/eso-
+pic/eso-pic.sty
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/xcol
+or/xcolor.sty
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/grap
+hics-cfg/color.cfg)
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/grap
+hics/mathcolor.ltx)))
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/pdfp
+ages/ppxetex.def))
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/enum
+item/enumitem.sty)
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/colo
+rtbl/colortbl.sty
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/tool
+s/array.sty))
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/list
+ings/listings.sty
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/list
+ings/lstpatch.sty)
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/list
+ings/lstmisc.sty)
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/list
+ings/listings.cfg))
+==> First Aid for listings.sty no longer applied!
+    Expected:
+        2024/09/23 1.10c (Carsten Heinz)
+    but found:
+        2025/11/14 1.11b (Carsten Heinz)
+    so I'm assuming it got fixed.
+
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/tool
+s/longtable.sty)
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hype
+rref/hyperref.sty
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/kvse
+tkeys/kvsetkeys.sty)
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/kv
+definekeys/kvdefinekeys.sty)
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/pd
+fescape/pdfescape.sty
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/lt
+xcmds/ltxcmds.sty)
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/pd
+ftexcmds/pdftexcmds.sty
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/in
+fwarerr/infwarerr.sty)))
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hyco
+lor/hycolor.sty)
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hype
+rref/nameref.sty
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/refc
+ount/refcount.sty)
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/ge
+ttitlestring/gettitlestring.sty
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/kvop
+tions/kvoptions.sty)))
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/st
+ringenc/stringenc.sty)
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hype
+rref/pd1enc.def)
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/in
+tcalc/intcalc.sty)
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hype
+rref/puenc.def)
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/url/
+url.sty)
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/bi
+tset/bitset.sty
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/bi
+gintcalc/bigintcalc.sty)))
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/hype
+rref/hxetex.def
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/reru
+nfilecheck/rerunfilecheck.sty
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/generic/un
+iquecounter/uniquecounter.sty)))
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/l3ba
+ckend/l3backend-xetex.def)
+No file main.aux.
+*geometry* driver: auto-detecting
+*geometry* detected driver: xetex
+
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/pdfl
+scape/pdflscape.sty
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/pdfl
+scape/pdflscape-nometadata.sty
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/grap
+hics/lscape.sty)))
+
+Package hyperref Warning: Rerun to get /PageLabels entry.
+
+[1]
+No file main.toc.
+[1] (./capitoli/1_introduzione.tex
+Capitolo 1.
+[1] (/tmp/drivehub-tavole-tools/texlive/usr/share/texmf/tex/latex/lm/t1lmtt.fd)
+[2]) (./capitoli/2_progettazione.tex [3]
+Capitolo 2.
+(./capitoli/2_funzioni.tex
+
+LaTeX Warning: Reference `fig:uc-cliente' on page 4 undefined on input line 5.
+
+
+LaTeX Warning: Reference `fig:uc-manager' on page 4 undefined on input line 5.
+
+
+LaTeX Warning: Reference `app:casi-uso' on page 4 undefined on input line 17.
+
+
+LaTeX Warning: Reference `fig:uc-autori' on page 4 undefined on input line 24.
+
+[4]
+
+LaTeX Warning: Reference `fig:uc-autori' on page 5 undefined on input line 33.
+
+[5] [6] [7] [8]
+
+LaTeX Warning: Reference `app:casi-uso' on page 9 undefined on input line 53.
+
+
+LaTeX Warning: Reference `uc:UC-01' on page 9 undefined on input line 62.
+
+
+LaTeX Warning: Reference `uc:UC-02' on page 9 undefined on input line 67.
+
+
+LaTeX Warning: Reference `uc:UC-03' on page 9 undefined on input line 72.
+
+
+LaTeX Warning: Reference `uc:UC-04' on page 9 undefined on input line 76.
+
+
+LaTeX Warning: Reference `uc:UC-05' on page 9 undefined on input line 81.
+
+
+LaTeX Warning: Reference `uc:UC-06' on page 9 undefined on input line 85.
+
+[9]
+
+LaTeX Warning: Reference `uc:UC-07' on page 10 undefined on input line 112.
+
+
+LaTeX Warning: Reference `uc:UC-08' on page 10 undefined on input line 113.
+
+
+LaTeX Warning: Reference `uc:UC-09' on page 10 undefined on input line 114.
+
+
+LaTeX Warning: Reference `uc:UC-10' on page 10 undefined on input line 114.
+
+
+LaTeX Warning: Reference `uc:UC-11' on page 10 undefined on input line 115.
+
+
+LaTeX Warning: Reference `uc:UC-S01' on page 10 undefined on input line 116.
+
+
+LaTeX Warning: Reference `uc:UC-S02' on page 10 undefined on input line 117.
+
+
+LaTeX Warning: Reference `uc:UC-S03' on page 10 undefined on input line 117.
+
+
+LaTeX Warning: Reference `uc:UC-S04' on page 10 undefined on input line 118.
+
+[10] [11] [12] [13] [14] [15] [16] [17] [18] [19]
+
+LaTeX Warning: Reference `fig:nav-cliente' on page 20 undefined on input line 1
+91.
+
+
+LaTeX Warning: Reference `fig:nav-manager' on page 20 undefined on input line 1
+91.
+
+
+LaTeX Warning: Reference `fig:nav-autori' on page 20 undefined on input line 20
+5.
+
+[20]
+
+LaTeX Warning: Reference `fig:nav-autori' on page 21 undefined on input line 21
+4.
+
+[21]
+
+LaTeX Warning: Reference `fig:ui-cliente-catalogo' on page 22 undefined on inpu
+t line 218.
+
+
+LaTeX Warning: Reference `fig:ui-identita' on page 22 undefined on input line 2
+18.
+
+
+LaTeX Warning: Reference `fig:ui-cliente-catalogo' on page 22 undefined on inpu
+t line 218.
+
+
+LaTeX Warning: Reference `fig:ui-identita' on page 22 undefined on input line 2
+18.
+
+[22]
+
+LaTeX Warning: Reference `fig:ui-venditore-richieste' on page 23 undefined on i
+nput line 223.
+
+
+LaTeX Warning: Reference `fig:ui-venditore-inventario' on page 23 undefined on 
+input line 223.
+
+
+LaTeX Warning: Reference `fig:ui-venditore-richieste' on page 23 undefined on i
+nput line 223.
+
+
+LaTeX Warning: Reference `fig:ui-venditore-inventario' on page 23 undefined on 
+input line 223.
+
+[23]
+
+LaTeX Warning: Reference `fig:ui-manager-marchi' on page 24 undefined on input 
+line 233.
+
+
+LaTeX Warning: Reference `fig:ui-manager-registro' on page 24 undefined on inpu
+t line 233.
+
+
+LaTeX Warning: Reference `fig:ui-manager-marchi' on page 24 undefined on input 
+line 233.
+
+
+LaTeX Warning: Reference `fig:ui-manager-registro' on page 24 undefined on inpu
+t line 233.
+
+[24]) (./capitoli/2_architettura.tex
+
+LaTeX Warning: Reference `fig:pkg' on page 25 undefined on input line 3.
+
+[25] [26]
+
+LaTeX Warning: Reference `app:classi' on page 27 undefined on input line 51.
+
+
+LaTeX Warning: Reference `fig:catalogo-corpo' on page 27 undefined on input lin
+e 74.
+
+[27] [28]
+
+LaTeX Warning: Reference `fig:eventi-corpo' on page 29 undefined on input line 
+113.
+
+[29] [30]
+
+LaTeX Warning: Reference `ch:implementazione' on page 31 undefined on input lin
+e 144.
+
+[31]) (./capitoli/2_sequenze.tex
+
+LaTeX Warning: Reference `app:casi-uso' on page 32 undefined on input line 3.
+
+
+LaTeX Warning: Reference `fig:sq01a' on page 32 undefined on input line 36.
+
+[32] [33]
+
+LaTeX Warning: Reference `fig:sq01b' on page 34 undefined on input line 53.
+
+
+LaTeX Warning: Reference `fig:sq01c' on page 34 undefined on input line 63.
+
+[34] [35] [36]
+
+LaTeX Warning: Reference `fig:sq01d' on page 37 undefined on input line 86.
+
+[37] [38]
+
+LaTeX Warning: Reference `fig:sq02' on page 39 undefined on input line 108.
+
+
+LaTeX Warning: Reference `fig:sqob' on page 39 undefined on input line 120.
+
+[39] [40] [41]
+
+LaTeX Warning: Reference `fig:sq03a' on page 42 undefined on input line 145.
+
+
+LaTeX Warning: Reference `fig:sq03b' on page 42 undefined on input line 157.
+
+[42] [43] [44]) (./capitoli/2_database.tex
+
+LaTeX Warning: Reference `fig:er-autori' on page 45 undefined on input line 10.
+
+
+[45]
+
+LaTeX Warning: Reference `fig:er-autori' on page 46 undefined on input line 20.
+
+
+[46]
+
+LaTeX Warning: Reference `fig:er-autori' on page 47 undefined on input line 20.
+
+
+[47]
+
+LaTeX Warning: Reference `fig:er01' on page 48 undefined on input line 22.
+
+
+LaTeX Warning: Reference `fig:er02' on page 48 undefined on input line 22.
+
+[48] [49] [50]
+
+LaTeX Warning: Reference `fig:rel01' on page 51 undefined on input line 61.
+
+
+LaTeX Warning: Reference `fig:rel03' on page 51 undefined on input line 61.
+
+[51] [52] [53] [54] [55])) (./capitoli/3_implementazione.tex [56]
+Capitolo 3.
+
+LaTeX Warning: Reference `app:classi' on page 57 undefined on input line 3.
+
+
+LaTeX Warning: Reference `sec:sequenze' on page 57 undefined on input line 4.
+
+
+LaTeX Warning: Reference `sec:database' on page 57 undefined on input line 5.
+
+
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/list
+ings/lstlang1.sty)
+
+LaTeX Warning: Reference `lst:vehicle-invariante' on page 57 undefined on input
+ line 28.
+
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texmf/tex/latex/lm/ts1lmtt.fd)
+[57] [58]
+
+LaTeX Warning: Reference `lst:transazione' on page 59 undefined on input line 1
+80.
+
+[59] [60]
+
+LaTeX Warning: Reference `fig:sqob' on page 61 undefined on input line 271.
+
+[61]
+
+LaTeX Warning: Reference `sec:navigazione' on page 62 undefined on input line 3
+48.
+
+[62] [63] [64]
+
+LaTeX Warning: Reference `sec:database' on page 65 undefined on input line 533.
+
+
+
+LaTeX Warning: Reference `fig:rel02' on page 65 undefined on input line 541.
+
+
+LaTeX Warning: Reference `fig:rel03' on page 65 undefined on input line 541.
+
+
+LaTeX Warning: Reference `fig:pkg' on page 65 undefined on input line 550.
+
+[65]
+
+LaTeX Warning: Reference `lst:observer' on page 66 undefined on input line 565.
+
+
+
+LaTeX Warning: Reference `lst:navigazione' on page 66 undefined on input line 5
+73.
+
+
+LaTeX Warning: Reference `lst:singleton' on page 66 undefined on input line 589
+.
+
+) (./capitoli/4_testing.tex [66]
+Capitolo 4.
+
+LaTeX Warning: Reference `app:verifiche' on page 67 undefined on input line 5.
+
+[67]
+
+LaTeX Warning: Reference `lst:test-accordo' on page 68 undefined on input line 
+78.
+
+[68]
+
+LaTeX Warning: Reference `lst:test-rollback' on page 69 undefined on input line
+ 162.
+
+[69]
+
+LaTeX Warning: Reference `lst:test-gara' on page 70 undefined on input line 191
+.
+
+
+LaTeX Warning: Reference `sec:sequenze' on page 70 undefined on input line 218.
+
+
+[70]
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/list
+ings/lstlang1.sty)
+(/tmp/drivehub-tavole-tools/texlive/usr/share/texlive/texmf-dist/tex/latex/list
+ings/lstlang1.sty)
+
+LaTeX Warning: Reference `app:verifiche' on page 71 undefined on input line 305
+.
+
+) (./capitoli/5_uso_ai.tex [71]
+Capitolo 5.
+[72]
+
+LaTeX Warning: Reference `app:verifiche' on page 73 undefined on input line 65.
+
+
+
+LaTeX Warning: Reference `ch:testing' on page 73 undefined on input line 95.
+
+
+LaTeX Warning: Reference `app:verifiche' on page 73 undefined on input line 95.
+
+
+[73]
+
+LaTeX Warning: Reference `app:classi' on page 74 undefined on input line 130.
+
+
+LaTeX Warning: Reference `fig:uc-autori' on page 74 undefined on input line 139
+.
+
+
+LaTeX Warning: Reference `fig:nav-autori' on page 74 undefined on input line 13
+9.
+
+
+LaTeX Warning: Reference `fig:er-autori' on page 74 undefined on input line 139
+.
+
+) (./appendici/appendici.tex [74]
+Appendice A.
+(./appendici/a_casi_uso.tex [75] [76] [77] [78] [79]
+
+LaTeX Warning: Reference `sec:sequenze' on page 80 undefined on input line 217.
+
+
+[80] [81] [82] [83] [84] [85] [86] [87]) [88]
+Appendice B.
+(./appendici/b_classi.tex
+
+LaTeX Warning: Reference `sec:classi' on page 89 undefined on input line 1.
+
+[89] [90] [91] [92] [93] [94] [95] [96] [97] [98] [99] [100] [101])
+Appendice C.
+(./appendici/c_verifiche.tex
+
+LaTeX Warning: Reference `app:casi-uso' on page 102 undefined on input line 8.
+
+[102] [103]
+ignored error: Infinite glue shrinkage found in box being split [104]
+ignored error: Infinite glue shrinkage found in box being split [105]
+ignored error: Infinite glue shrinkage found in box being split [106]
+ignored error: Infinite glue shrinkage found in box being split [107]
+ignored error: Infinite glue shrinkage found in box being split [108] [109]
+
+LaTeX Warning: Reference `sec:test-esecuzione' on page 110 undefined on input l
+ine 385.
+
+)) [110] (build/main.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `main.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+ )
+Output written on build/main.pdf (112 pages).
+Transcript written on build/main.log.

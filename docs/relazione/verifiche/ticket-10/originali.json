@@ -1,0 +1,50 @@
+{
+  "input_attivi": [
+    "Relazione_SWE/capitoli/2_progettazione.tex",
+    "Relazione_SWE/capitoli/2a_casi_uso.tex",
+    "Relazione_SWE/templates/test_drive.tex",
+    "Relazione_SWE/templates/noleggio.tex",
+    "Relazione_SWE/templates/acquisto.tex",
+    "Relazione_SWE/templates/cessione.tex",
+    "Relazione_SWE/templates/autorizzazione_acquisto.tex",
+    "Relazione_SWE/templates/sconto_veicolo.tex",
+    "Relazione_SWE/capitoli/2b_interfaccia.tex",
+    "Relazione_SWE/capitoli/2c_package_diagram.tex",
+    "Relazione_SWE/capitoli/2c_class_diagram.tex",
+    "Relazione_SWE/capitoli/2c_sequence_diagram.tex",
+    "Relazione_SWE/capitoli/2c_database.tex"
+  ],
+  "diagrammi": [
+    "Relazione_SWE/images/users-swe-current.png",
+    "Relazione_SWE/images/page-navigation-original.pdf",
+    "Relazione_SWE/images/package-diagram-original.pdf",
+    "Relazione_SWE/images/class-domain-drivehub.pdf",
+    "Relazione_SWE/images/class-business-drivehub.pdf",
+    "Relazione_SWE/images/class-dao-drivehub.pdf",
+    "Relazione_SWE/images/class-presentation-drivehub.pdf",
+    "Relazione_SWE/images/sequence-purchase-drivehub.pdf",
+    "Relazione_SWE/images/sequence-rental-drivehub.pdf",
+    "Relazione_SWE/images/sequence-acquisition-drivehub.pdf",
+    "Relazione_SWE/images/swe-er-original.pdf"
+  ],
+  "schermate": [
+    "Relazione_SWE/images/mockups/00-benvenuto.png",
+    "Relazione_SWE/images/mockups/01-accesso.png",
+    "Relazione_SWE/images/mockups/02-registrazione.png",
+    "Relazione_SWE/images/mockups/customer-catalogo.png",
+    "Relazione_SWE/images/mockups/customer-acquisti.png",
+    "Relazione_SWE/images/mockups/customer-noleggi-test-drive.png",
+    "Relazione_SWE/images/mockups/customer-cessione.png",
+    "Relazione_SWE/images/mockups/customer-conto.png",
+    "Relazione_SWE/images/mockups/customer-profilo.png",
+    "Relazione_SWE/images/mockups/salesman-proposte.png",
+    "Relazione_SWE/images/mockups/salesman-richieste.png",
+    "Relazione_SWE/images/mockups/salesman-stato-veicoli.png",
+    "Relazione_SWE/images/mockups/salesman-panoramica.png",
+    "Relazione_SWE/images/mockups/salesman-profilo.png",
+    "Relazione_SWE/images/mockups/manager-parco-veicoli.png",
+    "Relazione_SWE/images/mockups/manager-marche-modelli.png",
+    "Relazione_SWE/images/mockups/manager-vendite.png",
+    "Relazione_SWE/images/mockups/manager-profilo.png"
+  ]
+}
